@@ -635,6 +635,7 @@ footer a:hover { color: var(--primary); }
   <a href="#comparison" onclick="toggleMenu()">🥊 Claude Comparison</a>
   <a href="#benchmark-caveat" onclick="toggleMenu()">⚠️ Benchmarks Aren't Everything</a>
   <a href="#opinion" onclick="toggleMenu()">💭 Opinion: Local Models</a>
+  <a href="#community" onclick="toggleMenu()">🗣️ Community Feedback</a>
   <a href="#sources" onclick="toggleMenu()">📚 Sources</a>
 </nav>
 
@@ -1137,6 +1138,72 @@ footer a:hover { color: var(--primary); }
   <div class="highlight success">
     <strong>Verdict:</strong> Qwen3.6-27B confirms that a reasonable-sized open-source model can compete head-on with the best closed-source on specific tasks. The local model revolution isn't coming — it's already here.
   </div>
+</section>
+
+<!-- Community -->
+<section id="community">
+  <h2>🗣️ <span class="accent">Community</span> Feedback</h2>
+  <p>After 24 hours of real-world testing by the community (Reddit, Hacker News, YouTube), here's the consensus:</p>
+
+  <div class="result-grid">
+    <div class="result-card hit">
+      <div class="label">Reddit r/LocalLLaMA</div>
+      <div class="value">✅</div>
+      <div class="pred">Very positive</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">Hacker News</div>
+      <div class="value">✅</div>
+      <div class="pred">Positive + healthy skepticism</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">YouTube Reviews</div>
+      <div class="value">✅</div>
+      <div class="pred">Positive surprise</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">BenchLM.ai</div>
+      <div class="value">#9</div>
+      <div class="pred">Top 10 in Coding (86.9/100)</div>
+    </div>
+  </div>
+
+  <h3>What the community confirms:</h3>
+
+  <div class="highlight success">
+    <strong>✅ The numbers DO hold up in real usage</strong>
+    <p><em>"First local model that actually feels worth the effort"</em> — user with RTX 5090+4090, ~170 t/s on Q8 with full 260K context.</p>
+    <p style="margin-top: 8px;">The Terminal-Bench jump (+17.7) is noticeable in <strong>real agentic tasks</strong>: bash scripting, automation, tool use. In assisted coding, <strong>9 out of 10 times</strong> just asking it to self-review its changes is enough to catch and fix errors automatically.</p>
+  </div>
+
+  <div class="highlight success">
+    <strong>✅ Doesn't seem like benchmark gaming</strong>
+    <p>The model doesn't "recite" benchmarks — reasoning is genuine and generalizable. Multiple users confirm it beats <strong>Gemma 4</strong> and is clearly superior to 3.5-27B.</p>
+  </div>
+
+  <h3>What the community caveats:</h3>
+
+  <div class="highlight warning">
+    <strong>⚠️ SWE-bench: Different scaffolds</strong>
+    <p>Some doubt it's comparable to Claude Code — Qwen uses its internal agent scaffold vs Claude Code with its own tool system. We already knew this.</p>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ MMLU-Pro: Only +0.1 improvement</strong>
+    <p>The model is NOT better at general knowledge. The improvement is specifically in <strong>coding + agent skills</strong>, not knowledge.</p>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ Long context on real hardware</strong>
+    <p>On 32GB VRAM, ~128K practical (not the advertised 256K). The model needs more VRAM than announced for full context.</p>
+  </div>
+
+  <div class="highlight">
+    <strong>Final community verdict:</strong>
+    <p><em>"Official numbers hold up in real usage. Not empty hype — the agent skills jump is noticeable in practice, especially in terminal automation, coding with self-correction, and scientific reasoning."</em></p>
+  </div>
+
+  <p class="source">Sources: <a href="https://www.reddit.com/r/LocalLLaMA/comments/1so2nt9/qwen_36_is_the_first_local_model_that_actually/" target="_blank">Reddit r/LocalLLaMA</a>, <a href="https://news.ycombinator.com/item?id=47863217" target="_blank">Hacker News</a>, <a href="https://benchlm.ai/models/qwen3-6-27b" target="_blank">BenchLM.ai</a> — Added April 23, 2026</p>
 </section>
 
 <!-- Sources -->

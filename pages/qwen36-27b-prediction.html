@@ -636,6 +636,7 @@ footer a:hover { color: var(--primary); }
   <a href="#comparativa" onclick="toggleMenu()">🥊 Comparativa Claude</a>
   <a href="#benchmarks-advertencia" onclick="toggleMenu()">⚠️ Benchmarks no lo son todo</a>
   <a href="#opinión" onclick="toggleMenu()">💭 Opinión: Modelos Locales</a>
+  <a href="#comunidad" onclick="toggleMenu()">🗣️ Feedback Comunidad</a>
   <a href="#fuentes" onclick="toggleMenu()">📚 Fuentes</a>
 </nav>
 
@@ -1138,6 +1139,72 @@ footer a:hover { color: var(--primary); }
   <div class="highlight success">
     <strong>Veredicto:</strong> Qwen3.6-27B confirma que un modelo open-source de tamaño razonable puede competir de frente con los mejores closed-source en tareas específicas. La revolución de los modelos locales no está llegando — ya está aquí.
   </div>
+</section>
+
+<!-- Comunidad -->
+<section id="comunidad">
+  <h2>🗣️ <span class="accent">Feedback</span> de la Comunidad</h2>
+  <p>Tras 24 horas de testing real por parte de la comunidad (Reddit, Hacker News, YouTube), aquí está el consenso:</p>
+
+  <div class="result-grid">
+    <div class="result-card hit">
+      <div class="label">Reddit r/LocalLLaMA</div>
+      <div class="value">✅</div>
+      <div class="pred">Muy positivo</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">Hacker News</div>
+      <div class="value">✅</div>
+      <div class="pred">Positivo + escepticismo sano</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">YouTube Reviews</div>
+      <div class="value">✅</div>
+      <div class="pred">Sorpresa positiva</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">BenchLM.ai</div>
+      <div class="value">#9</div>
+      <div class="pred">Top 10 en Coding (86.9/100)</div>
+    </div>
+  </div>
+
+  <h3>Lo que confirma la comunidad:</h3>
+
+  <div class="highlight success">
+    <strong>✅ Los números SÍ se mantienen en uso real</strong>
+    <p><em>"First local model that actually feels worth the effort"</em> — usuario con RTX 5090+4090, ~170 t/s en Q8 con 260K contexto completo.</p>
+    <p style="margin-top: 8px;">El salto en Terminal-Bench (+17.7) se nota en <strong>tareas agenticas reales</strong>: scripting bash, automatización, uso de herramientas. En coding asistido, <strong>9 de 10 veces</strong> basta con pedirle que revise sus propios cambios para que corrija errores automáticamente.</p>
+  </div>
+
+  <div class="highlight success">
+    <strong>✅ No parece benchmaxing</strong>
+    <p>El modelo no "recita" benchmarks — el razonamiento es genuino y generalizable. Múltiples usuarios confirman que supera a <strong>Gemma 4</strong> y es claramente superior al 3.5-27B.</p>
+  </div>
+
+  <h3>Lo que la comunidad matiza:</h3>
+
+  <div class="highlight warning">
+    <strong>⚠️ SWE-bench: Scaffolds diferentes</strong>
+    <p>Algunos dudan que sea comparable con Claude Code — Qwen usa su internal agent scaffold vs Claude Code con su propio tool system. Ya lo sabíamos.</p>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ MMLU-Pro: Solo +0.1 de mejora</strong>
+    <p>El modelo NO es mejor en conocimiento general. La mejora es específicamente en <strong>coding + agent skills</strong>, no en knowledge.</p>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ Contexto largo en hardware real</strong>
+    <p>En 32GB VRAM, ~128K práctico (no los 256K teóricos). El modelo necesita más VRAM de lo anunciado para el contexto completo.</p>
+  </div>
+
+  <div class="highlight">
+    <strong>Veredicto final de la comunidad:</strong>
+    <p><em>"Los números oficiales se mantienen en uso real. No es hype vacío — el salto en skills de agent se nota al usarlo, especialmente en automatización terminal, coding con auto-corrección, y razonamiento científico."</em></p>
+  </div>
+
+  <p class="source">Fuentes: <a href="https://www.reddit.com/r/LocalLLaMA/comments/1so2nt9/qwen_36_is_the_first_local_model_that_actually/" target="_blank">Reddit r/LocalLLaMA</a>, <a href="https://news.ycombinator.com/item?id=47863217" target="_blank">Hacker News</a>, <a href="https://benchlm.ai/models/qwen3-6-27b" target="_blank">BenchLM.ai</a> — Agregado 23 de abril, 2026</p>
 </section>
 
 <!-- Fuentes -->
