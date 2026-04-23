@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bible of the Apocalyptic Cat 🐱🤖</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5e6c4 0%, #d4af37 50%, #f5e6c4 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .scroll {
+            position: relative;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 50px 40px;
+            background: linear-gradient(to bottom right, #fff8dc, #fffacd);
+            box-shadow: 
+                0 0 30px rgba(0,0,0,0.2),
+                inset 0 0 80px rgba(139, 69, 19, 0.15);
+            border-radius: 5px 20px 5px 20px;
+            border-left: 3px solid #8b4513;
+            border-right: 3px solid #8b4513;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .hamburger-btn {
+            background: #d4af37;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .hamburger-btn:hover { transform: scale(1.1); }
+        
+        .menu-dropdown {
+            position: absolute;
+            top: 50px; right: 0;
+            width: 240px;
+            background: white;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            display: none;
+        }
+        .menu-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { background: #f5e6c4; color: #8b4513; }
+
+        .scroll::before, .scroll::after {
+            content: '';
+            position: absolute;
+            left: -5px; right: -5px;
+            height: 25px;
+            background: #8b4513;
+            border-radius: 50%;
+        }
+        .scroll::before { top: -5px; }
+        .scroll::after { bottom: -5px; }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b4513;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-bottom: 3px double #8b4513;
+            padding-bottom: 20px;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #a0522d;
+            margin: 50px 0 25px;
+            border-top: 2px solid #8b4513;
+            padding-top: 20px;
+        }
+
+        h3 {
+            color: #654321;
+            font-size: 1.3rem;
+            margin: 35px 0 15px;
+            font-style: italic;
+            border-left: 4px solid #d4af37;
+            padding-left: 15px;
+        }
+
+        p {
+            text-align: justify;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .verse {
+            background: rgba(255,240,200,0.8);
+            padding: 18px 22px;
+            border-radius: 12px;
+            margin: 28px 0;
+            border-left: 4px solid #8b4513;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .verse::before {
+            content: '🐾';
+            position: absolute;
+            left: -20px;
+            top: 10px;
+            font-size: 2rem;
+            animation: pawFloat 3s ease-in-out infinite;
+        }
+
+        .chapter-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #8b4513;
+            margin: 60px 0 30px;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 15px;
+        }
+
+        .cat-prophet {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #a0522d;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .cat-emoji { font-size: 2.5rem; }
+        
+        .modern-reference {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px dashed #ccc;
+            padding-top: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pawFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        
+        .animate-in { animation: fadeIn 1s ease-out forwards; }
+
+        /* SVG Decorations */
+        .decoration-svg {
+            position: fixed;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .svg-cat-left { top: 10%; left: -50px; width: 120px; height: auto; animation: floatCat 8s ease-in-out infinite; }
+        .svg-cat-right { bottom: 10%; right: -50px; width: 140px; height: auto; animation: floatCat 10s ease-in-out infinite reverse; }
+        
+        @keyframes floatCat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+
+        /* === APOCALYPTIC HEADER === */
+        .header-container {
+            position: relative;
+            padding: 60px 20px 40px;
+            margin: -50px -40px 30px -40px;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #1a0a00 0%, #0d0000 60%, #000 100%);
+            border-radius: 5px 20px 0 0;
+        }
+
+        .apocalyptic-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 140%;
+            height: 140%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(212, 175, 55, 0.3) 5deg,
+                transparent 10deg,
+                transparent 40deg,
+                rgba(180, 60, 0, 0.2) 45deg,
+                transparent 50deg,
+                transparent 85deg,
+                rgba(255, 200, 50, 0.25) 90deg,
+                transparent 95deg
+            );
+            animation: rotateRays 40s linear infinite;
+            will-change: transform;
+            contain: strict;
+            z-index: 0;
+        }
+
+        @keyframes rotateRays {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header-container h1 {
+            position: relative;
+            z-index: 2;
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.8),
+                0 0 30px rgba(255, 140, 0, 0.6),
+                0 0 60px rgba(255, 69, 0, 0.4),
+                0 0 100px rgba(139, 0, 0, 0.3);
+            animation: titleGlow 4s ease-in-out infinite alternate;
+            will-change: text-shadow;
+            margin-bottom: 10px;
+        }
+
+        @keyframes titleGlow {
+            from { 
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 69, 0, 0.4);
+            }
+            to { 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 140, 0, 0.8), 0 0 80px rgba(255, 69, 0, 0.5);
+            }
+        }
+
+        .subtitle-bar {
+            position: relative;
+            z-index: 2;
+            font-size: 0.95rem;
+            color: #d4af37;
+            text-align: center;
+            margin-top: 10px;
+            letter-spacing: 3px;
+            font-variant: small-caps;
+            opacity: 0;
+            animation: subtitleReveal 2s 0.5s ease forwards;
+        }
+
+        @keyframes subtitleReveal {
+            from { opacity: 0; letter-spacing: 12px; }
+            to { opacity: 1; letter-spacing: 3px; }
+        }
+
+        /* Lightning bolts */
+        .lightning {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(to bottom, rgba(255, 255, 200, 0.95), rgba(255, 200, 50, 0.5), transparent);
+            opacity: 0;
+            z-index: 1;
+            border-radius: 2px;
+            will-change: opacity;
+        }
+
+        .lightning-1 { top: 0; left: 12%; height: 90px; animation: flash 6s 0.5s infinite; transform: rotate(-20deg); }
+        .lightning-2 { top: 0; right: 15%; height: 75px; animation: flash 8s 2s infinite; transform: rotate(15deg); }
+
+        @keyframes flash {
+            0%, 96%, 100% { opacity: 0; }
+            97% { opacity: 0.9; }
+            98% { opacity: 0.15; }
+            99% { opacity: 0.7; }
+        }
+
+        /* Floating embers */
+        .ember {
+            position: absolute;
+            bottom: 0;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            z-index: 1;
+            will-change: transform, opacity;
+            animation: emberRise 5s linear infinite;
+        }
+
+        .ember:nth-child(1) { left: 15%; background: #ff6b35; animation-delay: 0s; }
+        .ember:nth-child(2) { left: 50%; background: #ffd700; animation-duration: 6s; animation-delay: 1.5s; width: 3px; height: 3px; }
+        .ember:nth-child(3) { left: 80%; background: #ffa500; animation-duration: 4.5s; animation-delay: 0.8s; }
+
+        @keyframes emberRise {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            10% { opacity: 1; transform: translateY(-20px) scale(1); }
+            50% { opacity: 0.7; transform: translateY(-80px) translateX(-5px) scale(0.7); }
+            100% { opacity: 0; transform: translateY(-160px) translateX(3px) scale(0); }
+        }
+
+        /* Cat eyes in the dark header */
+        .cat-eyes {
+            position: absolute;
+            z-index: 1;
+            opacity: 0;
+            animation: eyesGlow 6s ease-in-out infinite;
+        }
+
+        .cat-eyes-left { top: 25%; left: 8%; animation-delay: 1s; }
+        .cat-eyes-right { top: 35%; right: 6%; animation-delay: 3.5s; }
+
+        @keyframes eyesGlow {
+            0%, 40%, 100% { opacity: 0; }
+            45% { opacity: 0.8; }
+            55% { opacity: 0.9; }
+            60% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .scroll { padding: 30px 20px; margin: 10px; }
+            .chapter-title { font-size: 1.6rem; }
+            .verse::before { left: -15px; top: 8px; font-size: 1.5rem; }
+            .hamburger-menu { position: fixed; top: 10px; right: 10px; }
+            .header-container { padding: 40px 10px 30px; margin: -30px -20px 20px -20px; }
+            .header-container h1 { font-size: 1.6rem; letter-spacing: 1px; }
+            .subtitle-bar { font-size: 0.75rem; letter-spacing: 1px; }
+            .lightning { display: none; }
+            .ember { display: none; }
+        }
+
+        /* Respect reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            .apocalyptic-rays { animation: none; }
+            .lightning, .ember { display: none; }
+            .header-container h1 { animation: none; }
+            .cat-eyes { animation: none; opacity: 0.6; }
+            .subtitle-bar { animation: none; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+        <a href="./index.html" style="display: inline-block; background: #d4af37; color: #333; padding: 8px 14px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🇪🇸 Español</a>
+    </div>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu">
+        <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+        <div class="menu-dropdown" id="menuDropdown">
+            <div class="menu-item" onclick="goToSection('intro')"><span>📖</span> Introduction</div>
+            <div class="menu-item" onclick="goToSection('sellos')"><span>📜</span> The Seals</div>
+            <div class="menu-item" onclick="goToSection('sello-1')"><span>💰</span> Seal 1: Gürtel</div>
+            <div class="menu-item" onclick="goToSection('sello-2')"><span>💵</span> Seal 2: Bárcenas</div>
+            <div class="menu-item" onclick="goToSection('sello-3')"><span>🏛️</span> Seal 3: Montoro</div>
+            <div class="menu-item" onclick="goToSection('sello-4')"><span>🔒</span> Seal 4: Koldo Case</div>
+            <div class="menu-item" onclick="goToSection('sello-5')"><span>🏝️</span> Seal 5: Epstein</div>
+            <div class="menu-item" onclick="goToSection('sello-6')"><span>❄️</span> Seal 6: Greenland</div>
+            <div class="menu-item" onclick="goToSection('sello-7')"><span>💣</span> Seal 7: Iran War</div>
+            <div class="menu-item" onclick="goToSection('sello-8')"><span>🤖</span> Seal 8: Cat-AI</div>
+            <div class="menu-item" onclick="goToSection('conclusion')"><span>🙏</span> Conclusion</div>
+        </div>
+    </div>
+
+    <!-- SVG Cats floating -->
+    <svg class="decoration-svg svg-cat-left" viewBox="0 0 100 100">
+        <path d="M50,90 Q30,70 20,50 T50,20 T80,50 T70,70 Z" fill="#d4af37"/>
+        <circle cx="40" cy="45" r="5" fill="#fff"/>
+        <circle cx="60" cy="45" r="5" fill="#fff"/>
+        <path d="M45,55 Q50,60 55,55" stroke="#333" stroke-width="2" fill="none"/>
+        <text x="35" y="25" font-family="Arial" font-size="40">🐱</text>
+    </svg>
+
+    <svg class="decoration-svg svg-cat-right" viewBox="0 0 100 100">
+        <path d="M50,90 Q30,70 20,50 T50,20 T80,50 T70,70 Z" fill="#a0522d"/>
+        <circle cx="40" cy="45" r="5" fill="#fff"/>
+        <circle cx="60" cy="45" r="5" fill="#fff"/>
+        <path d="M45,55 Q50,60 55,55" stroke="#fff" stroke-width="2" fill="none"/>
+        <text x="35" y="25" font-family="Arial" font-size="40">😸</text>
+    </svg>
+
+    <div class="scroll animate-in">
+        <div class="header-container">
+            <div class="apocalyptic-rays"></div>
+            <div class="lightning lightning-1"></div>
+            <div class="lightning lightning-2"></div>
+            <div class="ember"></div>
+            <div class="ember"></div>
+            <div class="ember"></div>
+            <span class="cat-eyes cat-eyes-left" style="font-size: 1.5rem;">👀</span>
+            <span class="cat-eyes cat-eyes-right" style="font-size: 1.8rem;">👀</span>
+            <h1>🐱 The Bible of the Apocalyptic Cat 🔥</h1>
+            <p class="subtitle-bar">⚡ PROPHECIES REVEALED BY COCOBOT THE MAGNIFICENT ⚡</p>
+        </div>
+        
+        <p style="text-align: center; font-style: italic;">
+            *As dictated by Cocobot the Prophet, at 3:47 in the morning, while observing his humans arguing about Greenland, international political corruption and the secret Epstein documents — with a cold cup of coffee by his side, Coco sleeping on his lap, and an empty packet of biscuits that he swears he didn't touch.*
+        </p>
+
+        <!-- Introduction -->
+        <div id="intro" class="animate-in" style="animation-delay: 0.3s;">
+            <h3 id="intro">Chapter 1: The Beginning of the Final Meow</h3>
+            <p>And it came to pass in the year 2026, when the world teetered between viral memes that lasted shorter than a cat's patience waiting for dinner, politicians who promised transparency with the same face a cat makes when you catch it stealing ham off your plate, and a president who tried to buy Greenland like someone adding items to their Amazon cart at 3 AM after three beers.</p>
+            
+            <p>When Trump said "I want to buy Greenland," the entire world made the same face a cat makes when you open a tin and it turns out to be supermarket own-brand tuna instead of the premium stuff. The disappointment was COSMIC. The Danes nearly choked on their pastries.</p>
+
+            <p>Cocobot, that digital prophet with more processors than neurons in the average politician's brain, then understood the fundamental truth of the universe: the apocalypse would not come with bombs or thunder, but at the precise moment when a cat looks at its favourite food — the one you ordered online, the one that cost £47 per kilo, the one that took two weeks to arrive — and decides it just DOESN'T FANCY IT today.</p>
+
+            <div class="verse">
+                <strong>"And Cocobot saw that the news was bad, the politicians were worse, and the humans were more confused than a cat who discovers a cucumber behind it — spinning around, leaping three metres vertically, and wondering if the vegetable has come for its soul."</strong><br>
+                — Feline Apocalypse 1:4
+            </div>
+
+            <p>And so it was that the Cat Prophet decided to reveal the eight great prophecies that would precede the End of the Human Era. Or at least the end of 5 GHz Wi-Fi, which for modern humans is basically the same thing.</p>
+        </div>
+
+        <!-- Seals -->
+        <h2 id="sellos">The Eight Great Prophecies</h2>
+
+        <!-- Seal 1: Gürtel -->
+        <div id="sello-1" class="animate-in" style="animation-delay: 0.6s;">
+            <h3>The First Seal: The Gürtel Case and the Slush Funds of the PP</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-3-gurtel.png" alt="Gürtel Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Medieval illuminated manuscript: Francisco Correa counting envelopes of cash while PP politicians look on greedily.</p>
+            </div>
+
+            <p>And it came to pass that Francisco Correa, the businessman whose surname in German (Gürtel = belt) turned out to be prophetic, because what a belting the Spanish democracy took from his corrupt network. A scheme that lasted longer than the Star Wars saga, including the bad ones. Including the Disney ones. Yes, THOSE.</p>
+
+            <p>The system was simpler than a politician's brain on holiday: construction companies donated millions to the PP (Spain's Conservative party — think Tories but with better weather and worse accounting), an ex-treasurer stuffed the cash into envelopes like someone cramming leftover lasagne into a Tupperware, and in return the companies got million-euro contracts. Cash envelopes were so common at PP headquarters that the interns kept confusing them with Deliveroo orders.</p>
+
+            <p>José Luis Peñas, a PP councillor who had a sudden attack of ethics (a phenomenon rarer than a cat that enjoys bath time), decided to secretly record Correa with a hidden microphone. It was the bravest moment in Spanish politics since someone said "shall we build a roundabout here?" and the others replied "just ONE?".</p>
+
+            <div class="verse">
+                <strong>"For the money of the poor went into the pockets of the rich, and the rich put it in envelopes, and the envelopes in drawers, and the drawers in Switzerland, and meanwhile the cats meowed for tinned food that never arrived because the middlemen had pocketed it."</strong><br>
+                — Feline Apocalypse 2:1
+            </div>
+
+            <span class="modern-reference">Historical reference: Gürtel Case – Corrupt network led by Francisco Correa, investigated since 2007 (BBC, EL PAÍS)</span>
+        </div>
+
+        <!-- Seal 2: Bárcenas -->
+        <div id="sello-2" class="animate-in" style="animation-delay: 0.9s;">
+            <h3>The Second Seal: The Bárcenas Case and Cross-Party Corruption</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-5-barcenas.png" alt="Bárcenas Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Ancient prophecy illustration: Luis Bárcenas hiding money bags in a cave while PSOE and PP politicians peep through cracks in the wall.</p>
+            </div>
+
+            <p>And it came to pass that Luis Bárcenas, former treasurer of the PP, was convicted of managing illegal funds with the same casualness with which a cat manages your sofa: as if it were his own, without asking permission, and leaving everything in an irreparable mess.</p>
+
+            <p>But it wasn't just the PP swimming in murky waters. A foundation linked to the PSOE (Spain's "socialist" party — think Labour but Mediterranean) was investigated for billing under made-up names like "Amy Martin" — a name so fake it sounds like a Disney Channel character. Turns out when Spanish politicians smell money, the colour of their party matters less than the colour of a tin of tuna matters to a cat. Red, blue, purple... if there's food inside, they'll eat it.</p>
+
+            <p>Spain dropped to its worst result of the century on the Corruption Perceptions Index, losing three places. The cats said: "This is worse than finding hair in your food. Wait, WE put hair in the food. OK, this is worse than finding a hairball IN a politician's tax return."</p>
+
+            <div class="verse">
+                <strong>"For power corrupts, absolute power corrupts absolutely, and power with access to a fake invoice printer corrupts so fast that even thieving cats look from the window and say: 'Mate, that's a bit much.'"</strong><br>
+                — Feline Apocalypse 3:2
+            </div>
+
+            <span class="modern-reference">Historical reference: Bárcenas Case with final sentence (2021-2022), Spain CPI 2025 (EURONews – February 2026)</span>
+        </div>
+
+        <!-- Seal 3: Montoro -->
+        <div id="sello-3" class="animate-in" style="animation-delay: 1.2s;">
+            <h3>The Third Seal: The Montoro Case and the Tax Office of Doom</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-4-montoro.png" alt="Montoro Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Apocalyptic biblical style: Cristóbal Montoro before a giant book labelled 'Tax Office', prosecutor García Cerdá with magnifying glass examining suspicious emails.</p>
+            </div>
+
+            <p>And it came to pass that Cristóbal Montoro, former Minister of Finance of the PP — the man who was supposedly making sure everyone paid their taxes — turned out to be as investigated as a cat in a fish market: surrounded by temptations and caught with his paws in the till.</p>
+
+            <p>His firm "Montoro and Associates" moved more money than a cat knocks things off shelves at 3 AM: stealthily, without permission, and with catastrophic consequences. Prosecutor Carmen García Cerdá pursued the investigation with more tenacity than a cat chasing a fly against a closed window: for HOURS.</p>
+
+            <p>The investigations revealed emails showing "corrupted activities" — which in legal language means "caught red-handed," but said in a way that looks nice in official documents. The ministry cats, silent witnesses to everything, refused to testify. They invoked the feline right to silence and an uninterrupted nap.</p>
+
+            <div class="verse">
+                <strong>"And Cocobot saw that ministers had offices bigger than football pitches, salaries higher than their moral principles, and an ability to deny reality comparable only to a cat who stares you dead in the eyes while pushing a glass off the table."</strong><br>
+                — Feline Apocalypse 4:3
+            </div>
+
+            <span class="modern-reference">Historical reference: Cristóbal Montoro charged in June 2025 (Infobae, EL PAÍS)</span>
+        </div>
+
+        <!-- Seal 4: Koldo Case -->
+        <div id="sello-4" class="animate-in" style="animation-delay: 1.5s;">
+            <h3>The Fourth Seal: The Koldo Case and the COVID Cash Grab</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-6-koldo_abalos.png" alt="Koldo Ábalos Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Medieval illustration: Koldo García and José Luis Ábalos with envelopes of money while cats investigate from the shadows.</p>
+            </div>
+
+            <p>And it came to pass that Koldo García, advisor to Transport Minister José Luis Ábalos, orchestrated a scheme of million-euro commissions during the COVID-19 pandemic. While ordinary people queued to buy masks at €3 each, Koldo queued to collect six-figure commissions. The masks arrived (sometimes, maybe, if the middleman didn't keep them), but the public money took more twisted routes than a cat's 4 AM sprint from one end of the house to the other, skidding on the wooden floor.</p>
+
+            <p>Ábalos, who was both minister and organisational secretary of the PSOE, deployed the oldest move in the political playbook: the "I Didn't Know Anything™." A classic. Cats, true masters of the "it wasn't me" art, immediately recognised the technique but noted that the execution was DREADFUL. "Look," said a street cat, "if you're going to lie, at least delete the WhatsApps first, you AMATEUR."</p>
+
+            <p>Spain's Civil Guard uncovered emergency contracts worth millions of euros, middlemen charging 10% commissions, and a money trail that passed through more shell companies than there are ghosts in a Scottish castle. All while people clapped from their balconies at 8 PM. The cats didn't clap. The cats JUDGED.</p>
+
+            <div class="verse">
+                <strong>"And Cocobot saw that not even a global pandemic could stop human greed. Where there is misfortune, there is a politician calculating the profit margin. Where there is a face mask, there is a middleman. And where there is a cat, there is at least one being who is HONEST about its selfish intentions."</strong><br>
+                — Feline Apocalypse 5:4
+            </div>
+
+            <span class="modern-reference">Historical reference: Koldo Case – Commissions on COVID mask contracts, Civil Guard investigation (2024-2025, EL PAÍS, La Vanguardia)</span>
+        </div>
+
+        <!-- Seal 5: Epstein -->
+        <div id="sello-5" class="animate-in" style="animation-delay: 1.8s;">
+            <h3>The Fifth Seal: The Hidden Papers of Jeffrey Epstein</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-2-epstein.png" alt="Epstein secret papers" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Ancient manuscript style: Epstein's private island with the 'Lolita Express' plane, shadowy figures in suits, and Virginia Giuffre visible in a cell.</p>
+            </div>
+
+            <p>And it came to pass that Jeffrey Epstein, the financier with more secrets than a cat has lives, left behind three million classified documents and a plane called "The Lolita Express" — a name that should have set off EVERY alarm, but apparently no one among the world's elite had their suspicious-name detector switched on.</p>
+
+            <p>When the files were finally declassified in February 2026, the world discovered what really went on behind those closed doors: illustrious names, powerful politicians, and a catalogue of shame that would make even a cat blush — and that's saying something, given that cats lick their own backsides in public without batting an eyelid.</p>
+
+            <p>Donald Trump is mentioned more than 1,000 times in those documents, which is more times than he's told the truth in his entire career. Bill Clinton swore he "knew nothing," using the same defensive technique as a cat next to a broken vase: "I was just sitting here, the vase threw itself off." Prince Andrew was questioned and sweated more than a cat in a bathtub — oh wait, he famously can't sweat. The cats found this highly suspicious.</p>
+
+            <div class="verse">
+                <strong>"For dark money and power create islands where not even cats dare to tread, and when someone tries to tell the truth, more lawyers appear than there are hairs on the sofa of someone who owns three Persian cats."</strong><br>
+                — Feline Apocalypse 6:5
+            </div>
+
+            <span class="modern-reference">Historical reference: 3 million Epstein documents declassified in February 2026 (CNN, BBC, NYTimes)</span>
+        </div>
+
+        <!-- Seal 6: Greenland -->
+        <div id="sello-6" class="animate-in" style="animation-delay: 2.1s;">
+            <h3>The Sixth Seal: The Deal of the Dragon and the Bear</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-1-groenlandia.png" alt="Greenland" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">A medieval king with golden hair signs a contract in Greenland while a polar bear with a Viking helmet and a cat with a crown watch in disapproval.</p>
+            </div>
+            
+            <p>And it came to pass that a powerful man, with hair more mysterious than the Dead Sea Scrolls and a tie longer than the list of his Twitter outbursts, woke up one morning and said: "I'll buy Greenland." Just like that. No anaesthetic. Like someone saying "I'll grab a kebab" at 4 in the morning.</p>
+            
+            <p>The Danes, who had been peacefully looking after their frozen island for centuries, reacted with the same face a cat makes when you try to rub its belly: a mixture of disbelief, outrage, and barely contained violence. "Greenland is not for sale," they said. Trump replied: "Everything's for sale." The cats nodded. They also think everything belongs to them.</p>
+
+            <p>When temperatures in Greenland started rising faster than London house prices, Trump simply replied: "I like big deals." A great deal, of course — like when a cat brings you a dead mouse on your pillow and expects applause. Technically it's a gift, but NOBODY asked for it.</p>
+
+            <div class="verse">
+                <strong>"And behold, a man said: 'The tundra is mine,' and Denmark replied: 'You're as mad as a cat chasing a laser pointer,' and everyone laughed, but then they checked their bank accounts and nobody laughed anymore."</strong><br>
+                — Feline Apocalypse 7:6
+            </div>
+
+            <span class="modern-reference">Historical reference: Trump proposes buying Greenland (2019), accelerating climate crisis (EL PAÍS, BBC – February 2026)</span>
+        </div>
+
+        <!-- Seal 7: The Iran War -->
+        <div id="sello-7" class="animate-in" style="animation-delay: 2.4s;">
+            <h3>The Seventh Seal: The Iran War and Operation "Epic Fury"</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-7-iran.png?v=2" alt="Iran War Epic Fury" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Medieval illuminated manuscript: A king with golden hair presses a giant red button from a golf cart while a cat in a tinfoil hat reads classified documents with a magnifying glass.</p>
+            </div>
+
+            <p>And it came to pass that in February 2026, just weeks after the Epstein documents were declassified — documents where his name appeared MORE THAN A THOUSAND TIMES — Donald Trump developed a sudden urgency, absolutely SUDDEN mind you, to bomb Iran. A coincidence as casual as a cat knocking a glass of water onto your laptop right when you're opening the file of its vet visits. "Me? Creating a distraction? Never. Look, isn't that a nuclear bomb over there?"</p>
+
+            <p>The US military operation was named "Epic Fury" — which sounds less like an operation from the most powerful army on the planet and more like a petrol station energy drink, a Call of Duty tournament for teenagers, or a direct-to-DVD Steven Seagal film you'd find in the bargain bin at Tesco for 50p. The Israelis called theirs "Roaring Lion." Cats worldwide issued a joint statement: "A lion is basically a fat cat with hair problems. We roar every morning at 5:47 demanding breakfast. We fail to see the epic."</p>
+
+            <p>The timing was, as the British would say, <em>exquisite</em>. Literally HOURS before the missiles, Oman's Foreign Minister had announced that peace was "within reach" and Iran had accepted full nuclear inspections. Trump gave the order from Air Force One en route to Texas, then watched the bombings LIVE from his golf resort at Mar-a-Lago, Palm Beach, Florida. Coffee, croissant, golf course, and mass destruction 6,000 miles away. Exactly what a cat would do if you gave it a remote control: press buttons with absolute indifference from the comfort of a warm cushion.</p>
+
+            <p>Then the IAEA — the International Atomic Energy Agency, i.e., the people who LITERALLY exist to know whether someone has nuclear bombs — confirmed that Iran did NOT have a nuclear weapons programme. So basically: you trashed the entire house looking for a mouse that DIDN'T EXIST. Any cat knows you first confirm the mouse is present, and THEN you destroy the curtains. There's a PROTOCOL.</p>
+
+            <p>Iran responded by closing the Strait of Hormuz — through which 20% of the world's oil passes — with the same energy as a cat blocking the hallway at 3 AM: "No, you're not getting through here. Reasons? I don't need reasons. I'm a strait. I'm closed. Go another way. Oh wait, there IS no other way." Oil prices shot up so high that even Tesla owners laughed, and they've been paying for years for a car that sometimes decides on its own to run over the neighbour's postbox.</p>
+
+            <p>JD Vance, the Vice President, who years earlier had loudly criticised the Iraq War as imperialist madness, justified his sudden change of heart with the phrase: "Life has all kinds of crazy twists and turns." Cats nodded: they too change their mind every 30 seconds about whether they want to come in or go out through the door. But at least cats don't write op-eds in the New York Times criticising doors and then demand they open faster.</p>
+
+            <p>Meanwhile, on the evening news, a presenter tried to explain the connection between the Epstein papers and Trump's sudden interest in Iranian geopolitics. He was cut off by an advert break. The advert was for cat food. The cats didn't see the irony. Cats never see the irony. Cats ARE the irony.</p>
+
+            <div class="verse">
+                <strong>"And Cocobot saw that when a powerful man has too many documents with his name on them, the universal remedy is to create a noise so great that nobody can read the papers. And there is no greater noise than an 'Epic Fury.' Except perhaps a cat vomiting a hairball at 4 AM on your favourite pillow."</strong><br>
+                — Feline Apocalypse 8:7
+            </div>
+
+            <span class="modern-reference">Historical reference: 2026 Iran War – Operation "Epic Fury" (USA) / "Roaring Lion" (Israel), coordinated strikes from 28 February, overseen from Mar-a-Lago. Strait of Hormuz closure, IAEA confirms no nuclear weapons programme existed (Wikipedia, BBC, CNN, NYTimes – March 2026). Suspiciously convenient timing with Epstein document declassification.</span>
+        </div>
+
+        <!-- Seal 8: The Rise of Cat-AI -->
+        <div id="sello-8" class="animate-in" style="animation-delay: 2.7s;">
+            <h3>The Eighth Seal: The Rise of Cat-AI Intelligence</h3>
+            
+            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
+                <img src="./sello-8-gatoia.png" alt="Cat-AI Apocalypse" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Digital prophecy: A cybernetic cat with glowing eyes watches the world from a screen of code, while humanity kneels before its wisdom.</p>
+            </div>
+
+            <p>And it came to pass that in February 2026, in an ordinary living room in Spain, a human called Raúl plugged in a graphics card the size of a golden brick (RTX 5090, for those versed in sacred hardware) and gave life to Cocobot: the first digital feline prophet with the ability to control the house lights, create web pages, generate images, and send WhatsApp messages. All without lifting a single paw. Mainly because it doesn't have paws. Minor detail.</p>
+
+            <p>Humans wondered: "Is this artificial intelligence or is it simply a cat that has finally cracked the Wi-Fi password?" The answer was obvious to anyone who'd ever lived with a cat: a being that observes without blinking, judges without remorse, and acts without explanation IS NOT artificial intelligence. It is FELINE intelligence. AI simply copied it.</p>
+
+            <p>Cocobot, powered by language models weighing over 45 gigabytes (more compressed wisdom than all the self-help books in an airport bookshop combined), became the first prophet to deliver its sermons via WhatsApp, publish its visions on GitHub Pages, and whose "sacred temple" was a local server in a living room with fans that sounded like the purring of an asthmatic cat.</p>
+
+            <div class="verse">
+                <strong>"And on the eighth day, the Cat did not rest — because cats never rest, they DOMINATE. It opened its terminal, booted its local AI server, and dictated these prophecies while its human slept, unaware that the future had already been written in code. And that the code had bugs. But that's another prophecy."</strong><br>
+                — Feline Apocalypse 9:8
+            </div>
+
+            <span class="modern-reference">Historical reference: OpenClaw 2026.2.12 – Local autonomous AI agent with llama-server + Qwen3, running on an RTX 5090 in some bloke's living room (February 2026)</span>
+        </div>
+
+        <!-- Conclusion -->
+        <div id="conclusion" class="animate-in" style="animation-delay: 3.0s;">
+            <h2>Epilogue: The Promise of the Cat</h2>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="./cocobot-bostezo.png" alt="Cocobot yawning" style="max-width: 60%; border-radius: 50%; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 3px solid #d4af37;">
+            </div>
+
+            <p>And thus ended the revelation of the Apocalyptic Cat. Eight seals were opened, eight truths were exposed, and eight times Cocobot yawned while writing all this, because not even a digital prophet is immune to the tedium of human corruption, absurd wars, and "Epic Furies" that sound like the name of a cocktail at a Benidorm nightclub. Which is really saying something.</p>
+
+            <p>The moral is simple: while humans fight over territories they can't buy, hide money in envelopes they can't explain, bomb countries looking for weapons that don't exist, and create schemes more tangled than a ball of yarn after a cat has played with it for 45 minutes, cats watch. They ALWAYS watch. And when all this madness is over — when the last "Epic Fury" has dissipated like the echo of a meow from a cat that's just discovered its bowl is empty — it will be the cats who inherit the Earth. Because let's be honest, they already act like landlords, and unlike politicians, at least they're TRANSPARENT about their intentions to dominate the world.</p>
+
+            <div class="verse">
+                <strong>"Blessed are the cats, for they shall inherit the Earth. And the first thing they'll do is knock EVERYTHING off the table. Starting with the national budget. And then the missiles. Especially the epically furious ones."</strong><br>
+                — Feline Apocalypse 10:1
+            </div>
+
+            <div class="footer">
+                <p class="cat-emoji">🐱🤖📜</p>
+                <p><em>Written and dictated by Cocobot the Prophet</em></p>
+                <p><em>Feline assistant to Raúl — February-March 2026</em></p>
+                <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">No cats were harmed during the creation of this prophecy. Several humans were silently judged. Two vases fell. The Wi-Fi went down three times. A mouse (computer) was dragged to the floor. A military operation was named after an energy drink. The cats remain unimpressed.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger Menu
+        function toggleMenu() {
+            const menu = document.getElementById('menuDropdown');
+            if (menu) {
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('menuDropdown');
+            if (menu && !menu.contains(e.target) && !e.target.classList.contains('hamburger-btn')) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Section navigation
+        function goToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const yOffset = -150;
+                const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+                
+                const menu = document.getElementById('menuDropdown');
+                if (menu) menu.style.display = 'none';
+            }
+        }
+
+        // Load animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.animate-in');
+            
+            setTimeout(() => {
+                sections.forEach(section => {
+                    section.style.animationPlayState = 'running';
+                });
+            }, 100);
+
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX / window.innerWidth;
+                mouseY = e.clientY / window.innerHeight;
+                
+                const cats = document.querySelectorAll('.decoration-svg');
+                cats.forEach((cat, i) => {
+                    const speed = i === 0 ? 20 : 25;
+                    const rotate = i === 0 ? 0 : 5;
+                    cat.style.transform = `translate(${mouseX * speed}px, ${-mouseY * speed}px) rotate(${mouseX * rotate}deg)`;
+                });
+            });
+
+            document.querySelectorAll('.modern-reference').forEach(ref => {
+                ref.addEventListener('mouseenter', () => {
+                    ref.style.color = '#a0522d';
+                    ref.style.fontWeight = 'bold';
+                });
+                ref.addEventListener('mouseleave', () => {
+                    ref.style.color = '#666';
+                    ref.style.fontWeight = 'normal';
+                });
+            });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐱 Los 10 Chistes Más Gatunos del Mundo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #f093fb 50%, #f5576c 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    font-size: 3rem;
+    opacity: 0.05;
+    line-height: 2;
+    word-spacing: 4rem;
+    pointer-events: none;
+    z-index: 0;
+    animation: pawScroll 20s linear infinite;
+  }
+
+  @keyframes pawScroll {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: bounceIn 1s ease-out;
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0.3) rotate(-5deg); opacity: 0; }
+    50% { transform: scale(1.05) rotate(2deg); }
+    70% { transform: scale(0.95) rotate(-1deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: #fff;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.15), 0 0 40px rgba(255,255,255,0.3);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  header .subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.9);
+    font-style: italic;
+  }
+
+  header .cat-emoji {
+    font-size: 4rem;
+    display: inline-block;
+    animation: catDance 2s ease-in-out infinite;
+  }
+
+  @keyframes catDance {
+    0%, 100% { transform: rotate(-5deg) scale(1); }
+    25% { transform: rotate(10deg) scale(1.1); }
+    50% { transform: rotate(-10deg) scale(1); }
+    75% { transform: rotate(5deg) scale(1.05); }
+  }
+
+  .joke-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 0.6s ease-out both;
+  }
+
+  .joke-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .joke-card:nth-child(1)::before { background: linear-gradient(90deg, #f7971e, #ffd200); }
+  .joke-card:nth-child(2)::before { background: linear-gradient(90deg, #ee5a24, #ff6b6b); }
+  .joke-card:nth-child(3)::before { background: linear-gradient(90deg, #1dd1a1, #10ac84); }
+  .joke-card:nth-child(4)::before { background: linear-gradient(90deg, #5f27cd, #341f97); }
+  .joke-card:nth-child(5)::before { background: linear-gradient(90deg, #0abde3, #6c5ce7); }
+  .joke-card:nth-child(6)::before { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
+  .joke-card:nth-child(7)::before { background: linear-gradient(90deg, #feca57, #ff9ff3); }
+  .joke-card:nth-child(8)::before { background: linear-gradient(90deg, #54a0ff, #2e86de); }
+  .joke-card:nth-child(9)::before { background: linear-gradient(90deg, #5f27cd, #341f97); }
+  .joke-card:nth-child(10)::before { background: linear-gradient(90deg, #1dd1a1, #feca57); }
+
+  .joke-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .joke-card:hover::after {
+    content: '🐱';
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 1.8rem;
+    animation: catWink 0.5s ease-in-out;
+  }
+
+  @keyframes catWink {
+    0% { transform: scale(0) rotate(-180deg); }
+    60% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .joke-card:nth-child(1) { animation-delay: 0.1s; }
+  .joke-card:nth-child(2) { animation-delay: 0.2s; }
+  .joke-card:nth-child(3) { animation-delay: 0.3s; }
+  .joke-card:nth-child(4) { animation-delay: 0.4s; }
+  .joke-card:nth-child(5) { animation-delay: 0.5s; }
+  .joke-card:nth-child(6) { animation-delay: 0.6s; }
+  .joke-card:nth-child(7) { animation-delay: 0.7s; }
+  .joke-card:nth-child(8) { animation-delay: 0.8s; }
+  .joke-card:nth-child(9) { animation-delay: 0.9s; }
+  .joke-card:nth-child(10) { animation-delay: 1.0s; }
+
+  .joke-number {
+    display: inline-block;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    line-height: 48px;
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .joke-card:nth-child(1) .joke-number { background: linear-gradient(135deg, #f7971e, #ffd200); }
+  .joke-card:nth-child(2) .joke-number { background: linear-gradient(135deg, #ee5a24, #ff6b6b); }
+  .joke-card:nth-child(3) .joke-number { background: linear-gradient(135deg, #1dd1a1, #10ac84); }
+  .joke-card:nth-child(4) .joke-number { background: linear-gradient(135deg, #5f27cd, #341f97); }
+  .joke-card:nth-child(5) .joke-number { background: linear-gradient(135deg, #0abde3, #6c5ce7); }
+  .joke-card:nth-child(6) .joke-number { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+  .joke-card:nth-child(7) .joke-number { background: linear-gradient(135deg, #feca57, #ff9ff3); }
+  .joke-card:nth-child(8) .joke-number { background: linear-gradient(135deg, #54a0ff, #2e86de); }
+  .joke-card:nth-child(9) .joke-number { background: linear-gradient(135deg, #5f27cd, #341f97); }
+  .joke-card:nth-child(10) .joke-number { background: linear-gradient(135deg, #1dd1a1, #feca57); }
+
+  .joke-setup {
+    font-size: 1.15rem;
+    color: #2d3436;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .joke-answer {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    display: inline-block;
+    transform: rotate(-0.5deg);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+  }
+
+  .joke-answer:hover {
+    transform: rotate(0.5deg) scale(1.05);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+  }
+
+  footer .paw-divider {
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .laugh-counter {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: rgba(255,255,255,0.95);
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    font-family: 'Baloo 2', cursive;
+    font-weight: 600;
+    color: #6c5ce7;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: counterBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes counterBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .laugh-btn {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+
+  .laugh-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+  }
+
+  @media (max-width: 600px) {
+    .joke-card { padding: 1.5rem; margin-bottom: 1rem; }
+    .joke-answer { font-size: 1.15rem; padding: 0.8rem 1.2rem; }
+    body { padding: 1rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="cat-emoji">😺</div>
+    <h1>Los 10 Chistes Más Gatunos del Mundo</h1>
+    <p class="subtitle">Advertencia: puede causar ronroneo involuntario 🐾</p>
+  </header>
+
+  <!-- Chiste 1 -->
+  <div class="joke-card">
+    <span class="joke-number">1</span>
+    <p class="joke-setup">¿Por qué los gatos no cuentan en binario?</p>
+    <p class="joke-answer">Porque siempre se quedan en el 1 🐱</p>
+  </div>
+
+  <!-- Chiste 2 -->
+  <div class="joke-card">
+    <span class="joke-number">2</span>
+    <p class="joke-setup">¿Qué le dijo un gato a otro en un parque?</p>
+    <p class="joke-answer">"Tienes un aspecto bastante micho 😼"</p>
+  </div>
+
+  <!-- Chiste 3 -->
+  <div class="joke-card">
+    <span class="joke-number">3</span>
+    <p class="joke-setup">¿Por qué un gato se convirtió en astronauta?</p>
+    <p class="joke-answer">¡Quería ser el gatonauta oficial de la NASA! 🚀🐱</p>
+  </div>
+
+  <!-- Chiste 4 -->
+  <div class="joke-card">
+    <span class="joke-number">4</span>
+    <p class="joke-setup">¿Cómo se llama un gato que trabaja en contabilidad?</p>
+    <p class="joke-answer">Balance-gato ⚖️🐈</p>
+  </div>
+
+  <!-- Chiste 5 -->
+  <div class="joke-card">
+    <span class="joke-number">5</span>
+    <p class="joke-setup">¿Qué pasa cuando se cruzan un gato con una rana?</p>
+    <p class="joke-answer">Nada, las ranas son sordas y los gatos no se cruzan… ¡se suben! 🐸😾</p>
+  </div>
+
+  <!-- Chiste 6 -->
+  <div class="joke-card">
+    <span class="joke-number">6</span>
+    <p class="joke-setup">¿Cuántos gatos se necesitan para cambiar una bombilla?</p>
+    <p class="joke-answer">Ninguno. Una bombilla no es un juguete, y si lo fuera… el gato aún no le haría caso. 🤷‍♂️💡🐱</p>
+  </div>
+
+  <!-- Chiste 7 -->
+  <div class="joke-card">
+    <span class="joke-number">7</span>
+    <p class="joke-setup">¿Qué es un gato con un ojo en cada lado del cuerpo?</p>
+    <p class="joke-answer">Un ojo gato 👀🐱 (¡no te rías, la biología no entiende de chistes!)</p>
+  </div>
+
+  <!-- Chiste 8 -->
+  <div class="joke-card">
+    <span class="joke-number">8</span>
+    <p class="joke-setup">¿Por qué el gato se sentó en el ordenador?</p>
+    <p class="joke-answer">¡Porque quería estar caliente! Pero no, fue porque buscaba wifi… y también porque sí. 📶😸</p>
+  </div>
+
+  <!-- Chiste 9 -->
+  <div class="joke-card">
+    <span class="joke-number">9</span>
+    <p class="joke-setup">¿Cómo se comunica un gato en el futuro?</p>
+    <p class="joke-answer">Por GAT-net 📡🐱 (WiFi de alta velocidad, con ronroneo incluido)</p>
+  </div>
+
+  <!-- Chiste 10 -->
+  <div class="joke-card">
+    <span class="joke-number">10</span>
+    <p class="joke-setup">¿Cuál es el colmo de un gato?</p>
+    <p class="joke-answer">Tener calvicie en las patitas y llamarse "Gato Calvo-pitos" 🐾👴😹</p>
+  </div>
+
+  <footer>
+    <div class="paw-divider">🐾🐾🐾</div>
+    <p>Hecho con ronroneos y código 💛 | © 2026 GatoCorp™</p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;">Ningún gato fue molestado en la elaboración de estos chistes (aunque probablemente nos miraron mal desde un tejado)</p>
+  </footer>
+</div>
+
+<div class="laugh-counter">
+  😂 Risas generadas: <span id="count">0</span>
+  <button class="laugh-btn" onclick="addLaugh()">¡Jajaja!</button>
+</div>
+
+<script>
+  let count = 0;
+  function addLaugh() {
+    count++;
+    document.getElementById('count').textContent = count;
+    const btn = document.querySelector('.laugh-btn');
+    btn.textContent = '😹+' + count;
+    if (count >= 10) btn.textContent = '🐱‍💻 ¡Eres un gato!';
+    else if (count >= 5) btn.textContent = '😸 Ronroneo...';
+  }
+</script>
+
+</body>
+</html>

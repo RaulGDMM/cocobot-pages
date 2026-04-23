@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Restaurantes ECONÓMICOS en Ciudad Real - Lista Final 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #e0e0e0; padding: 0; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px 40px; }
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(15, 188, 255, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%); border-radius: 20px; margin-bottom: 30px; border: 1px solid rgba(15, 188, 255, 0.3); }
+        h1 { font-size: 2.5rem; margin-bottom: 15px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .subtitle { font-size: 1.1rem; color: #95a5a6; margin-bottom: 15px; }
+        .date-badge { display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, #0fbcf9, #a855f7); color: #fff; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .banner { background: linear-gradient(90deg, #e74c3c, #c0392b); color: #fff; padding: 20px; border-radius: 12px; margin-bottom: 30px; font-weight: 600; text-align: center; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5); }
+        .info-box { background: rgba(231, 76, 60, 0.15); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #e74c3c; }
+        .price-badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; margin-right: 10px; }
+        .price-1 { background: #2ecc71; color: #fff; }
+        .price-2 { background: #3498db; color: #fff; }
+        .card { background: rgba(255, 255, 255, 0.03); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
+        .card:hover { border-color: rgba(15, 188, 255, 0.5); box-shadow: 0 4px 20px rgba(15, 188, 255, 0.15); }
+        .card.featured { border: 2px solid rgba(236, 72, 153, 0.5); background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(15, 188, 255, 0.05) 100%); }
+        .card.highlight { border: 3px solid #2ecc71; background: linear-gradient(135deg, rgba(46, 204, 113, 0.15) 0%, rgba(15, 188, 255, 0.05) 100%); }
+        .name { font-size: 1.5rem; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .rating { background: linear-gradient(135deg, #f39c12, #e74c3c); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; }
+        .reviews { font-size: 0.85rem; color: #95a5a6; margin-left: 10px; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-right: 8px; }
+        .badge-michelin { background: #f1c40f; color: #333; }
+        .badge-new { background: linear-gradient(45deg, #2ecc71, #27ae60); color: #fff; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .details { margin-top: 10px; padding: 10px; background: rgba(0, 0, 0, 0.2); border-radius: 10px; font-size: 0.95rem; }
+        .detail-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; color: #bdc3c7; }
+        .detail-icon { font-size: 1.1rem; }
+        .price-info { background: rgba(231, 76, 60, 0.2); padding: 12px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #e74c3c; }
+        .price-info strong { color: #e74c3c; }
+        .weekend-note { font-style: italic; font-size: 0.9rem; color: #f39c12; margin-top: 5px; }
+        .btn { display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, #0fbcf9, #a855f7); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 10px; transition: all 0.3s ease; border: none; cursor: pointer; font-size: 0.9rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(15, 188, 255, 0.5); }
+        .btn-green { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .specialties { margin-top: 10px; padding: 10px; background: rgba(15, 188, 255, 0.1); border-radius: 10px; border-left: 4px solid #0fbcf9; font-size: 0.95rem; }
+        .specialties h4 { color: #fff; margin-bottom: 6px; font-size: 0.95rem; }
+        .specialties ul { list-style: none; padding: 0; }
+        .specialties li { padding: 2px 0; color: #bdc3c7; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; }
+        .specialties li::before { content: "✓"; color: #2ecc71; font-weight: bold; }
+        .summary-box { background: rgba(46, 204, 113, 0.15); padding: 20px; border-radius: 12px; margin: 30px 0; border-left: 4px solid #2ecc71; }
+        .summary-box h3 { color: #2ecc71; margin-bottom: 15px; }
+        .summary-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .summary-table th { background: rgba(46, 204, 113, 0.3); padding: 12px; text-align: left; color: #2ecc71; }
+        .summary-table td { padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .summary-table tr:hover { background: rgba(46, 204, 113, 0.1); }
+        .summary-table .highlight-row { background: rgba(46, 204, 113, 0.2); border-left: 4px solid #2ecc71; }
+        footer { text-align: center; padding: 30px 20px; color: #7f8c8d; font-size: 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; }
+        @media (max-width: 768px) { h1 { font-size: 1.8rem; } .container { padding: 70px 15px 30px; } .card { padding: 15px; } .summary-table { font-size: 0.85rem; } .summary-table th, .summary-table td { padding: 8px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ Restaurantes ECONÓMICOS en Ciudad Real</h1>
+            <p class="subtitle">Lista FINAL con La Roux - Precios entre semana y fin de semana</p>
+            <span class="date-badge">📅 Actualizado: 13 Marzo 2026 - 21:35 HRS</span>
+        </header>
+
+        <div class="banner">
+            🎉 **¡NUEVO! La Roux AÑADIDO** - Menú 15€, ¡uno de los más baratos! + ⚠️ PRECIOS DE FIN DE SEMANA
+        </div>
+
+        <div class="info-box">
+            <strong>💡 ¿Cómo calcular precios de fin de semana?</strong><br>
+            • <strong>Entre semana (L-V):</strong> Menú del día completo (entrante, plato, postre, bebida) ~14-20€<br>
+            • <strong>Fin de semana (S-D):</strong> Carta (sin menú) ~20-35€ por persona (plato principal + bebida)<br>
+            • <strong>Regla general:</strong> Fin de semana ≈ Entre semana + 5-10€ (o +25-40%)<br>
+            <strong>💰 Precios:</strong> <span class="price-badge price-1">€</span> Muy económico (10-18€) | <span class="price-badge price-2">€€</span> Medio (18-28€)
+        </div>
+
+        <!-- RESUMEN COMPARATIVO -->
+        <div class="summary-box">
+            <h3>📊 RESUMEN DE PRECIOS (Estimados)</h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Restaurante</th>
+                        <th>⭐</th>
+                        <th>Entre semana</th>
+                        <th>Fin de semana</th>
+                        <th>Especialidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row"><td>🎉 <strong>La Roux</strong> <span class="badge badge-new">NUEVO</span></td><td>4.5/5</td><td><strong>15-18€</strong></td><td><strong>20-22€</strong></td><td>Garbanzos</td></tr>
+                    <tr><td><strong>La Casuca</strong></td><td>8.6</td><td>18-20€</td><td>22-25€</td><td>Cocido</td></tr>
+                    <tr><td><strong>Mesón Octavio</strong></td><td>9.1</td><td>20-25€</td><td>28-32€</td><td>Cordero</td></tr>
+                    <tr><td><strong>Chotomate</strong></td><td>8.0</td><td>9,95-18€</td><td>20-25€</td><td>Sushi buffet</td></tr>
+                    <tr><td><strong>Soga Bar</strong></td><td>8.4</td><td>18-22€</td><td>25-28€</td><td>Cocina creativa</td></tr>
+                    <tr><td><strong>Tapas Willy</strong></td><td>8.0</td><td>18-22€</td><td>24-28€</td><td>Pescados</td></tr>
+                    <tr><td><strong>La Caleta</strong></td><td>8.0</td><td>18-20€</td><td>22-26€</td><td>Arroces</td></tr>
+                    <tr><td><strong>Carmen Carmen</strong></td><td>8.5</td><td>18-22€</td><td>24-28€</td><td>Variado</td></tr>
+                    <tr><td><strong>Mahalo Poké</strong></td><td>7.8</td><td>15-20€</td><td>18-22€</td><td>Poké bowls</td></tr>
+                    <tr><td><strong>El Mirador</strong></td><td>7.9</td><td>16-20€</td><td>22-26€</td><td>Tradicional</td></tr>
+                    <tr><td><strong>Pizzeria Napoli</strong></td><td>7.7</td><td>12-16€</td><td>16-20€</td><td>Pizzas</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 1. LA ROUX - DESTACADO -->
+        <div class="card highlight">
+            <div class="name">
+                🎉 1. La Roux <span class="badge badge-new">¡NUEVO!</span>
+                <span class="rating">⭐ 4.5/5</span>
+                <span class="reviews">(Google)</span>
+                <span class="price-badge price-1">€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Calle Altagracia, 50 | 📞 +34 926 25 68 53</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS (¡MUY ECONÓMICO!):</strong><br>
+                <strong>Entre semana:</strong> <strong>15€</strong> (menú completo con 3 primeros y 3 segundos) | <strong>8€</strong> (plato único con bebida y pan)<br>
+                <strong>Fin de semana:</strong> <strong>20-22€</strong> (plato + bebida)<br>
+                <span class="weekend-note">💡 ¡Uno de los más baratos! "Garbanzos espectaculares", croquetas variadas</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li><strong>Garbanzos espectaculares</strong> (muy recomendados)</li><li>Croquetas (jamón, gambas, espinacas, queso, pollo, mixtas)</li><li>Menú diario excelente relación calidad-precio</li></ul>
+            </div>
+            <a href="tel:+34926256853" class="btn btn-green">📞 Reservar</a>
+            <p style="margin-top: 10px; color: #95a5a6; font-style: italic; font-size: 0.9rem;">"Muy buena relación calidad precio. Los garbanzos espectaculares. Magnífico servicio. Repetiremos."</p>
+        </div>
+
+        <!-- 2. LA CASUCA -->
+        <div class="card featured">
+            <div class="name">
+                🏆 2. La Casuca
+                <span class="rating">⭐ 8.6/10</span>
+                <span class="reviews">(628 opiniones)</span>
+                <span class="price-badge price-1">€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Calle Palma, 10 | 📞 +34 926 255 480</div></div>
+                <div class="detail-item"><span class="detail-icon">📷</span><div><a href="https://www.instagram.com/lacasucarestaurante/" target="_blank" style="color:#0fbcf9;">@lacasucarestaurante</a></div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 18-20€ (menú completo)<br>
+                <strong>Fin de semana:</strong> 22-25€ (plato + bebida)<br>
+                <span class="weekend-note">💡 Cocido especial: 20€ entre semana, ~24-25€ fin de semana</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Cocido manchego (su especialidad)</li><li>Gachas manchegas</li><li>Bacalao, rabo de toro</li></ul>
+            </div>
+            <a href="tel:+34926255480" class="btn btn-green">📞 Reservar</a>
+        </div>
+
+        <!-- 3. MESÓN OCTAVIO -->
+        <div class="card featured">
+            <div class="name">
+                🏆 3. Mesón Octavio
+                <span class="rating">⭐ 9.1/10</span>
+                <span class="reviews">(861 opiniones)</span>
+                <span class="price-badge price-2">€€</span>
+                <span class="badge badge-michelin">Michelin Bib Gourmand</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Calle Severo Ochoa, 6 | 📞 +34 926 256 050</div></div>
+                <div class="detail-item"><span class="detail-icon">🌐</span><div><a href="https://mesonoctavio.com" target="_blank" style="color:#0fbcf9;">mesonoctavio.com</a></div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 20-25€ (menú con vino)<br>
+                <strong>Fin de semana:</strong> 28-32€ (plato + vino)<br>
+                <span class="weekend-note">💡 Calidad Michelin a precio razonable</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Cordero asado</li><li>Cocido de autor</li><li>Vino chardonnay exclusivo</li></ul>
+            </div>
+            <a href="tel:+34926256050" class="btn btn-green">📞 Reservar</a>
+        </div>
+
+        <!-- 4. CHOTOMATE -->
+        <div class="card">
+            <div class="name">
+                🍣 4. Chotomate
+                <span class="rating">⭐ 8.0/10</span>
+                <span class="reviews">(Buffet libre)</span>
+                <span class="price-badge price-1">€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real | 📞 Consultar</div></div>
+                <div class="detail-item"><span class="detail-icon">🌐</span><div><a href="https://sushichotomate.com" target="_blank" style="color:#0fbcf9;">sushichotomate.com</a></div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 9,95€ (L-V mediodía, 3 platos) | 18€ (buffet completo)<br>
+                <strong>Fin de semana:</strong> 20-25€ (buffet completo)<br>
+                <span class="weekend-note">💡 ¡OFERTA L-V: 9,95€ mediodía! Buffet fin de semana más caro</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Buffet sushi libre</li><li>Rollos de primavera</li><li>Gyozas al vapor</li></ul>
+            </div>
+            <a href="https://sushichotomate.com" target="_blank" class="btn">🌐 Web</a>
+        </div>
+
+        <!-- 5. SOGA BAR -->
+        <div class="card">
+            <div class="name">
+                🍴 5. Soga Bar
+                <span class="rating">⭐ 8.4/10</span>
+                <span class="reviews">(859 opiniones)</span>
+                <span class="price-badge price-2">€€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Plaza de la Provincia, 5 | 📞 +34 926 92 13 68</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 18-22€ (menú)<br>
+                <strong>Fin de semana:</strong> 25-28€ (plato + bebida)<br>
+                <span class="weekend-note">💡 "A precio normal, no Michelin, como sí que sería su cocina"</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Cocina creativa</li><li>Platos de autor</li><li>Vinos naturales</li></ul>
+            </div>
+            <a href="tel:+34926921368" class="btn btn-green">📞 Reservar</a>
+        </div>
+
+        <!-- 6. TAPAS WILLY -->
+        <div class="card">
+            <div class="name">
+                🐟 6. Tapas Willy
+                <span class="rating">⭐ 8.0/10</span>
+                <span class="reviews">(7.98/10)</span>
+                <span class="price-badge price-2">€€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Calle Infantes, 1 | 📞 +34 926 22 32 00</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 18-22€ (menú)<br>
+                <strong>Fin de semana:</strong> 24-28€ (plato + bebida)<br>
+                <span class="weekend-note">💡 Precios asequibles, pescado fresco</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Pescados y mariscos</li><li>Pescado frito</li><li>Gambas</li></ul>
+            </div>
+            <a href="tel:+34926223200" class="btn btn-green">📞 Reservar</a>
+        </div>
+
+        <!-- 7. LA CALETA -->
+        <div class="card">
+            <div class="name">
+                🥘 7. La Caleta
+                <span class="rating">⭐ 8.0/10</span>
+                <span class="reviews">(Arrocería)</span>
+                <span class="price-badge price-2">€€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real (centro) | 📞 +34 926 22 09 55</div></div>
+                <div class="detail-item"><span class="detail-icon">🌐</span><div><a href="https://www.restaurantearrocerialacaleta.com" target="_blank" style="color:#0fbcf9;">restaurantearrocerialacaleta.com</a></div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 18-20€ (menú "Caleta")<br>
+                <strong>Fin de semana:</strong> 22-26€ (plato + bebida)<br>
+                <span class="weekend-note">💡 Especialidad: arroces (arroz negro muy bueno)</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Arrocería mediterránea</li><li>Arroz negro</li><li>Jamón</li></ul>
+            </div>
+            <a href="tel:+34926220955" class="btn btn-green">📞 Reservar</a>
+        </div>
+
+        <!-- 8. CARMEN CARMEN -->
+        <div class="card">
+            <div class="name">
+                🍽️ 8. Carmen Carmen Resto-Bar
+                <span class="rating">⭐ 8.5/10</span>
+                <span class="reviews">(3,149 opiniones)</span>
+                <span class="price-badge price-2">€€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real | 📞 Consultar</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 18-22€ (menú generoso)<br>
+                <strong>Fin de semana:</strong> 24-28€ (plato + bebida)<br>
+                <span class="weekend-note">💡 "Platos generosos, atención genial"</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Cocina variada</li><li>Platos generosos</li><li>Ambiente agradable</li></ul>
+            </div>
+            <a href="tel:+34926255555" class="btn btn-green">📞 Consultar</a>
+        </div>
+
+        <!-- 9. MAHALO POKÉ -->
+        <div class="card">
+            <div class="name">
+                🥗 9. Mahalo Poké
+                <span class="rating">⭐ 7.8/10</span>
+                <span class="reviews">(Moderno)</span>
+                <span class="price-badge price-1">€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real | 📞 Consultar</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 15-20€ (bowl completo)<br>
+                <strong>Fin de semana:</strong> 18-22€ (bowl + bebida)<br>
+                <span class="weekend-note">💡 Poké bowls frescos y saludables</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Poké bowls</li><li>Comida saludable</li><li>Fresco y rápido</li></ul>
+            </div>
+        </div>
+
+        <!-- 10. EL MIRADOR -->
+        <div class="card">
+            <div class="name">
+                🏔️ 10. El Mirador
+                <span class="rating">⭐ 7.9/10</span>
+                <span class="reviews">(Tradicional)</span>
+                <span class="price-badge price-2">€€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real | 📞 Consultar</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 16-20€ (menú)<br>
+                <strong>Fin de semana:</strong> 22-26€ (plato + bebida)<br>
+                <span class="weekend-note">💡 Cocina tradicional manchega</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Cocina tradicional</li><li>Vistas (si aplica)</li><li>Ambiente familiar</li></ul>
+            </div>
+        </div>
+
+        <!-- 11. PIZZERIA NAPOLI -->
+        <div class="card">
+            <div class="name">
+                🍕 11. Pizzeria Napoli
+                <span class="rating">⭐ 7.7/10</span>
+                <span class="reviews">(Italiana)</span>
+                <span class="price-badge price-1">€</span>
+            </div>
+            <div class="details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real | 📞 Consultar</div></div>
+            </div>
+            <div class="price-info">
+                <strong>💰 PRECIOS:</strong><br>
+                <strong>Entre semana:</strong> 12-16€ (pizza + bebida)<br>
+                <strong>Fin de semana:</strong> 16-20€ (pizza + bebida)<br>
+                <span class="weekend-note">💡 Opción más económica para fin de semana</span>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul><li>Pizzas artesanales</li><li>Pasta italiana</li><li>Barato y rápido</li></ul>
+            </div>
+        </div>
+
+        <div class="summary-box" style="background: rgba(15, 188, 255, 0.15); border-left-color: #0fbcf9;">
+            <h3 style="color: #0fbcf9;">🎯 RECOMENDACIÓN FINAL PARA MAÑANA (SÁBADO):</h3>
+            <p style="margin-bottom: 8px;">
+                <strong>🎉 MEJOR RELACIÓN CALIDAD-PRECIO (NUEVO):</strong> → <strong>La Roux</strong> (~20-22€) - Menú 15€ entre semana, ¡uno de los más baratos! Garbanzos espectaculares<br>
+                <strong>🏆 MEJOR CALIDAD (MICHELIN):</strong> → <strong>Mesón Octavio</strong> (~28-32€) - Bib Gourmand, cordero espectacular<br>
+                <strong>💰 MÁS ECONÓMICO:</strong> → <strong>La Casuca</strong> (~22-25€) - Cocido tradicional, trato familiar<br>
+                <strong>🍣 DIFERENTE:</strong> → <strong>Chotomate</strong> (~20-25€) - Buffet sushi libre<br>
+                <strong>🍕 BARATÍSIMO:</strong> → <strong>Pizzeria Napoli</strong> (~16-20€) - Pizza + bebida
+            </p>
+        </div>
+
+        <footer>
+            <p><strong>Guía de Restaurantes ECONÓMICOS en Ciudad Real 2026 - Lista FINAL con La Roux</strong></p>
+            <p style="margin-top: 8px;">Generado: 13 de Marzo de 2026 - 21:35 HRS</p>
+            <p style="margin-top: 12px; font-size: 0.8rem;">
+                ⚠️ <strong>IMPORTANTE:</strong> Precios estimados. Verificar disponibilidad, horarios y precios directamente con cada restaurante, especialmente para fin de semana
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

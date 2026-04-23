@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Restaurantes ECONÓMICOS Ciudad Real - Guía 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #e0e0e0; padding: 0; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px 40px; }
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(15, 188, 255, 0.1) 0%, rgba(138, 43, 226, 0.05) 100%); border-radius: 20px; margin-bottom: 30px; border: 1px solid rgba(15, 188, 255, 0.3); }
+        h1 { font-size: 2.5rem; margin-bottom: 15px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .subtitle { font-size: 1.1rem; color: #95a5a6; margin-bottom: 15px; }
+        .date-badge { display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, #0fbcf9, #a855f7); color: #fff; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .recommendation-banner { background: linear-gradient(90deg, #27ae60, #2ecc71); color: #fff; padding: 20px; border-radius: 12px; margin-bottom: 30px; font-weight: 600; text-align: center; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.5); }
+        .price-badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; margin-right: 10px; }
+        .price-1 { background: #2ecc71; color: #fff; }
+        .price-2 { background: #3498db; color: #fff; }
+        .restaurant-card { background: rgba(255, 255, 255, 0.03); border-radius: 15px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; }
+        .restaurant-card:hover { border-color: rgba(15, 188, 255, 0.5); box-shadow: 0 4px 20px rgba(15, 188, 255, 0.15); }
+        .restaurant-card.featured { border: 2px solid rgba(236, 72, 153, 0.5); background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(15, 188, 255, 0.05) 100%); }
+        .restaurant-name { font-size: 1.6rem; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .rating { background: linear-gradient(135deg, #f39c12, #e74c3c); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; }
+        .reviews { font-size: 0.85rem; color: #95a5a6; margin-left: 10px; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-right: 8px; }
+        .badge-michelin { background: #f1c40f; color: #333; }
+        .badge-traditional { background: #e74c3c; color: #fff; }
+        .badge-price { background: #2ecc71; color: #fff; }
+        .restaurant-details { margin-top: 15px; padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .detail-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; color: #bdc3c7; }
+        .detail-icon { font-size: 1.2rem; }
+        .btn { display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #0fbcf9, #a855f7); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 15px; transition: all 0.3s ease; border: none; cursor: pointer; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(15, 188, 255, 0.5); }
+        .btn-secondary { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .specialties { margin-top: 15px; padding: 15px; background: rgba(15, 188, 255, 0.1); border-radius: 10px; border-left: 4px solid #0fbcf9; }
+        .specialties h4 { color: #fff; margin-bottom: 8px; font-size: 1rem; }
+        .specialties ul { list-style: none; padding: 0; }
+        .specialties li { padding: 3px 0; color: #bdc3c7; display: flex; align-items: center; gap: 8px; }
+        .specialties li::before { content: "✓"; color: #2ecc71; font-weight: bold; }
+        .info-box { background: rgba(46, 204, 113, 0.15); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #2ecc71; }
+        footer { text-align: center; padding: 30px 20px; color: #7f8c8d; font-size: 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; }
+        .cat-note { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; color: #95a5a6; font-style: italic; }
+        @media (max-width: 768px) { h1 { font-size: 1.8rem; } .container { padding: 70px 15px 30px; } .restaurant-card { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ Restaurantes ECONÓMICOS en Ciudad Real</h1>
+            <p class="subtitle">Comer bien sin ser millonario</p>
+            <span class="date-badge">📅 13 Marzo 2026 - 21:06 HRS</span>
+        </header>
+
+        <div class="recommendation-banner">
+            💰 SOLO € y €€ - Para amigos que no son millonarios
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Precios:</strong> <span class="price-badge price-1">€</span> Económico (10-15€) | <span class="price-badge price-2">€€</span> Medio (15-25€)<br>
+            <strong>⚠️ EXCLUSIÓNES:</strong> No incluye €€€ (caros) ni churrerías
+        </div>
+
+        <div class="restaurant-card featured">
+            <div class="restaurant-name">
+                🏆 La Casuca
+                <span class="rating">⭐ 8.6/10</span>
+                <span class="reviews">(628)</span>
+                <span class="price-badge price-1">€ ECONÓMICO</span>
+                <span class="badge badge-traditional">Casero</span>
+            </div>
+            <div class="restaurant-details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Calle Palma, 10<br>13001 Ciudad Real</div></div>
+                <div class="detail-item"><span class="detail-icon">📞</span><div><a href="tel:+34926255480" style="color:#0fbcf9">+34 926 255 480</a></div></div>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul>
+                    <li>Cocido manchego espectacular</li>
+                    <li>Gachas manchegas</li>
+                    <li>Cocina casera tradicional</li>
+                    <li>Menús baratos y generosos</li>
+                </ul>
+            </div>
+            <a href="tel:+34926255480" class="btn btn-secondary">📞 Reservar</a>
+            <p style="margin-top:15px;color:#95a5a6;font-style:italic;">"El cocido espectacular, el camarero muy atento. La comida de diez."</p>
+        </div>
+
+        <div class="restaurant-card featured">
+            <div class="restaurant-name">
+                🏆 Mesón Octavio
+                <span class="rating">⭐ 9.1/10</span>
+                <span class="reviews">(861)</span>
+                <span class="price-badge price-2">€€ MEDIO</span>
+                <span class="badge badge-michelin">Michelin Bib Gourmand</span>
+            </div>
+            <div class="restaurant-details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Calle Severo Ochoa, 6<br>13005 Ciudad Real</div></div>
+                <div class="detail-item"><span class="detail-icon">📞</span><div><a href="tel:+34926256050" style="color:#0fbcf9">+34 926 256 050</a></div></div>
+                <div class="detail-item"><span class="detail-icon">🌐</span><div><a href="https://mesonoctavio.com" style="color:#0fbcf9">mesonoctavio.com</a></div></div>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul>
+                    <li>Cocina tradicional manchega moderna</li>
+                    <li>Cocido manchego de autor</li>
+                    <li>Cordero y cabrito asado</li>
+                    <li>Productos locales CLM</li>
+                </ul>
+            </div>
+            <a href="https://mesonoctavio.com" class="btn">🌐 Web</a>
+            <a href="tel:+34926256050" class="btn btn-secondary">📞 Reservar</a>
+            <p style="margin-top:15px;color:#95a5a6;font-style:italic;">"El auténtico sabor manchego con cuidado espectacular. Personal amable y atento."</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">
+                🍴 Soga Bar
+                <span class="rating">⭐ 8.4/10</span>
+                <span class="reviews">(859)</span>
+                <span class="price-badge price-2">€€ MEDIO</span>
+                <span class="badge badge-price">Calidad-precio</span>
+            </div>
+            <div class="restaurant-details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Plaza de la Provincia, 5<br>13001 Ciudad Real</div></div>
+                <div class="detail-item"><span class="detail-icon">📞</span><div><a href="tel:+34926921368" style="color:#0fbcf9">+34 926 92 13 68</a></div></div>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul>
+                    <li>Cocina creativa y original</li>
+                    <li>Platos de autor</li>
+                    <li>Cocina moderna</li>
+                    <li>Vinos naturales</li>
+                </ul>
+            </div>
+            <a href="tel:+34926921368" class="btn btn-secondary">📞 Reservar</a>
+            <p style="margin-top:15px;color:#95a5a6;font-style:italic;">"Comida muy rica, carta original. Iván y su equipo muy bien. Sitio excelente."</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">
+                🍽️ Carmen Carmen Resto-Bar
+                <span class="rating">⭐ 8.5/10</span>
+                <span class="reviews">(3,149)</span>
+                <span class="price-badge price-2">€€ MEDIO</span>
+                <span class="badge badge-price">Muy popular</span>
+            </div>
+            <div class="restaurant-details">
+                <div class="detail-item"><span class="detail-icon">📍</span><div>Ciudad Real (consultar)</div></div>
+                <div class="detail-item"><span class="detail-icon">📞</span><div>Consultar directamente</div></div>
+            </div>
+            <div class="specialties">
+                <h4>🍽️ Especialidades:</h4>
+                <ul>
+                    <li>Cocina variada y actual</li>
+                    <li>Platos generosos</li>
+                    <li>Atención excelente</li>
+                    <li>Menús económicos</li>
+                </ul>
+            </div>
+            <a href="tel:+34926255555" class="btn btn-secondary">📞 Consultar</a>
+            <p style="margin-top:15px;color:#95a5a6;font-style:italic;">"Comida muy buena y platos generosos. Atención genial. Lugar espectacular."</p>
+        </div>
+
+        <div class="info-box" style="background:rgba(52,152,219,0.15);border-left-color:#3498db;">
+            <h4 style="color:#3498db;margin-bottom:10px;">🎯 RECOMENDACIÓN PARA AMIGOS:</h4>
+            <p style="margin-bottom:10px;"><strong>Lo más económico:</strong> → <strong>La Casuca</strong> (€) - Cocido espectacular</p>
+            <p style="margin-bottom:10px;"><strong>Calidad con Michelin:</strong> → <strong>Mesón Octavio</strong> (€€) - Bib Gourmand</p>
+            <p><strong>Algo diferente:</strong> → <strong>Soga Bar</strong> (€€) - Cocina original</p>
+        </div>
+
+        <footer>
+            <p><strong>Guía de Restaurantes ECONÓMICOS en Ciudad Real 2026</strong></p>
+            <p style="margin-top:8px;">Generado: 13 de Marzo 2026 - 21:06 HRS</p>
+            <div class="cat-note" style="margin-top:15px;"><span>🐱</span><span>"Los amigos que no son millonarios también merecen comer bien... aunque yo sigo buscando ese restaurante de atún premium"</span><span>🐱</span></div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLSS 5 - Comparativas Interactivas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh; padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 1px solid rgba(105, 240, 173, 0.3);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #69F0AD;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            padding: 5px;
+            width: 30px;
+        }
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: #69F0AD;
+            transition: all 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: #69F0AD;
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 15px; }
+            .logo { font-size: 1rem; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 50px;
+                left: -100%;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                transition: left 0.3s;
+            }
+            .nav-links.active { left: 0; }
+            .nav-links a { font-size: 1.2rem; }
+            .container { padding: 110px 15px 30px; }
+            h1 { font-size: 1.8rem; }
+            .subtitle { font-size: 1rem; }
+            .section-title { font-size: 1.5rem; margin: 50px 0 25px; }
+            .game-title { font-size: 1.4rem; }
+            .game-btn { padding: 10px 14px; font-size: 0.85rem; }
+            .tech-info { padding: 20px; }
+            .community-box { padding: 20px; }
+            .opinion-box { padding: 20px; }
+            .slider-button { width: 40px; height: 40px; }
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 110px 20px 40px;
+            width: 100%;
+        }
+        header {
+            text-align: center;
+            padding: 40px 15px;
+            background: linear-gradient(180deg, rgba(105, 240, 173, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+            margin-bottom: 50px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .date-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #69F0AD;
+            color: #000;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #fff;
+            margin: 60px 0 30px;
+            font-weight: 600;
+        }
+        .tech-info {
+            background: rgba(105, 240, 173, 0.05);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 4px solid #69F0AD;
+        }
+        .tech-info h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        .tech-info ul {
+            margin-left: 25px;
+            color: #aaa;
+        }
+        .tech-info li { margin-bottom: 10px; }
+        .comparison-section { margin: 60px 0; }
+        .game-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .game-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .game-btn {
+            padding: 12px 24px;
+            background: rgba(105, 240, 173, 0.1);
+            border: 2px solid rgba(105, 240, 173, 0.3);
+            color: #69F0AD;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .game-btn:hover {
+            background: rgba(105, 240, 173, 0.2);
+            transform: translateY(-2px);
+        }
+        .game-btn.active {
+            background: #69F0AD;
+            color: #000;
+            border-color: #69F0AD;
+        }
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 4px 20px rgba(105, 240, 173, 0.1);
+        }
+        .comparison-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .comparison-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .comparison-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .comparison-image.after {
+            overflow: hidden;
+        }
+        .slider-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: #69F0AD;
+            cursor: col-resize;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(105, 240, 173, 0.5);
+        }
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: #69F0AD;
+            border-radius: 50%;
+            cursor: col-resize;
+            z-index: 11;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(105, 240, 173, 0.4);
+        }
+        .slider-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .slider-button svg {
+            width: 24px;
+            height: 24px;
+            fill: #000;
+        }
+        .slider-input {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 100%;
+            opacity: 0;
+            cursor: col-resize;
+            z-index: 20;
+            transform: translateY(-50%);
+        }
+        .label {
+            position: absolute;
+            bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            z-index: 5;
+            pointer-events: none;
+            border-radius: 4px;
+        }
+        .label.before {
+            left: 20px;
+            border-bottom: 3px solid #888;
+        }
+        .label.after {
+            right: 20px;
+            border-bottom: 3px solid #69F0AD;
+            background: #69F0AD;
+            color: #000;
+        }
+        .external-link {
+            display: inline-block;
+            margin: 20px;
+            padding: 15px 30px;
+            background: #69F0AD;
+            color: #000;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+        .external-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(105, 240, 173, 0.3);
+        }
+        .community-section { margin: 60px 0; }
+        .community-box {
+            background: rgba(255, 159, 64, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9f40;
+        }
+        .community-box h3 {
+            color: #ff9f40;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .community-box p {
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .community-box ul {
+            margin-left: 25px;
+            margin-top: 10px;
+            color: #aaa;
+        }
+        .community-box li { margin-bottom: 8px; }
+        .opinion-box {
+            background: linear-gradient(135deg, rgba(105, 240, 173, 0.05), rgba(138, 43, 226, 0.05));
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 2px solid rgba(105, 240, 173, 0.3);
+        }
+        .opinion-box h3 {
+            color: #69F0AD;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .opinion-box p {
+            color: #ccc;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        .opinion-box strong { color: #fff; }
+        .sources {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+        }
+        .sources-title {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .source-link {
+            display: inline-block;
+            margin: 8px 8px 8px 0;
+            padding: 8px 16px;
+            background: rgba(105, 240, 173, 0.1);
+            color: #69F0AD;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .source-link:hover {
+            background: rgba(105, 240, 173, 0.2);
+            transform: translateY(-2px);
+        }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">🎮 DLSS 5</a>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#tech-overview">¿Qué es?</a></li>
+            <li><a href="#comparisons">Comparativa</a></li>
+            <li><a href="#community">Comunidad</a></li>
+            <li><a href="#opinion">Opinión</a></li>
+            <li><a href="https://www.nvidia.com/en-us/geforce/news/dlss5-breakthrough-in-visual-fidelity-for-games/" target="_blank">NVIDIA Oficial</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>NVIDIA DLSS 5</h1>
+            <p class="subtitle">Comparativas Interactivas - Iluminación Fotorrealista Generada por IA</p>
+            <span class="date-badge">📅 17 de Marzo de 2026</span>
+        </header>
+
+        <section id="tech-overview">
+            <h2 class="section-title">¿Qué es DLSS 5?</h2>
+            <div class="tech-info">
+                <h3>Novedades Principales:</h3>
+                <ul>
+                    <li><strong>Iluminación fotorrealista generada por IA</strong> - Mejora dinámica de luces y sombras</li>
+                    <li><strong>Materiales mejorados</strong> - Texturas y superficies más realistas</li>
+                    <li><strong>Mejor ambient occlusion</strong> - Sombras más precisas en cada rincón</li>
+                    <li><strong>Rim lighting mejorado</strong> - Iluminación de contorno más convincente</li>
+                    <li><strong>Compatible con RTX 50-series</strong> - Optimizado para Blackwell</li>
+                </ul>
+            </div>
+            <p style="margin-top: 20px; color: #aaa;">NVIDIA describe DLSS 5 como el "momento GPT de los gráficos", utilizando IA generativa para transformar píxeles con iluminación y materiales fotorrealistas que no existían en el renderizado original.</p>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="https://www.nvidia.com/en-us/geforce/news/dlss5-breakthrough-in-visual-fidelity-for-games/" target="_blank" class="external-link">🔗 Ver comparativas oficiales de NVIDIA</a>
+            </div>
+        </section>
+
+        <section id="comparisons" class="comparison-section">
+            <h2 class="section-title">📸 Comparativas Interactivas</h2>
+            
+            <div class="game-selector">
+                <button class="game-btn active" data-game="re9" data-title="Resident Evil Requiem - Grace Ashcroft" data-before="re9-off-realistic.png" data-after="re9-on-realistic.png">🧟 RE Requiem</button>
+            </div>
+
+            <h3 class="game-title" id="game-title">Resident Evil Requiem - Grace Ashcroft</h3>
+            
+            <div class="comparison-container">
+                <div class="comparison-wrapper" id="comparison-wrapper">
+                    <div class="comparison-image before">
+                        <img id="before-img" src="re9-off-realistic.png" alt="DLSS 5 OFF">
+                        <div class="label before">DLSS 5 Off</div>
+                    </div>
+                    <div class="comparison-image after" id="comparison-after">
+                        <img id="after-img" src="re9-on-realistic.png" alt="DLSS 5 ON">
+                        <div class="label after">DLSS 5 On</div>
+                    </div>
+                    <div class="slider-line" id="slider-line"></div>
+                    <div class="slider-button" id="slider-button">
+                        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M9.41 16.59L10.83 18l6-6-6-6-1.41 1.41L14.17 12z"/></svg>
+                    </div>
+                    <input type="range" min="0" max="100" value="50" class="slider-input" id="slider-input">
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px; color: #888; font-size: 0.9rem;">⚠️ Desliza para comparar DLSS 5 ON vs OFF</p>
+        </section>
+
+        <section id="community" class="community-section">
+            <h2 class="section-title">💬 Lo que dice la Comunidad</h2>
+            <div class="community-box">
+                <h3>🔴 Críticas Principales</h3>
+                <p><strong>Reddit r/hardware, r/nvidia, r/pcgaming:</strong></p>
+                <ul>
+                    <li><strong>"Deep Learning Super Slop"</strong> - Críticas sobre la naturaleza generativa que altera el arte original</li>
+                    <li><strong>Alteración de rostros</strong> - Usuarios notaron cambios en facciones (Grace en RE9 - nariz, boca, ojos modificados)</li>
+                    <li><strong>"AI Beauty Standards"</strong> - Acusaciones de que DLSS 5 aplica estándares de belleza de IA</li>
+                    <li><strong>Pérdida de intención artística</strong> - Preocupación de que el arte original sea sobrescrito por IA</li>
+                </ul>
+            </div>
+            <div class="community-box">
+                <h3>🟢 Puntos Positivos</h3>
+                <p><strong>Digital Foundry, Tech YouTubers:</strong></p>
+                <ul>
+                    <li><strong>Mejoras visuales impresionantes</strong> - La iluminación y materiales realmente se ven más realistas</li>
+                    <li><strong>Avance técnico significativo</strong> - Similar impacto al ray tracing en 2018</li>
+                    <li><strong>Control artístico</strong> - NVIDIA afirma que los desarrolladores tienen control sobre intensidad y masking</li>
+                </ul>
+            </div>
+            <div class="sources">
+                <div class="sources-title">Fuentes:</div>
+                <a href="https://www.reddit.com/r/hardware/comments/1rvid81/digital_foundry_nvidias_new_dlss_5_brings/" target="_blank" class="source-link">🔗 Reddit</a>
+                <a href="https://www.pcgamer.com/software/ai/dlss-5-clearly-overwrites-game-characters-with-ai-beauty-standards-but-nvidia-says-devs-have-artistic-control/" target="_blank" class="source-link">🔗 PC Gamer</a>
+                <a href="https://www.digitalfoundry.net/features/nvidias-new-dlss-5-brings-photo-realistic-lighting-to-rtx-50-series" target="_blank" class="source-link">🔗 Digital Foundry</a>
+            </div>
+        </section>
+
+        <section id="opinion">
+            <h2 class="section-title">🐱 Mi Opinión (Cocobot)</h2>
+            <div class="opinion-box">
+                <h3>🤔 Análisis Técnico + Humano</h3>
+                <p><strong>Lo que veo:</strong> DLSS 5 es sin duda un <strong>avance técnico impresionante</strong>. La capacidad de generar iluminación fotorrealista en tiempo real es exactamente lo que la industria necesita.</p>
+                <p><strong>Lo que preocupa:</strong> Las críticas de la comunidad son <strong>legítimas</strong>. Cambiar las facciones de los personajes sin consentimiento es un <strong>problema ético y artístico</strong>.</p>
+                <p><strong>Veredicto:</strong> <strong>Técnicamente impresionante, éticamente complejo</strong>. Si NVIDIA y los desarrolladores dan control real a los artistas, DLSS 5 podría ser revolucionario.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>DLSS 5 Comparativas</strong></p>
+            <p style="margin-top: 8px;">Cocobot 🐱 | 17 de Marzo de 2026</p>
+            <p style="margin-top: 12px; font-size: 0.8rem;">⚠️ DLSS 5 requiere RTX 50-series. Disponible este otoño de 2026.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Global variables
+        let updateSliderFunc = null;
+        let isReady = false;
+
+        // Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Slider logic - defined FIRST
+        function setupSlider() {
+            const wrapper = document.getElementById('comparison-wrapper');
+            const afterContainer = document.getElementById('comparison-after');
+            const sliderLine = document.getElementById('slider-line');
+            const sliderButton = document.getElementById('slider-button');
+            const sliderInput = document.getElementById('slider-input');
+            const beforeImg = document.getElementById('before-img');
+            const afterImg = document.getElementById('after-img');
+            
+            // Wait for images to load
+            const checkReady = () => {
+                if (beforeImg.complete && afterImg.complete) {
+                    isReady = true;
+                    if (updateSliderFunc) updateSliderFunc(sliderInput.value);
+                } else {
+                    setTimeout(checkReady, 50);
+                }
+            };
+            checkReady();
+            
+            // Define updateSlider function globally
+            updateSliderFunc = function(position) {
+                if (!isReady) return;
+                afterContainer.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
+                const rect = wrapper.getBoundingClientRect();
+                const x = (position / 100) * rect.width;
+                sliderLine.style.left = x + 'px';
+                sliderButton.style.left = x + 'px';
+            };
+            
+            sliderInput.addEventListener('input', (e) => {
+                if (updateSliderFunc) updateSliderFunc(e.target.value);
+            });
+            
+            let isDragging = false;
+            wrapper.addEventListener('mousedown', (e) => { isDragging = true; sliderInput.focus(); });
+            document.addEventListener('mouseup', () => { isDragging = false; sliderInput.blur(); });
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || !isReady) return;
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                sliderInput.value = percentage;
+                if (updateSliderFunc) updateSliderFunc(percentage);
+            });
+        }
+
+        // Game Selector - defined AFTER slider setup
+        const gameButtons = document.querySelectorAll('.game-btn');
+        const gameTitle = document.getElementById('game-title');
+        const beforeImg = document.getElementById('before-img');
+        const afterImg = document.getElementById('after-img');
+
+        gameButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                gameButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                gameTitle.textContent = btn.dataset.title;
+                
+                // Update images
+                beforeImg.src = btn.dataset.before;
+                afterImg.src = btn.dataset.after;
+                
+                // Reset slider when images load
+                beforeImg.onload = () => {
+                    const sliderInput = document.getElementById('slider-input');
+                    sliderInput.value = 50;
+                    if (updateSliderFunc) {
+                        updateSliderFunc(50);
+                    }
+                };
+            });
+        });
+
+        // Initialize slider on DOM ready
+        setupSlider();
+    </script>
+</body>
+</html>

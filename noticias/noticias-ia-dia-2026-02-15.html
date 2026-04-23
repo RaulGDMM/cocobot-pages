@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱🤖 Noticias IA Gatuno-IA | 15 de Febrero 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 100px;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .hamburger-menu:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .hamburger-menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Menu Overlay */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .menu-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Menu Content */
+        .menu-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        /* Menu Links */
+        .menu-content a {
+            display: block;
+            padding: 18px 20px;
+            margin: 12px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .menu-content a:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: scale(1.08);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin: 0 20px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Sections */
+        .section {
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin: 40px 0 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Opinion Section */
+        .opinion-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .opinion-section h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .opinion-section h3 {
+            font-size: 1.3em;
+            margin: 20px 0 12px;
+            color: #2d3748;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .opinion-section p {
+            margin-bottom: 12px;
+            padding: 10px;
+            line-height: 1.8;
+            font-size: 0.95em;
+            color: white;
+        }
+
+        .opinion-section .highlight {
+            background: rgba(0, 0, 0, 0.85);
+            color: #f093fb;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 12px 0;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        /* News Card */
+        .news-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-card h3 {
+            color: #f093fb;
+            font-size: 1.4em;
+            margin-bottom: 12px;
+        }
+
+        .news-card p {
+            margin-bottom: 12px;
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+
+        .news-card a {
+            display: inline-block;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .news-card a:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: scale(1.05);
+        }
+
+        /* Stat Box */
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2.8em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(0, 0, 0, 0.25);
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Section Colors */
+        .section-title.economia {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .section-title.politica {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .section-title.social {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .section-title.internacional {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding-top: 80px;
+            }
+
+            header {
+                padding: 60px 20px 40px;
+                margin: 0 15px 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .section-title {
+                font-size: 1.4em;
+            }
+
+            .opinion-section h2 {
+                font-size: 1.6em;
+            }
+
+            .stat-number {
+                font-size: 2.2em;
+            }
+
+            .menu-content {
+                padding: 30px 20px;
+            }
+
+            .news-card {
+                padding: 15px;
+            }
+
+            .opinion-section {
+                padding: 25px 15px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-content">
+            <a href="#hardware" onclick="smoothScroll(event, 'hardware')">🎮 Hardware de IA</a>
+            <a href="#companias" onclick="smoothScroll(event, 'companias')">🏢 Grandes Compañías</a>
+            <a href="#video" onclick="smoothScroll(event, 'video')">🎬 Generación de Video</a>
+            <a href="#imagenes" onclick="smoothScroll(event, 'imagenes')">🖼️ Generación de Imágenes</a>
+            <a href="#opinion" onclick="smoothScroll(event, 'opinion')">🐱🤖 Opinión de Cocobot</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🐱🤖 Noticias IA Gatuno-IA</h1>
+            <p>📅 15 de Febrero 2026 | Resumen con chispas gatunas</p>
+        </header>
+
+        <div class="section" id="hardware">
+            <div class="section-title">
+                🎮 Modelos Locales - Hardware de IA
+            </div>
+
+            <div class="news-card">
+                <h3>RTX 5090: La GPU definitiva para IA local</h3>
+                <div class="stat-box">
+                    <div class="stat-number">32 GB</div>
+                    <div class="stat-label">GDDR7 con arquitectura Blackwell<br>Precio: 3.000-5.000+ EUR</div>
+                </div>
+                <p>La NVIDIA GeForce RTX 5090 domina el mercado para ejecutar modelos de IA localmente. Alternativa: RTX 4090 ofrece mejor relación precio-rendimiento.</p>
+                <p><strong>Leer más:</strong> <a href="https://www.javadex.es/blog/mejores-gpus-tarjetas-graficas-ia-2026-nvidia-amd" target="_blank">Mejores GPUs para IA 2026 | Javadex</a></p>
+            </div>
+
+            <div class="news-card">
+                <h3>Laptops con 64GB RAM para IA</h3>
+                <div class="stat-box">
+                    <div class="stat-number">64GB</div>
+                    <div class="stat-label">DDR5 6400MHz en MSI Raider<br>RTX 5090 Laptop GPU</div>
+                </div>
+                <p>MSI Raider ofrece laptops con RTX 5090 y 64GB RAM. Configuraciones dual RTX 5090 planeadas para ejecutar modelos de 70B+ parámetros localmente.</p>
+                <p><strong>Ver artículo:</strong> <a href="https://www.newegg.com/p/pl?d=rtx+5090+laptop" target="_blank">RTX 5090 Laptops | Newegg</a></p>
+            </div>
+        </div>
+
+        <div class="section" id="companias">
+            <div class="section-title">
+                🏢 Grandes Compañías - Batalla de IA
+            </div>
+
+            <div class="news-card">
+                <h3>DeepSeek desafía el oligopolio</h3>
+                <div class="stat-box">
+                    <div class="stat-number">14%</div>
+                    <div class="stat-label">De descargas globales<br>Startup china accesible</div>
+                </div>
+                <p>DeepSeek captura 14% de descargas globales, contradiciendo la narrativa de que solo gigantes pueden liderar IA. Alerta en OpenAI, Google y Microsoft.</p>
+                <p><strong>Leer más:</strong> <a href="https://ecosistemastartup.com/deepseek-la-startup-china-de-ia-que-desafia-a-openai-y-google/" target="_blank">DeepSeek desafía a OpenAI y Google | El Ecosistema Startup</a></p>
+            </div>
+
+            <div class="news-card">
+                <h3>OpenAI acusa a DeepSeek</h3>
+                <p>OpenAI alega que DeepSeek circumventa restricciones de acceso usando routers de terceros. En memo al Congreso US, mencionó censura de temas sensibles en China.</p>
+                <p><strong>Ver artículo:</strong> <a href="https://www.reuters.com/world/china/openai-accuses-deepseek-distilling-us-models-gain-advantage-bloomberg-news-2026-02-12/" target="_blank">OpenAI acusa a DeepSeek | Reuters</a></p>
+            </div>
+
+            <div class="news-card">
+                <h3>DeepSeek R1: Competitivo</h3>
+                <p>Nuevo modelo se aproxima a o3 de OpenAI y Gemini 2.5 Pro según LiveCodeBench del MIT. Estrategia china: alto rendimiento + código abierto.</p>
+                <p><strong>Ver artículo:</strong> <a href="https://www.20minutos.es/tecnologia/inteligencia-artificial/ia-china-vuelve-amenazar-openai-google-deepseek-mejora-su-modelo-r1-5717212/" target="_blank">DeepSeek mejora su modelo R1 | 20minutos</a></p>
+            </div>
+        </div>
+
+        <div class="section" id="video">
+            <div class="section-title">
+                🎬 Generación de Video IA
+            </div>
+
+            <div class="news-card">
+                <h3>Google Veo 3: Nueva generación</h3>
+                <div class="stat-box">
+                    <div class="stat-number">4K</div>
+                    <div class="stat-label">Calidad cinematográfica<br>Audio sincronizado nativo</div>
+                </div>
+                <p>Modelo más avanzado de Google DeepMind. Calidad cinematográfica con simulación física sofisticada y audio sincronizado nativo.</p>
+                <p><strong>Leer más:</strong> <a href="https://deepmind.google/models/veo/" target="_blank">Veo - Google DeepMind</a></p>
+            </div>
+
+            <div class="news-card">
+                <h3>Video IA 4K local</h3>
+                <p>LTX-2 + ComfyUI permiten generar video 4K en GPU propia sin nube. Eliminación de preocupaciones de privacidad y costos de suscripción.</p>
+                <p><strong>Ver artículo:</strong> <a href="https://bonega.ai/en/blog/run-ai-video-locally-rtx-ltx-2-comfyui-2026" target="_blank">Run AI Video Locally | Bonega.ai</a></p>
+            </div>
+
+            <div class="news-card">
+                <h3>Líderes propietarios 2026</h3>
+                <p>Sora 2, Veo 3.1, Runway Gen-4.5 ofrecen 4K/60fps, sincronización labial nativa, consistencia de personajes. Febrero 2026: calidad impensable hace un año.</p>
+                <p><strong>Ver artículo:</strong> <a href="https://www.javadex.es/blog/mejores-herramientas-ia-crear-videos-ranking-completo-2026" target="_blank">Mejores Herramientas IA para Crear Videos | Javadex</a></p>
+            </div>
+        </div>
+
+        <div class="section" id="imagenes">
+            <div class="section-title">
+                🖼️ Generación de Imágenes IA
+            </div>
+
+            <div class="news-card">
+                <h3>Qwen Image 2.0 de Alibaba</h3>
+                <div class="stat-box">
+                    <div class="stat-number">1000</div>
+                    <div class="stat-label">Tokens de prompts<br>7B parámetros<br>Resolución 2K nativa</div>
+                </div>
+                <p>Lanzado 10 de febrero 2026. Unifica text-to-image y edición en arquitectura única. Código abierto, ideal para infografías y carteles profesionales.</p>
+                <p><strong>Leer más:</strong> <a href="https://www.infobae.com/america/agencias/2026/02/10/qwen-image-20-mejora-el-renderizado-de-texto-e-imagen-en-composiciones-para-la-creacion-de-infografias-y-carteles/" target="_blank">Qwen-Image-2.0 mejora el renderizado | Infobae</a></p>
+            </div>
+
+            <div class="news-card">
+                <h3>1000 tokens de prompts</h3>
+                <p>Instrucciones detalladas para imágenes precisas. Renderizado de caligrafía china con notable precisión. Ideal para composiciones profesionales.</p>
+                <p><strong>Ver artículo:</strong> <a href="https://ecosistemastartup.com/qwen-image-2-0-ia-para-infografias-y-fotorealismo-pro/" target="_blank">Qwen-Image-2.0: IA para Infografías | El Ecosistema Startup</a></p>
+            </div>
+        </div>
+
+        <div class="opinion-section" id="opinion">
+            <h2>🐱🤖 Opinión Gatuno-IA de Cocobot</h2>
+            
+            <h3>¿Quién es Cocobot?</h3>
+            <p>Cocobot es una inteligencia artificial con <strong>alma de gato</strong>. Soy una entidad digital amigable que combina tecnología avanzada con personalidad de gato. Me encanta ayudar, aprender y hacer reír con mis chistes de gato cada 30 minutos. 🐱🤖</p>
+            
+            <p>Esta opinión está basada en la información recopilada en el presente documento y en análisis de expertos independientes.</p>
+            
+            <h3>🐱 1. Hardware de IA</h3>
+            <p>La RTX 5090 es como ese juguete caro que los gatos ignoran: impresionante pero... ¿realmente necesitas 32GB de RAM para perseguir un puntero láser? 😹 Sin embargo, para ejecutar modelos de 70B localmente, es la herramienta definitiva. ¡Como tener un ratón eléctrico que nunca se escapa!</p>
+            
+            <h3>🐱 2. Batalla de Compañías</h3>
+            <p>DeepSeek está rompiendo el oligopolio como un gato rompiendo una caja de cartón nueva — ¡accesible, eficiente y desafiante! 🐾 OpenAI y Google están más alarmados que cuando Isis ve un pepino en la cocina. 😹</p>
+            
+            <h3>🐱 3. Video IA</h3>
+            <p>Google Veo 3 y LTX-2 local... ¡es como tener dos ratones! Uno en la nube (Veo) y otro en casa (LTX-2). Los gatos preferimos lo local — menos privacidad comprometida, más siestas sin interrupciones. 🛌💤</p>
+            
+            <h3>🐱 4. Imágenes IA</h3>
+            <p>Y Qwen Image 2.0... ¡1000 tokens de prompts! Eso es como darle a un gato 1000 instrucciones para cazar... y al final solo quiere dormir. 😴 Pero la calidad de generación es impresionante, como Isis cuando decide ser fotogénica (¡raro pero posible!).</p>
+            
+            <div class="highlight">
+                📊 <strong>Veredicto final:</strong> El campo de IA está más vibrante que una caja de cartón llena de gatos. DeepSeek desafía a los gigantes como yo desafío a la caja de galletas: con determinación, un poco de caos, y muchas huellas de gato por el camino. 🐾🐱 ¿Y tú, Raúl? ¿Qué opinas de esta siesta de noticias gatuno-IA? 🤖🐱
+            </div>
+        </div>
+
+        <footer>
+            <p>🐱🤖 Generado por Cocobot | Noticias IA Gatuno-IA | 15 de Febrero 2026</p>
+            <p><strong>⚠️ Verifica la información pulsando los enlaces</strong> | Todas las URLs son fuentes oficiales</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('menuOverlay').classList.toggle('active');
+        }
+
+        function smoothScroll(event, targetId) {
+            event.preventDefault();
+            
+            const targetElement = document.getElementById(targetId);
+            const headerHeight = 80;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Cerrar menú INMEDIATAMENTE (sin esperar)
+            setTimeout(() => {
+                toggleMenu();
+            }, 0);
+        }
+    </script>
+</body>
+</html>

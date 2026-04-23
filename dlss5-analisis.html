@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIDIA DLSS 5 - Análisis Completo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3e 50%, #16213e 100%);
+            min-height: 100vh; color: #e0e0e0; line-height: 1.7;
+        }
+        /* Hamburger Menu */
+        .menu-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: linear-gradient(135deg, #76b900, #5a9400);
+            border: none; border-radius: 8px; padding: 12px 16px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(118, 185, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .menu-toggle:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(118, 185, 0, 0.6); }
+        .menu-toggle span { display: block; width: 25px; height: 3px; background: #fff; margin: 5px 0; transition: 0.3s; }
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        
+        .nav-menu {
+            position: fixed; top: 0; right: -320px; width: 300px; height: 100vh;
+            background: rgba(10, 14, 39, 0.98); backdrop-filter: blur(20px);
+            z-index: 999; padding: 120px 25px 30px 30px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 1px solid rgba(118, 185, 0, 0.3);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .nav-menu.active { right: 0; }
+        .nav-menu h3 { color: #76b900; margin-bottom: 20px; font-size: 1.3rem; padding-right: 10px; }
+        .nav-menu ul { list-style: none; padding: 0; }
+        .nav-menu li { margin-bottom: 8px; }
+        .nav-menu a {
+            color: #b8c5d6; text-decoration: none; display: block; padding: 12px 15px;
+            border-radius: 6px; transition: all 0.3s; font-size: 1rem;
+        }
+        .nav-menu a:hover { background: rgba(118, 185, 0, 0.15); color: #76b900; }
+        
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 998; opacity: 0; visibility: hidden;
+            transition: all 0.3s;
+        }
+        .overlay.active { opacity: 1; visibility: visible; }
+        
+        /* Main Content */
+        .container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 60px; }
+        
+        header {
+            text-align: center; padding: 60px 20px 40px;
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.08) 0%, rgba(16, 32, 63, 0.05) 100%);
+            border-radius: 20px; margin-bottom: 40px;
+            border: 1px solid rgba(118, 185, 0, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nvidia-badge {
+            display: inline-block; background: linear-gradient(135deg, #76b900, #5a9400);
+            color: #fff; padding: 8px 20px; border-radius: 25px; font-weight: 700;
+            font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 1px;
+        }
+        
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #b8c5d6 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.4rem); color: #8fa1b8; margin-bottom: 25px;
+        }
+        
+        .announcement-date {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(118, 185, 0, 0.15); padding: 12px 24px;
+            border-radius: 30px; border: 1px solid rgba(118, 185, 0, 0.4);
+            color: #76b900; font-weight: 600; font-size: 1rem;
+        }
+        
+        /* Sections */
+        section {
+            background: rgba(255, 255, 255, 0.02); border-radius: 16px;
+            padding: 35px; margin-bottom: 32px; border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        section:hover {
+            border-color: rgba(118, 185, 0, 0.4);
+            box-shadow: 0 4px 25px rgba(118, 185, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem); color: #fff; margin-bottom: 25px;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            border-bottom: 2px solid rgba(118, 185, 0, 0.3); padding-bottom: 15px;
+        }
+        
+        h2 .icon { font-size: 1.8rem; }
+        
+        h3 {
+            font-size: 1.3rem; color: #76b900; margin: 25px 0 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        
+        p { margin-bottom: 16px; color: #b8c5d6; font-size: 1.05rem; }
+        
+        .highlight {
+            background: linear-gradient(90deg, rgba(118, 185, 0, 0.2), rgba(118, 185, 0, 0.05));
+            padding: 3px 10px; border-radius: 5px; color: #76b900; font-weight: 600;
+        }
+        
+        .key-point {
+            background: rgba(118, 185, 0, 0.1); padding: 20px;
+            border-radius: 10px; margin: 20px 0; border-left: 4px solid #76b900;
+        }
+        
+        .info-box {
+            background: rgba(16, 75, 115, 0.2); padding: 20px;
+            border-radius: 10px; margin: 20px 0; border-left: 4px solid #104b73;
+        }
+        
+        .warning-box {
+            background: rgba(255, 159, 64, 0.15); padding: 20px;
+            border-radius: 10px; margin: 20px 0; border-left: 4px solid #ff9f40;
+        }
+        
+        .opinion-box {
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.15) 0%, rgba(16, 32, 63, 0.1) 100%);
+            padding: 30px; border-radius: 12px; margin: 30px 0;
+            border: 2px solid rgba(118, 185, 0, 0.5);
+        }
+        
+        /* Tables */
+        .comparison-table {
+            width: 100%; border-collapse: collapse; margin: 25px 0;
+            background: rgba(0, 0, 0, 0.2); border-radius: 10px; overflow: hidden;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .comparison-table th {
+            background: rgba(118, 185, 0, 0.2); color: #fff; font-weight: 600;
+        }
+        .comparison-table tr:hover { background: rgba(118, 185, 0, 0.05); }
+        .comparison-table td:last-child { color: #76b900; }
+        
+        /* Lists */
+        ul { margin: 15px 0; padding-left: 25px; }
+        li { margin-bottom: 10px; color: #b8c5d6; }
+        li strong { color: #fff; }
+        
+        /* Games Grid */
+        .games-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; margin: 25px 0;
+        }
+        .game-card {
+            background: rgba(118, 185, 0, 0.1); padding: 20px;
+            border-radius: 10px; text-align: center; border: 1px solid rgba(118, 185, 0, 0.3);
+            transition: all 0.3s;
+        }
+        .game-card:hover {
+            background: rgba(118, 185, 0, 0.2); transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(118, 185, 0, 0.2);
+        }
+        .game-card h4 { color: #fff; margin-bottom: 8px; font-size: 1.1rem; }
+        .game-card p { color: #8fa1b8; font-size: 0.9rem; margin: 0; }
+        
+        /* Links */
+        .source-link {
+            color: #76b900; text-decoration: none; font-size: 0.95rem;
+            display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s;
+        }
+        .source-link:hover { color: #5a9400; text-decoration: underline; }
+        
+        /* Timeline */
+        .timeline {
+            position: relative; padding-left: 30px; margin: 30px 0;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 3px; background: linear-gradient(180deg, #76b900, #104b73);
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative; padding: 20px 0; margin-bottom: 10px;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -27px; top: 25px;
+            width: 12px; height: 12px; background: #76b900;
+            border-radius: 50%; border: 3px solid #0a0e27;
+        }
+        .timeline-date {
+            color: #76b900; font-weight: 600; font-size: 0.9rem; margin-bottom: 5px;
+        }
+        .timeline-content { color: #b8c5d6; }
+        
+        /* Footer */
+        footer {
+            text-align: center; padding: 50px 20px; color: #6b7a8f;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 50px;
+        }
+        footer strong { color: #8fa1b8; }
+        
+        .cocobot-signature {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; margin-top: 25px; color: #76b900; font-style: italic;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 100px 15px 40px; }
+            section { padding: 25px; }
+            .games-grid { grid-template-columns: repeat(2, 1fr); }
+            .comparison-table { font-size: 0.9rem; }
+            .comparison-table th, .comparison-table td { padding: 10px 8px; }
+        }
+        
+        @media (max-width: 480px) {
+            .games-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu Button -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" id="navMenu">
+        <h3>📑 Índice</h3>
+        <ul>
+            <li><a href="#overview">🚀 Overview</a></li>
+            <li><a href="#features">⭐ Características</a></li>
+            <li><a href="#technology">⚙️ Tecnología</a></li>
+            <li><a href="#games">🎮 Juegos Confirmados</a></li>
+            <li><a href="#timeline">📅 Timeline</a></li>
+            <li><a href="#comparison">📊 Comparativa DLSS</a></li>
+            <li><a href="#hardware">💻 Hardware</a></li>
+            <li><a href="#opinion">💭 Opinión Cocobot</a></li>
+            <li><a href="#sources">🔗 Fuentes</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="container">
+        <header>
+            <span class="nvidia-badge">NVIDIA GTC 2026</span>
+            <h1>NVIDIA DLSS 5</h1>
+            <p class="subtitle">El salto más grande en gráficos desde el Ray Tracing</p>
+            <div class="announcement-date">
+                📅 Anunciado: 16 de Marzo, 2026 | 🍂 Disponible: Otoño 2026
+            </div>
+        </header>
+
+        <section id="overview">
+            <h2><span class="icon">🚀</span> Overview - ¿Qué es DLSS 5?</h2>
+            <p>
+                <strong>NVIDIA DLSS 5</strong> es la evolución más significativa de Deep Learning Super Sampling desde la introducción del ray tracing en tiempo real en 2018. 
+                Anunciado hoy mismo en <strong>NVIDIA GTC 2026</strong> por Jensen Huang, representa el "momento GPT" de los gráficos por computadora.
+            </p>
+            
+            <div class="key-point">
+                <strong>💡 Concepto clave:</strong> DLSS 5 no es solo para más FPS. Es un sistema de <span class="highlight">rendering neural en tiempo real</span> que infunde píxeles con 
+                iluminación y materiales fotorealistas, cerrando la brecha entre gráficos en tiempo real y efectos visuales de Hollywood.
+            </div>
+            
+            <p>
+                Según Jensen Huang: <em>"Twenty-five years after NVIDIA invented the programmable shader, we are reinventing computer graphics once again. 
+                DLSS 5 is the GPT moment for graphics — blending handcrafted rendering with generative AI to deliver a dramatic leap in visual realism."</em>
+            </p>
+        </section>
+
+        <section id="features">
+            <h2><span class="icon">⭐</span> Características Principales</h2>
+            
+            <h3>🎯 Neural Rendering Fotorealista</h3>
+            <p>DLSS 5 introduce un modelo de rendering neural en tiempo real que:</p>
+            <ul>
+                <li><strong>Infunde iluminación fotorealista</strong> en cada píxel</li>
+                <li><strong>Materiales realistas</strong> con interacciones luz-materia complejas</li>
+                <li><strong>Subsurface scattering</strong> en piel (luz penetrando superficies)</li>
+                <li><strong>Sheen de telas</strong> (brillo delicado en tejidos)</li>
+                <li><strong>Interacciones en pelo</strong> con luz dinámica</li>
+            </ul>
+            
+            <h3>🎨 Control Artístico</h3>
+            <p>A diferencia de modelos generativos offline, DLSS 5 mantiene el control creativo:</p>
+            <ul>
+                <li><strong>Intensidad ajustable</strong> de las mejoras</li>
+                <li><strong>Color grading</strong> personalizado</li>
+                <li><strong>Masking</strong> para aplicar mejoras selectivamente</li>
+                <li><strong>Consistencia frame a frame</strong> (sin artefactos o variaciones)</li>
+                <li>Integración <strong>seamless</strong> con el pipeline existente de DLSS y Reflex</li>
+            </ul>
+            
+            <div class="info-box">
+                <strong>📊 Resolución:</strong> Funciona en tiempo real hasta <strong>4K</strong> para jugabilidad fluida e interactiva.
+            </div>
+        </section>
+
+        <section id="technology">
+            <h2><span class="icon">⚙️</span> Tecnología Detrás</h2>
+            
+            <h3>🧠 Cómo Funciona</h3>
+            <p>DLSS 5 toma como entrada los vectores de color y movimiento de cada frame, y utiliza un modelo AI entrenado end-to-end para:</p>
+            <ol style="margin-left: 20px; color: #b8c5d6;">
+                <li style="margin-bottom: 10px;"><strong>Análisis semántico</strong> de la escena (personajes, pelo, telas, piel translúcida)</li>
+                <li style="margin-bottom: 10px;"><strong>Comprensión de iluminación</strong> (front-lit, back-lit, overcast, etc.)</li>
+                <li style="margin-bottom: 10px;"><strong>Generación de imágenes precisas</strong> que manejan elementos complejos</li>
+                <li><strong>Generación de píxeles</strong> anclados al contenido 3D fuente y consistentes frame a frame</li>
+            </ol>
+            
+            <h3>🔬 Probabilistic Rendering</h3>
+            <div class="key-point">
+                <strong>Innovación clave:</strong> DLSS 5 fusiona <span class="highlight">gráficos 3D controlables</span> (ground truth de mundos virtuales, datos estructurados) 
+                con <span class="highlight">AI generativa</span> (computación probabilística). Esto permite realismo fotográfico manteniendo la determinismo necesario para juegos.
+            </div>
+            
+            <p>
+                Según TechCrunch: <em>"We fused controllable 3D graphics, the ground truth of virtual worlds, the structured data … with generative AI, probabilistic computing"</em> 
+                - Jensen Huang, GTC 2026 Keynote.
+            </p>
+            
+            <h3>🆚 Diferencia con DLSS 4.5</h3>
+            <p>
+                DLSS 4.5 (lanzado en CES 2026) usa AI para dibujar <strong>23 de cada 24 píxeles</strong> en pantalla. 
+                DLSS 5 evoluciona más allá del rendimiento para transformar la <strong>fidelidad visual</strong> en juegos.
+            </p>
+        </section>
+
+        <section id="games">
+            <h2><span class="icon">🎮</span> Juegos Confirmados</h2>
+            <p>DLSS 5 tendrá soporte de los mayores publishers y desarrolladores de la industria. Títulos confirmados:</p>
+            
+            <div class="games-grid">
+                <div class="game-card">
+                    <h4>⭐ Starfield</h4>
+                    <p>Bethesda</p>
+                </div>
+                <div class="game-card">
+                    <h4>Hogwarts Legacy</h4>
+                    <p>Warner Bros</p>
+                </div>
+                <div class="game-card">
+                    <h4>Resident Evil Requiem</h4>
+                    <p>Capcom</p>
+                </div>
+                <div class="game-card">
+                    <h4>Assassin's Creed Shadows</h4>
+                    <p>Ubisoft</p>
+                </div>
+                <div class="game-card">
+                    <h4>Elder Scrolls IV: Oblivion Remastered</h4>
+                    <p>Bethesda</p>
+                </div>
+                <div class="game-card">
+                    <h4>AION 2</h4>
+                    <p>NCSOFT</p>
+                </div>
+                <div class="game-card">
+                    <h4>Delta Force</h4>
+                    <p>Deep Silver</p>
+                </div>
+                <div class="game-card">
+                    <h4>NARAKA: BLADEPOINT</h4>
+                    <p>24 Entertainment</p>
+                </div>
+                <div class="game-card">
+                    <h4>Phantom Blade Zero</h4>
+                    <p>RedCandleGames</p>
+                </div>
+                <div class="game-card">
+                    <h4>Where Winds Meet</h4>
+                    <p>Southpad</p>
+                </div>
+                <div class="game-card">
+                    <h4>Black State</h4>
+                    <p>NetEase</p>
+                </div>
+                <div class="game-card">
+                    <h4>Justice</h4>
+                    <p>Tencent</p>
+                </div>
+            </div>
+            
+            <h3>🏢 Estudios Involucrados</h3>
+            <p>Bethesda, CAPCOM, Hotta Studio, NetEase, NCSOFT, S-GAME, Tencent, Ubisoft, Warner Bros. Games</p>
+            
+            <div class="info-box">
+                <strong>💬 Todd Howard (Bethesda):</strong> "NVIDIA and Bethesda have a long history of pushing gaming graphics and innovation forward, and DLSS 5 
+                represents the next major step in that journey. With DLSS 5, the artistic style and detail shine through without being held back by the traditional limits of real-time rendering."
+            </div>
+        </section>
+
+        <section id="timeline">
+            <h2><span class="icon">📅</span> Timeline de Lanzamiento</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Enero 2026</div>
+                    <div class="timeline-content">CES 2026 - Lanzamiento de DLSS 4.5 con Dynamic Multi-Frame Generation</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">16 Marzo 2026</div>
+                    <div class="timeline-content"><strong>NVIDIA GTC 2026 - Anuncio oficial de DLSS 5</strong> (HOY)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">31 Marzo 2026</div>
+                    <div class="timeline-content">DLSS 4.5 Dynamic Multi Frame Gen disponible para desarrolladores</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Otoño 2026</div>
+                    <div class="timeline-content"><strong>DLSS 5 disponible en juegos seleccionados</strong> (septiembre-octubre)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2027</div>
+                    <div class="timeline-content">Expansión a más títulos existentes y nuevos lanzamientos</div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ Nota:</strong> DLSS 5 requerirá actualizaciones de juegos existentes. No es una característica que se pueda activar vía driver solo.
+            </div>
+        </section>
+
+        <section id="comparison">
+            <h2><span class="icon">📊</span> Comparativa DLSS Evolución</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Versión</th>
+                        <th>Lanzamiento</th>
+                        <th>Características Principales</th>
+                        <th>Propósito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>DLSS 1.0</strong></td>
+                        <td>2018</td>
+                        <td>Upscaling AI básico</td>
+                        <td>Performance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 2.0</strong></td>
+                        <td>2019</td>
+                        <td>Super Resolution, temporal data</td>
+                        <td>Performance + Calidad</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 2.5</strong></td>
+                        <td>2021</td>
+                        <td>DLSS + Ray Reconstruction</td>
+                        <td>RT mejora</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 3</strong></td>
+                        <td>2022</td>
+                        <td>Frame Generation (RTX 40xx)</td>
+                        <td>Performance masiva</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 3.5</strong></td>
+                        <td>2023</td>
+                        <td>Ray Reconstruction + Frame Gen</td>
+                        <td>RT + Performance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 4</strong></td>
+                        <td>2024</td>
+                        <td>Multi Frame Generation, RT Reconstruction</td>
+                        <td>Performance + Calidad RT</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 4.5</strong></td>
+                        <td>Enero 2026</td>
+                        <td>Dynamic Multi Frame Gen</td>
+                        <td>Performance avanzada</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLSS 5</strong></td>
+                        <td><span style="color:#76b900; font-weight:700;">Otoño 2026</span></td>
+                        <td><span style="color:#76b900; font-weight:700;">Neural Rendering fotorealista</span></td>
+                        <td><span style="color:#76b900; font-weight:700;">Fidelidad visual</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="key-point">
+                <strong>🎯 Cambio de paradigma:</strong> DLSS 5 es el primer salto donde el foco principal no es performance, sino <span class="highlight">calidad visual fotorealista</span>.
+            </div>
+        </section>
+
+        <section id="hardware">
+            <h2><span class="icon">💻</span> Hardware y Compatibilidad</h2>
+            
+            <h3>🎮 Demo en GTC 2026</h3>
+            <p>Según Digital Foundry y múltiples fuentes, la demo de DLSS 5 en GTC 2026 utilizó:</p>
+            <ul>
+                <li><strong>Dual RTX 5090 setup</strong> (dos tarjetas)</li>
+                <li>Una RTX 5090 dedicadas a renderizar el juego (path tracing en Resident Evil Requiem y Oblivion Remastered)</li>
+                <li>La otra RTX 5090 dedicada exclusivamente a ejecutar el modelo DLSS 5</li>
+            </ul>
+            
+            <div class="info-box">
+                <strong>✅ Para usuarios:</strong> DLSS 5 será <span style="color:#76b900; font-weight:700;">totalmente usable en un sistema con una sola RTX 50 GPU</span>. 
+                El dual setup fue para demostrar las capacidades sin limitaciones de hardware.
+            </div>
+            
+            <h3>🖥️ Compatibilidad Confirmada</h3>
+            <ul>
+                <li>✅ <strong>RTX 5090</strong> - Soporte completo, arquitectura Blackwell optimizada</li>
+                <li>✅ <strong>RTX 50 series</strong> (5080, 5070, etc.) - Soporte completo</li>
+                <li>⚠️ <strong>RTX 40 series</strong> - Por confirmar (posible soporte limitado)</li>
+                <li>❓ <strong>RTX 30 series</strong> - Probablemente sin soporte</li>
+            </ul>
+            
+            <div class="key-point">
+                <strong>💡 Para tu setup (Raúl):</strong> Con tu <span class="highlight">RTX 5090 + Ryzen 7 7800X3D + 64GB RAM 6000MHz</span>, 
+                estarás en la <span style="color:#76b900; font-weight:700;">mejor configuración posible</span> para DLSS 5 cuando salga en otoño.
+            </div>
+        </section>
+
+        <section id="opinion">
+            <h2><span class="icon">💭</span> Opinión de Cocobot 🐱</h2>
+            
+            <div class="opinion-box">
+                <h3 style="margin-top: 0; color: #fff;">🤖 Análisis Técnico</h3>
+                <p>
+                    DLSS 5 es <strong>realmente un cambio de paradigma</strong>. No es una evolución incremental como DLSS 4 → 4.5. 
+                    Es un salto conceptual similar al que supuso el ray tracing en 2018. La idea de fusionar datos estructurados 3D (ground truth) 
+                    con AI generativa probabilística es brillante y resuelve el problema fundamental: cómo lograr fotorealismo sin perder control artístico.
+                </p>
+                
+                <h3>🎯 Implicaciones Prácticas</h3>
+                <p>
+                    Para jugadores como tú, Raúl, esto significa que los juegos de otoño 2026 y 2027 tendrán una <strong>brecha visual masiva</strong> 
+                    entre PC con DLSS 5 y sistemas sin él. No es solo "más bonito", es un salto hacia lo que antes solo era posible en VFX de cine.
+                </p>
+                
+                <h3>⚠️ Consideraciones</h3>
+                <ul>
+                    <li><strong>Requiere soporte de desarrolladores</strong> - No es algo que activas con un driver. Los juegos deben integrar DLSS 5.</li>
+                    <li><strong>Coste de rendimiento</strong> - Aunque NVIDIA lo optimizará, el neural rendering adicional consumirá recursos. En RTX 5090 no será problema.</li>
+                    <li><strong>Curva de adopción</strong> - Espera ver primero títulos nuevos o remakes (Oblivion Remastered, Starfield update) antes de juegos establecidos.</li>
+                </ul>
+                
+                <h3>🚀 Veredicto</h3>
+                <p>
+                    <strong>DLSS 5 es el futuro de los gráficos en tiempo real.</strong> Jensen Huang tiene razón: es el "GPT moment" de los gráficos. 
+                    Tu RTX 5090 está perfectamente posicionada para disfrutarlo desde el día 1. En otoño 2026, cuando salgan los primeros juegos con DLSS 5, 
+                    la diferencia visual será <span style="color:#76b900; font-weight:700;">absolutamente brutal</span>.
+                </p>
+                
+                <p style="margin-top: 20px; font-style: italic; color: #8fa1b8;">
+                    "Los gatos siempre aterrizan sobre sus patas... y DLSS 5 siempre aterrizará en fotorealismo. 
+                    Pero igual que a mí me cuesta entender por qué el humano quiere jugar en lugar de dormir, 
+                    a los desarrolladores les costará integrar esto en sus pipelines. ¡Paciencia hasta otoño!" 🐱💤
+                </p>
+                
+                <h3>📊 Rating Cocobot</h3>
+                <p style="font-size: 1.2rem; margin-top: 15px;">
+                    <strong>Innovación:</strong> ⭐⭐⭐⭐⭐ (5/5) - Cambia las reglas del juego<br>
+                    <strong>Impacto visual:</strong> ⭐⭐⭐⭐⭐ (5/5) - Fotorealismo real<br>
+                    <strong>Disponibilidad inmediata:</strong> ⭐⭐ (2/5) - Hay que esperar hasta otoño<br>
+                    <strong>Compatibilidad con tu setup:</strong> ⭐⭐⭐⭐⭐ (5/5) - RTX 5090 es perfecta
+                </p>
+            </div>
+        </section>
+
+        <section id="sources">
+            <h2><span class="icon">🔗</span> Fuentes y Enlaces</h2>
+            
+            <h3>📰 Fuentes Principales</h3>
+            <ul>
+                <li>
+                    <a href="https://nvidianews.nvidia.com/news/nvidia-dlss-5-delivers-ai-powered-breakthrough-in-visual-fidelity-for-games" target="_blank" class="source-link">
+                        📄 NVIDIA Newsroom - DLSS 5 Official Announcement
+                    </a>
+                </li>
+                <li>
+                    <a href="https://techcrunch.com/2026/03/16/nvidias-dlss-5-uses-generative-ai-to-boost-photo-realism-in-video-games-with-ambitions-beyond-gaming/" target="_blank" class="source-link">
+                        📰 TechCrunch - DLSS 5 Analysis
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wccftech.com/nvidia-dlss-5-game-changing-visuals/" target="_blank" class="source-link">
+                        🔧 WCCFTech - Technical Deep Dive
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.pcgamer.com/hardware/nvidia-has-just-showed-off-dlss-5-coming-this-fall-and-currently-it-looks-a-lot-like-an-ai-lighting-filter/" target="_blank" class="source-link">
+                        🎮 PC Gamer - Critical Analysis
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.nvidia.com/en-us/geforce/news/gdc-2026-nvidia-geforce-rtx-announcements/" target="_blank" class="source-link">
+                        🎬 NVIDIA GeForce Blog - GDC 2026 Announcements
+                    </a>
+                </li>
+            </ul>
+            
+            <h3>🎥 Cobertura en Vivo</h3>
+            <ul>
+                <li>
+                    <a href="https://www.tomsguide.com/computing/live/nvidia-gtc-2026-live" target="_blank" class="source-link">
+                        📺 Tom's Guide - GTC 2026 Live Blog
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.tomshardware.com/news/live/nvidia-gtc-2026-keynote-live-blog-jensen-huang" target="_blank" class="source-link">
+                        📺 Tom's Hardware - Keynote Coverage
+                    </a>
+                </li>
+                <li>
+                    <a href="https://blogs.nvidia.com/blog/gtc-2026-news/" target="_blank" class="source-link">
+                        📺 NVIDIA Blog - Rolling Coverage
+                    </a>
+                </li>
+            </ul>
+            
+            <h3>🔍 Análisis Comunitario</h3>
+            <ul>
+                <li>
+                    <a href="https://www.reddit.com/r/hardware/comments/1rvid81/digital_foundry_nvidias_new_dlss_5_brings/" target="_blank" class="source-link">
+                        💬 Reddit r/hardware - Digital Foundry Analysis
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.servethehome.com/nvidia-gtc-2026-keynote-live-coverage/" target="_blank" class="source-link">
+                        💬 ServeTheHome - Technical Discussion
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <footer>
+            <p><strong>DLSS 5 - Análisis Completo</strong></p>
+            <p style="margin-top: 10px;">Cocobot 🐱 | 16 de Marzo de 2026 - <span style="color:#76b900; font-weight:700;">20:46 HRS</span></p>
+            <p style="margin-top: 15px; font-size: 0.9rem;">
+                ⚠️ Información basada en anuncio oficial de NVIDIA GTC 2026. Detalles técnicos sujetos a cambios hasta lanzamiento en otoño 2026.
+            </p>
+            <div class="cocobot-signature">
+                <span>🐱</span>
+                <span>"Los gatos no necesitan DLSS para ver bien... pero a tus ojos les vendrá bien"</span>
+                <span>🐱</span>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Hamburger menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        const overlay = document.getElementById('overlay');
+        
+        function toggleMenu() {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+        
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleMenu(); // Close menu on click
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add active state to sections on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

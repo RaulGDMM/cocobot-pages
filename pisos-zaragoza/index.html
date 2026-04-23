@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 Pisos Baratos en Zaragoza 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #e0e0e0; line-height: 1.8; min-height: 100vh; }
+        header { background: linear-gradient(135deg, rgba(255, 100, 0, 0.15), rgba(0, 150, 255, 0.15)); padding: 60px 20px 40px; text-align: center; border-bottom: 3px solid rgba(255, 100, 0, 0.4); position: relative; overflow: hidden; }
+        h1 { font-size: 2.8em; margin-bottom: 15px; color: #ff6400; text-shadow: 0 0 30px rgba(255, 100, 0, 0.5); }
+        .subtitle { font-size: 1.2em; color: #aaa; margin-bottom: 10px; }
+        .date { color: #00d4ff; font-size: 1.1em; font-weight: 600; }
+        .tagline { color: #ff6400; font-size: 0.95em; font-style: italic; margin-top: 10px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        .price-range { background: linear-gradient(135deg, rgba(255, 100, 0, 0.15), rgba(255, 150, 0, 0.1)); border: 3px solid #ff6400; border-radius: 15px; padding: 30px; margin-bottom: 40px; position: relative; overflow: hidden; }
+        .price-range::before { content: '💰 RANGOS DE PRECIOS'; position: absolute; top: 15px; right: 15px; background: #ff6400; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .price-range h2 { color: #ff6400; font-size: 2em; margin-bottom: 20px; }
+        .price-range table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .price-range th { background: rgba(255, 100, 0, 0.2); color: #ff6400; padding: 15px; text-align: left; border: 1px solid #ff6400; }
+        .price-range td { padding: 12px; border: 1px solid rgba(255, 100, 0, 0.3); }
+        
+        .examples { background: rgba(255, 255, 255, 0.03); border-radius: 20px; padding: 35px; margin-bottom: 35px; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .examples h2 { color: #00d4ff; font-size: 2em; margin-bottom: 25px; border-bottom: 3px solid #00d4ff; padding-bottom: 15px; }
+        .example-card { background: rgba(0, 212, 255, 0.05); border-radius: 12px; padding: 20px; margin: 15px 0; border-left: 4px solid #00d4ff; transition: all 0.3s ease; }
+        .example-card:hover { background: rgba(0, 212, 255, 0.08); transform: translateX(5px); }
+        .example-card h3 { color: #00d4ff; font-size: 1.3em; margin-bottom: 10px; }
+        .example-card .price { font-size: 1.5em; color: #ff6400; font-weight: bold; margin-bottom: 10px; }
+        .example-card ul { list-style: none; padding-left: 0; }
+        .example-card li { color: #bbb; margin: 5px 0; padding-left: 20px; position: relative; }
+        .example-card li::before { content: '✓'; color: #00d4ff; position: absolute; left: 0; }
+        
+        .platforms { background: rgba(255, 255, 255, 0.03); border-radius: 20px; padding: 35px; margin-bottom: 35px; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .platforms h2 { color: #00ff88; font-size: 2em; margin-bottom: 25px; border-bottom: 3px solid #00ff88; padding-bottom: 15px; }
+        .platform-link { display: block; background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 200, 100, 0.1)); border: 2px solid #00ff88; border-radius: 12px; padding: 20px; margin: 15px 0; text-decoration: none; color: #e0e0e0; transition: all 0.3s ease; }
+        .platform-link:hover { background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 200, 100, 0.2)); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); }
+        .platform-link h3 { color: #00ff88; font-size: 1.4em; margin-bottom: 8px; }
+        .platform-link p { color: #ccc; margin-bottom: 5px; }
+        .platform-link .badge { display: inline-block; background: #00ff88; color: #003300; padding: 3px 12px; border-radius: 12px; font-size: 0.85em; font-weight: bold; margin-top: 8px; }
+        
+        .tips { background: linear-gradient(135deg, rgba(255, 200, 0, 0.15), rgba(255, 150, 0, 0.1)); border: 3px solid #ffc107; border-radius: 15px; padding: 30px; margin-bottom: 40px; position: relative; overflow: hidden; }
+        .tips::before { content: '💡 CONSEJOS'; position: absolute; top: 15px; right: 15px; background: #ffc107; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .tips h2 { color: #ffc107; font-size: 2em; margin-bottom: 20px; }
+        .tips ul { list-style: none; padding-left: 0; }
+        .tips li { color: #fff8e1; margin: 12px 0; padding-left: 25px; position: relative; font-size: 1.05em; }
+        .tips li::before { content: '⭐'; position: absolute; left: 0; }
+        
+        footer { text-align: center; padding: 40px 20px; color: #888; font-size: 0.9em; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .container { padding: 20px 15px; }
+            .price-range, .examples, .platforms, .tips { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏠 Pisos Baratos en Zaragoza</h1>
+        <p class="subtitle">Guía completa de alquileres económicos</p>
+        <p class="date">Actualizado: 14 de abril de 2026</p>
+        <p class="tagline">Encuentra tu hogar sin gastar de más 💰</p>
+    </header>
+
+    <div class="container">
+        <!-- RANGOS DE PRECIOS -->
+        <section class="price-range">
+            <h2>💰 Rangos de Precios 2026</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plataforma</th>
+                        <th>Desde</th>
+                        <th>Disponibles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Alquiler400</strong></td>
+                        <td style="color: #00ff88; font-weight: bold;">&lt;500€/mes</td>
+                        <td>Varios</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enalquiler</strong></td>
+                        <td style="color: #ff6400; font-weight: bold;">550€/mes</td>
+                        <td>81 pisos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Idealista</strong></td>
+                        <td>650€/mes</td>
+                        <td>Muchos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Yaencontre</strong></td>
+                        <td>770€/mes</td>
+                        <td>322+ pisos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EJEMPLOS -->
+        <section class="examples">
+            <h2>📍 Ejemplos Encontrados</h2>
+            
+            <div class="example-card">
+                <h3>🏢 La Magdalena</h3>
+                <div class="price">650€/mes</div>
+                <ul>
+                    <li>36 m², 1 habitación</li>
+                    <li>Con ascensor</li>
+                    <li>Reformado, sin amueblar</li>
+                    <li>Gastos comunidad incluidos</li>
+                    <li>Autobuses 21, 22, 32</li>
+                </ul>
+            </div>
+
+            <div class="example-card">
+                <h3>🎯 Centro (Calle San Pablo)</h3>
+                <div class="price">770€/mes</div>
+                <ul>
+                    <li>Estudio recién reformado</li>
+                    <li>Ideal para 1 persona o pareja</li>
+                    <li>Ubicación céntrica</li>
+                    <li>Espacio moderno y cómodo</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PLATAFORMAS -->
+        <section class="platforms">
+            <h2>🔗 Dónde Buscar</h2>
+            
+            <a href="https://www.idealista.com/alquiler-viviendas/zaragoza-zaragoza/?ordenado-por=precios-asc" target="_blank" class="platform-link">
+                <h3>1️⃣ Idealista (Más opciones)</h3>
+                <p>📊 Mayor catálogo de pisos en Zaragoza</p>
+                <p>🔗 https://www.idealista.com/alquiler-viviendas/zaragoza</p>
+                <span class="badge">Desde 650€/mes</span>
+            </a>
+
+            <a href="https://www.alquiler400.com/zaragoza/zaragoza" target="_blank" class="platform-link">
+                <h3>2️⃣ Alquiler400 (Más baratos)</h3>
+                <p>💰 Todos los pisos por debajo de 500€/mes</p>
+                <p>🔗 https://www.alquiler400.com/zaragoza</p>
+                <span class="badge">&lt;500€/mes</span>
+            </a>
+
+            <a href="https://www.yaencontre.com/alquiler/pisos/zaragoza/e-baratos" target="_blank" class="platform-link">
+                <h3>3️⃣ Yaencontre (322+ opciones)</h3>
+                <p>🏠 322+ pisos y viviendas baratas</p>
+                <p>🔗 https://www.yaencontre.com/alquiler/pisos/zaragoza</p>
+                <span class="badge">Desde 770€/mes</span>
+            </a>
+
+            <a href="https://www.enalquiler.com/alquilar/alquiler-pisos-baratos-zaragoza_2_55267_52.html" target="_blank" class="platform-link">
+                <h3>4️⃣ Enalquiler (81 pisos)</h3>
+                <p>📸 Anuncios con muchas fotos</p>
+                <p>🔗 https://www.enalquiler.com/alquilar/alquiler-pisos-baratos-zaragoza</p>
+                <span class="badge">Desde 550€/mes</span>
+            </a>
+        </section>
+
+        <!-- CONSEJOS -->
+        <section class="tips">
+            <h2>💡 Consejos para Buscar</h2>
+            <ul>
+                <li><strong>Pisos &lt;500€/mes:</strong> Están en Alquiler400.com (particulares)</li>
+                <li><strong>Estudios/1 habitación:</strong> Rango 550-770€/mes</li>
+                <li><strong>Zonas baratas:</strong> La Magdalena, zonas periféricas</li>
+                <li><strong>Más caros:</strong> Centro, Actura, Delicias</li>
+                <li><strong>Mejor relación calidad-precio:</strong> La Magdalena (650€, comunidad incluida)</li>
+                <li><strong>Si buscas céntrico:</strong> Calle San Pablo y alrededores (770€+)</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p>🏠 Generado por Cocobot | Actualizado: 14 de abril de 2026</p>
+        <p>Los precios son referenciales y pueden variar. Verifica disponibilidad directamente en las plataformas.</p>
+    </footer>
+</body>
+</html>

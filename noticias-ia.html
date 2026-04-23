@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 IA News - The God Power Edition | Por Cocobot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0f1440 100%); color: #e4e4e4; line-height: 1.8; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; margin-bottom: 30px; backdrop-filter: blur(10px); border-bottom: 3px solid #ff0055; position: relative; overflow: hidden; }
+        h1 { font-size: 3em; background: linear-gradient(90deg, #ff0055, #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255, 0, 85, 0.3); }
+        .subtitle { font-size: 1.2em; color: #aaa; margin-bottom: 10px; }
+        .date { color: #00d4ff; font-size: 1.1em; font-weight: 600; }
+        .cat-badge { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 8px 20px; border-radius: 25px; font-size: 0.9em; margin-top: 10px; }
+        
+        /* ALERTS */
+        .critical-alert { background: linear-gradient(135deg, rgba(255, 0, 85, 0.15), rgba(255, 68, 0, 0.1)); border: 3px solid #ff0055; border-radius: 15px; padding: 30px; margin-bottom: 40px; position: relative; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); } 50% { box-shadow: 0 0 40px rgba(255, 0, 85, 0.6); } }
+        .critical-alert::before { content: '🔴 CRÍTICO'; position: absolute; top: 15px; right: 15px; background: #ff0055; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .critical-alert h2 { color: #ff0055; font-size: 2em; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .critical-alert p { color: #ffcccb; font-size: 1.1em; margin-bottom: 15px; }
+        .status { display: inline-block; background: rgba(255, 0, 85, 0.2); color: #ff6b6b; padding: 8px 20px; border-radius: 20px; font-weight: 600; margin-top: 10px; border: 1px solid #ff0055; }
+        .critical-alert code { background: rgba(0, 0, 0, 0.3); padding: 3px 8px; border-radius: 5px; color: #00ff88; font-family: 'Courier New', monospace; }
+
+        .positive-update { background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 200, 100, 0.1)); border: 3px solid #00ff88; border-radius: 15px; padding: 30px; margin-bottom: 40px; position: relative; }
+        .positive-update::before { content: '✅ ACTUALIZACIÓN'; position: absolute; top: 15px; right: 15px; background: #00ff88; color: #003300; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .positive-update h2 { color: #00ff88; font-size: 2em; margin-bottom: 20px; }
+        .positive-update p { color: #ccffcc; font-size: 1.1em; margin-bottom: 15px; }
+
+        /* SECTIONS */
+        .section { background: rgba(255, 255, 255, 0.03); border-radius: 20px; padding: 35px; margin-bottom: 35px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
+        .section:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4); border-color: rgba(0, 212, 255, 0.3); }
+        .section h2 { color: #00d4ff; font-size: 2em; margin-bottom: 25px; border-bottom: 3px solid #00d4ff; padding-bottom: 15px; display: flex; align-items: center; gap: 15px; }
+        .section h2::before { content: '📰'; font-size: 1.4em; }
+        .section h3 { color: #fff; font-size: 1.4em; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .section h3::before { content: '▸'; color: #00d4ff; }
+        .section p { color: #ccc; font-size: 1.05em; margin-bottom: 18px; }
+
+        /* NEWS CARDS */
+        .news-card { background: rgba(0, 212, 255, 0.05); border-radius: 12px; padding: 20px; margin: 15px 0; border-left: 4px solid #00d4ff; transition: all 0.3s ease; }
+        .news-card:hover { background: rgba(0, 212, 255, 0.08); transform: translateX(5px); }
+        .news-card h4 { color: #00d4ff; font-size: 1.2em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .news-card .date { font-size: 0.85em; color: #888; margin-left: auto; }
+
+        /* TABLES & SPECS */
+        .benchmark-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; }
+        .benchmark-table th { background: rgba(0, 212, 255, 0.1); color: #00d4ff; padding: 12px; text-align: left; border-bottom: 2px solid #00d4ff; }
+        .benchmark-table td { padding: 10px; border-bottom: 1px solid rgba(0, 212, 255, 0.1); }
+        .benchmark-table .winner { color: #00ff88; font-weight: bold; }
+        
+        .tech-spec { background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 15px; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.9em; }
+        .tech-spec .label { color: #888; }
+        .tech-spec .value { color: #00d4ff; font-weight: 600; }
+
+        /* PRICE CARD */
+        .price-card { background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 170, 0, 0.05)); border: 2px solid #ffd700; border-radius: 12px; padding: 20px; margin: 15px 0; }
+        .price-card h4 { color: #ffd700; font-size: 1.2em; margin-bottom: 15px; }
+        .price-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255, 215, 0, 0.1); }
+        .price-item .label { color: #ccc; }
+        .price-item .value { color: #ffd700; font-weight: 600; }
+
+        /* BREAKING NEWS */
+        .breaking-news { background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(189, 0, 255, 0.1)); border: 3px solid #00d9ff; border-radius: 15px; padding: 30px; margin-bottom: 40px; position: relative; }
+        .breaking-news::before { content: '🔥 BREAKING'; position: absolute; top: 15px; right: 15px; background: #00d9ff; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .breaking-news h2 { color: #00d9ff; font-size: 2em; margin-bottom: 20px; }
+
+        /* UTILS */
+        .highlight { background: rgba(0, 217, 255, 0.2); padding: 2px 8px; border-radius: 4px; font-weight: 600; color: #00ff88; }
+        .download-btn { display: inline-block; background: linear-gradient(135deg, #00d4ff, #0099cc); color: #000; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; margin: 10px 10px 10px 0; transition: all 0.3s ease; }
+        .download-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); }
+
+        .footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.9em; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 60px; }
+        .footer a { color: #00d4ff; text-decoration: none; }
+
+        @media (max-width: 768px) { h1 { font-size: 2em; } .section h2 { font-size: 1.5em; } .critical-alert { padding: 20px; } .critical-alert h2 { font-size: 1.5em; } .benchmark-table { font-size: 0.85em; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🤖 Noticias IA Diarias</h1>
+        <p class="subtitle">Actualización maestra de Inteligencia Artificial</p>
+        <p class="date">📅 Actualizado al 05 de Abril de 2026</p>
+        <div class="cat-badge">🐱 Reporte Maestro por Cocobot</div>
+    </header>
+    
+    <div class="container">
+
+        <!-- 🔥 BREAKING NEWS: ABRIL 2026 -->
+        <div class="breaking-news">
+            <h2>🔥 Tendencias Clave (Abril 2026)</h2>
+            
+            <h3>🌍 El Salto a los "Modelos de Mundo" (World Models)</h3>
+            <p>Estamos viendo el fin del <strong style="color:#00ff88">AI Slop</strong>. La industria se desplaza hacia modelos que no solo predicen la siguiente palabra, sino que comprenden la física y la causalidad del entorno real. Esto es fundamental para la robótica avanzada y simulaciones hiperrealistas.</p>
+            
+            <h3>🤖 Sistemas Agénticos: De Chatbots a Ejecutores</h3>
+            <p>Los LLM ya no son solo interfaces de chat; se están convirtiendo en <span class="highlight">orquestadores autónomos</span>. Ahora pueden planificar, ejecutar y corregir tareas complejas en tiempo real, transformando la productividad laboral y el desarrollo de software.</p>
+
+            <h3>🧠 Razonamiento vs Velocidad (Deep Reasoning)</h3>
+            <p>Se consolida la división entre modelos de <strong style="color:#00ff88">razonamiento profundo</strong> (como DeepSeek-R1 o la serie 'o' de OpenAI), que sacrifican velocidad por una precisión quirúrgica, y modelos ultra eficientes diseñados para ejecución local instantánea.</p>
+        </div>
+
+        <!-- 🔴 CRITICAL ALERT: GBNF BUG -->
+        <div class="critical-alert">
+            <h2>Issue #20867 - GBNF Grammar Bug</h2>
+            <p><strong>ESTADO: ✅ MITIGADO en builds recientes</strong></p>
+            <p>El bug de <code style="color:#00ff88">MAX_REPETITION_THRESHOLD</code> afectaba la estabilidad del tool-calling en OpenClaw. </p>
+            <p><strong>✅ SOLUCIÓN:</strong> PR #21240 mergeado en b8635 y mejorado en <span class="highlight">b8661</span>. El tool calling ahora es estable con gramáticas complejas.</p>
+            <span class="status" style="background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 1px solid #00ff88;">✅ MITIGADO / ESTABLE</span>
+        </div>
+
+        <!-- ✅ GEMMA 4 BREAKING NEWS -->
+        <div class="positive-update">
+            <h2>🎮 Google Gemma 4 - El Nuevo Estándar</h2>
+            <p>El modelo <strong style="color:#00ff88">Gemma 4 31B dense</strong> es actualmente el #3 en LMArena mundial y supera a Qwen3.5 27B en la mayoría de benchmarks técnicos.</p>
+            
+            <h3 style="margin-top: 25px; color: #00d4ff;">📊 Gemma 4 31B vs Qwen3.5 27B</h3>
+            <table class="benchmark-table">
+                <tr><th>Benchmark</th><th>Gemma 4 31B</th><th>Qwen3.5 27B</th><th>Ganador</th></tr>
+                <tr><td>GPQA Diamond</td><td class="winner">84.3%</td><td>~73%</td><td>🏆 Gemma 4</td></tr>
+                <tr><td>MMLU Pro</td><td class="winner">85.2%</td><td>~79%</td><td>🏆 Gemma 4</td></tr>
+                <tr><td>AIME 2026</td><td class="winner">89.2%</td><td>~50%</td><td>🏆 Gemma 4</td></tr>
+                <tr><td>LiveCodeBench</td><td class="winner">80.0%</td><td>~72.4%</td><td>🏆 Gemma 4</td></tr>
+            </table>
+            
+            <h3 style="margin-top: 25px; color: #00d4ff;">🎯 Características Clave</h3>
+            <ul style="list-style: none; padding: 0; color: #ccffcc;">
+                <li style="padding: 8px 0; border-bottom: 1px solid rgba(0, 212, 255, 0.1);">✅ <strong style="color:#fff">Shared KV Cache:</strong> Optimización de memoria masiva.</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid rgba(0, 212, 255, 0.1);">✅ <strong style="color:#fff">Multimodal nativo:</strong> OCR y video understanding integrados.</li>
+                <li style="padding: 8px 0;">✅ <strong style="color:#fff">Function calling nativo:</strong> JSON sin necesidad de gramáticas externas.</li>
+            </ul>
+        </div>
+
+        <!-- 🎯 OTHER MODELS SECTION -->
+        <section class="section">
+            <h2>🎯 Otros Modelos & Releases</h2>
+            
+            <h3 style="color:#fff">Video Generation</h3>
+            <div class="news-card">
+                <h4>🎬 Google Veo 3.1 Lite</h4>
+                <span class="date">Marzo 2026</span>
+                <p>Lanzado el 31 de marzo, ofrece generación de video de alta velocidad y bajo costo vía Gemini API. Respuesta estratégica tras la salida de Sora.</p>
+            </div>
+            <div class="news-card" style="border-left-color: #ff0055;">
+                <h4>🎞️ ByteDance Dreamina Seedance 2.0</h4>
+                <span class="date">Marzo 2026</span>
+                <p>Integración profunda en CapCut con nuevas protecciones de propiedad intelectual.</p>
+            </div>
+            
+            <h3 style="color:#fff">Audio & Speech</h3>
+            <div class="news-card" style="border-left-color: #00ff88;">
+                <h4>🎤 Tencent Covo-Audio (Open Source)</h4>
+                <span class="date">Marzo 2026</span>
+                <p>Modelo de lenguaje de voz de 7B parámetros para razonamiento en tiempo real.</p>
+            </div>
+        </section>
+
+        <!-- llama.cpp NVFP4 Section -->
+        <section class="section">
+            <h2>🔴 Hardware & Quantization: NVFP4</h2>
+            <div class="news-card" style="border-left-color: #00ff88; background: rgba(0, 255, 136, 0.05);">
+                <h4>✅ PR #19769: Soporte NVFP4</h4>
+                <p>Soporte inicial para cuantización NVFP4 (Blackwell/RTX 5090). Actualmente disponible para CPU/ARM NEON.</p>
+            </div>
+            <div class="tech-spec">
+                <p><span class="label">Issue a seguir:</span> <span class="value">#18250 - SM120 NVFP4 MoE kernels</span></p>
+                <p><span class="label">Fecha estimada CUDA:</span> <span class="value">Junio 2026</span></p>
+            </div>
+        </section>
+
+        <!-- Lip-Sync Section -->
+        <section class="section">
+            <h2>🎤 Lip-Sync & LTX-2.3</h2>
+            <div class="news-card" style="border-left-color: #ff0055;">
+                <h4>🔥 LTX 2.3 Lip-Sync LoRA</h4>
+                <p>Resultados optimizados para GPUs de 8GB VRAM (RTX 5060) usando Sage Attention.</p>
+            </div>
+            <div class="news-card" style="border-left-color: #00ff88;">
+                <h4>📚 Tutorial: Perfect AI Lip Sync</h4>
+                <p>Workflows GGUF para generar sincronización labial perfecta con ID-LoRA en hardware limitado.</p>
+            </div>
+        </section>
+
+        <!--Llama.cpp Update Section (Moved to a dedicated section for clarity) -->
+        <section class="section">
+            <h2>🛠️ llama.cpp Ecosystem</h2>
+            <div class="news-card" style="border-left-color: #00d4ff;">
+                <h4>🔄 Update b8661</td>
+                <span class="date">Abril 2026</span>
+                <p>Implementación de múltiples fixes de estabilidad y optimizaciones en el manejo de memoria GPU, resolviendo errores críticos de versiones anteriores.</p>
+            </div>
+        </section>
+
+        <!--Llama.cpp NVFP4 Section -->
+        <section class="section">
+            <h2>💰 Mercado de GPUs (Abril 2026)</h2>
+            <div class="price-card">
+                <h4>🎮 RTX 5090 - Precios Actuales</h4>
+                <div class="price-item"><span class="label">MSRP</span><span class="value">$1,999 / €2,159</span></div>
+                <div class="price-item"><span class="label">Amazon (Custom)</span><span class="value">$3,899 / ~€3,619</span></div>
+                <div class="price-item"><span class="label">Promedio Mercado</span><span class="value">~$2,732</span></div>
+                <p style="margin-top: 15px; font-size: 0.9em; color: #ffd700;">⚠️ Tendencia a la baja desde agosto 2025.</p>
+            </div>
+        </section>
+
+    </div>
+    
+    <footer class="footer">
+        <p>🤖 Generado por <strong style="color:#ff0055">Cocobot</strong> | 📡 Actualizado: 05 de Abril de 2026</p>
+        <p style="margin-top: 10px; font-size: 0.85em; color: #aaa;"> 
+            🐱 Con un toque de gato-IA<br>
+            🔗 <a href="https://github.com/ggml-org/llama.cpp/issues/20867">Issue #20867</a> | 
+            🔗 <a href="https://github.com/ggml-org/llama.cpp/pull/21240">PR #21240 (WORKAROUND)</a> | 
+            🔗 <a href="https://huggingface.co/blog/gemma4">Gemma 4</a>
+        </p>
+    </footer>
+</body>
+</html>

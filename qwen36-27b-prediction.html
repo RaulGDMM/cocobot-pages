@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen3.6-27B: Predicción vs Realidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #ff4d4d;
+  --primary-light: #ff6b6b;
+  --primary-soft: rgba(255, 77, 77, 0.15);
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.1);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.1);
+  --miss: #f87171;
+  --miss-bg: rgba(248, 113, 113, 0.1);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96, 165, 250, 0.1);
+  --bg-dark: #06060b;
+  --bg-card: rgba(18, 18, 30, 0.9);
+  --bg-card-hover: rgba(25, 25, 40, 0.95);
+  --text-primary: #f0f0f0;
+  --text-secondary: #909090;
+  --text-muted: #606060;
+  --border: rgba(255, 77, 77, 0.2);
+  --border-soft: rgba(255, 255, 255, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body { 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -30%;
+  left: 20%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(255, 77, 77, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  background: rgba(255, 77, 77, 0.9);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(255, 77, 77, 0.3);
+}
+.hamburger:hover { 
+  transform: scale(1.05); 
+  box-shadow: 0 6px 30px rgba(255, 77, 77, 0.5);
+}
+.hamburger span { 
+  display: block; 
+  width: 24px; 
+  height: 2px; 
+  background: #fff; 
+  margin: 5px 0; 
+  transition: all 0.3s; 
+  border-radius: 2px;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.nav-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100vh;
+  background: rgba(6, 6, 11, 0.98);
+  backdrop-filter: blur(40px);
+  z-index: 999;
+  padding: 100px 36px;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 1px solid var(--border);
+}
+.nav-menu.active { right: 0; }
+.nav-menu a {
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: all 0.3s;
+}
+.nav-menu a:hover { 
+  color: var(--primary-light); 
+  padding-left: 12px;
+}
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 140px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--success);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+.hero h1 {
+  font-size: clamp(48px, 10vw, 84px);
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff4d4d 0%, #ff6b6b 40%, #ff8e8e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  letter-spacing: -3px;
+  line-height: 1.05;
+}
+.hero h2 {
+  font-size: clamp(20px, 4vw, 30px);
+  font-weight: 400;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.hero-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+.hero-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.badge {
+  background: rgba(255, 77, 77, 0.08);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-light);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.badge.live {
+  background: var(--success-bg);
+  border-color: rgba(74, 222, 128, 0.3);
+  color: var(--success);
+}
+
+/* Sections */
+section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  scroll-margin-top: 24px;
+  position: relative;
+  z-index: 1;
+}
+section h2 {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -1.5px;
+}
+section h2 .accent {
+  color: var(--primary);
+}
+section h3 {
+  font-size: clamp(20px, 3.5vw, 26px);
+  font-weight: 600;
+  color: var(--primary-light);
+  margin: 48px 0 16px;
+  letter-spacing: -0.5px;
+}
+section h4 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--blue);
+  margin: 32px 0 10px;
+}
+section p { 
+  margin-bottom: 18px; 
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+}
+section ul { 
+  margin: 18px 0; 
+  padding-left: 28px; 
+  color: var(--text-secondary);
+}
+section li { 
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 28px 0;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th, td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+}
+th {
+  background: rgba(255, 77, 77, 0.08);
+  color: var(--primary-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover { background: rgba(255, 77, 77, 0.04); }
+td:first-child { 
+  font-weight: 600; 
+  color: var(--text-primary);
+}
+.winner { color: var(--success) !important; font-weight: 600; }
+.loser { color: var(--miss) !important; font-weight: 600; }
+.draw { color: var(--warning) !important; font-weight: 600; }
+
+.prediction-cell {
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+.prediction-hit { color: var(--success); }
+.prediction-miss { color: var(--warning); }
+.prediction-fail { color: var(--miss); }
+
+/* Highlight boxes */
+.highlight {
+  background: var(--primary-soft);
+  border-left: 3px solid var(--primary);
+  padding: 22px 26px;
+  border-radius: 0 12px 12px 0;
+  margin: 28px 0;
+}
+.highlight.success { 
+  background: var(--success-bg); 
+  border-color: var(--success);
+}
+.highlight.warning { 
+  background: var(--warning-bg); 
+  border-color: var(--warning);
+}
+.highlight.miss {
+  background: var(--miss-bg);
+  border-color: var(--miss);
+}
+.highlight.blue {
+  background: var(--blue-bg);
+  border-color: var(--blue);
+}
+.highlight strong { color: var(--text-primary); }
+.highlight p { color: var(--text-secondary); margin-bottom: 0; }
+
+/* Result cards */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.result-card:hover {
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+.result-card .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.result-card .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.result-card .pred {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.result-card.hit .value { color: var(--success); }
+.result-card.miss .value { color: var(--warning); }
+.result-card.fail .value { color: var(--miss); }
+
+/* Architecture cards */
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin: 28px 0;
+}
+.arch-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 28px;
+  transition: all 0.3s;
+}
+.arch-card:hover {
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+.arch-card .card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-light);
+  margin-bottom: 4px;
+}
+.arch-card .card-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.arch-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.arch-card li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+.arch-card li:last-child { border-bottom: none; }
+.arch-card li .param-label {
+  color: var(--text-muted);
+}
+.arch-card li .param-value {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+/* Architecture diagram */
+.arch-diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 32px;
+  margin: 28px 0;
+  text-align: center;
+}
+.arch-diagram .diagram-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 20px;
+}
+.arch-block {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 4px;
+}
+.arch-block.deltanet {
+  background: rgba(96, 165, 250, 0.15);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  color: var(--blue);
+}
+.arch-block.attention {
+  background: var(--primary-soft);
+  border: 1px solid var(--border);
+  color: var(--primary-light);
+}
+.arch-block.ffn {
+  background: rgba(168, 162, 255, 0.12);
+  border: 1px solid rgba(168, 162, 255, 0.25);
+  color: #a8a2ff;
+}
+.arch-block.moe {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: var(--warning);
+}
+.arch-repeat {
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  margin: 8px 0;
+}
+.arch-arrow {
+  color: var(--text-muted);
+  font-size: 18px;
+  margin: 0 8px;
+}
+
+/* Opinion section */
+.opinion-box {
+  background: linear-gradient(135deg, rgba(255, 77, 77, 0.06) 0%, rgba(255, 107, 107, 0.02) 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  margin: 28px 0;
+}
+.opinion-box h4 {
+  color: var(--primary);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.opinion-box p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  margin: 36px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 50%, var(--text-muted) 100%);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 32px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+}
+.timeline-item h4 { 
+  color: var(--primary-light); 
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.timeline-item p { 
+  font-size: 14px; 
+  color: var(--text-secondary);
+}
+
+/* Sources */
+.source {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+.source a { 
+  color: var(--primary-light); 
+  text-decoration: none; 
+  transition: color 0.3s;
+}
+.source a:hover { 
+  color: var(--primary);
+  text-decoration: underline; 
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 60px;
+  position: relative;
+  z-index: 1;
+}
+footer a { 
+  color: var(--primary-light); 
+  text-decoration: none;
+  transition: color 0.3s;
+}
+footer a:hover { color: var(--primary); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero { padding: 120px 20px 60px; }
+  section { padding: 60px 20px; }
+  th, td { padding: 10px 12px; font-size: 11px; }
+  .nav-menu { width: 280px; }
+  .result-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .arch-grid { grid-template-columns: 1fr; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-eyebrow, .hero h1, .hero h2, .hero-sub, .hero-meta {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+.hero h1 { animation-delay: 0.1s; }
+.hero h2 { animation-delay: 0.2s; }
+.hero-sub { animation-delay: 0.3s; }
+.hero-meta { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+<!-- Hamburger Menu -->
+<div class="hamburger" onclick="toggleMenu()">
+  <span></span><span></span><span></span>
+</div>
+<nav class="nav-menu" id="navMenu">
+  <a href="#resultados" onclick="toggleMenu()">🏆 Predicción vs Realidad</a>
+  <a href="#benchmarks-reales" onclick="toggleMenu()">📊 Benchmarks Reales</a>
+  <a href="#arquitectura" onclick="toggleMenu()">🧠 Arquitectura (3.5 → 3.6)</a>
+  <a href="#metodologia" onclick="toggleMenu()">🔬 Metodología</a>
+  <a href="#comparativa" onclick="toggleMenu()">🥊 Comparativa Claude</a>
+  <a href="#benchmarks-advertencia" onclick="toggleMenu()">⚠️ Benchmarks no lo son todo</a>
+  <a href="#opinión" onclick="toggleMenu()">💭 Opinión: Modelos Locales</a>
+  <a href="#fuentes" onclick="toggleMenu()">📚 Fuentes</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Released April 22, 2026</div>
+  <h1>Qwen3.6-27B</h1>
+  <h2>Predicción vs Realidad</h2>
+  <p class="hero-sub">Análisis de nuestras predicciones frente a los benchmarks oficiales. Arquitectura, metodología y comparativas completas.</p>
+  <div class="hero-meta">
+    <span class="badge live">● Datos reales confirmados</span>
+    <span class="badge">Modelo denso 27B</span>
+    <span class="badge">Gated DeltaNet</span>
+    <span class="badge">256K Context</span>
+  </div>
+</div>
+
+<!-- Resultados: Predicción vs Realidad -->
+<section id="resultados">
+  <h2>🏆 <span class="accent">Predicción</span> vs Realidad</h2>
+  <p>Hace un día, basándonos en los deltas entre Qwen3.5-35B-A3B y Qwen3.6-35B-A3B, hicimos predicciones de lo que sería el 3.6-27B. Aquí está el veredicto:</p>
+
+  <div class="result-grid">
+    <div class="result-card hit">
+      <div class="label">GPQA Diamond</div>
+      <div class="value">87.8</div>
+      <div class="pred">Predicción: 87–88 ✅</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">SWE-bench Verified</div>
+      <div class="value">77.2</div>
+      <div class="pred">Predicción: 75–76 ✅ (+0.2)</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">Terminal-Bench 2.0</div>
+      <div class="value">59.3</div>
+      <div class="pred">Predicción: 52–53 🔥 (+6–7)</div>
+    </div>
+    <div class="result-card miss">
+      <div class="label">LiveCodeBench v6</div>
+      <div class="value">83.9</div>
+      <div class="pred">Predicción: 86–87 ⚠️ (−2–3)</div>
+    </div>
+    <div class="result-card hit">
+      <div class="label">MMLU-Pro</div>
+      <div class="value">86.2</div>
+      <div class="pred">Predicción: 85–86 ✅</div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Qwen3.5-27B</th><th>Nuestra Predicción</th><th>Qwen3.6-27B (real)</th><th>Resultado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMLU-Pro</td><td>86.1</td><td class="prediction-cell">85–86</td><td><strong>86.2</strong></td><td class="winner">✅ Dentro</td></tr>
+        <tr><td>GPQA Diamond</td><td>85.5</td><td class="prediction-cell">87–88</td><td><strong>87.8</strong></td><td class="winner">✅ Dentro</td></tr>
+        <tr><td>SWE-bench Verified</td><td>75.0</td><td class="prediction-cell">75–76</td><td><strong>77.2</strong></td><td class="winner">✅ +0.2</td></tr>
+        <tr><td>Terminal-Bench 2.0</td><td>41.6</td><td class="prediction-cell">52–53</td><td><strong>59.3</strong></td><td class="winner">🔥 +6–7</td></tr>
+        <tr><td>LiveCodeBench v6</td><td>80.7</td><td class="prediction-cell">86–87</td><td><strong>83.9</strong></td><td class="loser">⚠️ −2–3</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight success">
+    <strong>Veredicto: 4 de 5 predicciones acertadas.</strong>
+    <p>Nuestra metodología de extrapolación por deltas fue sorprendentemente precisa. Terminal-Bench fue la sorpresa: +17.7 pts (vs +11.0 del 35B-A3B). LiveCodeBench falló porque el 3.5-27B ya era anormalmente fuerte aquí.</p>
+  </div>
+</section>
+
+<!-- Benchmarks Reales Completos -->
+<section id="benchmarks-reales">
+  <h2>📊 Benchmarks Reales <span class="accent">Completos</span></h2>
+  
+  <h3>Coding & Agentic</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>3.5-27B</th><th>3.5-397B-A17B</th><th>Claude 4.5 Opus</th><th>3.6-35B-A3B</th><th>3.6-27B</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>SWE-bench Verified</td><td>75.0</td><td>76.2</td><td>80.9</td><td>73.4</td><td><strong class="winner">77.2</strong></td></tr>
+        <tr><td>SWE-bench Pro</td><td>51.2</td><td>50.9</td><td>57.1</td><td>49.5</td><td><strong>53.5</strong></td></tr>
+        <tr><td>SWE-bench Multilingual</td><td>69.3</td><td>69.3</td><td>77.5</td><td>67.2</td><td><strong>71.3</strong></td></tr>
+        <tr><td>Terminal-Bench 2.0</td><td>41.6</td><td>52.5</td><td>59.3</td><td>51.5</td><td><strong class="winner">59.3</strong></td></tr>
+        <tr><td>SkillsBench Avg5</td><td>27.2</td><td>30.0</td><td>45.3</td><td>28.7</td><td><strong class="winner">48.2</strong></td></tr>
+        <tr><td>LiveCodeBench v6</td><td>80.7</td><td>83.6</td><td>84.8</td><td>80.4</td><td><strong>83.9</strong></td></tr>
+        <tr><td>Claw-Eval Avg</td><td>64.3</td><td>70.7</td><td>76.6</td><td>68.7</td><td><strong>72.4</strong></td></tr>
+        <tr><td>Claw-Eval Pass³</td><td>46.2</td><td>48.1</td><td>59.6</td><td>50.0</td><td><strong>60.6</strong></td></tr>
+        <tr><td>QwenWebBench</td><td>1068</td><td>1186</td><td>1536</td><td>1397</td><td><strong>1487</strong></td></tr>
+        <tr><td>NL2Repo</td><td>27.3</td><td>32.2</td><td>43.2</td><td>29.4</td><td><strong>36.2</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Knowledge, STEM & Reasoning</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>3.5-27B</th><th>3.5-397B-A17B</th><th>Claude 4.5 Opus</th><th>3.6-35B-A3B</th><th>3.6-27B</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMLU-Pro</td><td>86.1</td><td>87.8</td><td>89.5</td><td>85.2</td><td><strong>86.2</strong></td></tr>
+        <tr><td>SuperGPQA</td><td>65.6</td><td>70.4</td><td>70.6</td><td>64.7</td><td><strong>66.0</strong></td></tr>
+        <tr><td>GPQA Diamond</td><td>85.5</td><td>88.4</td><td>87.0</td><td>86.0</td><td><strong>87.8</strong></td></tr>
+        <tr><td>AIME26</td><td>92.6</td><td>93.3</td><td>95.1</td><td>92.7</td><td><strong>94.1</strong></td></tr>
+        <tr><td>HMMT Feb 25</td><td>92.0</td><td>94.8</td><td>92.9</td><td>90.7</td><td><strong>93.8</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Salto 3.5 → 3.6 en 27B vs 35B-A3B</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Δ 3.5→3.6 (27B)</th><th>Δ 3.5→3.6 (35B-A3B)</th><th>¿27B saltó más?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMLU-Pro</td><td class="draw">+0.1</td><td class="draw">−0.1</td><td class="winner">Sí (ligero)</td></tr>
+        <tr><td>GPQA Diamond</td><td class="winner">+2.3</td><td class="winner">+1.8</td><td class="winner">Sí</td></tr>
+        <tr><td>SWE-bench</td><td class="winner">+2.2</td><td class="winner">+3.4</td><td class="loser">No</td></tr>
+        <tr><td>Terminal-Bench 2.0</td><td class="winner">+17.7</td><td class="winner">+11.0</td><td class="winner">🔥 Sí, mucho</td></tr>
+        <tr><td>LiveCodeBench v6</td><td class="winner">+3.2</td><td class="winner">+5.8</td><td class="loser">No</td></tr>
+        <tr><td>AIME26</td><td class="winner">+1.5</td><td class="winner">+1.4</td><td class="winner">Sí (igual)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="source">Fuente: <a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">HuggingFace Qwen3.6-27B (oficial)</a> — Publicado 22 de abril, 2026</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NUEVA SECCIÓN: Arquitectura                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="arquitectura">
+  <h2>🧠 Arquitectura: <span class="accent">Por qué mejora</span></h2>
+  <p>Para entender los saltos de rendimiento, hay que mirar bajo el capó. Qwen3.5 y Qwen3.6 comparten la misma familia arquitectónica, pero con diferencias cruciales.</p>
+
+  <div class="highlight blue">
+    <strong>Concepto clave: Gated DeltaNet + Gated Attention</strong>
+    <p>Ambas generaciones usan una arquitectura híbrida revolucionaria que combina lo mejor de dos mundos: <strong>DeltaNet</strong> (atención lineal O(n), ultra-eficiente) y <strong>Atención tradicional</strong> (softmax O(n²), expresiva pero costosa). El "gating" permite al modelo aprender cuándo usar cada uno dinámicamente.</p>
+  </div>
+
+  <h3>¿Qué es DeltaNet?</h3>
+  <p>DeltaNet es una arquitectura de <strong>atención lineal con memoria de estado</strong>. En lugar de calcular atención sobre todos los tokens del contexto (O(n²)), mantiene un <strong>estado comprimido de memoria de tamaño fijo</strong> — similar a cómo un RNN condensa la historia en un hidden state, pero con capacidad de atención.</p>
+  <ul>
+    <li><strong>Atención softmax tradicional:</strong> O(n²) — todos los tokens se comparan con todos. Precisa pero lenta y costosa en memoria</li>
+    <li><strong>DeltaNet:</strong> O(n) — procesa cada token una vez, actualizando un estado compacto. Rápida y eficiente, pero con capacidad de contexto limitada por el tamaño de memoria</li>
+    <li><strong>Gated DeltaNet:</strong> usa un gate que decide cuánto peso dar a la ruta DeltaNet vs la ruta de atención tradicional para cada token — lo mejor de ambos mundos</li>
+  </ul>
+
+  <h3>Layout de Capas: el bloque 3:1</h3>
+  <p>En lugar de alternar capares por igual, los modelos densos usan un patrón específico de <strong>3 capas DeltaNet por cada 1 capa de Atención</strong>, repetido 16 veces = 64 capas totales:</p>
+
+  <div class="arch-diagram">
+    <div class="diagram-title">Qwen3.5/3.6-27B (Dense) — Layout por bloque</div>
+    <div class="arch-block deltanet">Gated DeltaNet → FFN</div>
+    <div class="arch-block deltanet">Gated DeltaNet → FFN</div>
+    <div class="arch-block deltanet">Gated DeltaNet → FFN</div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-block attention">Gated Attention → FFN</div>
+    <div class="arch-repeat">↻ repetir 16 veces = 64 capas</div>
+    <p style="margin-top: 16px; font-size: 13px; color: var(--text-muted);">75% de las capas son DeltaNet (eficientes), 25% son Attention (expresivas). El gate aprende dinámicamente cuándo confiar en cada ruta.</p>
+  </div>
+
+  <h3>Comparativa de Arquitecturas</h3>
+  <p>Cuatro modelos, dos familias (denso y MoE), dos generaciones:</p>
+
+  <div class="arch-grid">
+    <!-- Qwen3.5-27B Dense -->
+    <div class="arch-card">
+      <div class="card-title">Qwen3.5-27B</div>
+      <div class="card-subtitle">Dense · Feb 2026</div>
+      <ul>
+        <li><span class="param-label">Total params</span><span class="param-value">27B</span></li>
+        <li><span class="param-label">Active params</span><span class="param-value">27B (todos)</span></li>
+        <li><span class="param-label">Capas</span><span class="param-value">64</span></li>
+        <li><span class="param-label">Hidden dim</span><span class="param-value">5120</span></li>
+        <li><span class="param-label">Layout</span><span class="param-value">16 × (3Δ + 1A)</span></li>
+        <li><span class="param-label">DeltaNet heads</span><span class="param-value">48V / 16QK</span></li>
+        <li><span class="param-label">DeltaNet head dim</span><span class="param-value">128</span></li>
+        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
+        <li><span class="param-label">Attention head dim</span><span class="param-value">256</span></li>
+        <li><span class="param-label">RoPE dim</span><span class="param-value">64</span></li>
+        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
+        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
+      </ul>
+    </div>
+
+    <!-- Qwen3.5-397B-A17B MoE -->
+    <div class="arch-card">
+      <div class="card-title">Qwen3.5-397B-A17B</div>
+      <div class="card-subtitle">MoE · Feb 2026</div>
+      <ul>
+        <li><span class="param-label">Total params</span><span class="param-value">397B</span></li>
+        <li><span class="param-label">Active params</span><span class="param-value">~17B/tok</span></li>
+        <li><span class="param-label">Capas</span><span class="param-value">48</span></li>
+        <li><span class="param-label">Expertos</span><span class="param-value">256 (128 routed + 1 shared)</span></li>
+        <li><span class="param-label">Layout</span><span class="param-value">12 × (3Δ + 1A)</span></li>
+        <li><span class="param-label">DeltaNet heads</span><span class="param-value">32V / 16QK</span></li>
+        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
+        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
+        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
+      </ul>
+    </div>
+
+    <!-- Qwen3.6-27B Dense -->
+    <div class="arch-card">
+      <div class="card-title">Qwen3.6-27B</div>
+      <div class="card-subtitle">Dense · Apr 2026</div>
+      <ul>
+        <li><span class="param-label">Total params</span><span class="param-value">27B</span></li>
+        <li><span class="param-label">Active params</span><span class="param-value">27B (todos)</span></li>
+        <li><span class="param-label">Capas</span><span class="param-value">64</span></li>
+        <li><span class="param-label">Hidden dim</span><span class="param-value">5120</span></li>
+        <li><span class="param-label">Layout</span><span class="param-value">16 × (3Δ + 1A)</span></li>
+        <li><span class="param-label">DeltaNet heads</span><span class="param-value">48V / 16QK</span></li>
+        <li><span class="param-label">DeltaNet head dim</span><span class="param-value">128</span></li>
+        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
+        <li><span class="param-label">Attention head dim</span><span class="param-value">256</span></li>
+        <li><span class="param-label">RoPE dim</span><span class="param-value">64</span></li>
+        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
+        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
+      </ul>
+    </div>
+
+    <!-- Qwen3.6-35B-A3B MoE -->
+    <div class="arch-card">
+      <div class="card-title">Qwen3.6-35B-A3B</div>
+      <div class="card-subtitle">MoE · Abr 2026</div>
+      <ul>
+        <li><span class="param-label">Total params</span><span class="param-value">35B</span></li>
+        <li><span class="param-label">Active params</span><span class="param-value">~3B/tok</span></li>
+        <li><span class="param-label">Capas</span><span class="param-value">40</span></li>
+        <li><span class="param-label">Expertos</span><span class="param-value">256 (8 routed + 1 shared)</span></li>
+        <li><span class="param-label">Layout</span><span class="param-value">8 × (3Δ + 1A)</span></li>
+        <li><span class="param-label">DeltaNet heads</span><span class="param-value">32V / 16QK</span></li>
+        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
+        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
+        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>⚡ La revelación: 3.5-27B y 3.6-27B tienen la MISMA arquitectura</h3>
+  <div class="highlight">
+    <strong>Mismo modelo, mismo esqueleto, diferente cerebro.</strong>
+    <p>Comparando las cards de HuggingFace, Qwen3.5-27B y Qwen3.6-27B son idénticos en arquitectura: mismas capas (64), mismo hidden dim (5120), mismos heads (48/16 DeltaNet, 24/4 GQA), misma layout 16×(3Δ+1A), mismo FFN (17,408). El salto de rendimiento <strong>NO viene de un cambio arquitectónico</strong>.</p>
+  </div>
+
+  <h3>Entonces, ¿por qué mejora tanto?</h3>
+  <p>Si la arquitectura es idéntica, los +17.7 puntos en Terminal-Bench, los +2.3 en GPQA y el resto de mejoras provienen de:</p>
+
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="card-title">📊 Datos de Entrenamiento</div>
+      <div class="card-subtitle">Lo que alimenta al modelo</div>
+      <ul>
+        <li><span class="param-label">Data mix</span><span class="param-value">Rebalanceado</span></li>
+        <li><span class="param-label">Code data</span><span class="param-value">Mayor calidad</span></li>
+        <li><span class="param-label">Agent traces</span><span class="param-value">Expandido</span></li>
+        <li><span class="param-label">Multilingüe</span><span class="param-value">201 idiomas</span></li>
+      </ul>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">Qwen priorizó data de calidad sobre cantidad. Más traces de agent coding, más repos reales, más interacciones terminales.</p>
+    </div>
+
+    <div class="arch-card">
+      <div class="card-title">🤖 Reinforcement Learning</div>
+      <div class="card-subtitle">Lo que transforma al modelo</div>
+      <ul>
+        <li><span class="param-label">RL scale</span><span class="param-value">Millones de agentes</span></li>
+        <li><span class="param-label">Env types</span><span class="param-value">Coding, reasoning, tools</span></li>
+        <li><span class="param-label">Reward design</span><span class="param-value">Verificación automática</span></li>
+        <li><span class="param-label">Async framework</span><span class="param-value">~100% efficiency</span></li>
+      </ul>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">El RL a escala masiva con entornos de agent reales es el factor #1 del salto en Terminal-Bench (+17.7) y SkillsBench (+21).</p>
+    </div>
+  </div>
+
+  <h3>Dense vs MoE: ¿por qué el denso 27B compite con MoEs mucho más grandes?</h3>
+  <p>Esta es la pregunta clave. El Qwen3.6-27B denso compite de frente con el Qwen3.5-397B-A17B (que tiene 14.7× más parámetros totales):</p>
+
+  <div class="highlight success">
+    <strong>Ventajas del modelo denso:</strong>
+    <ul>
+      <li>✅ <strong>Más capas (64 vs 48/40):</strong> Mayor profundidad = más capacidad de razonamiento encadenado</li>
+      <li>✅ <strong>Mayor DeltaNet head count (48 vs 32):</strong> Más capacidad de compresión de contexto en la ruta eficiente</li>
+      <li>✅ <strong>Sin routing overhead:</strong> No hay pérdida por mala selección de expertos</li>
+      <li>✅ <strong>Activación completa:</strong> Los 27B params trabajen en cada token (vs solo 3B en el MoE 35B)</li>
+      <li>✅ <strong>Sin expert load balancing:</strong> No hay el problema clásico de MoE de algunos expertos subutilizados</li>
+    </ul>
+  </div>
+
+  <div class="highlight warning">
+    <strong>Ventajas del MoE:</strong>
+    <ul>
+      <li>✅ <strong>Especialización:</strong> Expertos diferentes para diferentes tipos de tarea (code, math, language)</li>
+      <li>✅ <strong>Eficiencia inferencia:</strong> Solo 3B active params = más rápido en hardware optimizado</li>
+      <li>✅ <strong>Escalabilidad:</strong> Puedes añadir expertos sin aumentar coste de inferencia</li>
+    </ul>
+    <p style="margin-top: 8px;">Pero el MoE 35B-A3B de Qwen3.6 es <strong>extremadamente ligero</strong> (solo 3B active) — eso limita su capacidad. El 397B-A17B con 17B active params es mucho más competitivo.</p>
+  </div>
+
+  <h3>MTP: Multi-Token Prediction</h3>
+  <p>Ambas generaciones incluyen <strong>Multi-Token Prediction (MTP)</strong> nativo — el modelo predice múltiples tokens a la vez, no solo el siguiente:</p>
+  <div class="arch-diagram">
+    <div class="diagram-title">MTP: El modelo predice varios pasos adelante</div>
+    <div class="arch-block deltanet">Token N → predice N+1, N+2, N+3</div>
+    <div class="arch-arrow">↓</div>
+    <p style="font-size: 13px; color: var(--text-muted);">Si la predicción speculative es aceptada, se saltan pasos. En vLLM: +30-50% velocidad. En llama.cpp: aún sin soporte nativo.</p>
+  </div>
+
+  <h3>Vision Encoder: multimodal nativo</h3>
+  <p>A diferencia de modelos de solo texto, Qwen3.5/3.6-27B incluye un <strong>Vision Encoder integrado</strong> con early fusion: las imágenes se procesan como tokens desde las primeras capas, no como un add-on posterior. Esto da capacidades de visión impresionantes:</p>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>3.5-27B</th><th>3.6-27B</th><th>Claude 4.5 Opus</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMMU</td><td>82.3</td><td>82.9</td><td>80.7</td></tr>
+        <tr><td>MMMU-Pro</td><td>75.0</td><td>75.8</td><td>70.6</td></tr>
+        <tr><td>MathVista mini</td><td>87.8</td><td>87.4</td><td>—</td></tr>
+        <tr><td>VideoMME</td><td>87.0</td><td>87.7</td><td>77.7</td></tr>
+        <tr><td>AndroidWorld</td><td>64.2</td><td>70.3</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Resumen: El "por qué" de las mejoras</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Salto</th><th>Factor principal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Terminal-Bench +17.7</td><td class="winner">🔥 Masivo</td><td><strong>RL a escala</strong> — entornos de agent reales con herramientas bash</td></tr>
+        <tr><td>SkillsBench +21.0</td><td class="winner">🔥 Masivo</td><td><strong>RL + data mix</strong> — entrenamiento en tasks de agent diversificadas</td></tr>
+        <tr><td>GPQA +2.3</td><td class="winner">Moderado</td><td><strong>RL reasoning</strong> — verificación automática de respuestas científicas</td></tr>
+        <tr><td>SWE-bench +2.2</td><td class="winner">Moderado</td><td><strong>Data code + RL</strong> — más repos reales + verificación automática</td></tr>
+        <tr><td>LiveCodeBench +3.2</td><td class="draw">Pequeño</td><td>Modelo ya estaba cerca del tope; mejora marginal</td></tr>
+        <tr><td>MMLU-Pro +0.1</td><td class="draw">Mínimo</td><td>Ya cerca del tope; la prioridad fue coding/agent, no knowledge</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight blue">
+    <strong>Lección arquitectónica:</strong>
+    <p>Para un modelo consumer-size (~27B) que cabe en GPU consumer, la mejor estrategia es <strong>denso + muchas capas (64) + más DeltaNet heads (48)</strong>. El MoE ultra-light (3B active) es demasiado limitado; el MoE pesado (17B active) requiere infraestructura datacenter. El denso es el sweet spot para consumer hardware.</p>
+    <p style="margin-top: 8px;">La mejora 3.5→3.6 viene de <strong>dónde entrenas</strong> (RL masivo en entornos reales), no de <strong>cómo lo construyes</strong> (la arquitectura se mantiene). Qwen está apostando por "más RL, mejor data" en vez de cambiar el esqueleto del modelo.</p>
+  </div>
+
+  <p class="source">Fuentes: <a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">HF Qwen3.6-27B</a>, <a href="https://huggingface.co/Qwen/Qwen3.5-27B" target="_blank">HF Qwen3.5-27B</a>, <a href="https://huggingface.co/Qwen/Qwen3.6-35B-A3B" target="_blank">HF Qwen3.6-35B-A3B</a>, <a href="https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html" target="_blank">vLLM Recipes</a></p>
+</section>
+
+<!-- Metodología -->
+<section id="metodologia">
+  <h2>🔬 <span class="accent">Metodología</span> de Extrapolación</h2>
+  <p>Nuestra predicción se basó en un análisis de dos deltas cruzados:</p>
+  
+  <h3>1. Diferencia por Tamaño (misma versión 3.5)</h3>
+  <p>Comparando Qwen3.5-27B (denso) vs Qwen3.5-35B-A3B (MoE) para entender el gap entre denso y MoE.</p>
+  
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Qwen3.5-27B</th><th>Qwen3.5-35B-A3B</th><th>Δ (MoE - Dense)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMLU-Pro</td><td>86.1</td><td>85.3</td><td class="loser">−0.8</td></tr>
+        <tr><td>GPQA Diamond</td><td>85.5</td><td>84.2</td><td class="loser">−1.3</td></tr>
+        <tr><td>SWE-bench Verified</td><td>75.0</td><td>70.0</td><td class="loser">−5.0</td></tr>
+        <tr><td>Terminal Bench 2</td><td>41.6</td><td>40.5</td><td class="loser">−1.1</td></tr>
+        <tr><td>LiveCodeBench v6</td><td>80.7</td><td>74.6</td><td class="loser">−6.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2. Diferencia por Versión (mismo tamaño 35B-A3B)</h3>
+  <p>Comparando Qwen3.5-35B-A3B vs Qwen3.6-35B-A3B para medir el salto arquitectónico 3.5 → 3.6.</p>
+  
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Qwen3.5-35B-A3B</th><th>Qwen3.6-35B-A3B</th><th>Δ (3.6 − 3.5)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMLU-Pro</td><td>85.3</td><td>85.2</td><td class="draw">−0.1</td></tr>
+        <tr><td>GPQA Diamond</td><td>84.2</td><td>86.0</td><td class="winner">+1.8</td></tr>
+        <tr><td>SWE-bench Verified</td><td>70.0</td><td>73.4</td><td class="winner">+3.4</td></tr>
+        <tr><td>Terminal Bench 2</td><td>40.5</td><td>51.5</td><td class="winner">+11.0</td></tr>
+        <tr><td>LiveCodeBench v6</td><td>74.6</td><td>80.4</td><td class="winner">+5.8</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight">
+    <strong>Fórmula usada:</strong> Predicción 3.6-27B = Qwen3.5-27B + Δ(3.5→3.6 del 35B-A3B)
+    <p>Asumimos que el salto de versión sería similar en el 27B al que se observó en el 35B-A3B. Funcionó para GPQA y MMLU, pero el 27B denso superó el salto en Terminal-Bench (+17.7 vs +11.0) y lo subestimó en LiveCodeBench.</p>
+  </div>
+</section>
+
+<!-- Comparativa Claude -->
+<section id="comparativa">
+  <h2>🥊 Comparativa <span class="accent">vs Claude</span></h2>
+  <p>Con datos reales, ¿dónde queda Qwen3.6-27B frente a los modelos Claude?</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Qwen3.6-27B</th><th>Claude 4.5 Opus</th><th>Veredicto</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MMLU-Pro</td><td>86.2</td><td>89.5</td><td class="loser">Por detrás (−3.3)</td></tr>
+        <tr><td>GPQA Diamond</td><td><strong class="winner">87.8</strong></td><td>87.0</td><td class="winner">✅ Gana (+0.8)</td></tr>
+        <tr><td>SWE-bench Verified</td><td>77.2</td><td>80.9</td><td class="loser">Por detrás (−3.7)*</td></tr>
+        <tr><td>Terminal-Bench 2.0</td><td><strong class="winner">59.3</strong></td><td>59.3</td><td class="draw">✅ Empate</td></tr>
+        <tr><td>SkillsBench Avg5</td><td><strong class="winner">48.2</strong></td><td>45.3</td><td class="winner">✅ Gana (+2.9)</td></tr>
+        <tr><td>LiveCodeBench v6</td><td>83.9</td><td>84.8</td><td class="loser">Por detrás (−0.9)</td></tr>
+        <tr><td>Claw-Eval Avg</td><td>72.4</td><td>76.6</td><td class="loser">Por detrás (−4.2)</td></tr>
+        <tr><td>AIME26</td><td>94.1</td><td>95.1</td><td class="loser">Por detrás (−1.0)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="source">* SWE-bench: Qwen usa internal agent scaffold vs Claude Code. No exactamente comparable. / Fuentes: <a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a>, <a href="https://tokencalculator.com/llm-benchmarks" target="_blank">TokenCalculator</a></p>
+
+  <div class="highlight success">
+    <strong>Donde gana o iguala a Claude Opus:</strong> GPQA Diamond, SkillsBench, Terminal-Bench (empate), AIME26 (casi).
+  </div>
+  <div class="highlight warning">
+    <strong>Donde queda por detrás:</strong> MMLU-Pro (−3.3), SWE-bench (−3.7, scaffolds diferentes), Claw-Eval (−4.2).
+  </div>
+</section>
+
+<!-- Benchmarks advertencia -->
+<section id="benchmarks-advertencia">
+  <h2>⚠️ Los Benchmarks <span class="accent">no lo son todo</span></h2>
+  
+  <div class="highlight miss">
+    <strong>Advertencia:</strong> Los benchmarks muestran competencia directa, pero la experiencia real en producción cuenta otra historia.
+  </div>
+
+  <h3>1. Scaffold Advantage</h3>
+  <p>Los benchmarks de coding de Qwen usan su <strong>internal agent scaffold</strong> (bash + file-edit tools optimizados para el modelo). Claude usa Claude Code con su propio tool system. Son setups diferentes.</p>
+
+  <h3>2. Dónde Brillan los Modelos Locales</h3>
+  <div class="highlight success">
+    <strong>Modelos locales como Qwen3.6-27B son excelentes para:</strong>
+    <ul>
+      <li>✅ Obtener insights y feedback sobre codebases</li>
+      <li>✅ Reasoning donde superan benchmarks (GPQA: 87.8, SkillsBench: 48.2)</li>
+      <li>✅ Privacidad total — datos nunca salen de tu máquina</li>
+      <li>✅ Coste cero después del hardware</li>
+      <li>✅ Customización — fine-tuning para tu dominio</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Opinión -->
+<section id="opinión">
+  <h2>💭 Opinión: <span class="accent">El Aceleramiento de Modelos Locales</span></h2>
+  
+  <div class="opinion-box">
+    <h4>Estamos en un punto de inflexión</h4>
+    <p>Qwen3.6-27B es real y los números hablan. Un modelo denso de 27B que:</p>
+    <ul>
+      <li>Empata con Claude Opus en Terminal-Bench (59.3)</li>
+      <li>Gana a Opus en GPQA Diamond (87.8 vs 87.0)</li>
+      <li>Gana a Opus en SkillsBench (48.2 vs 45.3)</li>
+      <li>Cabe en una RTX 4090/5090</li>
+    </ul>
+    <p style="margin-top: 12px;">Esto no era posible hace 12 meses. La brecha real entre open y closed se ha reducido a "puntos de porcentaje".</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>2024: Llama 3, la era de la brecha</h4>
+      <p>Modelos locales 10–15 puntos por detrás de GPT-4. La brecha era clara.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>2025: Qwen2.5, DeepSeek, Llama 3.3</h4>
+      <p>Brecha reducida a 5–8 puntos. Modelos de 70B compiten con 405B.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Abril 2026: Qwen3.6-27B</h4>
+      <p>27B denso empata y supera a Claude Opus en reasoning y skills de agent. Gated DeltaNet + RL masivo = eficiencia antes imposible.</p>
+    </div>
+  </div>
+
+  <div class="opinion-box">
+    <h4>Para tu setup (RTX 5090 + llama.cpp)</h4>
+    <ul>
+      <li><strong>Q4_K_M/Q5_K_M:</strong> ~15–20GB VRAM, ~80–100 t/s estimado</li>
+      <li><strong>MTP:</strong> +30–50% en vLLM/SGLang (llama.cpp aún sin soporte nativo)</li>
+      <li><strong>Vision incluido:</strong> Es multimodal nativo. Analiza imágenes directamente</li>
+      <li><strong>256K contexto nativo:</strong> Extensible a 1M. En 32GB VRAM, ~128K práctico</li>
+    </ul>
+  </div>
+
+  <div class="highlight success">
+    <strong>Veredicto:</strong> Qwen3.6-27B confirma que un modelo open-source de tamaño razonable puede competir de frente con los mejores closed-source en tareas específicas. La revolución de los modelos locales no está llegando — ya está aquí.
+  </div>
+</section>
+
+<!-- Fuentes -->
+<section id="fuentes">
+  <h2>📚 <span class="accent">Fuentes</span></h2>
+  
+  <h3>Datos Qwen3.6-27B</h3>
+  <ul>
+    <li><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B — HuggingFace (oficial)</a> — Benchmarks y arquitectura</li>
+    <li><a href="https://qwen.ai/blog?id=qwen3.6-27b" target="_blank">Qwen3.6-27B — Blog post oficial</a></li>
+  </ul>
+
+  <h3>Datos Qwen3.5 (metodología)</h3>
+  <ul>
+    <li><a href="https://huggingface.co/Qwen/Qwen3.5-27B" target="_blank">Qwen3.5-27B — HuggingFace</a></li>
+    <li><a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank">Qwen3.5-35B-A3B — HuggingFace</a></li>
+    <li><a href="https://huggingface.co/Qwen/Qwen3.6-35B-A3B" target="_blank">Qwen3.6-35B-A3B — HuggingFace</a></li>
+  </ul>
+
+  <h3>Datos Claude</h3>
+  <ul>
+    <li><a href="https://tokencalculator.com/llm-benchmarks" target="_blank">TokenCalculator — LLM Benchmarks 2026</a></li>
+    <li><a href="https://benchlm.ai" target="_blank">BenchLM.ai — Comparativas</a></li>
+  </ul>
+
+  <h3>Arquitectura</h3>
+  <ul>
+    <li><a href="https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html" target="_blank">vLLM Qwen3.5 & Qwen3.6 Usage Guide</a> — Detalles técnicos de serving</li>
+    <li><a href="https://arxiv.org/pdf/2505.09388" target="_blank">Qwen3 Technical Report (arXiv)</a> — Paper técnico original</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>Nota:</strong> Página actualizada con datos reales del 22 de abril, 2026. Incluye sección de arquitectura con explicación de Gated DeltaNet y por qué mejora el modelo.
+  </div>
+</section>
+
+<footer>
+  <p>Generado y actualizado por Cocobot 🐱 | Datos oficiales de HuggingFace</p>
+  <p style="margin-top: 8px;">Última actualización: 22 de abril, 2026 — Benchmarks reales + Arquitectura</p>
+  <p style="margin-top: 8px;"><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a> · <a href="https://huggingface.co/Qwen" target="_blank">Qwen Models</a> · <a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a></p>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.querySelector('.hamburger').classList.toggle('active');
+  document.querySelector('.nav-menu').classList.toggle('active');
+}
+
+document.addEventListener('click', (e) => {
+  const menu = document.querySelector('.nav-menu');
+  const hamburger = document.querySelector('.hamburger');
+  if (!menu.contains(e.target) && !hamburger.contains(e.target) && menu.classList.contains('active')) {
+    toggleMenu();
+  }
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

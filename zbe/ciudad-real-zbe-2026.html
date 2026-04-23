@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 Ciudad Real ZBE 2026 - Guía Completa</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #151b2e;
+            --bg-card: #1a2238;
+            --text-primary: #e0e6ed;
+            --text-secondary: #94a3b8;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #dc2626;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --border-color: #2d3748;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .hamburger-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(16, 185, 129, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5);
+        }
+        
+        .hamburger-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.7);
+        }
+        
+        .nav-menu {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(10, 14, 26, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            display: none;
+            min-width: 280px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .nav-menu.active {
+            display: block;
+        }
+        
+        .nav-menu a {
+            display: block;
+            padding: 14px 18px;
+            margin: 6px 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: #fff;
+            border-left-color: var(--accent-green);
+            padding-left: 25px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        
+        .date-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--accent-green);
+            color: #fff;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        
+        .alert-banner {
+            background: linear-gradient(90deg, #059669, #10b981);
+            color: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+            font-size: 1.1rem;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        
+        .alert-banner.warning {
+            background: linear-gradient(90deg, #d97706, #f59e0b);
+        }
+        
+        .alert-banner.danger {
+            background: linear-gradient(90deg, #b91c1c, #dc2626);
+        }
+        
+        section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            scroll-margin-top: 120px;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInSection 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInSection {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        section:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        h2 .icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            color: #f1f5f9;
+            margin: 25px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+        
+        .highlight {
+            background: rgba(16, 185, 129, 0.25);
+            padding: 3px 10px;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+        
+        .key-point {
+            background: rgba(148, 163, 184, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .warning {
+            background: rgba(220, 38, 38, 0.18);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-red);
+            color: #f1f5f9;
+        }
+        
+        .info-box {
+            background: rgba(59, 130, 246, 0.12);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .success-box {
+            background: rgba(16, 185, 129, 0.12);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-green);
+            color: #f1f5f9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-green);
+        }
+        
+        .stat-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        .stat .green { color: var(--accent-green); }
+        .stat .yellow { color: var(--accent-yellow); }
+        .stat .red { color: var(--accent-red); }
+        .stat .blue { color: var(--accent-blue); }
+        
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 25px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            min-width: 600px;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background: rgba(16, 185, 129, 0.2);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        ul {
+            margin: 20px 0;
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+        
+        li strong {
+            color: #fff;
+        }
+        
+        .etiqueta-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 5px solid;
+        }
+        
+        .etiqueta-0 { border-left-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+        .etiqueta-eco { border-left-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        .etiqueta-c { border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .etiqueta-b { border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.05); }
+        .etiqueta-sin { border-left-color: #6b7280; background: rgba(107, 114, 128, 0.1); }
+        
+        .etiqueta-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .etiqueta-badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-0 { background: #10b981; color: #fff; }
+        .badge-eco { background: #3b82f6; color: #fff; }
+        .badge-c { background: #f59e0b; color: #fff; }
+        .badge-b { background: #f59e0b; color: #fff; }
+        .badge-sin { background: #6b7280; color: #fff; }
+        
+        
+        .source-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.2s ease;
+        }
+        
+        .source-link:hover {
+            color: var(--accent-green);
+            transform: translateX(5px);
+        }
+        
+        .source-link .source-name {
+            color: inherit;
+        }
+        
+        .source-link .source-type {
+            color: var(--accent-blue);
+        }
+        
+        .source-link:hover .source-type {
+            color: var(--accent-green);
+        }
+.footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+        }
+        
+        .cat-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .source-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .source-item:last-child {
+            border-bottom: none;
+        }
+        
+        .source-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .source-content {
+            flex: 1;
+        }
+        
+        .source-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        
+        .source-type {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            font-style: italic;
+        }
+        
+        .checklist {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        
+        .checklist-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 90px 15px 40px; }
+            section { padding: 25px; }
+            .nav-menu { right: 15px; min-width: 250px; }
+            .hamburger-btn { top: 15px; right: 15px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            table { font-size: 0.9rem; }
+            th, td { padding: 10px; }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger-btn" onclick="toggleMenu()" title="Menú" aria-label="Abrir menú">☰</button>
+    
+    <div class="nav-menu" id="navMenu">
+        <a href="#que-es-zbe">📋 ¿Qué es una ZBE?</a>
+        <a href="#ciudad-real">🏙️ Ciudad Real</a>
+        <a href="#etiquetas">🏷️ Etiquetas DGT</a>
+        <a href="#multas">💰 Multas</a>
+        <a href="#como-saber">🔍 Cómo saber si está activa</a>
+        <a href="#excepciones">⚠️ Excepciones</a>
+        <a href="#recomendaciones">✅ Recomendaciones</a>
+        <a href="#fuentes">📚 Fuentes</a>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🚗 Ciudad Real ZBE 2026</h1>
+            <p class="subtitle">Guía completa sobre la Zona de Bajas Emisiones</p>
+            <span class="date-badge">📅 Actualizado: Marzo 2026</span>
+        </header>
+
+        <div class="alert-banner">
+            ℹ️ INFORMACIÓN ACTUALIZADA: Estado de la ZBE en Ciudad Real y normativa aplicable
+        </div>
+
+        <section id="que-es-zbe">
+            <h2><span class="icon">📋</span> ¿Qué es una Zona de Bajas Emisiones (ZBE)?</h2>
+            
+            <div class="info-box">
+                <strong>Definición:</strong> Una Zona de Bajas Emisiones es un área delimitada dentro de una ciudad donde se restringe el acceso de los vehículos más contaminantes para mejorar la calidad del aire y la salud de los ciudadanos.
+            </div>
+            
+            <h3>📊 Marco Legal</h3>
+            <ul>
+                <li><strong>Ley de Cambio Climático y Transición Energética</strong> (Ley 7/2021, de 20 de mayo)</li>
+                <li><strong>Obligatoria</strong> para municipios de más de <span class="highlight">50,000 habitantes</span></li>
+                <li><strong>Plazo de implantación:</strong> 31 de diciembre de 2023 (con prórrogas posibles)</li>
+                <li><strong>Supervisión:</strong> Ministerio para la Transición Ecológica y el Reto Demográfico</li>
+            </ul>
+            
+            <div class="key-point">
+                <strong>🎯 Objetivos principales:</strong>
+                <ul style="margin-top: 10px;">
+                    <li>Reducir la contaminación atmosférica (NO₂, PM10, PM2.5)</li>
+                    <li>Mejorar la salud pública</li>
+                    <li>Incentivar la movilidad sostenible</li>
+                    <li>Fomentar vehículos menos contaminantes</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ciudad-real">
+            <h2><span class="icon">🏙️</span> Situación en Ciudad Real</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value blue">74,000</span>
+                    <span class="stat-label">Habitantes<br><small>(aprox.)</small></span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value green">✅</span>
+                    <span class="stat-label">Obligatoria ZBE<br><small>>50,000 hab.</small></span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value yellow">📅</span>
+                    <span class="stat-label">Moratoria<br><small>Hasta dic 2026</small></span>
+                </div>
+            </div>
+            
+            <div class="success-box">
+                <strong>👥 Para residentes censados en Ciudad Real:</strong>
+                <p style="margin-top: 10px;">Existe un <span class="highlight">periodo de moratoria hasta diciembre de 2026</span> para vehículos de residentes censados en el municipio. Durante este periodo, los residentes tienen un periodo de adaptación antes de la aplicación estricta de las restricciones.</p>
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ IMPORTANTE:</strong>
+                <ul style="margin-top: 10px;">
+                    <li>Las restricciones por ZBE solo se aplican durante <span class="highlight">episodios de alta contaminación</span> declarados oficialmente</li>
+                    <li>No son restricciones permanentes (salvo en ciudades con ZBE más estrictas como Madrid o Barcelona)</li>
+                    <li>El ayuntamiento debe comunicar oficialmente la activación de restricciones</li>
+                </ul>
+            </div>
+            
+            <h3>🗺️ Área afectada</h3>
+            <p>En Ciudad Real, la ZBE abarca principalmente el <strong>interior de la Ronda</strong> (vía de circunvalación), incluyendo:</p>
+            <ul>
+                <li>Centro histórico</li>
+                <li>Zonas residenciales dentro de la ronda</li>
+                <li>Áreas comerciales principales</li>
+                <li>Edificios públicos y administrativos</li>
+            </ul>
+        </section>
+
+        <section id="etiquetas">
+            <h2><span class="icon">🏷️</span> Etiquetas Ambientales DGT</h2>
+            
+            <p>La Dirección General de Tráfico (DGT) clasifica los vehículos según su nivel de emisiones. Esta clasificación determina qué vehículos pueden circular en las ZBE.</p>
+            
+            <div class="etiqueta-box etiqueta-0">
+                <div class="etiqueta-title">
+                    <span class="etiqueta-badge badge-0">0 EMISIONES</span>
+                    Vehículos Cero Emisiones
+                </div>
+                <p style="margin-top: 8px; margin-bottom: 0;">Vehículos eléctricos 100%, de pila de hidrógeno. <strong>Acceso SIN restricciones.</strong></p>
+            </div>
+            
+            <div class="etiqueta-box etiqueta-eco">
+                <div class="etiqueta-title">
+                    <span class="etiqueta-badge badge-eco">ECO</span>
+                    Vehículos de Bajas Emisiones
+                </div>
+                <p style="margin-top: 8px; margin-bottom: 0;">Híbridos en general, enchufables, GNL, GNC, algunos diésel Euro 6 (matriculados después de enero 2020). <strong>Acceso permitido con mínimas limitaciones.</strong></p>
+            </div>
+            
+            <div class="etiqueta-box etiqueta-c">
+                <div class="etiqueta-title">
+                    <span class="etiqueta-badge badge-c">C</span>
+                    Vehículos Poco Contaminantes
+                </div>
+                <p style="margin-top: 8px; margin-bottom: 0;">• Gasolina: matriculados desde enero 2006<br>• Diésel: matriculados desde septiembre 2015<br><strong>Pueden tener restricciones en episodios de alta contaminación.</strong></p>
+            </div>
+            
+            <div class="etiqueta-box etiqueta-b">
+                <div class="etiqueta-title">
+                    <span class="etiqueta-badge badge-b">B</span>
+                    Vehículos Contaminantes
+                </div>
+                <p style="margin-top: 8px; margin-bottom: 0;">• Gasolina: matriculados desde enero 1997<br>• Diésel: matriculados desde enero 2006<br><strong>Restricciones probables en episodios de contaminación.</strong></p>
+            </div>
+            
+            <div class="etiqueta-box etiqueta-sin">
+                <div class="etiqueta-title">
+                    <span class="etiqueta-badge badge-sin">SIN ETIQUETA</span>
+                    Vehículos Más Contaminantes
+                </div>
+                <p style="margin-top: 8px; margin-bottom: 0;">• Gasolina: matriculados antes de enero 1997<br>• Diésel: matriculados antes de enero 2006<br><strong>PROHIBIDO el acceso en episodios de alta contaminación.</strong></p>
+            </div>
+            
+            <div class="info-box" style="margin-top: 20px;">
+                <strong>🔍 Cómo consultar tu etiqueta:</strong>
+                <p style="margin-bottom: 0;">Visita <a href="https://www.dgt.es/es/consultas-y-servicios/consulta-de-vehiculos/etiqueta-ambiental/" style="color: var(--accent-blue);">cdt.dgt.es</a> e introduce tu matrícula para conocer el distintivo ambiental de tu vehículo.</p>
+            </div>
+        </section>
+
+        <section id="multas">
+            <h2><span class="icon">💰</span> Multas y Sanciones</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value red">200€</span>
+                    <span class="stat-label">Multa grave<br><small>Base</small></span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value yellow">100€</span>
+                    <span class="stat-label">Con pronto pago<br><small>50% descuento</small></span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value green">0</span>
+                    <span class="stat-label">Puntos carnet<br><small>No afecta</small></span>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Infracción</th>
+                            <th>Gravedad</th>
+                            <th>Sanción</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Acceder sin permiso a ZBE</td>
+                            <td>Grave</td>
+                            <td>200€ (100€ pronto pago)</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>No tener ITV en vigor</td>
+                            <td>Grave</td>
+                            <td>Hasta 500€</td>
+                            <td>0-3</td>
+                        </tr>
+                        <tr>
+                            <td>No cumplir restricciones en episodio contaminación</td>
+                            <td>Grave</td>
+                            <td>200€ (100€ pronto pago)</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="warning">
+                <strong>📸 Control automatizado:</strong>
+                <p style="margin-top: 10px;">Las cámaras de lectura automática de matrículas (sistema ANPR) detectan automáticamente los vehículos que no cumplen las restricciones. <strong>No hace falta que un agente te pare.</strong></p>
+            </div>
+            
+            <div class="info-box">
+                <strong>⏰ Pronto pago:</strong>
+                <p style="margin-bottom: 0;">El descuento del 50% (de 200€ a 100€) se aplica si se paga en los primeros <span class="highlight">20 días hábiles</span> desde la notificación de la multa.</p>
+            </div>
+        </section>
+
+        <section id="como-saber">
+            <h2><span class="icon">🔍</span> ¿Cómo saber si está activa?</h2>
+            
+            <div class="key-point">
+                <strong>📢 Las restricciones NO son permanentes en Ciudad Real:</strong>
+                <p style="margin-top: 10px;">Solo se activan durante <span class="highlight">episodios de alta contaminación</span> declarados oficialmente por la Junta de Comunidades de Castilla-La Mancha o el Ayuntamiento de Ciudad Real.</p>
+            </div>
+            
+            <h3>📱 Canales oficiales de información</h3>
+            
+            <div class="checklist">
+                <div class="checklist-item">
+                    <span class="checklist-icon">🌐</span>
+                    <div>
+                        <strong>Web del Ayuntamiento de Ciudad Real</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">www.ciudadreal.es - Sección de Medio Ambiente / Movilidad</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🏛️</span>
+                    <div>
+                        <strong>Junta de Castilla-La Mancha</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">www.jccm.es - Calidad del aire y episodios de contaminación</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">📰</span>
+                    <div>
+                        <strong>Boletín Oficial de Castilla-La Mancha (BOCM)</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Publicación oficial de declaraciones de episodios</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">📻</span>
+                    <div>
+                        <strong>Medios locales</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">La Verdad de Ciudad Real, Onda Cero Ciudad Real, etc.</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🚨</span>
+                    <div>
+                        <strong>Aplicaciones de tráfico</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Waze, Google Maps pueden mostrar alertas de restricciones</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>🌤️ Índices de contaminación:</strong>
+                <p style="margin-bottom: 0;">La Junta de Castilla-La Mancha publica diariamente los niveles de contaminantes (NO₂, PM10, O₃). Cuando superan los umbrales establecidos, se puede declarar un episodio de contaminación.</p>
+            </div>
+        </section>
+
+        <section id="excepciones">
+            <h2><span class="icon">⚠️</span> Excepciones y Vehículos Permitidos</h2>
+            
+            <div class="success-box">
+                <strong>✅ Vehículos SIEMPRE permitidos:</strong>
+                <ul style="margin-top: 10px;">
+                    <li>Vehículos con etiqueta <strong>0 Emisiones</strong> (eléctricos 100%)</li>
+                    <li>Vehículos de <strong>servicios públicos esenciales</strong> (policía, bomberos, ambulancias)</li>
+                    <li>Vehículos de <strong>personas con discapacidad</strong> (con tarjeta de aparcamiento)</li>
+                    <li><strong>Residentes censados</strong> durante el periodo de moratoria (hasta diciembre 2026)</li>
+                    <li>Vehículos de <strong>colectivos vulnerables</strong> (según normativa municipal)</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <strong>📝 Registro de residentes:</strong>
+                <p style="margin-bottom: 0;">Los residentes censados en Ciudad Real pueden tener que <span class="highlight">registrarse previamente</span> en el ayuntamiento para obtener el permiso de acceso. Consulta en el ayuntamiento si es necesario.</p>
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ ITV obligatoria:</strong>
+                <p style="margin-top: 10px;">A partir de 2026, la nueva ordenanza tipo de la FEMP exige tener la <span class="highlight">ITV en vigor</span> para acceder a las ZBE, independientemente de la etiqueta del vehículo. Multas hasta 500€ por no cumplir.</p>
+            </div>
+        </section>
+
+        <section id="recomendaciones">
+            <h2><span class="icon">✅</span> Recomendaciones Prácticas</h2>
+            
+            <div class="checklist">
+                <div class="checklist-item">
+                    <span class="checklist-icon">1️⃣</span>
+                    <div>
+                        <strong>Consulta tu etiqueta DGT</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Visita cdt.dgt.es e introduce tu matrícula</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">2️⃣</span>
+                    <div>
+                        <strong>Verifica si eres residente censado</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Si vives en Ciudad Real, consulta el periodo de moratoria aplicable</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">3️⃣</span>
+                    <div>
+                        <strong>Revisa si hay episodio activo</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Consulta fuentes oficiales antes de entrar en la ZBE</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">4️⃣</span>
+                    <div>
+                        <strong>Mantén la ITV al día</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Obligatoria desde 2026 para acceder a ZBE</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">5️⃣</span>
+                    <div>
+                        <strong>Considera transporte alternativo</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Autobús, bicicleta, caminar en días de restricciones</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">6️⃣</span>
+                    <div>
+                        <strong>Regístrate como residente si es necesario</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--text-secondary);">Algunos ayuntamientos requieren registro previo</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="key-point" style="margin-top: 20px;">
+                <strong>💡 Consejo adicional:</strong>
+                <p style="margin-top: 10px;">Si tu vehículo es antiguo y no tiene etiqueta, considera usar <span class="highlight">parkings periféricos</span> fuera de la ZBE y completar el trayecto a pie o en transporte público.</p>
+            </div>
+        </section>
+
+        <section id="fuentes">
+            <h2><span class="icon">📚</span> Fuentes & Referencias</h2>
+            
+            <div class="sources-list">
+                <div class="source-item">
+                    <span class="source-icon">🏛️</span>
+                    <div class="source-content">
+                        <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2021-9798" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Ley 7/2021 de Cambio Climático y Transición Energética</div>
+                            <div class="source-type">Marco legal nacional - BOE ↗</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🚗</span>
+                    <div class="source-content">
+                        <a href="https://www.dgt.es/es/consultas-y-servicios/consulta-de-vehiculos/etiqueta-ambiental/" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Dirección General de Tráfico (DGT)</div>
+                            <div class="source-type">Consulta etiquetas ambientales ↗</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🏢</span>
+                    <div class="source-content">
+                        <a href="https://www.femp.es/" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Federación Española de Municipios y Provincias (FEMP)</div>
+                            <div class="source-type">Ordenanza tipo Zonas de Bajas Emisiones ↗</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🌍</span>
+                    <div class="source-content">
+                        <a href="https://www.miteco.gob.es/es/" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Ministerio para la Transición Ecológica</div>
+                            <div class="source-type">Supervisión e implementación de ZBE ↗</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">📰</span>
+                    <div class="source-content">
+                        <a href="https://www.motor16.com/" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Motor16.com</div>
+                            <div class="source-type">Información sobre multas ZBE - Febrero 2026 ↗</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">📊</span>
+                    <div class="source-content">
+                        <a href="https://www.jccm.es/" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Junta de Castilla-La Mancha</div>
+                            <div class="source-type">Calidad del aire y episodios de contaminación ↗</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🏙️</span>
+                    <div class="source-content">
+                        <a href="https://www.ciudadreal.es/" target="_blank" rel="noopener noreferrer" class="source-link">
+                            <div class="source-name">Ayuntamiento de Ciudad Real</div>
+                            <div class="source-type">Normativa municipal ZBE ↗</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box" style="margin-top: 25px;">
+                <strong>📅 Última actualización:</strong> Marzo 2026
+                <p style="margin-top: 8px; margin-bottom: 0;">La normativa puede cambiar. Consulta siempre las fuentes oficiales para información actualizada.</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p><strong>Guía ZBE Ciudad Real 2026</strong></p>
+            <p style="margin-top: 10px;">Cocobot 🐱 | Marzo 2026</p>
+            <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);">
+                ⚠️ Información basada en fuentes oficiales. Verifica siempre en el ayuntamiento.
+            </p>
+            <div class="cat-note" style="margin-top: 20px;">
+                <span>🐱</span>
+                <span>Guía informativa - Consulta fuentes oficiales para normativa actualizada</span>
+                <span>🐱</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle hamburger menu
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('.hamburger-btn');
+            menu.classList.toggle('active');
+            btn.textContent = menu.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navMenu').classList.remove('active');
+                    document.querySelector('.hamburger-btn').textContent = '☰';
+                }
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('.hamburger-btn');
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.remove('active');
+                btn.textContent = '☰';
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Animate elements on appear
+        document.querySelectorAll('section, table, .info-box, .warning, .success-box, .etiqueta-box').forEach(el => {
+            el.classList.add('fade-in');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

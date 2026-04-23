@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLM-5.1 - Zhipu AI Model Tracker 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .header .badge {
+            display: inline-block;
+            background: #00d9ff;
+            color: #1a1a2e;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+        }
+        
+        .section h2 {
+            color: #1a1a2e;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-card h3 {
+            color: #1a1a2e;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status.available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.unknown {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+        
+        .timeline-date {
+            font-size: 0.85rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .specs-table th,
+        .specs-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .specs-table th {
+            background: #f8f9fa;
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+        
+        .specs-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .hardware-check {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .hardware-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .hardware-item:last-child {
+            border-bottom: none;
+        }
+        
+        .viability {
+            font-weight: 600;
+        }
+        
+        .viability.no { color: #dc3545; }
+        .viability.maybe { color: #ffc107; }
+        .viability.yes { color: #28a745; }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 25px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .alert strong {
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 GLM-5.1</h1>
+            <p class="subtitle">Zhipu AI Next-Generation Model Tracker</p>
+            <span class="badge">📅 Updated: March 27, 2026</span>
+        </div>
+        
+        <div class="content">
+            <div class="alert">
+                <strong>⚠️ Estado Actual:</strong> GLM-5.1 ya está disponible vía API para usuarios del GLM Coding Plan (Lite/Pro/Max), pero los pesos open source aún no han sido liberados.
+            </div>
+            
+            <div class="section">
+                <h2>📋 Resumen Ejecutivo</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>🎯 Estado de Release</h3>
+                        <p><span class="status available">Disponible (API)</span></p>
+                        <p style="margin-top: 8px; font-size: 0.9rem;">Acceso vía GLM Coding Plan</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🔓 Open Source</h3>
+                        <p><span class="status pending">Anunciado</span></p>
+                        <p style="margin-top: 8px; font-size: 0.9rem;">Pesos pendientes de release</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📦 Tamaño del Modelo</h3>
+                        <p><span class="status unknown">No especificado</span></p>
+                        <p style="margin-top: 8px; font-size: 0.9rem;">Base GLM-5: 744B parámetros</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>💰 Precio API</h3>
+                        <p>Desde $3/mes</p>
+                        <p style="margin-top: 8px; font-size: 0.9rem;">Plan Coding Lite</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>📅 Línea de Tiempo</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">11 de Febrero, 2026</div>
+                        <div class="timeline-content">
+                            <strong>GLM-5 lanzado oficialmente</strong><br>
+                            Zhipu AI presenta GLM-5 como modelo flagship con capacidades avanzadas de coding y agentic engineering.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">20 de Marzo, 2026</div>
+                        <div class="timeline-content">
+                            <strong>Anuncio de GLM-5.1</strong><br>
+                            Li Zixuan (Global Head de Z.ai) anuncia en X: "Don't panic. GLM-5.1 will be open source."
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">27 de Marzo, 2026</div>
+                        <div class="timeline-content">
+                            <strong>GLM-5.1 disponible vía API</strong><br>
+                            Acceso inmediato para todos los usuarios del GLM Coding Plan (Lite/Pro/Max).
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Pendiente</div>
+                        <div class="timeline-content">
+                            <strong>Release Open Source</strong><br>
+                            Pesos del modelo serán liberados bajo licencia MIT (timeline no especificado).
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔧 Especificaciones Técnicas (GLM-5 Base)</h2>
+                <table class="specs-table">
+                    <tr>
+                        <th>Característica</th>
+                        <th>Detalle</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Parámetros</strong></td>
+                        <td>744B (foundation model)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Especialización</strong></td>
+                        <td>Coding & Agent Scenarios</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Context Window</strong></td>
+                        <td>200,000 tokens</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max Output</strong></td>
+                        <td>131,072 tokens</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rendimiento Coding</strong></td>
+                        <td>~Claude Opus 4.5 level</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Licencia</strong></td>
+                        <td>MIT (Open Source)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Precio API</strong></td>
+                        <td>$0.72 / $2.30 per 1M tokens (in/out)</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>💻 Viabilidad Local (Hardware Consumer)</h2>
+                <div class="hardware-check">
+                    <div class="hardware-item">
+                        <span><strong>GLM-5 Full (744B)</strong></span>
+                        <span class="viability no">❌ Imposible</span>
+                    </div>
+                    <div class="hardware-item">
+                        <span><strong>GLM-5.1 (tamaño desconocido)</strong></span>
+                        <span class="viability maybe">❓ Pendiente</span>
+                    </div>
+                    <div class="hardware-item">
+                        <span><strong>Versión Flash (hipotética 7B-13B)</strong></span>
+                        <span class="viability yes">✅ Posible (6-12GB RAM)</span>
+                    </div>
+                    <div class="hardware-item">
+                        <span><strong>Versión Mediana (hipotética 30B-70B)</strong></span>
+                        <span class="viability maybe">⚠️ Requiere 16-32GB RAM + GPU</span>
+                    </div>
+                    <div class="hardware-item">
+                        <span><strong>GGUF Q4_K_M (7B)</strong></span>
+                        <span class="viability yes">✅ ~4-6GB RAM</span>
+                    </div>
+                </div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 15px;">
+                    <strong>Nota:</strong> Los modelos grandes pueden ejecutarse localmente con llama.cpp + cuantización GGUF. La viabilidad depende del tamaño final de GLM-5.1 y si se liberan versiones distilled/Flash.
+                </p>
+            </div>
+            
+            <div class="section">
+                <h2>🎯 Plan de Acceso</h2>
+                <div class="info-grid">
+                    <div class="info-card" style="border-left-color: #28a745;">
+                        <h3>🟢 Inmediato (API)</h3>
+                        <p><strong>GLM Coding Plan</strong></p>
+                        <p style="font-size: 0.85rem; margin-top: 8px;">
+                            Lite: ~$3-10/mes<br>
+                            Pro: ~$30-50/mes<br>
+                            Max: ~$100+/mes
+                        </p>
+                    </div>
+                    <div class="info-card" style="border-left-color: #ffc107;">
+                        <h3>🟡 Próximamente (Open Source)</h3>
+                        <p><strong>Pesos del modelo</strong></p>
+                        <p style="font-size: 0.85rem; margin-top: 8px;">
+                            Timeline no especificado<br>
+                            Licencia MIT esperada<br>
+                            Monitorear GitHub/Hugging Face
+                        </p>
+                    </div>
+                    <div class="info-card" style="border-left-color: #17a2b8;">
+                        <h3>🔵 Monitoreo</h3>
+                        <p><strong>Fuentes oficiales</strong></p>
+                        <p style="font-size: 0.85rem; margin-top: 8px;">
+                            GitHub: zai-org/GLM-5<br>
+                            Hugging Face: zai-org<br>
+                            X: @LiZixuan_Zhipu
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>📊 Generado automáticamente por Cocobot | Datos actualizados: 27 de marzo, 2026</p>
+            <p style="margin-top: 8px;">
+                Fuentes: <a href="https://github.com/zai-org/GLM-5" target="_blank">GitHub</a> • 
+                <a href="https://huggingface.co/zai-org" target="_blank">Hugging Face</a> • 
+                <a href="https://z.ai" target="_blank">Z.ai Official</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

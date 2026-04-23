@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Crisis en Irán 2026 - Actualización</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0c1a2e 0%, #1a2639 50%, #1e3a5f 100%);
+            min-height: 100vh; color: #e0e0e0; padding: 0;
+            line-height: 1.6;
+        }
+        .hamburger-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: rgba(231, 76, 60, 0.9); backdrop-filter: blur(10px);
+            border: none; color: #fff;
+            padding: 12px 18px; border-radius: 8px; cursor: pointer;
+            font-size: 1.5rem; font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+        .hamburger-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        .nav-menu {
+            position: fixed; top: 70px; right: 20px; z-index: 999;
+            background: rgba(12, 26, 46, 0.98); backdrop-filter: blur(20px);
+            padding: 20px; border-radius: 12px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            display: none; min-width: 250px;
+        }
+        .nav-menu.active { display: block; animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu a {
+            display: block; padding: 12px 15px; margin: 5px 0;
+            color: #bdc3c7; text-decoration: none; border-radius: 6px;
+            transition: all 0.2s ease; border-left: 3px solid transparent;
+            font-size: 0.95rem;
+        }
+        .nav-menu a:hover {
+            background: rgba(231, 76, 60, 0.2); color: #fff;
+            border-left-color: #e74c3c; padding-left: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px 40px; }
+        header {
+            text-align: center; padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(149, 165, 166, 0.05) 100%);
+            border-radius: 20px; margin-bottom: 30px; border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        h1 {
+            font-size: 2.5rem; margin-bottom: 15px; color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .subtitle { font-size: 1.1rem; color: #95a5a6; margin-bottom: 15px; }
+        .date-badge {
+            display: inline-block; padding: 8px 16px; background: #e74c3c;
+            color: #fff; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+        }
+        .alert-banner {
+            background: linear-gradient(90deg, #c0392b, #e74c3c);
+            color: #fff; padding: 15px 20px; border-radius: 10px;
+            margin-bottom: 25px; font-weight: 600; text-align: center;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+        .alert-banner.urgent {
+            background: linear-gradient(90deg, #8e44ad, #9b59b6);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(142, 68, 173, 0.7); }
+        }
+        section {
+            background: rgba(255, 255, 255, 0.03); border-radius: 15px;
+            padding: 25px; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.1);
+            scroll-margin-top: 20px; transition: all 0.3s ease;
+        }
+        section:hover {
+            border-color: rgba(231, 76, 60, 0.5);
+            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.15);
+        }
+        h2 {
+            font-size: 1.6rem; color: #fff; margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 2px solid rgba(231, 76, 60, 0.3);
+            padding-bottom: 10px; flex-wrap: wrap;
+        }
+        h2 .icon { font-size: 1.8rem; }
+        h3 { font-size: 1.2rem; color: #ecf0f1; margin: 18px 0 10px; }
+        p { margin-bottom: 12px; color: #bdc3c7; }
+        .highlight {
+            background: rgba(231, 76, 60, 0.2); padding: 2px 8px;
+            border-radius: 4px; color: #fff; font-weight: 600;
+        }
+        .key-point {
+            background: rgba(149, 165, 166, 0.1); padding: 15px;
+            border-radius: 8px; margin: 15px 0; border-left: 4px solid #95a5a6;
+        }
+        .warning {
+            background: rgba(231, 76, 60, 0.15); padding: 15px;
+            border-radius: 8px; margin: 15px 0; border-left: 4px solid #e74c3c;
+            color: #ecf0f1;
+        }
+        .warning.urgent {
+            background: rgba(142, 68, 173, 0.2);
+            border-left-color: #8e44ad;
+            animation: pulse 2s infinite;
+        }
+        .info-box {
+            background: rgba(52, 152, 219, 0.1); padding: 15px;
+            border-radius: 8px; margin: 15px 0; border-left: 4px solid #3498db;
+        }
+        ul { margin: 15px 0; padding-left: 25px; }
+        li { margin-bottom: 8px; color: #bdc3c7; }
+        .timeline {
+            position: relative; padding-left: 30px; margin: 20px 0;
+        }
+        .timeline-item {
+            position: relative; padding: 15px; margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.02); border-radius: 8px;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -25px; top: 20px;
+            width: 12px; height: 12px; background: #e74c3c;
+            border-radius: 50%; border: 2px solid #fff;
+        }
+        .timeline-item.urgent::before {
+            background: #8e44ad;
+        }
+        .opinion-section {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.15) 0%, rgba(192, 57, 43, 0.1) 100%);
+            border: 2px solid rgba(231, 76, 60, 0.4);
+        }
+        .greeting {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.05) 100%);
+            border: 2px solid rgba(52, 152, 219, 0.4);
+            text-align: center; padding: 35px;
+        }
+        .greeting h2 { justify-content: center; }
+        .friends-list {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .friend-badge {
+            background: rgba(52, 152, 219, 0.2); padding: 10px 20px;
+            border-radius: 25px; color: #fff; font-weight: 600;
+            border: 1px solid rgba(52, 152, 219, 0.4);
+        }
+        .friend-badge.warning {
+            background: rgba(231, 122, 33, 0.3);
+            border-color: rgba(231, 122, 33, 0.5);
+        }
+        .friend-badge.critical {
+            background: rgba(142, 68, 173, 0.4);
+            border-color: rgba(142, 68, 173, 0.6);
+            animation: pulse 2s infinite;
+        }
+        .regional-alert {
+            background: linear-gradient(135deg, rgba(231, 122, 33, 0.15) 0%, rgba(211, 84, 0, 0.1) 100%);
+            border: 2px solid rgba(231, 122, 33, 0.4);
+            border-left: 4px solid #e7751d;
+        }
+        .regional-alert.critical {
+            background: linear-gradient(135deg, rgba(142, 68, 173, 0.2) 0%, rgba(155, 89, 182, 0.15) 100%);
+            border-color: rgba(142, 68, 173, 0.5);
+            border-left-color: #8e44ad;
+        }
+        .sources-section {
+            background: rgba(46, 204, 113, 0.05);
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+        .source-item {
+            display: flex; gap: 15px; align-items: flex-start;
+            margin-bottom: 12px; padding: 12px; background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+        }
+        .source-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .source-info { flex: 1; }
+        .source-title { font-weight: 600; color: #fff; margin-bottom: 4px; }
+        .source-url { font-size: 0.85rem; color: #7f8c8d; }
+        .source-url a { color: #3498db; text-decoration: none; }
+        .source-url a:hover { text-decoration: underline; }
+        footer {
+            text-align: center; padding: 30px 20px; color: #7f8c8d;
+            font-size: 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+        .cat-note {
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; margin-top: 15px; color: #95a5a6; font-style: italic;
+        }
+        .casualty-box {
+            background: rgba(192, 57, 43, 0.2); padding: 20px;
+            border-radius: 10px; margin: 15px 0; border-left: 5px solid #c0392b;
+            color: #fff; font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .container { padding: 70px 15px 30px; }
+            section { padding: 20px; }
+            .nav-menu { right: 15px; min-width: 220px; }
+            .hamburger-btn { top: 15px; right: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger-btn" onclick="toggleMenu()" title="Menú">☰</button>
+    
+    <div class="nav-menu" id="navMenu">
+        <a href="#situacion-actual">📊 Situación Actual</a>
+        <a href="#regional-impact">🏢 Impacto Regional</a>
+        <a href="#cronologia">⏰ Cronología</a>
+        <a href="#ataques">💥 Ataques</a>
+        <a href="#implicaciones-economicas">🛢️ Impacto Económico</a>
+        <a href="#proyecciones">🔮 Escenarios</a>
+        <a href="#opinion">💭 Opinión</a>
+        <a href="#fuentes">📚 Fuentes</a>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🌍 Crisis en Irán 2026</h1>
+            <p class="subtitle">Análisis situacional público - Oriente Medio</p>
+            <span class="date-badge">📅 05 de March de 2026 - ACTUALIZADO 09:30 HRS</span>
+        </header>
+
+        <div class="alert-banner urgent">
+            ⚠️ SITUACIÓN CRÍTICA ACTUALIZADA: Ataques activos, bajas confirmadas en EAU, Dubái dañado
+        </div>
+
+        <section id="situacion-actual">
+            <h2><span class="icon">📊</span> Situación Actual</h2>
+            <div class="warning urgent">
+                <strong>⚠️ ALERTA DE SEGURIDAD ACTUALIZADA:</strong> Ataques masivos de EE.UU. e Israel contra Irán. Muerte confirmada del líder supremo Alí Jameneí. Irán ha respondido con misiles. <strong>BAJAS CONFIRMADAS EN DUBÁI Y EAU.</strong>
+            </div>
+            
+            <div class="casualty-box">
+                📊 <strong>BAJAS CONFIRMADAS (Actualizado 09:30):</strong><br>
+                • Irán: 200+ muertos (ataques EE.UU./Israel)<br>
+                • EAU: 3 muertos, 58 heridos (misiles iraníes)<br>
+                • Israel: 8 muertos en Beit Shemesh
+            </div>
+            
+            <h3>Hechos Confirmados</h3>
+            <ul>
+                <li><strong>Muerte del Líder Supremo:</strong> Alí Jameneí (86 años) falleció en los ataques</li>
+                <li><strong>Operación "Furia Épica":</strong> Ofensiva conjunta con 200+ muertos</li>
+                <li><strong>Liderazgo decapitado:</strong> También murieron generales Pakpur y Shamkhani</li>
+                <li><strong>Respuesta iraní:</strong> Misiles contra Israel, EAU, Bahréin, Kuwait, Arabia Saudita y Catar</li>
+                <li><strong>Duelo nacional:</strong> Irán declaró 40 días de luto nacional</li>
+                <li><strong>Venganza prometida:</strong> Presidente Pezeshkian juró vengar a Jameneí</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Contexto:</strong> Primera vez que Israel asesina a un máximo dirigente en el poder de un Estado. Jameneí gobernaba desde 1989.
+            </div>
+        </section>
+
+        <section id="regional-impact" class="regional-alert critical">
+            <h2><span class="icon">🏢</span> Impacto Regional <span style="font-size:0.7em; background:#8e44ad; padding:3px 8px; border-radius:10px;">CRÍTICO</span></h2>
+            
+            <div class="warning urgent">
+                <strong>📍 ALERTA REGIONAL ACTUALIZADA:</strong> Países de Oriente Medio bajo ataque activo. <strong>DUBÁI Y EAU CON BAJAS CONFIRMADAS.</strong>
+            </div>
+
+            <h3>🔴 Países Afectados (Actualizado)</h3>
+            <ul>
+                <li><strong>🇦🇪 Emiratos Árabes Unidos (DUBÁI, Abu Dabi):</strong> <span style="color:#e74c3c; font-weight:700;">3 MUERTOS, 58 HERIDOS</span>. Incendio en muelle. DP World suspendió operaciones (36% del PIB de Dubái). Aeropuerto Internacional: Dañado. Burj Al Arab: Dañado.</li>
+                <li><strong>🇮🇱 Israel:</strong> Múltiples ciudades bajo alerta. <span style="color:#e74c3c; font-weight:700;">8 MUERTOS en Beit Shemesh</span>. Iron Dome en operación continua.</li>
+                <li><strong>🇶🇦 Catar:</strong> Alertas activas, instalaciones energéticas protegidas</li>
+                <li><strong>🇧🇭 Bahréin, 🇰🇼 Kuwait, 🇸🇦 Arabia Saudita:</strong> Protocolos de seguridad máximos</li>
+            </ul>
+
+            <div class="casualty-box" style="background: rgba(142, 68, 173, 0.2); border-left-color: #8e44ad;">
+                🚨 <strong>DUBAÍ - DAÑOS CONFIRMADOS (09:30):</strong><br>
+                • Puerto de Jebel Ali: Incendio en muelle<br>
+                • DP World: DP World suspendió operaciones (36% del PIB de Dubái)<br>
+                • Aeropuerto Internacional: Dañado<br>
+                • Burj Al Arab: Dañado<br>
+                • Barrios residenciales: Alertas de defensa aérea
+            </div>
+
+            <h3>Recomendaciones para Ciudadanos en la Región</h3>
+            <div class="key-point" style="border-left-color: #8e44ad;">
+                <ul>
+                    <li>🚨 <strong>SI ESTÁS EN DUBÁI/EAU:</strong> Mantente en zona segura, evita puerto Jebel Ali y aeropuerto</li>
+                    <li>✅ Mantente informado a través de canales oficiales locales</li>
+                    <li>✅ Evita áreas cercanas a bases militares o instalaciones gubernamentales</li>
+                    <li>✅ Ten listo un plan de emergencia y puntos de encuentro</li>
+                    <li>✅ Sigue instrucciones de las autoridades locales</li>
+                    <li>✅ Mantén comunicación con familiares y embajadas</li>
+                    <li>✅ Ten a mano documentos importantes y dinero en efectivo</li>
+                </ul>
+            </div>
+
+            <h3>Impacto en Centros Económicos</h3>
+            <ul>
+                <li><strong>Dubai:</strong> <span style="color:#e74c3c; font-weight:700;">CRÍTICO</span> - Centro financiero bajo presión, Jebel Ali detenido</li>
+                <li><strong>Comercio:</strong> Mercados financieros en caída, fuga de capitales</li>
+                <li><strong>Transporte:</strong> Vuelos cancelados (Dubái, Bahréin)</li>
+                <li><strong>Turismo:</strong> Protocolos máximos en hoteles y atracciones</li>
+            </ul>
+        </section>
+
+        <section id="cronologia">
+            <h2><span class="icon">⏰</span> Cronología del Conflicto</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-time">Viernes 28 Feb - 20:00 hrs</span>
+                    <strong>Inicio:</strong> EE.UU. e Israel lanzan ataques coordinados contra Irán
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">Viernes 28 Feb - 21:30 hrs</span>
+                    <strong>Muerte confirmada:</strong> Trump anuncia fallecimiento de Jameneí
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">Sábado 1 Mar - 02:00 hrs</span>
+                    <strong>Venganza:</strong> Irán promete "respuesta aplastante"
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">Sábado 1 Mar - Amanecer</span>
+                    <strong>Ataques:</strong> Misiles iraníes contra 27 bases de EE.UU. y países de la región
+                </div>
+                <div class="timeline-item urgent">
+                    <span class="timeline-time">Domingo 1 Mar - 08:00 hrs</span>
+                    <strong>Alertas:</strong> Continúan en Israel, EAU y países de la región
+                </div>
+                <div class="timeline-item urgent">
+                    <span class="timeline-time">Jueves 05 de Marzo - 09:30 hrs (ACTUAL)</span>
+                    <strong>BAJAS CONFIRMADAS:</strong> 3 muertos, 58 heridos en EAU. Dubái dañado. 8 muertos en Israel. Irán declara 40 días de luto.
+                </div>
+            </div>
+        </section>
+
+        <section id="ataques">
+            <h2><span class="icon">💥</span> Ataques y Respuestas</h2>
+            
+            <h3>Objetivos de los Ataques Iraníes</h3>
+            <ul>
+                <li>27 bases militares estadounidenses en Oriente Próximo</li>
+                <li>Objetivos en Israel (Jerusalén, Beit Shemesh y otras ciudades)</li>
+                <li><strong>🇦🇪 Emiratos Árabes Unidos (Dubái, Abu Dabi):</strong> Puerto Jebel Ali, aeropuerto, Burj Al Arab</li>
+                <li>Bahréin, Kuwait, Arabia Saudita y Catar</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Defensas Activadas:</strong> Iron Dome (Israel), sistemas Patriot (EE.UU.), y defensas aéreas regionales han interceptado múltiples misiles.
+            </div>
+
+            <h3>Amenazas de Trump</h3>
+            <p>El presidente estadounidense advirtió con golpear Irán con "una fuerza nunca antes vista" si Teherán continúa los ataques.</p>
+        </section>
+
+        <section id="implicaciones-economicas">
+            <h2><span class="icon">🛢️</span> Impacto Económico</h2>
+            
+            <div class="warning">
+                <strong>ALERTA DE MERCADOS:</strong> El conflicto abre una "caja de Pandora" energética.
+            </div>
+
+            <h3>Precio del Petróleo</h3>
+            <ul>
+                <li><strong>Actual:</strong> Brent a <span class="highlight">$72-73</span></li>
+                <li><strong>Riesgo:</strong> Podría superar <span class="highlight">$100+</span> si Ormuz se bloquea</li>
+                <li><strong>Aumento 2026:</strong> +20% respecto al año anterior</li>
+            </ul>
+
+            <h3>Estrecho de Ormuz</h3>
+            <div class="info-box">
+                <strong>Dato Crítico:</strong> Irán ha bloqueado el Estrecho de Ormuz (20% del petróleo mundial transita por aquí).
+            </div>
+
+            <h3>Impacto Regional</h3>
+            <ul>
+                <li>Centros financieros bajo presión</li>
+                <li>Posible fuga de capitales temporal</li>
+                <li>Sector turismo afectado</li>
+                <li>Comercio marítimo en riesgo</li>
+                <li><strong>Dubái:</strong> Jebel Ali detenido (36% del PIB)</li>
+            </ul>
+        </section>
+
+        <section id="proyecciones">
+            <h2><span class="icon">🔮</span> Escenarios Probables</h2>
+            
+            <h3>Escenario 1: Guerra Prolongada (50%)</h3>
+            <div class="warning">
+                Ataques continuos, proxies activados, Ormuz bloqueado parcialmente, petróleo $90-120
+            </div>
+
+            <h3>Escenario 2: Colapso del Régimen (30%)</h3>
+            <div class="info-box">
+                Vacío de poder, inestabilidad interna, intervención internacional
+            </div>
+
+            <h3>Escenario 3: Escalada Controlada (20%)</h3>
+            <div class="key-point">
+                Objetivos logrados sin desestabilización total, petróleo $80-90
+            </div>
+        </section>
+
+        <section id="opinion" class="opinion-section">
+            <h2><span class="icon">💭</span> Opinión del Analista</h2>
+            
+            <p>Esta crisis es un <span class="highlight">punto de inflexión histórico</span>. La muerte de Jameneí podría reconfigurar Oriente Medio por décadas.</p>
+
+            <h3>Puntos Críticos</h3>
+            <ul>
+                <li><strong>Decapitación estratégica:</strong> Operación de inteligencia extraordinaria</li>
+                <li><strong>Riesgo de escalada:</strong> Irán promete venganza pero su mando está debilitado</li>
+                <li><strong>Vacío de poder:</strong> Transición crítica en Irán</li>
+                <li><strong>Bajas en aliados:</strong> EAU e Israel confirmando muertos</li>
+            </ul>
+
+            <div class="warning">
+                <strong>Advertencia:</strong> El mayor riesgo es la <span class="highlight">incertidumbre</span>. Un Irán en transición es impredecible.
+            </div>
+
+            <p><strong>Pronóstico:</strong> Las próximas <span class="highlight">24-48 horas</span> serán determinantes.</p>
+
+            <div class="cat-note">
+                <span>🐱</span>
+                <span>Cocobot: Análisis basado en fuentes verificadas. Situación en evolución. Actualizado 09:30.</span>
+            </div>
+        </section>
+
+        <section id="fuentes" class="sources-section">
+            <h2><span class="icon">📚</span> Fuentes</h2>
+            
+            <div class="source-item">
+                <span class="source-icon">📰</span>
+                <div class="source-info">
+                    <div class="source-title">EL PAÍS</div>
+                    <div class="source-url"><a href="https://elpais.com" target="_blank">elpais.com</a></div>
+                </div>
+            </div>
+            <div class="source-item">
+                <span class="source-icon">📰</span>
+                <div class="source-info">
+                    <div class="source-title">BBC News Mundo</div>
+                    <div class="source-url"><a href="https://www.bbc.com/mundo" target="_blank">bbc.com/mundo</a></div>
+                </div>
+            </div>
+            <div class="source-item">
+                <span class="source-icon">📰</span>
+                <div class="source-info">
+                    <div class="source-title">The New York Times</div>
+                    <div class="source-url"><a href="https://www.nytimes.com" target="_blank">nytimes.com</a></div>
+                </div>
+            </div>
+            <div class="source-item">
+                <span class="source-icon">📰</span>
+                <div class="source-info">
+                    <div class="source-title">Al Jazeera</div>
+                    <div class="source-url"><a href="https://www.aljazeera.com" target="_blank">aljazeera.com</a></div>
+                </div>
+            </div>
+            <div class="source-item">
+                <span class="source-icon">📊</span>
+                <div class="source-info">
+                    <div class="source-title">Reuters</div>
+                    <div class="source-url"><a href="https://www.reuters.com" target="_blank">reuters.com</a></div>
+                </div>
+            </div>
+            <div class="source-item">
+                <span class="source-icon">📰</span>
+                <div class="source-info">
+                    <div class="source-title">Arab News</div>
+                    <div class="source-url"><a href="https://www.arabnews.com" target="_blank">arabnews.com</a></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Análisis Situacional Público - Crisis en Irán 2026</strong></p>
+            <p style="margin-top: 8px;">Cocobot 🐱 | 05 de March de 2026 - <span style="color:#e74c3c; font-weight:700;">ACTUALIZADO 09:30 HRS</span></p>
+            <p style="margin-top: 12px; font-size: 0.8rem;">
+                ⚠️ Situación en evolución. Consultar fuentes oficiales.
+            </p>
+            <div class="cat-note" style="margin-top: 15px;">
+                <span>🐱</span>
+                <span>Información pública - Análisis basado en fuentes verificadas</span>
+                <span>🐱</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('.hamburger-btn');
+            menu.classList.toggle('active');
+            btn.textContent = menu.classList.contains('active') ? '✕' : '☰';
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navMenu').classList.remove('active');
+                    document.querySelector('.hamburger-btn').textContent = '☰';
+                }
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('.hamburger-btn');
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.remove('active');
+                btn.textContent = '☰';
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>

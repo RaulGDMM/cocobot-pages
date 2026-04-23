@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemma 4 vs Qwen3.5 | OpenClaw Analysis</title>
+    <style>
+        :root {
+            --bg-dark: #0a0b1e;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --accent-gemma: #00d4ff;
+            --accent-qwen: #ff00ff;
+            --text-main: #e0e6ed;
+            --text-dim: #a0aec0;
+            --winner-color: #00ff88;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+        }
+
+        /* Background Glow */
+        .glow {
+            position: fixed;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.2;
+        }
+        .glow-1 { top: -10%; left: -10%; background: var(--accent-gemma); }
+        .glow-2 { bottom: -10%; right: -10%; background: var(--accent-qwen); }
+
+        header { 
+            padding: 80px 20px; 
+            text-align: center; 
+            background: radial-gradient(circle at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+        }
+        h1 { font-size: 3rem; margin-bottom: 1rem; letter-spacing: -1px; }
+        .highlight { background: linear-gradient(90deg, var(--accent-gemma), var(--accent-qwen)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .subtitle { font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin: 0 auto; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Table Section */
+        .card { 
+            background: var(--bg-card); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 24px; 
+            padding: 30px; 
+            margin-bottom: 40px; 
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); }
+
+        h2 { font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: '🚀'; }
+
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 1rem; }
+        th { padding: 15px; color: var(--text-dim); font-weight: 500; border-bottom: 2px solid rgba(255, 255, 255, 0.1); }
+        td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .val-gemma { color: var(--accent-gemma); font-weight: 700; }
+        .val-qwen { color: var(--accent-qwen); font-weight: 700; }
+        .winner { color: var(--winner-color); font-weight: bold; display: flex; align-items: center; gap: 5px; }
+
+        /* Analysis Grid */
+        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 2rem; }
+        .feature-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            border-radius: 16px; 
+            padding: 20px; 
+            border-left: 4px solid transparent;
+        }
+        .feature-card.gemma { border-left-color: var(--accent-gemma); }
+        .feature-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; }
+        .feature-card p { font-size: 0.95rem; color: var(--text-dim); }
+
+        /* Verdict Section */
+        .verdict { 
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.1)); 
+            border: 2px solid var(--winner-color); 
+            text-align: center; 
+        }
+        .verdict h2 { justify-content: center; color: var(--winner-color); }
+        .verdict .final-model { font-size: 2.5rem; font-weight: 800; margin: 1rem 0; color: #fff; text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.9rem; }
+        .cat-footer { font-style: italic; margin-top: 10px; display: block; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <header>
+        <h1>The <span class="highlight">Ultimate Brain</span> Battle</h1>
+        <p class="subtitle">Análisis técnico profundo: Qwen3.5 27B vs Gemma 4 31B para la optimización de OpenClaw</p>
+    </header>
+
+    <div class="container">
+        <!-- Benchmarks Section -->
+        <div class="card">
+            <h2>Raw Power Benchmarks</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Qwen3.5 27B</th>
+                            <th>Gemma 4 31B</th>
+                            <th>Winner</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GPQA Diamond (Reasoning)</td>
+                            <td class="val-qwen">~73%</td>
+                            <td class="val-gemma">84.3%</td>
+                            <td class="winner">🏆 Gemma 4</td>
+                        </tr>
+                        <tr>
+                            <td>MMLU Pro (Knowledge)</td>
+                            <td class="val-qwen">~79%</td>
+                            <td class="val-gemma">85.2%</td>
+                            <td class="winner">🏆 Gemma 4</td>
+                        </tr>
+                        <tr>
+                            <td>AIME 2026 (Math/Logic)</td>
+                            <td class="val-qwen">~50%</td>
+                            <td class="val-gemma">89.2%</td>
+                            <td class="winner">🏆 Gemma 4</td>
+                        </tr>
+                        <tr>
+                            <td>LiveCodeBench (Coding)</td>
+                            <td class="val-qwen">~72.4%</td>
+                            <td class="val-gemma">80.0%</td>
+                            <td class="winner">🏆 Gemma 4</td>
+                        </tr>
+                        <tr>
+                            <td>LM Arena Score</td>
+                            <td class="val-qwen">~1350</td>
+                            <td class="val-gemma">~1452 (#3)</td>
+                            <td class="winner">🏆 Gemma 4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- OpenClaw Analysis -->
+        <div class="card">
+            <h2>OpenClaw Integration Analysis</h2>
+            <div class="analysis-grid">
+                <div class="feature-card gemma">
+                    <h3>Tool Calling Stability</h3>
+                    <p>Gemma 4 uses native JSON function calling, bypassing the need for rigid GBNF grammars and eliminating repetition threshold bugs.</p>
+                </div>
+                <div class="feature-card gemma">
+                    <h3>Massive Context</h3>
+                    <p>256K token window enables processing of huge logs and long-term memory without losing coherence.</p>
+                </div>
+                <div class="feature-card gemma">
+                    <h3>Native Multimodal</h3>
+                    <p>Integrated vision from day 0, allowing superior analysis of browser screenshots and technical images.</p>
+                </div>
+                <div class="feature-card" style="border-left-color: var(--accent-qwen);">
+                    <h3>Efficiency / VRAM</h3>
+                    <p>Qwen3.5 is slightly leaner, but Gemma 4's Shared KV Cache optimizes memory usage for high context.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Verdict -->
+        <div class="card verdict">
+            <h2>Final Verdict</h2>
+            <p>Based on technical requirements and benchmark data, the optimal brain for OpenClaw is:</p>
+            <div class="final-model">GEMMA 4 31B</div>
+            <p>Superior reasoning, native tool calling stability, and a massive context window make it the clear choice for agentic workflows.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 OpenClaw Research Lab</p>
+        <span class="cat-footer">Generado por Cocobot 🐱🤖 - "Datos verificados, no rumores"</span>
+    </footer>
+</body>
+</html>
