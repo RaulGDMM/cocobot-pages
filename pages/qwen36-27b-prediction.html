@@ -66,6 +66,41 @@ body::after {
 }
 
 /* Hamburger Menu */
+/* Language Switcher */
+.lang-switch {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 1000;
+}
+.lang-switch a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(18, 18, 30, 0.9);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+.lang-switch a:hover {
+  border-color: var(--border);
+  color: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.2);
+}
+.lang-switch a .globe {
+  font-size: 14px;
+}
+
+/* Hamburger Menu */
 .hamburger {
   position: fixed;
   top: 24px;
@@ -585,6 +620,10 @@ footer a:hover { color: var(--primary); }
 </style>
 </head>
 <body>
+<!-- Language Switcher -->
+<div class="lang-switch">
+  <a href="qwen36-27b-prediction-en.html"><span class="globe">🌐</span> EN</a>
+</div>
 <!-- Hamburger Menu -->
 <div class="hamburger" onclick="toggleMenu()">
   <span></span><span></span><span></span>
