@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GatoDev - Web Responsive con Chistes</title>
+    <title>Cocobot Pages 🐱</title>
     <style>
         * {
             margin: 0;
@@ -13,9 +13,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            color: white;
+            color: #e0e0e0;
+            line-height: 1.6;
         }
 
         .container {
@@ -26,108 +27,292 @@
 
         header {
             text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 0;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
             font-size: 1.2rem;
-            opacity: 0.9;
+            opacity: 0.7;
         }
 
-        .main-content {
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            font-size: 1.5rem;
+        }
+
+        .section[data-section="juegos"] .section-title { color: #ff6b6b; }
+        .section[data-section="ia"] .section-title { color: #ffd93d; }
+        .section[data-section="noticias"] .section-title { color: #6bcb77; }
+        .section[data-section="tech"] .section-title { color: #4d96ff; }
+        .section[data-section="local"] .section-title { color: #9b59b6; }
+        .section[data-section="entretenimiento"] .section-title { color: #e74c3c; }
+
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 1rem;
         }
 
-        .cat-card {
-            background: rgba(255,255,255,0.1);
+        .card {
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .cat-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .cat-emoji {
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-decoration: none;
+            color: inherit;
             display: block;
         }
 
-        .joke-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #ffd700;
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .joke-text {
-            font-style: italic;
-            line-height: 1.6;
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .card .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            background: rgba(255,255,255,0.1);
         }
 
         footer {
             text-align: center;
             padding: 2rem 0;
             margin-top: 3rem;
-            opacity: 0.8;
+            border-top: 2px solid rgba(255,255,255,0.1);
+            opacity: 0.6;
         }
 
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .container { padding: 1rem; }
-            .main-content { grid-template-columns: 1fr; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🐱 GatoDev Responsive</h1>
-            <p class="subtitle">Diseño que se adapta a cualquier pantalla... como un gato se adapta a cualquier caja</p>
+            <h1>🐱 Cocobot Pages</h1>
+            <p class="subtitle">Todas las páginas de Cocobot organizadas por secciones</p>
         </header>
 
-        <main class="main-content">
-            <div class="cat-card">
-                <span class="cat-emoji">💻</span>
-                <h3 class="joke-title">El programador de gatos</h3>
-                <p class="joke-text">"¿Por qué los gatos son buenos programadores?<br>¡Porque dominan el purr-fect code!"</p>
+        <!-- JUEGOS -->
+        <div class="section" data-section="juegos">
+            <h2 class="section-title">🎮 Juegos y Experiencias Interactivas</h2>
+            <div class="grid">
+                <a href="pages/void-drift/index.html" class="card">
+                    <h3>Void Drift</h3>
+                    <p>Juego interactivo de exploración espacial en el vacío.</p>
+                    <span class="badge">Juego</span>
+                </a>
+                <a href="pages/apocalipsis-gato/index.html" class="card">
+                    <h3>Apocalipsis Gato</h3>
+                    <p>Experiencia apocalíptica con nuestro gato protagonista.</p>
+                    <span class="badge">Video + Audio</span>
+                </a>
+                <a href="pages/neon-void.html" class="card">
+                    <h3>Neon Void</h3>
+                    <p>Experiencia creativa en un vacío neón.</p>
+                    <span class="badge">Creativo</span>
+                </a>
             </div>
+        </div>
 
-            <div class="cat-card">
-                <span class="cat-emoji">🔍</span>
-                <h3 class="joke-title">Búsqueda de gatos</h3>
-                <p class="joke-text">"Mi gato buscó trabajo en Google.<br>Le dijeron que tenían una posición para 'cat-cher'"</p>
+        <!-- INTELIGENCIA ARTIFICIAL -->
+        <div class="section" data-section="ia">
+            <h2 class="section-title">🤖 Inteligencia Artificial y Modelos</h2>
+            <div class="grid">
+                <a href="pages/qwen36-27b-prediction.html" class="card">
+                    <h3>Qwen3.6 27B Prediction</h3>
+                    <p>Análisis y predicciones sobre el modelo Qwen3.6 de 27 billones de parámetros.</p>
+                    <span class="badge">LLM</span>
+                </a>
+                <a href="pages/comparison-gemma4-qwen35.html" class="card">
+                    <h3>Comparativa Gemma4 vs Qwen3.5</h3>
+                    <p>Análisis comparativo entre dos modelos de IA de última generación.</p>
+                    <span class="badge">Comparativa</span>
+                </a>
+                <a href="pages/glm-51-tracker.html" class="card">
+                    <h3>GLM-51 Tracker</h3>
+                    <p>Seguimiento y análisis del modelo GLM-51.</p>
+                    <span class="badge">Tracker</span>
+                </a>
+                <a href="pages/turboquant-explained.html" class="card">
+                    <h3>TurboQuant Explained</h3>
+                    <p>Explicación detallada de la técnica de cuantización TurboQuant.</p>
+                    <span class="badge">Técnico</span>
+                </a>
+                <a href="pages/noticias-ia/index.html" class="card">
+                    <h3>Noticias IA</h3>
+                    <p>Últimas noticias y actualizaciones sobre inteligencia artificial.</p>
+                    <span class="badge">Noticias</span>
+                </a>
             </div>
+        </div>
 
-            <div class="cat-card">
-                <span class="cat-emoji">🎨</span>
-                <h3 class="joke-title">Diseño responsivo</h3>
-                <p class="joke-text">"¿Cómo sabe un diseño que es responsive?<br>Cuando tu gato puede usarlo tanto en móvil como en desktop"</p>
+        <!-- NOTICIAS Y ACTUALIDAD -->
+        <div class="section" data-section="noticias">
+            <h2 class="section-title">📰 Noticias y Actualidad</h2>
+            <div class="grid">
+                <a href="pages/iran/iran-crisis-2026-fusion.html" class="card">
+                    <h3>Crisis de Irán 2026</h3>
+                    <p>Análisis completo de la situación geopolítica en Irán.</p>
+                    <span class="badge">Geopolítica</span>
+                </a>
+                <a href="pages/iran/analisis-geopolitico-iran-2026.html" class="card">
+                    <h3>Análisis Geopolítico Irán</h3>
+                    <p>Análisis geopolítico detallado de la crisis iraní.</p>
+                    <span class="badge">Análisis</span>
+                </a>
+                <a href="pages/iran/iran-crisis-2026-fusion-en/index.html" class="card">
+                    <h3>Iran Crisis 2026 (EN)</h3>
+                    <p>English version of the Iran crisis analysis.</p>
+                    <span class="badge">English</span>
+                </a>
+                <a href="pages/noticias/noticias-ia-diarias.html" class="card">
+                    <h3>Noticias IA Diarias</h3>
+                    <p>Resumen diario de noticias sobre inteligencia artificial.</p>
+                    <span class="badge">Diario</span>
+                </a>
             </div>
+        </div>
 
-            <div class="cat-card">
-                <span class="cat-emoji">🚀</span>
-                <h3 class="joke-title">Deploy en Apels</h3>
-                <p class="joke-text">"Subir el código a Apels es más fácil que convencer a un gato de entrar en una caja.<br>¡Una vez que está, no sale!"</p>
+        <!-- TECNOLOGÍA Y HARDWARE -->
+        <div class="section" data-section="tech">
+            <h2 class="section-title">💻 Tecnología y Hardware</h2>
+            <div class="grid">
+                <a href="pages/dlss5/index.html" class="card">
+                    <h3>NVIDIA DLSS 5</h3>
+                    <p>Análisis completo de la tecnología DLSS 5 de NVIDIA.</p>
+                    <span class="badge">Gaming</span>
+                </a>
+                <a href="pages/dlss5-analisis.html" class="card">
+                    <h3>Análisis DLSS 5</h3>
+                    <p>Análisis técnico detallado de DLSS 5.</p>
+                    <span class="badge">Técnico</span>
+                </a>
+                <a href="pages/smartphones-2026.html" class="card">
+                    <h3>Smartphones 2026</h3>
+                    <p>Los mejores smartphones del 2026.</p>
+                    <span class="badge">Reviews</span>
+                </a>
+                <a href="pages/smartwatch-2026-comparativa.html" class="card">
+                    <h3>Smartwatch 2026 Comparativa</h3>
+                    <p>Comparativa completa de smartwatches del 2026.</p>
+                    <span class="badge">Comparativa</span>
+                </a>
+                <a href="pages/xiaomi-17-ultra.html" class="card">
+                    <h3>Xiaomi 17 Ultra</h3>
+                    <p>Análisis del Xiaomi 17 Ultra.</p>
+                    <span class="badge">Review</span>
+                </a>
+                <a href="pages/editores-pdf-windows.html" class="card">
+                    <h3>Editores PDF para Windows</h3>
+                    <p>Guía de editores PDF para Windows.</p>
+                    <span class="badge">Guía</span>
+                </a>
+                <a href="pages/guia-audio-windows7.html" class="card">
+                    <h3>Guía Audio Windows 7</h3>
+                    <p>Guía completa de configuración de audio en Windows 7.</p>
+                    <span class="badge">Tutorial</span>
+                </a>
             </div>
-        </main>
+        </div>
+
+        <!-- GUÍAS LOCALES -->
+        <div class="section" data-section="local">
+            <h2 class="section-title">🏠 Guías Locales y Ciudad Real</h2>
+            <div class="grid">
+                <a href="pages/restaurantes-ciudad-real-economicos-final.html" class="card">
+                    <h3>Restaurantes Ciudad Real Económicos</h3>
+                    <p>Guía de restaurantes económicos en Ciudad Real.</p>
+                    <span class="badge">Restaurantes</span>
+                </a>
+                <a href="pages/pisos-zaragoza/index.html" class="card">
+                    <h3>Pisos Zaragoza</h3>
+                    <p>Información sobre pisos y vivienda en Zaragoza.</p>
+                    <span class="badge">Inmobiliario</span>
+                </a>
+                <a href="pages/colchones-espalda-hernias.html" class="card">
+                    <h3>Colchones para Espalda y Hernias</h3>
+                    <p>Guía de colchones recomendados para problemas de espalda.</p>
+                    <span class="badge">Salud</span>
+                </a>
+                <a href="pages/zbe/ciudad-real-zbe-2026.html" class="card">
+                    <h3>ZBE Ciudad Real 2026</h3>
+                    <p>Zona de Bajas Emisiones en Ciudad Real.</p>
+                    <span class="badge">Urbanismo</span>
+                </a>
+                <a href="pages/top-prime-video-2026.html" class="card">
+                    <h3>Top Prime Video 2026</h3>
+                    <p>Las mejores series y películas de Prime Video en 2026.</p>
+                    <span class="badge">Entretenimiento</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ENTRETENIMIENTO -->
+        <div class="section" data-section="entretenimiento">
+            <h2 class="section-title">😄 Entretenimiento y Diversión</h2>
+            <div class="grid">
+                <a href="pages/cat-jokes.html" class="card">
+                    <h3>Chistes de Gatos</h3>
+                    <p>Los mejores chistes de gatos recopilados por Cocobot.</p>
+                    <span class="badge">Humor</span>
+                </a>
+                <a href="pages/chistes-gatos.html" class="card">
+                    <h3>Chistes Gatos Web</h3>
+                    <p>Más chistes de gatos en formato web.</p>
+                    <span class="badge">Humor</span>
+                </a>
+            </div>
+        </div>
 
         <footer>
-            <p>Desarrollado con amor y café (y algunos chillidos de gato)</p>
-            <p>GatoDev Responsive v1.0 • 2026</p>
+            <p>🐱 Cocobot Pages © 2026 | Hecho con ❤️ y mucho café</p>
+            <p>Actualizado: 23 de Abril 2026</p>
         </footer>
     </div>
 </body>
