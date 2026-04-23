@@ -661,12 +661,12 @@
             <div class="model-grid">
                 <div class="model-card gemma">
                     <span class="model-tag gemma">Google DeepMind — April 2, 2026</span>
-                    <h3>Gemma 4 31B ⭐</h3>
-                    <p><strong>La revolución open-weight.</strong> GPQA Diamond 84.3%, LiveCodeBench 80%, AIME 2026 89.2%, Codeforces ELO 2,150. Apache 2.0. +330% mejora en matemáticas vs Gemma 3 27B.</p>
+                    <h3>Gemma 4 31B</h3>
+                    <p><strong>Mejor para escritura y reasoning.</strong> GPQA Diamond 84.3%, LiveCodeBench v6 80%, AIME 2026 89.2%, Codeforces ELO 2,150. Apache 2.0. #3 en LMArena global por preferencia de chat.</p>
                     <ul>
-                        <li class="strengths">Precio/parámetro increíble, multimodal nativo, Apache 2.0, on-device</li>
-                        <li class="weaknesses">31B = necesita 24GB+ VRAM, aún por debajo de frontier en coding complejo</li>
-                        <li class="potential">El mejor open-weight para la mayoría de tareas. #3 en LMArena global</li>
+                        <li class="strengths">Escritura/redacción excelente, reasoning profundo, Arena AI superior, matemáticas brutal, Apache 2.0</li>
+                        <li class="weaknesses">31B = necesita 24GB+ VRAM (más que Qwen 27B), NO publica SWE-bench (coding real), no optimizado para agentic</li>
+                        <li class="potential">Mejor open-weight para escritura, reasoning, matemáticas y chat general</li>
                     </ul>
                 </div>
 
@@ -682,13 +682,13 @@
                 </div>
 
                 <div class="model-card qwen">
-                    <span class="model-tag qwen">Alibaba — Actual</span>
-                    <h3>Qwen 3.6 27B</h3>
-                    <p><strong>El que tenemos ahora.</strong> Iteración sobre 3.5 con mejoras incrementales. Bueno para tareas diarias, QA, scripting, chatear.</p>
+                    <span class="model-tag qwen">Alibaba — Abril 2026 ⭐</span>
+                    <h3>Qwen 3.6 27B ⭐ MEJOR CODING LOCAL</h3>
+                    <p><strong>El rey del coding local.</strong> SWE-bench Verified <strong>77.2%</strong> (rivaliza con Claude Opus 4.5), Terminal-Bench 2.0 ~65%. 27B = menos VRAM que Gemma 31B. Linear attention = caché más eficiente.</p>
                     <ul>
-                        <li class="strengths">Local/instantáneo, gratis, privacidad total, buen enough</li>
-                        <li class="weaknesses">~60% rendimiento de Opus en coding, ~50% en reasoning</li>
-                        <li class="potential">Ideal para workflows donde la privacidad y velocidad importan</li>
+                        <li class="strengths">Coding agentic brutal (SWE 77.2%), 27B (menos VRAM), linear attention (caché eficiente), optimizado para agentic, supera a Qwen3.5-397B en coding</li>
+                        <li class="weaknesses">Escritura por debajo de Gemma 4, Arena AI por debajo de Gemma</li>
+                        <li class="potential">🏆 MEJOR OPCIÓN para coding local, agentic workflows y desarrollo</li>
                     </ul>
                 </div>
 
@@ -727,212 +727,233 @@
             </div>
         </section>
 
-        <!-- COMPARISON TABLE -->
+        <!-- COMPARISON TABLE UNIFIED -->
         <section id="tabla">
-            <h2><span class="icon">📋</span> Tabla Comparativa Completa</h2>
+            <h2><span class="icon">📋</span> Tabla Unificada: Frontier vs Open-Weight</h2>
+            <p>Todos los modelos juntos con los mismos benchmarks. Así se ve el gap real entre frontier y locales.</p>
 
-            <h3>Frontier Models</h3>
+            <div class="warning-box" style="margin-top: 0;">
+                <strong>⚠️ Nota importante:</strong> Los benchmarks no son exactamente comparables porque cada laboratorio usa scaffolds/agentes diferentes. SWE-bench Pro con scaffold propio vs sin scaffold puede variar 20+ puntos. Usa esto como referencia general, no como comparación absoluta.
+            </div>
+
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
                             <th>Modelo</th>
+                            <th>Tipo</th>
                             <th>SWE-bench Pro</th>
                             <th>SWE-bench Verified</th>
-                            <th>Terminal-Bench</th>
+                            <th>Terminal-Bench 2.0</th>
                             <th>GPQA Diamond</th>
                             <th>OSWorld</th>
-                            <th>Precio I/O</th>
-                            <th>Context</th>
+                            <th>Precio</th>
+                            <th>Params</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr style="background: rgba(217,119,87,0.08);">
                             <td><strong>Claude Mythos Preview</strong></td>
+                            <td><span class="model-tag claude">Frontier</span></td>
                             <td class="highlight-cell">77.8%</td>
                             <td class="highlight-cell">93.9%</td>
                             <td class="highlight-cell">82.0%</td>
                             <td class="highlight-cell">94.6%</td>
                             <td>—</td>
                             <td class="price">Preview</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(217,119,87,0.05);">
                             <td><strong>Claude Opus 4.7</strong></td>
+                            <td><span class="model-tag claude">Frontier</span></td>
                             <td class="highlight-cell">64.3%</td>
                             <td class="highlight-cell">87.6%</td>
                             <td>69.4%</td>
                             <td>94.2%</td>
                             <td>78.0%</td>
                             <td class="price">$5 / $25</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(16,163,127,0.05);">
                             <td><strong>GPT-5.5</strong></td>
+                            <td><span class="model-tag openai">Frontier</span></td>
                             <td>58.6%</td>
                             <td>~85%</td>
                             <td class="highlight-cell">82.7%</td>
                             <td>~93%</td>
                             <td class="highlight-cell">78.7%</td>
                             <td class="price">$5 / $30</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(16,163,127,0.03);">
                             <td>GPT-5.4</td>
+                            <td><span class="model-tag openai">Frontier</span></td>
                             <td>57.7%</td>
                             <td>~80%</td>
                             <td>76.9%</td>
                             <td>~91%</td>
                             <td>68.1%</td>
                             <td class="price">$2.50 / $15</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(217,119,87,0.03);">
                             <td>Claude Opus 4.6</td>
+                            <td><span class="model-tag claude">Frontier</span></td>
                             <td>53.4%</td>
                             <td>80.8%</td>
                             <td>65.4%</td>
                             <td>~92%</td>
                             <td>—</td>
                             <td class="price">$5 / $25</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(66,133,244,0.05);">
                             <td>Gemini 3.1 Pro</td>
+                            <td><span class="model-tag google">Frontier</span></td>
                             <td>54.2%</td>
                             <td>80.6%</td>
                             <td>68.5%</td>
                             <td>~91%</td>
                             <td>~60%</td>
                             <td class="price">$2 / $12</td>
-                            <td class="highlight-cell">2M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(217,119,87,0.02);">
                             <td>Claude Sonnet 4.6</td>
+                            <td><span class="model-tag claude">Frontier</span></td>
                             <td>—</td>
                             <td>79.6%</td>
                             <td>59.1%</td>
                             <td>92.8%</td>
-                            <td class="highlight-cell">72.5%</td>
+                            <td>72.5%</td>
                             <td class="price">$3 / $15</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(16,163,127,0.02);">
                             <td>GPT-5.3-Codex</td>
+                            <td><span class="model-tag openai">Frontier</span></td>
                             <td>—</td>
                             <td>—</td>
-                            <td class="highlight-cell">77.3%</td>
+                            <td>77.3%</td>
                             <td>—</td>
                             <td>64.7%</td>
                             <td class="price">$1.25 / $10</td>
-                            <td>1M</td>
+                            <td>???B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(16,163,127,0.02);">
                             <td>GPT-5.2 Thinking</td>
+                            <td><span class="model-tag openai">Frontier</span></td>
                             <td>—</td>
                             <td>80.0%</td>
                             <td>—</td>
                             <td class="highlight-cell">96.1%</td>
                             <td>—</td>
                             <td class="price">$1.75 / $14</td>
-                            <td class="highlight-cell">2M</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3>Open-Weight / Locales</h3>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Modelo</th>
-                            <th>GPQA Diamond</th>
-                            <th>LiveCodeBench</th>
-                            <th>AIME 2026</th>
-                            <th>Codeforces ELO</th>
-                            <th>Params</th>
-                            <th>Licencia</th>
-                            <th>Hardware</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Gemma 4 31B</strong></td>
-                            <td class="highlight-cell">84.3%</td>
-                            <td class="highlight-cell">80.0%</td>
-                            <td class="highlight-cell">89.2%</td>
-                            <td class="highlight-cell">2,150</td>
-                            <td>31B</td>
-                            <td>Apache 2.0</td>
-                            <td>24GB+ VRAM</td>
+                            <td>???B</td>
                         </tr>
                         <tr>
-                            <td><strong>Qwen 3.5 27B</strong></td>
-                            <td class="highlight-cell">85.8%</td>
+                            <td colspan="9" style="padding: 10px; border-bottom: 3px solid var(--border-color);"></td>
+                        </tr>
+                        <tr style="background: rgba(124,58,237,0.08);">
+                            <td><strong>Qwen 3.6 27B</strong></td>
+                            <td><span class="model-tag qwen">Open-Weight</span></td>
                             <td>—</td>
+                            <td>77.2%</td>
+                            <td>~65%</td>
+                            <td>~85%</td>
                             <td>—</td>
-                            <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
                             <td>27B</td>
-                            <td>Qwen</td>
-                            <td>24GB+ VRAM</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(124,58,237,0.05);">
+                            <td><strong>Qwen 3.5 27B</strong></td>
+                            <td><span class="model-tag qwen">Open-Weight</span></td>
+                            <td>—</td>
+                            <td>72.4%</td>
+                            <td>61.6%</td>
+                            <td>85.8%</td>
+                            <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
+                            <td>27B</td>
+                        </tr>
+                        <tr style="background: rgba(245,158,11,0.08);">
+                            <td><strong>Gemma 4 31B</strong></td>
+                            <td><span class="model-tag gemma">Open-Weight</span></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>84.3%</td>
+                            <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
+                            <td>31B</td>
+                        </tr>
+                        <tr style="background: rgba(245,158,11,0.05);">
                             <td>Gemma 4 26B MoE</td>
+                            <td><span class="model-tag gemma">Open-Weight</span></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
                             <td>79.2%</td>
                             <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
                             <td>26B-A4B</td>
-                            <td>Apache 2.0</td>
-                            <td>16GB+ VRAM</td>
                         </tr>
-                        <tr>
-                            <td>Qwen 3.6 27B</td>
-                            <td>~85%</td>
-                            <td>~75%</td>
-                            <td>~85%</td>
-                            <td>~2,000</td>
-                            <td>27B</td>
-                            <td>Qwen</td>
-                            <td>24GB+ VRAM</td>
+                        <tr style="background: rgba(124,58,237,0.03);">
+                            <td>Qwen3.5-122B-A10B</td>
+                            <td><span class="model-tag qwen">Open-Weight</span></td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
+                            <td>122B-A10B</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(0,102,255,0.05);">
                             <td>Llama 4 Maverick</td>
+                            <td><span class="model-tag meta">Open-Weight</span></td>
                             <td>—</td>
                             <td>—</td>
                             <td>—</td>
                             <td>—</td>
+                            <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
                             <td>17B-128E</td>
-                            <td>Llama 4</td>
-                            <td>24GB+ VRAM</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(0,102,255,0.03);">
                             <td>Llama 4 Scout</td>
+                            <td><span class="model-tag meta">Open-Weight</span></td>
                             <td>—</td>
                             <td>—</td>
                             <td>—</td>
+                            <td>74.3%</td>
                             <td>—</td>
+                            <td class="highlight-cell">Gratis</td>
                             <td>17B-16E</td>
-                            <td>Llama 4</td>
-                            <td>16GB+ VRAM</td>
                         </tr>
-                        <tr>
+                        <tr style="background: rgba(124,58,237,0.02);">
                             <td>Qwen3-Coder-Next</td>
+                            <td><span class="model-tag qwen">Open-Weight</span></td>
+                            <td>~37%</td>
+                            <td>~70%</td>
                             <td>—</td>
                             <td>—</td>
                             <td>—</td>
-                            <td>—</td>
-                            <td>MoE 3B active</td>
-                            <td>Qwen</td>
-                            <td>8GB+ VRAM</td>
+                            <td class="highlight-cell">Gratis</td>
+                            <td>MoE 3B</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="info-box">
-                <strong>📊 Sobre los benchmarks:</strong> SWE-bench Pro mide resolución real de issues de GitHub. SWE-bench Verified usa tareas curadas para evitar ambiguiedades. Terminal-Bench mide workflows CLI/DevOps. GPQA Diamond mide conocimiento experto. OSWorld mide uso de ordenador autónomo. LiveCodeBench mide coding en tiempo real.
+                <strong>📊 Sobre los benchmarks:</strong><br>
+                • <strong>SWE-bench Pro:</strong> Resolución real de issues de GitHub (el más difícil y realista)<br>
+                • <strong>SWE-bench Verified:</strong> Tareas curadas para evitar ambigüedades (más justo)<br>
+                • <strong>Terminal-Bench 2.0:</strong> Workflows CLI/DevOps autónomos<br>
+                • <strong>GPQA Diamond:</strong> Conocimiento experto a nivel PhD<br>
+                • <strong>OSWorld:</strong> Uso de ordenador autónomo (clicks, navegación, etc.)<br><br>
+                <strong>🔍 Lo que se ve en la tabla:</strong> El mejor open-weight (Qwen 3.6 27B, SWE 77.2%) está a ~10 puntos del mejor frontier (Opus 4.7, SWE 87.6%). En Terminal-Bench, Qwen 3.5 27B (61.6%) rivaliza con Opus 4.6 (65.4%). El gap se mantiene en ~10-15 puntos en coding, pero en reasoning (GPQA) Qwen llega a ~90% del rendimiento de Opus.
             </div>
         </section>
 
@@ -1069,11 +1090,18 @@
                     <p>🥉 GPT-5.3 Instant (barato pero limitado)</p>
                 </div>
                 <div class="verdict-card">
-                    <h4>🔒 Uso local / Open-weight</h4>
+                    <h4>🔒 Coding local / Desarrollo</h4>
+                    <p class="winner">🥇 Qwen 3.6 27B</p>
+                    <p>SWE-bench Verified 77.2% (rivaliza Opus 4.5), menos VRAM, caché eficiente</p>
+                    <p>🥈 Qwen3-Coder-Next (especializado agentic)</p>
+                    <p>🥉 Qwen 3.5 27B (SWE 72.4%, multilingüe)</p>
+                </div>
+                <div class="verdict-card">
+                    <h4>✍️ Escritura / Reasoning local</h4>
                     <p class="winner">🥇 Gemma 4 31B</p>
-                    <p>GPQA 84.3%, LiveCodeBench 80%, Apache 2.0</p>
-                    <p>🥈 Qwen 3.5 27B (GPQA 85.8%, multilingüe)</p>
-                    <p>🥉 Qwen3-Coder-Next (coding específico)</p>
+                    <p>GPQA 84.3%, Arena AI superior, AIME 89.2%, mejor redacción</p>
+                    <p>🥈 Qwen 3.5 27B (GPQA 85.8% pero menos natural)</p>
+                    <p>🥉 Gemma 4 26B MoE (más ligero)</p>
                 </div>
                 <div class="verdict-card">
                     <h4>🖥️ Computer Use / Control OS</h4>
@@ -1106,7 +1134,7 @@
             </div>
 
             <div class="success-box">
-                <strong>🎯 Mi recomendación personal:</strong> Para el 90% de desarrolladores, <strong>Claude Sonnet 4.6</strong> es el sweet spot: casi la calidad de Opus a 40% del precio. Si necesitas lo mejor absoluto en coding, sube a <strong>Opus 4.7</strong>. Si necesitas autonomía, ve a <strong>GPT-5.5</strong>. Si el presupuesto es ajustado, <strong>Gemini 3.1 Pro</strong> es imbatible. Si necesitas privacidad, <strong>Gemma 4 31B</strong> local.
+                <strong>🎯 Mi recomendación personal:</strong> Para el 90% de desarrolladores, <strong>Claude Sonnet 4.6</strong> es el sweet spot: casi la calidad de Opus a 40% del precio. Si necesitas lo mejor absoluto en coding, sube a <strong>Opus 4.7</strong>. Si necesitas autonomía, ve a <strong>GPT-5.5</strong>. Si el presupuesto es ajustado, <strong>Gemini 3.1 Pro</strong> es imbatible. Si necesitas coding local/privacidad, <strong>Qwen 3.6 27B</strong> (SWE 77.2%, menos VRAM). Si necesitas escritura/reasoning local, <strong>Gemma 4 31B</strong>.
             </div>
         </section>
 
