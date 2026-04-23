@@ -11,6 +11,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
@@ -19,10 +23,88 @@
             line-height: 1.6;
         }
 
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* HAMBURGER MENU */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTENT */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            padding-top: 5rem; /* Space for fixed navbar */
         }
 
         header {
@@ -48,6 +130,7 @@
 
         .section {
             margin-bottom: 3rem;
+            scroll-margin-top: 5rem; /* Offset for fixed navbar */
         }
 
         .section-title {
@@ -124,22 +207,73 @@
             opacity: 0.6;
         }
 
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
-            .container { padding: 1rem; }
+            .container { padding: 1rem; padding-top: 5rem; }
             .grid { grid-template-columns: 1fr; }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(15, 12, 41, 0.98);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                transition: right 0.3s ease;
+                gap: 1rem;
+                border-left: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-menu a {
+                font-size: 1.1rem;
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="#top" class="navbar-brand">🐱 Cocobot</a>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#juegos">🎮 Juegos</a></li>
+            <li><a href="#ia">🤖 IA</a></li>
+            <li><a href="#noticias">📰 Noticias</a></li>
+            <li><a href="#tech">💻 Tech</a></li>
+            <li><a href="#local">🏠 Local</a></li>
+            <li><a href="#entretenimiento">😄 Diversión</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" id="top">
         <header>
             <h1>🐱 Cocobot Pages</h1>
             <p class="subtitle">Todas las páginas de Cocobot organizadas por secciones</p>
         </header>
 
         <!-- JUEGOS -->
-        <div class="section" data-section="juegos">
+        <div class="section" data-section="juegos" id="juegos">
             <h2 class="section-title">🎮 Juegos y Experiencias Interactivas</h2>
             <div class="grid">
                 <a href="pages/void-drift/index.html" class="card">
@@ -161,7 +295,7 @@
         </div>
 
         <!-- INTELIGENCIA ARTIFICIAL -->
-        <div class="section" data-section="ia">
+        <div class="section" data-section="ia" id="ia">
             <h2 class="section-title">🤖 Inteligencia Artificial y Modelos</h2>
             <div class="grid">
                 <a href="pages/qwen36-27b-prediction.html" class="card">
@@ -193,7 +327,7 @@
         </div>
 
         <!-- NOTICIAS Y ACTUALIDAD -->
-        <div class="section" data-section="noticias">
+        <div class="section" data-section="noticias" id="noticias">
             <h2 class="section-title">📰 Noticias y Actualidad</h2>
             <div class="grid">
                 <a href="pages/iran/iran-crisis-2026-fusion.html" class="card">
@@ -220,7 +354,7 @@
         </div>
 
         <!-- TECNOLOGÍA Y HARDWARE -->
-        <div class="section" data-section="tech">
+        <div class="section" data-section="tech" id="tech">
             <h2 class="section-title">💻 Tecnología y Hardware</h2>
             <div class="grid">
                 <a href="pages/dlss5/index.html" class="card">
@@ -262,7 +396,7 @@
         </div>
 
         <!-- GUÍAS LOCALES -->
-        <div class="section" data-section="local">
+        <div class="section" data-section="local" id="local">
             <h2 class="section-title">🏠 Guías Locales y Ciudad Real</h2>
             <div class="grid">
                 <a href="pages/restaurantes-ciudad-real-economicos-final.html" class="card">
@@ -294,7 +428,7 @@
         </div>
 
         <!-- ENTRETENIMIENTO -->
-        <div class="section" data-section="entretenimiento">
+        <div class="section" data-section="entretenimiento" id="entretenimiento">
             <h2 class="section-title">😄 Entretenimiento y Diversión</h2>
             <div class="grid">
                 <a href="pages/cat-jokes.html" class="card">
@@ -315,5 +449,32 @@
             <p>Actualizado: 23 de Abril 2026</p>
         </footer>
     </div>
+
+    <script>
+        // HAMBURGER MENU TOGGLE
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // CLOSE MENU WHEN CLICKING A LINK
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // CLOSE MENU WHEN CLICKING OUTSIDE
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
