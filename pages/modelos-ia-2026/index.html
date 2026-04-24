@@ -187,14 +187,18 @@
             margin-bottom: 20px;
             font-size: 0.95rem;
         }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
             background: var(--surface);
-            border-radius: 12px;
-            overflow: hidden;
             font-size: 0.9rem;
+            min-width: 700px;
         }
         th {
             background: var(--surface2);
@@ -497,7 +501,7 @@
     <h2><span class="emoji">🏗️</span> Especificaciones Técnicas</h2>
     <p class="subtitle">Arquitectura, parámetros, context window y capacidades de cada modelo frontier.</p>
     
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Modelo</th>
@@ -592,7 +596,7 @@
                 <td><span class="badge">ACTIVO</span></td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="highlight-box">
         <h4>🔑 Innovaciones Clave de DeepSeek V4</h4>
@@ -610,7 +614,7 @@
         <p><strong>DeepSeek V4-Pro</strong> (1.6T params, 49B activos) y modelos similares chinos (MiniMax H1, Qwen3.5-397B) son <strong>open-weight</strong> pero requieren clusters de datacenter. No confundir con modelos consumer-runnable.</p>
     </div>
 
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Tier</th>
@@ -680,7 +684,7 @@
                 <td>$2M-10M+<br>(cluster)</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="highlight-box">
         <h4>💡 La trampa de "open-source"</h4>
@@ -693,7 +697,7 @@
     <h2><span class="emoji">💰</span> Comparativa de Precios</h2>
     <p class="subtitle">Precios API por millón de tokens (input/output). Actualizado a abril 2026.</p>
     
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Modelo</th>
@@ -770,7 +774,7 @@
                 <td>6x</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="verdict">
         <h4>⚠️ El GPT-5.4 Pro no tiene sentido económico</h4>
@@ -789,7 +793,7 @@
     <p class="subtitle">Benchmarks de generación de código, resolución de issues reales y competencias de programación.</p>
     
     <h3>SWE-bench & Code Generation</h3>
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Benchmark</th>
@@ -848,10 +852,10 @@
                 <td>—</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <h3>Coding Competitions</h3>
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Benchmark</th>
@@ -884,7 +888,7 @@
                 <td>64.8%</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="highlight-box">
         <h4>🏆 Coding Winner</h4>
@@ -897,7 +901,7 @@
     <h2><span class="emoji">🧠</span> Knowledge & Reasoning</h2>
     <p class="subtitle">Conocimiento general, razonamiento de nivel graduate y benchmarks científicos.</p>
     
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Benchmark</th>
@@ -963,7 +967,7 @@
                 <td>53.5%</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="highlight-box">
         <h4>🧠 Conocimiento Científico</h4>
@@ -976,7 +980,7 @@
     <h2><span class="emoji">📐</span> Matemáticas & Física</h2>
     <p class="subtitle">Benchmarks de razonamiento matemático, desde competiciones hasta investigación de nivel frontera.</p>
     
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Benchmark</th>
@@ -1026,7 +1030,7 @@
                 <td class="winner">96.1%</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="highlight-box">
         <h4>📐 Para Matemáticos y Físicos</h4>
@@ -1039,7 +1043,7 @@
     <h2><span class="emoji">✍️</span> Escritura Creativa & Redacción</h2>
     <p class="subtitle">Benchmarks de escritura, prosa creativa, instrucción-following y calidad literaria.</p>
     
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Benchmark</th>
@@ -1080,7 +1084,7 @@
                 <td>93</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="card-grid">
         <div class="card">
@@ -1121,7 +1125,7 @@
     <h2><span class="emoji">🤖</span> Agentic & Tool Use</h2>
     <p class="subtitle">Capacidades de agentes autónomos, uso de herramientas, investigación web y computer use.</p>
     
-    <table>
+    <div class="table-wrapper"><table>
         <thead>
             <tr>
                 <th>Benchmark</th>
@@ -1161,7 +1165,7 @@
                 <td>—</td>
             </tr>
         </tbody>
-    </table>
+    </table></div>
 
     <div class="highlight-box">
         <h4>🤖 Agentic Winner</h4>
@@ -1463,16 +1467,17 @@
 </div>
 
 <script>
-    // Smooth scroll for hamburger menu links
-    document.querySelectorAll('.menu-content a').forEach(link => {
+    // Smooth scroll for all nav links (desktop + hamburger)
+    document.querySelectorAll('.desktop-nav a, .menu-content a').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Close menu
-                document.getElementById('menu-toggle').checked = false;
             }
+            // Close hamburger menu if open
+            const toggle = document.getElementById('menu-toggle');
+            if (toggle) toggle.checked = false;
         });
     });
 
