@@ -269,14 +269,19 @@
             padding: 0;
         }
         .card ul li {
-            padding: 4px 0;
+            padding: 6px 0;
             font-size: 0.85rem;
             color: var(--text2);
         }
-        .card ul li::before {
-            content: "→ ";
-            color: var(--accent1);
-            font-weight: bold;
+        .card ul li a {
+            color: var(--accent2);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+        .card ul li a:hover {
+            color: var(--accent5);
+            border-bottom-color: var(--accent5);
         }
         .use-case-grid {
             display: grid;
@@ -1376,14 +1381,14 @@
     <h2><span class="emoji">📚</span> Fuentes</h2>
     <div class="card">
         <ul>
-            <li>DeepSeek V4 Technical Report — HuggingFace (24 abril 2026)</li>
-            <li>LM Council Benchmarks — Epoch AI (abril 2026)</li>
-            <li>BenchLM.ai — Best LLM for Writing 2026</li>
-            <li>MindStudio — GPT-5.4 vs Claude vs Gemini benchmarks</li>
-            <li>Spectrum AI Labs — GPT-5.4 vs Opus 4.7 vs Gemini comparison</li>
-            <li>OpenAI — GDPval benchmark results</li>
-            <li>Vellum — Opus 4.7 benchmark breakdown</li>
-            <li>LMSYS Chatbot Arena — Creative Writing & IF rankings</li>
+            <li><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noopener">DeepSeek V4 Technical Report — HuggingFace ↗</a></li>
+            <li><a href="https://lmcouncil.ai/benchmarks" target="_blank" rel="noopener">LM Council Benchmarks — Epoch AI ↗</a></li>
+            <li><a href="https://benchlm.ai/blog/posts/best-llm-writing" target="_blank" rel="noopener">BenchLM.ai — Best LLM for Writing 2026 ↗</a></li>
+            <li><a href="https://www.mindstudio.ai/blog/gpt-54-vs-claude-opus-46-vs-gemini-31-pro-benchmarks/" target="_blank" rel="noopener">MindStudio — GPT-5.4 vs Claude vs Gemini ↗</a></li>
+            <li><a href="https://spectrumailab.com/blog/gpt-5-4-vs-claude-opus-4-7-vs-gemini-3-1-pro-comparison-2026" target="_blank" rel="noopener">Spectrum AI Labs — GPT-5.4 vs Opus 4.7 vs Gemini ↗</a></li>
+            <li><a href="https://openai.com/index/gpt-5-4/" target="_blank" rel="noopener">OpenAI — GPT-5.4 & GDPval ↗</a></li>
+            <li><a href="https://www.vellum.ai/" target="_blank" rel="noopener">Vellum — Opus 4.7 benchmark breakdown ↗</a></li>
+            <li><a href="https://lmsys.org/" target="_blank" rel="noopener">LMSYS Chatbot Arena ↗</a></li>
         </ul>
     </div>
 </section>
