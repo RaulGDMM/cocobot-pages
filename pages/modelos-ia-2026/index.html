@@ -541,6 +541,75 @@
             <li><strong>3 modos de razonamiento:</strong> Non-think / Think High / Think Max</li>
         </ul>
     </div>
+
+    <div class="verdict">
+        <h4>⚠️ Open-Weight ≠ Corres en tu PC</h4>
+        <p><strong>DeepSeek V4-Pro</strong> (1.6T params, 49B activos) y modelos similares chinos (MiniMax H1, Qwen3.5-397B) son <strong>open-weight</strong> pero requieren clusters de datacenter. No confundir con modelos consumer-runnable.</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tier</th>
+                <th>Hardware Necesario</th>
+                <th>Modelos Ejemplo</th>
+                <th>Params Activos</th>
+                <th>Costo Hardware</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>🖥️ Consumer GPU</strong><br><small>1 GPU, escritorio</small></td>
+                <td>RTX 4090 (24GB)<br>Mac M4 Pro 64GB</td>
+                <td>
+                    Qwen 3.6 27B<br>
+                    Gemma 4 26B MoE<br>
+                    Llama 4 Scout<br>
+                    Phi 4 Mini
+                </td>
+                <td>3-27B</td>
+                <td>$1.5K-3K<br>(tu PC)</td>
+            </tr>
+            <tr>
+                <td><strong>🖥️ Workstation</strong><br><small>2-4 GPUs</small></td>
+                <td>2× RTX 4090 (48GB)<br>4× RTX 4090 (96GB)</td>
+                <td>
+                    Qwen 3.6 32B-A10B (quant)<br>
+                    Gemma 4 31B<br>
+                    Qwen3-Coder-Next 32B
+                </td>
+                <td>10-32B</td>
+                <td>$4K-8K<br>(build)</td>
+            </tr>
+            <tr>
+                <td><strong>🏢 Small Server</strong><br><small>8-16 GPUs</small></td>
+                <td>8× A100 80GB<br>8× H100</td>
+                <td>
+                    Qwen3.5-122B-A10B<br>
+                    Qwen 3.5 397B-A17B (quant)
+                </td>
+                <td>10-17B activos</td>
+                <td>$50K-150K<br>(rack)</td>
+            </tr>
+            <tr>
+                <td><strong>🏭 Datacenter</strong><br><small>32+ GPUs</small></td>
+                <td>32× H100 80GB<br>64× A100 80GB</td>
+                <td>
+                    <strong>DeepSeek V4-Pro</strong> (1.6T/49B)<br>
+                    <strong>DeepSeek V4-Flash</strong> (284B/13B)<br>
+                    MiniMax H1<br>
+                    Qwen3.5-397B-A17B (full)
+                </td>
+                <td>13-49B activos</td>
+                <td>$2M-10M+<br>(cluster)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight-box">
+        <h4>💡 La trampa de "open-source"</h4>
+        <p>Cuando se dice que DeepSeek V4, MiniMax o Qwen3.5-397B son "open-source", lo que significan es <strong>open-weights</strong>: puedes descargar los pesos, auditar el modelo, e incluso usarlo comercialmente. Pero <strong>necesitas infraestructura de datacenter</strong> para correrlos en producción. Para uso real en hardware consumer, los modelos de 7-32B son la opción práctica.</p>
+    </div>
 </section>
 
 <!-- PRECIOS -->
