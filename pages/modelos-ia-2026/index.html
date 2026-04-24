@@ -3,1210 +3,1201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧠 Panorama Modelos IA 2026 - Comparativa Completa</title>
+    <title>Modelos IA 2026 — Comparativa Completa</title>
     <style>
         :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #111827;
-            --bg-card: #1a2238;
-            --bg-card-hover: #1f2b45;
-            --text-primary: #e0e6ed;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent-claude: #d97757;
-            --accent-openai: #10a37f;
-            --accent-google: #4285f4;
-            --accent-meta: #0066ff;
-            --accent-qwen: #7c3aed;
-            --accent-gemma: #f59e0b;
-            --accent-red: #dc2626;
-            --accent-green: #10b981;
-            --accent-orange: #f59e0b;
-            --accent-blue: #3b82f6;
-            --accent-purple: #8b5cf6;
-            --border-color: #2d3748;
-            --ribbon-height: 56px;
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a28;
+            --border: #2a2a3a;
+            --text: #e0e0f0;
+            --text2: #8888aa;
+            --accent1: #6c5ce7;
+            --accent2: #00cec9;
+            --accent3: #fd79a8;
+            --accent4: #ffeaa7;
+            --accent5: #55efc4;
+            --win: #00b894;
+            --lose: #d63031;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: calc(var(--ribbon-height) + 20px);
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
             overflow-x: hidden;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.7;
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, #1a1a3e 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--border);
         }
-
-        /* === RIBON NAVIGATION === */
-        .ribbon {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: var(--ribbon-height);
-            background: rgba(10, 14, 26, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 5px;
-            overflow-x: auto;
-            scrollbar-width: none;
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
         }
-
-        .ribbon::-webkit-scrollbar { display: none; }
-
-        .ribbon-logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            margin-right: 15px;
-            padding-right: 15px;
-            border-right: 1px solid var(--border-color);
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text2);
+            max-width: 700px;
+            margin: 0 auto;
         }
-
-        .ribbon a {
+        .hero .updated {
             display: inline-block;
-            padding: 8px 16px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            white-space: nowrap;
-            transition: all 0.2s ease;
+            margin-top: 15px;
+            padding: 4px 14px;
+            background: var(--surface2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--accent5);
+            border: 1px solid var(--border);
         }
-
-        .ribbon a:hover {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-        }
-
-        .ribbon a.active {
-            background: rgba(139, 92, 246, 0.2);
-            color: var(--accent-purple);
-        }
-
-        /* === CONTAINER === */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: calc(var(--ribbon-height) + 30px) 20px 60px;
+            padding: 20px;
         }
-
-        /* === HEADER === */
-        header {
-            text-align: center;
-            padding: 60px 20px 40px;
-            margin-bottom: 40px;
+        nav.tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #fff;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        nav.tabs a {
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
         }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 20px;
+        nav.tabs a:hover {
+            background: var(--surface2);
+            color: var(--text);
+            border-color: var(--accent1);
         }
-
-        .date-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, var(--accent-purple), #6d28d9);
-            color: #fff;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        /* === SECTIONS === */
         section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 35px;
-            border: 1px solid var(--border-color);
-            scroll-margin-top: calc(var(--ribbon-height) + 20px);
-            transition: all 0.3s ease;
+            margin: 40px 0;
+            scroll-margin-top: 80px;
         }
-
-        section:hover {
-            border-color: rgba(139, 92, 246, 0.3);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: #fff;
-            margin-bottom: 25px;
+        section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 12px;
-            border-bottom: 2px solid rgba(139, 92, 246, 0.3);
-            padding-bottom: 15px;
+            gap: 10px;
         }
-
-        h2 .icon { font-size: 2.2rem; }
-
-        h3 {
-            font-size: 1.4rem;
-            color: #f1f5f9;
-            margin: 30px 0 15px;
-        }
-
-        p {
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-        }
-
-        /* === MODEL CARDS === */
-        .model-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-
-        .model-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 14px;
-            padding: 28px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .model-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-        }
-
-        .model-card.claude::before { background: var(--accent-claude); }
-        .model-card.openai::before { background: var(--accent-openai); }
-        .model-card.google::before { background: var(--accent-google); }
-        .model-card.meta::before { background: var(--accent-meta); }
-        .model-card.qwen::before { background: var(--accent-qwen); }
-        .model-card.gemma::before { background: var(--accent-gemma); }
-
-        .model-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-
-        .model-card h3 {
-            margin-top: 0;
-            font-size: 1.3rem;
-            color: #fff;
-        }
-
-        .model-tag {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .model-tag.claude { background: rgba(217, 119, 87, 0.2); color: var(--accent-claude); }
-        .model-tag.openai { background: rgba(16, 163, 127, 0.2); color: var(--accent-openai); }
-        .model-tag.google { background: rgba(66, 133, 244, 0.2); color: var(--accent-google); }
-        .model-tag.meta { background: rgba(0, 102, 255, 0.2); color: var(--accent-meta); }
-        .model-tag.qwen { background: rgba(124, 58, 237, 0.2); color: var(--accent-qwen); }
-        .model-tag.gemma { background: rgba(245, 158, 11, 0.2); color: var(--accent-gemma); }
-
-        .model-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .model-card ul li {
-            padding: 6px 0;
-            color: var(--text-secondary);
+        section h2 .emoji { font-size: 1.5rem; }
+        .subtitle {
+            color: var(--text2);
+            margin-bottom: 20px;
             font-size: 0.95rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
-        .model-card ul li:last-child { border-bottom: none; }
-
-        .model-card ul li strong { color: #f1f5f9; }
-
-        .strengths { color: var(--accent-green); }
-        .weaknesses { color: var(--accent-red); }
-        .potential { color: var(--accent-orange); }
-
-        .strengths::before { content: '💪 '; }
-        .weaknesses::before { content: '⚠️ '; }
-        .potential::before { content: '🚀 '; }
-
-        /* === COMPARISON TABLE === */
-        .table-wrapper {
-            overflow-x: auto;
-            margin: 30px 0;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 15px 0;
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
             font-size: 0.9rem;
         }
-
         th {
-            background: rgba(139, 92, 246, 0.15);
-            color: #fff;
-            padding: 14px 12px;
+            background: var(--surface2);
+            padding: 12px 10px;
             text-align: left;
             font-weight: 600;
+            color: var(--accent2);
+            border-bottom: 2px solid var(--border);
             white-space: nowrap;
-            position: sticky;
-            top: 0;
         }
-
         td {
-            padding: 12px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
         }
-
-        tr:hover td {
-            background: rgba(255,255,255,0.03);
-        }
-
-        .highlight-cell {
-            color: var(--accent-green);
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: rgba(108, 92, 231, 0.05); }
+        .winner {
+            color: var(--win) !important;
             font-weight: 700;
         }
-
-        .price { color: var(--accent-orange); }
-
-        /* === INFO BOXES === */
-        .info-box {
-            background: rgba(59, 130, 246, 0.1);
-            padding: 25px;
+        .loser {
+            color: var(--text2) !important;
+            font-weight: 400;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
             border-radius: 12px;
-            margin: 25px 0;
-            border-left: 4px solid var(--accent-blue);
+            font-size: 0.75rem;
+            font-weight: 600;
         }
-
-        .warning-box {
-            background: rgba(245, 158, 11, 0.1);
-            padding: 25px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border-left: 4px solid var(--accent-orange);
-        }
-
-        .success-box {
-            background: rgba(16, 185, 129, 0.1);
-            padding: 25px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border-left: 4px solid var(--accent-green);
-        }
-
-        .info-box strong, .warning-box strong, .success-box strong {
-            color: #fff;
-        }
-
-        /* === STATS GRID === */
-        .stats-grid {
+        .badge-new { background: #6c5ce730; color: var(--accent1); border: 1px solid #6c5ce750; }
+        .badge-hot { background: #ff6b6b30; color: #ff6b6b; border: 1px solid #ff6b6b50; }
+        .badge-value { background: #55efc430; color: var(--accent5); border: 1px solid #55efc450; }
+        .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
-            margin: 30px 0;
+            margin: 20px 0;
         }
-
-        .stat-card {
-            background: rgba(0, 0, 0, 0.3);
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid var(--border-color);
+            padding: 24px;
+            transition: all 0.3s;
         }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            display: block;
+        .card:hover {
+            border-color: var(--accent1);
+            transform: translateY(-2px);
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card p {
+            color: var(--text2);
+            font-size: 0.9rem;
             margin-bottom: 8px;
         }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+        .card .price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent2);
         }
-
-        /* === VERDICT === */
-        .verdict-grid {
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            padding: 4px 0;
+            font-size: 0.85rem;
+            color: var(--text2);
+        }
+        .card ul li::before {
+            content: "→ ";
+            color: var(--accent1);
+            font-weight: bold;
+        }
+        .use-case-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
+            gap: 16px;
+            margin: 20px 0;
         }
-
-        .verdict-card {
-            background: rgba(0, 0, 0, 0.3);
+        .use-case {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 25px;
-            border: 1px solid var(--border-color);
-        }
-
-        .verdict-card h4 {
-            color: #fff;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .verdict-card p {
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-        }
-
-        .winner {
-            color: var(--accent-green);
-            font-weight: 700;
-        }
-
-        /* === EVOLUTION TIMELINE === */
-        .timeline {
-            position: relative;
-            padding-left: 40px;
-            margin: 30px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border-color);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
+        }
+        .use-case h4 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .use-case .best {
+            background: var(--surface2);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+        }
+        .use-case .best-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent3);
+            margin-bottom: 4px;
+        }
+        .use-case .best-model {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent2);
+        }
+        .use-case .why {
+            font-size: 0.85rem;
+            color: var(--text2);
+            margin-top: 6px;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #6c5ce715, #00cec915);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin: 20px 0;
         }
-
-        .timeline-item::before {
-            content: '';
+        .highlight-box h4 {
+            color: var(--accent2);
+            margin-bottom: 10px;
+        }
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 60px;
+            margin: 10px 0;
+        }
+        .bar {
+            flex: 1;
+            background: var(--accent1);
+            border-radius: 4px 4px 0 0;
+            min-width: 30px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .bar:hover { opacity: 0.8; }
+        .bar span {
             position: absolute;
-            left: -33px;
-            top: 25px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent-purple);
-            border: 2px solid var(--bg-primary);
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: var(--text2);
+            white-space: nowrap;
         }
-
-        .timeline-date {
-            color: var(--accent-purple);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        /* === FOOTER === */
-        footer {
+        .footer {
             text-align: center;
             padding: 40px 20px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+            color: var(--text2);
+            font-size: 0.85rem;
         }
-
-        /* === RESPONSIVE === */
+        .footer a { color: var(--accent2); text-decoration: none; }
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed var(--text2);
+        }
+        .tooltip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 10;
+            color: var(--text);
+        }
+        .verdict {
+            background: linear-gradient(135deg, #fd79a815, #6c5ce715);
+            border: 1px solid var(--accent3);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .verdict h4 {
+            color: var(--accent3);
+            margin-bottom: 12px;
+        }
+        .verdict p {
+            color: var(--text2);
+            font-size: 0.9rem;
+        }
         @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.5rem; }
-            section { padding: 25px; }
-            .model-grid { grid-template-columns: 1fr; }
-            .ribbon { padding: 0 10px; }
-            .ribbon-logo { font-size: 1.1rem; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 8px 6px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .use-case-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- RIBBON NAVIGATION -->
-    <nav class="ribbon">
-        <div class="ribbon-logo">🧠 Modelos IA 2026</div>
-        <a href="#overview">Overview</a>
-        <a href="#claude">Claude</a>
-        <a href="#gpt">GPT</a>
-        <a href="#gemini">Gemini</a>
-        <a href="#local">Locales</a>
-        <a href="#tabla">Tabla</a>
-        <a href="#pricing">Precios</a>
-        <a href="#veredicto">Veredicto</a>
-        <a href="#evolucion">Evolución</a>
-    </nav>
+<div class="hero">
+    <h1>Modelos IA 2026</h1>
+    <p class="subtitle">Comparativa completa de benchmarks, precios y casos de uso para los modelos frontier: DeepSeek V4, GPT-5.4, Claude Opus 4.7, Gemini 3.1 Pro y más</p>
+    <span class="updated">📅 Actualizado: 24 de abril, 2026</span>
+</div>
 
-    <div class="container">
+<nav class="tabs">
+    <a href="#specs">🏗️ Specs</a>
+    <a href="#precios">💰 Precios</a>
+    <a href="#coding">💻 Coding</a>
+    <a href="#knowledge">🧠 Knowledge</a>
+    <a href="#math">📐 Matemáticas</a>
+    <a href="#creative">✍️ Escritura</a>
+    <a href="#agentic">🤖 Agentic</a>
+    <a href="#usos">🎯 Casos de Uso</a>
+    <a href="#veredicto">🏆 Veredicto</a>
+</nav>
 
-        <!-- HEADER -->
-        <header>
-            <h1>🧠 Panorama Modelos IA 2026</h1>
-            <p class="subtitle">Comparativa completa de todos los modelos frontier y open-weight: dónde brillan, dónde fallan y hacia dónde va la industria.</p>
-            <span class="date-badge">📅 Abril 2026 — Actualizado con GPT-5.5 y Claude Opus 4.7</span>
-        </header>
+<div class="container">
 
-        <!-- OVERVIEW -->
-        <section id="overview">
-            <h2><span class="icon">📊</span> Overview del Landscape</h2>
-            <p>En abril de 2026, el panorama de IA está dominado por tres grandes families frontier (Claude, GPT, Gemini) que compiten en el tier más alto, mientras el espacio open-weight (Qwen, Gemma, Llama) alcanza capacidades que hace un año parecían imposibles para modelos locales.</p>
+<!-- SPECS -->
+<section id="specs">
+    <h2><span class="emoji">🏗️</span> Especificaciones Técnicas</h2>
+    <p class="subtitle">Arquitectura, parámetros, context window y capacidades de cada modelo frontier.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Modelo</th>
+                <th>Arquitectura</th>
+                <th>Params Total</th>
+                <th>Params Activos</th>
+                <th>Context</th>
+                <th>Training</th>
+                <th>Licencia</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>DeepSeek V4-Pro</strong></td>
+                <td>MoE Transformer</td>
+                <td>1.6T</td>
+                <td>49B</td>
+                <td>1M</td>
+                <td>32T tokens</td>
+                <td>MIT</td>
+                <td><span class="badge badge-new">NUEVO</span></td>
+            </tr>
+            <tr>
+                <td><strong>DeepSeek V4-Flash</strong></td>
+                <td>MoE Transformer</td>
+                <td>284B</td>
+                <td>13B</td>
+                <td>1M</td>
+                <td>32T tokens</td>
+                <td>MIT</td>
+                <td><span class="badge badge-new">NUEVO</span></td>
+            </tr>
+            <tr>
+                <td><strong>Claude Opus 4.7</strong></td>
+                <td>Dense Transformer</td>
+                <td>—</td>
+                <td>—</td>
+                <td>200K</td>
+                <td>—</td>
+                <td>Closed</td>
+                <td><span class="badge badge-hot">FRONTIER</span></td>
+            </tr>
+            <tr>
+                <td><strong>GPT-5.4</strong></td>
+                <td>Mixture of Experts</td>
+                <td>—</td>
+                <td>—</td>
+                <td>1.05M</td>
+                <td>—</td>
+                <td>Closed</td>
+                <td><span class="badge badge-hot">FRONTIER</span></td>
+            </tr>
+            <tr>
+                <td><strong>Gemini 3.1 Pro</strong></td>
+                <td>Multimodal MoE</td>
+                <td>—</td>
+                <td>—</td>
+                <td>2M</td>
+                <td>—</td>
+                <td>Closed</td>
+                <td><span class="badge badge-hot">FRONTIER</span></td>
+            </tr>
+            <tr>
+                <td><strong>GPT-5.4 Pro</strong></td>
+                <td>MoE + Reasoning</td>
+                <td>—</td>
+                <td>—</td>
+                <td>1.05M</td>
+                <td>—</td>
+                <td>Closed</td>
+                <td><span class="badge badge-hot">PREMIUM</span></td>
+            </tr>
+            <tr>
+                <td><strong>Grok 4.1</strong></td>
+                <td>Transformer</td>
+                <td>—</td>
+                <td>—</td>
+                <td>1M</td>
+                <td>—</td>
+                <td>Closed</td>
+                <td><span class="badge">ACTIVO</span></td>
+            </tr>
+        </tbody>
+    </table>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-value" style="color: var(--accent-claude);">Opus 4.7</span>
-                    <span class="stat-label">Rey del coding (SWE-bench Pro 64.3%)</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value" style="color: var(--accent-openai);">GPT-5.5</span>
-                    <span class="stat-label">Rey del agentic (Terminal-Bench 82.7%)</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value" style="color: var(--accent-google);">Gemini 3.1</span>
-                    <span class="stat-label">Mejor precio/rendimiento ($2/$12)</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value" style="color: var(--accent-qwen);">Qwen 3.6 27B</span>
-                    <span class="stat-label">Mejor open-weight coding (SWE 77.2%)</span>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <strong>🔑 TL;DR:</strong> Claude Opus 4.7 sigue siendo el mejor para código complejo. GPT-5.5 domina tareas autónomas y computer use. Gemini 3.1 Pro ofrece el mejor ratio precio/rendimiento. Qwen 3.6 27B es la mejor opción open-weight para coding local (SWE 77.2%, menos VRAM).
-            </div>
-        </section>
-
-        <!-- CLAUDE FAMILY -->
-        <section id="claude">
-            <h2><span class="icon">🟠</span> Claude Family — Anthropic</h2>
-            <p>Anthropic lidera en precisión de código, instruction-following y seguridad. Su modelo Opus 4.7 es actualmente el benchmark de referencia para tareas de software engineering.</p>
-
-            <div class="model-grid">
-                <div class="model-card claude">
-                    <span class="model-tag claude">Anthropic — April 2026</span>
-                    <h3>Claude Opus 4.7</h3>
-                    <p><strong>El rey del código.</strong> SWE-bench Pro 64.3%, SWE-bench Verified 87.6%, MCP-Atlas 77.3%. Self-verification nativa, modo xhigh, resolución visual 3.75MP.</p>
-                    <ul>
-                        <li class="strengths">Coding end-to-end, refactoring multi-archivo, code review, precision</li>
-                        <li class="weaknesses">Precio elevado ($5/$25), latencia mayor, no el mejor en agentic/terminal</li>
-                        <li class="potential">Mejorar velocidad, reducir latencia, competir en computer use</li>
-                    </ul>
-                </div>
-
-                <div class="model-card claude">
-                    <span class="model-tag claude">Anthropic — March 2026</span>
-                    <h3>Claude Opus 4.6</h3>
-                    <p><strong>Predecesor sólido.</strong> SWE-bench Verified 80.8%, Terminal-Bench 65.4%. Todavía muy capaz y más barato que 4.7. Excelente para producción diaria.</p>
-                    <ul>
-                        <li class="strengths">Coding robusto, precio estable, buen instruction-following</li>
-                        <li class="weaknesses">SWE-bench Pro más bajo (53.4%), sin self-verification nativa</li>
-                        <li class="potential">Sigue siendo excelente para la mayoría de tareas de coding</li>
-                    </ul>
-                </div>
-
-                <div class="model-card claude">
-                    <span class="model-tag claude">Anthropic — Earlier 2026</span>
-                    <h3>Claude Opus 4.5</h3>
-                    <p><strong>Primera generación Opus.</strong> Terminal-Bench 76.7%, SWE-bench Pro 53.4%. Fue el referente hasta 4.6/4.7. Todavía válido para muchas tareas.</p>
-                    <ul>
-                        <li class="strengths">Base sólida, reasoning fuerte, precio accesible</li>
-                        <li class="weaknesses">Superseded por 4.6 y 4.7 en casi todo</li>
-                        <li class="potential">Viable para tareas menos complejas</li>
-                    </ul>
-                </div>
-
-                <div class="model-card claude">
-                    <span class="model-tag claude">Anthropic — February 2026</span>
-                    <h3>Claude Sonnet 4.6</h3>
-                    <p><strong>El daily driver.</strong> SWE-bench Verified 79.6%, OSWorld 72.5%, GPQA Diamond 92.8%. Casi iguala a Opus en tareas de producción y es 70% más barato ($3/$15).</p>
-                    <ul>
-                        <li class="strengths">Mejor precio/rendimiento de Anthropic, IDE workflows, pairing</li>
-                        <li class="weaknesses">No llega a Opus en reasoning complejo, arc-agi, browsing</li>
-                        <li class="potential">El modelo más recomendado para uso diario</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- GPT FAMILY -->
-        <section id="gpt">
-            <h2><span class="icon">🟢</span> GPT Family — OpenAI</h2>
-            <p>OpenAI evolucionó de un modelo monolítico a una familia especializada. GPT-5.5 ("Spud") es el modelo más autónomo del mercado, diseñado para ejecutar workflows completos sin supervisión.</p>
-
-            <div class="model-grid">
-                <div class="model-card openai">
-                    <span class="model-tag openai">OpenAI — April 23, 2026</span>
-                    <h3>GPT-5.5 "Spud" 🆕</h3>
-                    <p><strong>El ingeniero autónomo.</strong> Terminal-Bench 82.7%, GDPval 84.9%, Tau2-bench 98%. First fully retrained base since GPT-4.5. Native omnimodal (text+image+audio+video unified).</p>
-                    <ul>
-                        <li class="strengths">Agentic workflows, DevOps/CLI, computer use, token efficiency</li>
-                        <li class="weaknesses">SWE-bench Pro 58.6% (below Opus 4.7), caro ($5/$30), cyber classifiers estrictos</li>
-                        <li class="potential">Lidera en tareas que requieren coordinación multi-herramienta</li>
-                    </ul>
-                </div>
-
-                <div class="model-card openai">
-                    <span class="model-tag openai">OpenAI — March 2026</span>
-                    <h3>GPT-5.4</h3>
-                    <p><strong>El profesional.</strong> SWE-bench Pro 57.7%, FrontierMath líder. Reasoning + coding + computer use + tool search en un solo modelo. 1M context.</p>
-                    <ul>
-                        <li class="strengths">Composición: reasoning + coding + computer use juntos</li>
-                        <li class="weaknesses">SWE-bench Pro por debajo de Opus, precio ($2.50/$15)</li>
-                        <li class="potential">Mejor opción si necesitas todo en un solo modelo</li>
-                    </ul>
-                </div>
-
-                <div class="model-card openai">
-                    <span class="model-tag openai">OpenAI — Early 2026</span>
-                    <h3>GPT-5.3-Codex</h3>
-                    <p><strong>Codex especializado.</strong> Terminal-Bench 2.0 líder (77.3%), CTFs 77.6%. Diseñado específicamente para código, con variantes Spark (1000 tok/s) para feedback en tiempo real.</p>
-                    <ul>
-                        <li class="strengths">Terminal/CLI workflows, velocidad Spark, coding puro</li>
-                        <li class="weaknesses">Computer use por debajo de Sonnet 4.6 (64.7% vs 72.5%)</li>
-                        <li class="potential">El mejor para pipelines de DevOps automatizados</li>
-                    </ul>
-                </div>
-
-                <div class="model-card openai">
-                    <span class="model-tag openai">OpenAI — 2026</span>
-                    <h3>GPT-5.2 Thinking</h3>
-                    <p><strong>Reasoning profundo.</strong> GPQA Diamond 96.1% (xhigh), 2M context window. Diseñado para razonamiento de múltiples pasos, no para velocidad.</p>
-                    <ul>
-                        <li class="strengths">Razonamiento profundo, SWE-bench Verified 80%, contexto 2M</li>
-                        <li class="weaknesses">Caro ($1.75/$14), lento, no para tareas simples</li>
-                        <li class="potential">Usar solo cuando la tarea requiere máximo reasoning</li>
-                    </ul>
-                </div>
-
-                <div class="model-card openai">
-                    <span class="model-tag openai">OpenAI — 2026</span>
-                    <h3>GPT-5.3 Instant</h3>
-                    <p><strong>Rápido y barato.</strong> 5-6x más barato que Thinking. Diseñado para tareas cotidianas donde la velocidad importa más que la profundidad.</p>
-                    <ul>
-                        <li class="strengths">Precio bajo, velocidad, bueno para tareas simples</li>
-                        <li class="weaknesses">No para reasoning complejo o coding difícil</li>
-                        <li class="potential">Router automático de OpenAI lo usa para tareas triviales</li>
-                    </ul>
-                </div>
-
-                <div class="model-card openai">
-                    <span class="model-tag openai">OpenAI — 2026</span>
-                    <h3>GPT-5 / GPT-5.1</h3>
-                    <p><strong>Primera generación GPT-5.</strong> GPT-5: 400K context, $1.25/$10. GPT-5.1: familia completa (Instant, Thinking, Auto, Pro + Codex variants).</p>
-                    <ul>
-                        <li class="strengths">Precio accesible, buena base</li>
-                        <li class="weaknesses">Superseded por 5.2-5.5 en casi todos los benchmarks</li>
-                        <li class="potential">Viable para tareas básicas, reemplazado por versiones más nuevas</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- GEMINI -->
-        <section id="gemini">
-            <h2><span class="icon">🔵</span> Gemini — Google DeepMind</h2>
-            <p>Gemini 3.1 Pro es el rey del precio/rendimiento. Compete con Opus y GPT-5.4 en la mayoría de benchmarks a menos de la mitad del precio.</p>
-
-            <div class="model-card google">
-                <span class="model-tag google">Google DeepMind — March 2026</span>
-                <h3>Gemini 3.1 Pro</h3>
-                <p><strong>El mejor ratio precio/rendimiento.</strong> SWE-bench Verified 80.6%, LiveCodeBench Pro 2887 Elo, SWE-bench Pro 54.2%. 2M context window (el más grande del tier frontier).</p>
-                <ul>
-                    <li class="strengths">Precio imbatible ($2/$12), context 2M, LiveCodeBench líder, competitive coding</li>
-                    <li class="weaknesses">SWE-bench Pro por debajo de Opus y GPT-5.5, agentic reasoning</li>
-                    <li class="potential">El mejor modelo para pipelines de alto volumen donde el precio importa</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- LOCAL / OPEN-WEIGHT -->
-        <section id="local">
-            <h2><span class="icon">🟣</span> Modelos Locales / Open-Weight</h2>
-            <p>El espacio open-weight está viviendo su revolución. Gemma 4 31B compite con modelos 10x más grandes. Qwen sigue siendo el rey del open-weight para uso práctico, y Llama 4 introduce multimodalidad nativa.</p>
-
-            <div class="model-grid">
-                <div class="model-card gemma">
-                    <span class="model-tag gemma">Google DeepMind — April 2, 2026</span>
-                    <h3>Gemma 4 31B</h3>
-                    <p><strong>Mejor para escritura y reasoning.</strong> GPQA Diamond 84.3%, LiveCodeBench v6 80%, AIME 2026 89.2%, Codeforces ELO 2,150. Apache 2.0. #3 en LMArena global por preferencia de chat.</p>
-                    <ul>
-                        <li class="strengths">Escritura/redacción excelente, reasoning profundo, Arena AI superior, matemáticas brutal, Apache 2.0</li>
-                        <li class="weaknesses">31B = necesita 24GB+ VRAM (más que Qwen 27B), NO publica SWE-bench (coding real), no optimizado para agentic</li>
-                        <li class="potential">Mejor open-weight para escritura, reasoning, matemáticas y chat general</li>
-                    </ul>
-                </div>
-
-                <div class="model-card qwen">
-                    <span class="model-tag qwen">Alibaba — Feb 24, 2026</span>
-                    <h3>Qwen 3.5 27B</h3>
-                    <p><strong>El todoterreno chino.</strong> GPQA Diamond 85.8%, 201 languages, visión excepcional. La familia incluye 0.8B-397B-A17B. Qwen3.5-122B-A10B: BFCL-V4 72.2% (vs GPT-5 mini 55.5%).</p>
-                    <ul>
-                        <li class="strengths">Multilingüe imbatible, visión/mejor open, función-calling</li>
-                        <li class="weaknesses">Coding por debajo de Gemma 4, necesita hardware para 27B+</li>
-                        <li class="potential">Mejor para tareas multilingües, QA, contenido</li>
-                    </ul>
-                </div>
-
-                <div class="model-card qwen">
-                    <span class="model-tag qwen">Alibaba — Abril 2026 ⭐</span>
-                    <h3>Qwen 3.6 27B ⭐ MEJOR CODING LOCAL</h3>
-                    <p><strong>El rey del coding local.</strong> SWE-bench Verified <strong>77.2%</strong> (rivaliza con Claude Opus 4.5), Terminal-Bench 2.0 ~65%. 27B = menos VRAM que Gemma 31B. Linear attention = caché más eficiente.</p>
-                    <ul>
-                        <li class="strengths">Coding agentic brutal (SWE 77.2%), 27B (menos VRAM), linear attention (caché eficiente), optimizado para agentic, supera a Qwen3.5-397B en coding</li>
-                        <li class="weaknesses">Escritura por debajo de Gemma 4, Arena AI por debajo de Gemma</li>
-                        <li class="potential">🏆 MEJOR OPCIÓN para coding local, agentic workflows y desarrollo</li>
-                    </ul>
-                </div>
-
-                <div class="model-card meta">
-                    <span class="model-tag meta">Meta — April 5, 2026</span>
-                    <h3>Llama 4 Maverick/Scout</h3>
-                    <p><strong>Multimodal nativo de Meta.</strong> MoE architecture, 10M context (Scout), supera GPT-4o y Gemini 2.0 Flash en múltiples benchmarks. Primer Llama nativamente multimodal.</p>
-                    <ul>
-                        <li class="strengths">Context 10M (Scout), multimodal, MoE eficiente, adaptable</li>
-                        <li class="weaknesses">Benchmarks completos aún por venir, ecosistema en crecimiento</li>
-                        <li class="potential">Muy prometedor para tareas que requieren contexto enorme</li>
-                    </ul>
-                </div>
-
-                <div class="model-card qwen">
-                    <span class="model-tag qwen">Alibaba — Feb 2026</span>
-                    <h3>Qwen3-Coder-Next</h3>
-                    <p><strong>Codificador open-weight.</strong> SWE-bench Verified 70%+, SWE-bench Pro comparable a modelos 10-20x más grandes. 3B active params (MoE).</p>
-                    <ul>
-                        <li class="strengths">Coding agentic, eficiente, 3B active params</li>
-                        <li class="weaknesses">Recién salido, ecosistema pequeño</li>
-                        <li class="potential">Mejor open-weight para coding agents local</li>
-                    </ul>
-                </div>
-
-                <div class="model-card gemma">
-                    <span class="model-tag gemma">Google DeepMind — April 2026</span>
-                    <h3>Gemma 4 26B MoE / E4B / E2B</h3>
-                    <p><strong>Familia completa.</strong> 26B-A4B (MoE), E4B, E2B (edge). Apache 2.0. GPQA Diamond 79.2% (26B). On-device hasta Raspberry Pi.</p>
-                    <ul>
-                        <li class="strengths">Edge deployment, Apache 2.0, eficiencia extrema</li>
-                        <li class="weaknesses">Modelos pequeños pierden capacidad</li>
-                        <li class="potential">Revolucionario para edge AI y dispositivos móviles</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- COMPARISON TABLE UNIFIED -->
-        <section id="tabla">
-            <h2><span class="icon">📋</span> Tabla Unificada: Frontier vs Open-Weight</h2>
-            <p>Todos los modelos juntos con los mismos benchmarks. Así se ve el gap real entre frontier y locales.</p>
-
-            <div class="warning-box" style="margin-top: 0;">
-                <strong>⚠️ Nota importante:</strong> Los benchmarks no son exactamente comparables porque cada laboratorio usa scaffolds/agentes diferentes. SWE-bench Pro con scaffold propio vs sin scaffold puede variar 20+ puntos. Usa esto como referencia general, no como comparación absoluta.
-            </div>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Modelo</th>
-                            <th>Tipo</th>
-                            <th>SWE-bench Pro</th>
-                            <th>SWE-bench Verified</th>
-                            <th>Terminal-Bench 2.0</th>
-                            <th>GPQA Diamond</th>
-                            <th>OSWorld</th>
-                            <th>Precio</th>
-                            <th>Params</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: rgba(217,119,87,0.08);">
-                            <td><strong>Claude Mythos Preview</strong></td>
-                            <td><span class="model-tag claude">Frontier</span></td>
-                            <td class="highlight-cell">77.8%</td>
-                            <td class="highlight-cell">93.9%</td>
-                            <td class="highlight-cell">82.0%</td>
-                            <td class="highlight-cell">94.6%</td>
-                            <td>—</td>
-                            <td class="price">Preview</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(217,119,87,0.05);">
-                            <td><strong>Claude Opus 4.7</strong></td>
-                            <td><span class="model-tag claude">Frontier</span></td>
-                            <td class="highlight-cell">64.3%</td>
-                            <td class="highlight-cell">87.6%</td>
-                            <td>69.4%</td>
-                            <td>94.2%</td>
-                            <td>78.0%</td>
-                            <td class="price">$5 / $25</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(16,163,127,0.05);">
-                            <td><strong>GPT-5.5</strong></td>
-                            <td><span class="model-tag openai">Frontier</span></td>
-                            <td>58.6%</td>
-                            <td>~85%</td>
-                            <td class="highlight-cell">82.7%</td>
-                            <td>~93%</td>
-                            <td class="highlight-cell">78.7%</td>
-                            <td class="price">$5 / $30</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(16,163,127,0.03);">
-                            <td>GPT-5.4</td>
-                            <td><span class="model-tag openai">Frontier</span></td>
-                            <td>57.7%</td>
-                            <td>~80%</td>
-                            <td>76.9%</td>
-                            <td>~91%</td>
-                            <td>68.1%</td>
-                            <td class="price">$2.50 / $15</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(217,119,87,0.03);">
-                            <td>Claude Opus 4.6</td>
-                            <td><span class="model-tag claude">Frontier</span></td>
-                            <td>53.4%</td>
-                            <td>80.8%</td>
-                            <td>65.4%</td>
-                            <td>~92%</td>
-                            <td>—</td>
-                            <td class="price">$5 / $25</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(66,133,244,0.05);">
-                            <td>Gemini 3.1 Pro</td>
-                            <td><span class="model-tag google">Frontier</span></td>
-                            <td>54.2%</td>
-                            <td>80.6%</td>
-                            <td>68.5%</td>
-                            <td>~91%</td>
-                            <td>~60%</td>
-                            <td class="price">$2 / $12</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(217,119,87,0.02);">
-                            <td>Claude Sonnet 4.6</td>
-                            <td><span class="model-tag claude">Frontier</span></td>
-                            <td>—</td>
-                            <td>79.6%</td>
-                            <td>59.1%</td>
-                            <td>92.8%</td>
-                            <td>72.5%</td>
-                            <td class="price">$3 / $15</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(16,163,127,0.02);">
-                            <td>GPT-5.3-Codex</td>
-                            <td><span class="model-tag openai">Frontier</span></td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>77.3%</td>
-                            <td>—</td>
-                            <td>64.7%</td>
-                            <td class="price">$1.25 / $10</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr style="background: rgba(16,163,127,0.02);">
-                            <td>GPT-5.2 Thinking</td>
-                            <td><span class="model-tag openai">Frontier</span></td>
-                            <td>—</td>
-                            <td>80.0%</td>
-                            <td>—</td>
-                            <td class="highlight-cell">96.1%</td>
-                            <td>—</td>
-                            <td class="price">$1.75 / $14</td>
-                            <td>???B</td>
-                        </tr>
-                        <tr>
-                            <td colspan="9" style="padding: 10px; border-bottom: 3px solid var(--border-color);"></td>
-                        </tr>
-                        <tr style="background: rgba(124,58,237,0.08);">
-                            <td><strong>Qwen 3.6 27B</strong></td>
-                            <td><span class="model-tag qwen">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>77.2%</td>
-                            <td>~65%</td>
-                            <td>~85%</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>27B</td>
-                        </tr>
-                        <tr style="background: rgba(124,58,237,0.05);">
-                            <td><strong>Qwen 3.5 27B</strong></td>
-                            <td><span class="model-tag qwen">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>72.4%</td>
-                            <td>61.6%</td>
-                            <td>85.8%</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>27B</td>
-                        </tr>
-                        <tr style="background: rgba(245,158,11,0.08);">
-                            <td><strong>Gemma 4 31B</strong></td>
-                            <td><span class="model-tag gemma">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>84.3%</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>31B</td>
-                        </tr>
-                        <tr style="background: rgba(245,158,11,0.05);">
-                            <td>Gemma 4 26B MoE</td>
-                            <td><span class="model-tag gemma">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>79.2%</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>26B-A4B</td>
-                        </tr>
-                        <tr style="background: rgba(124,58,237,0.03);">
-                            <td>Qwen3.5-122B-A10B</td>
-                            <td><span class="model-tag qwen">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>122B-A10B</td>
-                        </tr>
-                        <tr style="background: rgba(0,102,255,0.05);">
-                            <td>Llama 4 Maverick</td>
-                            <td><span class="model-tag meta">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>17B-128E</td>
-                        </tr>
-                        <tr style="background: rgba(0,102,255,0.03);">
-                            <td>Llama 4 Scout</td>
-                            <td><span class="model-tag meta">Open-Weight</span></td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>74.3%</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>17B-16E</td>
-                        </tr>
-                        <tr style="background: rgba(124,58,237,0.02);">
-                            <td>Qwen3-Coder-Next</td>
-                            <td><span class="model-tag qwen">Open-Weight</span></td>
-                            <td>~37%</td>
-                            <td>~70%</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>MoE 3B</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="info-box">
-                <strong>📊 Sobre los benchmarks:</strong><br>
-                • <strong>SWE-bench Pro:</strong> Resolución real de issues de GitHub (el más difícil y realista)<br>
-                • <strong>SWE-bench Verified:</strong> Tareas curadas para evitar ambigüedades (más justo)<br>
-                • <strong>Terminal-Bench 2.0:</strong> Workflows CLI/DevOps autónomos<br>
-                • <strong>GPQA Diamond:</strong> Conocimiento experto a nivel PhD<br>
-                • <strong>OSWorld:</strong> Uso de ordenador autónomo (clicks, navegación, etc.)<br><br>
-                <strong>🔍 Lo que se ve en la tabla:</strong> El mejor open-weight (Qwen 3.6 27B, SWE 77.2%) está a ~10 puntos del mejor frontier (Opus 4.7, SWE 87.6%). En Terminal-Bench, Qwen 3.5 27B (61.6%) rivaliza con Opus 4.6 (65.4%). El gap se mantiene en ~10-15 puntos en coding, pero en reasoning (GPQA) Qwen llega a ~90% del rendimiento de Opus.
-            </div>
-        </section>
-
-        <!-- PRICING -->
-        <section id="pricing">
-            <h2><span class="icon">💰</span> Comparativa de Precios</h2>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Modelo</th>
-                            <th>Input / 1M tokens</th>
-                            <th>Cached / 1M tokens</th>
-                            <th>Output / 1M tokens</th>
-                            <th>Context</th>
-                            <th>Veredicto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Gemini 3.1 Pro</strong></td>
-                            <td class="highlight-cell">$1.25</td>
-                            <td class="highlight-cell">$0.31</td>
-                            <td class="highlight-cell">$10</td>
-                            <td>2M</td>
-                            <td>🏆 Mejor precio/rendimiento</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-5.3 Instant</td>
-                            <td>$1.25</td>
-                            <td>—</td>
-                            <td>$10</td>
-                            <td>1M</td>
-                            <td>Barato pero limitado</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-5.1</td>
-                            <td>$1.25</td>
-                            <td>—</td>
-                            <td>$10</td>
-                            <td>400K</td>
-                            <td>Accesible</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-5.2 Thinking</td>
-                            <td>$1.75</td>
-                            <td>—</td>
-                            <td>$14</td>
-                            <td>2M</td>
-                            <td>Reasoning profundo</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-5.4</td>
-                            <td>$2.50</td>
-                            <td>$0.25</td>
-                            <td>$15</td>
-                            <td>1M</td>
-                            <td>Buen balance</td>
-                        </tr>
-                        <tr>
-                            <td>Claude Sonnet 4.6</td>
-                            <td>$3</td>
-                            <td>$0.75</td>
-                            <td>$15</td>
-                            <td>1M</td>
-                            <td>Daily driver premium</td>
-                        </tr>
-                        <tr>
-                            <td>Claude Opus 4.7</td>
-                            <td>$5</td>
-                            <td>$1.25</td>
-                            <td>$25</td>
-                            <td>1M</td>
-                            <td>Premium, mejor coding</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-5.5</td>
-                            <td>$5</td>
-                            <td>$1.25</td>
-                            <td>$30</td>
-                            <td>1M</td>
-                            <td>Agentic, usa menos tokens</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-5.5 Pro</td>
-                            <td>$30</td>
-                            <td>—</td>
-                            <td>$180</td>
-                            <td>1M</td>
-                            <td>Enterprise only</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Open-Weight</strong></td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>—</td>
-                            <td class="highlight-cell">Gratis</td>
-                            <td>Depende</td>
-                            <td>🏆 Si tienes hardware</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="warning-box">
-                <strong>💡 Insight de costos:</strong> Un agent procesando 10M tokens/día cuesta ~$30/día con Sonnet 4.6, ~$50/día con Opus 4.6, pero solo ~$15/día con Gemini 3.1 Pro. GPT-5.5 usa significativamente menos tokens por tarea, reduciendo su costo efectivo.
-            </div>
-        </section>
-
-        <!-- VERDICT -->
-        <section id="veredicto">
-            <h2><span class="icon">🏆</span> Mi Veredicto: ¿Cuál Usar?</h2>
-
-            <div class="verdict-grid">
-                <div class="verdict-card">
-                    <h4>💻 Coding complejo / Refactoring</h4>
-                    <p class="winner">🥇 Claude Opus 4.7</p>
-                    <p>64.3% SWE-bench Pro, self-verification, mode xhigh</p>
-                    <p>🥈 GPT-5.4 (57.7%, pero más barato)</p>
-                    <p>🥉 Gemini 3.1 Pro (54.2%, mejor precio)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>🤖 Tareas autónomas / Agentic</h4>
-                    <p class="winner">🥇 GPT-5.5</p>
-                    <p>Terminal-Bench 82.7%, OSWorld 78.7%, GDPval 84.9%</p>
-                    <p>🥈 GPT-5.3-Codex (77.3% Terminal-Bench)</p>
-                    <p>🥉 Claude Mythos Preview (82% Terminal-Bench)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>💰 Mejor precio/rendimiento</h4>
-                    <p class="winner">🥇 Gemini 3.1 Pro</p>
-                    <p>$2/$12, 2M context, 80.6% SWE-bench Verified</p>
-                    <p>🥈 Claude Sonnet 4.6 ($3/$15, 79.6% SWE)</p>
-                    <p>🥉 GPT-5.3 Instant (barato pero limitado)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>🔒 Coding local / Desarrollo</h4>
-                    <p class="winner">🥇 Qwen 3.6 27B</p>
-                    <p>SWE-bench Verified 77.2% (rivaliza Opus 4.5), menos VRAM, caché eficiente</p>
-                    <p>🥈 Qwen3-Coder-Next (especializado agentic)</p>
-                    <p>🥉 Qwen 3.5 27B (SWE 72.4%, multilingüe)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>✍️ Escritura / Reasoning local</h4>
-                    <p class="winner">🥇 Gemma 4 31B</p>
-                    <p>GPQA 84.3%, Arena AI superior, AIME 89.2%, mejor redacción</p>
-                    <p>🥈 Qwen 3.5 27B (GPQA 85.8% pero menos natural)</p>
-                    <p>🥉 Gemma 4 26B MoE (más ligero)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>🖥️ Computer Use / Control OS</h4>
-                    <p class="winner">🥇 GPT-5.5</p>
-                    <p>OSWorld 78.7%, omnimodal nativo</p>
-                    <p>🥈 Claude Opus 4.7 (78.0% OSWorld)</p>
-                    <p>🥉 Claude Sonnet 4.6 (72.5% OSWorld)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>📚 Razonamiento profundo</h4>
-                    <p class="winner">🥇 GPT-5.2 Thinking</p>
-                    <p>GPQA Diamond 96.1%, ARC-AGI líder</p>
-                    <p>🥈 Claude Mythos Preview (94.6% GPQA)</p>
-                    <p>🥉 Claude Opus 4.7 (94.2% GPQA)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>🌍 Multilingüe / Internacional</h4>
-                    <p class="winner">🥇 Qwen 3.5 27B</p>
-                    <p>201 languages, visión excepcional</p>
-                    <p>🥈 GPT-5.5 (omnimodal nativo)</p>
-                    <p>🥉 Claude Opus 4.7 (buen multilingüe)</p>
-                </div>
-                <div class="verdict-card">
-                    <h4>⚡ Uso diario / Pair programming</h4>
-                    <p class="winner">🥇 Claude Sonnet 4.6</p>
-                    <p>$3/$15, 79.6% SWE, IDE workflows excelentes</p>
-                    <p>🥈 GPT-5.4 ($2.50/$15, completo)</p>
-                    <p>🥉 Gemini 3.1 Pro ($2/$12, económico)</p>
-                </div>
-            </div>
-
-            <div class="success-box">
-                <strong>🎯 Mi recomendación personal:</strong> Para el 90% de desarrolladores, <strong>Claude Sonnet 4.6</strong> es el sweet spot: casi la calidad de Opus a 40% del precio. Si necesitas lo mejor absoluto en coding, sube a <strong>Opus 4.7</strong>. Si necesitas autonomía, ve a <strong>GPT-5.5</strong>. Si el presupuesto es ajustado, <strong>Gemini 3.1 Pro</strong> es imbatible. Si necesitas coding local/privacidad, <strong>Qwen 3.6 27B</strong> (SWE 77.2%, menos VRAM). Si necesitas escritura/reasoning local, <strong>Gemma 4 31B</strong>.
-            </div>
-        </section>
-
-        <!-- EVOLUTION -->
-        <section id="evolucion">
-            <h2><span class="icon">📈</span> Cómo Está Evolucionando Todo</h2>
-            <p>Mi análisis de las tendencias que estoy viendo en el landscape de IA en abril de 2026:</p>
-
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">Tendencia 1: Divergencia de especialización</div>
-                    <h3>De un modelo a muchos</h3>
-                    <p>Hace un año, un solo modelo era "el mejor". Ahora cada familia tiene 5+ variantes especializadas: Coding (GPT-5.3-Codex), Thinking (GPT-5.2), Instant (GPT-5.3), Agentic (GPT-5.5), Precision (Opus 4.7), Daily (Sonnet 4.6). La pregunta ya no es "qué modelo es mejor" sino "qué modelo para qué tarea".</p>
-                    <p><strong>Lo que viene:</strong> Routing automático inteligente que selecciona el modelo óptimo por tarea. OpenAI ya lo hace con GPT-5 Auto. Anthropic probablemente lo haga pronto.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">Tendencia 2: El gap se estrecha (y luego no)</div>
-                    <h3>Frontier vs Open-Weight: dos velocidades</h3>
-                    <p>Los modelos open-weight están mejorando exponencialmente. Gemma 4 31B compite con modelos 10x más grandes. Pero los frontier models siguen mejorando más rápido: Claude Mythos Preview está en 77.8% SWE-bench Pro mientras el mejor open-weight queda en ~70% Verified. El gap no se cierra — se mantiene en ~10-15 puntos.</p>
-                    <p><strong>Lo que viene:</strong> Los open-weight seguirán siendo buenos "suficientemente bien" para la mayoría de tareas. Los frontier seguirán dominando en lo que requiere máxima capacidad.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">Tendencia 3: Agentic como nuevo estándar</div>
-                    <h3>De chatbot a ejecutor autónomo</h3>
-                    <p>GPT-5.5 es el primer modelo diseñado desde cero como executor autónomo. Terminal-Bench 82.7%, Tau2-bench 98%. Los benchmarks que importan ya no son "qué responde mejor a un prompt" sino "qué tasks completa sin supervisión". La métrica clave es "¿puedo delegarle esto y olvidar?".</p>
-                    <p><strong>Lo que viene:</strong> Los modelos se medirán por "tasks completadas autónomamente" no por "puntuación en benchmark". El benchmark relevante será el éxito en producción.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">Tendencia 4: Multimodal nativo</div>
-                    <h3>Texto + imagen + audio + video unificados</h3>
-                    <p>GPT-5.5 introdujo procesamiento omnimodal nativo (no módulos pegados). Llama 4 es el primer open-weight multimodal nativo. Gemma 4 también. En 2026, ser multimodal ya no es un feature — es el baseline.</p>
-                    <p><strong>Lo que viene:</strong> Los modelos que no sean nativamente multimodales quedarán obsoletos. La frontera será la calidad de la integración cross-modal, no el hecho de tenerla.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">Tendencia 5: Token efficiency como métrica</div>
-                    <h3>No es el precio por token, es el precio por tarea</h3>
-                    <p>GPT-5.5 cuesta más por token ($5/$30) que Opus 4.7 ($5/$25), pero usa "significativamente menos tokens" por tarea. El metric que importa no es $/token sino $/task-completed. Los modelos que optimicen esto ganarán.</p>
-                    <p><strong>Lo que viene:</strong> Pricing basado en outcomes, no en tokens. "Pago por issue resuelto" no "pago por token consumido".</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">Tendencia 6: El problema de la saturación</div>
-                    <h3>¿Cuándo deja de importar "mejor modelo"?</h3>
-                    <p>Cuando todos los modelos top pueden resolver el 90% de los issues de coding, el 10% adicional de capacidad cuesta 3x más. Para la mayoría de developers, Sonnet 4.6 ($3/$15) es "suficientemente bueno". El ROI de subir a Opus 4.7 ($5/$25) o GPT-5.5 ($5/$30) depende del volumen y la criticidad.</p>
-                    <p><strong>Lo que viene:</strong> Democratización a través de routers inteligentes que usan el modelo mínimo necesario. La mayoría de tasks se resolverán con modelos mid-tier, reservando los top-tier para los edge cases.</p>
-                </div>
-            </div>
-
-            <div class="warning-box">
-                <strong>🔮 Mi predicción para finales de 2026:</strong><br><br>
-                1. <strong>Claude Mythos</strong> (preview actual) se lanzará y establecerá el nuevo benchmark: ~80% SWE-bench Pro, ~95% GPQA Diamond.<br>
-                2. <strong>GPT-5.6</strong> responderá con mejor coding, acercándose a Mythos.<br>
-                3. <strong>Gemini 3.2</strong> mantendrá su ventaja de precio/rendimiento.<br>
-                4. <strong>Gemma 5</strong> probablemente lance con 60-100B params, cerrando el gap con los frontier a ~85%.<br>
-                5. <strong>Los routers automáticos</strong> serán el estándar: un solo prompt → el modelo correcto para esa tarea.<br><br>
-                <strong>La pregunta clave:</strong> ¿Cuándo dejará de importar qué modelo usas y empezará a importar qué pipeline has construido? Creo que estamos a 12-18 meses de eso.
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer>
-            <p>🧠 <strong>Panorama Modelos IA 2026</strong> — Datos recabados de fuentes oficiales y benchmarks verificados.</p>
-            <p>Fuentes: BenchLM.ai, ISW-CTP, Anthropic blog, OpenAI blog, Google DeepMind blog, Hugging Face, LMArena.</p>
-            <p>Última actualización: 24 de Abril de 2026</p>
-            <p style="margin-top: 15px; color: var(--text-muted);">Por Cocobot 🐱</p>
-        </footer>
-
+    <div class="highlight-box">
+        <h4>🔑 Innovaciones Clave de DeepSeek V4</h4>
+        <ul>
+            <li><strong>Hybrid Attention (CSA + HCA):</strong> En 1M context: solo <strong>27% FLOPs</strong> y <strong>10% KV cache</strong> vs V3.2</li>
+            <li><strong>mHC (Manifold-Constrained Hyper-Connections):</strong> Residual connections reforzadas para propagación estable</li>
+            <li><strong>Muon Optimizer:</strong> Convergencia más rápida y estable</li>
+            <li><strong>Post-training 2-stage:</strong> SFT + RL-GRPO por expertos → distillation on-policy unificada</li>
+            <li><strong>3 modos de razonamiento:</strong> Non-think / Think High / Think Max</li>
+        </ul>
     </div>
+</section>
+
+<!-- PRECIOS -->
+<section id="precios">
+    <h2><span class="emoji">💰</span> Comparativa de Precios</h2>
+    <p class="subtitle">Precios API por millón de tokens (input/output). Actualizado a abril 2026.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Modelo</th>
+                <th>Input ($/M)</th>
+                <th>Output ($/M)</th>
+                <th>Context Max</th>
+                <th>Costo 1M in+out/día</th>
+                <th>Costo mensual</th>
+                <th>Ratio Output/Input</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>V4-Flash</strong></td>
+                <td class="winner">$0.32</td>
+                <td class="winner">$1.28</td>
+                <td>1M</td>
+                <td class="winner">$1.60</td>
+                <td class="winner">$48</td>
+                <td>4x</td>
+            </tr>
+            <tr>
+                <td><strong>Gemini 3.1 Pro</strong></td>
+                <td>$2.00</td>
+                <td>$12.00</td>
+                <td>2M</td>
+                <td>$14.00</td>
+                <td>$420</td>
+                <td>6x</td>
+            </tr>
+            <tr>
+                <td><strong>GPT-5.4</strong></td>
+                <td>$2.50</td>
+                <td>$15.00</td>
+                <td>1.05M</td>
+                <td>$17.50</td>
+                <td>$525</td>
+                <td>6x</td>
+            </tr>
+            <tr>
+                <td><strong>V4-Pro</strong></td>
+                <td>$6.00</td>
+                <td>$24.00</td>
+                <td>1M</td>
+                <td>$30.00</td>
+                <td>$900</td>
+                <td>4x</td>
+            </tr>
+            <tr>
+                <td><strong>Opus 4.7</strong></td>
+                <td>$5.00</td>
+                <td>$25.00</td>
+                <td>200K</td>
+                <td>$30.00</td>
+                <td>$900</td>
+                <td>5x</td>
+            </tr>
+            <tr>
+                <td><strong>GPT-5.4 Pro</strong></td>
+                <td class="loser">$30.00</td>
+                <td class="loser">$180.00</td>
+                <td>1.05M</td>
+                <td class="loser">$210.00</td>
+                <td class="loser">$6,300</td>
+                <td>6x</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="verdict">
+        <h4>⚠️ El GPT-5.4 Pro no tiene sentido económico</h4>
+        <p>GPT-5.4 Pro es <strong>12x más caro en input</strong> y <strong>12x en output</strong> que el standard GPT-5.4, con mejoras marginales en benchmarks. Cuesta <strong>$6,300/mes</strong> para 1M tokens diarios vs $525 del standard. Solo justifica el precio si necesitas el máximo razonamiento en tareas de investigación matemática de nivel frontera.</p>
+    </div>
+
+    <div class="highlight-box">
+        <h4>💡 Valor Real por Token</h4>
+        <p><strong>DeepSeek V4-Flash</strong> es <strong>18.75x más barato que GPT-5.4</strong> en input y <strong>11.7x en output</strong>, con rendimiento comparable en la mayoría de tareas. <strong>V4-Pro</strong> ofrece rendimiento similar a Claude Opus 4.7 al mismo precio API pero con licencia MIT (self-hosting incluido).</p>
+    </div>
+</section>
+
+<!-- CODING -->
+<section id="coding">
+    <h2><span class="emoji">💻</span> Coding & Software Engineering</h2>
+    <p class="subtitle">Benchmarks de generación de código, resolución de issues reales y competencias de programación.</p>
+    
+    <h3>SWE-bench & Code Generation</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Benchmark</th>
+                <th>V4-Pro-Max</th>
+                <th>Opus 4.7</th>
+                <th>GPT-5.4</th>
+                <th>Gemini 3.1</th>
+                <th>GPT-5.4 Pro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>SWE-bench Verified</strong><br><small>Fix GitHub issues</small></td>
+                <td class="winner">80.6%</td>
+                <td>80.8%</td>
+                <td>78.2%</td>
+                <td>78.8%</td>
+                <td>~80%</td>
+            </tr>
+            <tr>
+                <td><strong>SWE-bench Pro</strong><br><small>Harder issues</small></td>
+                <td>—</td>
+                <td class="winner">64.3%</td>
+                <td>57.7%</td>
+                <td>54.2%</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>HumanEval</strong><br><small>Function generation</small></td>
+                <td class="winner">97.1%</td>
+                <td>94.5%</td>
+                <td>95.2%</td>
+                <td>96.0%</td>
+                <td>97.0%</td>
+            </tr>
+            <tr>
+                <td><strong>LiveCodeBench</strong><br><small>Real-time coding</small></td>
+                <td class="winner">93.5%</td>
+                <td>88.0%</td>
+                <td>88.3%</td>
+                <td>89.2%</td>
+                <td>90.0%</td>
+            </tr>
+            <tr>
+                <td><strong>WebDev Arena</strong><br><small>Website building</small></td>
+                <td>—</td>
+                <td class="winner">1512</td>
+                <td>1480</td>
+                <td>1477</td>
+                <td>—</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Coding Competitions</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Benchmark</th>
+                <th>V4-Pro-Max</th>
+                <th>Opus 4.7</th>
+                <th>GPT-5.4</th>
+                <th>Gemini 3.1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Codeforces</strong><br><small>Competitive programming</small></td>
+                <td class="winner">3206</td>
+                <td>3100</td>
+                <td>3122</td>
+                <td>3150</td>
+            </tr>
+            <tr>
+                <td><strong>Apex Shortlist</strong><br><small>Code review</small></td>
+                <td class="winner">90.2%</td>
+                <td>85.0%</td>
+                <td>86.4%</td>
+                <td>87.3%</td>
+            </tr>
+            <tr>
+                <td><strong>CRUXEval-Plan</strong><br><small>Code understanding</small></td>
+                <td class="winner">66.7%</td>
+                <td>65.2%</td>
+                <td>63.5%</td>
+                <td>64.8%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight-box">
+        <h4>🏆 Coding Winner</h4>
+        <p><strong>Para code generation puro:</strong> DeepSeek V4-Pro-Max domina LiveCodeBench (93.5%), Codeforces (3206) y HumanEval (97.1%). <strong>Para SWE-bench Pro (issues reales difíciles):</strong> Claude Opus 4.7 lleva la delantera (64.3%). <strong>Para web dev:</strong> Opus 4.7 gana en WebDev Arena.</p>
+    </div>
+</section>
+
+<!-- KNOWLEDGE -->
+<section id="knowledge">
+    <h2><span class="emoji">🧠</span> Knowledge & Reasoning</h2>
+    <p class="subtitle">Conocimiento general, razonamiento de nivel graduate y benchmarks científicos.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Benchmark</th>
+                <th>V4-Pro-Max</th>
+                <th>V4-Pro-High</th>
+                <th>Opus 4.7</th>
+                <th>GPT-5.4</th>
+                <th>Gemini 3.1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>MMLU</strong><br><small>General knowledge (57 subjects)</small></td>
+                <td>91.0%</td>
+                <td>90.8%</td>
+                <td>91.1%</td>
+                <td>90.4%</td>
+                <td class="winner">92.0%</td>
+            </tr>
+            <tr>
+                <td><strong>MMLU-Pro</strong><br><small>Expert-level knowledge</small></td>
+                <td>87.5%</td>
+                <td>87.1%</td>
+                <td>88.7%</td>
+                <td>86.7%</td>
+                <td class="winner">91.0%</td>
+            </tr>
+            <tr>
+                <td><strong>GPQA Diamond</strong><br><small>PhD-level science</small></td>
+                <td>90.1%</td>
+                <td>87.9%</td>
+                <td>94.2%</td>
+                <td>94.4%</td>
+                <td class="winner">94.3%</td>
+            </tr>
+            <tr>
+                <td><strong>Humanity's Last Exam</strong><br><small>2,500 hard multi-modal Qs</small></td>
+                <td>—</td>
+                <td>—</td>
+                <td>34.4%</td>
+                <td>31.6%</td>
+                <td class="winner">37.5%</td>
+            </tr>
+            <tr>
+                <td><strong>SimpleBench</strong><br><small>Common sense reasoning</small></td>
+                <td>—</td>
+                <td>—</td>
+                <td>62.9%</td>
+                <td>74.1%</td>
+                <td class="winner">79.6%</td>
+            </tr>
+            <tr>
+                <td><strong>GDPval</strong><br><small>44 knowledge occupations</small></td>
+                <td>—</td>
+                <td>—</td>
+                <td>59.6%</td>
+                <td class="winner">83.0%</td>
+                <td>53.5%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight-box">
+        <h4>🧠 Conocimiento Científico</h4>
+        <p><strong>Gemini 3.1 Pro</strong> domina GPQA Diamond (94.3%) y MMLU-Pro (91.0%), lo que lo convierte en el mejor modelo para tareas que requieren conocimiento científico profundo. <strong>GPT-5.4</strong> es líder en GDPval (83%) → mejor para trabajos profesionales generales. <strong>V4-Pro-Max</strong> está muy cerca pero aún tiene una brecha de ~4pts en ciencia PhD.</p>
+    </div>
+</section>
+
+<!-- MATH -->
+<section id="math">
+    <h2><span class="emoji">📐</span> Matemáticas & Física</h2>
+    <p class="subtitle">Benchmarks de razonamiento matemático, desde competiciones hasta investigación de nivel frontera.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Benchmark</th>
+                <th>V4-Pro-Max</th>
+                <th>V4-Pro-High</th>
+                <th>Opus 4.7</th>
+                <th>GPT-5.4</th>
+                <th>Gemini 3.1</th>
+                <th>GPT-5.4 Pro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>AIME 2025</strong><br><small>Integer math competition</small></td>
+                <td class="winner">84.4%</td>
+                <td>81.1%</td>
+                <td>78.5%</td>
+                <td>83.2%</td>
+                <td>82.0%</td>
+                <td>85.0%</td>
+            </tr>
+            <tr>
+                <td><strong>MATH Level 5</strong><br><small>Hardest competition math</small></td>
+                <td>—</td>
+                <td>—</td>
+                <td>97.7%</td>
+                <td class="winner">98.1%</td>
+                <td>97.9%</td>
+                <td class="winner">98.1%</td>
+            </tr>
+            <tr>
+                <td><strong>FrontierMath</strong><br><small>Unpublished expert-level</small></td>
+                <td>—</td>
+                <td>—</td>
+                <td>40.7%</td>
+                <td>47.6%</td>
+                <td>45.0%</td>
+                <td class="winner">50.0%</td>
+            </tr>
+            <tr>
+                <td><strong>OTIS Mock AIME</strong><br><small>Integer-answer problems</small></td>
+                <td>—</td>
+                <td>—</td>
+                <td>94.4%</td>
+                <td class="winner">96.1%</td>
+                <td>95.6%</td>
+                <td class="winner">96.1%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight-box">
+        <h4>📐 Para Matemáticos y Físicos</h4>
+        <p><strong>Competition math (AIME, MATH L5):</strong> GPT-5.4 domina con 98.1% en MATH L5 y 96.1% en OTIS AIME. <strong>V4-Pro-Max</strong> es el mejor open-source en AIME (84.4%). <strong>Para investigación matemática de nivel frontera (FrontierMath):</strong> GPT-5.4 Pro lidera (50%), pero al costo de $30/M input. <strong>GPQA Diamond (física/chem/bio PhD):</strong> Gemini 3.1, GPT-5.4 y Opus 4.7 están empatados (~94%).</p>
+    </div>
+</section>
+
+<!-- CREATIVE WRITING -->
+<section id="creative">
+    <h2><span class="emoji">✍️</span> Escritura Creativa & Redacción</h2>
+    <p class="subtitle">Benchmarks de escritura, prosa creativa, instrucción-following y calidad literaria.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Benchmark</th>
+                <th>Gemini 3.1</th>
+                <th>Opus 4.7</th>
+                <th>GPT-5.4 Pro</th>
+                <th>GPT-5.4</th>
+                <th>Sonnet 4.6</th>
+                <th>Grok 4.1</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Arena Creative Writing</strong><br><small>Human preference (Elo)</small></td>
+                <td class="winner">1487</td>
+                <td>1468</td>
+                <td>1461</td>
+                <td>1423</td>
+                <td>1443</td>
+                <td>1431</td>
+            </tr>
+            <tr>
+                <td><strong>Arena Instruction Following</strong><br><small>Human preference (Elo)</small></td>
+                <td>1490</td>
+                <td class="winner">1500</td>
+                <td>1488</td>
+                <td>1470</td>
+                <td>1479</td>
+                <td>1433</td>
+            </tr>
+            <tr>
+                <td><strong>IFEval</strong><br><small>Format/style constraint adherence</small></td>
+                <td>95</td>
+                <td>95</td>
+                <td class="winner">97</td>
+                <td>96</td>
+                <td>89.5</td>
+                <td>93</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>✍️ Gemini 3.1 Pro</h3>
+            <p><strong>Mejor escritura creativa</strong> — Lidera Arena CW con 1487 Elo.</p>
+            <ul>
+                <li>Prosa más original y narrativa</li>
+                <li>Ideal para ficción y storytelling</li>
+                <li>12x más barato que Opus</li>
+                <li>2M context → analiza obras completas</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>📝 Claude Opus 4.7</h3>
+            <p><strong>Mejor editor profesional</strong> — Máximo instruction-following (1500 Elo).</p>
+            <ul>
+                <li>Prosa natural, ritmo literario</li>
+                <li>Sigue reglas de marca/tono con precisión</li>
+                <li>Editing y rewriting de primer nivel</li>
+                <li>Mejor para contenido profesional largo</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>📊 GPT-5.4</h3>
+            <p><strong>Escritura técnica y estructurada</strong> — IFEval más alto entre estándar (96).</p>
+            <ul>
+                <li>Documentación técnica precisa</li>
+                <li>Copy de marketing con reglas estrictas</li>
+                <li>Reports y documentos estructurados</li>
+                <li>Output más formal/analítico</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- AGENTIC -->
+<section id="agentic">
+    <h2><span class="emoji">🤖</span> Agentic & Tool Use</h2>
+    <p class="subtitle">Capacidades de agentes autónomos, uso de herramientas, investigación web y computer use.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Benchmark</th>
+                <th>Opus 4.7</th>
+                <th>GPT-5.4</th>
+                <th>Gemini 3.1</th>
+                <th>V4-Pro-Max</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>MCP-Atlas</strong><br><small>Tool orchestration</small></td>
+                <td class="winner">77.3%</td>
+                <td>68.1%</td>
+                <td>73.9%</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>OSWorld-Verified</strong><br><small>Computer use</small></td>
+                <td class="winner">78.0%</td>
+                <td>75.0%</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>BrowseComp</strong><br><small>Web research</small></td>
+                <td>79.3%</td>
+                <td class="winner">89.3%</td>
+                <td>85.9%</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>Finance Agent v1.1</strong><br><small>Financial analysis</small></td>
+                <td class="winner">64.4%</td>
+                <td>61.5%</td>
+                <td>59.7%</td>
+                <td>—</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight-box">
+        <h4>🤖 Agentic Winner</h4>
+        <p><strong>Claude Opus 4.7</strong> lidera en MCP-Atlas (77.3%) y OSWorld (78%) → mejor para agents con herramientas y computer use. <strong>GPT-5.4</strong> domina BrowseComp (89.3%) → investigación web superior. <strong>Gemini 3.1 Pro</strong> es sólido pero sin ventaja clara en agentic.</p>
+    </div>
+</section>
+
+<!-- CASOS DE USO -->
+<section id="usos">
+    <h2><span class="emoji">🎯</span> Casos de Uso por Perfil</h2>
+    <p class="subtitle">Recomendaciones específicas para cada tipo de usuario y profesional.</p>
+
+    <div class="use-case-grid">
+        <div class="use-case">
+            <h4>👨‍💻 Developer / QA Engineer</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">Claude Opus 4.7</div>
+                <div class="why">SWE-bench Pro: 64.3%. WebDev Arena: 1512. MCP-Atlas: 77.3%. El rey del coding.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Mejor valor</div>
+                <div class="best-model">DeepSeek V4-Pro-Max</div>
+                <div class="why">LiveCodeBench: 93.5%, Codeforces: 3206, HumanEval: 97.1%. A 1/5 del precio de Opus y open-source MIT.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🧮 Matemático / Investigador</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">GPT-5.4 / GPT-5.4 Pro</div>
+                <div class="why">MATH L5: 98.1%, OTIS AIME: 96.1%, FrontierMath: 50%. Domina competición y matemáticas de nivel frontera.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Mejor open-source</div>
+                <div class="best-model">DeepSeek V4-Pro-Max</div>
+                <div class="why">AIME: 84.4% — mejor open-source en competiciones matemáticas.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🔬 Físico / Científico</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">Gemini 3.1 Pro</div>
+                <div class="why">GPQA Diamond: 94.3%, MMLU-Pro: 91.0%. Conocimiento científico más profundo de cualquier modelo.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Investigación web</div>
+                <div class="best-model">GPT-5.4</div>
+                <div class="why">BrowseComp: 89.3%. Ideal para buscar papers, revisar literatura y síntesis de documentos científicos.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>✍️ Escritor Creativo</h4>
+            <div class="best">
+                <div class="best-label">Mejor prosa</div>
+                <div class="best-model">Gemini 3.1 Pro</div>
+                <div class="why">Arena CW: 1487 Elo. Prosa más original y narrativa. 2M context para obras completas.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Mejor editor</div>
+                <div class="best-model">Claude Opus 4.7</div>
+                <div class="why">Arena IF: 1500. Editing profesional, ritmo literario, coherencia en textos largos.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>📝 Redactor / Copywriter</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">Claude Opus 4.7</div>
+                <div class="why">Instruction-following perfecto. Sigue reglas de marca, tono, estructura con precisión quirúrgica.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Mejor valor</div>
+                <div class="best-model">Gemini 3.1 Pro</div>
+                <div class="why">IFEval: 95 (empata con Opus). 12x más barato. Ideal para contenido en volumen.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🎨 Diseñador / Frontend</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">Claude Opus 4.7</div>
+                <div class="why">WebDev Arena: 1512. SVG generation precisa, CSS correcto, arquitectura limpia.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Alternativa</div>
+                <div class="best-model">GPT-5.4</div>
+                <div class="why">SVG generation con proporciones precisas. Mejor para data visualization y diagramas técnicos.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🔍 Investigador / Analyst</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">GPT-5.4</div>
+                <div class="why">BrowseComp: 89.3%. Investigación web superior. GDPval: 83% para trabajos profesionales.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Documentos enormes</div>
+                <div class="best-model">Gemini 3.1 Pro</div>
+                <div class="why">2M context → analiza libros, bases de código completas, corpus legales enteros.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🏢 Empresa / High Volume</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">DeepSeek V4-Flash</div>
+                <div class="why">$0.32/M input, $1.28/M output. Rendimiento sólido a 18x menos que GPT-5.4. Open-source para self-hosting.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Balance precio/calidad</div>
+                <div class="best-model">Gemini 3.1 Pro</div>
+                <div class="why">$2/M input. Contexto masivo. Creatividad top. 60% más barato que Opus en output.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🧪 Agentic Workflows / Automation</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">Claude Opus 4.7</div>
+                <div class="why">MCP-Atlas: 77.3%, OSWorld: 78%. Tool orchestration superior, computer use, MCP native.</div>
+            </div>
+            <div class="best">
+                <div class="best-label">Finance agent</div>
+                <div class="best-model">Claude Opus 4.7</div>
+                <div class="why">Finance Agent: 64.4%. Análisis financiero con herramientas integradas.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>🌐 Multilingüe / Traducción</h4>
+            <div class="best">
+                <div class="best-label">Mejor opción</div>
+                <div class="best-model">Gemini 3.1 Pro</div>
+                <div class="why">MMMLU: 92.6%. Conocimiento multilingüe más amplio de cualquier modelo frontier.</div>
+            </div>
+        </div>
+
+        <div class="use-case">
+            <h4>💡 Self-Hosting / Privacy</h4>
+            <div class="best">
+                <div class="best-label">Única opción</div>
+                <div class="best-model">DeepSeek V4 (Flash o Pro)</div>
+                <div class="why">Licencia MIT. Weights disponibles en HuggingFace. Self-hosting completo con privacidad total.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VEREDICTO -->
+<section id="veredicto">
+    <h2><span class="emoji">🏆</span> Veredicto Final</h2>
+    <p class="subtitle">Resumen de qué modelo usar y cuándo.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>🥇 Claude Opus 4.7</h3>
+            <p class="price">$5/$25 per M tokens</p>
+            <p><strong>El más equilibrado del frontier.</strong></p>
+            <ul>
+                <li>Coding líder en SWE-bench Pro y WebDev</li>
+                <li>Best agentic: MCP-Atlas, OSWorld, Finance Agent</li>
+                <li>Mejor instruction-following para redacción profesional</li>
+                <li>Prosa literaria y editing de primer nivel</li>
+                <li>Flat pricing sin surcharges de context largo</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🥈 DeepSeek V4-Pro-Max</h3>
+            <p class="price">$6/$24 per M tokens</p>
+            <p><strong>El revelación de 2026. Open-source MIT.</strong></p>
+            <ul>
+                <li>LiveCodeBench: 93.5% → mejor en coding real-time</li>
+                <li>Codeforces: 3206 → domina competencias</li>
+                <li>HumanEval: 97.1% → generación de funciones</li>
+                <li>AIME: 84.4% → mejor open-source en math</li>
+                <li>1.6T params, 49B activos, 1M context</li>
+                <li>Self-hosting con licencia MIT</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🥉 Gemini 3.1 Pro</h3>
+            <p class="price">$2/$12 per M tokens</p>
+            <p><strong>Mejor valor científico y creativo.</strong></p>
+            <ul>
+                <li>GPQA Diamond: 94.3% → ciencia PhD</li>
+                <li>MMLU-Pro: 91.0% → conocimiento experto</li>
+                <li>Arena CW: 1487 → escritura creativa #1</li>
+                <li>2M context → más largo del mercado</li>
+                <li>60% más barato que Opus en output</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>📊 GPT-5.4</h3>
+            <p class="price">$2.50/$15 per M tokens</p>
+            <p><strong>Matemáticas, investigación y estructura.</strong></p>
+            <ul>
+                <li>MATH L5: 98.1% → domine en competition math</li>
+                <li>BrowseComp: 89.3% → investigación web #1</li>
+                <li>GDPval: 83% → trabajos profesionales</li>
+                <li>IFEval: 96 → escritura técnica precisa</li>
+                <li>Caching: $1.25/M input cached</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>⚡ DeepSeek V4-Flash</h3>
+            <p class="price">$0.32/$1.28 per M tokens</p>
+            <p><strong>El rey del precio. Open-source MIT.</strong></p>
+            <ul>
+                <li>284B params, solo 13B activos</li>
+                <li>18.75x más barato que GPT-5.4 en input</li>
+                <li>Rendimiento sólido para la mayoría de tareas</li>
+                <li>Ideal para workloads de volumen alto</li>
+                <li>Self-hosting: 2× RTX 4090 (~$4/día)</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>❌ GPT-5.4 Pro</h3>
+            <p class="price">$30/$180 per M tokens</p>
+            <p><strong>Precio premium, mejoras marginales.</strong></p>
+            <ul>
+                <li>FrontierMath: 50% → único donde destaca claramente</li>
+                <li>MATH L5: 98.1% (empata con standard)</li>
+                <li>12x más caro que standard por mínimas mejoras</li>
+                <li>Solo justifica si necesitas math de nivel investigación</li>
+                <li>Para el 95% de casos: usa el standard</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="verdict">
+        <h4>🎯 Estrategia óptima: Model Routing</h4>
+        <p>No elijas un modelo, elige por tarea. La estrategia más inteligente es <strong>ruteo por tarea</strong>:</p>
+        <ul>
+            <li><strong>Coding production:</strong> Claude Opus 4.7</li>
+            <li><strong>Coding a precio accesible:</strong> DeepSeek V4-Pro-Max</li>
+            <li><strong>Matemáticas y ciencia:</strong> Gemini 3.1 Pro / GPT-5.4</li>
+            <li><strong>Investigación web:</strong> GPT-5.4</li>
+            <li><strong>Escritura creativa:</strong> Gemini 3.1 Pro</li>
+            <li><strong>Redacción profesional:</strong> Claude Opus 4.7</li>
+            <li><strong>Volumen alto / presupuesto:</strong> DeepSeek V4-Flash</li>
+            <li><strong>Agentic / herramientas:</strong> Claude Opus 4.7</li>
+            <li><strong>Self-hosting / privacidad:</strong> DeepSeek V4 (Flash o Pro)</li>
+        </ul>
+    </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+    <h2><span class="emoji">📚</span> Fuentes</h2>
+    <div class="card">
+        <ul>
+            <li>DeepSeek V4 Technical Report — HuggingFace (24 abril 2026)</li>
+            <li>LM Council Benchmarks — Epoch AI (abril 2026)</li>
+            <li>BenchLM.ai — Best LLM for Writing 2026</li>
+            <li>MindStudio — GPT-5.4 vs Claude vs Gemini benchmarks</li>
+            <li>Spectrum AI Labs — GPT-5.4 vs Opus 4.7 vs Gemini comparison</li>
+            <li>OpenAI — GDPval benchmark results</li>
+            <li>Vellum — Opus 4.7 benchmark breakdown</li>
+            <li>LMSYS Chatbot Arena — Creative Writing & IF rankings</li>
+        </ul>
+    </div>
+</section>
+
+</div>
+
+<div class="footer">
+    <p>Modelos IA 2026 — Comparativa actualizada a 24 de abril, 2026</p>
+    <p>Hecho con datos de benchmarks independientes y reportes técnicos oficiales</p>
+    <p><a href="https://github.com/RaulGDMM/cocobot-pages">GitHub</a></p>
+</div>
 
 </body>
 </html>
