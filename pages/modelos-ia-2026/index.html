@@ -27,6 +27,7 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
         .hero {
             text-align: center;
@@ -64,37 +65,112 @@
             margin: 0 auto;
             padding: 20px;
         }
-        nav.tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            padding: 20px;
-            position: sticky;
-            top: 0;
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
         }
-        nav.tabs a {
-            padding: 8px 16px;
+        .menu-label {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 8px;
-            color: var(--text2);
-            text-decoration: none;
-            font-size: 0.85rem;
             transition: all 0.3s;
         }
-        nav.tabs a:hover {
+        .menu-label:hover {
+            border-color: var(--accent1);
+        }
+        .hamburger-icon {
+            width: 22px;
+            height: 16px;
+            position: relative;
+        }
+        .hamburger-icon span {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .hamburger-icon span:nth-child(1) { top: 0; }
+        .hamburger-icon span:nth-child(2) { top: 7px; }
+        .hamburger-icon span:nth-child(3) { top: 14px; }
+        .menu-toggle:checked + .menu-label .hamburger-icon span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-toggle:checked + .menu-label .hamburger-icon span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle:checked + .menu-label .hamburger-icon span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        .menu-content {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            max-width: 85vw;
+            height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 150;
+            padding: 70px 20px 20px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .menu-toggle:checked ~ .menu-content {
+            transform: translateX(0);
+        }
+        .menu-content a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            margin: 4px 0;
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .menu-content a:hover {
             background: var(--surface2);
             color: var(--text);
-            border-color: var(--accent1);
+        }
+        .menu-content a .emoji {
+            font-size: 1.2rem;
+            width: 28px;
+            text-align: center;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 140;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .menu-toggle:checked ~ .menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
         }
         section {
             margin: 40px 0;
-            scroll-margin-top: 80px;
+            scroll-margin-top: 20px;
         }
         section h2 {
             font-size: 1.8rem;
@@ -340,17 +416,26 @@
     <span class="updated">📅 Actualizado: 24 de abril, 2026</span>
 </div>
 
-<nav class="tabs">
-    <a href="#specs">🏗️ Specs</a>
-    <a href="#precios">💰 Precios</a>
-    <a href="#coding">💻 Coding</a>
-    <a href="#knowledge">🧠 Knowledge</a>
-    <a href="#math">📐 Matemáticas</a>
-    <a href="#creative">✍️ Escritura</a>
-    <a href="#agentic">🤖 Agentic</a>
-    <a href="#usos">🎯 Casos de Uso</a>
-    <a href="#veredicto">🏆 Veredicto</a>
+<input type="checkbox" id="menu-toggle" class="menu-toggle">
+<label for="menu-toggle" class="menu-label" aria-label="Menu">
+    <div class="hamburger-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</label>
+<nav class="menu-content">
+    <a href="#specs"><span class="emoji">🏗️</span> Especificaciones</a>
+    <a href="#precios"><span class="emoji">💰</span> Precios</a>
+    <a href="#coding"><span class="emoji">💻</span> Coding</a>
+    <a href="#knowledge"><span class="emoji">🧠</span> Knowledge</a>
+    <a href="#math"><span class="emoji">📐</span> Matemáticas</a>
+    <a href="#creative"><span class="emoji">✍️</span> Escritura</a>
+    <a href="#agentic"><span class="emoji">🤖</span> Agentic</a>
+    <a href="#usos"><span class="emoji">🎯</span> Casos de Uso</a>
+    <a href="#veredicto"><span class="emoji">🏆</span> Veredicto</a>
 </nav>
+<label for="menu-toggle" class="menu-overlay"></label>
 
 <div class="container">
 
