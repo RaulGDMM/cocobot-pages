@@ -405,7 +405,44 @@
             color: var(--text2);
             font-size: 0.9rem;
         }
+        /* Desktop: show inline nav, hide hamburger */
+        .desktop-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+        .desktop-nav a {
+            padding: 6px 14px;
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .desktop-nav a:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+        .menu-label { display: none !important; }
+        .menu-content { display: none !important; }
+        .menu-overlay { display: none !important; }
+
         @media (max-width: 768px) {
+            /* Mobile: hide inline nav, show hamburger */
+            .desktop-nav { display: none !important; }
+            .menu-label { display: flex !important; }
+            .menu-content { display: block !important; }
+            .menu-overlay { display: block !important; }
+
             table { font-size: 0.8rem; }
             th, td { padding: 8px 6px; }
             .card-grid { grid-template-columns: 1fr; }
@@ -429,6 +466,17 @@
         <span></span>
     </div>
 </label>
+<nav class="desktop-nav">
+    <a href="#specs"><span class="emoji">🏗️</span> Especificaciones</a>
+    <a href="#precios"><span class="emoji">💰</span> Precios</a>
+    <a href="#coding"><span class="emoji">💻</span> Coding</a>
+    <a href="#knowledge"><span class="emoji">🧠</span> Knowledge</a>
+    <a href="#math"><span class="emoji">📐</span> Matemáticas</a>
+    <a href="#creative"><span class="emoji">✍️</span> Escritura</a>
+    <a href="#agentic"><span class="emoji">🤖</span> Agentic</a>
+    <a href="#usos"><span class="emoji">🎯</span> Casos de Uso</a>
+    <a href="#veredicto"><span class="emoji">🏆</span> Veredicto</a>
+</nav>
 <nav class="menu-content">
     <a href="#specs"><span class="emoji">🏗️</span> Especificaciones</a>
     <a href="#precios"><span class="emoji">💰</span> Precios</a>
