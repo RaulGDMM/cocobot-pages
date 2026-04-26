@@ -6,15 +6,16 @@
   <title>🤖 AI News — Cocobot Daily</title>
   <style>
     :root {
-      --bg: #0d1117;
-      --bg-card: #161b22;
-      --bg-sidebar: #010409;
-      --border: #30363d;
-      --text: #c9d1d9;
-      --text-muted: #8b949e;
-      --accent: #58a6ff;
-      --accent2: #f0883e;
-      --star: #f2cc60;
+      --bg-primary: #0a0a1a;
+      --bg-secondary: #1a1a3e;
+      --bg-card: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --accent: #00d4ff;
+      --accent2: #ff0055;
+      --star: #ffd700;
+      --green: #00ff88;
       --tag-llm: #58a6ff;
       --tag-video: #f778ba;
       --tag-image: #db61a2;
@@ -23,190 +24,363 @@
       --tag-llama: #f0883e;
       --tag-general: #8b949e;
       --tag-comfyui: #f2cc60;
+      --sidebar-w: 250px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      background: var(--bg);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #0f1440 100%);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.8;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     /* ── Header ── */
     .header {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--bg-sidebar);
-      border-bottom: 1px solid var(--border);
-      padding: 0.75rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
+      background: linear-gradient(135deg, rgba(255,0,85,0.15), rgba(0,100,255,0.15));
+      padding: 50px 20px 35px;
+      text-align: center;
+      border-bottom: 3px solid rgba(255,0,85,0.4);
+      position: relative;
+      overflow: hidden;
     }
-    .header h1 { font-size: 1.25rem; flex: 1; }
-    .header h1 span { font-size: 0.85rem; color: var(--text-muted); margin-left: 0.5rem; }
+    .header h1 {
+      font-size: 2.5em;
+      color: var(--accent2);
+      text-shadow: 0 0 30px rgba(255,0,85,0.5);
+      margin-bottom: 8px;
+    }
+    .header .subtitle {
+      font-size: 1.1em;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    .header .tagline {
+      color: var(--accent2);
+      font-size: 0.9em;
+      font-style: italic;
+      margin-top: 8px;
+    }
+    .header .versions {
+      font-size: 0.8em;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 200px);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: rgba(1,4,9,0.95);
+      border-right: 1px solid var(--border);
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sidebar-header h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0 5px;
+    }
+    .date-list {
+      list-style: none;
+      padding: 10px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .date-list li a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .date-list li a:hover,
+    .date-list li a.active {
+      background: rgba(0,212,255,0.1);
+      text-decoration: none;
+    }
+    .date-list li a.active {
+      border-left: 3px solid var(--accent);
+    }
+    .date-list li .badge {
+      font-size: 0.7rem;
+      background: rgba(0,212,255,0.15);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* ── Overlay ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 99;
+    }
+    .overlay.show { display: block; }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      width: 100%;
+    }
 
     /* ── Hamburger ── */
     .hamburger {
-      background: none; border: none; cursor: pointer;
-      display: flex; flex-direction: column; gap: 5px; padding: 4px;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 101;
+      background: rgba(26,26,62,0.9);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
     }
+    .hamburger:hover { background: rgba(0,212,255,0.15); }
     .hamburger span {
-      display: block; width: 24px; height: 2px;
-      background: var(--text); border-radius: 2px;
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
       transition: all 0.3s ease;
     }
     .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.active span:nth-child(2) { opacity: 0; }
     .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-    /* ── Sidebar (dates) ── */
-    .sidebar {
-      position: fixed; top: 52px; left: 0; bottom: 0;
-      width: 260px; background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
-      overflow-y: auto; padding: 1rem;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 90;
+    /* ── Back link ── */
+    .back-link {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 101;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: rgba(26,26,62,0.9);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
     }
-    .sidebar.open { transform: translateX(0); }
-    .sidebar h2 { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 0.75rem; }
-    .date-list { list-style: none; }
-    .date-list li a {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.5rem 0.75rem; margin-bottom: 2px;
-      border-radius: 6px; font-size: 0.9rem;
-      color: var(--text);
-      transition: background 0.15s;
-    }
-    .date-list li a:hover, .date-list li a.active {
+    .back-link:hover { color: var(--accent); text-decoration: none; }
+
+    /* ── Section ── */
+    .section {
       background: var(--bg-card);
-      text-decoration: none;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
     }
-    .date-list li a.active { border-left: 3px solid var(--accent); }
-    .date-list li .badge { font-size: 0.7rem; background: var(--bg); padding: 2px 6px; border-radius: 10px; color: var(--text-muted); }
-
-    /* ── Day section nav (hamburger) ── */
-    .day-nav {
-      position: sticky; top: 52px; z-index: 80;
-      background: var(--bg); border-bottom: 1px solid var(--border);
-      padding: 0.5rem 1.5rem; display: flex; gap: 0.5rem;
-      overflow-x: auto; white-space: nowrap;
+    .section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+      border-color: rgba(0,212,255,0.3);
     }
-    .day-nav button {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--text); padding: 0.35rem 0.85rem;
-      border-radius: 20px; font-size: 0.8rem;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .day-nav button:hover, .day-nav button.active {
-      background: var(--accent); border-color: var(--accent); color: #000;
-    }
-
-    /* ── Main content ── */
-    .main { padding: 1.5rem; max-width: 900px; margin: 0 auto; }
-
-    /* ── Day block ── */
-    .day-block { display: none; }
-    .day-block.active { display: block; }
-    .day-header {
-      margin-bottom: 2rem; padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .day-header h2 { font-size: 1.5rem; }
-    .day-header .date-sub { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem; }
-
-    /* ── Category section ── */
-    .category-section { margin-bottom: 2.5rem; }
-    .category-section h3 {
-      font-size: 1.1rem; margin-bottom: 1rem;
-      padding-left: 0.75rem; border-left: 3px solid var(--accent);
+    .section h3 {
+      color: var(--accent);
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
     }
 
     /* ── News card ── */
     .news-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 8px; padding: 1rem 1.25rem;
-      margin-bottom: 1rem; transition: border-color 0.2s;
+      background: rgba(0,212,255,0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 12px 0;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
     }
-    .news-card:hover { border-color: var(--accent); }
+    .news-card:hover {
+      background: rgba(0,212,255,0.08);
+      transform: translateX(5px);
+    }
     .news-card.starred {
-      border-color: var(--star);
-      background: linear-gradient(135deg, var(--bg-card) 0%, #1c1a0a 100%);
+      border-left-color: var(--star);
+      background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,170,0,0.05));
     }
-    .news-card .card-top { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
-    .news-card h4 { flex: 1; font-size: 1rem; min-width: 0; }
-    .news-card .summary { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
-    .news-card .source { font-size: 0.8rem; color: var(--text-muted); }
-    .news-card .source a { color: var(--accent); }
+    .news-card.starred:hover {
+      background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,170,0,0.08));
+    }
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .card-top h4 {
+      flex: 1;
+      color: var(--accent);
+      font-size: 1.15em;
+      min-width: 0;
+    }
+    .news-card.starred .card-top h4 { color: var(--star); }
 
     /* ── Star badge ── */
     .star-badge {
-      display: inline-flex; align-items: center; gap: 3px;
-      background: #2a2408; border: 1px solid var(--star);
-      color: var(--star); font-size: 0.7rem; font-weight: 600;
-      padding: 2px 8px; border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(255,215,0,0.2);
+      color: var(--star);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 15px;
+      border: 1px solid var(--star);
     }
 
     /* ── Tags ── */
     .tag {
-      display: inline-block; font-size: 0.7rem; font-weight: 600;
-      padding: 2px 8px; border-radius: 12px;
-      text-transform: uppercase; letter-spacing: 0.5px;
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
     }
-    .tag-llm { background: rgba(88,166,255,0.15); color: var(--tag-llm); }
-    .tag-video { background: rgba(247,120,186,0.15); color: var(--tag-video); }
-    .tag-image { background: rgba(219,97,162,0.15); color: var(--tag-image); }
-    .tag-music { background: rgba(163,113,247,0.15); color: var(--tag-music); }
-    .tag-agent { background: rgba(63,185,80,0.15); color: var(--tag-agent); }
-    .tag-llama { background: rgba(240,136,62,0.15); color: var(--tag-llama); }
-    .tag-general { background: rgba(139,148,158,0.15); color: var(--tag-general); }
-    .tag-comfyui { background: rgba(242,204,96,0.15); color: var(--tag-comfyui); }
+    .tag-llm { background: rgba(88,166,255,0.2); color: var(--tag-llm); }
+    .tag-video { background: rgba(247,120,186,0.2); color: var(--tag-video); }
+    .tag-image { background: rgba(219,97,162,0.2); color: var(--tag-image); }
+    .tag-music { background: rgba(163,113,247,0.2); color: var(--tag-music); }
+    .tag-agent { background: rgba(63,185,80,0.2); color: var(--tag-agent); }
+    .tag-llama { background: rgba(240,136,62,0.2); color: var(--tag-llama); }
+    .tag-general { background: rgba(139,148,158,0.2); color: var(--tag-general); }
+    .tag-comfyui { background: rgba(242,204,96,0.2); color: var(--tag-comfyui); }
 
-    /* ── Overlay ── */
-    .overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5); z-index: 85;
+    .news-card .summary {
+      color: #bbb;
+      font-size: 0.95em;
+      margin-bottom: 8px;
+      line-height: 1.6;
     }
-    .overlay.show { display: block; }
+    .news-card .source {
+      font-size: 0.8em;
+      color: var(--text-muted);
+    }
+    .news-card .source a { color: var(--accent); }
+
+    /* ── Category colors ── */
+    .cat-comfyui .section h3 { color: var(--tag-comfyui); border-color: var(--tag-comfyui); }
+    .cat-comfyui .news-card { border-left-color: var(--tag-comfyui); background: rgba(242,204,96,0.05); }
+    .cat-llm .section h3 { color: var(--tag-llm); border-color: var(--tag-llm); }
+    .cat-llm .news-card { border-left-color: var(--tag-llm); background: rgba(88,166,255,0.05); }
+    .cat-video .section h3 { color: var(--tag-video); border-color: var(--tag-video); }
+    .cat-video .news-card { border-left-color: var(--tag-video); background: rgba(247,120,186,0.05); }
+    .cat-image .section h3 { color: var(--tag-image); border-color: var(--tag-image); }
+    .cat-image .news-card { border-left-color: var(--tag-image); background: rgba(219,97,162,0.05); }
+    .cat-music .section h3 { color: var(--tag-music); border-color: var(--tag-music); }
+    .cat-music .news-card { border-left-color: var(--tag-music); background: rgba(163,113,247,0.05); }
+    .cat-agent .section h3 { color: var(--tag-agent); border-color: var(--tag-agent); }
+    .cat-agent .news-card { border-left-color: var(--tag-agent); background: rgba(63,185,80,0.05); }
+    .cat-llama .section h3 { color: var(--tag-llama); border-color: var(--tag-llama); }
+    .cat-llama .news-card { border-left-color: var(--tag-llama); background: rgba(240,136,62,0.05); }
+    .cat-general .section h3 { color: var(--tag-general); border-color: var(--tag-general); }
 
     /* ── Loading ── */
-    .loading { text-align: center; padding: 3rem; color: var(--text-muted); }
+    .loading { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 1.1em; }
 
     /* ── Footer ── */
     .footer {
-      text-align: center; padding: 2rem; color: var(--text-muted);
-      font-size: 0.8rem; border-top: 1px solid var(--border);
-      margin-top: 3rem;
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+      font-size: 0.85em;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
     }
+    .footer a { color: var(--accent); }
 
     /* ── Responsive ── */
     @media (min-width: 768px) {
       .sidebar { transform: translateX(0); }
-      .main { margin-left: 260px; }
       .overlay { display: none !important; }
+      .main { padding: 30px 40px; }
+    }
+    @media (max-width: 767px) {
+      .header h1 { font-size: 1.8em; }
+      .section { padding: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <button class="hamburger" id="menuBtn" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <h1>🤖 AI News <span>Cocobot Daily</span></h1>
-  </header>
+  <!-- Hamburger -->
+  <button class="hamburger" id="menuBtn" aria-label="Toggle dates">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Back link -->
+  <a href="https://raulgdmm.github.io/cocobot-pages/" class="back-link">← Índice</a>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
 
   <!-- Sidebar -->
-  <div class="overlay" id="overlay"></div>
   <aside class="sidebar" id="sidebar">
-    <h2>📅 Fechas</h2>
+    <div class="sidebar-header">
+      <h2>📅 Fechas</h2>
+      <button class="sidebar-close" id="closeBtn">&times;</button>
+    </div>
     <ul class="date-list" id="dateList"></ul>
   </aside>
 
-  <!-- Day Nav (category quick links) -->
-  <nav class="day-nav" id="dayNav"></nav>
+  <!-- Header -->
+  <header class="header">
+    <h1>🤖 AI News</h1>
+    <p class="subtitle">Actualización diaria de Inteligencia Artificial</p>
+    <p class="tagline">"Datos verificados, no rumores"</p>
+  </header>
 
   <!-- Main -->
   <main class="main" id="mainContent">
@@ -214,39 +388,36 @@
   </main>
 
   <!-- Footer -->
-  <div class="footer">
-    🐱 Cocobot AI News — Actualizado diariamente a las 9:30 CET<br>
-    <a href="https://raulgdmm.github.io/cocobot-pages/" target="_blank">← Volver al índice</a>
-  </div>
+  <footer class="footer">
+    <p>🐱 Cocobot AI News — Actualizado diariamente a las 9:30 CET</p>
+    <p style="margin-top:8px;">🤖 Con un toque de gato-IA</p>
+  </footer>
 
 <script>
 const CATEGORIES = {
-  'llm':       { label: '🧠 LLMs',              cls: 'tag-llm',       color: '#58a6ff' },
-  'video':     { label: '🎬 Video Generation',   cls: 'tag-video',     color: '#f778ba' },
-  'image':     { label: '🖼️ Image Generation',   cls: 'tag-image',     color: '#db61a2' },
-  'music':     { label: '🎵 Music Generation',   cls: 'tag-music',     color: '#a371f7' },
-  'agent':     { label: '🤖 Agentes & IA Tools', cls: 'tag-agent',     color: '#3fb950' },
-  'llama':     { label: '⚙️ llama.cpp',          cls: 'tag-llama',     color: '#f0883e' },
-  'comfyui':   { label: '🎨 ComfyUI & Modelos',  cls: 'tag-comfyui',   color: '#f2cc60' },
-  'general':   { label: '🌐 General IA',         cls: 'tag-general',   color: '#8b949e' },
+  'llm':     { label: '🧠 LLMs',          cls: 'tag-llm',     color: '#58a6ff' },
+  'video':   { label: '🎬 Video',          cls: 'tag-video',   color: '#f778ba' },
+  'image':   { label: '🖼️ Imagen',         cls: 'tag-image',   color: '#db61a2' },
+  'music':   { label: '🎵 Música',         cls: 'tag-music',   color: '#a371f7' },
+  'agent':   { label: '🤖 Agentes',        cls: 'tag-agent',   color: '#3fb950' },
+  'llama':   { label: '⚙️ llama.cpp',      cls: 'tag-llama',   color: '#f0883e' },
+  'comfyui': { label: '🎨 ComfyUI',        cls: 'tag-comfyui', color: '#f2cc60' },
+  'general': { label: '🌐 General IA',     cls: 'tag-general', color: '#8b949e' },
 };
 
 let DATA = null;
 
-// ── Load data ──
 async function loadData() {
   try {
     const res = await fetch('data.json?t=' + Date.now());
     DATA = await res.json();
   } catch(e) {
-    // If fetch fails, use inline data
     DATA = typeof window.__aiNewsData !== 'undefined' ? window.__aiNewsData : { days: [], versions: {} };
   }
   renderDates();
   if (DATA.days.length > 0) selectDate(DATA.days[0].date);
 }
 
-// ── Render date sidebar ──
 function renderDates() {
   const list = document.getElementById('dateList');
   list.innerHTML = DATA.days.map(d =>
@@ -264,9 +435,7 @@ function renderDates() {
   });
 }
 
-// ── Select date ──
 function selectDate(date) {
-  // Update sidebar active
   document.querySelectorAll('.date-list a').forEach(a => {
     a.classList.toggle('active', a.dataset.date === date);
   });
@@ -274,45 +443,19 @@ function selectDate(date) {
   const day = DATA.days.find(d => d.date === date);
   if (!day) return;
 
-  // Render day nav
-  const cats = [...new Set(day.news.map(n => n.category))];
-  const nav = document.getElementById('dayNav');
-  nav.innerHTML = cats.map(c => {
-    const cat = CATEGORIES[c] || CATEGORIES['general'];
-    return `<button data-cat="${c}" class="all-btn">${cat.label}</button>`;
-  }).join('');
-  // Add "All" button
-  nav.insertAdjacentHTML('afterbegin', '<button class="all-btn" data-cat="__all__">📋 Todo</button>');
-
-  nav.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      nav.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.cat;
-      document.querySelectorAll('.category-section').forEach(sec => {
-        if (cat === '__all__' || sec.dataset.cat === cat) {
-          sec.style.display = '';
-        } else {
-          sec.style.display = 'none';
-        }
-      });
-    });
-  });
-  nav.querySelector('[data-cat="__all__"]').classList.add('active');
-
-  // Render content
-  const main = document.getElementById('mainContent');
   const versions = DATA.versions || {};
 
-  let html = `<div class="day-block active">`;
-  html += `<div class="day-header">
-    <h2>${formatDateLong(day.date)}</h2>
-    <div class="date-sub">🕐 9:30 CET — ${day.news.length} noticias recopiladas</div>
-    ${versions.hermes || versions.llamacpp ? `<div class="date-sub" style="margin-top:0.3rem">
-      ${versions.hermes ? `🤖 Hermes Agent v${versions.hermes}` : ''}
-      ${versions.llamacpp ? ` · ⚙️ llama.cpp v${versions.llamacpp}` : ''}
-    </div>` : ''}
-  </div>`;
+  // Update header
+  document.querySelector('.header .subtitle').textContent =
+    formatDateLong(day.date) + ' — ' + day.news.length + ' noticias';
+  const verHtml = `${versions.hermes ? '🤖 Hermes v' + versions.hermes : ''}${versions.llamacpp && versions.hermes ? ' · ' : ''}${versions.llamacpp ? '⚙️ llama.cpp v' + versions.llamacpp : ''}`;
+  let verEl = document.querySelector('.header .versions');
+  if (!verEl) {
+    verEl = document.createElement('p');
+    verEl.className = 'versions';
+    document.querySelector('.header').appendChild(verEl);
+  }
+  verEl.textContent = verHtml;
 
   // Group by category
   const grouped = {};
@@ -322,19 +465,20 @@ function selectDate(date) {
     grouped[c].push(n);
   });
 
-  // Category order
   const catOrder = ['comfyui', 'llm', 'video', 'image', 'music', 'agent', 'llama', 'general'];
+  const main = document.getElementById('mainContent');
+  let html = '';
+
   catOrder.forEach(cat => {
     if (!grouped[cat]) return;
     const catInfo = CATEGORIES[cat] || CATEGORIES['general'];
-    html += `<section class="category-section" data-cat="${cat}" id="sec-${cat}">`;
-    html += `<h3 style="border-color:${catInfo.color}">${catInfo.label}</h3>`;
+    html += `<section class="section cat-${cat}">`;
+    html += `<h3>${catInfo.label}</h3>`;
     grouped[cat].forEach(n => {
       const isStar = n.star || false;
       html += `<div class="news-card${isStar ? ' starred' : ''}">
         <div class="card-top">
           <h4>${n.title}</h4>
-          <span class="tag ${catInfo.cls}">${catInfo.label.replace(/^.+\s/, '')}</span>
           ${isStar ? '<span class="star-badge">⭐ Destacado</span>' : ''}
         </div>
         <p class="summary">${n.summary}</p>
@@ -344,21 +488,10 @@ function selectDate(date) {
     html += `</section>`;
   });
 
-  html += `</div>`;
   main.innerHTML = html;
-
-  // Smooth scroll for day nav
-  document.querySelectorAll('.day-nav button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cat = btn.dataset.cat;
-      if (cat === '__all__') return;
-      const sec = document.getElementById(`sec-${cat}`);
-      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── Helpers ──
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -368,20 +501,26 @@ function formatDateLong(dateStr) {
   return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-// ── Hamburger ──
+// ── Sidebar toggle ──
 const menuBtn = document.getElementById('menuBtn');
+const closeBtn = document.getElementById('closeBtn');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  menuBtn.classList.add('active');
+  if (window.innerWidth < 768) overlay.classList.add('show');
+}
 function closeSidebar() {
   sidebar.classList.remove('open');
   menuBtn.classList.remove('active');
   overlay.classList.remove('show');
 }
 menuBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-  menuBtn.classList.toggle('active');
-  overlay.classList.toggle('show');
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
 });
+closeBtn.addEventListener('click', closeSidebar);
 overlay.addEventListener('click', closeSidebar);
 
 // ── Init ──
