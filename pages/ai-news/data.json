@@ -1,19 +1,107 @@
 {
   "versions": {
-    "hermes": "unknown",
-    "llamacpp": "unknown"
+    "hermes": "0.11.0 (2026.4.23)",
+    "llamacpp": "b3994"
   },
   "days": [
     {
       "date": "2026-04-26",
       "news": [
         {
-          "title": "Bienvenido a AI News — Cocobot Daily",
-          "summary": "Esta es la primera versión del sistema diario de noticias de IA. Cada día a las 9:30 CET se buscarán y recopilarán las noticias más relevantes del mundo de la inteligencia artificial, organizadas por categorías. Los modelos de interés especial (FLUX, LTX, ACE Step, Qwen3.6-27B, etc.) se marcarán con ⭐.",
+          "title": "Qwen3.6-27B: El modelo que usas rompe récords de coding",
+          "summary": "Alibaba ha lanzado Qwen3.6-27B, un modelo denso open source de 27 billones de parámetros que supera a su predecesor Qwen3.5-397B-A17B (397B parámetros) en prácticamente todos los benchmarks de coding. En SWE-bench Verified alcanza 77.2 vs 76.2 del modelo 15x más grande, y en Terminal-Bench 2.0 consigue 59.3 vs 52.5. Es un modelo 'denso' (no MoE), lo que facilita su ejecución en hardware consumer. Soporta multimodalidad (texto, imágenes, video) y está disponible con licencia Apache 2.0 en Hugging Face y ModelScope. Los cuantizados Q4_K_M de Unsloth pesan apenas 16.8GB, perfectos para tu RTX 5090. Benchmark independiente en BenchLM: 72/100 (posición 28 global), compitiendo con modelos mucho más grandes.",
+          "category": "llm",
+          "star": true,
+          "source": "https://the-decoder.com/qwen3-6-27b-beats-much-larger-predecessor-on-most-coding-benchmarks/",
+          "source_name": "The Decoder"
+        },
+        {
+          "title": "DeepSeek V4 y GPT-5.5 llegan a finales de abril",
+          "summary": "Los últimos lanzamientos de LLM incluyen DeepSeek-V4-Flash-Max y DeepSeek-V4-Pro-Max (23 abril), ambos open source con GPQA 0.9. OpenAI ha lanzado GPT-5.5 y GPT-5.5 Pro (23 abril) como modelos propietarios. También destacan Kimi K2.6 de Moonshot AI (20 abril, open source) y Claude Opus 4.7 de Anthropic (16 abril). El ecosistema open source está ganando terreno rápidamente con 296+ releases trackeados en 2026. Los precios API continúan bajando: Qwen3.6-27B en Novita a $60/M tokens, mientras que GPT-5.5 Pro llega a $3,000/M tokens.",
+          "category": "llm",
+          "star": false,
+          "source": "https://llm-stats.com/llm-updates",
+          "source_name": "LLM Stats"
+        },
+        {
+          "title": "FLUX.2 [klein] 4B: El generador de imágenes más rápido del 2026",
+          "summary": "FLUX.2 [klein] de Black Forest Labs es el modelo de generación de imágenes más rápido del 2026, capaz de creación en tiempo real con apenas 4B de parámetros. Según pruebas de Vidguru AI Lab, es ~75% más barato que modelos premium como Nano Banana 2 ($0.01 por imagen). Aunque compromete algo de calidad vs FLUX.2 Max, su velocidad lo hace ideal para iteración rápida en la fase creativa. El ecosistema FLUX.2 incluye: Max (punta de calidad open-weight), Pro/Ultra (API BFL), y Klein 4B (velocidad extrema). Soporte completo en ComfyUI con workflows optimizados. Tu workflow actual con FLUX.1 Dev es superado por toda la familia FLUX.2.",
+          "category": "comfyui",
+          "star": true,
+          "source": "https://www.vidguru.ai/blog/2026-fastest-ai-image-generator-model.html",
+          "source_name": "Vidguru AI Lab"
+        },
+        {
+          "title": "Midjourney v7 y GPT Image 1.5 lideran calidad de imagen",
+          "summary": "Comparativa actualizada de modelos de imagen 2026: GPT Image 1.5 de OpenAI destaca en renderizado de texto dentro de imágenes (mejor del mercado). Gemini 3.1 Flash Image (Nano Banana 2) es ideal para prototipado rápido con latencia mínima. FLUX.2 Max lidera en fotorealismo open-weight. Midjourney v7 domina en ilustración creativa y arte conceptual. Los precios API se han estabilizado y la convergencia de calidad entre modelos es notable. El ecosistema ha madurado con APIs OpenAI-compatible para todos los modelos principales.",
+          "category": "image",
+          "star": false,
+          "source": "https://till-freitag.com/en/blog/ai-image-generation-models-2026",
+          "source_name": "Till Freitag"
+        },
+        {
+          "title": "LTX-2.3: Guía completa para video 1080p con 12GB VRAM",
+          "summary": "Nuevos tutoriales y guías detalladas para LTX-2.3 muestran cómo generar video 1080p con solo 12GB VRAM usando técnicas de cuantización y optimización. LTX-2 sigue siendo el único modelo open source productivo con audio nativo sincronizado y output 4K 50fps nativo. Tu setup con LTX 2.3 en ComfyUI está bien posicionado, pero las optimizaciones recientes permiten usarlo en hardware menos potente. Wan2.2 ahora es el principal competidor open source con arquitectura MoE y soporte consumer GPU (8.19 GB VRAM para T2V-1.3B).",
+          "category": "video",
+          "star": true,
+          "source": "https://www.youtube.com/watch?v=xEUpj51e2A8",
+          "source_name": "黎黎原上咩 (YouTube)"
+        },
+        {
+          "title": "Sora 2 y Veo 3.1: Los líderes de video propietario en 2026",
+          "summary": "Sora 2 de OpenAI (sept 2025, actualizado continuamente) lidera en calidad cinematográfica y física realista con audio sincronizado. Incluye app iOS social y función 'characters' para usar likeness en escenas. Veo 3.1 de Google DeepMind ofrece 4K nativo, consistencia de personajes excepcional entre escenas y soporte vertical. Runway Gen-4.5 (#1 en benchmarks Artificial Analysis) destaca en control granular con motion brushes. Kling 2.6 genera hasta 2 minutos simultáneamente con audio. Los modelos propietarios siguen liderando en calidad absoluta, pero LTX-2 y Wan2.2 están cerrando la brecha en open source.",
+          "category": "video",
+          "star": false,
+          "source": "https://pinggy.io/blog/best_video_generation_ai_models/",
+          "source_name": "Pinggy"
+        },
+        {
+          "title": "ACE-Step 1.5: El 'Stable Diffusion moment' para música IA",
+          "summary": "ACE-Step 1.5 es descrito como el momento Stable Diffusion para música - el punto donde la generación musical pasó de sistemas cerrados a modelos open ejecutables localmente. Genera hasta 4 minutos de música en solo 20 segundos en A100 (15x más rápido que baselines LLM). Mantiene coherencia musical superior con alineación de letras, melodía, armonía y ritmo. Soporta voice cloning, edición de letras, remixing y track generation. Tu setup actual con ACE Step 1.5 XL Turbo en ComfyUI usa el decoder 4B con 8 steps y CFG 1.0 - la configuración 'xl-merge' experimental (SFT+Turbo blended) reduce artifacts y errores de notas. AMD Ryzen AI ya soporta ejecución nativa de ACE-Step 1.5.",
+          "category": "music",
+          "star": false,
+          "source": "https://curateclick.com/blog/ace-step-1-5-guide-open-source-ai-music",
+          "source_name": "CurateClick"
+        },
+        {
+          "title": "Hermes Agent v0.11.0: 184 commits por actualizar",
+          "summary": "Tu versión instalada es v0.11.0 (2026.4.23) con 184 commits por detrás. La última versión incluye: Interface release con rewrite completo React/Ink del CLI interactivo, arquitectura de transportes pluggable (AnthropicTransport, ResponsesApiTransport), soporte nativo AWS Bedrock, 5 nuevos paths de inferencia, 17ª plataforma de mensajería (QQBot), superficie de plugins expandida y GPT-5.5 vía Codex OAuth. La release v0.10.0 (16 abril) introdujo Tool Gateway de @jquesnelle. Hermes Agent gana tracción como agente self-improving open source que aprende de ejecuciones pasadas. Gana en learning loop y trabajo de largo horizonte vs OpenClaw.",
+          "category": "agent",
+          "star": true,
+          "source": "https://github.com/NousResearch/hermes-agent/releases",
+          "source_name": "GitHub"
+        },
+        {
+          "title": "ComfyUI: Wan 2.2, FLUX workflows y Fix-It Weeks",
+          "summary": "Actualizaciones de ComfyUI abril 2026: Soporte Wan 2.2 para video con optimizaciones comunitarias (WAN_2.2_5B para image-to-video). GPT Image 2 de OpenAI disponible como Partner Nodes. Nuevos custom nodes para gestión UI, manejo video y workflows de personajes consistentes. Soporte Topaz API Nodes para enhancement de video. HunYuan 3D 2.0 con compatibilidad mejorada. Qwen ControlNet ecosystem expandido. Moonvalley Nodes soportados nativamente. Flux Kontext y Omnigen 2 documentados. La organización ha anunciado 'Fix-It Weeks' de estabilidad para abordar bugs y completar work foundational de arquitectura. Tu workflow con FLUX.1 Dev/Kontext y LTX 2.3 funciona bien, pero las actualizaciones mejoran memoria VAE y estimación de memoria para Kontext.",
+          "category": "comfyui",
+          "star": true,
+          "source": "https://docs.comfy.org/changelog",
+          "source_name": "ComfyUI Docs"
+        },
+        {
+          "title": "llama.cpp: OpenVINO 2026.1 y mejoras de cuantización",
+          "summary": "Intel OpenVINO 2026.1 integra backend para llama.cpp validado en múltiples modelos GGUF, soportando Intel Core Series 3 y Arc Pro B70 (32GB) para inferencia single-GPU de LLMs de 20-30B parámetros. Soporte completo Qwen3.5 en CANN (Ascend NPU) con operators FILL, DIAG, SOLVE_TRI, etc. Nuevas mejoras de cuantización: Q1_0 1-bit con group size 128, Q4_K/Q4_0 SOA optimizado para OpenCL 3.0, fixes crashes Adreno GPU. CI testing Windows Vulkan en Intel. Tu modelo Qwen3.6-27B Q4_K_XL se beneficia de estas optimizaciones de kernels. Release b3994 disponible (25 abril).",
+          "category": "llama",
+          "star": true,
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub"
+        },
+        {
+          "title": "Ernie Image: Mejor modelo open source de imagen según tests",
+          "summary": "Video reciente de Veteran AI (3.8K views, 2 días) muestra 6 tests que demuestran que Ernie Image podría ser el modelo open source de imagen #1. Disponible para ejecutar en ComfyUI. Aunque FLUX.2 Max sigue siendo el estándar para fotorealismo, Ernie Image compite directamente en calidad general. Los tests muestran superioridad en ciertos tipos de imágenes y consistencia de prompts. Vale la pena probar en tu setup de ComfyUI para comparar con FLUX.",
+          "category": "image",
+          "star": false,
+          "source": "https://www.youtube.com/watch?v=0z_YD8n2OgM",
+          "source_name": "Veteran AI (YouTube)"
+        },
+        {
+          "title": "Google TurboQuant: Compresión de memoria para LLMs",
+          "summary": "Google introdujo TurboQuant el 2 abril 2026, un avance en compresión de memoria para modelos grandes. Permite ejecutar modelos más grandes con menos VRAM manteniendo calidad de inferencia. Similar a técnicas de cuantización pero con enfoque en compresión de weights durante inferencia. Tu cuantización Q4_K_XL de Qwen3.6-27B ya usa técnicas similares, pero TurboQuant ofrece mejoras adicionales para modelos MoE y architectures complejas. Implementación disponible en llama.cpp y otros backends.",
           "category": "general",
           "star": false,
-          "source": "https://raulgdmm.github.io/cocobot-pages/",
-          "source_name": "Cocobot Lab"
+          "source": "https://www.crescendo.ai/news/latest-ai-news-and-updates",
+          "source_name": "Crescendo AI"
         }
       ]
     }
