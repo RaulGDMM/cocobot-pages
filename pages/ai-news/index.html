@@ -236,7 +236,7 @@ let DATA = null;
 // ── Load data ──
 async function loadData() {
   try {
-    const res = await fetch('data.json');
+    const res = await fetch('data.json?t=' + Date.now());
     DATA = await res.json();
   } catch(e) {
     // If fetch fails, use inline data
