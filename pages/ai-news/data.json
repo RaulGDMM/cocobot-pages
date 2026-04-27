@@ -1,9 +1,174 @@
 {
   "versions": {
-    "hermes": "0.11.0 (2026.4.23)",
-    "llamacpp": "b3994"
+    "hermes": "v0.11.0 (2026.4.23)",
+    "llamacpp": "b8943"
   },
   "days": [
+    {
+      "date": "2026-04-27",
+      "news": [
+        {
+          "title": "Qwen3.6-27B Released — Flagship-Level Agentic Coding in a 27B Dense Model",
+          "summary": "Alibaba Cloud's Qwen Team released Qwen3.6-27B, a dense 27B parameter model delivering flagship-level agentic coding performance. This model surpasses the previous-generation open-source flagship and scores 0.9 on GPQA. Released as open-source just days ago (April 21, 2026), it represents a significant leap for consumer-grade LLM deployment. The model is designed for local inference, making it ideal for developers who want strong agentic coding capabilities without massive hardware requirements. At Q4 quantization, it runs comfortably on a single RTX 4090 with ~14-15 GB VRAM. This release comes alongside the broader Qwen3.6 family including the 35B-A3B MoE variant.",
+          "category": "llm",
+          "star": true,
+          "source": "https://llm-stats.com/llm-updates",
+          "source_name": "LLM Stats"
+        },
+        {
+          "title": "GLM-5.1 by Zhipu AI — #1 Open-Source Coding Model on SWE-Bench Pro",
+          "summary": "Zhipu AI released GLM-5.1, a 744B parameter MoE model (40B active per forward pass) with a 200K context window under an MIT license. It ranks #1 on SWE-Bench Pro, beating both Claude Opus 4.6 and GPT-5.4 on expert-level software engineering tasks. This is the first open-weight model to lead on this benchmark, proving open-source can surpass closed frontier models on real-world coding. Free to self-host, it represents a paradigm shift for self-hosted AI deployment. The MIT license means no restrictions on commercial use or modification, making it the most permissive frontier-level coding model available.",
+          "category": "llm",
+          "star": false,
+          "source": "https://whatllm.org/blog/new-ai-models-april-2026",
+          "source_name": "WhatLLM.org"
+        },
+        {
+          "title": "Qwen3-Coder-Next — 3B Active Parameters Achieves 70%+ on SWE-Bench Verified",
+          "summary": "The Qwen Team introduced Qwen3-Coder-Next, built on the Qwen3-Next-80B-A3B-Base hybrid attention + MoE architecture with only 3B active parameters. Despite its tiny active footprint, it achieves over 70% on SWE-Bench Verified using SWE-Agent, delivering performance comparable to models with 10-20x more active parameters. The model excels at long-horizon reasoning, tool usage, and recovery from execution failures — essential traits for real-world coding agents. Official integrations include Web Dev, CLI automation, Cline, OpenClaw, and Browser Use Agent workflows.",
+          "category": "llm",
+          "star": false,
+          "source": "https://qwen.ai/blog?id=qwen3-coder-next",
+          "source_name": "Qwen Blog"
+        },
+        {
+          "title": "Google Gemma 4 Family Released — Multimodal Open-Source Models Up to 27B",
+          "summary": "Google released the Gemma 4 family of open-source multimodal models under Apache 2.0 license in April 2026. The lineup includes four variants: a 27B dense model, a 26B-A4B MoE variant, and edge-optimized E2B/E4B models for on-device inference. The 27B variant scores ~0.8 on GPQA, demonstrating impressive capabilities for its size. The unified architecture natively handles text, image, and audio — making the pure text LLM category effectively obsolete. Edge variants (2B-4B params) can run on mobile devices and laptops without dedicated GPUs.",
+          "category": "llm",
+          "star": false,
+          "source": "https://whatllm.org/blog/new-ai-models-april-2026",
+          "source_name": "WhatLLM.org"
+        },
+        {
+          "title": "Claude Opus 4.7 and Mythos — Anthropic's April 2026 Releases",
+          "summary": "Anthropic released Claude Opus 4.7 (proprietary, GPQA: 0.9) and the preview of Claude Mythos, a reasoning-focused model gated under Project Glasswing. Mythos is restricted to ~50 critical infrastructure partners (AWS, Apple, Microsoft, Google, NVIDIA, Cisco, etc.) for defensive vulnerability scanning of OS kernels and codebases. Anthropic publicly labeled it 'too capable to release broadly,' establishing a new precedent in safety gating. The preview pricing is $25/M input tokens and $125/M output tokens. This split between capability and control marks a philosophical fracture in the AI industry.",
+          "category": "llm",
+          "star": false,
+          "source": "https://whatllm.org/blog/new-ai-models-april-2026",
+          "source_name": "WhatLLM.org"
+        },
+        {
+          "title": "Microsoft MAI Suite — In-House Transcribe, Voice, and Image Models",
+          "summary": "Microsoft launched three world-class AI models built entirely in-house: MAI-Transcribe (fast multilingual speech-to-text), MAI-Voice (custom voice generation), and MAI-Image (image/video generation). Released on April 2, 2026, via Microsoft Foundry, these represent Microsoft's push toward AI independence from OpenAI. The models are proprietary with Azure pricing and focus on production-ready multimodal plumbing for enterprise deployment.",
+          "category": "llm",
+          "star": false,
+          "source": "https://whatllm.org/blog/new-ai-models-april-2026",
+          "source_name": "WhatLLM.org"
+        },
+        {
+          "title": "LTX-2.3 — Lightricks' 22B Video Model with New VAE, Audio, and Upscalers",
+          "summary": "Lightricks released LTX-2.3, the latest iteration of their LTX-2 family — a 22B parameter diffusion transformer that generates high-fidelity video and synchronized audio. Key upgrades: a new high-fidelity VAE that retains micro-textures across frames (reducing texture drift from every 8-10 frames to much longer), a rebuilt audio conditioning layer with fewer artifacts, native 9:16 portrait support, and new spatial + temporal upscalers. It offers 24/48 FPS options and improved image-to-video quality. VRAM requirements: 24GB for 720p base, higher for 1080p+. Updated ComfyUI custom nodes and reference workflows are available via the ComfyUI-LTXVideo repository.",
+          "category": "video",
+          "star": true,
+          "source": "https://wavespeed.ai/blog/posts/ltx-2-3-whats-new-2026/",
+          "source_name": "WaveSpeed AI Blog"
+        },
+        {
+          "title": "Wan2.2 — Leading Open-Source Video Generation with MoE Architecture",
+          "summary": "Wan2.2 stands as the leading open-source video generation model in 2026, introducing a Mixture-of-Experts (MoE) architecture into video diffusion models. The WAN_2.2_5B variant is being actively optimized in ComfyUI for image-to-video generation. Community users are actively troubleshooting and refining workflows, particularly for RTX 4080 setups. Wan2.2 is rapidly maturing as a practical open-source alternative for local video generation, with dedicated ComfyUI nodes and Pinokio integration (Wan2GP) becoming available.",
+          "category": "video",
+          "star": false,
+          "source": "https://pinggy.io/blog/best_video_generation_ai_models/",
+          "source_name": "Pinggy"
+        },
+        {
+          "title": "ComfyUI April 2026 Updates — New Nodes, Wan2.2 Support, Flux Workflows",
+          "summary": "ComfyUI's April 2026 update brings several notable changes: new custom nodes including ComfyUI-ComboFilter (UI decluttering), ComfyUI-Video-Frame-Extractor v1.3.0 (improved video pipeline reliability), and a preview LoRA Slider Node. Security hardening was applied to ComfyUI Manager with CSRF protection and Content-Type gating. OpenAI's GPT Image 2 arrived as Partner Nodes with 2K output and 8-image consistency. Wan 2.2 support is maturing with active community optimization. The ComfyUI changelog also notes Topaz API video enhancement nodes, HunYuan 3D 2.0 support, audio workflow integration, and Qwen ControlNet ecosystem expansion.",
+          "category": "comfyui",
+          "star": false,
+          "source": "https://neonframe.ai/comfyui-latest-updates-april-2026-new-custom-nodes-wan-2-2-support-flux-workflows-comfyui-manager-fixes-comfyui-news-new-features/",
+          "source_name": "NeonFrame AI"
+        },
+        {
+          "title": "FLUX.2 Model Lineup — Black Forest Labs' Latest Image Generation Stack",
+          "summary": "Black Forest Labs has released 10 Flux AI models since August 2024, now updated to the FLUX.2 generation. The current lineup ranges from FLUX Schnell (2 credits, sub-second) to FLUX.2 [max] (25 credits, maximum quality). Key variants: FLUX.2 [pro] (Nov 2025, medium quality, up to 4K), FLUX.2 [dev] (open-weight for local workflows), FLUX.2 [flex] (text and control), and FLUX.2 [klein] (low-latency). FLUX.2 [max] delivers the strongest prompt following, best final-quality output, and grounded generation with real-time web context. FLUX.2 is optimized for multi-reference control, dependable typography, and brand color precision.",
+          "category": "image",
+          "star": false,
+          "source": "https://seavidgen.com/blog/flux-2-review",
+          "source_name": "SeaVidGen"
+        },
+        {
+          "title": "OpenAI ChatGPT Images 2.0 — Native Reasoning and 2K Resolution",
+          "summary": "OpenAI launched ChatGPT Images 2.0 on April 21, 2026, introducing the new gpt-image-2 model with three major innovations: native reasoning (the model 'thinks' before it draws), 2K resolution output, and multi-image consistency. This represents a significant leap in AI image generation, moving beyond simple text-to-image toward reasoning-driven visual creation. While proprietary, it sets a new benchmark that open-source models will likely work to match.",
+          "category": "image",
+          "star": false,
+          "source": "https://www.bentoml.com/blog/a-guide-to-open-source-image-generation-models",
+          "source_name": "BentoML Blog"
+        },
+        {
+          "title": "ACE Studio 2.0.7 — Free Update with Video Composer Feature",
+          "summary": "Timedomain released ACE Studio 2.0.7 on March 20, 2026, a free update introducing Video Composer — a score-to-picture feature that analyzes video scenes, cuts, and motion to generate synchronized music and SFX on a timeline. ACE Studio features AI-powered vocal synthesis, AI instrument software, and Generative AI Kits that create realistic singing vocals and instruments from MIDI data, lyrics, and text descriptions. The Video Composer feature can use AI-generated music as inspiration or as a base to enhance with AI voices and instruments.",
+          "category": "music",
+          "star": false,
+          "source": "https://www.recordingmag.com/news/timedomain-releases-ace-studio-2-0-7-introduces-video-composer/",
+          "source_name": "Recording Magazine"
+        },
+        {
+          "title": "ACE-Step 1.5 — Open-Source AI Music Generation Reaches Commercial Quality",
+          "summary": "ACE-Step 1.5 by ByteDance is the most capable open-source AI music generation model in 2026, described as the 'Stable Diffusion moment' for music. Using a diffusion transformer architecture with conditional flow matching in the STFT domain, it generates music up to 4 minutes from text descriptions and supports lyrics-to-song generation. It rivals commercial alternatives in quality and control while being fully open-source and locally runnable. The model supports cross-platform deployment including mobile GPUs, making it the most hardware-flexible open-source music model available.",
+          "category": "music",
+          "star": false,
+          "source": "https://arxiv.org/abs/2602.00744",
+          "source_name": "arXiv"
+        },
+        {
+          "title": "Stable Audio 2.5 — Multi-Part Musical Composition Generation",
+          "summary": "Stability AI unveiled Stable Audio 2.5 with advanced capabilities for generating multi-part musical compositions including intros, developments, and outros. Building on Stable Audio 2.0's foundation of high-quality full tracks up to 3 minutes at 44.1kHz stereo, version 2.5 adds structural composition control. Also notable: Stable Audio Open, an open-source model for short audio samples and sound effects, and Stable Audio Open Small (collaboration with Arm) that can generate 11 seconds of audio on a smartphone in under 8 seconds.",
+          "category": "music",
+          "star": false,
+          "source": "https://stability.ai/news-updates/tag/Audio",
+          "source_name": "Stability AI"
+        },
+        {
+          "title": "Hermes Agent v0.11.0 — Current Release with 423 Pending Commits",
+          "summary": "Hermes Agent v0.11.0 (2026.4.23) is the current installed version. The GitHub releases page shows active development with recent versions v2026.4.23 and v2026.4.13. The v2026.4.23 release includes improvements to Ollama (cloud provider support, GLM continuation, think=false control), Xiaomi MiMo as first-class provider, and ChatCompletionsTransport. The system reports 423 commits behind latest, with an 'hermes update' command available. Hermes Agent continues gaining traction as an open-source self-improving AI agent, increasingly compared with OpenClaw in 2026.",
+          "category": "agent",
+          "star": false,
+          "source": "https://github.com/NousResearch/hermes-agent/releases",
+          "source_name": "GitHub - NousResearch"
+        },
+        {
+          "title": "LangGraph Emerges as Leading AI Agent Framework for Production in 2026",
+          "summary": "LangGraph is identified as the best overall AI agent framework for serious developers in 2026. It appears in more production environments than any other framework, with deployments at Klarna, Cisco, and Vizient. Key advantages: native MCP support, built-in tool filtering, production-ready safety guardrails, and support for 100+ LLMs. Other notable frameworks include CrewAI (fast multi-agent prototypes), AutoGen/AG2 (research-style conversations), Microsoft Semantic Kernel (enterprise .NET), LlamaIndex (RAG agents), and Pydantic AI (type-safe Python). Microsoft also merged AutoGen and Semantic Kernel into a unified Microsoft Agent Framework.",
+          "category": "agent",
+          "star": false,
+          "source": "https://alphacorp.ai/blog/the-8-best-ai-agent-frameworks-in-2026-a-developers-guide",
+          "source_name": "AlphaCorp AI"
+        },
+        {
+          "title": "llama.cpp b8943 — Latest Release with Active Development",
+          "summary": "The latest llama.cpp release (b8943) was published on April 26, 2026. Intel OpenVINO 2026.1 released in early April integrates llama.cpp with a new backend, adding support for Intel Core Series 3 processors and Arc Pro B70 Graphics (32 GB) for single-GPU inference of 20-30B parameter LLMs. Framework Desktop users are successfully running Ubuntu 24.04.4 + ROCm 7.2.1 + llama.cpp on AMD Strix Halo setups. NVIDIA RTX optimizations for llama.cpp were also highlighted at CES 2026, targeting lower latency for AI PCs. rk-llama.cpp received a 2026 update for Rockchip RK3588 NPU support.",
+          "category": "llama",
+          "star": true,
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub - ggml-org/llama.cpp"
+        },
+        {
+          "title": "OpenVINO 2026.1 — Intel's llama.cpp Backend for Arc Pro B70 and Core Series 3",
+          "summary": "Intel released OpenVINO 2026.1 in early April with a preview OpenVINO backend for llama.cpp, validated on multiple GGUF models. This makes Intel's AI strategy more tangible, with explicit support for Intel Core Series 3 processors and the Arc Pro B70 Graphics (32 GB VRAM). The Arc Pro B70 can run single-GPU inference for 20-30B parameter LLMs — a significant milestone for Intel's consumer AI hardware strategy. This opens llama.cpp to a wider range of accessible hardware beyond NVIDIA GPUs.",
+          "category": "llama",
+          "star": false,
+          "source": "https://www.igorslab.de/en/intel-openvino-2026-1-links-llama-c-with-wildcat-lake-and-arc-pro-b70-suddenly-making-intels-ai-strategy-more-tangible/",
+          "source_name": "igor'sLAB"
+        },
+        {
+          "title": "NVIDIA RTX Optimizations — Faster Local AI Video and LLM Inference",
+          "summary": "NVIDIA used CES 2026 to push generative AI workflows onto local hardware, rolling out RTX-focused upgrades targeting video generation at high resolution without VRAM exhaustion. New optimizations were introduced across ComfyUI, Lightricks' LTX-2, llama.cpp, Ollama, and Nexa.ai's Hyperlink — making advanced video, image, and language pipelines viable on RTX AI PCs with lower latency and on-device privacy. This directly benefits consumer hardware users looking to run LTX-2 video generation and large LLMs locally.",
+          "category": "general",
+          "star": false,
+          "source": "https://opendatascience.com/nvidia-rtx-speeds-up-4k-ai-video-generation-with-ltx-2-and-comfyui-upgrades/",
+          "source_name": "OpenDataScience"
+        },
+        {
+          "title": "AI Arms Race 2026 — $250B SpaceX-xAI Deal, Agentic AI Dawn",
+          "summary": "April 2026 saw a major shift in the AI landscape with the $250B SpaceX-xAI megadeal and the dawn of agentic intelligence. Key themes: GPT-5.4 as the frontier benchmark ceiling at 57.18 (since Feb 2026), Anthropic valued at $800B with leaked 'Capybara' roadmap, Yann LeCun's AMI Labs raising $1.03B for world models approach, and Microsoft achieving AI independence with in-house MAI models. The industry is shifting from raw benchmark chasing to deployment strategy, safety gating, and multimodal integration as the default.",
+          "category": "general",
+          "star": false,
+          "source": "https://kersai.com/ai-breakthroughs-april-2026-models-funding-shifts/",
+          "source_name": "KersAI"
+        }
+      ]
+    },
     {
       "date": "2026-04-26",
       "news": [
