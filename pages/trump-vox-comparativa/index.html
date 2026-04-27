@@ -92,6 +92,155 @@
             transform: translateY(-2px);
         }
 
+        /* SEARCH */
+        .search-bar {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-bar input:focus {
+            border-color: var(--accent);
+        }
+        .search-bar::before {
+            content: "🔍";
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+        .search-bar .search-clear {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: none;
+        }
+        .search-bar input:not(:placeholder-shown) + .search-clear { display: block; }
+        mark.search-highlight {
+            background: var(--yellow);
+            color: #000;
+            padding: 0.1em 0.2em;
+            border-radius: 3px;
+        }
+
+        /* FILTER TOGGLES */
+        .filter-toggles {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .filter-toggle {
+            padding: 0.4rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            user-select: none;
+        }
+        .filter-toggle:hover { border-color: var(--accent); color: var(--text); }
+        .filter-toggle.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 2rem 0;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent), var(--accent2), var(--red));
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            padding: 1rem 1rem 1rem 3rem;
+            margin-bottom: 1rem;
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 1.4rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+            z-index: 1;
+        }
+        .timeline-item.trump::before { background: var(--accent2); }
+        .timeline-item.vox::before { background: var(--yellow); }
+        .timeline-item.franco::before { background: var(--red); }
+        .timeline-item.hitler::before { background: var(--purple); }
+        .timeline-year {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .timeline-text {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        .timeline-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.3rem;
+        }
+
+        /* TABLE SCROLL */
+        .table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            margin: 1rem 0 1.5rem;
+        }
+        .table-scroll::-webkit-scrollbar { height: 6px; }
+        .table-scroll::-webkit-scrollbar-track { background: var(--surface); border-radius: 3px; }
+        .table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .table-scroll::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* COLUMN HIDE */
+        .col-franco { transition: opacity 0.3s; }
+        .col-hitler { transition: opacity 0.3s; }
+        .col-franco.hidden-col { display: none; }
+        .col-hitler.hidden-col { display: none; }
+
         /* MAIN CONTENT */
         .container {
             max-width: 960px;
@@ -314,6 +463,18 @@
             <p class="date">Research actualizado: Abril 2026 · Fuentes verificadas · Análisis histórico</p>
         </header>
 
+        <!-- SEARCH -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar en la página..." autocomplete="off">
+            <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+        </div>
+
+        <!-- FILTER TOGGLES -->
+        <div class="filter-toggles">
+            <button class="filter-toggle active" data-col="franco" onclick="toggleColumn('franco')">🇪🇸 Franco</button>
+            <button class="filter-toggle active" data-col="hitler" onclick="toggleColumn('hitler')">🇩🇪 Hitler</button>
+        </div>
+
         <!-- STAT GRID -->
         <div class="stat-grid">
             <div class="stat-card">
@@ -334,6 +495,59 @@
             </div>
         </div>
 
+        <!-- TIMELINE -->
+        <h2 id="timeline">📅 Línea Temporal de Paralelismos</h2>
+        <div class="timeline">
+            <div class="timeline-item hitler">
+                <div class="timeline-year">1933</div>
+                <div class="timeline-text"><span class="timeline-badge badge-purple">Hitler</span> Hitler se convierte en Canciller. Abolición del aborto, comienzo de la Gleichschaltung (coordinación totalitaria)</div>
+            </div>
+            <div class="timeline-item hitler">
+                <div class="timeline-year">1935</div>
+                <div class="timeline-text"><span class="timeline-badge badge-purple">Hitler</span> Leyes de Núremberg — 500.000 judíos despojados de ciudadanía</div>
+            </div>
+            <div class="timeline-item hitler">
+                <div class="timeline-year">1938</div>
+                <div class="timeline-text"><span class="timeline-badge badge-purple">Hitler</span> Crystal Night — 7.500 tiendas judías destruidas, 30.000 deportados</div>
+            </div>
+            <div class="timeline-item hitler">
+                <div class="timeline-year">1939</div>
+                <div class="timeline-text"><span class="timeline-badge badge-purple">Hitler</span> Invasión de Polonia — inicio WWII. Pacto Ribbentrop-Mólotov</div>
+            </div>
+            <div class="timeline-item franco">
+                <div class="timeline-year">1939-1975</div>
+                <div class="timeline-text"><span class="timeline-badge badge-red">Franco</span> Dictadura franquista. Autarquía, censura absoluta, nacionalcatolicismo, 200.000-500.000 ejecutados</div>
+            </div>
+            <div class="timeline-item franco">
+                <div class="timeline-year">1953</div>
+                <div class="timeline-text"><span class="timeline-badge badge-red">Franco</span> Pacto con EE.UU. — bases militares a cambio de reconocimiento internacional</div>
+            </div>
+            <div class="timeline-item trump">
+                <div class="timeline-year">2017-2021</div>
+                <div class="timeline-text"><span class="timeline-badge badge-orange">Trump</span> Primer mandato. Muro fronterizo, ataques a instituciones, intento de golpe del 6J</div>
+            </div>
+            <div class="timeline-item vox">
+                <div class="timeline-year">2018</div>
+                <div class="timeline-text"><span class="timeline-badge badge-yellow">Vox</span> Vox gana su primer escaño en el Congreso. Inicio de su crecimiento político</div>
+            </div>
+            <div class="timeline-item trump">
+                <div class="timeline-year">Enero 2025</div>
+                <div class="timeline-text"><span class="timeline-badge badge-orange">Trump</span> Segundo mandato. +256 executive orders, deportaciones masivas, Schedule F</div>
+            </div>
+            <div class="timeline-item vox">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-text"><span class="timeline-badge badge-yellow">Vox</span> Programa electoral: deportaciones masivas, fin regularizaciones, supresión Ministerio Igualdad</div>
+            </div>
+            <div class="timeline-item vox">
+                <div class="timeline-year">Abril 2026</div>
+                <div class="timeline-text"><span class="timeline-badge badge-yellow">Vox</span> Nuevo eslogan "Prioridad Nacional". PP lo adopta en Extremadura y Aragón</div>
+            </div>
+            <div class="timeline-item trump">
+                <div class="timeline-year">Abril 2026</div>
+                <div class="timeline-text"><span class="timeline-badge badge-orange">Trump</span> Aranceles 10-50% a EU. Estrategia de "alejarse de la Unión Europea" filtrada</div>
+            </div>
+        </div>
+
         <!-- 1. PILARES COMPARTIDOS -->
         <h2 id="pilares">1. Pilares Ideológicos Compartidos</h2>
          <p>Análisis comparativo de los ejes temáticos centrales de las políticas de Trump (segundo mandato, 2025-2026) y Vox (programa electoral 2023 y propuestas actuales, incluyendo el nuevo eslogan "<strong>Prioridad Nacional</strong>").</p>
@@ -350,15 +564,15 @@
 
         <table>
             <thead>
-                <tr><th>Eje temático</th><th>Trump (EE.UU.)</th><th>Vox (España)</th><th>Franco (1939-75)</th><th>Hitler (1933-45)</th><th>Similitud</th></tr>
+                <tr><th>Eje temático</th><th>Trump (EE.UU.)</th><th>Vox (España)</th><th class="col-franco">Franco (1939-75)</th><th class="col-hitler">Hitler (1933-45)</th><th>Similitud</th></tr>
             </thead>
             <tbody>
-                <tr><td><strong>Soberanía nacional</strong></td><td>"America First", rechazo a acuerdos multilaterales, retirada de pactos climáticos</td><td>Centralización del Estado, desmantelamiento del Estado de las Autonomías</td><td>Centralización absoluta, abolición autonomías, Estado único</td><td>"Ein Volk, Ein Reich, Ein Führer" (Un Pueblo, Un Reich, Un Líder). Anschluss Austria, Sudetes</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
-                <tr><td><strong>Inmigración restrictiva</strong></td><td>Deportaciones masivas, muro fronterizo, fin TPS, interdicción naval</td><td>Expulsión inmediata, bloqueo naval Canarias/Ceuta/Melilla, fin regularizaciones</td><td>Expulsión 125.000 marroquíes (1925-26), colonia de Guinea Ecuatorial</td><td>Leyes de Núremberg, expulsión Judíos, "Lebensraum" (espacio vital) oriental</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
-                <tr><td><strong>Anti-"woke"</strong></td><td>Reversión DEI, ataque a "ideología gender", valores tradicionales</td><td>Supresión Ministerio Igualdad, repeal aborto/eutanasia, familia tradicional</td><td>Nacionalcatolicismo: Iglesia Católica como religión oficial. Aborto prohibido (hasta 1985). Divorcio ilegal (hasta 1981). Mujer "sujeta al marido"</td><td>Abolición aborto (1933), "Kinder, Küche, Kirche" (Niños, Cocina, Iglesia), mujeres como "madres de la nación"</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
-                <tr><td><strong>Nacionalismo económico</strong></td><td>Aranceles 10-50%, deregulación masiva</td><td>Recortes fiscales radicales, deregulación laboral</td><td>Autarquía económica (1939-59), racionamiento 12 años, mercado negro "estraperlo"</td><td>Autarquía, Vierjähriger Plan (Plan Cuatrienal), economía de guerra, esclavitud laboral</td><td><span class="star-high">⭐⭐ MEDIA-ALTA</span></td></tr>
-                <tr><td><strong>Escepticismo institucional</strong></td><td>Schedule F, ataques a prensa/judicial, "deep state"</td><td>Críticas a justicia, polarización afectiva, desconfianza UE/OTAN</td><td>Censura previa absoluta (hasta 1966), único partido FET y de las JONS, presos políticos</td><td>Gleichschaltung (coordinación totalitaria), quema libros, control total prensa, Gestapo, SS</td><td><span class="star-high">⭐⭐ ALTA</span></td></tr>
-                <tr><td><strong>Euroscepticismo</strong></td><td>Críticas a UE, incentivos para alejar países de Bruselas</td><td>VOX en "Patriotas por Europa" pro-Trump</td><td>Neutralidad en WWII, aislamiento internacional, ONU (expulsado 1946)</td><td>Invasión Europa, destrucción democracias europeas</td><td><span class="star-high">⭐ ALTA</span></td></tr>
+                <tr><td><strong>Soberanía nacional</strong></td><td>"America First", rechazo a acuerdos multilaterales, retirada de pactos climáticos</td><td>Centralización del Estado, desmantelamiento del Estado de las Autonomías</td><td class="col-franco">Centralización absoluta, abolición autonomías, Estado único</td><td class="col-hitler">"Ein Volk, Ein Reich, Ein Führer" (Un Pueblo, Un Reich, Un Líder). Anschluss Austria, Sudetes</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Inmigración restrictiva</strong></td><td>Deportaciones masivas, muro fronterizo, fin TPS, interdicción naval</td><td>Expulsión inmediata, bloqueo naval Canarias/Ceuta/Melilla, fin regularizaciones</td><td class="col-franco">Expulsión 125.000 marroquíes (1925-26), colonia de Guinea Ecuatorial</td><td class="col-hitler">Leyes de Núremberg, expulsión Judíos, "Lebensraum" (espacio vital) oriental</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Anti-"woke"</strong></td><td>Reversión DEI, ataque a "ideología gender", valores tradicionales</td><td>Supresión Ministerio Igualdad, repeal aborto/eutanasia, familia tradicional</td><td class="col-franco">Nacionalcatolicismo: Iglesia Católica como religión oficial. Aborto prohibido (hasta 1985). Divorcio ilegal (hasta 1981). Mujer "sujeta al marido"</td><td class="col-hitler">Abolición aborto (1933), "Kinder, Küche, Kirche" (Niños, Cocina, Iglesia), mujeres como "madres de la nación"</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Nacionalismo económico</strong></td><td>Aranceles 10-50%, deregulación masiva</td><td>Recortes fiscales radicales, deregulación laboral</td><td class="col-franco">Autarquía económica (1939-59), racionamiento 12 años, mercado negro "estraperlo"</td><td class="col-hitler">Autarquía, Vierjähriger Plan (Plan Cuatrienal), economía de guerra, esclavitud laboral</td><td><span class="star-high">⭐⭐ MEDIA-ALTA</span></td></tr>
+                <tr><td><strong>Escepticismo institucional</strong></td><td>Schedule F, ataques a prensa/judicial, "deep state"</td><td>Críticas a justicia, polarización afectiva, desconfianza UE/OTAN</td><td class="col-franco">Censura previa absoluta (hasta 1966), único partido FET y de las JONS, presos políticos</td><td class="col-hitler">Gleichschaltung (coordinación totalitaria), quema libros, control total prensa, Gestapo, SS</td><td><span class="star-high">⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Euroscepticismo</strong></td><td>Críticas a UE, incentivos para alejar países de Bruselas</td><td>VOX en "Patriotas por Europa" pro-Trump</td><td class="col-franco">Neutralidad en WWII, aislamiento internacional, ONU (expulsado 1946)</td><td class="col-hitler">Invasión Europa, destrucción democracias europeas</td><td><span class="star-high">⭐ ALTA</span></td></tr>
             </tbody>
         </table>
 
@@ -861,6 +1075,73 @@
                 backToTop.classList.remove('visible');
             }
         });
+
+        // COLUMN TOGGLES
+        function toggleColumn(col) {
+            const btn = document.querySelector(`.filter-toggle[data-col="${col}"]`);
+            btn.classList.toggle('active');
+            const cells = document.querySelectorAll(`.col-${col}`);
+            cells.forEach(cell => cell.classList.toggle('hidden-col'));
+        }
+
+        // SEARCH
+        const searchInput = document.getElementById('searchInput');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(doSearch, 300);
+        });
+
+        function clearSearch() {
+            searchInput.value = '';
+            removeHighlights();
+        }
+
+        function doSearch() {
+            removeHighlights();
+            const query = searchInput.value.trim().toLowerCase();
+            if (query.length < 2) return;
+
+            const container = document.querySelector('.container');
+            const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+                acceptNode: function(node) {
+                    if (node.parentElement.closest('.search-bar') || node.parentElement.tagName === 'MARK') {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    return node.textContent.toLowerCase().includes(query)
+                        ? NodeFilter.FILTER_ACCEPT
+                        : NodeFilter.FILTER_REJECT;
+                }
+            });
+
+            const nodes = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+
+            nodes.forEach(node => {
+                const text = node.textContent;
+                const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                if (regex.test(text)) {
+                    const span = document.createElement('span');
+                    span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            });
+
+            // Scroll to first match
+            const firstMark = document.querySelector('mark.search-highlight');
+            if (firstMark) {
+                firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function removeHighlights() {
+            document.querySelectorAll('mark.search-highlight').forEach(mark => {
+                const parent = mark.parentNode;
+                parent.replaceChild(document.createTextNode(mark.textContent), mark);
+                parent.normalize();
+            });
+        }
     </script>
 </body>
 </html>
