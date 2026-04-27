@@ -6,7 +6,7 @@
     <title>Trump vs Vox — Comparativa de Políticas y Impacto para España</title>
     <style>
         :root {
-            --bg: #0d1117;
+            --bg: #0f0c29;
             --surface: #161b22;
             --surface2: #1c2333;
             --border: #30363d;
@@ -20,13 +20,85 @@
             --purple: #bc8cff;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background: var(--bg);
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             color: var(--text);
             line-height: 1.7;
         }
-        .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .navbar-brand {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* HAMBURGER MENU */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 5px;
+            z-index: 1001;
+        }
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .nav-menu a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            padding-top: 5rem;
+        }
         header {
             text-align: center;
             padding: 3rem 1rem;
@@ -42,6 +114,7 @@
         }
         header .subtitle { color: var(--text-muted); font-size: 1.1rem; }
         header .date { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
         .badge {
             display: inline-block;
             padding: 0.2rem 0.6rem;
@@ -56,22 +129,26 @@
         .badge-green { background: #3fb95033; color: var(--green); }
         .badge-yellow { background: #d2992233; color: var(--yellow); }
         .badge-purple { background: #bc8cff33; color: var(--purple); }
+
         h2 {
             font-size: 1.5rem;
             margin: 2.5rem 0 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--border);
+            scroll-margin-top: 5rem;
         }
         h3 { font-size: 1.2rem; margin: 1.5rem 0 0.8rem; color: var(--accent); }
         p { margin-bottom: 1rem; color: var(--text); }
+
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
         }
         .card h3 { margin-top: 0; }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -84,17 +161,14 @@
             text-align: left;
             vertical-align: top;
         }
-        th {
-            background: var(--surface2);
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
+        th { background: var(--surface2); font-weight: 600; position: sticky; top: 0; }
         tr:nth-child(even) { background: var(--surface); }
         tr:nth-child(odd) { background: var(--surface2); }
+
         .star-high { color: var(--red); font-weight: 700; }
         .star-med { color: var(--yellow); font-weight: 700; }
         .star-low { color: var(--green); font-weight: 700; }
+
         .quote {
             border-left: 3px solid var(--accent);
             padding: 1rem 1.2rem;
@@ -105,6 +179,7 @@
             color: var(--text-muted);
         }
         .quote author { display: block; margin-top: 0.5rem; font-style: normal; font-weight: 600; color: var(--text); }
+
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -114,66 +189,35 @@
         .stat-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.2rem;
             text-align: center;
         }
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
+        .stat-card .number { font-size: 2rem; font-weight: 700; color: var(--accent); }
         .stat-card .label { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem; }
+
         .risk-high { color: var(--red); }
         .risk-med { color: var(--yellow); }
         .risk-low { color: var(--green); }
+
         .ref-list { list-style: none; padding: 0; }
-        .ref-list li {
-            padding: 0.6rem 0;
-            border-bottom: 1px solid var(--border);
-        }
+        .ref-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
         .ref-list li:last-child { border-bottom: none; }
-        .ref-list a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        .ref-list a { color: var(--accent); text-decoration: none; }
         .ref-list a:hover { text-decoration: underline; }
         .ref-list .ref-source { color: var(--text-muted); font-size: 0.85rem; }
-        .section-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            padding: 0.8rem 0;
-            z-index: 10;
-            border-bottom: 1px solid var(--border);
-        }
-        .section-nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            padding: 0.3rem 0.7rem;
-            border-radius: 15px;
-            border: 1px solid var(--border);
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-        .section-nav a:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-        }
+
         .conclusion-box {
             background: var(--surface2);
             border: 1px solid var(--accent);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
             margin: 1.5rem 0;
         }
         .conclusion-box h4 { color: var(--accent); margin-bottom: 0.8rem; }
-        .conclusion-box ul { margin-left: 1.5rem; }
+        .conclusion-box ul, .conclusion-box ol { margin-left: 1.5rem; }
         .conclusion-box li { margin-bottom: 0.5rem; }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -182,51 +226,109 @@
             color: var(--text-muted);
             font-size: 0.85rem;
         }
-        @media (max-width: 640px) {
+
+        /* BACK TO TOP */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text);
+            padding: 0.8rem 1rem;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+        .back-to-top.visible { opacity: 1; }
+        .back-to-top:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
             header h1 { font-size: 1.6rem; }
+            .container { padding: 1rem; padding-top: 5rem; }
+            .stat-grid { grid-template-columns: 1fr 1fr; }
             table { font-size: 0.85rem; }
             th, td { padding: 0.5rem; }
-            .stat-grid { grid-template-columns: 1fr 1fr; }
+            .navbar { padding: 1rem; }
+            .navbar-brand { font-size: 1.1rem; }
+            .menu-toggle { display: flex; }
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(15, 12, 41, 0.98);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                transition: right 0.3s ease;
+                gap: 0.5rem;
+                border-left: 1px solid rgba(255,255,255,0.1);
+                overflow-y: auto;
+            }
+            .nav-menu.active { right: 0; }
+            .nav-menu a {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🇺🇸 Trump vs Vox 🇪🇸</h1>
-        <p class="subtitle">Comparativa de Políticas y Análisis de Impacto para España</p>
-        <p class="date">Research actualizado: Abril 2026 · Fuentes verificadas</p>
-    </header>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="#top" class="navbar-brand">🇺🇸 Trump vs Vox 🇪🇸</a>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#pilares">Pilares</a></li>
+            <li><a href="#inmigracion">Inmigración</a></li>
+            <li><a href="#economia">Economía</a></li>
+            <li><a href="#seguridad">Seguridad</a></li>
+            <li><a href="#violencia">Violencia</a></li>
+            <li><a href="#democracia">Democracia</a></li>
+            <li><a href="#escenarios">Escenarios</a></li>
+            <li><a href="#conclusiones">Conclusiones</a></li>
+            <li><a href="#referencias">Fuentes</a></li>
+        </ul>
+    </nav>
 
-    <div class="container">
-         <nav class="section-nav">
-            <a href="#pilares">Pilares compartidos</a>
-            <a href="#inmigracion">Inmigración</a>
-            <a href="#economia">Economía</a>
-            <a href="#seguridad">Seguridad</a>
-            <a href="#violencia">Violencia 2026</a>
-            <a href="#democracia">Democracia</a>
-            <a href="#escenarios">Escenarios</a>
-            <a href="#conclusiones">Conclusiones</a>
-            <a href="#referencias">Referencias</a>
-        </nav>
+    <div class="container" id="top">
+        <header>
+            <h1>🇺🇸 Trump vs Vox 🇪🇸</h1>
+            <p class="subtitle">Comparativa de Políticas y Análisis de Impacto para España</p>
+            <p class="date">Research actualizado: Abril 2026 · Fuentes verificadas</p>
+        </header>
 
         <!-- STAT GRID -->
         <div class="stat-grid">
             <div class="stat-card">
                 <div class="number">256+</div>
-                <div class="label">Executive Orders Trump (2025-26)</div>
+                <div class="label">Executive Orders Trump</div>
             </div>
             <div class="stat-card">
                 <div class="number">7-8M</div>
-                <div class="label">Personas objetivo deportación Vox</div>
+                <div class="label">Objetivo deportación Vox</div>
             </div>
             <div class="stat-card">
                 <div class="number">-1.5%</div>
-                <div class="label">Impacto GDP España (aranceles)</div>
+                <div class="label">Impacto GDP España</div>
             </div>
             <div class="stat-card">
                 <div class="number">2.9%</div>
-                <div class="label">Crecimiento GDP España 2025</div>
+                <div class="label">GDP España 2025</div>
             </div>
         </div>
 
@@ -236,152 +338,75 @@
 
         <table>
             <thead>
-                <tr>
-                    <th>Eje temático</th>
-                    <th>Trump (EE.UU.)</th>
-                    <th>Vox (España)</th>
-                    <th>Similitud</th>
-                </tr>
+                <tr><th>Eje temático</th><th>Trump (EE.UU.)</th><th>Vox (España)</th><th>Similitud</th></tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><strong>Soberanía nacional</strong></td>
-                    <td>"America First", rechazo a acuerdos multilaterales, retirada de pactos climáticos y comerciales</td>
-                    <td>Centralización del Estado, desmantelamiento del Estado de las Autonomías, soberanía nacional por encima de todo</td>
-                    <td><span class="star-high">⭐⭐⭐ ALTA</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Inmigración restrictiva</strong></td>
-                    <td>Deportaciones masivas, muro fronterizo, fin de TPS, restricciones visuales, interdicción naval</td>
-                    <td>Expulsión inmediata, bloqueo naval en Canarias/Ceuta/Melilla, fin de regularizaciones, priorización iberoamericana</td>
-                    <td><span class="star-high">⭐⭐⭐ ALTA</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Anti-"woke" / cultura</strong></td>
-                    <td>Reversión de políticas DEI, ataque a "ideología gender", protección de valores tradicionales</td>
-                    <td>Supresión Ministerio Igualdad, repeal leyes de género, repeal aborto/eutanasia, familia tradicional</td>
-                    <td><span class="star-high">⭐⭐⭐ ALTA</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Nacionalismo económico</strong></td>
-                    <td>Aranceles proteccionistas (10-50%), "despilfaro" en gasto federal, deregulación masiva</td>
-                    <td>Recortes fiscales radicales, eliminación subsidios sindicatos, deregulación laboral, reducción gasto político</td>
-                    <td><span class="star-med">⭐⭐ MEDIA</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Escepticismo institucional</strong></td>
-                    <td>Schedule F (reclasificación funcionarios), ataques a prensa/judicial, desconfianza en "deep state"</td>
-                    <td>Críticas a justicia, polarización afectiva, delegitimización de oposición, desconfianza en UE/OTAN</td>
-                    <td><span class="star-med">⭐⭐ MEDIA</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Euroscepticismo</strong></td>
-                    <td>Críticas a UE, incentivos para alejar países de Bruselas, presión fiscal</td>
-                    <td>VOX en grupo "Patriotas por Europa" pro-Trump, crítica a federalismo europeo</td>
-                    <td><span class="star-high">⭐ ALTA</span> (VOX alineado)</td>
-                </tr>
+                <tr><td><strong>Soberanía nacional</strong></td><td>"America First", rechazo a acuerdos multilaterales, retirada de pactos climáticos</td><td>Centralización del Estado, desmantelamiento del Estado de las Autonomías</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Inmigración restrictiva</strong></td><td>Deportaciones masivas, muro fronterizo, fin TPS, interdicción naval</td><td>Expulsión inmediata, bloqueo naval Canarias/Ceuta/Melilla, fin regularizaciones</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Anti-"woke"</strong></td><td>Reversión DEI, ataque a "ideología gender", valores tradicionales</td><td>Supresión Ministerio Igualdad, repeal aborto/eutanasia, familia tradicional</td><td><span class="star-high">⭐⭐⭐ ALTA</span></td></tr>
+                <tr><td><strong>Nacionalismo económico</strong></td><td>Aranceles 10-50%, deregulación masiva</td><td>Recortes fiscales radicales, deregulación laboral</td><td><span class="star-med">⭐⭐ MEDIA</span></td></tr>
+                <tr><td><strong>Escepticismo institucional</strong></td><td>Schedule F, ataques a prensa/judicial, "deep state"</td><td>Críticas a justicia, polarización afectiva, desconfianza UE/OTAN</td><td><span class="star-med">⭐⭐ MEDIA</span></td></tr>
+                <tr><td><strong>Euroscepticismo</strong></td><td>Críticas a UE, incentivos para alejar países de Bruselas</td><td>VOX en "Patriotas por Europa" pro-Trump</td><td><span class="star-high">⭐ ALTA</span></td></tr>
             </tbody>
         </table>
 
         <!-- 2. INMIGRACIÓN -->
-        <h2 id="inmigracion">2. Políticas de Inmigración — Comparativa Directa</h2>
+        <h2 id="inmigracion">2. Políticas de Inmigración</h2>
 
         <div class="card">
             <h3>🇺🇸 Trump — Datos Reales 2025-2026</h3>
             <ul>
-                <li><strong>+256 executive orders</strong> firmados (Ballotpedia, abril 2026)</li>
+                <li><strong>+256 executive orders</strong> firmados</li>
                 <li>Meta: <strong>4M deportaciones</strong> en 4 años</li>
-                <li>Impacto económico documentado: <strong class="risk-high">-6M puestos de trabajo</strong> (Economic Policy Institute)</li>
+                <li>Impacto: <strong class="risk-high">-6M puestos de trabajo</strong> (EPI)</li>
                 <li><strong>-0.2 a -0.3% GDP</strong> por reducción migración (Brookings)</li>
-                <li>EE.UU. tuvo <strong>más salidas que entradas</strong> en 2025 (Washington Post)</li>
-                <li>Consumo: <strong>-$60-110B</strong> en gasto consumer (Brookings)</li>
-                <li>Fin de TPS para venezolanos, haitianos y otros</li>
+                <li>EE.UU. tuvo <strong>más salidas que entradas</strong> en 2025</li>
+                <li>Consumo: <strong>-$60-110B</strong> (Brookings)</li>
             </ul>
         </div>
 
         <div class="card">
             <h3>🇪🇸 Vox — Programa Electoral 2023</h3>
             <ul>
-                <li>Revocación de TODAS las regularizaciones bipartidistas: <strong>>1M personas</strong> perderían estatus legal</li>
-                <li>"<strong>Deportaciones masivas</strong>" (actualmente ilegales en España)</li>
-                <li>Rocío de Meer: planes para deportar <strong>7-8M personas</strong> de origen extranjero (incluyendo 2ª generación)</li>
-                <li>Bloqueo naval + despliegue militar en Ceuta, Melilla y Canarias</li>
-                <li>MENA: repatriación inmediata</li>
-                <li>Priorización ciudadanos de países iberoamericanos</li>
-                <li>Acceso sanitario limitado a <strong>urgencias vitales y enfermedades infecciosas</strong> para indocumentados</li>
+                <li>Revocación de TODAS las regularizaciones: <strong>>1M personas</strong></li>
+                <li>"<strong>Deportaciones masivas</strong>" (actualmente ilegales)</li>
+                <li>Rocío de Meer: deportar <strong>7-8M personas</strong> (incl. 2ª generación)</li>
+                <li>Bloqueo naval + despliegue militar en fronteras</li>
+                <li>Acceso sanitario limitado a <strong>urgencias vitales</strong></li>
             </ul>
         </div>
 
         <div class="conclusion-box">
             <h4>⚡ Similitud: Extrema</h4>
-            <p>Ambos usan retórica de "invasión", priorizan expulsión masiva y vinculan inmigración con amenaza existencial nacional. Las propuestas de Vox son más radicales en algunos aspectos (deportar 2ª generación) que las de Trump.</p>
+            <p>Ambos usan retórica de "invasión" y vinculan inmigración con amenaza existencial. Las propuestas de Vox son más radicales en algunos aspectos (deportar 2ª generación).</p>
         </div>
 
         <!-- 3. ECONOMÍA -->
         <h2 id="economia">3. Impacto Económico para España</h2>
 
-        <h3>Aranceles Trump (ya en vigor, datos Bruegel)</h3>
+        <h3>Aranceles Trump (datos Bruegel)</h3>
         <table>
-            <thead>
-                <tr>
-                    <th>Métrica</th>
-                    <th>Impacto</th>
-                </tr>
-            </thead>
+            <thead><tr><th>Métrica</th><th>Impacto</th></tr></thead>
             <tbody>
-                <tr>
-                    <td>Tarifa media EU → US</td>
-                    <td>De 1.47% → <strong>10-15.2%</strong></td>
-                </tr>
-                <tr>
-                    <td>GDP España</td>
-                    <td><strong class="risk-high">-1.5% a -2.0%</strong> (BBVA Research)</td>
-                </tr>
-                <tr>
-                    <td>Exportaciones bienes</td>
-                    <td>+0.5% YoY (estancadas, impacto aranceles)</td>
-                </tr>
-                <tr>
-                    <td>Exportaciones servicios</td>
-                    <td>+8.7% YoY (compensan parcialmente)</td>
-                </tr>
-                <tr>
-                    <td>Regiones más expuestas</td>
-                    <td>Andalucía (agricultura), Cataluña (automoción), País Vasco (industria)</td>
-                </tr>
-                <tr>
-                    <td>Málaga específico</td>
-                    <td><strong>550 empresas</strong>, €262M en riesgo</td>
-                </tr>
+                <tr><td>Tarifa media EU → US</td><td>De 1.47% → <strong>10-15.2%</strong></td></tr>
+                <tr><td>GDP España</td><td><strong class="risk-high">-1.5% a -2.0%</strong> (BBVA Research)</td></tr>
+                <tr><td>Regiones más expuestas</td><td>Andalucía, Cataluña, País Vasco</td></tr>
+                <tr><td>Málaga</td><td><strong>550 empresas</strong>, €262M en riesgo</td></tr>
             </tbody>
         </table>
 
-        <h3>Resiliencia española real (2025 — CaixaBank Research)</h3>
+        <h3>Resiliencia española 2025 (CaixaBank)</h3>
         <div class="stat-grid">
-            <div class="stat-card">
-                <div class="number" style="color: var(--green);">2.9%</div>
-                <div class="label">GDP Growth 2025 (vs 1.4% EU)</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">+3.8</div>
-                <div class="label">pp demanda doméstica</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">55.6</div>
-                <div class="label">PMI Q4 (expansión)</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">+506K</div>
-                <div class="label">Empleo nuevo 2025</div>
-            </div>
+            <div class="stat-card"><div class="number" style="color: var(--green);">2.9%</div><div class="label">GDP Growth 2025</div></div>
+            <div class="stat-card"><div class="number">+3.8</div><div class="label">pp demanda doméstica</div></div>
+            <div class="stat-card"><div class="number">55.6</div><div class="label">PMI Q4</div></div>
+            <div class="stat-card"><div class="number">+506K</div><div class="label">Empleo nuevo</div></div>
         </div>
 
         <div class="quote">
-            "La demanda doméstica ha compensado completamente el impacto negativo de los aranceles US en las exportaciones españolas de bienes."
+            "La demanda doméstica ha compensado completamente el impacto negativo de los aranceles US."
             <span class="author">— CaixaBank Research, enero 2026</span>
         </div>
-
-        <p><strong>Conclusión económica:</strong> España tiene exposición moderada-baja a aranceles US directos (~2.9% GDP value-added embedded), pero el impacto sectorial es significativo en regiones exportadoras. La demanda doméstica y fondos europeos actúan como amortiguador principal.</p>
 
         <!-- 4. SEGURIDAD -->
         <h2 id="seguridad">4. Impacto en Seguridad y Defensa</h2>
@@ -390,70 +415,62 @@
             <h3>🇺🇸 Trump — Estrategia de Seguridad Nacional 2025</h3>
             <ul>
                 <li>Cuestiona capacidad de Europa como aliado fiable</li>
-                <li>Presión OTAN: exigir 2-5% PIB defensa, amenaza de no proteger países que no cumplan</li>
-                <li>Estrategia filtrada: listar Austria, Hungría, Italia, Polonia como países que "<strong>deberían cooperar más (…) con el objetivo de alejarlos de la (Unión Europea)</strong>"</li>
-                <li>Ucrania: priorizar negociación con Putin sobre continuación ayuda militar</li>
-                <li>Documental: critica TODAS las administraciones estadounidenses desde fin de Guerra Fría</li>
+                <li>Presión OTAN: exigir 2-5% PIB defensa</li>
+                <li>Estrategia filtrada: "<strong>alejarse de la (Unión Europea)</strong>"</li>
+                <li>Ucrania: priorizar negociación con Putin</li>
             </ul>
         </div>
 
         <div class="card">
             <h3>🇪🇸 Vox</h3>
             <ul>
-                <li>Aumento gasto defensa (propuesta recurrente)</li>
-                <li>Críticas a "desgaste" de OTAN sin propuestas alternativas concretas</li>
-                <li>Postura pro-OTAN pero con fuerte componente de "España primero"</li>
+                <li>Aumento gasto defensa</li>
+                <li>Postura pro-OTAN pero "España primero"</li>
             </ul>
         </div>
 
         <div class="conclusion-box">
             <h4>⚠️ Riesgo estratégico</h4>
-            <p>Si Trump reduce garantías de seguridad a Europa y Vox influye en política exterior española hacia mayor aislacionismo, España podría quedar en posición de vulnerabilidad estratégica sin alternativas de defensa robustas.</p>
+            <p>Si Trump reduce garantías de seguridad a Europa y Vox influye hacia mayor aislacionismo, España podría quedar vulnerable sin alternativas de defensa robustas.</p>
         </div>
 
-        <!-- 5. INCIDENTES RECENTES — VOCES DE VIOLENCIA Y AGRESIONES PARLAMENTARIAS -->
-        <h2 id="violencia">5. Incidentes Recientes — Voces de Violencia y Agresiones Parlamentarias</h2>
-        <p>Abril 2026 ha registrado dos incidentes graves que ejemplifican la escalada retórica y conductual de miembros de Vox.</p>
+        <!-- 5. VIOLENCIA -->
+        <h2 id="violencia">5. Incidentes Recientes — Violencia y Agresiones</h2>
 
         <div class="card" style="border-color: var(--red);">
-            <h3 style="color: var(--red);">🔴 Caso 1: "Combate con violencia" el aborto y la eutanasia — Murcia, 15 abril 2026</h3>
-            <p><strong>Antonio Martínez Nieto</strong>, diputado de Vox en la Asamblea Regional de Murcia, declaró durante el debate de una moción del PP sobre cuidados paliativos:</p>
+            <h3 style="color: var(--red);">🔴 Caso 1: "Combate con violencia" — Murcia, 15/04/2026</h3>
+            <p><strong>Antonio Martínez Nieto</strong>, diputado Vox en la Asamblea de Murcia:</p>
             <div class="quote" style="border-left-color: var(--red);">
                 "Y tenemos el deber de combatir, <strong>incluso con violencia</strong>, la aberración moral del aborto y la eutanasia."
-                <span class="author">— Antonio Martínez Nieto (Vox), Asamblea de Murcia, 15 abril 2026</span>
+                <span class="author">— Antonio Martínez Nieto (Vox), 15 abril 2026</span>
             </div>
-            <p>Acusó tanto al PP como al PSOE de fomentar "la cultura de la muerte". La declaración provocó reacciones de alarma en todos los grupos políticos y fue ampliamente reportada por RTVE, El Mundo y prensa regional.</p>
-            <p><strong>Contexto interno:</strong> El incidente coincide con una crisis interna en Vox Murcia. La diputada <strong>Virginia Martínez</strong> abandonó Vox para el Grupo Mixto citing "profunda decepción" con la dirección nacional. Esta defección priva a Vox de su estatus de "llave" para el presidente del PP Fernando López Miras en la región.</p>
+            <p><strong>Contexto:</strong> Crisis interna en Vox Murcia. Virginia Martínez abandonó el partido. Vox pierde estatus de "llave" para el PP regional.</p>
         </div>
 
         <div class="card" style="border-color: var(--red);">
-            <h3 style="color: var(--red);">🔴 Caso 2: Diputado Vox expulsado por increpar violentamente al vicepresidente del Congreso — 14 abril 2026</h3>
-            <p><strong>José María Sánchez García</strong>, portavoz de Vox en la Comisión Constitucional, protagonizó un incidente grave en el Pleno del Congreso:</p>
+            <h3 style="color: var(--red);">🔴 Caso 2: Expulsión del Congreso — 14/04/2026</h3>
+            <p><strong>José María Sánchez García</strong>, portavoz Vox en Comisión Constitucional:</p>
             <table>
-                <tr><td><strong>Secuencia</strong></td><td>Subió a la tribuna de la Presidencia del Congreso e increpó directamente a una letrada y al vicepresidente primero, <strong>Alfonso Rodríguez Gómez de Celis</strong> (que presidía la sesión)</td></tr>
-                <tr><td><strong>Avisos</strong></td><td>Fue llamado al orden en <strong>3 ocasiones</strong>. Tras ignorarlos, fue <strong>expulsado</strong> del pleno — medida que le impidió asistir a debates y votaciones del resto de la semana</td></tr>
-                <tr><td><strong>Versión de Vox</strong></td><td>Sánchez afirma que el diputado del ERC Jordi Salvador le llamó repetidamente "nazi, asesino, gilipollas y criminal". Demandó intervención de la Presidencia para que interviniera</td></tr>
-                <tr><td><strong>Versión del ERC</strong></td><td>Niega cualquier insulto. La declaración real fue: "mientras que nosotros inaugurábamos colegios, ellos pactaban con nazis que sí que quemaban libros"</td></tr>
-                <tr><td><strong>Testigos</strong></td><td>Múltiples fuentes y grabaciones de la sesión respaldan la versión del ERC. La Presidencia del Congreso no registró los insultos alegados</td></tr>
+                <tr><td><strong>Hechos</strong></td><td>Subió a la Presidencia del Congreso e increpó a letrada y al vicepresidente Gómez de Celis</td></tr>
+                <tr><td><strong>Avisos</strong></td><td><strong>3 llamadas al orden</strong> → <strong>Expulsión</strong> del pleno</td></tr>
+                <tr><td><strong>Versión Vox</strong></td><td>Diputado ERC le llamó "nazi, asesino, criminal"</td></tr>
+                <tr><td><strong>Versión ERC</strong></td><td>Nega insultos. Dijo: "pactaban con nazis que sí que quemaban libros"</td></tr>
+                <tr><td><strong>Testigos</strong></td><td>Fuentes y grabaciones respaldan versión ERC</td></tr>
             </table>
-            <div class="quote">
-                "Lo que es un gesto de violencia grave es llamar reiteradamente criminal y asesino"
-                <span class="author">— José María Sánchez García (Vox), El Debate, 16 abril 2026</span>
-            </div>
-            <div class="quote">
-                "Empiezan con la violencia verbal, continúan con la violencia ideológica pero terminan con la violencia física"
-                <span class="author">— Alfonso Rodríguez Gómez de Celis (PSOE), vicepresidente del Congreso</span>
-            </div>
-            <p><strong>Reacciones:</strong> El PSOE propuso una declaración institucional de rechazo — medida sin precedentes desde la época de Batasuna. EL PAÍS publicó un editorial titulado "Violencia en el Congreso" calificando el incidente como "inaceptable". Sergio Pascual (Sumar) declaró que Vox "no tiene respeto ante las instituciones de este país". Vox, por su parte, <strong>defendió a su diputado</strong> y culpó a la Presidencia del Congreso de "equivocarse".</p>
+            <div class="quote">"Lo que es un gesto de violencia grave es llamar reiteradamente criminal y asesino"
+                <span class="author">— J.M. Sánchez García (Vox), El Debate</span></div>
+            <div class="quote">"Empiezan con la violencia verbal, continúan con la ideológica pero terminan con la física"
+                <span class="author">— Alfonso Rodríguez Gómez de Celis, vicepresidente del Congreso</span></div>
+            <p><strong>Reacciones:</strong> PSOE propuso declaración institucional (precedente desde Batasuna). EL PAÍS: "Violencia en el Congreso" (inaceptable). Vox <strong>defendió a su diputado</strong>.</p>
         </div>
 
         <div class="conclusion-box" style="border-color: var(--red);">
             <h4 style="color: var(--red);">⚠️ Patrón identificado</h4>
             <ul>
-                <li><strong>Normalización de retórica violenta:</strong> Dos incidentes graves en una misma semana (aborto/eutanasia + agresión parlamentaria)</li>
-                <li><strong>Inversion de roles:</strong> El diputado Vox expulsado se autodefine como víctima ("lo que es violencia es llamar criminal") — técnica de gaslighting político</li>
-                <li><strong>Respuesta de partido:</strong> Vox defiende a sus miembros en lugar de距离arse de la violencia, enviando señal de que este comportamiento es aceptable internamente</li>
-                <li><strong>Paralelismo con Trump:</strong> La retórica de "víctimas de la élite" y justificación de confrontación física como legítima autodefensa política</li>
+                <li><strong>Normalización de retórica violenta:</strong> Dos incidentes graves en una semana</li>
+                <li><strong>Inversión de roles:</strong> El expulsado se autodefine como víctima — gaslighting político</li>
+                <li><strong>Defensa interna:</strong> Vox no se distancia, envía señal de comportamiento aceptable</li>
+                <li><strong>Paralelismo Trump:</strong> Retórica "víctimas de la élite" + confrontación física justificada</li>
             </ul>
         </div>
 
@@ -461,72 +478,35 @@
         <h2 id="democracia">6. Estado de Derecho y Democracia</h2>
 
         <div class="card">
-            <h3>Análisis Académico — Democratic Erosion Consortium (Boston University)</h3>
-            <p>Vox usa <strong>polarización afectiva</strong> para erosionar tolerancia mutua:</p>
+            <h3>Democratic Erosion Consortium (Boston University)</h3>
             <ul>
-                <li>Crea "out-groups" (inmigrantes, catalanes, LGBTQ) → normaliza sentimientos antidemocráticos</li>
-                <li>Aunque Vox <strong>NO es plenamente populista</strong> actualmente, su exclusivismo lo hace <strong>altamente susceptible al framing populista</strong></li>
-                <li>Riesgo: Vox podría reclamar autoridad exclusiva para definir "identidad española" → delegitimar oposición</li>
-                <li>Partidización excesiva normaliza actitudes antidemocráticas más allá de política</li>
+                <li>Vox usa <strong>polarización afectiva</strong> para erosionar tolerancia mutua</li>
+                <li>Crea "out-groups" (inmigrantes, catalanes, LGBTQ)</li>
+                <li>Altamente susceptible al framing populista</li>
             </ul>
-            <div class="quote">
-                "These parties are dangerous not only because they threaten the political status quo but also because they employ dehumanizing rhetoric towards oppositional candidates which leads to social divides."
-                <span class="author">— Mueller, 2019</span>
-            </div>
+            <div class="quote">"These parties employ dehumanizing rhetoric towards oppositional candidates which leads to social divides."
+                <span class="author">— Mueller, 2019</span></div>
         </div>
 
         <div class="card">
             <h3>Trump — Ataque Institucional</h3>
             <ul>
-                <li><strong>Schedule F:</strong> reclasificar 2.2M funcionarios competitivos como políticos</li>
-                <li>Ataque sistemático a instituciones: DOJ, FBI, prensa, academia</li>
-                <li>Retórica de "enemigos internos" y "deep state"</li>
+                <li><strong>Schedule F:</strong> reclasificar 2.2M funcionarios</li>
+                <li>Ataque a DOJ, FBI, prensa, academia</li>
                 <li>256+ executive orders para rodear Congreso</li>
             </ul>
         </div>
 
-        <div class="conclusion-box">
-            <h4>Similitud clave</h4>
-            <p>Ambos debilitan instituciones mediadoras y usan retórica de "el pueblo real vs élites corruptas" para justificar concentración de poder ejecutivo.</p>
-        </div>
-
         <!-- 7. ESCENARIOS -->
-        <h2 id="escenarios">7. Escenarios de Impacto para España</h2>
-
+        <h2 id="escenarios">7. Escenarios de Impacto</h2>
         <table>
-            <thead>
-                <tr>
-                    <th>Escenario</th>
-                    <th>Probabilidad</th>
-                    <th>Impacto</th>
-                </tr>
-            </thead>
+            <thead><tr><th>Escenario</th><th>Probabilidad</th><th>Impacto</th></tr></thead>
             <tbody>
-                <tr>
-                    <td><strong>Vox como partner de gobierno</strong></td>
-                    <td><span class="badge badge-yellow">Media</span></td>
-                    <td><span class="badge badge-red">Alto</span> Cambios constitucionales, centralización, políticas migratorias restrictivas</td>
-                </tr>
-                <tr>
-                    <td><strong>Vox como rey-maker</strong></td>
-                    <td><span class="badge badge-orange">Alta</span> (ya es)</td>
-                    <td><span class="badge badge-yellow">Medio</span> Influencia en políticas sin gobierno directo</td>
-                </tr>
-                <tr>
-                    <td><strong>Alineación Trump-Vox oficial</strong></td>
-                    <td><span class="badge badge-yellow">Media-Alta</span></td>
-                    <td><span class="badge badge-red">Riesgo geopolítico</span> España pierde influencia en UE/OTAN</td>
-                </tr>
-                <tr>
-                    <td><strong>Guerra comercial US-EU escalada</strong></td>
-                    <td><span class="badge badge-yellow">Media</span></td>
-                    <td><span class="badge badge-orange">-1.5 a -2% GDP</span> Si aranceles full implementation</td>
-                </tr>
-                <tr>
-                    <td><strong>Fragmentación OTAN</strong></td>
-                    <td><span class="badge badge-yellow">Media</span></td>
-                    <td><span class="badge badge-red">Vulnerabilidad</span> Dependencia energética Rusia reactivada</td>
-                </tr>
+                <tr><td><strong>Vox como partner de gobierno</strong></td><td><span class="badge badge-yellow">Media</span></td><td><span class="badge badge-red">Alto</span> Cambios constitucionales</td></tr>
+                <tr><td><strong>Vox como rey-maker</strong></td><td><span class="badge badge-orange">Alta</span></td><td><span class="badge badge-yellow">Medio</span> Influencia indirecta</td></tr>
+                <tr><td><strong>Alineación Trump-Vox oficial</strong></td><td><span class="badge badge-yellow">Media-Alta</span></td><td><span class="badge badge-red">Riesgo geopolítico</span></td></tr>
+                <tr><td><strong>Guerra comercial US-EU</strong></td><td><span class="badge badge-yellow">Media</span></td><td><span class="badge badge-orange">-1.5 a -2% GDP</span></td></tr>
+                <tr><td><strong>Fragmentación OTAN</strong></td><td><span class="badge badge-yellow">Media</span></td><td><span class="badge badge-red">Vulnerabilidad</span></td></tr>
             </tbody>
         </table>
 
@@ -536,78 +516,100 @@
         <div class="conclusion-box">
             <h4>🔴 Lo más preocupante</h4>
             <ol>
-                <li><strong>Convergencia ideológica real</strong> entre Trump y Vox no es retórica — hay alineación de políticas concreta y documentada</li>
-                <li><strong>Vox ya está en "Patriotas por Europa"</strong> con Fidesz, AfD, RN, Lega — bloque pro-Trump coordinado en Parlamento Europeo</li>
-                <li><strong>Impacto económico de deportaciones masivas</strong> está documentado como negativo incluso para trabajadores nativos (-6M jobs en datos US)</li>
-                <li><strong>España tiene buffers económicos</strong> (demanda doméstica, fondos UE) pero son frágiles y dependientes de continuidad política actual</li>
-                <li><strong>Erosión democrática gradual</strong> es el riesgo a largo plazo más serio — no colapso súbito, pero normalización progresiva de autoritarismo suave</li>
+                <li><strong>Convergencia ideológica real</strong> entre Trump y Vox — alineación documentada</li>
+                <li><strong>Vox en "Patriotas por Europa"</strong> — bloque pro-Trump en Parlamento Europeo</li>
+                <li><strong>Impacto económico de deportaciones</strong> documentado negativo (-6M jobs US)</li>
+                <li><strong>Erosión democrática gradual</strong> — normalización de autoritarismo suave</li>
+                <li><strong>Incidentes violentos abril 2026</strong> — escalada retórica y conductual</li>
             </ol>
         </div>
 
         <div class="conclusion-box" style="border-color: var(--green);">
             <h4 style="color: var(--green);">🟢 Factores de mitigación</h4>
             <ul>
-                <li><strong>Fortaleza instituciones españolas:</strong> Tribunal Constitucional, autonomías, prensa libre</li>
-                <li><strong>Enmarque UE como protección</strong> contra tanto Trump como populismos internos</li>
-                <li><strong>Cohesión social española</strong> (históricamente fuerte post-transición)</li>
-                <li><strong>Resiliencia económica demostrada:</strong> GDP +2.9% en 2025 a pesar de aranceles</li>
+                <li><strong>Fortaleza instituciones:</strong> Tribunal Constitucional, autonomías, prensa libre</li>
+                <li><strong>Enmarque UE</strong> como protección contra populismos</li>
+                <li><strong>Cohesión social española</strong> post-transición</li>
+                <li><strong>Resiliencia económica:</strong> GDP +2.9% en 2025</li>
             </ul>
         </div>
 
-        <!-- 8. REFERENCIAS -->
-        <h2 id="referencias">8. Referencias</h2>
+        <!-- 9. REFERENCIAS -->
+        <h2 id="referencias">9. Referencias</h2>
 
-        <h3>⚠️ Fuentes de Incidentes de Violencia (Abril 2026)</h3>
+        <h3>⚠️ Incidentes de Violencia</h3>
         <ul class="ref-list">
-            <li><a href="https://www.rtve.es/noticias/20260415/diputado-vox-murcia-llama-a-combatir-con-violencia-aberracion-moral-del-aborto-eutanasia/17025798.shtml" target="_blank">Vox llama en Murcia a combatir "con violencia" el aborto y la eutanasia</a> <span class="ref-source">— RTVE, 15 abril 2026</span></li>
-            <li><a href="https://cadenaser.com/nacional/2026/04/14/expulsado-un-diputado-de-vox-tras-subir-al-estrado-a-increpar-al-presidente-segundo-del-congreso-por-no-darle-la-palabra-cadena-ser/" target="_blank">Expulsado un diputado de Vox tras subir al estrado a increpar al vicepresidente del Congreso</a> <span class="ref-source">— Cadena SER, 14 abril 2026</span></li>
-            <li><a href="https://www.eldebate.com/espana/20260416/habla-diputado-vox-expulsado-congreso-gesto-violencia-grave-llamar-reiteradamente-criminal-asesino_407166.html" target="_blank">Habla el diputado de Vox expulsado: «Lo que es un gesto de violencia grave es llamar criminal y asesino»</a> <span class="ref-source">— El Debate, 16 abril 2026</span></li>
-            <li><a href="https://elpais.com/opinion/2026-04-17/violencia-en-el-congreso.html" target="_blank">Violencia en el Congreso (Editorial)</a> <span class="ref-source">— EL PAÍS, 17 abril 2026</span></li>
+            <li><a href="https://www.rtve.es/noticias/20260415/diputado-vox-murcia-llama-a-combatir-con-violencia-aberracion-moral-del-aborto-eutanasia/17025798.shtml" target="_blank">Vox llama a combatir "con violencia" el aborto y la eutanasia</a> <span class="ref-source">— RTVE, 15/04/2026</span></li>
+            <li><a href="https://cadenaser.com/nacional/2026/04/14/expulsado-un-diputado-de-vox-tras-subir-al-estrado-a-increpar-al-presidente-segundo-del-congreso-por-no-darle-la-palabra-cadena-ser/" target="_blank">Expulsado diputado Vox tras increpar al vicepresidente del Congreso</a> <span class="ref-source">— Cadena SER, 14/04/2026</span></li>
+            <li><a href="https://www.eldebate.com/espana/20260416/habla-diputado-vox-expulsado-congreso-gesto-violencia-grave-llamar-reiteradamente-criminal-asesino_407166.html" target="_blank">Habla el diputado de Vox expulsado</a> <span class="ref-source">— El Debate, 16/04/2026</span></li>
+            <li><a href="https://elpais.com/opinion/2026-04-17/violencia-en-el-congreso.html" target="_blank">Violencia en el Congreso</a> <span class="ref-source">— EL PAÍS, 17/04/2026</span></li>
         </ul>
 
-        <h3>📰 Fuentes de Política de Vox</h3>
+        <h3>📰 Política de Vox</h3>
         <ul class="ref-list">
-            <li><a href="https://www.lasprovincias.es/politica/programa-electoral-vox-20251103104056-nt.html" target="_blank">El programa electoral de Vox: su política en pensiones, inmigración o Sanidad</a> <span class="ref-source">— Las Provincias, nov 2025</span></li>
-            <li><a href="https://files.mediaset.es/file/2023/0707/15/programa-vox-completo-pdf.pdf" target="_blank">Programa Electoral de VOX 23J (PDF completo, 178 páginas)</a> <span class="ref-source">— Mediaset / Vox</span></li>
-            <li><a href="https://expansion.mx/mundo/2025/07/14/las-politicas-de-trump-inspiran-a-lideres-de-la-extrema-derecha-en-europa" target="_blank">Las políticas de Trump inspiran a líderes de la extrema derecha en Europa</a> <span class="ref-source">— Expansión, julio 2025</span></li>
+            <li><a href="https://www.lasprovincias.es/politica/programa-electoral-vox-20251103104056-nt.html" target="_blank">Programa electoral de Vox</a> <span class="ref-source">— Las Provincias</span></li>
+            <li><a href="https://expansion.mx/mundo/2025/07/14/las-politicas-de-trump-inspiran-a-lideres-de-la-extrema-derecha-en-europa" target="_blank">Políticas de Trump inspiran extrema derecha europea</a> <span class="ref-source">— Expansión</span></li>
         </ul>
 
-        <h3>🌍 Fuentes de Alineación Trump-Extrema Derecha Europea</h3>
+        <h3>🌍 Alineación Trump-Extrema Derecha</h3>
         <ul class="ref-list">
-            <li><a href="https://europeannewsroom.com/es/de-la-retorica-a-la-alineacion-la-linea-politica-de-estados-unidos-se-hace-eco-de-la-extrema-derecha-de-europa/" target="_blank">De la retórica a la alineación: la línea política de EE.UU. se hace eco de la extrema derecha de Europa</a> <span class="ref-source">— European Newsroom, dic 2025</span></li>
-            <li><a href="https://ballotpedia.org/Donald_Trump%27s_executive_orders_and_actions,_2025-2026" target="_blank">Donald Trump's executive orders and actions, 2025-2026</a> <span class="ref-source">— Ballotpedia</span></li>
-            <li><a href="https://www.lathropgpm.com/insights/trump-2-0-one-year-in-a-business-critical-look-at-executive-orders-and-actions/" target="_blank">Trump 2.0: One Year In — Executive Orders and Actions</a> <span class="ref-source">— Lathrop GPM</span></li>
+            <li><a href="https://europeannewsroom.com/es/de-la-retorica-a-la-alineacion-la-linea-politica-de-estados-unidos-se-hace-eco-de-la-extrema-derecha-de-europa/" target="_blank">Línea política de EE.UU. se hace eco de extrema derecha europea</a> <span class="ref-source">— European Newsroom</span></li>
+            <li><a href="https://ballotpedia.org/Donald_Trump%27s_executive_orders_and_actions,_2025-2026" target="_blank">Trump executive orders 2025-2026</a> <span class="ref-source">— Ballotpedia</span></li>
         </ul>
 
-        <h3>💰 Fuentes de Impacto Económico</h3>
+        <h3>💰 Impacto Económico</h3>
         <ul class="ref-list">
-            <li><a href="https://www.bruegel.org/analysis/economic-impact-trumps-tariffs-europe-initial-assessment" target="_blank">The economic impact of Trump's tariffs on Europe: an initial assessment</a> <span class="ref-source">— Bruegel, 2025</span></li>
-            <li><a href="https://www.bbvaresearch.com/en/publicaciones/spain-the-impact-on-the-economy-of-the-increase-in-us-trade-tariffs/" target="_blank">Spain | The impact on the economy of the increase in US trade tariffs</a> <span class="ref-source">— BBVA Research, dic 2024</span></li>
-            <li><a href="https://www.caixabankresearch.com/en/economics-markets/recent-developments/spanish-economy-weathers-tariff-storm" target="_blank">The Spanish economy weathers the tariff storm</a> <span class="ref-source">— CaixaBank Research, ene 2026</span></li>
-            <li><a href="https://northdakotamonitor.com/2025/07/11/trumps-deportations-could-cost-6m-jobs-report-finds/" target="_blank">Trump's deportations could cost 6M jobs, report finds</a> <span class="ref-source">— North Dakota Monitor / EPI, julio 2025</span></li>
-            <li><a href="https://www.brookings.edu/articles/macroeconomic-implications-of-immigration-flows-in-2025-and-2026-january-2026-update/" target="_blank">Macroeconomic implications of immigration flows in 2025 and 2026</a> <span class="ref-source">— Brookings, ene 2026</span></li>
+            <li><a href="https://www.bruegel.org/analysis/economic-impact-trumps-tariffs-europe-initial-assessment" target="_blank">Economic impact of Trump's tariffs on Europe</a> <span class="ref-source">— Bruegel</span></li>
+            <li><a href="https://www.caixabankresearch.com/en/economics-markets/recent-developments/spanish-economy-weathers-tariff-storm" target="_blank">Spanish economy weathers tariff storm</a> <span class="ref-source">— CaixaBank Research</span></li>
+            <li><a href="https://www.brookings.edu/articles/macroeconomic-implications-of-immigration-flows-in-2025-and-2026-january-2026-update/" target="_blank">Macroeconomic implications of immigration flows</a> <span class="ref-source">— Brookings</span></li>
         </ul>
 
-        <h3>🔒 Fuentes de Seguridad y Democracia</h3>
+        <h3>🔒 Seguridad y Democracia</h3>
         <ul class="ref-list">
-            <li><a href="https://democratic-erosion.org/2022/11/28/vox-populism-and-polarization-a-potential-threat-to-spanish-democracy/" target="_blank">Vox, Populism, and Polarization: A Potential Threat to Spanish Democracy</a> <span class="ref-source">— Democratic Erosion Consortium / Boston University, nov 2022</span></li>
-            <li><a href="https://pulaski.pl/en/what-does-the-2025-u-s-national-security-strategy-signal-to-europe-2/" target="_blank">What Does the 2025 U.S. National Security Strategy Signal to Europe?</a> <span class="ref-source">— Casimir Pulaski Foundation</span></li>
-            <li><a href="https://www.chathamhouse.org/2025/12/trumps-new-national-security-strategy-cut-deals-hammer-europe-and-tread-gently-around" target="_blank">Trump's new national security strategy: Cut deals, hammer Europe</a> <span class="ref-source">— Chatham House, dic 2025</span></li>
-            <li><a href="https://www.wsj.com/world/europe/europe-nato-trump-plans-3a423233" target="_blank">Europe Is Accelerating a NATO Fallback Plan in Case Trump Pulls Out</a> <span class="ref-source">— Wall Street Journal</span></li>
-            <li><a href="https://freedomhouse.org/country/spain/freedom-world/2024" target="_blank">Spain: Freedom in the World 2024 Country Report</a> <span class="ref-source">— Freedom House</span></li>
-        </ul>
-
-        <h3>📊 Fuentes de Trade y Aranceles</h3>
-        <ul class="ref-list">
-            <li><a href="https://www.intereconomics.eu/contents/year/2026/number/1/article/trump-s-tariffs-global-trade-and-europe-s-strategic-choice.html" target="_blank">Trump's Tariffs, Global Trade and Europe's Strategic Choice</a> <span class="ref-source">— Intereconomics, 2026</span></li>
-            <li><a href="https://taxfoundation.org/research/all/federal/trump-tariffs-trade-war/" target="_blank">Tracking the Impact of the Trump Tariffs & Trade War</a> <span class="ref-source">— Tax Foundation</span></li>
-            <li><a href="https://www.europarl.europa.eu/RegData/etudes/IDAN/2025/764382/ECTI_IDA(2025)764382_EN.pdf" target="_blank">US tariffs: economic, financial and monetary repercussions (PDF)</a> <span class="ref-source">— European Parliament</span></li>
+            <li><a href="https://democratic-erosion.org/2022/11/28/vox-populism-and-polarization-a-potential-threat-to-spanish-democracy/" target="_blank">Vox, Populism, and Polarization</a> <span class="ref-source">— Boston University</span></li>
+            <li><a href="https://www.chathamhouse.org/2025/12/trumps-new-national-security-strategy-cut-deals-hammer-europe-and-tread-gently-around" target="_blank">Trump's national security strategy</a> <span class="ref-source">— Chatham House</span></li>
+            <li><a href="https://www.wsj.com/world/europe/europe-nato-trump-plans-3a423233" target="_blank">Europe NATO fallback plan if Trump pulls out</a> <span class="ref-source">— WSJ</span></li>
         </ul>
     </div>
 
+    <a href="#top" class="back-to-top" id="backToTop">↑</a>
+
     <footer>
         <p>Research generado con fuentes verificadas · Abril 2026</p>
-        <p>Cocobot Lab · Análisis objetivo basado en datos</p>
+        <p>Cocobot Lab · Análisis objetivo basado en datos · <a href="/" style="color: var(--accent);">← Volver a Cocobot Pages</a></p>
     </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        const backToTop = document.getElementById('backToTop');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+    </script>
 </body>
 </html>
