@@ -87,14 +87,14 @@
         },
         {
           "category": "llama",
-          "title": "[CRÍTICO] ISSUE #22384: Fix de checkpoints para modelos híbridos/recurrentes (nuevo)",
-          "summary": "Issue ABIERTO por Gastón Parravicini (@Tongas). Identifica 2 bugs en server-context.cpp que impiden restaurar checkpoints en modelos DeltaNet/Mamba (Qwen3.5-27B, Qwen3.6-27B). Bug 1: búsqueda de checkpoint usa pos_min que siempre es la longitud total en recurrentes. Bug 2: creación de checkpoint requiere n_tokens >= 64. Fix implementado y testeado en fork spiritbuun#26. Mejora: Turn 2 de 12K context de 11s a 115ms. No mergeado todavía.",
+          "title": "[RESUELTO] ISSUE #22384 ✅ CERRADO: Fix de checkpoints para modelos híbridos/recurrentes",
+          "summary": "Issue CERRADO el 26 de abril por Gastón Parravicini (@Tongas). Fix mergeado: corrige 2 bugs en server-context.cpp que impedían restaurar checkpoints en modelos DeltaNet/Mamba (Qwen3.5-27B, Qwen3.6-27B). Bug 1: búsqueda de checkpoint usaba pos_min que siempre era la longitud total en recurrentes. Bug 2: creación de checkpoint requería n_tokens >= 64. Mejora: Turn 2 de 12K contexto pasa de 11s a 115ms. Verificar que tu versión de llama.cpp incluye este fix.",
           "source": "https://github.com/ggml-org/llama.cpp/issues/22384"
         },
         {
           "category": "llama",
-          "title": "[CRÍTICO] ISSUE #20153: Re-procesamiento forzado en Qwen3.5-27B (ABIERTO, sin cambios nuevos)",
-          "summary": "El issue sigue abierto sin actividad nueva reportada este día. Reportado por @lostmsu con Qwen3.5-27B en 2× RTX 3090. Cache KV no se reutiliza entre turns. Cada turno re-procesa todo el contexto acumulado: task 0=383 tokens (19s), task 384=2704 tokens (129s), task 3089=3764 tokens (180s). Sin workaround funcional salvo --cache-ram 0 (que solo quita overhead, no fija re-procesamiento).",
+          "title": "[RESUELTO] ISSUE #20153 ✅ CERRADO (Mar 9): Re-procesamiento forzado en Qwen3.5-27B",
+          "summary": "Issue CERRADO desde marzo. Reportado originalmente por @lostmsu con Qwen3.5-27B en 2× RTX 3090. Cache KV no se reutilizaba entre turns. Aunque el issue está cerrado, el problema puede persistir en versiones sin el fix de #22384 (mergeado Apr 26). Verifica que tu versión incluya ambos fixes.",
           "source": "https://github.com/ggml-org/llama.cpp/issues/20153"
         },
         {
