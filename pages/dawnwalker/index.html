@@ -52,11 +52,20 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
   padding:0 2rem;height:60px;
   display:flex;align-items:center;justify-content:space-between;
 }
-.nav-brand{
-  font-family:'Cinzel',serif;font-weight:700;font-size:1rem;
-  color:var(--txt);letter-spacing:.12em;text-transform:uppercase;
-}
-.nav-brand em{font-style:normal;color:var(--red-glow)}
+.nav-left{display:flex;align-items:center;gap:1.2rem}
+ .nav-brand{
+   font-family:'Cinzel',serif;font-weight:700;font-size:1rem;
+   color:var(--txt);letter-spacing:.12em;text-transform:uppercase;
+ }
+ .nav-brand em{font-style:normal;color:var(--red-glow)}
+
+ .lang-switch{
+   font-family:'Inter',sans-serif;font-size:.75rem;font-weight:500;
+   color:var(--txt-dim);text-decoration:none;
+   padding:5px 10px;border:1px solid var(--border);border-radius:4px;
+   transition:all .2s;letter-spacing:.05em;
+ }
+ .lang-switch:hover{color:var(--txt-mid);border-color:var(--txt-dim)}
 
 /* Hamburger */
 .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;z-index:1002}
@@ -285,7 +294,10 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── NAVBAR ──────────── -->
 <nav class="navbar">
-  <div class="nav-brand"><em>☠</em> The Blood of Dawnwalker</div>
+  <div class="nav-left">
+    <div class="nav-brand"><em>☠</em> The Blood of Dawnwalker</div>
+    <a href="../dawnwalker-es/index.html" class="lang-switch" title="Versión en español">🌐 ES</a>
+  </div>
   <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
@@ -576,6 +588,9 @@ footer a:hover{text-decoration:underline}
 
   <div class="videos-grid">
 
+    <!-- ══════════ TRAILERS ══════════ -->
+    <h3 style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--gold);margin:2rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)">🎬 Official Trailers</h3>
+
     <!-- Cinematic & Gameplay Teaser (original reveal) -->
     <div class="video-card">
       <div class="video-wrap">
@@ -609,6 +624,17 @@ footer a:hover{text-decoration:underline}
       </div>
     </div>
 
+    <!-- Story Trailer Bandai Namco -->
+    <div class="video-card">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/Fn7aYRVyRMM" title="Story Trailer" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="video-meta">
+        <h4>Story Trailer</h4>
+        <p>Bandai Namco Entertainment America</p>
+      </div>
+    </div>
+
     <!-- Developer Overview (Summer Showcase) -->
     <div class="video-card">
       <div class="video-wrap">
@@ -617,39 +643,6 @@ footer a:hover{text-decoration:underline}
       <div class="video-meta">
         <h4>Developer Overview Trailer</h4>
         <p>Bandai Namco Summer Showcase 2025</p>
-      </div>
-    </div>
-
-    <!-- Gameplay Overview Part I -->
-    <div class="video-card">
-      <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/BooGSMc3aMs" title="Gameplay Overview Part I" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-      </div>
-      <div class="video-meta">
-        <h4>Gameplay Overview — Part I</h4>
-        <p>Pre-beta footage · Rebel Wolves</p>
-      </div>
-    </div>
-
-    <!-- Gameplay Overview Part II -->
-    <div class="video-card">
-      <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/bHlsx20yl0o" title="Gameplay Overview Part II" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-      </div>
-      <div class="video-meta">
-        <h4>Gameplay Overview — Part II</h4>
-        <p>Svartrau secrets revealed · Rebel Wolves</p>
-      </div>
-    </div>
-
-    <!-- Gameplay Deep Dive Part 3 -->
-    <div class="video-card">
-      <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/MRpCejAlh-E" title="Gameplay Deep Dive Overview Part 3" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-      </div>
-      <div class="video-meta">
-        <h4>Gameplay Deep Dive Overview — Part 3</h4>
-        <p>Official Developer Deep Dive · 13 min</p>
       </div>
     </div>
 
@@ -664,14 +657,39 @@ footer a:hover{text-decoration:underline}
       </div>
     </div>
 
-    <!-- Story Trailer Bandai Namco -->
+    <!-- ══════════ DEEP DIVES ══════════ -->
+    <h3 style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--red-glow);margin:2.5rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)">🔍 Gameplay Deep Dives</h3>
+
+    <!-- Gameplay Overview Part I (first chronologically) -->
     <div class="video-card">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/Fn7aYRVyRMM" title="Story Trailer" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        <iframe src="https://www.youtube.com/embed/BooGSMc3aMs" title="Gameplay Overview Part I" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
       <div class="video-meta">
-        <h4>Story Trailer</h4>
-        <p>Bandai Namco Entertainment America</p>
+        <h4>Gameplay Overview — Part I</h4>
+        <p>Pre-beta footage · Rebel Wolves</p>
+      </div>
+    </div>
+
+    <!-- Gameplay Overview Part II (second chronologically) -->
+    <div class="video-card">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/bHlsx20yl0o" title="Gameplay Overview Part II" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="video-meta">
+        <h4>Gameplay Overview — Part II</h4>
+        <p>Svartrau secrets revealed · Rebel Wolves</p>
+      </div>
+    </div>
+
+    <!-- Gameplay Deep Dive Part 3 (third chronologically) -->
+    <div class="video-card">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/MRpCejAlh-E" title="Gameplay Deep Dive Overview Part 3" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="video-meta">
+        <h4>Gameplay Deep Dive Overview — Part 3</h4>
+        <p>Official Developer Deep Dive · 13 min</p>
       </div>
     </div>
 
