@@ -45,11 +45,11 @@ body {
 
 /* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(10,10,8,0.92);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10,10,8,0.93);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  padding: 0.8rem 2rem;
+  padding: 0 2rem; height: 60px;
   display: flex; justify-content: space-between; align-items: center;
 }
 nav .logo {
@@ -57,7 +57,6 @@ nav .logo {
   font-size: 1.1rem; font-weight: 600;
   color: var(--gold);
   letter-spacing: 0.05em;
-  z-index: 101;
 }
 nav .nav-links { display: flex; gap: 1.5rem; }
 nav .nav-links a {
@@ -71,26 +70,55 @@ nav .nav-links a {
 nav .nav-links a:hover { color: var(--bronze-light); }
 
 /* Hamburger */
-nav .hamburger {
+.hamburger {
   display: none;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 48px; height: 48px;
-  background: none; border: none; cursor: pointer;
-  z-index: 101;
-  gap: 6px;
+  gap: 5px; cursor: pointer; padding: 8px;
+  background: none; border: none; z-index: 1002;
 }
-nav .hamburger span {
-  display: block;
-  width: 24px; height: 2px;
-  background: var(--gold);
-  border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
+.hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--gold); border-radius: 2px;
+  transition: all 0.3s ease; transform-origin: center;
 }
-nav .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-nav .hamburger.active span:nth-child(2) { opacity: 0; }
-nav .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Overlay */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.overlay.show { opacity: 1; pointer-events: all; }
+
+/* Side menu */
+.side-menu {
+  position: fixed; top: 0; right: -300px;
+  width: 280px; height: 100vh;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border);
+  z-index: 1001; padding-top: 80px;
+  transition: right 0.35s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+.side-menu.open { right: 0; }
+.side-menu a {
+  display: block; padding: 14px 2rem;
+  color: var(--text-muted); text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.side-menu a:hover {
+  color: var(--fire-glow);
+  background: rgba(232,96,10,0.08);
+  padding-left: 24px;
+}
 
 /* ── HERO ── */
 .hero {
@@ -473,31 +501,9 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  /* Nav → hamburger */
-  nav { padding: 0.8rem 1rem; z-index: 110; }
-  nav .hamburger { display: flex; }
-  nav .nav-links {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg-deep);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-    z-index: 120;
-  }
-  nav .nav-links.open { display: flex; }
-  nav .nav-links a {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    padding: 0.6rem 1.5rem;
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-  }
+  /* Hide desktop nav, show hamburger */
+  nav .nav-links { display: none; }
+  .hamburger { display: flex; }
 
   /* General */
   section { padding: 3.5rem 1.25rem; }
@@ -561,10 +567,7 @@ footer {
 <!-- ── NAV ── -->
 <nav>
   <div class="logo">◆ DODECAEDRO ROMANO</div>
-  <button class="hamburger" id="menuToggle" aria-label="Menú">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="nav-links" id="navMenu">
+  <div class="nav-links">
     <a href="#que-es">¿Qué es?</a>
     <a href="#fuego">Teorías del Fuego</a>
     <a href="#platonicos">Sólidos Platónicos</a>
@@ -572,7 +575,18 @@ footer {
     <a href="#todas-las-teorias">Todas las Teorías</a>
     <a href="#fuentes">Fuentes</a>
   </div>
+  <button class="hamburger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
 </nav>
+
+<div class="overlay" id="overlay"></div>
+<div class="side-menu" id="sMenu">
+  <a href="#que-es">¿Qué es?</a>
+  <a href="#fuego">Teorías del Fuego</a>
+  <a href="#platonicos">Sólidos Platónicos</a>
+  <a href="#cronologia">Cronología</a>
+  <a href="#todas-las-teorias">Todas las Teorías</a>
+  <a href="#fuentes">Fuentes</a>
+</div>
 
 <!-- ── HERO ── -->
 <header class="hero">
@@ -1139,32 +1153,33 @@ footer {
 </footer>
 
 <script>
-  const hamburger = document.getElementById('menuToggle');
-  const navMenu = document.getElementById('navMenu');
-  const navLinks = navMenu.querySelectorAll('a');
+  const burger = document.getElementById('burger');
+  const sMenu = document.getElementById('sMenu');
+  const overlay = document.getElementById('overlay');
+
+  function openMenu() {
+    burger.classList.add('active');
+    sMenu.classList.add('open');
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
 
   function closeMenu() {
-    hamburger.classList.remove('active');
-    navMenu.classList.remove('open');
+    burger.classList.remove('active');
+    sMenu.classList.remove('open');
+    overlay.classList.remove('show');
     document.body.style.overflow = '';
   }
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('open');
-    document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+  burger.addEventListener('click', () => {
+    sMenu.classList.contains('open') ? closeMenu() : openMenu();
   });
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
+  overlay.addEventListener('click', closeMenu);
+
+  sMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
       closeMenu();
-      // Wait for menu to close before scrolling
-      setTimeout(() => {
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 150);
     });
   });
 </script>
