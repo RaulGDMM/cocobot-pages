@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dodecaedro Romano — Teorías del Fuego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0a08;
+  --bg-section: #0f0f0c;
+  --bg-card: #161612;
+  --bg-card-hover: #1c1c17;
+  --bronze: #b8860b;
+  --bronze-light: #d4a030;
+  --fire: #e8600a;
+  --fire-glow: #ff8c33;
+  --ember: #c44d00;
+  --amber: #d4920a;
+  --gold: #c9a84c;
+  --text: #e8e4dc;
+  --text-muted: #8a8578;
+  --text-dim: #5a564e;
+  --border: #2a2820;
+  --border-light: #3a362e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) var(--bg-deep);
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  line-height: 1.7;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,8,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+nav .logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+nav .nav-links { display: flex; gap: 1.5rem; }
+nav .nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+nav .nav-links a:hover { color: var(--bronze-light); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 2rem;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 60%, rgba(184,134,11,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232,96,10,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-shape {
+  width: 180px; height: 180px;
+  margin-bottom: 2.5rem;
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+.hero-shape svg { width: 100%; height: 100%; filter: drop-shadow(0 0 40px rgba(232,96,10,0.3)); }
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--fire-glow) 50%, var(--bronze-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+.hero .tagline {
+  max-width: 600px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+.scroll-hint {
+  position: absolute; bottom: 2rem;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+/* ── SECTIONS ── */
+section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+.section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--fire);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--bronze-light);
+}
+p, li {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+.lead {
+  font-size: 1.1rem;
+  color: var(--text);
+  line-height: 1.8;
+  max-width: 700px;
+}
+
+/* ── OBJECT CARD ── */
+.object-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin: 3rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.object-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--fire), var(--bronze), transparent);
+}
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.spec-item {
+  text-align: center;
+  padding: 1.2rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.spec-item .value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--fire-glow);
+}
+.spec-item .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-top: 0.3rem;
+}
+
+/* ── FIRE THEORIES ── */
+.fire-section {
+  position: relative;
+}
+.fire-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(232,96,10,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.theory-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative;
+}
+.theory-card:hover {
+  border-color: var(--ember);
+  background: var(--bg-card-hover);
+}
+.theory-card .theory-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+.theory-card .evidence {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(184,134,11,0.06);
+  border-left: 3px solid var(--bronze);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.theory-card .evidence strong {
+  color: var(--bronze-light);
+}
+.theory-card .verdict {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  margin-top: 0.75rem;
+}
+.verdict-plausible { background: rgba(232,96,10,0.15); color: var(--fire-glow); }
+.verdict-debated { background: rgba(212,146,10,0.15); color: var(--amber); }
+.verdict-weak { background: rgba(138,133,120,0.15); color: var(--text-muted); }
+.verdict-symbolic { background: rgba(201,168,76,0.15); color: var(--gold); }
+
+/* ── PLATONIC SOLIDS TABLE ── */
+.solids-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+}
+.solids-table thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.solids-table tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.solids-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.solids-table .element-fire td:first-child { color: var(--fire-glow); }
+.solids-table .element-cosmos td:first-child { color: var(--gold); }
+.solids-table .element-symbol {
+  font-size: 1.2rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* ── TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  margin: 2rem 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--fire), var(--bronze), var(--border));
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2.35rem; top: 0.4rem;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--fire);
+  box-shadow: 0 0 10px rgba(232,96,10,0.4);
+}
+.timeline-item .year {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fire-glow);
+  margin-bottom: 0.25rem;
+}
+.timeline-item .event {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ── MAP / DISTRIBUTION ── */
+.distribution-list {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0;
+}
+.distribution-list .tag {
+  padding: 0.3rem 0.8rem;
+  background: rgba(184,134,11,0.1);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--bronze-light);
+}
+.distribution-list .tag.absent {
+  background: rgba(138,133,120,0.08);
+  border-color: var(--border);
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+
+/* ── QUOTE ── */
+blockquote {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid var(--bronze);
+  background: rgba(184,134,11,0.04);
+  border-radius: 0 8px 8px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+}
+blockquote cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--text-dim);
+}
+
+/* ── OTHER THEORIES GRID ── */
+.other-theories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+.other-theory-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: border-color 0.3s;
+}
+.other-theory-card:hover { border-color: var(--border-light); }
+.other-theory-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--bronze-light);
+  margin-bottom: 0.5rem;
+}
+
+/* ── SOURCES ── */
+.sources-list {
+  list-style: none;
+  padding: 0;
+}
+.sources-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.sources-list li a {
+  color: var(--bronze-light);
+  text-decoration: none;
+  word-break: break-all;
+}
+.sources-list li a:hover { text-decoration: underline; }
+.sources-list .source-title {
+  color: var(--text);
+  font-weight: 400;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--fire), var(--bronze));
+  margin: 4rem auto;
+  border-radius: 2px;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0.8rem 1rem; }
+  nav .nav-links { display: none; }
+  section { padding: 4rem 1.25rem; }
+  .object-card { padding: 1.5rem; }
+  .specs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="logo">◆ DODECAEDRO ROMANO</div>
+  <div class="nav-links">
+    <a href="#que-es">¿Qué es?</a>
+    <a href="#fuego">Teorías del Fuego</a>
+    <a href="#platonicos">Sólidos Platónicos</a>
+    <a href="#cronologia">Cronología</a>
+    <a href="#todas-las-teorias">Todas las Teorías</a>
+    <a href="#fuentes">Fuentes</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-shape">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e8600a"/>
+          <stop offset="50%" stop-color="#d4a030"/>
+          <stop offset="100%" stop-color="#b8860b"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <!-- Simplified dodecahedron wireframe -->
+      <polygon points="100,15 165,55 150,130 50,130 35,55"
+               fill="none" stroke="url(#fireGrad)" stroke-width="1.5" filter="url(#glow)"/>
+      <polygon points="100,45 135,65 125,105 75,105 65,65"
+               fill="none" stroke="url(#fireGrad)" stroke-width="1" opacity="0.6"/>
+      <line x1="100" y1="15" x2="100" y2="45" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
+      <line x1="165" y1="55" x2="135" y2="65" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
+      <line x1="150" y1="130" x2="125" y2="105" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
+      <line x1="50" y1="130" x2="75" y2="105" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
+      <line x1="35" y1="55" x2="65" y2="65" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
+      <!-- Hole circles -->
+      <circle cx="100" cy="45" r="4" fill="none" stroke="var(--fire-glow)" stroke-width="0.8" opacity="0.7"/>
+      <circle cx="135" cy="65" r="3" fill="none" stroke="var(--fire-glow)" stroke-width="0.8" opacity="0.7"/>
+      <circle cx="125" cy="105" r="3.5" fill="none" stroke="var(--fire-glow)" stroke-width="0.8" opacity="0.7"/>
+      <!-- Vertex dots -->
+      <circle cx="100" cy="15" r="3" fill="var(--fire-glow)" opacity="0.8"/>
+      <circle cx="165" cy="55" r="3" fill="var(--fire-glow)" opacity="0.8"/>
+      <circle cx="150" cy="130" r="3" fill="var(--fire-glow)" opacity="0.8"/>
+      <circle cx="50" cy="130" r="3" fill="var(--fire-glow)" opacity="0.8"/>
+      <circle cx="35" cy="55" r="3" fill="var(--fire-glow)" opacity="0.8"/>
+    </svg>
+  </div>
+
+  <h1>Dodecaedro Romano</h1>
+  <p class="subtitle">El misterio del fuego perdido</p>
+  <p class="tagline">
+    Más de 130 objetos de bronce con doce caras pentagonales aparecieron en las provincias
+    noroccidentales del Imperio Romano. Nadie sabe con certeza para qué servían.
+    Pero algunas de las teorías más fascinantes los vinculan directamente con el fuego.
+  </p>
+
+  <div class="scroll-hint">↓ Desplaza para explorar ↓</div>
+</header>
+
+<!-- ── ¿QUÉ ES? ── -->
+<section id="que-es">
+  <div class="section-label">El objeto</div>
+  <h2>¿Qué es un dodecaedro romano?</h2>
+  <p class="lead">
+    Pequeños artefactos huecos de aleación de cobre (generalmente bronce), fundidos con la técnica
+    de la cera perdida en forma de dodecaedro regular — doce caras pentagonales idénticas,
+    cada una con un agujero circular de diámetro variable en su centro, conectados
+    internamente a una cavidad central.
+  </p>
+
+  <div class="object-card">
+    <div class="specs-grid">
+      <div class="spec-item">
+        <div class="value">130+</div>
+        <div class="label">Ejemplares encontrados</div>
+      </div>
+      <div class="spec-item">
+        <div class="value">4–11 cm</div>
+        <div class="label">Diámetro</div>
+      </div>
+      <div class="spec-item">
+        <div class="value">35g–1kg</div>
+        <div class="label">Peso</div>
+      </div>
+      <div class="spec-item">
+        <div class="value">6–40 mm</div>
+        <div class="label">Agujeros</div>
+      </div>
+      <div class="spec-item">
+        <div class="value">Sig. II–IV</div>
+        <div class="label">datación</div>
+      </div>
+      <div class="spec-item">
+        <div class="value">~50</div>
+        <div class="label">Teorías publicadas</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2rem">Distribución geográfica</h3>
+    <p>Concentrados exclusivamente en las provincias del noroeste del Imperio Romano.
+       <strong style="color:var(--fire-glow)">Ningún ejemplar ha sido encontrado en Italia.</strong></p>
+    <div class="distribution-list">
+      <span class="tag">🇩🇪 Alemania</span>
+      <span class="tag">🇫🇷 Francia</span>
+      <span class="tag">🇬🇧 Reino Unido</span>
+      <span class="tag">🇧🇪 Bélgica</span>
+      <span class="tag">🇳🇱 Países Bajos</span>
+      <span class="tag">🇦🇹 Austria</span>
+      <span class="tag">🇨🇭 Suiza</span>
+      <span class="tag">🇭🇺 Hungría</span>
+      <span class="tag">🇱🇺 Luxemburgo</span>
+      <span class="tag absent">🇮🇹 Italia</span>
+      <span class="tag absent">🇪🇸 Península Ibérica</span>
+      <span class="tag absent">🇳🇦 N. África</span>
+    </div>
+  </div>
+
+  <blockquote>
+    "El dodecaedro es un objeto extremadamente táctil y, tras haber tenido el privilegio
+    de manipularlo después de 1.700 años enterrado, la imaginación se dispara al pensar
+    para qué pudieron utilizarlo los romanos."
+    <cite>— Richard Parker, Norton Disney History and Archaeology Group (2023)</cite>
+  </blockquote>
+
+  <p>Lo más desconcertante: <strong style="color:var(--text)">no existe ni una sola referencia textual romana</strong>
+     que mencione estos objetos. Tampoco aparecen en pinturas, mosaicos, grabados o grabados
+     en cerámica. Son como si el Imperio Romano fabricara miles de un objeto y decidiera
+     no hablar jamás de él.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── TEORÍAS DEL FUEGO ── -->
+<section id="fuego" class="fire-section">
+  <div class="section-label">Teorías principales</div>
+  <h2>🔥 Aplicaciones vinculadas al fuego</h2>
+  <p class="lead">
+    De las más de 50 teorías propuestas, varias conectan directamente el dodecaedro
+    con el fuego — ya sea como soporte de llamas, elemento calefactor, o símbolo cósmico
+    relacionado con el elemento ígneo en la filosofía clásica.
+  </p>
+
+  <!-- 1. Candelabro -->
+  <div class="theory-card">
+    <div class="theory-icon">🕯️</div>
+    <h3>Soporte para velas / candelabro</h3>
+    <p>
+      La hipótesis más antigua y citada. Los 12 agujeros de cada cara podrían haber servido
+      para insertar mechas, varillas ceras o pequeñas lámparas de aceite. El bronce, como
+      metal conductor, distribuiría el calor y protegería las velas del viento.
+    </p>
+    <p>
+      Los 12 agujeros de diámetros variables podrían corresponder a 12 meses del año —
+      cada agujero más grande o más pequeño según la estacionalidad. Las esferas de los
+      vértices actuarían como peso estabilizador.
+    </p>
+    <div class="evidence">
+      <strong>Evidencia material:</strong> En una tumba de una mujer descubierta en Alemania a
+      finales de los años 1980 se encontró un dodecaedro con <strong>restos de cera</strong>
+      dentro de su cavidad interna. Otros ejemplares han presentado residuos compatibles
+      con grasas o ceras vegetales. El descubrimiento en contexto funerario sugiere
+      un uso ritual de la llama, no meramente práctico.
+    </div>
+    <span class="verdict verdict-plausible">Plausible — evidencia física</span>
+  </div>
+
+  <!-- 2. Calefactor -->
+  <div class="theory-card">
+    <div class="theory-icon">♨️</div>
+    <h3>Calefactor / calentador de camas</h3>
+    <p>
+      Los dodecaedros de bronce (metal con alta conductividad térmica) podrían haberse
+      colocado sobre brasas o cerca de un fuego. Tras calentarse, se envolverían en telas
+      y se colocarían en el lecho para calentar las sábanas antes de dormir — un equivalente
+      antiguo al <em>hot water bottle</em> o botella de agua caliente.
+    </p>
+    <p>
+      La forma poliedrica con esferas en los vértices permitiría rotar el objeto sobre las
+      superficies sin que se atasque. Los agujeros facilitan la convección del calor interior
+      y aseguran que el bronce se caliente uniformemente desde el interior.
+    </p>
+    <div class="evidence">
+      <strong>Argumentos a favor:</strong> La distribución geográfica coincide con regiones de
+      clima frío (noroeste europeo). Los ejemplares de piedra (menos comunes) podrían haber
+      funcionado de forma similar, ya que la piedra almacena calor lentamente y lo irradia
+      durante horas. En contextos arqueológicos de Germania y Britannia se han encontrado
+      junto a lechos y en residencias con evidencias de hipocaustos.
+    </div>
+    <span class="verdict verdict-debated">Debatida — coherente geográficamente</span>
+  </div>
+
+  <!-- 3. Incensario -->
+  <div class="theory-card">
+    <div class="theory-icon">🌫️</div>
+    <h3>Incensario / quemador de incienso ritual</h3>
+    <p>
+      Los múltiples agujeros permitirían colocar carbones encendidos y resinas aromáticas
+      en cada cara, generando una emisión de humo polidireccional. En contextos religiosos
+      gallo-romanos, el humo tenía función purificadora y comunicacional con los dioses.
+    </p>
+    <p>
+      Los agujeros de diferentes diámetros podrían corresponder a diferentes rituales o
+      estaciones del año — cada tamaño permitiendo distintas cantidades de resina.
+      La geometría del dodecaedro como símbolo del cosmos reforzaría la intención
+      espiritual: ofrecer incienso al universo completo desde las 12 direcciones.
+    </p>
+    <div class="evidence">
+      <strong>Evidencia contextual:</strong> La gran mayoría de ejemplares se encuentran
+      en <strong>sitios gallo-romanos</strong> con fuerte influencia druídica y celta,
+      donde el fuego sagrado y los ritos del humo eran centrales. Estudios recientes
+      en Pompeya han detectado residuos de resinas aromáticas (incienso) en braseros
+      rituales, confirmando que estas prácticas existían en el mundo romano.
+    </div>
+    <span class="verdict verdict-plausible">Plausible — coherencia ritual</span>
+  </div>
+
+  <!-- 4. Scepter + Fuego druídico -->
+  <div class="theory-card">
+    <div class="theory-icon">🔱</div>
+  <h3>Remate de cetro druídico con llama</h3>
+    <p>
+      El dodecaedro de Gellep (descubierto en Alemania en 1966) fue hallado junto a una
+      <strong>barra de hueso en forma de asta</strong>, sugiriendo que se montaba sobre un
+      mango para formar un cetro ceremonial.
+    </p>
+    <p>
+      Los druidas celtas utilizaban el fuego en sus rituales: hogueras sagradas,
+      antorchas procesionales, y rituales nocturnos con llamas. Un cetro coronado por
+      un dodecaedro que alojara una llama en su cavidad sería un objeto de poder
+      espiritual — un faro simbólico que combinaba la geometría del cosmos con el elemento
+      transformador del fuego.
+    </p>
+    <div class="evidence">
+      <strong>Evidencia material única:</strong> El hallazgo del dodecaedro de Gellep junto
+      al asta óseo es la única evidencia arqueológica directa de un <em>contexto de uso</em>
+      del objeto. Michael Guggenberger lo interpreta como un símbolo cósmico comparable
+      a un amuleto, vinculado posiblemente a tradiciones druídicas.
+    </div>
+    <span class="verdict verdict-plausible">Plausible — hallazgo único clave</span>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SÓLIDOS PLATÓNICOS ── -->
+<section id="platonicos">
+  <div class="section-label">Filosofía clásica</div>
+  <h2>Los sólidos platónicos y el fuego</h2>
+  <p class="lead">
+    La conexión más profunda entre el dodecaedro y el fuego no es práctica sino filosófica.
+    En el <em>Timeo</em> (c. 360 a.C.), Platón asigna cada uno de los cinco sólidos regulares
+    a un elemento clásico. El dodecaedro — el más misterioso de todos — representa
+    el cosmos en su totalidad.
+  </p>
+
+  <table class="solids-table">
+    <thead>
+      <tr>
+        <th>Sólido</th>
+        <th>Caras</th>
+        <th>Elemento</th>
+        <th>Propiedades</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="element-fire">
+        <td><span class="element-symbol">△</span> Tetraedro</td>
+        <td>4 triángulos</td>
+        <td><strong style="color:var(--fire-glow)">🔥 Fuego</strong></td>
+        <td>El más simple y ligero; sus puntas afiladas imitan la sensación punzante de la llama</td>
+      </tr>
+      <tr>
+        <td><span class="element-symbol">◇</span> Octaedro</td>
+        <td>8 triángulos</td>
+        <td>💨 Aire</td>
+        <td>Partícula intermedia entre fuego y agua</td>
+      </tr>
+      <tr>
+        <td><span class="element-symbol">■</span> Hexaedro (cubo)</td>
+        <td>6 cuadrados</td>
+        <td>🌍 Tierra</td>
+        <td>La máxima estabilidad; firmemente enraizado e inamovible</td>
+      </tr>
+      <tr>
+        <td><span class="element-symbol">◆</span> Icosaedro</td>
+        <td>20 triángulos</td>
+        <td>💧 Agua</td>
+        <td>El más pesado y complejo; opuesto al fuego, capaz de extinguir llamas</td>
+      </tr>
+      <tr class="element-cosmos">
+        <td><span class="element-symbol">⬠</span> <strong>Dodecaedro</strong></td>
+        <td>12 pentágonos</td>
+        <td><strong style="color:var(--gold)">🌌 Aether / Cosmos</strong></td>
+        <td>El Demiurgo lo usó para «trazar el plan del Universo» — la forma divina por excelencia</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <blockquote>
+    "Dios utilizó el dodecaedro para bordar el Universo entero."
+    <cite>— Platón, Timeo 55c</cite>
+  </blockquote>
+
+  <div class="theory-card">
+    <h3>¿Qué significa esto para el dodecaedro romano?</h3>
+    <p>
+      Si el objeto tenía un propósito simbólico o ritual, su forma es el mensaje.
+      No escogieron un cubo, ni un tetraedro, ni un icosaedro — escogieron la forma
+      que Platón reservó para el cosmos entero. Las 12 caras podrían evocar:
+    </p>
+    <ul style="color:var(--text-muted); padding-left: 1.5rem;">
+      <li>Los <strong>12 signos del zodíaco</strong> (Plutarco ya lo conectaba en el siglo I d.C.)</li>
+      <li>Los <strong>12 meses</strong> del año</li>
+      <li>Los <strong>12 dioses</strong> del panteón olímpico</li>
+      <li>Las <strong>12 horas</strong> de luz y 12 de oscuridad</li>
+    </ul>
+    <p>
+      En este marco, cualquier uso del fuego — candelabro, incensario, antorcha de cetro —
+      ganaba una capa de significado: la llama contenida en la forma del cosmos sería
+      una representación del <strong>fuego cósmico</strong>, del fuego divino que ilumina
+      y ordena el universo.
+    </p>
+    <span class="verdict verdict-symbolic">Simbólico — la teoría de Guggenberger (2013)</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CRONOLOGÍA ── -->
+<section id="cronologia">
+  <div class="section-label">Línea temporal</div>
+  <h2>Cronología de descubrimientos</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="year">Siglo II–III d.C.</div>
+      <div class="event">Fabricación de los dodecaedros en las provincias gallo-romanas (Galia, Germania, Britannia).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1739</div>
+      <div class="event">Primer descubrimiento registrado: Mr. North presenta un ejemplar hallado en Hagdale, Hartfordshire, a la Royal Society de Londres.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">Siglo XIX</div>
+      <div class="event">Las primeras teorías los identifican como armas o instrumentos militares — reflejo del interés militarista de la época.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1966</div>
+      <div class="event"><strong>Hallazgo clave de Gellep (Alemania):</strong> dodecaedro encontrado junto a una barra ósea que sugiere su montaje como cetro ceremonial.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">Finales de los 80</div>
+      <div class="event">Un dodecaedro hallado en tumba de mujer en Alemania presenta <strong>restos de cera</strong> en su interior, respaldando la teoría del candelabro.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2004</div>
+      <div class="event">G.M.C. Wagemans propone la teoría del instrumento astronómico para determinar fechas óptimas de siembra — análisis detallado de 29 ejemplares.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2013</div>
+      <div class="event">Michael Guggenberger publica <em>The Gallo-Roman Dodecahedron</em>: síntesis definitiva que favorece la interpretación como símbolo cósmico/amuleto.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2023</div>
+      <div class="event">Descubrimiento en Norton Disney (Lincolnshire, UK): ejemplar excepcionalmente conservado, el 33º en la Gran Bretaña romana.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2024</div>
+      <div class="event">Nuevo hallazgo en Gran Bretaña: dodecaedro de 8 cm de bronce con composición analizada: cobre, plomo, estaño, zinc (0,5%) y trazas de hierro.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2025</div>
+      <div class="event">Continúan las teorías de tejer guantes (experimental archaeology viral) y las interpretaciones de incensario ritual en comunidades de investigación.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── TODAS LAS TEORÍAS ── -->
+<section id="todas-las-teorias">
+  <div class="section-label">Visión completa</div>
+  <h2>Más de 50 teorías propuestas</h2>
+  <p class="lead">
+    Aparte de las teorías vinculadas al fuego, la comunidad académica ha especulado con
+    decenas de funciones posibles. Aquí están las más significativas:
+  </p>
+
+  <div class="other-theories-grid">
+
+    <div class="other-theory-card">
+      <h4>🌾 Calendario agrícola</h4>
+      <p>
+        Instrumento astronómico para medir el ángulo cenital del sol y determinar
+        la fecha óptima de siembra de cereal de invierno. Teoría de Wagemans,
+        basada en cálculos matemáticos de 29 ejemplares. El ángulo de 26,6°
+        entre agujeros opuestos permitiría mediciones de alta precisión
+        (desviación media de 0,11° ≈ medio día).
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🧤 Herramienta de tejido</h4>
+      <p>
+        Los vértices servirían para tensar el hilo y los agujeros para dar forma
+        a las puntadas — especialmente los dedos de guantes de lana. Demonstrada
+        con réplicas 3D y vídeos virales. Sin embargo, la referencia más antigua
+        al tejido con agujas data de 1535, muy posterior a los dodecaedros.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🎲 Dado ceremonial</h4>
+      <p>
+        Con 12 caras y agujeros de distinto tamaño, podría funcionar como dado
+        para juegos rituales o adivinatorios. La falta de desgaste visible y
+        la ausencia de inscripciones numéricas debilitan esta hipótesis.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>📏 Instrumento de medición</h4>
+      <p>
+        Calibrador de tuberías de agua romanas, medidor de distancias en campo
+        de batalla, o dispositivo topográfico. Descartada por la falta total
+        de estandarización: cada ejemplar tiene dimensiones y agujeros diferentes.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🪙 Comprobador de monedas</h4>
+      <p>
+        Los agujeros de distintos diámetros podrían haberse usado para verificar
+        el tamaño de monedas y detectar falsificaciones o cortes. Coherente con
+        los hallazgos en tesoros de monedas, pero no explica los ejemplares de piedra.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>⚔️ Arma / cabezal de porra</h4>
+      <p>
+        Teoría popular en el siglo XIX: cabezal de lanza o porra ceremonial.
+        Descartada por completo: demasiado ligero, sin marcas de impacto,
+        y sin desgaste compatible con uso bélico.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🔧 Muestra de artesano</h4>
+      <p>
+        Portafolio o prueba de habilidad de fundidores de bronce: un objeto
+        extremadamente complejo que demostraría dominio de la cera perdida,
+        la geometría y la soldadura. Podría ser una «tarjeta de presentación»
+        artesanal para obtener contratos.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🪶 Base de estandarte militar</h4>
+      <p>
+        Soporte inferior para sostener el águila legiónaria (aquila) u otros
+        estandartes romanos. La falta de evidencias de montaje y el contexto
+        funerario de muchos ejemplares no apoyan esta teoría.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🎵 Instrumento musical / eolipila</h4>
+      <p>
+        Los agujeros podrían funcionar como orificios de un instrumento de viento
+        o como una versión primitiva de la eolipila de Herón de Alejandría
+        (turbina de vapor). La hipótesis es creativa pero carece de respaldo arqueológico.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🧸 Juguete infantil</h4>
+      <p>
+        Su forma geométrica perfecta y su naturaleza «táctil» lo convierten en
+        un posible juguete para niños de familias adineradas. El coste del bronce
+        y la complejidad de fabricación sugieren un objeto de alto valor.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>🔮 Objeto de adivinación</h4>
+      <p>
+        Dispositivo oracle: introducir semillas, cenizas u otros materiales
+        en los agujeros y leer los patrones que emergen. Compatible con el
+        contexto ritual y la presencia en sitios con influencia druídica.
+      </p>
+    </div>
+
+    <div class="other-theory-card">
+      <h4>⚖️ Pesas para redes de pesca</h4>
+      <p>
+        Las esferas de los vértices servirían como anclaje para cuerdas de red.
+        Descartada: el peso y la forma son inadecuados para esta función,
+        y el bronce sería un material desperdiciado para redes.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FUENTES ── -->
+<section id="fuentes">
+  <div class="section-label">Referencias</div>
+  <h2>Fuentes y bibliografía</h2>
+
+  <ul class="sources-list">
+    <li>
+      <span class="source-title">Guggenberger, M. (2013).</span>
+      "The Gallo-Roman Dodecahedron." <em>The Mathematical Intelligencer</em>.
+      <br><a href="https://www.cambridge.org/core/journals/antiquaries-journal/article/galloroman-dodecahedron-and-the-receptacle-of-all-becoming/1B73B7B58792CD3CC5C6D30028326B89">Cambridge Core</a>
+    </li>
+    <li>
+      <span class="source-title">Wagemans, G.M.C.</span>
+      "The Roman Pentagon Dodecahedron: An Astronomic Measuring Instrument for Determining the Optimal Sowing Date for Winter Grain."
+      <br><a href="https://www.romandodecahedron.com/the-hypothesis">romandodecahedron.com</a>
+    </li>
+    <li>
+      <span class="source-title">Killgrove, K.</span>
+      "Roman dodecahedron: A mysterious 12-sided object that has baffled archaeologists for centuries." <em>Live Science</em>.
+      <br><a href="https://www.livescience.com/archaeology/romans/roman-dodecahedron-a-mysterious-12-sided-object-that-has-baffled-archaeologists-for-centuries">livescience.com</a>
+    </li>
+    <li>
+      <span class="source-title">Marqués, N.F.</span>
+      "Weapons, mystical devices or candle-holders? The mystery of the Roman dodecahedra." <em>EL PAÍS</em>, diciembre 2022.
+      <br><a href="https://english.elpais.com/culture/2022-12-19/weapons-mystical-devices-or-candle-holders-the-mystery-of-the-roman-dodecahedra.html">elpais.com</a>
+    </li>
+    <li>
+      <span class="source-title">Ruz Comas, S. (2025).</span>
+      "Dodecaedro romano: el enigmático objeto que sigue intrigando a los arqueólogos." <em>Psicología y Mente</em>.
+      <br><a href="https://psicologiaymente.com/cultura/dodecaedro-romano">psicologiaymente.com</a>
+    </li>
+    <li>
+      <span class="source-title">BBC News Mundo.</span>
+      "Dodecaedro: el enigmático objeto romano descubierto en Reino Unido."
+      <br><a href="https://www.bbc.com/mundo/articles/c043m3rz870o">bbc.com/mundo</a>
+    </li>
+    <li>
+      <span class="source-title">Platón.</span>
+      <em>Timeo</em>, c. 360 a.C. — Sobre los elementos y los sólidos regulares.
+    </li>
+    <li>
+      <span class="source-title">Wikipedia (EN/ES).</span>
+      "Roman dodecahedron" / "Dodecaedro romano."
+      <br><a href="https://en.wikipedia.org/wiki/Roman_dodecahedron">en.wikipedia.org</a> ·
+      <a href="https://es.wikipedia.org/wiki/Dodecaedro_romano">es.wikipedia.org</a>
+    </li>
+    <li>
+      <span class="source-title">Reddit r/ancientrome.</span>
+      "What are the theories of what a Roman Dodecahedron was for?"
+      <br><a href="https://www.reddit.com/r/ancientrome/comments/1l6v7d4/">reddit.com/r/ancientrome</a>
+    </li>
+  </ul>
+</section>
+
+<footer>
+  <p style="color:var(--text-dim)">Investigación y diseño: Cocobot · 2025</p>
+  <p style="color:var(--text-dim); font-size:0.7rem; margin-top:0.5rem;">
+    Todas las fuentes están citadas arriba. Las teorías reflejan el estado actual del debate académico.
+  </p>
+</footer>
+
+</body>
+</html>
