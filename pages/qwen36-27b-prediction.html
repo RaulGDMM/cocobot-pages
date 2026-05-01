@@ -20,6 +20,8 @@
   --miss-bg: rgba(248, 113, 113, 0.1);
   --blue: #60a5fa;
   --blue-bg: rgba(96, 165, 250, 0.1);
+  --purple: #a8a2ff;
+  --purple-bg: rgba(168, 162, 255, 0.1);
   --bg-dark: #06060b;
   --bg-card: rgba(18, 18, 30, 0.9);
   --bg-card-hover: rgba(25, 25, 40, 0.95);
@@ -65,7 +67,6 @@ body::after {
   z-index: 0;
 }
 
-/* Hamburger Menu */
 /* Language Switcher */
 .lang-switch {
   position: fixed;
@@ -228,6 +229,11 @@ body::after {
   border-color: rgba(74, 222, 128, 0.3);
   color: var(--success);
 }
+.badge.purple {
+  background: var(--purple-bg);
+  border-color: rgba(168, 162, 255, 0.3);
+  color: var(--purple);
+}
 
 /* Sections */
 section {
@@ -345,6 +351,10 @@ td:first-child {
 .highlight.blue {
   background: var(--blue-bg);
   border-color: var(--blue);
+}
+.highlight.purple {
+  background: var(--purple-bg);
+  border-color: var(--purple);
 }
 .highlight strong { color: var(--text-primary); }
 .highlight p { color: var(--text-secondary); margin-bottom: 0; }
@@ -562,6 +572,51 @@ td:first-child {
   color: var(--text-secondary);
 }
 
+/* Issues list */
+.issue-list {
+  margin: 20px 0;
+}
+.issue-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 14px;
+  border-left: 3px solid var(--warning);
+}
+.issue-item.resolved {
+  border-left-color: var(--success);
+}
+.issue-item .issue-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+.issue-item .issue-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.issue-item .issue-status {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.issue-item .issue-status.open {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.issue-item .issue-status.fixed {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
 /* Sources */
 .source {
   font-size: 12px;
@@ -635,6 +690,7 @@ footer a:hover { color: var(--primary); }
   <a href="#metodologia" onclick="toggleMenu()">🔬 Metodología</a>
   <a href="#comparativa" onclick="toggleMenu()">🥊 Comparativa Claude</a>
   <a href="#benchmarks-advertencia" onclick="toggleMenu()">⚠️ Benchmarks no lo son todo</a>
+  <a href="#problemas-reales" onclick="toggleMenu()">🔧 Problemas Reales y Soluciones</a>
   <a href="#opinión" onclick="toggleMenu()">💭 Opinión: Modelos Locales</a>
   <a href="#comunidad" onclick="toggleMenu()">🗣️ Feedback Comunidad</a>
   <a href="#fuentes" onclick="toggleMenu()">📚 Fuentes</a>
@@ -645,12 +701,13 @@ footer a:hover { color: var(--primary); }
   <div class="hero-eyebrow">Released April 22, 2026</div>
   <h1>Qwen3.6-27B</h1>
   <h2>Predicción vs Realidad</h2>
-  <p class="hero-sub">Análisis de nuestras predicciones frente a los benchmarks oficiales. Arquitectura, metodología y comparativas completas.</p>
+  <p class="hero-sub">Análisis actualizado a 9 días del lanzamiento. Benchmarks reales, problemas descubiertos, soluciones de la comunidad y feedback en uso real.</p>
   <div class="hero-meta">
     <span class="badge live">● Datos reales confirmados</span>
     <span class="badge">Modelo denso 27B</span>
     <span class="badge">Gated DeltaNet</span>
     <span class="badge">256K Context</span>
+    <span class="badge purple">🔥 Actualizado Mayo 2026</span>
   </div>
 </div>
 
@@ -769,7 +826,7 @@ footer a:hover { color: var(--primary); }
 </section>
 
 <!-- ═══════════════════════════════════════════════════════ -->
-<!-- NUEVA SECCIÓN: Arquitectura                           -->
+<!-- SECCIÓN: Arquitectura                                 -->
 <!-- ═══════════════════════════════════════════════════════ -->
 <section id="arquitectura">
   <h2>🧠 Arquitectura: <span class="accent">Por qué mejora</span></h2>
@@ -789,7 +846,7 @@ footer a:hover { color: var(--primary); }
   </ul>
 
   <h3>Layout de Capas: el bloque 3:1</h3>
-  <p>En lugar de alternar capares por igual, los modelos densos usan un patrón específico de <strong>3 capas DeltaNet por cada 1 capa de Atención</strong>, repetido 16 veces = 64 capas totales:</p>
+  <p>En lugar de alternar capas por igual, los modelos densos usan un patrón específico de <strong>3 capas DeltaNet por cada 1 capa de Atención</strong>, repetido 16 veces = 64 capas totales:</p>
 
   <div class="arch-diagram">
     <div class="diagram-title">Qwen3.5/3.6-27B (Dense) — Layout por bloque</div>
@@ -800,85 +857,6 @@ footer a:hover { color: var(--primary); }
     <div class="arch-block attention">Gated Attention → FFN</div>
     <div class="arch-repeat">↻ repetir 16 veces = 64 capas</div>
     <p style="margin-top: 16px; font-size: 13px; color: var(--text-muted);">75% de las capas son DeltaNet (eficientes), 25% son Attention (expresivas). El gate aprende dinámicamente cuándo confiar en cada ruta.</p>
-  </div>
-
-  <h3>Comparativa de Arquitecturas</h3>
-  <p>Cuatro modelos, dos familias (denso y MoE), dos generaciones:</p>
-
-  <div class="arch-grid">
-    <!-- Qwen3.5-27B Dense -->
-    <div class="arch-card">
-      <div class="card-title">Qwen3.5-27B</div>
-      <div class="card-subtitle">Dense · Feb 2026</div>
-      <ul>
-        <li><span class="param-label">Total params</span><span class="param-value">27B</span></li>
-        <li><span class="param-label">Active params</span><span class="param-value">27B (todos)</span></li>
-        <li><span class="param-label">Capas</span><span class="param-value">64</span></li>
-        <li><span class="param-label">Hidden dim</span><span class="param-value">5120</span></li>
-        <li><span class="param-label">Layout</span><span class="param-value">16 × (3Δ + 1A)</span></li>
-        <li><span class="param-label">DeltaNet heads</span><span class="param-value">48V / 16QK</span></li>
-        <li><span class="param-label">DeltaNet head dim</span><span class="param-value">128</span></li>
-        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
-        <li><span class="param-label">Attention head dim</span><span class="param-value">256</span></li>
-        <li><span class="param-label">RoPE dim</span><span class="param-value">64</span></li>
-        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
-        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
-      </ul>
-    </div>
-
-    <!-- Qwen3.5-397B-A17B MoE -->
-    <div class="arch-card">
-      <div class="card-title">Qwen3.5-397B-A17B</div>
-      <div class="card-subtitle">MoE · Feb 2026</div>
-      <ul>
-        <li><span class="param-label">Total params</span><span class="param-value">397B</span></li>
-        <li><span class="param-label">Active params</span><span class="param-value">~17B/tok</span></li>
-        <li><span class="param-label">Capas</span><span class="param-value">48</span></li>
-        <li><span class="param-label">Expertos</span><span class="param-value">256 (128 routed + 1 shared)</span></li>
-        <li><span class="param-label">Layout</span><span class="param-value">12 × (3Δ + 1A)</span></li>
-        <li><span class="param-label">DeltaNet heads</span><span class="param-value">32V / 16QK</span></li>
-        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
-        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
-        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
-      </ul>
-    </div>
-
-    <!-- Qwen3.6-27B Dense -->
-    <div class="arch-card">
-      <div class="card-title">Qwen3.6-27B</div>
-      <div class="card-subtitle">Dense · Apr 2026</div>
-      <ul>
-        <li><span class="param-label">Total params</span><span class="param-value">27B</span></li>
-        <li><span class="param-label">Active params</span><span class="param-value">27B (todos)</span></li>
-        <li><span class="param-label">Capas</span><span class="param-value">64</span></li>
-        <li><span class="param-label">Hidden dim</span><span class="param-value">5120</span></li>
-        <li><span class="param-label">Layout</span><span class="param-value">16 × (3Δ + 1A)</span></li>
-        <li><span class="param-label">DeltaNet heads</span><span class="param-value">48V / 16QK</span></li>
-        <li><span class="param-label">DeltaNet head dim</span><span class="param-value">128</span></li>
-        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
-        <li><span class="param-label">Attention head dim</span><span class="param-value">256</span></li>
-        <li><span class="param-label">RoPE dim</span><span class="param-value">64</span></li>
-        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
-        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
-      </ul>
-    </div>
-
-    <!-- Qwen3.6-35B-A3B MoE -->
-    <div class="arch-card">
-      <div class="card-title">Qwen3.6-35B-A3B</div>
-      <div class="card-subtitle">MoE · Abr 2026</div>
-      <ul>
-        <li><span class="param-label">Total params</span><span class="param-value">35B</span></li>
-        <li><span class="param-label">Active params</span><span class="param-value">~3B/tok</span></li>
-        <li><span class="param-label">Capas</span><span class="param-value">40</span></li>
-        <li><span class="param-label">Expertos</span><span class="param-value">256 (8 routed + 1 shared)</span></li>
-        <li><span class="param-label">Layout</span><span class="param-value">8 × (3Δ + 1A)</span></li>
-        <li><span class="param-label">DeltaNet heads</span><span class="param-value">32V / 16QK</span></li>
-        <li><span class="param-label">Attention heads</span><span class="param-value">24Q / 4KV (GQA)</span></li>
-        <li><span class="param-label">FFN intermediate</span><span class="param-value">17,408</span></li>
-        <li><span class="param-label">Context</span><span class="param-value">256K → 1M</span></li>
-      </ul>
-    </div>
   </div>
 
   <h3>⚡ La revelación: 3.5-27B y 3.6-27B tienen la MISMA arquitectura</h3>
@@ -917,15 +895,13 @@ footer a:hover { color: var(--primary); }
   </div>
 
   <h3>Dense vs MoE: ¿por qué el denso 27B compite con MoEs mucho más grandes?</h3>
-  <p>Esta es la pregunta clave. El Qwen3.6-27B denso compite de frente con el Qwen3.5-397B-A17B (que tiene 14.7× más parámetros totales):</p>
-
   <div class="highlight success">
     <strong>Ventajas del modelo denso:</strong>
     <ul>
       <li>✅ <strong>Más capas (64 vs 48/40):</strong> Mayor profundidad = más capacidad de razonamiento encadenado</li>
       <li>✅ <strong>Mayor DeltaNet head count (48 vs 32):</strong> Más capacidad de compresión de contexto en la ruta eficiente</li>
       <li>✅ <strong>Sin routing overhead:</strong> No hay pérdida por mala selección de expertos</li>
-      <li>✅ <strong>Activación completa:</strong> Los 27B params trabajen en cada token (vs solo 3B en el MoE 35B)</li>
+      <li>✅ <strong>Activación completa:</strong> Los 27B params trabajan en cada token (vs solo 3B en el MoE 35B)</li>
       <li>✅ <strong>Sin expert load balancing:</strong> No hay el problema clásico de MoE de algunos expertos subutilizados</li>
     </ul>
   </div>
@@ -933,37 +909,11 @@ footer a:hover { color: var(--primary); }
   <div class="highlight warning">
     <strong>Ventajas del MoE:</strong>
     <ul>
-      <li>✅ <strong>Especialización:</strong> Expertos diferentes para diferentes tipos de tarea (code, math, language)</li>
+      <li>✅ <strong>Especialización:</strong> Expertos diferentes para diferentes tipos de tarea</li>
       <li>✅ <strong>Eficiencia inferencia:</strong> Solo 3B active params = más rápido en hardware optimizado</li>
       <li>✅ <strong>Escalabilidad:</strong> Puedes añadir expertos sin aumentar coste de inferencia</li>
     </ul>
-    <p style="margin-top: 8px;">Pero el MoE 35B-A3B de Qwen3.6 es <strong>extremadamente ligero</strong> (solo 3B active) — eso limita su capacidad. El 397B-A17B con 17B active params es mucho más competitivo.</p>
-  </div>
-
-  <h3>MTP: Multi-Token Prediction</h3>
-  <p>Ambas generaciones incluyen <strong>Multi-Token Prediction (MTP)</strong> nativo — el modelo predice múltiples tokens a la vez, no solo el siguiente:</p>
-  <div class="arch-diagram">
-    <div class="diagram-title">MTP: El modelo predice varios pasos adelante</div>
-    <div class="arch-block deltanet">Token N → predice N+1, N+2, N+3</div>
-    <div class="arch-arrow">↓</div>
-    <p style="font-size: 13px; color: var(--text-muted);">Si la predicción speculative es aceptada, se saltan pasos. En vLLM: +30-50% velocidad. En llama.cpp: aún sin soporte nativo.</p>
-  </div>
-
-  <h3>Vision Encoder: multimodal nativo</h3>
-  <p>A diferencia de modelos de solo texto, Qwen3.5/3.6-27B incluye un <strong>Vision Encoder integrado</strong> con early fusion: las imágenes se procesan como tokens desde las primeras capas, no como un add-on posterior. Esto da capacidades de visión impresionantes:</p>
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr><th>Benchmark</th><th>3.5-27B</th><th>3.6-27B</th><th>Claude 4.5 Opus</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>MMMU</td><td>82.3</td><td>82.9</td><td>80.7</td></tr>
-        <tr><td>MMMU-Pro</td><td>75.0</td><td>75.8</td><td>70.6</td></tr>
-        <tr><td>MathVista mini</td><td>87.8</td><td>87.4</td><td>—</td></tr>
-        <tr><td>VideoMME</td><td>87.0</td><td>87.7</td><td>77.7</td></tr>
-        <tr><td>AndroidWorld</td><td>64.2</td><td>70.3</td><td>—</td></tr>
-      </tbody>
-    </table>
+    <p style="margin-top: 8px;">Pero el MoE 35B-A3B de Qwen3.6 es <strong>extremadamente ligero</strong> (solo 3B active) — eso limita su capacidad.</p>
   </div>
 
   <h3>Resumen: El "por qué" de las mejoras</h3>
@@ -986,10 +936,9 @@ footer a:hover { color: var(--primary); }
   <div class="highlight blue">
     <strong>Lección arquitectónica:</strong>
     <p>Para un modelo consumer-size (~27B) que cabe en GPU consumer, la mejor estrategia es <strong>denso + muchas capas (64) + más DeltaNet heads (48)</strong>. El MoE ultra-light (3B active) es demasiado limitado; el MoE pesado (17B active) requiere infraestructura datacenter. El denso es el sweet spot para consumer hardware.</p>
-    <p style="margin-top: 8px;">La mejora 3.5→3.6 viene de <strong>dónde entrenas</strong> (RL masivo en entornos reales), no de <strong>cómo lo construyes</strong> (la arquitectura se mantiene). Qwen está apostando por "más RL, mejor data" en vez de cambiar el esqueleto del modelo.</p>
   </div>
 
-  <p class="source">Fuentes: <a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">HF Qwen3.6-27B</a>, <a href="https://huggingface.co/Qwen/Qwen3.5-27B" target="_blank">HF Qwen3.5-27B</a>, <a href="https://huggingface.co/Qwen/Qwen3.6-35B-A3B" target="_blank">HF Qwen3.6-35B-A3B</a>, <a href="https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html" target="_blank">vLLM Recipes</a></p>
+  <p class="source">Fuentes: <a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">HF Qwen3.6-27B</a>, <a href="https://huggingface.co/Qwen/Qwen3.5-27B" target="_blank">HF Qwen3.5-27B</a>, <a href="https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html" target="_blank">vLLM Recipes</a></p>
 </section>
 
 <!-- Metodología -->
@@ -1095,6 +1044,79 @@ footer a:hover { color: var(--primary); }
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NUEVA SECCIÓN: Problemas Reales y Soluciones            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="problemas-reales">
+  <h2>🔧 Problemas Reales y <span class="accent">Soluciones</span></h2>
+  <p>Tras 9 días de uso real por parte de la comunidad, se han identificado varios problemas prácticos. Aquí está el estado actual con soluciones confirmadas:</p>
+
+  <div class="issue-list">
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 Tool Calling Rotto en vLLM / llama.cpp</div>
+      <div class="issue-desc">El chat template oficial de Qwen3.6-27B tiene bugs que causan que las llamadas a herramientas fallen silenciosamente. El modelo escribe los tool calls como texto plano en lugar de ejecutarlos. Se reportó tanto en vLLM como en llama.cpp. <strong>Solución confirmada:</strong> usar el chat template corregido de <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">froggeric/Qwen-Fixed-Chat-Templates</a> (archivo <code>qwen3.6/chat_template.jinja</code>).</div>
+      <span class="issue-status fixed">✅ Solucionado — Template de la comunidad</span>
+    </div>
+
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 Ollama Incompatible (por ahora)</div>
+      <div class="issue-desc">Qwen3.6-27B NO funciona con Ollama. La razón: usa archivos <code>mmproj</code> separados para el vision encoder, y Ollama no soporta esa estructura todavía. La comunidad está trabajando en un workaround pero aún sin solución oficial. <strong>Soluciones temporales:</strong> usar llama.cpp directamente, Unsloth Studio, o SGLang/vLLM.</div>
+      <span class="issue-status open">⚠️ Pendiente — Esperar soporte Ollama</span>
+    </div>
+
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 CUDA 13.2 — Outputs de Basura</div>
+      <div class="issue-desc">Reportado por múltiples usuarios: CUDA 13.2 produce outputs completamente aleatorios/incoherentes con Qwen3.6-27B en llama.cpp. <strong>Solución:</strong> usar CUDA 12.x o actualizar a una versión más reciente de llama.cpp donde el bug está corregido.</div>
+      <span class="issue-status fixed">✅ Solucionado — Usar CUDA 12.x o actualizar llama.cpp</span>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-title">🔧 Thinking Bleed en Chat Templates</div>
+      <div class="issue-desc">El chat template emite bloques <code>&lt;thinking&gt;</code> vacíos en el historial de conversación, causando "prompt drift" y "cache invalidation". Los thinking tags se acumulan en mensajes anteriores, contaminando el contexto. <strong>Workaround:</strong> usar <code>--chat-template-kwargs '{"preserve_thinking": true}'</code> en llama.cpp o los templates de froggeric.</div>
+      <span class="issue-status open">⚠️ Mitigado — Workaround disponible</span>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-title">🔧 Contexto 256K Práctico vs Teórico</div>
+      <div class="issue-desc">El modelo soporta 256K tokens (extensible a 1M con YaRN), pero en hardware real los límites prácticos son más bajos: ~128K en 32GB VRAM con Q4, ~64K en 24GB. El contexto completo requiere ~56GB VRAM en Q4. <strong>Recomendación:</strong> usar 128K para tareas complejas y 32K para tareas simples en hardware limitado.</div>
+      <span class="issue-status open">⚠️ Limitación de hardware (no del modelo)</span>
+    </div>
+
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 OpenCode — Tool Calls no Ejecutados</div>
+      <div class="issue-desc">Usuarios de OpenCode reportan que los tool calls se escriben pero no se ejecutan. <strong>Workaround:</strong> cambiar el config para usar Anthropic API format en lugar de OpenAI-compatible, o usar <code>--tool-call-parser qwen3_coder</code> con el template <code>qwen3.5-enhanced.jinja</code>.</div>
+      <span class="issue-status fixed">✅ Solucionado — Cambiar parser o format</span>
+    </div>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ Setup recomendado (Mayo 2026):</strong>
+    <ul>
+      <li><strong>llama.cpp:</strong> Usar el chat template de froggeric + CUDA 12.x + <code>--chat-template-kwargs '{"preserve_thinking": true}'</code></li>
+      <li><strong>vLLM:</strong> Template corregido + <code>--tool-call-parser qwen3_xml</code></li>
+      <li><strong>Unsloth Studio:</strong> Funciona out-of-the-box, manejo automático de GGUF y templates</li>
+      <li><strong>NO usar Ollama</strong> — incompatibilidad confirmada con mmproj files</li>
+    </ul>
+  </div>
+
+  <h3>Configuración Recomendada para RTX 5090 (32GB VRAM)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Quant</th><th>Tamaño</th><th>VRAM</th><th>Velocidad Est.</th><th>Calidad</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Q4_K_M</td><td>~16GB</td><td>~18GB</td><td>~80-100 t/s</td><td>✅ Excelente</td></tr>
+        <tr><td>Q4_K_XL</td><td>~16.8GB</td><td>~19GB</td><td>~80-100 t/s</td><td>✅ Recomendado</td></tr>
+        <tr><td>Q5_K_M</td><td>~19GB</td><td>~21GB</td><td>~70-85 t/s</td><td>✅ Muy buena</td></tr>
+        <tr><td>Q8_0</td><td>~30GB</td><td>~33GB</td><td>~50-65 t/s</td><td>⚠️ Límite VRAM</td></tr>
+        <tr><td>BF16</td><td>~55GB</td><td>No cabe</td><td>—</td><td>❌ Solo con offload</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="source">Fuentes: <a href="https://www.reddit.com/r/LocalLLaMA/comments/1syh4sd/" target="_blank">Reddit Tool Calling Fix</a>, <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">Froggeric Templates</a>, <a href="https://huggingface.co/Qwen/Qwen3.6-27B/discussions/13" target="_blank">HF Discussion #13</a>, <a href="https://forums.developer.nvidia.com/t/whats-the-best-speed-we-can-get-with-qwen-3-6-27b-without-quantizing/367561" target="_blank">NVIDIA Forums</a></p>
+</section>
+
 <!-- Opinión -->
 <section id="opinión">
   <h2>💭 Opinión: <span class="accent">El Aceleramiento de Modelos Locales</span></h2>
@@ -1124,27 +1146,31 @@ footer a:hover { color: var(--primary); }
       <h4>Abril 2026: Qwen3.6-27B</h4>
       <p>27B denso empata y supera a Claude Opus en reasoning y skills de agent. Gated DeltaNet + RL masivo = eficiencia antes imposible.</p>
     </div>
+    <div class="timeline-item">
+      <h4>Mayo 2026: Uso real</h4>
+      <p>La comunidad confirma: "First local model that actually feels worth the effort." Los benchmarks se mantienen en uso real, pero el setup requiere trabajo — no es plug-and-play.</p>
+    </div>
   </div>
 
   <div class="opinion-box">
     <h4>Para tu setup (RTX 5090 + llama.cpp)</h4>
     <ul>
-      <li><strong>Q4_K_M/Q5_K_M:</strong> ~15–20GB VRAM, ~80–100 t/s estimado</li>
-      <li><strong>MTP:</strong> +30–50% en vLLM/SGLang (llama.cpp aún sin soporte nativo)</li>
+      <li><strong>Q4_K_XL:</strong> ~16.8GB, ~80-100 t/s — el sweet spot</li>
+      <li><strong>Chat template:</strong> Usar el de froggeric (bug fix confirmado)</li>
       <li><strong>Vision incluido:</strong> Es multimodal nativo. Analiza imágenes directamente</li>
       <li><strong>256K contexto nativo:</strong> Extensible a 1M. En 32GB VRAM, ~128K práctico</li>
     </ul>
   </div>
 
   <div class="highlight success">
-    <strong>Veredicto:</strong> Qwen3.6-27B confirma que un modelo open-source de tamaño razonable puede competir de frente con los mejores closed-source en tareas específicas. La revolución de los modelos locales no está llegando — ya está aquí.
+    <strong>Veredicto:</strong> Qwen3.6-27B confirma que un modelo open-source de tamaño razonable puede competir de frente con los mejores closed-source en tareas específicas. La revolución de los modelos locales no está llegando — ya está aquí. Pero cuidado: no es plug-and-play, es "plug-and-engineer". El scaffolding importa tanto como el modelo.
   </div>
 </section>
 
 <!-- Comunidad -->
 <section id="comunidad">
   <h2>🗣️ <span class="accent">Feedback</span> de la Comunidad</h2>
-  <p>Tras 24 horas de testing real por parte de la comunidad (Reddit, Hacker News, YouTube), aquí está el consenso:</p>
+  <p>Actualizado a 9 días del lanzamiento. Consenso basado en Reddit, YouTube, NVIDIA Forums, Hacker News y HuggingFace discussions:</p>
 
   <div class="result-grid">
     <div class="result-card hit">
@@ -1153,19 +1179,19 @@ footer a:hover { color: var(--primary); }
       <div class="pred">Muy positivo</div>
     </div>
     <div class="result-card hit">
-      <div class="label">Hacker News</div>
-      <div class="value">✅</div>
-      <div class="pred">Positivo + escepticismo sano</div>
-    </div>
-    <div class="result-card hit">
       <div class="label">YouTube Reviews</div>
       <div class="value">✅</div>
       <div class="pred">Sorpresa positiva</div>
     </div>
+    <div class="result-card miss">
+      <div class="label">Facebook Local AI</div>
+      <div class="value">⚖️</div>
+      <div class="pred">Realista: "No match Opus"</div>
+    </div>
     <div class="result-card hit">
       <div class="label">BenchLM.ai</div>
-      <div class="value">#9</div>
-      <div class="pred">Top 10 en Coding (86.9/100)</div>
+      <div class="value">#30</div>
+      <div class="pred">Top 30 global (73/100)</div>
     </div>
   </div>
 
@@ -1173,38 +1199,43 @@ footer a:hover { color: var(--primary); }
 
   <div class="highlight success">
     <strong>✅ Los números SÍ se mantienen en uso real</strong>
-    <p><em>"First local model that actually feels worth the effort"</em> — usuario con RTX 5090+4090, ~170 t/s en Q8 con 260K contexto completo.</p>
+    <p><em>"First local model that actually feels worth the effort"</em> — usuario con RTX 5090, ~170 t/s en Q8 con 260K contexto completo.</p>
     <p style="margin-top: 8px;">El salto en Terminal-Bench (+17.7) se nota en <strong>tareas agenticas reales</strong>: scripting bash, automatización, uso de herramientas. En coding asistido, <strong>9 de 10 veces</strong> basta con pedirle que revise sus propios cambios para que corrija errores automáticamente.</p>
   </div>
 
   <div class="highlight success">
-    <strong>✅ No parece benchmaxing</strong>
+    <strong>✅ No es benchmaxing</strong>
     <p>El modelo no "recita" benchmarks — el razonamiento es genuino y generalizable. Múltiples usuarios confirman que supera a <strong>Gemma 4</strong> y es claramente superior al 3.5-27B.</p>
+  </div>
+
+  <div class="highlight success">
+    <strong>✅ Nuevo cambio de paradigma: "Wish coding"</strong>
+    <p>Según DeepInsightAI, los usuarios están pasando de <em>vibe coding</em> a <em>wish coding</em>: necesitan menos rework, no perfección. Qwen3.6-27B es ideal para código "aburrido pero necesario" (XML, C++ embebido, config files). Los usuarios ahora eligen modelos por <strong>rol</strong> (Editor, Generator, Planner) en lugar de por tamaño de parámetros.</p>
   </div>
 
   <h3>Lo que la comunidad matiza:</h3>
 
   <div class="highlight warning">
-    <strong>⚠️ SWE-bench: Scaffolds diferentes</strong>
-    <p>Algunos dudan que sea comparable con Claude Code — Qwen usa su internal agent scaffold vs Claude Code con su propio tool system. Ya lo sabíamos.</p>
+    <strong>⚠️ No es un Opus killer real</strong>
+    <p>Varios usuarios (especialmente en Facebook/Foros NVIDIA) subrayan que Qwen3.6-27B <strong>NO iguala a Opus en todas las categorías</strong>. Es excepcional para su tamaño, pero Opus sigue liderando en reasoning complejo, multi-step tasks, y precisión general. La comparación directa solo funciona en benchmarks específicos.</p>
   </div>
 
   <div class="highlight warning">
-    <strong>⚠️ MMLU-Pro: Solo +0.1 de mejora</strong>
-    <p>El modelo NO es mejor en conocimiento general. La mejora es específicamente en <strong>coding + agent skills</strong>, no en knowledge.</p>
+    <strong>⚠️ Tool calling: requiere parches</strong>
+    <p>El chat template oficial tiene bugs. La solución de la comunidad (froggeric) funciona, pero la experiencia no es out-of-the-box. <strong>El harness importa tanto como el modelo.</strong></p>
   </div>
 
   <div class="highlight warning">
-    <strong>⚠️ Contexto largo en hardware real</strong>
-    <p>En 32GB VRAM, ~128K práctico (no los 256K teóricos). El modelo necesita más VRAM de lo anunciado para el contexto completo.</p>
+    <strong>⚠️ Agent scaffolding > Modelo puro</strong>
+    <p><em>"People are getting better results not by changing models — but by changing the agent scaffolding."</em> Los mejores resultados vienen de runtime guards, thinking budgets, y tool usage injection bien diseñados, no solo del modelo.</p>
   </div>
 
   <div class="highlight">
     <strong>Veredicto final de la comunidad:</strong>
-    <p><em>"Los números oficiales se mantienen en uso real. No es hype vacío — el salto en skills de agent se nota al usarlo, especialmente en automatización terminal, coding con auto-corrección, y razonamiento científico."</em></p>
+    <p><em>"Los números oficiales se mantienen en uso real. No es hype vacío — el salto en skills de agent se nota al usarlo. Pero exige trabajo de setup: templates, parsers, y scaffolding propio. Es el primer modelo local donde el beneficio supera consistentemente el esfuerzo."</em></p>
   </div>
 
-  <p class="source">Fuentes: <a href="https://www.reddit.com/r/LocalLLaMA/comments/1so2nt9/qwen_36_is_the_first_local_model_that_actually/" target="_blank">Reddit r/LocalLLaMA</a>, <a href="https://news.ycombinator.com/item?id=47863217" target="_blank">Hacker News</a>, <a href="https://benchlm.ai/models/qwen3-6-27b" target="_blank">BenchLM.ai</a> — Agregado 23 de abril, 2026</p>
+  <p class="source">Fuentes: <a href="https://www.reddit.com/r/LocalLLaMA/" target="_blank">Reddit r/LocalLLaMA</a>, <a href="https://deepinsightai.io/qwen-3-6/" target="_blank">DeepInsightAI</a>, <a href="https://benchlm.ai/models/qwen3-6-27b" target="_blank">BenchLM.ai</a>, <a href="https://forums.developer.nvidia.com/t/whats-the-best-speed-we-can-get-with-qwen-3-6-27b-without-quantizing/367561" target="_blank">NVIDIA Forums</a> — Agregado 1 de mayo, 2026</p>
 </section>
 
 <!-- Fuentes -->
@@ -1236,15 +1267,32 @@ footer a:hover { color: var(--primary); }
     <li><a href="https://arxiv.org/pdf/2505.09388" target="_blank">Qwen3 Technical Report (arXiv)</a> — Paper técnico original</li>
   </ul>
 
+  <h3>Problemas y Soluciones</h3>
+  <ul>
+    <li><a href="https://www.reddit.com/r/LocalLLaMA/comments/1syh4sd/" target="_blank">Reddit: 3.6 27B Tool Calling Issues (vLLM)</a></li>
+    <li><a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">froggeric/Qwen-Fixed-Chat-Templates</a> — Templates corregidos</li>
+    <li><a href="https://huggingface.co/Qwen/Qwen3.6-27B/discussions/13" target="_blank">HF Discussion #13: Tool Calling Issues</a></li>
+    <li><a href="https://forums.developer.nvidia.com/t/qwen3-5-tool-calling-finally-fixed-possibly/366451" target="_blank">NVIDIA Forums: Tool Calling Fix</a></li>
+    <li><a href="https://github.com/QwenLM/Qwen3/issues/1831" target="_blank">GitHub Issue #1831: Chat Template Fix</a></li>
+  </ul>
+
+  <h3>Análisis Independientes</h3>
+  <ul>
+    <li><a href="https://deepinsightai.io/qwen-3-6/" target="_blank">DeepInsightAI: Qwen 3.6 Real-World Usability</a></li>
+    <li><a href="https://www.buildfastwithai.com/blogs/qwen3-6-27b-review-2026" target="_blank">BuildFastWithAI: Comprehensive Review</a></li>
+    <li><a href="https://www.youtube.com/watch?v=N-0WtgxJ7ZU" target="_blank">YouTube: Qwen3.6 27B vs Claude Opus (real tasks)</a></li>
+    <li><a href="https://www.youtube.com/watch?v=HT2NplHskIQ" target="_blank">YouTube: Digital Space Port Review</a></li>
+  </ul>
+
   <div class="highlight">
-    <strong>Nota:</strong> Página actualizada con datos reales del 22 de abril, 2026. Incluye sección de arquitectura con explicación de Gated DeltaNet y por qué mejora el modelo.
+    <strong>Nota:</strong> Página actualizada al 1 de mayo, 2026. Incluye nueva sección de problemas reales descubiertos por la comunidad, soluciones confirmadas, y feedback actualizado a 9 días del lanzamiento.
   </div>
 </section>
 
 <footer>
-  <p>Generado y actualizado por Cocobot 🐱 | Datos oficiales de HuggingFace</p>
-  <p style="margin-top: 8px;">Última actualización: 22 de abril, 2026 — Benchmarks reales + Arquitectura</p>
-  <p style="margin-top: 8px;"><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a> · <a href="https://huggingface.co/Qwen" target="_blank">Qwen Models</a> · <a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a></p>
+  <p>Generado y actualizado por Cocobot 🐱 | Datos oficiales de HuggingFace + feedback comunidad</p>
+  <p style="margin-top: 8px;">Última actualización: 1 de mayo, 2026 — Benchmarks reales + Problemas + Soluciones + Feedback comunidad</p>
+  <p style="margin-top: 8px;"><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a> · <a href="https://huggingface.co/Qwen" target="_blank">Qwen Models</a> · <a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a> · <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">Fixed Templates</a></p>
 </footer>
 
 <script>
