@@ -57,6 +57,7 @@ nav .logo {
   font-size: 1.1rem; font-weight: 600;
   color: var(--gold);
   letter-spacing: 0.05em;
+  z-index: 101;
 }
 nav .nav-links { display: flex; gap: 1.5rem; }
 nav .nav-links a {
@@ -68,6 +69,28 @@ nav .nav-links a {
   transition: color 0.3s;
 }
 nav .nav-links a:hover { color: var(--bronze-light); }
+
+/* Hamburger */
+nav .hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 36px; height: 36px;
+  background: none; border: none; cursor: pointer;
+  z-index: 101;
+  gap: 5px;
+}
+nav .hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+nav .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+nav .hamburger.active span:nth-child(2) { opacity: 0; }
+nav .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ── HERO ── */
 .hero {
@@ -306,6 +329,9 @@ p, li {
   vertical-align: middle;
 }
 
+/* Mobile table: card layout */
+.table-wrapper { overflow-x: hidden; }
+
 /* ── TIMELINE ── */
 .timeline {
   position: relative;
@@ -447,11 +473,80 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
+  /* Nav → hamburger */
   nav { padding: 0.8rem 1rem; }
-  nav .nav-links { display: none; }
-  section { padding: 4rem 1.25rem; }
+  nav .hamburger { display: flex; }
+  nav .nav-links {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,8,0.97);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 100;
+  }
+  nav .nav-links.open { display: flex; }
+  nav .nav-links a {
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+  }
+
+  /* General */
+  section { padding: 3.5rem 1.25rem; }
   .object-card { padding: 1.5rem; }
-  .specs-grid { grid-template-columns: repeat(2, 1fr); }
+  .specs-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .spec-item { padding: 0.9rem; }
+  .spec-item .value { font-size: 1.4rem; }
+
+  /* Theory cards */
+  .theory-card { padding: 1.5rem; }
+
+  /* Table → card stack */
+  .solids-table, .solids-table thead, .solids-table tbody,
+  .solids-table th, .solids-table td, .solids-table tr {
+    display: block;
+  }
+  .solids-table thead tr { display: none; }
+  .solids-table tbody tr {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .solids-table tbody td {
+    padding: 0.4rem 0;
+    border-bottom: none;
+    text-align: right;
+    position: relative;
+    padding-left: 50%;
+  }
+  .solids-table tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-align: left;
+    width: 45%;
+  }
+  .solids-table tbody tr:hover { background: var(--bg-card); }
+
+  /* Other theories grid → single column */
+  .other-theories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Quote */
+  blockquote { padding: 1rem 1.25rem; font-size: 1rem; }
+
+  /* Hero */
+  .hero-shape { width: 130px; height: 130px; margin-bottom: 2rem; }
 }
 </style>
 </head>
@@ -460,7 +555,10 @@ footer {
 <!-- ── NAV ── -->
 <nav>
   <div class="logo">◆ DODECAEDRO ROMANO</div>
-  <div class="nav-links">
+  <button class="hamburger" id="menuToggle" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navMenu">
     <a href="#que-es">¿Qué es?</a>
     <a href="#fuego">Teorías del Fuego</a>
     <a href="#platonicos">Sólidos Platónicos</a>
@@ -719,6 +817,7 @@ footer {
     el cosmos en su totalidad.
   </p>
 
+  <div class="table-wrapper">
   <table class="solids-table">
     <thead>
       <tr>
@@ -730,37 +829,38 @@ footer {
     </thead>
     <tbody>
       <tr class="element-fire">
-        <td><span class="element-symbol">△</span> Tetraedro</td>
-        <td>4 triángulos</td>
-        <td><strong style="color:var(--fire-glow)">🔥 Fuego</strong></td>
-        <td>El más simple y ligero; sus puntas afiladas imitan la sensación punzante de la llama</td>
+        <td data-label="Sólido"><span class="element-symbol">△</span> Tetraedro</td>
+        <td data-label="Caras">4 triángulos</td>
+        <td data-label="Elemento"><strong style="color:var(--fire-glow)">🔥 Fuego</strong></td>
+        <td data-label="Propiedades">El más simple y ligero; sus puntas afiladas imitan la sensación punzante de la llama</td>
       </tr>
       <tr>
-        <td><span class="element-symbol">◇</span> Octaedro</td>
-        <td>8 triángulos</td>
-        <td>💨 Aire</td>
-        <td>Partícula intermedia entre fuego y agua</td>
+        <td data-label="Sólido"><span class="element-symbol">◇</span> Octaedro</td>
+        <td data-label="Caras">8 triángulos</td>
+        <td data-label="Elemento">💨 Aire</td>
+        <td data-label="Propiedades">Partícula intermedia entre fuego y agua</td>
       </tr>
       <tr>
-        <td><span class="element-symbol">■</span> Hexaedro (cubo)</td>
-        <td>6 cuadrados</td>
-        <td>🌍 Tierra</td>
-        <td>La máxima estabilidad; firmemente enraizado e inamovible</td>
+        <td data-label="Sólido"><span class="element-symbol">■</span> Hexaedro (cubo)</td>
+        <td data-label="Caras">6 cuadrados</td>
+        <td data-label="Elemento">🌍 Tierra</td>
+        <td data-label="Propiedades">La máxima estabilidad; firmemente enraizado e inamovible</td>
       </tr>
       <tr>
-        <td><span class="element-symbol">◆</span> Icosaedro</td>
-        <td>20 triángulos</td>
-        <td>💧 Agua</td>
-        <td>El más pesado y complejo; opuesto al fuego, capaz de extinguir llamas</td>
+        <td data-label="Sólido"><span class="element-symbol">◆</span> Icosaedro</td>
+        <td data-label="Caras">20 triángulos</td>
+        <td data-label="Elemento">💧 Agua</td>
+        <td data-label="Propiedades">El más pesado y complejo; opuesto al fuego, capaz de extinguir llamas</td>
       </tr>
       <tr class="element-cosmos">
-        <td><span class="element-symbol">⬠</span> <strong>Dodecaedro</strong></td>
-        <td>12 pentágonos</td>
-        <td><strong style="color:var(--gold)">🌌 Aether / Cosmos</strong></td>
-        <td>El Demiurgo lo usó para «trazar el plan del Universo» — la forma divina por excelencia</td>
+        <td data-label="Sólido"><span class="element-symbol">⬠</span> <strong>Dodecaedro</strong></td>
+        <td data-label="Caras">12 pentágonos</td>
+        <td data-label="Elemento"><strong style="color:var(--gold)">🌌 Aether / Cosmos</strong></td>
+        <td data-label="Propiedades">El Demiurgo lo usó para «trazar el plan del Universo» — la forma divina por excelencia</td>
       </tr>
     </tbody>
   </table>
+  </div>
 
   <blockquote>
     "Dios utilizó el dodecaedro para bordar el Universo entero."
@@ -1032,5 +1132,24 @@ footer {
   </p>
 </footer>
 
+<script>
+  const hamburger = document.getElementById('menuToggle');
+  const navMenu = document.getElementById('navMenu');
+  const navLinks = navMenu.querySelectorAll('a');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('open');
+    document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
 </body>
 </html>
