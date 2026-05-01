@@ -76,10 +76,10 @@ nav .hamburger {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 36px; height: 36px;
+  width: 48px; height: 48px;
   background: none; border: none; cursor: pointer;
   z-index: 101;
-  gap: 5px;
+  gap: 6px;
 }
 nav .hamburger span {
   display: block;
@@ -474,23 +474,29 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   /* Nav → hamburger */
-  nav { padding: 0.8rem 1rem; }
+  nav { padding: 0.8rem 1rem; z-index: 110; }
   nav .hamburger { display: flex; }
   nav .nav-links {
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10,10,8,0.97);
+    background: var(--bg-deep);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
-    z-index: 100;
+    gap: 2.5rem;
+    z-index: 120;
   }
   nav .nav-links.open { display: flex; }
   nav .nav-links a {
-    font-size: 1rem;
-    letter-spacing: 0.15em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1.5rem;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
   }
 
   /* General */
@@ -1137,6 +1143,12 @@ footer {
   const navMenu = document.getElementById('navMenu');
   const navLinks = navMenu.querySelectorAll('a');
 
+  function closeMenu() {
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('open');
@@ -1144,10 +1156,15 @@ footer {
   });
 
   navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      navMenu.classList.remove('open');
-      document.body.style.overflow = '';
+    link.addEventListener('click', (e) => {
+      closeMenu();
+      // Wait for menu to close before scrolling
+      setTimeout(() => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 150);
     });
   });
 </script>
