@@ -81,7 +81,12 @@
             .container { padding: 20px 10px; }
             .news-section { padding: 20px; }
         }
-    </style>
+    
+    .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
+    .footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+    .footer-brand{color:#888;font-size:0.85em}
+    .visit-counter-badge{color:#888;font-size:0.8em;background:rgba(0,212,255,0.06);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08)}
+</style>
 </head>
 <body>
     <div class="container">
@@ -273,5 +278,26 @@
             </div>
         </footer>
     </div>
+
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/noticias/noticias-ia-02-marzo-2026';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

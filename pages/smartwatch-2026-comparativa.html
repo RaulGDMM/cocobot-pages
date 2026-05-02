@@ -110,7 +110,12 @@
         /* Animations */
         .fade-in { animation: fadeIn 0.6s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+    
+    .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
+    .footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+    .footer-brand{color:#888;font-size:0.85em}
+    .visit-counter-badge{color:#888;font-size:0.8em;background:rgba(0,212,255,0.06);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08)}
+</style>
 </head>
 <body>
     <!-- Hamburger Menu Button -->
@@ -640,5 +645,26 @@
             observer.observe(section);
         });
     </script>
+
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/smartwatch-2026-comparativa';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

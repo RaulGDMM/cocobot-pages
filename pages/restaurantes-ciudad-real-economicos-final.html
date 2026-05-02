@@ -51,7 +51,12 @@
         .summary-table .highlight-row { background: rgba(46, 204, 113, 0.2); border-left: 4px solid #2ecc71; }
         footer { text-align: center; padding: 30px 20px; color: #7f8c8d; font-size: 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; }
         @media (max-width: 768px) { h1 { font-size: 1.8rem; } .container { padding: 70px 15px 30px; } .card { padding: 15px; } .summary-table { font-size: 0.85rem; } .summary-table th, .summary-table td { padding: 8px; } }
-    </style>
+    
+    .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
+    .footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+    .footer-brand{color:#888;font-size:0.85em}
+    .visit-counter-badge{color:#888;font-size:0.8em;background:rgba(0,212,255,0.06);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08)}
+</style>
 </head>
 <body>
     <div class="container">
@@ -388,5 +393,26 @@
             </p>
         </footer>
     </div>
+
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/restaurantes-ciudad-real-economicos-final';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>
