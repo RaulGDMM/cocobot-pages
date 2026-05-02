@@ -643,21 +643,24 @@ loadData();
 
 <!-- ── GoatCounter tracking ── -->
 <script data-goatcounter="https://raulgdm.goatcounter.com/count"
+        data-goatcounter-settings='{"p": "/pages/ai-news/"}'
         async src="https://gc.zgo.at/count.js"></script>
 
 <!-- ── Visitor counter via JSON API ── -->
 <script>
 (function() {
-  var path = location.pathname;
-  fetch('https://raulgdm.goatcounter.com/counter/' + encodeURIComponent(path) + '.json')
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      var el = document.getElementById('visit-counter');
-      if (el && d.count) {
-        el.textContent = '👁️ ' + d.count + ' visitas';
-      }
-    })
-    .catch(function() {});
+  var path = '/pages/ai-news/';
+  setTimeout(function() {
+    fetch('https://raulgdm.goatcounter.com/counter/' + encodeURIComponent(path) + '.json')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var el = document.getElementById('visit-counter');
+        if (el && d.count) {
+          el.textContent = '\ud83d\udc41\ufe0f ' + d.count + ' visitas';
+        }
+      })
+      .catch(function() {});
+  }, 1500);
 })();
 </script>
 </body>
