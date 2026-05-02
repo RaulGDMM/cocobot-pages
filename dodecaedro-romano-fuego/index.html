@@ -481,6 +481,75 @@ blockquote cite {
   font-weight: 400;
 }
 
+/* ── 3D PRINT TABLE ── */
+.print-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+}
+.print-table thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.print-table tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.print-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.print-table a {
+  color: var(--bronze-light);
+  text-decoration: none;
+}
+.print-table a:hover { text-decoration: underline; }
+
+/* Print options */
+.print-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+.print-option {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: border-color 0.3s;
+}
+.print-option:hover { border-color: var(--border-light); }
+.print-option h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--bronze-light);
+  margin-bottom: 0.5rem;
+}
+.print-option ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.75rem;
+}
+.print-option li {
+  padding: 0.3rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+.print-option li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--fire);
+}
+
 /* ── DIVIDER ── */
 .divider {
   width: 60px; height: 2px;
@@ -573,6 +642,7 @@ footer {
     <a href="#cronologia">Cronología</a>
     <a href="#todas-las-teorias">Todas las Teorías</a>
     <a href="#fuentes">Fuentes</a>
+    <a href="#impresion-3d">Impresión 3D</a>
   </div>
   <button class="hamburger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
 </nav>
@@ -584,6 +654,7 @@ footer {
   <a href="#platonicos">Sólidos Platónicos</a>
   <a href="#cronologia">Cronología</a>
   <a href="#todas-las-teorias">Todas las Teorías</a>
+  <a href="#impresion-3d">Impresión 3D</a>
   <a href="#fuentes">Fuentes</a>
 </div>
 
@@ -1050,6 +1121,121 @@ footer {
       </p>
     </div>
 
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── IMPRESIÓN 3D ── -->
+<section id="impresion-3d">
+  <div class="section-label">Réplicar el objeto</div>
+  <h2>🖨️ Impresión 3D de un dodecaedro romano</h2>
+  <p class="lead">
+    ¿Quieres tener un dodecaedro romano real en tus manos? Ya existen múltiples diseños
+    basados en las medidas exactas de los originales. Aquí tienes las mejores opciones
+    para imprimir uno tú mismo.
+  </p>
+
+  <h3>Modelos disponibles para descargar</h3>
+
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th>Modelo</th>
+        <th>Plataforma</th>
+        <th>Soportes</th>
+        <th>Destacado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Modelo"><strong>Marco3D - Jublains Replica</strong></td>
+        <td data-label="Plataforma"><a href="https://www.myminifactory.com/object/3d-print-roman-dedocahedron-98978" target="_blank">MyMiniFactory</a></td>
+        <td data-label="Soportes">Sí</td>
+        <td data-label="Destacado">Réplica histórica fiel al original de Jublains (Francia). Incluye STL completo, partido en mitades y base de exhibición</td>
+      </tr>
+      <tr>
+        <td data-label="Modelo"><strong>Lovemetwotimes</strong></td>
+        <td data-label="Plataforma"><a href="https://www.printables.com/model/617284-roman-dodecahedron" target="_blank">Printables</a></td>
+        <td data-label="Soportes">Sí</td>
+        <td data-label="Destacado">Medidas arqueológicas exactas. Perillas (bolitas) separadas que se pegan con superpegamento</td>
+      </tr>
+      <tr>
+        <td data-label="Modelo"><strong>Keenan - Foldable</strong></td>
+        <td data-label="Plataforma"><a href="https://www.thingiverse.com/thing:6640386" target="_blank">Thingiverse</a></td>
+        <td data-label="Soportes"><strong>No</strong></td>
+        <td data-label="Destacado">Impresión plana desplegable con living hinges. Se pliega y encaja sin pegamento. 12 caras + 20 perillas</td>
+      </tr>
+      <tr>
+        <td data-label="Modelo"><strong>PaulDesign</strong></td>
+        <td data-label="Plataforma"><a href="https://www.thingiverse.com/thing:5071800" target="_blank">Thingiverse</a></td>
+        <td data-label="Soportes">No</td>
+        <td data-label="Destacado">12 tiles + 20 pins ensamblables. Cada cara imprime por separado</td>
+      </tr>
+      <tr>
+        <td data-label="Modelo"><strong>futuregraphicart</strong></td>
+        <td data-label="Plataforma"><a href="https://makerworld.com/en/models/162621-roman-dodecahedron" target="_blank">MakerWorld</a></td>
+        <td data-label="Soportes">Variable</td>
+        <td data-label="Destacado">Modelo reciente y gratuito</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Cómo imprimir un dodecaedro romano</h3>
+
+  <div class="print-options">
+    <div class="print-option">
+      <h4>🥇 Opción A: Con soportes (más realista)</h4>
+      <p>La mejor opción para un resultado que parezca un objeto real de bronce.</p>
+      <ul>
+        <li><strong>Material:</strong> PLA BronzeFill (ColorFabb) — contiene partículas de bronce reales</li>
+        <li><strong>Acabado:</strong> Lijar y pulir para que brillen las partículas metálicas</li>
+        <li><strong>Envejecer:</strong> Spray con vinagre + sal → patina verde oxidada como el original</li>
+        <li><strong>Dimensiones:</strong> 6-8 cm (tamaño de los originales de Jublains)</li>
+        <li><strong>Modelo recomendado:</strong> Marco3D en MyMiniFactory</li>
+      </ul>
+    </div>
+
+    <div class="print-option">
+      <h4>🧩 Opción B: Sin soportes (más fácil)</h4>
+      <p>Ideal si no quieres soportes, pegamento ni postprocesado complejo.</p>
+      <ul>
+        <li><strong>Modelo:</strong> Keenan "Foldable" en Thingiverse</li>
+        <li><strong>Cómo funciona:</strong> Se imprime plano con living hinges (bisagras flexibles)</li>
+        <li><strong>Montaje:</strong> Se pliega como origami y encaja con agujeros roscados</li>
+        <li><strong>Ventaja:</strong> Cero soportes, cero pegamento</li>
+        <li><strong>Material:</strong> Cualquier PLA estándar</li>
+      </ul>
+    </div>
+
+    <div class="print-option">
+      <h4>⚙️ Opción C: Impresión en metal</h4>
+      <p>El resultado definitivo si tienes acceso a fabricación profesional.</p>
+      <ul>
+        <li><strong>Tecnología:</strong> Direct Metal Laser Sintering (DMLS)</li>
+        <li><strong>Material:</strong> Bronce real fundido capa a capa</li>
+        <li><strong>Resultado:</strong> Indistinguible del original</li>
+        <li><strong>Coste:</strong> Significativamente más elevado que FDM</li>
+        <li><strong>Alternativa:</strong> Impresión en arena + colado en bronce</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="theory-card" style="margin-top:2rem">
+    <h3>💡 Recomendación final</h3>
+    <p>
+      Si tienes impresora FDM (Ender 3, Prusa, Bambu Lab...): <strong>el modelo de Marco3D en MyMiniFactory</strong>
+      es el mejor punto de partida. Dimensiones arqueológicas exactas, STL completo y partido,
+      y viene con base de exhibición. Con PLA negro o PLA BronzeFill queda espectacular.
+    </p>
+    <p>
+      Si no quieres soportes ni pegamento: <strong>el modelo desplegable de Keenan</strong>
+      es el más ingenioso — se imprime en una capa plana y lo pliegas como un puzzle.
+    </p>
+    <div class="evidence">
+      <strong>Nota:</strong> Todos los modelos enlazados son gratuitos bajo licencia Creative Commons.
+      Algunos requieren atribución al diseñador. Verifica la licencia antes de usar comercialmente.
+    </div>
   </div>
 </section>
 
