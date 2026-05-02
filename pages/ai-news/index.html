@@ -641,26 +641,25 @@ loadData();
   </div>
 </footer>
 
-<!-- ── GoatCounter tracking ── -->
-<script data-goatcounter="https://raulgdm.goatcounter.com/count"
-        data-goatcounter-settings='{"p": "/pages/ai-news/"}'
-        async src="https://gc.zgo.at/count.js"></script>
-
-<!-- ── Visitor counter via JSON API ── -->
+<!-- ── Cocobot Stats: tracking + visitor counter (Cloudflare Worker) ── -->
 <script>
 (function() {
+  var worker = 'https://cocobot-stats.rgarciademarina.workers.dev';
   var path = '/pages/ai-news/';
-  setTimeout(function() {
-    fetch('https://raulgdm.goatcounter.com/counter/' + encodeURIComponent(path) + '.json')
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        var el = document.getElementById('visit-counter');
-        if (el && d.count) {
-          el.textContent = '\ud83d\udc41\ufe0f ' + d.count + ' visitas';
-        }
-      })
-      .catch(function() {});
-  }, 1500);
+  var el = document.getElementById('visit-counter');
+
+  // Track visit (in your own domain → never blocked by adblockers)
+  fetch(worker + '/t?path=' + encodeURIComponent(path), { method: 'GET' }).catch(function() {});
+
+  // Fetch and display counter
+  fetch(worker + '/c?path=' + encodeURIComponent(path))
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (el && d.count) {
+        el.textContent = '\ud83d\udc41\ufe0f ' + d.count + ' visitas';
+      }
+    })
+    .catch(function() {});
 })();
 </script>
 </body>
