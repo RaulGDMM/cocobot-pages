@@ -139,16 +139,15 @@ nav .nav-links a:hover { color: var(--bronze-light); }
   pointer-events: none;
 }
 .hero-shape {
-  width: 180px; height: 180px;
+  width: min(320px, 60vw);
+  height: min(320px, 60vw);
   margin-bottom: 2.5rem;
   position: relative;
-  animation: float 6s ease-in-out infinite;
+  cursor: grab;
+  touch-action: none;
 }
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(3deg); }
-}
-.hero-shape svg { width: 100%; height: 100%; filter: drop-shadow(0 0 40px rgba(232,96,10,0.3)); }
+.hero-shape:active { cursor: grabbing; }
+.hero-canvas { width: 100%; height: 100%; display: block; }
 
 .hero h1 {
   font-family: 'Cormorant Garamond', serif;
@@ -558,7 +557,7 @@ footer {
   blockquote { padding: 1rem 1.25rem; font-size: 1rem; }
 
   /* Hero */
-  .hero-shape { width: 130px; height: 130px; margin-bottom: 2rem; }
+  .hero-shape { width: min(220px, 60vw); height: min(220px, 60vw); margin-bottom: 2rem; }
 }
 </style>
 </head>
@@ -591,42 +590,7 @@ footer {
 <!-- ── HERO ── -->
 <header class="hero">
   <div class="hero-shape">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#e8600a"/>
-          <stop offset="50%" stop-color="#d4a030"/>
-          <stop offset="100%" stop-color="#b8860b"/>
-        </linearGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="2" result="blur"/>
-          <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      <!-- Simplified dodecahedron wireframe -->
-      <polygon points="100,15 165,55 150,130 50,130 35,55"
-               fill="none" stroke="url(#fireGrad)" stroke-width="1.5" filter="url(#glow)"/>
-      <polygon points="100,45 135,65 125,105 75,105 65,65"
-               fill="none" stroke="url(#fireGrad)" stroke-width="1" opacity="0.6"/>
-      <line x1="100" y1="15" x2="100" y2="45" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
-      <line x1="165" y1="55" x2="135" y2="65" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
-      <line x1="150" y1="130" x2="125" y2="105" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
-      <line x1="50" y1="130" x2="75" y2="105" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
-      <line x1="35" y1="55" x2="65" y2="65" stroke="url(#fireGrad)" stroke-width="0.8" opacity="0.5"/>
-      <!-- Hole circles -->
-      <circle cx="100" cy="45" r="4" fill="none" stroke="var(--fire-glow)" stroke-width="0.8" opacity="0.7"/>
-      <circle cx="135" cy="65" r="3" fill="none" stroke="var(--fire-glow)" stroke-width="0.8" opacity="0.7"/>
-      <circle cx="125" cy="105" r="3.5" fill="none" stroke="var(--fire-glow)" stroke-width="0.8" opacity="0.7"/>
-      <!-- Vertex dots -->
-      <circle cx="100" cy="15" r="3" fill="var(--fire-glow)" opacity="0.8"/>
-      <circle cx="165" cy="55" r="3" fill="var(--fire-glow)" opacity="0.8"/>
-      <circle cx="150" cy="130" r="3" fill="var(--fire-glow)" opacity="0.8"/>
-      <circle cx="50" cy="130" r="3" fill="var(--fire-glow)" opacity="0.8"/>
-      <circle cx="35" cy="55" r="3" fill="var(--fire-glow)" opacity="0.8"/>
-    </svg>
+    <canvas class="hero-canvas" id="dodecahedronCanvas"></canvas>
   </div>
 
   <h1>Dodecaedro Romano</h1>
@@ -1152,6 +1116,188 @@ footer {
   </p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const canvas = document.getElementById('dodecahedronCanvas');
+  if (!canvas) return;
+  const container = canvas.parentElement;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  camera.position.set(0, 0, 4.5);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  function resize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Wireframe dodecahedron
+  const geo = new THREE.DodecahedronGeometry(1.2, 0);
+  const edges = new THREE.EdgesGeometry(geo);
+
+  // Main wireframe
+  const mainMat = new THREE.LineBasicMaterial({ color: 0xd4a030, linewidth: 1 });
+  const wireframe = new THREE.LineSegments(edges, mainMat);
+  scene.add(wireframe);
+
+  // Glow layer
+  const glowMat = new THREE.LineBasicMaterial({ color: 0xe8600a, linewidth: 1, transparent: true, opacity: 0.3 });
+  const glowGeo = new THREE.DodecahedronGeometry(1.24, 0);
+  const glowEdges = new THREE.EdgesGeometry(glowGeo);
+  const glowMesh = new THREE.LineSegments(glowEdges, glowMat);
+  scene.add(glowMesh);
+
+  // Vertices - small spheres
+  const vertexGeo = new THREE.SphereGeometry(0.04, 8, 8);
+  const vertexMat = new THREE.MeshBasicMaterial({ color: 0xff8c33 });
+  const positions = geo.attributes.position;
+  const vertexSet = new Set();
+  const vertexGroup = new THREE.Group();
+  for (let i = 0; i < positions.count; i++) {
+    const x = positions.getX(i);
+    const y = positions.getY(i);
+    const z = positions.getZ(i);
+    const key = `${x.toFixed(3)},${y.toFixed(3)},${z.toFixed(3)}`;
+    if (!vertexSet.has(key)) {
+      vertexSet.add(key);
+      const s = new THREE.Mesh(vertexGeo, vertexMat);
+      s.position.set(x, y, z);
+      vertexGroup.add(s);
+    }
+  }
+  scene.add(vertexGroup);
+
+  // Face center holes
+  const holeGeo = new THREE.RingGeometry(0.08, 0.12, 16);
+  const holeMat = new THREE.MeshBasicMaterial({ color: 0xff8c33, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
+  const faceCenters = [
+    [0, 0, 1.902], [0, 0, -1.902],
+    [1.902, 0, 0], [-1.902, 0, 0],
+    [1.176, 1.176, 1.176], [1.176, 1.176, -1.176],
+    [1.176, -1.176, 1.176], [1.176, -1.176, -1.176],
+    [-1.176, 1.176, 1.176], [-1.176, 1.176, -1.176],
+    [-1.176, -1.176, 1.176], [-1.176, -1.176, -1.176]
+  ];
+  const holeGroup = new THREE.Group();
+  faceCenters.forEach(function(fc) {
+    const dir = new THREE.Vector3(fc[0], fc[1], fc[2]).normalize();
+    const h = new THREE.Mesh(holeGeo, holeMat);
+    h.position.copy(dir.multiplyScalar(1.22));
+    h.lookAt(0, 0, 0);
+    holeGroup.add(h);
+  });
+  scene.add(holeGroup);
+
+  // Particles (embers)
+  const particleCount = 60;
+  const particleGeo = new THREE.BufferGeometry();
+  const particlePos = new Float32Array(particleCount * 3);
+  const particleVel = [];
+  for (let i = 0; i < particleCount; i++) {
+    particlePos[i*3] = (Math.random() - 0.5) * 5;
+    particlePos[i*3+1] = (Math.random() - 0.5) * 5;
+    particlePos[i*3+2] = (Math.random() - 0.5) * 5;
+    particleVel.push({
+      x: (Math.random() - 0.5) * 0.003,
+      y: Math.random() * 0.005 + 0.002,
+      z: (Math.random() - 0.5) * 0.003
+    });
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+  const particleMat = new THREE.PointsMaterial({ color: 0xe8600a, size: 0.03, transparent: true, opacity: 0.4 });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  scene.add(particles);
+
+  // Interaction
+  let isDragging = false;
+  let prevMouse = { x: 0, y: 0 };
+  let rotVel = { x: 0.003, y: 0.005 };
+  let autoRotate = true;
+
+  function getPos(e) {
+    if (e.touches) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  function onDown(e) {
+    isDragging = true;
+    autoRotate = false;
+    prevMouse = getPos(e);
+  }
+  function onMove(e) {
+    if (!isDragging) return;
+    const pos = getPos(e);
+    const dx = pos.x - prevMouse.x;
+    const dy = pos.y - prevMouse.y;
+    rotVel.x += dy * 0.00008;
+    rotVel.y += dx * 0.00008;
+    prevMouse = pos;
+  }
+  function onUp() {
+    isDragging = false;
+    setTimeout(function() { autoRotate = true; }, 3000);
+  }
+
+  canvas.addEventListener('mousedown', onDown);
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mouseup', onUp);
+  canvas.addEventListener('mouseleave', onUp);
+  canvas.addEventListener('touchstart', onDown, { passive: true });
+  canvas.addEventListener('touchmove', onMove, { passive: true });
+  canvas.addEventListener('touchend', onUp);
+
+  // Animate
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (autoRotate) {
+      wireframe.rotation.x += 0.003;
+      wireframe.rotation.y += 0.005;
+    } else {
+      wireframe.rotation.x += rotVel.x;
+      wireframe.rotation.y += rotVel.y;
+      if (!isDragging) {
+        rotVel.x *= 0.98;
+        rotVel.y *= 0.98;
+      }
+    }
+
+    glowMesh.rotation.copy(wireframe.rotation);
+    vertexGroup.rotation.copy(wireframe.rotation);
+    holeGroup.rotation.copy(wireframe.rotation);
+
+    // Pulse glow
+    const t = Date.now() * 0.001;
+    glowMat.opacity = 0.2 + Math.sin(t * 2) * 0.1;
+
+    // Particles
+    const pPos = particles.geometry.attributes.position;
+    for (let i = 0; i < particleCount; i++) {
+      pPos.array[i*3] += particleVel[i].x;
+      pPos.array[i*3+1] += particleVel[i].y;
+      pPos.array[i*3+2] += particleVel[i].z;
+      if (pPos.array[i*3+1] > 2.5) {
+        pPos.array[i*3] = (Math.random() - 0.5) * 4;
+        pPos.array[i*3+1] = -2;
+        pPos.array[i*3+2] = (Math.random() - 0.5) * 4;
+      }
+    }
+    pPos.needsUpdate = true;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
 <script>
   const burger = document.getElementById('burger');
   const sMenu = document.getElementById('sMenu');
