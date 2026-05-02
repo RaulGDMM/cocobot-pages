@@ -617,6 +617,41 @@ footer {
   }
   .solids-table tbody tr:hover { background: var(--bg-card); }
 
+  /* Print table → card stack */
+  .print-table, .print-table thead, .print-table tbody,
+  .print-table th, .print-table td, .print-table tr {
+    display: block;
+  }
+  .print-table thead tr { display: none; }
+  .print-table tbody tr {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .print-table tbody td {
+    padding: 0.4rem 0;
+    border-bottom: none;
+    text-align: right;
+    position: relative;
+    padding-left: 50%;
+    word-break: break-word;
+  }
+  .print-table tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-align: left;
+    width: 45%;
+  }
+  .print-table tbody tr:hover { background: var(--bg-card); }
+
   /* Other theories grid → single column */
   .other-theories-grid {
     grid-template-columns: 1fr;
