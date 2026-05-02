@@ -393,6 +393,25 @@
     }
     .footer a { color: var(--accent); }
 
+    /* ── Page footer con contador ── */
+    .page-footer {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      margin-top: 30px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-brand {
+      color: var(--text-muted);
+      font-size: 0.85em;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 767px) {
       .header h1 { font-size: 1.8em; }
@@ -604,6 +623,43 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // ── Init ──
 loadData();
+</script>
+
+<!-- ── Footer con contador ── -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot Daily</span>
+    <span id="visit-counter"></span>
+  </div>
+</footer>
+
+<!-- ── GoatCounter tracking + visitor counter ── -->
+<script data-goatcounter="https://raulgdm.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<script>
+(function() {
+  var t = setInterval(function() {
+    if (window.goatcounter && window.goatcounter.visit_count) {
+      clearInterval(t);
+      window.goatcounter.visit_count({
+        append: 'visit-counter',
+        type: 'html',
+        no_branding: true,
+        style: `
+          div {
+            border-color: rgba(255,255,255,0.08);
+            background-color: rgba(0,212,255,0.06);
+            color: var(--text-muted, #888);
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+          }
+        `
+      });
+    }
+  }, 100);
+})();
 </script>
 </body>
 </html>
