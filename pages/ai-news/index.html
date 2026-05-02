@@ -637,36 +637,27 @@ loadData();
 <footer class="page-footer">
   <div class="footer-inner">
     <span class="footer-brand">🐱 Cocobot Daily</span>
-    <span id="visit-counter"></span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
   </div>
 </footer>
 
-<!-- ── GoatCounter tracking + visitor counter ── -->
+<!-- ── GoatCounter tracking ── -->
 <script data-goatcounter="https://raulgdm.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+
+<!-- ── Visitor counter via JSON API ── -->
 <script>
 (function() {
-  var t = setInterval(function() {
-    if (window.goatcounter && window.goatcounter.visit_count) {
-      clearInterval(t);
-      window.goatcounter.visit_count({
-        append: 'visit-counter',
-        type: 'html',
-        no_branding: true,
-        style: `
-          div {
-            border-color: rgba(255,255,255,0.08);
-            background-color: rgba(0,212,255,0.06);
-            color: var(--text-muted, #888);
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            display: inline-block;
-          }
-        `
-      });
-    }
-  }, 100);
+  var path = location.pathname;
+  fetch('https://raulgdm.goatcounter.com/counter/' + encodeURIComponent(path) + '.json')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var el = document.getElementById('visit-counter');
+      if (el && d.count) {
+        el.textContent = '👁️ ' + d.count + ' visitas';
+      }
+    })
+    .catch(function() {});
 })();
 </script>
 </body>
