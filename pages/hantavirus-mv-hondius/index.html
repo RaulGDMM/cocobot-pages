@@ -529,7 +529,7 @@
 
     <!-- NAVBAR -->
     <nav class="navbar">
-        <a href="../index.html" class="navbar-back">← Cocobot</a>
+        <a href="../../index.html" class="navbar-back">← Cocobot</a>
         <div class="menu-toggle" id="menuToggle">
             <span></span><span></span><span></span>
         </div>
@@ -1098,12 +1098,12 @@
             const particles = new THREE.Points(particleGeo, particleMat);
             scene.add(particles);
 
-            // Mouse interaction
+            // Rotation state
             let mouseX = 0, mouseY = 0;
-            let targetRotX = 0, targetRotY = 0;
             let isDragging = false;
             let prevMouseX = 0, prevMouseY = 0;
-            let dragRotX = 0, dragRotY = 0;
+            let autoRotY = 0;              // Rotación automática acumulada
+            let dragRotX = 0, dragRotY = 0; // Offset persistente de arrastre
 
             canvas.addEventListener('mousedown', (e) => {
                 isDragging = true;
@@ -1143,25 +1143,17 @@
             // Breathing animation
             let time = 0;
 
-            // Animation loop
+             // Animation loop
             function animate(){
                 requestAnimationFrame(animate);
                 time += 0.016;
 
-                // Gentle auto-rotation
-                virusGroup.rotation.y += 0.003;
+                // Auto-rotation (always keeps spinning)
+                autoRotY += 0.003;
 
-                // Mouse influence (smooth)
-                targetRotX = -mouseY * 0.3;
-                targetRotY = mouseX * 0.3;
-
-                if(!isDragging){
-                    dragRotX *= 0.95;
-                    dragRotY *= 0.95;
-                }
-
-                virusGroup.rotation.y = targetRotY + dragRotY;
-                virusGroup.rotation.x = targetRotX + dragRotX;
+                // Apply: auto-rotation + drag offset (persists after release)
+                virusGroup.rotation.y = autoRotY + dragRotY;
+                virusGroup.rotation.x = dragRotX;
                 virusGroup.rotation.z = mouseY * 0.1;
 
                 // Breathing effect
