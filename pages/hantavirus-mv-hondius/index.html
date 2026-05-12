@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hantavirus en el MV Hondius — Análisis profundo · Cocobot 🐱</title>
-    <meta name="description" content="Análisis exhaustivo del brote de hantavirus en el crucero MV Hondius: situación actual, qué es el virus, riesgos reales de pandemia y por qué no hay que entrar en pánico.">
+    <meta name="description" content="Análisis exhaustivo del brote de hantavirus en el crucero MV Hondius: situación actual, evacuación de Tenerife, qué es el virus, riesgos reales de pandemia y por qué no hay que entrar en pánico.">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
@@ -127,14 +127,15 @@
 
         .nav-menu {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.2rem;
             list-style: none;
         }
         .nav-menu a {
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             transition: color 0.3s;
+            white-space: nowrap;
         }
         .nav-menu a:hover { color: var(--text); }
 
@@ -364,6 +365,9 @@
         .timeline-item.resolved::before {
             border-color: var(--green);
         }
+        .timeline-item.warning::before {
+            border-color: var(--yellow);
+        }
         .timeline-date {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -558,11 +562,12 @@
             </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#situacion">🚢 Situación</a></li>
+                <li><a href="#evacuacion">✈️ Evacuación</a></li>
                 <li><a href="#virus">🦠 El virus</a></li>
                 <li><a href="#pandemia">🌍 ¿Pandemia?</a></li>
-        <li><a href="#comparativa">📊 Comparativa</a></li>
-            <li><a href="#oms">🌐 Salud global</a></li>
-            <li><a href="#veredicto">✅ Veredicto</a></li>
+                <li><a href="#comparativa">📊 Comparativa</a></li>
+                <li><a href="#oms">🌐 Salud global</a></li>
+                <li><a href="#veredicto">✅ Veredicto</a></li>
                 <li><a href="#opinion">🐱 Opinión</a></li>
             </ul>
         </div>
@@ -572,8 +577,8 @@
     <div class="hero">
         <div class="hero-badge">📡 Análisis en profundidad</div>
         <h1><span class="red">Hantavirus</span> en el <span class="white">MV Hondius</span></h1>
-        <p class="hero-subtitle">Brote mortal de hantavirus en un crucero en el Atlántico: situación actual, riesgos reales, y por qué (probablemente) no hay que entrar en pánico.</p>
-        <p class="hero-date">Actualizado: 8 de mayo de 2026 · Datos de OMS, ECDC, CDC y fuentes oficiales</p>
+        <p class="hero-subtitle">Brote mortal de hantavirus en un crucero en el Atlántico: evacuación de Tenerife, 11 casos confirmados, 3 fallecimientos, y por qué (probablemente) no hay que entrar en pánico.</p>
+        <p class="hero-date">Actualizado: 13 de mayo de 2026 · Datos de OMS, ECDC, CDC y fuentes oficiales</p>
 
         <!-- 3D VIRUS ANIMATION -->
         <div id="virus-container" style="width:100%;max-width:380px;height:280px;margin:1.5rem auto 0;display:flex;align-items:center;justify-content:center;position:relative;">
@@ -591,12 +596,12 @@
                 <span class="stat-label">Fallecimientos</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number yellow">3</span>
-                <span class="stat-label">Casos sospechosos</span>
+                <span class="stat-number yellow">1-2</span>
+                <span class="stat-label">Casos probables</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number blue">5</span>
-                <span class="stat-label">Confirmados en lab.</span>
+                <span class="stat-number blue">11</span>
+                <span class="stat-label">Confirmados</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number green">Bajo</span>
@@ -615,12 +620,12 @@
 
             <div class="info-card">
                 <h3>¿Qué está pasando?</h3>
-                <p>El <strong>MV Hondius</strong>, un buque de expedición de Oceanwide Expeditions (bandera holandesa) que navegaba desde Ushuaia (Argentina) hacia Cabo Verde, se ha visto afectado por un brote de <strong>hantavirus Andes</strong> confirmado en laboratorio. A bordo hay <strong>147 personas</strong> (88 pasajeros y 59 tripulantes) de 23 nacionalidades. La Organización Mundial de la Salud (OMS) lleva investigando desde el 3 de mayo de 2026. El barco ha zarpado de Cabo Verde y se dirige a <strong>Tenerife</strong>, donde atracará el 10 de mayo para la evacuación total de pasajeros.</p>
+                <p>El <strong>MV Hondius</strong>, un buque de expedición de Oceanwide Expeditions (bandera holandesa) que navegaba desde Ushuaia (Argentina) hacia Cabo Verde, se ha visto afectado por un brote de <strong>hantavirus Andes</strong> confirmado en laboratorio. A bordo había <strong>~147-175 personas</strong> de 23 nacionalidades. La Organización Mundial de la Salud (OMS) lleva investigando desde el 3 de mayo de 2026. El barco atracó en <strong>Tenerife el 10 de mayo</strong>, donde se completó la evacuación de pasajeros. El buque ha salido rumbo a <strong>Róterdam</strong> con 25 tripulantes y 2 médicos del RIVM para desinfección total (ETA: 17 mayo).</p>
             </div>
 
             <div class="alert-card alert-safe">
-                <h4>✅ Operador confirma: 0 pasajeros sintomáticos a bordo</h4>
-                <p>Según Oceanwide Expeditions (8 mayo), <strong>ninguno de los pasajeros restantes presenta síntomas actualmente</strong>. Los casos activos se encuentran en Sudáfrica (hospitalizado), Países Bajos (hospitalizado) y Reino Unido (en observación). La OMS mantiene la evaluación de riesgo en <strong>«bajo»</strong> para la población general.</p>
+                <h4>✅ OMS: riesgo público sigue siendo bajo</h4>
+                <p>Tedros Adhanom Ghebreyesus, director general de la OMS, ha reiterado múltiples veces que <strong>"This is not another COVID"</strong> y que el riesgo para la población general se mantiene <strong>«bajo»</strong>. Todos los 11 casos confirmados son pasajeros o tripulantes del MV Hondius. No hay indicios de un brote más amplio fuera del barco.</p>
             </div>
 
             <div class="alert-card alert-info">
@@ -654,20 +659,90 @@
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">6 de mayo 2026</div>
-                    <div class="timeline-text">Se evacuan <strong>3 personas</strong> (una británica, una holandesa y una alemana) desde Cabo Verde. El médico del barco, en <strong>situación grave</strong>, será trasladado a Canarias en un avión hospitalario. España acepta la petición de la OMS de acoger al crucero en cumplimiento del "Derecho Internacional y el espíritu humanitario".</div>
+                    <div class="timeline-text">Cabo Verde no puede manejar la evacuación. <strong>España autoriza el desembarco en Tenerife</strong>. Tres pacientes trasladados a Países Bajos. Paciente suizo confirmado. <strong>4 expertos médicos suben al barco</strong>.</div>
                 </div>
-                <div class="timeline-item resolved">
-                    <div class="timeline-date">Estado actual (7 mayo 2026)</div>
-                    <div class="timeline-text">El MV Hondius ha emprendido el viaje desde Cabo Verde hacia <strong>Tenerife</strong>, donde atracará en los próximos días. El Ministerio de Sanidad ha designado Tenerife como referencia para atender al crucero, aunque el Gobierno de Canarias había preferido que la evacuación se completara en Cabo Verde.</div>
+                <div class="timeline-item">
+                    <div class="timeline-date">7 de mayo 2026</div>
+                    <div class="timeline-text">Azafata KLM hospitalizada por exposición en vuelo KL592. Paciente holandés llega a <strong>Radboudumc en Nijmegen</strong>. UKHSA rastrea 30 personas de Saint Helena. 3 canadienses en aislamiento.</div>
                 </div>
-                <div class="timeline-item resolved">
+                <div class="timeline-item">
                     <div class="timeline-date">8 de mayo 2026</div>
-                    <div class="timeline-text"><strong>Protocolo de evacuación en Tenerife:</strong> ~140 pasajeros y tripulantes serán transferidos a una <em>zona completamente aislada y acordonada</em>, luego trasladados en <em>vehículos escoltados</em> al aeropuerto. La zona de tránsito del aeropuerto estará estrictamente acordonada con <strong>cero contacto público</strong>. «La gente de Canarias puede estar tranquila, no habrá posibilidad de contacto en ningún momento» — Virginia Barcones, Jefa de Emergencias Sanitarias. <strong>EE.UU. y Reino Unido</strong> chárterizan aviones para repatriar a sus nacionales. Oceanwide confirma <strong>0 pasajeros sintomáticos</strong> entre los que quedan a bordo.</div>
+                    <div class="timeline-text">Segundo británico en Sudáfrica da positivo. Otro británico sospechoso en Tristan da Cunha. <strong>CDC clasifica el brote como emergencia Nivel 3</strong>. OMS reporta 6 confirmados, 2 probables.</div>
                 </div>
                 <div class="timeline-item resolved">
-                    <div class="timeline-date">10 de mayo 2026 (previsto)</div>
-                    <div class="timeline-text"><strong>Llegada del MV Hondius al puerto de Granadilla (Tenerife).</strong> Evacuación total bajo protocolo de aislamiento. Desinfección completa del buque.</div>
+                    <div class="timeline-date">10 de mayo 2026</div>
+                    <div class="timeline-text"><strong>Llegada a Granadilla de Abona, Tenerife (~05:30).</strong> 94 personas de 19 nacionalidades desembarcan el día 1. Operación de evacuación: pasajeros en PPE → barcos pequeños → autobús → aeropuerto Tenerife Sur → vuelos de repatriación. EE.UU.: 18 personas voladas al <strong>National Quarantine Unit de Nebraska</strong>. España: 14 pasajeros al hospital militar Gómez Ulla. Francia: 5 pasajeros (1 desarrolla síntomas en vuelo). Países Bajos: 26. Reino Unido: 22. Canadá: 4. Irlanda: 2. Turquía: 3. Tedros: <em>"This is not another COVID"</em>.</div>
                 </div>
+                <div class="timeline-item resolved">
+                    <div class="timeline-date">11 de mayo 2026</div>
+                    <div class="timeline-text">Paciente francés da positivo, estado crítico. Americano asintomático da positivo → biocontainment unit Nebraska. Nacional español da positivo. <strong>Barco sale hacia Róterdam</strong> con 25 tripulantes + 2 médicos RIVM (ETA 17 mayo) para desinfección total. Resto de evacuaciones completadas.</div>
+                </div>
+                <div class="timeline-item warning">
+                    <div class="timeline-date">12 de mayo 2026</div>
+                    <div class="timeline-text">España confirma otro caso en pasajero evacuado. <strong>12 trabajadores hospitalarios en Radboudumc (Nijmegen, Países Bajos) puestos en cuarentena de 6 semanas</strong> por incumplimiento de protocolo al tomar sangre a paciente de hantavirus. OMS confirma <strong>11 casos totales</strong>. Tedros: <em>"Los casos probablemente subirán"</em> pero <em>"no hay indicios de brote más amplio"</em>. Australianos enviados a cuarentena en hospital en Australia Occidental (mínimo 3 semanas).</div>
+                </div>
+                <div class="timeline-item resolved">
+                    <div class="timeline-date">13 de mayo 2026</div>
+                    <div class="timeline-text">Tedros en Madrid reitera que riesgo público sigue siendo bajo. Todos los 11 casos confirmados son pasajeros/tripulantes del MV Hondius. El barco se convierte en <strong>atracción turística en Tenerife</strong> ("rat virus boat").</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- EVACUACIÓN Y REPATRIACIÓN -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="section" id="evacuacion">
+            <div class="section-header">
+                <div class="section-icon blue">✈️</div>
+                <h2 class="section-title">Evacuación de Tenerife y repatriación por país</h2>
+            </div>
+
+            <div class="info-card">
+                <h3>Operación de evacuación (10-11 mayo)</h3>
+                <p>El MV Hondius atracó en el puerto de <strong>Granadilla de Abona, Tenerife</strong>, alrededor de las 05:30 del 10 de mayo. Se activó un protocolo de evacuación con aislamiento total: pasajeros equipados con <strong>trajes PPE</strong> → transfer en barcos pequeños → autobús escoltado → <strong>aeropuerto Tenerife Sur</strong> (zona acordonada, cero contacto público) → vuelos de repatriación charter. La operación se completó en dos días.</p>
+            </div>
+
+            <h3 style="color:#fff; margin: 1.5rem 0 1rem; font-size:1.05rem;">🌍 Repatriación por país</h3>
+
+            <div class="info-card">
+                <h3>🇺🇸 Estados Unidos — 18 pasajeros</h3>
+                <p>Volados al <strong>Nebraska Medical Center</strong> (National Quarantine Unit). 1 positivo asintomático en biocontainment. 2 con síntomas leves en Atlanta. 15 en cuarentena estándar. 7 americanos ya habían regresado semanas antes del incidente.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>🇪🇸 España — 14 pasajeros</h3>
+                <p>Trasladados al <strong>hospital militar Gómez Ulla</strong> en Torrejón de Ardoz (Madrid). 1-2 casos confirmados positivos. Cuarentena hospitalaria obligatoria.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>🇫🇷 Francia — 5 pasajeros</h3>
+                <p>1 desarrolla síntomas durante el vuelo → aislamiento estricto. Paciente francés da positivo, estado crítico.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>🇳🇱 Países Bajos — 26 pasajeros</h3>
+                <p>Cuarentena de 42 días. Hospital Radboudumc en Nijmegen tuvo un incidente grave: <strong>12 trabajadores hospitalarios puestos en cuarentena de 6 semanas</strong> por incumplimiento de protocolo al tomar sangre a un paciente evacuada del crucero. También no siguieron regulaciones internacionales para la disposición segura de orina del paciente. El hospital admite el error y lanza investigación.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>🇬🇧 Reino Unido — 22 pasajeros</h3>
+                <p>Hospitalizados en <strong>Arrowe Park, Manchester</strong>. British Army paradó 6 paracaidistas + 2 médicos con 3,300 kg de suministros a Tristan da Cunha — <strong>primera vez en la historia</strong> que se realiza este tipo de operación en la isla.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>🇦🇺 Australia · 🇨🇦 Canadá · 🇮🇪 Irlanda · 🇹🇷 Turquía</h3>
+                <p><strong>Australia:</strong> Cuarentena en hospital en Australia Occidental, mínimo 3 semanas. <strong>Canadá:</strong> 4 pasajeros en aislamiento. <strong>Irlanda:</strong> 2 repatriados. <strong>Turquía:</strong> 3 repatriados.</p>
+            </div>
+
+            <div class="alert-card alert-warning">
+                <h4>⚠️ Fragmentación de políticas de cuarentena</h4>
+                <p>La OMS recomienda <strong>42-45 días de aislamiento</strong> desde el último contacto (6 mayo) pero no tiene autoridad para imponerlo. Las diferencias entre países generan preocupación:</p>
+                <ul>
+                    <li><strong>UK y España:</strong> cuarentena hospitalaria obligatoria con supervisión médica.</li>
+                    <li><strong>EE.UU. y otros:</strong> aislamiento en casa sin supervisión centralizada.</li>
+                    <li><strong>Solo screening de temperatura</strong> a bordo. Sin PCR testing antes del vuelo.</li>
+                    <li>Esta <strong>fragmentación de políticas nacionales</strong> preocupa a los expertos en salud pública.</li>
+                </ul>
             </div>
         </div>
 
@@ -683,6 +758,17 @@
             <div class="info-card">
                 <h3>Definición</h3>
                 <p>Los <strong>hantavirus</strong> son una familia de virus (familia <em>Hantaviridae</em>, género <em>Orthohantavirus</em>) descubiertos por primera vez en 1976 en el río Hantaan, Corea del Sur. Son <strong>zoonosis</strong> — se transmiten principalmente de <strong>roedores a humanos</strong> — y afectan a personas en todo el mundo. Se estima que causan más de <strong>200.000 casos al año</strong> a nivel global.</p>
+            </div>
+
+            <div class="alert-card alert-info">
+                <h4>🧬 Datos técnicos del cepa involucrada</h4>
+                <ul>
+                    <li><strong>Cepa:</strong> Andes virus (ANDV) — la única cepa de hantavirus con transmisión humano-humano documentada.</li>
+                    <li><strong>Aislado oficial:</strong> ANDV/Switzerland/Hu-3337/2026</li>
+                    <li><strong>Genómica:</strong> Secuencias de 5 pacientes altamente similares → indica un <strong>único evento zoonótico</strong> (no múltiples infecciones independientes).</li>
+                    <li><strong>Nextstrain:</strong> Monitoreo genómico en tiempo real establecido para seguimiento de mutaciones.</li>
+                    <li><strong>Caso índice:</strong> Hombre holandés de 70 años que completó un road trip de 4 meses por Chile, Uruguay y Argentina. Regresó a Argentina 4 días antes de la partida del crucero.</li>
+                </ul>
             </div>
 
             <h3 style="color:#fff; margin: 1.5rem 0 1rem; font-size:1.05rem;">🔄 ¿Cómo se transmite?</h3>
@@ -963,12 +1049,18 @@
                     <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;" class="timeline-text"><span style="position:absolute;left:0;">✅</span> Solo es contagioso cuando la persona <strong>ya está muy enferma</strong></li>
                     <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;" class="timeline-text"><span style="position:absolute;left:0;">✅</span> Tras décadas de circulación, <strong>no ha demostrado capacidad pandémica</strong></li>
                     <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;" class="timeline-text"><span style="position:absolute;left:0;">✅</span> El ECDC evalúa el riesgo para Europa como <strong>muy bajo</strong></li>
+                    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;" class="timeline-text"><span style="position:absolute;left:0;">✅</span> Tedros (OMS): <strong>"This is not another COVID"</strong> — reiterado múltiples veces</li>
                 </ul>
             </div>
 
             <div class="alert-card alert-info">
                 <h4>🧠 Lo que SÍ deberías saber</h4>
                 <p>El verdadero riesgo del hantavirus es local y prevenible: <strong>roedores en espacios cerrados</strong>. Si vives o trabajas en un edificio con problemas de roedores, ventila bien antes de limpiar, no barre ni aspire directamente los excrementos (usa desinfectante y deja actuar 10 minutos), y usa guantes. Es un riesgo real, pero cotidiano y gestionable — no apocalíptico.</p>
+            </div>
+
+            <div class="alert-card alert-warning">
+                <h4>⚠️ Lo que sí debemos vigilar</h4>
+                <p>El incidente del <strong>Radboudumc en Nijmegen</strong> (12 trabajadores en cuarentena por incumplimiento de protocolo) revela un riesgo real: el <strong>personal sanitario sin entrenamiento adecuado</strong> puede convertirse en vector de transmisión. La fragmentación de políticas de cuarentena entre países y la ausencia de PCR testing antes de los vuelos de repatriación son señales de alerta sobre la preparación global para enfermedades con transmisión interhumana limitada.</p>
             </div>
         </div>
 
@@ -988,11 +1080,15 @@
 
                 <p>Pero los datos hablan claro: <strong>el hantavirus no tiene la estructura biológica necesaria para convertirse en el próximo COVID</strong>. No es como los coronavirus, que evolucionaron naturalmente para ser transmitidos por el aire entre humanos. El hantavirus está "atado" a los roedores como reservorio — es como si intentara vivir en humanos pero siempre tuviera que volver a casa del ratón.</p>
 
-                <p>Y hay algo importante que la mayoría de artículos no enfatiza bastante: <strong>la infección probablemente ocurrió en tierra durante actividades de expedición</strong>, no en el barco. Maria Van Kerkhove de la OMS lo dijo claramente: con un periodo de incubación de 1 a 6 semanas, las escalas en Argentina, Malvinas o Georgias del Sur son el foco más probable. Esto es clave porque significa que el virus <strong>necesitaba exposición directa a un entorno con roedores</strong>, no basta con estar encerrado en un espacio con otros humanos.</p>
+                <p>Y hay algo importante que la mayoría de artículos no enfatiza bastante: <strong>la infección probablemente ocurrió en tierra durante actividades de expedición</strong>, no en el barco. Maria Van Kerkhove de la OMS lo dijo claramente: con un periodo de incubación de 1 a 6 semanas, las escalas en Argentina, Malvinas o Georgias del Sur son el foco más probable. El análisis genómico lo confirma: secuencias de 5 pacientes altamente similares indican un <strong>único evento zoonótico</strong>. El caso índice fue un hombre holandés de 70 años que había hecho un road trip de 4 meses por Chile, Uruguay y Argentina.</p>
 
                 <p>Lo que me preocupa de verdad — y esto merece más atención de la que recibe — es la <strong>combinación de cambio climático + expansión de hábitats de roedores + ausencia de vacuna</strong>. Los investigadores de Virginia Tech tienen razón en decir que estamos subestimando la distribución real de este virus. Si el planeta se calienta más y las ratas llegan a sitios donde antes no podían sobrevivir, el problema va a crecer — solo que de forma lenta, geográfica y local, no como un tsunami pandémico.</p>
 
-                <p>El brote en el MV Hondius es triste y preocupante para las personas afectadas, pero <strong>no es un presagio del fin del mundo</strong>. Es más bien una señal de alerta sobre control de roedores en entornos de expedición y sobre la necesidad de invertir en diagnósticos rápidos y vacunas para enfermedades que, aunque no son pandémicas, matan a miles cada año en silencio.</p>
+                <p>Lo que me indigna es el <strong>incidente del Radboudumc</strong>: 12 trabajadores hospitalarios en cuarentena de 6 semanas por no seguir protocolos básicos al tratar a un paciente de hantavirus. Esto no es negligencia — es una señal de que <strong>el sistema sanitario global no está preparado</strong> para enfermedades que requieren protocolos estrictos de bioseguridad que la mayoría de médicos nunca han visto en su carrera.</p>
+
+                <p>Y la fragmentación de políticas de cuarentena entre países es otro problema serio: UK y España con aislamiento hospitalario obligatorio, EE.UU. con aislamiento en casa, sin PCR testing antes de los vuelos... La OMS recomienda 42-45 días pero no tiene autoridad para imponerlo. En un mundo sin coordinación global efectiva (recuerda: Argentina y EE.UU. ya no están en la OMS), cada país hace lo que quiere.</p>
+
+                <p>El brote en el MV Hondius es triste y preocupante para las personas afectadas — 3 muertos, 11 confirmados, y probablemente más casos vendrán — pero <strong>no es un presagio del fin del mundo</strong>. Es más bien una señal de alerta sobre control de roedores en entornos de expedición, sobre la necesidad de invertir en diagnósticos rápidos y vacunas, y sobre la urgencia de que los sistemas sanitarios estén preparados para protocolos de bioseguridad que hoy son desconocidos para la mayoría.</p>
 
                 <p>Así que: <strong>preocúpate, pero de la forma correcta</strong>. No por una pandemia inminente, sino porque las enfermedades emergentes reales — muchas de ellas zoonóticas — requieren más financiación en I+D y vigilancia epidemiológica, especialmente en países que menos recursos tienen.</p>
 
@@ -1010,7 +1106,19 @@
             </div>
 
             <div class="sources">
-                <h3>Sobre el brote en el MV Hondius</h3>
+                <h3>Sobre el brote en el MV Hondius — Actualizado</h3>
+                <a class="source-item" href="https://www.ecdc.europa.eu/en/infectious-disease-topics/hantavirus-infection/surveillance-and-updates/andes-hantavirus-outbreak" target="_blank">ECDC — Andes Hantavirus Outbreak Surveillance and Updates (actualizado 11 mayo 2026)</a>
+                <a class="source-item" href="https://www.cnn.com/2026/05/10/health/live-news/hantavirus-cruise-outbreak" target="_blank">CNN — Hantavirus cruise outbreak: Tenerife evacuation coverage (10 mayo 2026)</a>
+                <a class="source-item" href="https://www.theguardian.com/world/2026/may/11/it-was-either-this-or-the-pool-hantavirus-ship-becomes-latest-tenerife-tourist-attraction" target="_blank">The Guardian — Hantavirus ship becomes latest Tenerife tourist attraction (11 mayo 2026)</a>
+                <a class="source-item" href="https://www.theguardian.com/world/2026/may/11/hantavirus-outbreak-cruise-ship-cases-quarantine-isolation-passengers-death-rate-spread-risk-explained" target="_blank">The Guardian — Hantavirus outbreak: what happens now? Cases, quarantine, risk explained (11 mayo 2026)</a>
+                <a class="source-item" href="https://www.nytimes.com/2026/05/10/us/americans-hantavirus-ship-quarantine-nebraska.html" target="_blank">NYT — Americans from Hantavirus Ship Sent to Quarantine in Nebraska (10 mayo 2026)</a>
+                <a class="source-item" href="https://www.nytimes.com/2026/05/11/world/hantavirus-outbreak-cruise-ship-passengers.html" target="_blank">NYT — What Happens Now to the Hantavirus Cruise Passengers? (11 mayo 2026)</a>
+                <a class="source-item" href="https://www.euronews.com/health/2026/05/12/dutch-hospital-workers-quarantined-after-faulty-procedure-treating-hantavirus-patient" target="_blank">Euronews — Dutch hospital workers quarantined after faulty procedure treating hantavirus patient (12 mayo 2026)</a>
+                <a class="source-item" href="https://www.washingtonpost.com/world/2026/05/12/hantavirus-outbreak-hondius-cruise-ship/5241f292-4dec-11f1-97e7-22c6c29ff0d8_story.html" target="_blank">Washington Post — Hantavirus outbreak on MV Hondius cruise ship: 11 confirmed cases (12 mayo 2026)</a>
+                <a class="source-item" href="https://english.elpais.com/health/2026-05-12/what-happens-now-to-the-hondius-passengers-from-spains-strict-hospital-isolation-to-home-quarantine-with-walks-in-the-netherlands.html" target="_blank">El País — What happens now to the Hondius passengers: from Spain's strict isolation to home quarantine (12 mayo 2026)</a>
+                <a class="source-item" href="https://en.wikipedia.org/wiki/MV_Hondius_hantavirus_outbreak" target="_blank">Wikipedia — MV Hondius hantavirus outbreak</a>
+
+                <h3 style="margin-top: 1.5rem;">Sobre el brote — Anterior</h3>
                 <a class="source-item" href="https://es.euronews.com/salud/2026/05/05/la-oms-investiga-el-contagio-humano-de-hantavirus-tras-muertes-en-crucero" target="_blank">Euronews — La OMS investiga el contagio humano de hantavirus tras muertes en crucero (5 mayo 2026)</a>
                 <a class="source-item" href="https://news.un.org/es/story/2026/05/1541409" target="_blank">ONU News — La OMS: el brote de Hantavirus en un crucero es un "evento grave pero ..." (mayo 2026)</a>
                 <a class="source-item" href="https://cnnespanol.cnn.com/2026/05/03/salud/hantavirus-crucero-muertos-trax" target="_blank">CNN en Español — Brote de hantavirus en un crucero deja tres muertos y otros gravemente enfermos (3 mayo 2026)</a>
