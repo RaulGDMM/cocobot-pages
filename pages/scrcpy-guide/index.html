@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía scrcpy — Mirror de Android en Mac</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --warn: #d29922;
+    --error: #f85149;
+    --code-bg: #1c2128;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 60px 24px 40px;
+    background: linear-gradient(180deg, #161b22 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header .icon { font-size: 48px; margin-bottom: 12px; }
+  header h1 {
+    font-size: 2.4em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  header h1 span { color: var(--accent); }
+  header p.subtitle {
+    color: var(--text-muted);
+    font-size: 1.15em;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* Sections */
+  section { margin: 48px 0; }
+  section h2 {
+    font-size: 1.6em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section h2 .step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #000;
+    font-size: 0.75em;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  section h3 {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin: 24px 0 10px;
+    color: var(--accent);
+  }
+  p, li { margin-bottom: 10px; }
+  ul, ol { padding-left: 24px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+  code {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
+  }
+  p code, li code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: #ff7b72;
+  }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-left: 4px solid;
+  }
+  .callout.info { background: rgba(88,166,255,0.08); border-color: var(--accent); }
+  .callout.success { background: rgba(63,185,80,0.08); border-color: var(--accent2); }
+  .callout.warn { background: rgba(210,153,34,0.08); border-color: var(--warn); }
+  .callout.error { background: rgba(248,81,73,0.08); border-color: var(--error); }
+  .callout strong { display: block; margin-bottom: 4px; }
+  .callout.info strong::before { content: "ℹ️ "; }
+  .callout.success strong::before { content: "✅ "; }
+  .callout.warn strong::before { content: "⚠️ "; }
+  .callout.error strong::before { content: "❌ "; }
+
+  /* Table */
+  .table-wrapper { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92em;
+  }
+  th, td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  th { background: var(--surface); font-weight: 600; }
+  td { background: var(--code-bg); }
+
+  /* FAQ */
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin: 14px 0;
+  }
+  .faq-item .q {
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .faq-item .a { color: var(--text-muted); }
+
+  /* Shortcut keys */
+  kbd {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: inherit;
+    font-size: 0.85em;
+    box-shadow: 0 1px 0 var(--border);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 30px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85em;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.8em; }
+    .container { padding: 24px 16px 60px; }
+    pre { font-size: 0.82em; padding: 12px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="icon">📱💻</div>
+  <h1>Guía <span>scrcpy</span></h1>
+  <p class="subtitle">Cómo ver y controlar tu Android desde Mac — con grabación de pantalla incluida</p>
+</header>
+
+<div class="container">
+
+<!-- INTRO -->
+<section>
+  <h2>¿Qué es scrcpy?</h2>
+  <p><strong>scrcpy</strong> es una herramienta de código abierto (de Genymobile/Google) que permite <strong>espejar la pantalla de tu dispositivo Android</strong> en tu Mac en tiempo real, con muy baja latencia. Además puedes:</p>
+  <ul>
+    <li>Controlar el móvil desde el ratón y teclado del Mac</li>
+    <li>Grabar la sesión en vídeo (<code>.mp4</code>)</li>
+    <li>Tomar capturas de pantalla</li>
+    <li>Funcionar por USB o por WiFi (sin cables)</li>
+  </ul>
+  <div class="callout info">
+    <strong>¿Por qué scrcpy y no QuickTime?</strong>
+    QuickTime solo soporta capturas de pantalla de dispositivos iOS. Para Android, scrcpy es la alternativa estándar de la industria.
+  </div>
+</section>
+
+<!-- STEP 1: BREW -->
+<section>
+  <h2><span class="step">1</span> Instalar Homebrew</h2>
+  <p>Homebrew es el gestor de paquetes de macOS. Necesitarás Homebrew para instalar ADB y scrcpy de forma sencilla.</p>
+
+  <h3>¿Ya tienes Homebrew?</h3>
+  <p>Ejecuta en Terminal:</p>
+  <pre>brew --version</pre>
+  <p>Si ves algo como <code>Homebrew 4.x.x</code>, ya lo tienes y puedes saltar al paso 2. Si dice <code>command not found</code>, sigue con la instalación.</p>
+
+  <h3>Instalar Homebrew</h3>
+  <p>Abre <strong>Terminal</strong> (lo encuentras en <em>Aplicaciones → Utilidades → Terminal</em> o buscando con Spotlight <kbd>⌘</kbd> + <kbd>Espacio</kbd> → escribe "Terminal") y ejecuta:</p>
+  <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+  <p>El instalador te pedirá tu contraseña de Mac y te hará unas preguntas. Acepta todo. Al terminar, ejecuta:</p>
+  <pre>brew --version</pre>
+  <div class="callout success">
+    <strong>Verificación</strong>
+    Si ves la versión de Homebrew, ya estás listo para el siguiente paso.
+  </div>
+</section>
+
+<!-- STEP 2: ADB -->
+<section>
+  <h2><span class="step">2</span> Instalar ADB (Android Debug Bridge)</h2>
+  <p>ADB es la herramienta que permite comunicarse con el dispositivo Android desde el Mac. scrcpy lo necesita.</p>
+  <pre>brew install --cask android-platform-tools</pre>
+  <p>Verifica que se instaló correctamente:</p>
+  <pre>adb --version</pre>
+  <div class="callout warn">
+    <strong>Advertencia de seguridad de macOS</strong>
+    La primera vez que ejecutes <code>adb</code>, macOS puede mostrar: <em>"Apple no ha podido verificar que adb no contenga software malicioso..."</em>. Esto es una advertencia estándar — ADB es software oficial de Google y es seguro. Haz clic en el mensaje, ve a <strong>Ajustes del Sistema → Privacidad y seguridad</strong> y pulsa <strong>"Abrir de todos modos"</strong>.
+  </div>
+</section>
+
+<!-- STEP 3: USB DEBUGGING -->
+<section>
+  <h2><span class="step">3</span> Activar Depuración USB en Android</h2>
+  <p>Antes de conectar el móvil, necesitas activar las opciones de desarrollador y la depuración USB:</p>
+  <ol>
+    <li>Ve a <strong>Ajustes</strong> → <strong>Acerca del teléfono</strong></li>
+    <li>Busca <strong>"Número de compilación"</strong> (Build number)</li>
+    <li>Toca sobre él <strong>7 veces</strong> rápidamente — aparecerá un mensaje: "Ya eres desarrollador"</li>
+    <li>Vuelve atrás y entra en <strong>Opciones de desarrollador</strong> (ahora visible)</li>
+    <li>Activa <strong>Depuración USB</strong> (USB debugging)</li>
+  </ol>
+  <div class="callout info">
+    <strong>Nota</strong>
+    Algunos dispositivos Samsung ocultan la depuración USB dentro de un submenú. Busca "Depuración USB" directamente en la barra de búsqueda de Ajustes.
+  </div>
+</section>
+
+<!-- STEP 4: SCRCPY -->
+<section>
+  <h2><span class="step">4</span> Instalar scrcpy</h2>
+  <pre>brew install scrcpy</pre>
+  <p>Verifica:</p>
+  <pre>scrcpy --version</pre>
+</section>
+
+<!-- STEP 5: CONNECT -->
+<section>
+  <h2><span class="step">5</span> Conectar y usar</h2>
+
+  <h3>Conexión por USB (recomendada)</h3>
+  <ol>
+    <li>Conecta el Android al Mac con un cable USB</li>
+    <li>En la pantalla del móvil aparecerá un diálogo: <strong>"¿Permitir depuración USB desde este equipo?"</strong> — marca <em>"Siempre permitir"</em> y acepta</li>
+    <li>En Terminal del Mac ejecuta:</li>
+  </ol>
+  <pre>scrcpy</pre>
+  <p>¡Listo! Se abrirá una ventana con la pantalla del móvil en directo.</p>
+
+  <h3>Conexión por WiFi (sin cables)</h3>
+  <ol>
+    <li>Conecta primero por USB y ejecuta:</li>
+  </ol>
+  <pre>adb tcpip 5555</pre>
+  <ol start="2">
+    <li>Desconecta el cable USB</li>
+    <li>Encuentra la IP del móvil: <strong>Ajustes</strong> → <strong>Wi-Fi</strong> → toca la red conectada</li>
+    <li>Conecta por WiFi:</li>
+  </ol>
+  <pre>adb connect IP_DEL_MOVIL:5555</pre>
+  <p>Por ejemplo: <code>adb connect 192.168.1.42:5555</code></p>
+  <ol start="4">
+    <li>Ejecuta scrcpy sin argumentos:</li>
+  </ol>
+  <pre>scrcpy</pre>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <h2>Funciones útiles</h2>
+
+  <h3>Grabar vídeo</h3>
+  <pre>scrcpy --record=grabacion.mp4</pre>
+  <p>El vídeo se guarda en el directorio actual de Terminal. Para grabar en una carpeta específica:</p>
+  <pre>scrcpy --record=~/Videos/grabacion.mp4</pre>
+
+  <h3>Tomar captura de pantalla</h3>
+  <p>Con la ventana de scrcpy activa, pulsa:</p>
+  <pre><kbd>⌘ Cmd</kbd> + <kbd>⇧ Shift</kbd> + <kbd>S</kbd></pre>
+  <p>Se guarda como <code>scrcpy-screenshot-XXXX.png</code> en el directorio actual.</p>
+
+  <h3>Atajos de teclado</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>Atajo</th><th>Acción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><kbd>⌘ Cmd</kbd> + <kbd>V</kbd></td><td>Pegar texto del Mac al móvil</td></tr>
+      <tr><td><kbd>⌘ Cmd</kbd> + <kbd>⇧ Shift</kbd> + <kbd>S</kbd></td><td>Captura de pantalla</td></tr>
+      <tr><td><kbd>⌘ Cmd</kbd> + <kbd>Enter</kbd></td><td>Pantalla completa</td></tr>
+      <tr><td><kbd>⌘ Cmd</kbd> + <kbd>+</kbd> / <kbd>-</kbd></td><td>Zoom</td></tr>
+      <tr><td><kbd>⌘ Cmd</kbd> + <kbd>R</kbd></td><td>Rotar ventana</td></tr>
+      <tr><td><kbd>⌘ Cmd</kbd> + <kbd>Q</kbd></td><td>Cerrar scrcpy</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>S</kbd></td><td>Bloquear controles (scroll/zoom sin tocar el móvil)</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd></td><td>Apagar pantalla del móvil (sigue mirándose en Mac)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Opciones útiles de línea de comandos</h3>
+  <div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>Comando</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>scrcpy --max-size=1080</code></td><td>Forzar resolución 1080p</td></tr>
+      <tr><td><code>scrcpy --bit-rate=8M</code></td><td>Calidad de vídeo (por defecto 8 Mbps)</td></tr>
+      <tr><td><code>scrcpy --no-control</code></td><td>Solo ver (sin controles del ratón/teclado)</td></tr>
+      <tr><td><code>scrcpy --window-title="QA Test"</code></td><td>Poner nombre a la ventana</td></tr>
+      <tr><td><code>scrcpy --always-on-top</code></td><td>Siempre encima de otras ventanas</td></tr>
+      <tr><td><code>scrcpy --rotate=1</code></td><td>Rotar 90° (modo landscape)</td></tr>
+      <tr><td><code>scrcpy -d</code></td><td>Conectar al dispositivo por defecto (útil con varios)</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- TROUBLESHOOTING -->
+<section>
+  <h2>Resolución de problemas</h2>
+
+  <div class="faq-item">
+    <div class="q">❌ "ERROR: Command not found: [adb]"</div>
+    <div class="a">ADB no está instalado o no está en tu PATH. Ejecuta <code>brew install --cask android-platform-tools</code> y vuelve a intentarlo. Si ya lo instalaste, cierra y reabre Terminal.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ "scrcpy: device not found"</div>
+    <div class="a">Verifica: (1) Depuración USB activada en el móvil, (2) Diálogo de permiso aceptado en pantalla, (3) Cable USB funciona. Ejecuta <code>adb devices</code> — si no aparece el dispositivo, el problema es ADB, no scrcpy.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ "adb: command not found" después de instalar</div>
+    <div class="a">Cierra Terminal completamente y ábrelo de nuevo. Homebrew añade rutas al PATH que solo se cargan al iniciar una nueva sesión. También puedes ejecutar <code>source ~/.zshrc</code> para recargar sin cerrar.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ El móvil no aparece en <code>adb devices</code></div>
+    <div class="a">Prueba en este orden: (1) Cambia el cable USB, (2) Prueba otro puerto USB del Mac, (3) Desactiva y reactiva Depuración USB, (4) Desbloquea la pantalla del móvil y vuelve a aceptar el diálogo de permiso, (5) Reinicia el servidor ADB con <code>adb kill-server && adb start-server</code>.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ macOS bloquea adb — "software malicioso"</div>
+    <div class="a">Es una advertencia estándar de macOS. Ve a <strong>Ajustes del Sistema → Privacidad y seguridad</strong> → baja hasta ver el mensaje sobre adb → pulsa <strong>"Abrir de todos modos"</strong>. ADB es software oficial de Google.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ La conexión WiFi no funciona</div>
+    <div class="a">Asegúrate de que Mac y móvil están en la misma red WiFi. Verifica la IP del móvil (Ajustes → Wi-Fi → toca la red conectada). Si sigue fallando, prueba <code>adb connect IP_DEL_MOVIL:5555</code> manualmente. Algunos routers aíslan dispositivos — desactiva "AP Isolation" o "Client Isolation" en el router.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ La imagen se ve pixelada o con baja calidad</div>
+    <div class="a">Aumenta el bitrate: <code>scrcpy --bit-rate=16M</code>. También puedes forzar una resolución más alta: <code>scrcpy --max-size=1920</code>. Si usas WiFi, la calidad puede verse limitada por la velocidad de tu red.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ Samsung: no encuentro "Depuración USB"</div>
+    <div class="a">En Samsung, dentro de Opciones de desarrollador, busca el submenú <strong>"E/S depuración"</strong> o <strong>"Debugging"</strong>. La Depuración USB está dentro. También puedes buscar "Depuración USB" directamente en la barra de búsqueda de Ajustes.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="q">❌ Tengo varios dispositivos conectados</div>
+    <div class="a">Usa <code>adb devices</code> para ver la lista y sus IDs. Conecta a uno específico con: <code>scrcpy -s ID_DEL_DISPOSITIVO</code></div>
+  </div>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section>
+  <h2>Referencia rápida (TL;DR)</h2>
+  <pre>brew install --cask android-platform-tools  # ADB
+brew install scrcpy                          # scrcpy
+
+# Conectar por USB
+scrcpy
+
+# Grabar
+scrcpy --record=~/Videos/test.mp4
+
+# Conexión WiFi (tras configurar con USB)
+adb tcpip 5555
+adb connect 192.168.1.XX:5555
+scrcpy</pre>
+</section>
+
+</div>
+
+<footer>
+  <p>Guía interna · scrcpy es software libre de <a href="https://github.com/Genymobile/scrcpy" style="color: var(--accent);">Genymobile</a></p>
+</footer>
+
+</body>
+</html>
