@@ -570,23 +570,15 @@ scrcpy</pre>
 
 <!-- Cocobot Stats tracking -->
 <script>
-(function() {
-  var worker = 'https://cocobot-stats.rgarciademarina.workers.dev';
-  var path = location.pathname;
-  // Track visit
-  fetch(worker + '/track', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({path: path, url: location.href})
-  }).catch(function(){});
-  // Fetch visit count
-  fetch(worker + '/count' + encodeURIComponent(path))
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      var el = document.getElementById('visit-counter');
-      if (el && d.count !== undefined) {
-        el.textContent = '👁️ ' + d.count + ' visitas';
-      }
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/scrcpy-guide';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
     })
     .catch(function(){});
 })();
