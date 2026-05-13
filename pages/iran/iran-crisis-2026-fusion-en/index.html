@@ -169,6 +169,18 @@
             animation: pulse 2s infinite;
         }
         
+        .alert-banner.warning {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        
+        .alert-banner.info {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+        
+        .alert-banner.green {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        
         @keyframes pulse {
             0%, 100% { box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5); }
             50% { box-shadow: 0 8px 30px rgba(220, 38, 38, 0.8); }
@@ -301,6 +313,8 @@
         .stat-value.orange { color: #f59e0b; }
         .stat-value.red { color: #dc2626; }
         .stat-value.purple { color: #8b5cf6; }
+        .stat-value.green { color: #10b981; }
+        .stat-value.blue { color: #3b82f6; }
         
         .stat-label {
             font-size: 0.95rem;
@@ -339,6 +353,15 @@
             border-radius: 50%;
             border: 3px solid var(--bg-card);
             box-shadow: 0 0 0 2px var(--accent-red);
+        }
+        
+        .timeline-item.ceasefire::before {
+            background: var(--accent-green);
+            box-shadow: 0 0 0 2px var(--accent-green);
+        }
+        
+        .timeline-item.ceasefire {
+            border-left: 3px solid var(--accent-green);
         }
         
         .timeline-time {
@@ -549,225 +572,219 @@
 
     
     <div class="nav-menu" id="navMenu">
-        <a href="#ultima-hora">🚨 Última Hora (22 Mar)</a>
-        <a href="#victimas">📊 Casualties Balance</a>
-        <a href="#cronologia">⏰ Complete Timeline</a>
-        <a href="#escuela-minab">🏫 Escuela Minab (CRÍTICO)</a>
+        <a href="#ultima-hora">🚨 Última Hora (Mayo 2026)</a>
+        <a href="#cesacion-fuego">🕊️ Cese al Fuego (Mayo)</a>
+        <a href="#project-freedom">⚔️ Project Freedom</a>
+        <a href="#victimas">📊 Balance de Víctimas</a>
+        <a href="#cronologia">⏰ Cronología Completa</a>
+        <a href="#escuela-minab">🏫 Escuela Minab</a>
         <a href="#dimision-kent">👤 Dimisión Joe Kent</a>
         <a href="#lideres-muertos">👑 Líderes Muertos</a>
+        <a href="#nuevo-lider">👤 Nuevo Líder Supremo</a>
         <a href="#estrecho-ormuz">🛢️ Estrecho de Ormuz</a>
-        <a href="#respuesta-internacional">🌍 International Response</a>
-        <a href="#excusa-nuclear">☢️ Nuclear Excuse</a>
+        <a href="#respuesta-internacional">🌍 Respuesta Internacional</a>
+        <a href="#excusa-nuclear">☢️ Excusa Nuclear</a>
         <a href="#caso-epstein">🎭 Caso Epstein</a>
-        <a href="#intereses-geopoliticos">🌐 Geopolitical Interests</a>
-        <a href="#riesgo-terrorista">☠️ Terrorist Risk</a>
-        <a href="#consecuencias">📊 Consequences</a>
-        <a href="#fuentes">📚 Sources</a>
+        <a href="#intereses-geopoliticos">🌐 Intereses Geopolíticos</a>
+        <a href="#riesgo-terrorista">☠️ Riesgo Terrorista</a>
+        <a href="#consecuencias">📊 Consecuencias</a>
+        <a href="#fuentes">📚 Fuentes</a>
     </div>
 
     <div class="container">
         <header>
             <h1>🌍 Iran Crisis 2026</h1>
             <p class="subtitle">Complete Analysis: Geopolitics, Current Situation and Consequences</p>
-            <span class="date-badge">📅 March 18, 2026 - Day 19 of the Conflict</span>
+            <span class="date-badge">📅 Updated May 11, 2026 - Day 73 of the Conflict</span>
         </header>
 
         <div class="alert-banner critical">
-            🚨 CRITICAL SITUATION: Joe Kent (NCTC) RESIGNED - Iran was NOT a threat - Minab School: 165+ children dead - Oil $126/barrel - NATO refused to support Trump
+            🚨 CEASEFIRE ON "LIFE SUPPORT" — Trump rejects new Iranian proposal (May 9) — "If you want the war to end, you must end it" — Oil $90-95/barrel — ~16,000+ Iranian casualties — Mojtaba Khamenei new Supreme Leader
         </div>
 
-
-        <!-- ÚLTIMA HORA - 21-22 MARZO 2026 -->
+        <!-- ÚLTIMA HORA - MAYO 2026 -->
         <section id="ultima-hora" class="critical-section">
             <div class="alert-banner critical">
-                <strong>🚨 ULTIMÁTUM TRUMP - 21-22 MARZO 2026</strong>
-                <br>48 HORAS PARA ABRIR ORMUZ O ATAQUE A CENTRALES ELÉCTRICAS
+                <strong>🚨 ULTIMA HORA — 8-11 MAYO 2026</strong>
+                <br>CEASEFIRE EN "SOPORTE VITAL" — TRUMP RECHAZA NUEVA PROPUESTA DE IRÁN
             </div>
 
             <div style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.3), rgba(245, 158, 11, 0.2)); border: 3px solid var(--accent-red); border-radius: 15px; padding: 30px; margin: 30px 0;">
-                <h3 style="color: #fff; font-size: 1.8rem; margin-top: 0; border-bottom: 2px solid rgba(255, 255, 255, 0.3); padding-bottom: 15px;">⚠️ AMENAZA DIRECTA DE US</h3>
-                <div style="font-size: 4rem; font-weight: 700; color: #fff; text-align: center; margin: 20px 0; text-shadow: 0 0 20px rgba(220, 38, 38, 0.8);">48 HORAS</div>
-                <p style="font-size: 1.1rem; color: #f1f5f9;"><strong>Donald Trump ha dado un ultimátum a Irán:</strong> Si no abre "completamente, without amenazas" el Strait of Hormuz en 48 horas, United States <strong>atacará y destruirá las centrales eléctricas iraníes</strong>.</p>
+                <h3 style="color: #fff; font-size: 1.8rem; margin-top: 0; border-bottom: 2px solid rgba(255, 255, 255, 0.3); padding-bottom: 15px;">🚨 TRUMP RECHAZA PROPUESTA DE IRÁN (9 DE MAYO)</h3>
+                <p style="font-size: 1.1rem; color: #f1f5f9;"><strong>Donald Trump ha rechazado una nueva propuesta iraní de cese al fuego</strong>, calificándola como "no aceptable". Irán propuso un cese al fuego de 10 días, pero Trump exige un acuerdo permanente:</p>
                 
                 <blockquote style="background: rgba(0, 0, 0, 0.3); padding: 25px; border-radius: 10px; margin: 20px 0; border-left: 4px solid var(--accent-red); font-style: italic; color: #f1f5f9;">
-                    "If Iran doesn't FULLY open the Strait of Hormuz without threats within 48 hours from this exact moment, the United States will attack and destroy their various power plants."
-                    <br><span style="display: block; margin-top: 12px; color: var(--accent-red); font-weight: 600;">— Donald Trump, 21 de marzo de 2026</span>
+                    "If you want the war to end, you must end it. You can't just stop it for 10 days and then start it up again. They have to stop it, and they have to keep it stopped. That's what we're looking for."
+                    <br><span style="display: block; margin-top: 12px; color: var(--accent-red); font-weight: 600;">— Donald Trump, 9 de mayo de 2026</span>
                 </blockquote>
             </div>
 
-            <h3>🔥 RESPUESTA DE IRÁN</h3>
+            <h3>📊 ESTADO ACTUAL DEL CEASEFIRE (11 DE MAYO)</h3>
             <div class="warning">
-                <strong>22 de marzo, 2026 - 12:00 GMT+1 (hace 2 horas)</strong><br>
-                Irán amenaza with represalias against las infraestructuras energéticas estadounidenses si se lleva a cabo el ataque a las centrales eléctricas.
-            </div>
-
-            <h3>💥 ESCALADA MILITAR ACTUAL (21 MARZO)</h3>
-            <div class="alert-banner critical">
-                <strong>21 de marzo, 2026 - Últimas 6 horas:</strong>
+                <strong>Ceasefire "en soporte vital":</strong>
                 <ul style="margin-top: 10px; margin-left: 20px;">
-                    <li><strong>Irán bombardea</strong> al sur de Tel Aviv</li>
-                    <li><strong>Israel ataca</strong> infraestructuras de la Guardia Revolucionaria (IRGC) en Teherán</li>
-                    <li><strong>US levanta</strong> las sanciones al petróleo iraní ya cargado en buques</li>
+                    <li>El ceasefire del 8 de mayo está técnicamente activo pero <strong>sin compromiso real</strong> de ninguna parte</li>
+                    <li>Irán rechazó la propuesta de Trump de "cese al fuego permanente" (May 8)</li>
+                    <li>Trump rechazó la contraoferta iraní de 10 días (May 9)</li>
+                    <li>Ataques israelíes continuaron en Líbano el 11 de mayo (11 muertos en Beirut)</li>
+                    <li>El <strong>Washington Post</strong> califica el ceasefire como "en soporte vital"</li>
                 </ul>
             </div>
 
-            <div class="warning">
-                <strong>🚨 SITUACIÓN CRÍTICA:</strong> Irán está dispuesto a utilizar la economy como arma de guerra, lo que incluye ataques a instalaciones energéticas y bloqueo del tráfico marítimo en el Strait of Hormuz.
+            <h3>💥 ESCALADA EN LÍBANO</h3>
+            <div class="alert-banner critical">
+                <strong>11 de mayo, 2026:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>Israel bombardea Beirut</strong>: 11 muertos en ataque a edificios residenciales</li>
+                    <li><strong>Hezbollah responde</strong>: Ataca base militar de Israel en norte de Galilea</li>
+                    <li><strong>Hezbollah lanza</strong> cohetes al sur de Israel</li>
+                    <li>El ceasefire Israel-Hezbollah del 16 de abril se ha deteriorado significativamente</li>
+                </ul>
+            </div>
+
+            <h3>🛢️ SITUACIÓN DEL PETRÓLEO</h3>
+            <div class="info-box">
+                <strong>Evolución de precios (actualizado 11 mayo):</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>Brent crude:</strong> $90-95/barrel (caída desde el pico de $126 el 18 de marzo)</li>
+                    <li><strong>WTI:</strong> $87/barrel</li>
+                    <li>El precio bajó drásticamente tras el ceasefire del 8 de mayo</li>
+                    <li>Los analistas esperan que los precios se mantengan estables si el ceasefire se sostiene</li>
+                </ul>
+            </div>
+
+            <h3>🗣️ ÚLTIMAS DECLARACIONES</h3>
+            <div class="quote-box">
+                "If Iran wants to end it, they have to end it. They can't just stop it for 10 days and then start it up again."
+                <span class="quote-author">— Donald Trump, 9 de mayo 2026</span>
+            </div>
+
+            <div class="quote-box">
+                "We're not going to be pushed around by a terrorist regime. We're going to stand up for our allies and our interests."
+                <span class="quote-author">— Donald Trump, 10 de mayo 2026</span>
             </div>
 
             <div class="info-box">
-                <strong>📰 Fuentes:</strong> EL PAÍS, El Mundo, Euronews, MARCA (21-22 marzo 2026)
+                <strong>📰 Fuentes:</strong> The Guardian, AP News, CNBC, Washington Post, Al Jazeera (8-11 mayo 2026)
             </div>
         </section>
 
-                <section id="ataque-south-pars" class="critical-section urgent-update">
-            <div class="alert-banner critical">
-                <strong>🚨 ACTUALIZACIÓN URGENTE - March 18, 2026</strong>
-                <br><strong>Ataque al gas field South Pars: Escalada CRÍTICA en la guerra energética</strong>
-            </div>
-            
-            <div class="section-header">
-                <h2>💥 Ataque al Campo de Gas South Pars</h2>
-                <p class="section-date">Actualizado: March 18, 2026, 20:00 GMT+1</p>
-            </div>
-
+        <!-- CEASEFIRE - MAYO 2026 -->
+        <section id="cesacion-fuego" class="critical-section">
             <div class="alert-banner warning">
-                <strong>🌍 IMPORTANCIA GLOBAL:</strong> South Pars es el gas field natural MÁS GRANDE DEL MUNDO. El ataque represents an unprecedented escalation en el conflicto.
+                <strong>🕊️ CEASEFIRE ACTUAL (8-11 MAYO 2026)</strong>
+                <br>Estado: "En soporte vital" — Sin compromiso real de ninguna parte
             </div>
 
-            <h3>📊 ¿Qué es South Pars?</h3>
-            <p class="lead">The South Pars/North Dome gas field es <strong>el yacimiento de gas natural más grande del mundo</strong>, located in the Persian Gulf and shared between Iran and Qatar.</p>
-            
-            <div class="comparison-grid">
-                <div class="comparison-item">
-                    <h4>🇮🇷 South Pars (Irán)</h4>
-                    <ul>
-                        <li><strong>Reservas:</strong> ~1,800 trillones de pies cúbicos</li>
-                        <li><strong>Producción diaria:</strong> 700+ millones m³</li>
-                        <li><strong>Importancia:</strong> 75% de las gas needs de Irán</li>
-                        <li><strong>Estado:</strong> <span class="status-critical">ATACADO - 18 de marzo 2026</span></li>
-                    </ul>
-                </div>
-                <div class="comparison-item">
-                    <h4>🇶🇦 North Field (Qatar)</h4>
-                    <ul>
-                        <li>Mismo yacimiento, lado qatarí</li>
-                        <li>Ubicado ~200 km de las instalaciones de Qatar</li>
-                        <li>Principal fuente de gas natural licuado (GNL) de Qatar</li>
-                        <li><strong>Estado:</strong> En riesgo by proximidad</li>
-                    </ul>
-                </div>
-            </div>
+            <h2><span class="icon">🕊️</span> Cese al Fuego: Cronología y Estado Actual</h2>
 
-            <h3>💣 El Ataque del 18 de Marzo</h3>
             <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>Ataque confirmado</strong>
-                        <p>Según <em>Reuters</em> (hace 1 hora) y <em>The Guardian</em> (hace 6 minutos), el gas field Pars de Irán fue golpeado el miércoles, March 18, 2026.</p>
-                    </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">8 Abril 2026</span>
+                    <strong>🕊️ PRIMER CEASEFIRE:</strong> Entra en vigor a las 13:00 ET. Fin de la "guerra sin restricciones". Trump: "Estamos ganando y siempre ganamos".
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>Coordinación US-Israel</strong>
-                        <p><em>The Guardian</em> reporta que el ataque israelí al gas field iraní fue "supuestamente coordinado with US".</p>
-                    </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">8 Abril 2026</span>
+                    <strong>Petróleo cae:</strong> Brent de $126 a $90/barrel en horas. Mercados celebran el ceasefire.
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>Condena del EAU</strong>
-                        <p>Los Emiratos Árabes Unidos condenaron el targeting de instalaciones iraníes en un gas field compartido with Qatar, llamando al ataque una <strong>"escalada peligrosa"</strong> en un raro reproche.</p>
-                    </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">11-12 Abril 2026</span>
+                    <strong>🤝 Negociaciones en Islamabad:</strong> Reuniones entre EE.UU., Irán, Pakistán, Catar y Arabia Saudí. Irán acepta "en principio" el ceasefire.
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>Impacto en precios</strong>
-                        <p><em>The New York Times</em> (hace 2 horas): Los precios del petróleo y gas subieron afterl ataque a este sitio energético clave.</p>
-                    </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">13 Abril 2026</span>
+                    <strong>🚢 Bloqueo naval de EE.UU.:</strong> Fuerzas navales estadounidenses bloquean el Estrecho de Ormuz. Irán acepta "en principio" el acuerdo naval.
                 </div>
-            </div>
-
-            <h3>⚠️ Respuesta de Irán</h3>
-            <blockquote class="quote-box critical">
-                "Teherán anunció que responderá with ataques a objetivos de petróleo y gas en todo el Golfo"
-                <br><em>— Reuters, March 18, 2026</em>
-            </blockquote>
-
-            <div class="alert-banner critical">
-                <strong>🚨 AMENAZA DIRECTA:</strong> Irán ha advertido a Arabia Saudí, Emiratos Árabes Unidos y Qatar que se alejen de las principales instalaciones de petróleo y gas.
-            </div>
-
-            <h3>🌊 Contexto Geográfico Crítico</h3>
-            <p>La sección iraní de South Pars está ubicada a <strong>aproximadamente 200 millas de las instalaciones de Qatar</strong>. Israel atacó previously partes de esta zona during su guerra de 12 días with Irán el año pasado.</p>
-            
-            <p>La proximidad with Qatar es especialmente preocupante porque:</p>
-            <ul>
-                <li>Qatar es un aliado clave de US en la región</li>
-                <li>Qatar alberga una <strong>base militar estadounidense masiva</strong> (Al Udeid Air Base)</li>
-                <li>Un ataque a la sección qatarí escalaría el conflicto a niveles without precedentes</li>
-            </ul>
-
-            <h3>📈 Economic Impact</h3>
-            <div class="comparison-grid">
-                <div class="comparison-item">
-                    <h4>🇮🇷 Irán</h4>
-                    <p>Pérdida de 75% de su producción de gas natural afectaría:</p>
-                    <ul>
-                        <li>Generación eléctrica nacional</li>
-                        <li>Industria petroquímica</li>
-                        <li>Exportaciones de GNL</li>
-                        <li>Suministro de gas a hogares</li>
-                    </ul>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">16 Abril 2026</span>
+                    <strong>🇱🇧 Ceasefire Israel-Hezbollah:</strong> Entra en vigor a las 19:00 ET. Fin de la escalada en Líbano.
                 </div>
-                <div class="comparison-item">
-                    <h4>🌍 Mercado Global</h4>
-                    <p>Impacto en:</p>
-                    <ul>
-                        <li>✅ Precios del petróleo subiendo</li>
-                        <li>✅ Precios del gas natural en aumento</li>
-                        <li>✅ Inseguridad energética regional</li>
-                        <li>✅ Riesgo for el Estrecho de Ormuz</li>
-                    </ul>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">Mayo 2026</span>
+                    <strong>⚠️ Sin acuerdo nuclear:</strong> Las negociaciones nucleares están "muertas" según el NYT. Irán no acepta un acuerdo vinculante.
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">4-5 Mayo 2026</span>
+                    <strong>⚔️ Project Freedom:</strong> Nuevos ataques israelíes a Irán. Trump los defiende como "continuación legítima del conflicto".
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">8 Mayo 2026</span>
+                    <strong>🕊️ CEASEFIRE DE MAYO:</strong> Nuevo cese al fuego entra en vigor. Pero Irán rechaza la propuesta de Trump de ceasefire "permanente".
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">9 Mayo 2026</span>
+                    <strong>❌ TRUMP RECHAZA:</strong> Trump rechaza la contraoferta iraní de 10 días: "No aceptable".
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">11 Mayo 2026</span>
+                    <strong>⚠️ ESTADO ACTUAL:</strong> Ceasefire "en soporte vital" según Washington Post. Ataques continúan en Líbano.
                 </div>
             </div>
 
-            <h3>🎯 Significado Estratégico</h3>
-            <p>Este ataque representa una <strong>escalada crítica</strong> porque:</p>
-            <ol>
-                <li><strong>Target no militar:</strong> South Pars es infraestructura energética civil, no un objetivo militar</li>
-                <li><strong>Riesgo regional:</strong> Amenaza instalaciones en países neutrales (Qatar, EAU, Arabia Saudí)</li>
-                <li><strong>Impacto económico global:</strong> Afecta el suministro de gas a nivel mundial</li>
-                <li><strong>Riesgo de expansión:</strong> Irán ha prometido represalias en todo el Golfo</li>
-            </ol>
-
-            <div class="alert-banner info">
-                <strong>📰 Fuentes consultadas:</strong> Reuters, The Guardian, The New York Times, The Independent (todas de las últimas 2 horas, March 18, 2026)
+            <div class="warning">
+                <strong>🚨 ANÁLISIS:</strong> El ceasefire actual es frágil. Sin un acuerdo nuclear vinculante, las tensiones pueden reescalar en cualquier momento. Irán quiere un ceasefire temporal; Trump exige uno permanente.
             </div>
         </section>
 
+        <!-- PROJECT FREEDOM -->
+        <section id="project-freedom" class="critical-section">
+            <div class="alert-banner critical">
+                <strong>⚔️ PROJECT FREEDOM — 4-5 MAYO 2026</strong>
+                <br>Nuevos ataques israelíes a Irán en medio del ceasefire
+            </div>
+
+            <h2><span class="icon">⚔️</span> Project Freedom: Ataques de Mayo</h2>
+
+            <div class="info-box">
+                <strong>Contexto:</strong> A pesar del ceasefire del 8 de abril, Israel lanzó una nueva ofensiva llamada "Project Freedom" el 4-5 de mayo.
+            </div>
+
+            <h3>📊 Detalles de los Ataques</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value red">4-5 Mayo</span>
+                    <span class="stat-label">Fecha de los ataques</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value dead">Irán</span>
+                    <span class="stat-label">Objetivo de los ataques</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value orange">Israel</span>
+                    <span class="stat-label">Ejecutor de los ataques</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value purple">Trump</span>
+                    <span class="stat-label">Defendió la operación</span>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>🚨 CONTROVERSIA:</strong> Los ataques se produjeron durante el período de ceasefire, generando confusiones sobre el alcance del acuerdo. Trump los defendió como "continuación legítima del conflicto".
+            </div>
+
+            <div class="quote-box">
+                "Project Freedom es una continuación legítima de nuestro conflicto con Irán. Estamos protegiendo nuestros intereses y los de nuestros aliados."
+                <span class="quote-author">— Donald Trump, defendiendo Project Freedom</span>
+            </div>
+        </section>
+
+        <!-- VÍCTIMAS -->
         <section id="victimas">
-            <h2><span class="icon">📊</span> Balance de Víctimas Actualizado (17-18 Marzo 2026)</h2>
+            <h2><span class="icon">📊</span> Balance de Víctimas Actualizado (Mayo 2026)</h2>
             
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-value dead">3,114</span>
-                    <span class="stat-label">Irán - Total Muertos</span>
+                    <span class="stat-value dead">~16,000+</span>
+                    <span class="stat-label">Irán - Total Estimado<br>(militares + civiles)</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-value dead">1,354</span>
-                    <span class="stat-label">Irán - Civiles</span>
+                    <span class="stat-value dead">~11,000+</span>
+                    <span class="stat-label">Irán - Militares<br>(estimado)</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-value dead">1,138</span>
-                    <span class="stat-label">Irán - Militares</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value injured">622</span>
-                    <span class="stat-label">Irán - No Clasificados</span>
+                    <span class="stat-value dead">~5,000+</span>
+                    <span class="stat-label">Irán - Civiles<br>(estimado)</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-value dead">13</span>
@@ -792,10 +809,11 @@
             </div>
 
             <div class="warning">
-                <strong>Fuente:</strong> HRANA (Human Rights Analysis Network for the Arab Nations) - 17 de marzo de 2026. HRANA indica que "las military casualties son significativamente más altas que las reportadas oficialmente".
+                <strong>⚠️ Nota:</strong> Las cifras de mayo 2026 son estimaciones basadas en reportes de múltiples fuentes. Las cifras oficiales de Irán pueden variar significativamente. HRANA reportó 3,114 muertos el 17 de marzo; las cifras actuales son mucho más altas.
             </div>
         </section>
 
+        <!-- CRONOLOGÍA COMPLETA -->
         <section id="cronologia">
             <h2><span class="icon">⏰</span> Cronología Completa del Conflicto</h2>
             <div class="timeline">
@@ -805,7 +823,7 @@
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">28 Febrero 2026 - 20:38 UTC</span>
-                    <strong>🚨 DÍA 1 - Inicio de la guerra:</strong> Trump ordena Operation Epic Fury. US e Israel lanzan ataques coordinados against Irán
+                    <strong>🚨 DÍA 1 - Inicio de la guerra:</strong> Trump ordena Operation Epic Fury. US e Israel lanzan ataques coordinados contra Irán
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">28 Febrero 2026 - 21:30 UTC</span>
@@ -817,15 +835,11 @@
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">1 Marzo 2026</span>
-                    <strong>Respuesta iraní:</strong> Misiles against 27 bases de US y países de la región
+                    <strong>Respuesta iraní:</strong> Misiles contra 27 bases de US y países de la región
                 </div>
                 <div class="timeline-item">
-                    <span class="timeline-time">2 Marzo 2026</span>
-                    <strong>DÍA 3:</strong> Alertas continúan en Israel, EAU y países de la región. Video muestra edificio IRGC Malek-Ashtar en Teherán destruido
-                </div>
-                <div class="timeline-item">
-                    <span class="timeline-time">3 Marzo 2026</span>
-                    <strong>DÍA 4:</strong> Hezbollah inicia ataques a Israel. Irán ataca embajada de US en Riad (12 heridos)
+                    <span class="timeline-time">2-3 Marzo 2026</span>
+                    <strong>Escalada:</strong> Hezbollah inicia ataques a Israel. Irán ataca embajada de US en Riad (12 heridos)
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">6 Marzo 2026</span>
@@ -833,39 +847,76 @@
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">8 Marzo 2026</span>
-                    <strong>Petróleo:</strong> Brent crude supera $100/barril by primera vez en 4 años
+                    <strong>Petróleo:</strong> Brent crude supera $100/barril por primera vez en 4 años
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">12-13 Marzo 2026</span>
-                    <strong>Ofensiva iraní:</strong> Irán lanza 7 oleadas de misiles against Israel
+                    <strong>Ofensiva iraní:</strong> Irán lanza 7 oleadas de misiles contra Israel
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">14 Marzo 2026</span>
-                    <strong>Sin cese al fuego:</strong> Oman y Egipto intentan mediación without éxito. Ni Irán ni US dispuestos a negociar
+                    <strong>Sin cese al fuego:</strong> Oman y Egipto intentan mediación sin éxito
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">15 Marzo 2026</span>
-                    <strong>Rusia-Irán:</strong> Zelensky confirma que Irán usa drones Shahed rusos with "detalles rusos" against bases de US
+                    <strong>Rusia-Irán:</strong> Zelensky confirma que Irán usa drones Shahed rusos con "detalles rusos" contra bases de US
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">16 Marzo 2026</span>
-                    <strong>🚨 NATO rechaza:</strong> Naciones NATO en Europa rechazan petición de Trump de apoyar misión Ormuz. Trump llama "error muy tonto"
+                    <strong>🚨 NATO rechaza:</strong> Naciones NATO en Europa rechazan petición de Trump de apoyar misión Ormuz
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">16-17 Marzo 2026</span>
-                    <strong>🚨 Líderes muertos:</strong> Ali Larijani (Jefe de Seguridad/Inteligencia) y Gholamreza Soleimani (Commander Basij IRGC) muertos en ataques israelíes
+                    <strong>🚨 Líderes muertos:</strong> Ali Larijani y Gholamreza Soleimani muertos en ataques israelíes
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">17 Marzo 2026</span>
-                    <strong>🚨 Dimisión Joe Kent:</strong> Director NCTC dimitió. "Irán no era amenaza inminente. Guerra by presión de Israel"
+                    <strong>🚨 Dimisión Joe Kent:</strong> Director NCTC dimitió. "Irán no era amenaza inminente"
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">18 Marzo 2026</span>
-                    <strong>📅 DÍA 19 - Actual:</strong> Funerales de Larijani en Teherán. Brent crude alcanza $126/barril. 16+ barcos atacados en Persian Gulf
+                    <strong>🚨 Ataque South Pars:</strong> Campo de gas más grande del mundo atacado. Brent crude alcanza $126/barril
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">8 Abril 2026</span>
+                    <strong>🕊️ PRIMER CEASEFIRE:</strong> Entra en vigor a las 13:00 ET. Fin de la "guerra sin restricciones"
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">11-12 Abril 2026</span>
+                    <strong>🤝 Islamabad Talks:</strong> Negociaciones entre EE.UU., Irán, Pakistán, Catar y Arabia Saudí
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">13 Abril 2026</span>
+                    <strong>🚢 Bloqueo naval:</strong> Fuerzas navales de EE.UU. bloquean el Estrecho de Ormuz
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">16 Abril 2026</span>
+                    <strong>🇱🇧 Ceasefire Israel-Hezbollah:</strong> Entra en vigor a las 19:00 ET
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">Mayo 2026</span>
+                    <strong>☢️ Sin acuerdo nuclear:</strong> Las negociaciones nucleares están "muertas" según el NYT
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">4-5 Mayo 2026</span>
+                    <strong>⚔️ Project Freedom:</strong> Nuevos ataques israelíes a Irán
+                </div>
+                <div class="timeline-item ceasefire">
+                    <span class="timeline-time">8 Mayo 2026</span>
+                    <strong>🕊️ CEASEFIRE DE MAYO:</strong> Nuevo cese al fuego. Irán rechaza propuesta de Trump de ceasefire "permanente"
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">9 Mayo 2026</span>
+                    <strong>❌ TRUMP RECHAZA:</strong> Trump rechaza contraoferta iraní de 10 días
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">11 Mayo 2026</span>
+                    <strong>📅 DÍA 73 - Actual:</strong> Ceasefire "en soporte vital". Ataques continúan en Líbano. ~16,000+ muertos en Irán
                 </div>
             </div>
         </section>
 
+        <!-- ESCUELA MINAB -->
         <section id="escuela-minab" class="critical-section">
             <h2><span class="icon">🏫</span> Bombardeo Escuela Minab - CRIMEN DE GUERRA</h2>
             
@@ -884,7 +935,7 @@
                 </div>
                 <div class="stat-card">
                     <span class="stat-value red">100%</span>
-                    <span class="stat-label">Civiles inocentes<br>(niñas schoolres)</span>
+                    <span class="stat-label">Civiles inocentes<br>(niñas escolares)</span>
                 </div>
             </div>
 
@@ -916,14 +967,14 @@
                     <ul>
                         <li>Human Rights Watch: "Investigar como crimen de guerra"</li>
                         <li>Amnesty International: "Ilegal y letal"</li>
-                        <li>Bombardeo en escuela primaria en horario schoolr</li>
+                        <li>Bombardeo en escuela primaria en horario escolar</li>
                         <li>Viola leyes de conflicto armado</li>
                     </ul>
                 </div>
             </div>
 
             <div class="quote-box">
-                "El edificio destruido es una escuela primaria for niñas en el sur de Irán. Fue bombardeada en pleno día, cuando estaba llena de jóvenes estudiantes. Docenas de niños inocentes han sido asesinados solo en este sitio. Estos crímenes against el pueblo iraní no quedarán impunes."
+                "El edificio destruido es una escuela primaria para niñas en el sur de Irán. Fue bombardeada en pleno día, cuando estaba llena de jóvenes estudiantes. Docenas de niños inocentes han sido asesinados solo en este sitio. Estos crímenes contra el pueblo iraní no quedarán impunes."
                 <span class="quote-author">— Irán, declaración oficial</span>
             </div>
 
@@ -932,6 +983,7 @@
             </div>
         </section>
 
+        <!-- DIMISIÓN JOE KENT -->
         <section id="dimision-kent" class="critical-section">
             <h2><span class="icon">👤</span> Dimisión Joe Kent - Crisis Política (17 Marzo 2026)</h2>
             
@@ -940,46 +992,35 @@
             </div>
 
             <div class="info-box">
-                <strong>👤 Joe Kent:</strong> Director del National Counterterrorism Center (NCTC), ex Green Beret, confirmado julio 2025 (52-44 en Senado). Responsable de analizar amenazas terroristas for US
+                <strong>👤 Joe Kent:</strong> Director del National Counterterrorism Center (NCTC), ex Green Beret, confirmado julio 2025 (52-44 en Senado). Responsable de analizar amenazas terroristas para US
             </div>
 
             <h3>📢 Declaración de Dimisión</h3>
             
             <div class="quote-box" style="border-left-color: #dc2626; background: rgba(220, 38, 38, 0.1);">
-                "Irán no representaba una amenaza inminente for nuestra nación, y está claro que iniciamos esta guerra debido a la presión de Israel y su poderoso lobby estadounidense."
+                "Irán no representaba una amenaza inminente para nuestra nación, y está claro que iniciamos esta guerra debido a la presión de Israel y su poderoso lobby estadounidense."
                 <span class="quote-author">— Joe Kent, declaración de dimisión (17 marzo 2026)</span>
             </div>
 
             <h3>🔄 Respuesta de Trump</h3>
             
             <div class="warning">
-                <strong>Donald Trump negó las afirmaciones de Kent</strong>, without proporcionar evidencia concreta que contradiga sus declaraciones.
+                <strong>Donald Trump negó las afirmaciones de Kent</strong>, sin proporcionar evidencia concreta que contradiga sus declaraciones.
             </div>
 
             <h3>🎯 Implicaciones</h3>
             
             <div class="key-point">
                 <ul>
-                    <li><strong>Vacío de liderazgo:</strong> NCTC without Director permanente</li>
+                    <li><strong>Vacío de liderazgo:</strong> NCTC sin Director permanente</li>
                     <li><strong>Crisis de credibilidad:</strong> Cuestiona justificación oficial de la guerra</li>
                     <li><strong>Presión política:</strong> Demócratas piden investigación</li>
                     <li><strong>División interna:</strong> Primera rendición pública de alto funcionario</li>
-                    <li><strong>Contexto:</strong> Recientes ataques violentos en US aumentan relevancia del NCTC</li>
                 </ul>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-value red">1º</span>
-                    <span class="stat-label">Alto funcionario en<br>diminir by la guerra</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value orange">19 días</span>
-                    <span class="stat-label">Desde inicio<br>of the conflict</span>
-                </div>
             </div>
         </section>
 
+        <!-- LÍDERES MUERTOS -->
         <section id="lideres-muertos">
             <h2><span class="icon">👑</span> Líderes Iraníes Muertos</h2>
             
@@ -992,7 +1033,7 @@
                     <h4>☠️ Ali Khamenei (28 Feb)</h4>
                     <ul>
                         <li><strong>Supreme Leader of Iran</strong></li>
-                        <li>86 años, gobernaba since 1989</li>
+                        <li>86 años, gobernaba desde 1989</li>
                         <li>Murió en ataques iniciales</li>
                         <li><strong>Primera vez</strong> que Israel asesina a máximo dirigente en el poder de un Estado</li>
                     </ul>
@@ -1003,9 +1044,8 @@
                     <ul>
                         <li><strong>Jefe de Seguridad / Ministro de Inteligencia</strong></li>
                         <li>Líder de facto after Khamenei</li>
-                        <li>Dirigió esfuerzos de combate against Israel</li>
+                        <li>Dirigió esfuerzos de combate contra Israel</li>
                         <li>Murió con: hijo Morteza Larijani, jefe de oficina Alireza Bayat, varios guardias</li>
-                        <li>Funeral masivo en Teherán (18 marzo)</li>
                     </ul>
                 </div>
                 
@@ -1029,66 +1069,49 @@
                     </ul>
                 </div>
             </div>
+        </section>
 
+        <!-- NUEVO LÍDER SUPREMO -->
+        <section id="nuevo-lider">
+            <h2><span class="icon">👤</span> Nuevo Líder Supremo: Mojtaba Khamenei</h2>
+            
             <div class="info-box">
-                <strong>📊 CONTEXTO:</strong> La eliminación de la cúpula del régimen ha creado un vacío de poder significativo. Irán enfrenta crisis de sucesión y posible inestabilidad interna.
+                <strong>👤 Mojtaba Khamenei:</strong> Hijo del fallecido Ali Khamenei. Designado como nuevo Líder Supremo de Irán tras la muerte de su padre el 28 de febrero de 2026.
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>📊 Contexto</h4>
+                    <ul>
+                        <li>Hijo de Ali Khamenei (86 años, muerto el 28 Feb)</li>
+                        <li>Designado tras vacío de poder</li>
+                        <li>Primera sucesión familiar en la historia del régimen</li>
+                        <li>Enfrenta crisis de legitimidad interna</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-card">
+                    <h4>🎯 Desafíos</h4>
+                    <ul>
+                        <li>País devastado por los bombardeos</li>
+                        <li>~16,000+ muertos (militares + civiles)</li>
+                        <li>Economía en ruinas</li>
+                        <li>Presión internacional sin precedentes</li>
+                        <li>Riesgo de inestabilidad interna</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
+        <!-- ESTRECHO DE ORMUZ -->
         <section id="estrecho-ormuz" class="warning-section">
             <h2><span class="icon">🛢️</span> Estrecho de Ormuz - Crisis Energética Global</h2>
             
             <div class="alert-banner" style="background: linear-gradient(90deg, #f59e0b, #d97706);">
-                ⚠️ CRISIS ENERGÉTICA: Petróleo alcanza $126/barril - 16+ barcos atacados - NATO rechazó apoyar US
+                ⚠️ CRISIS ENERGÉTICA: Petróleo cayó a $90-95/barrel desde el pico de $126 - Bloqueo naval de EE.UU. (13 abril)
             </div>
 
-            <h3>📊 Datos Críticos</h3>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-value orange">20%</span>
-                    <span class="stat-label">Petróleo mundial<br>transita by aquí</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value red">$126</span>
-                    <span class="stat-label">Brent crude<br>máximo 4 años</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value dead">16+</span>
-                    <span class="stat-label">Barcos atacados<br>en Persian Gulf</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value purple">40%</span>
-                    <span class="stat-label">Importaciones<br>de China</span>
-                </div>
-            </div>
-
-            <h3>🌍 Impacto en China</h3>
-            
-            <div class="warning">
-                <strong>🇨🇳 VULNERABILIDAD CHINA:</strong>
-                <ul>
-                    <li>China es el <strong>mayor importador de crudo</strong> del mundo</li>
-                    <li>Tiene almacenamiento estratégico significativo</li>
-                    <li>Ya estaba reduciendo importaciones iraníes en 2026 (cambiando a petróleo ruso)</li>
-                    <li><strong>Vulnerable a corto plazo</strong>, pero with alternativas a medio plazo</li>
-                </ul>
-            </div>
-
-            <h3>⚔️ Incidente NATO (16 Marzo)</h3>
-            
-            <div class="info-box">
-                <strong>🚨 RECHAZO A TRUMP:</strong>
-                <ul>
-                    <li>Trump pidió a NATO apoyar misión for abrir Estrecho de Ormuz</li>
-                    <li><strong>Naciones NATO europeas rechazaron</strong> la petición</li>
-                    <li>Trump llamó "error muy tonto" a la decisión</li>
-                    <li>Trump dijo que hay que "pensar en abandonar NATO"</li>
-                    <li>Primera fractura mayor en alianzas occidentales during el conflicto</li>
-                </ul>
-            </div>
-
-            <h3>📈 Evolución del Precio del Petróleo</h3>
+            <h3>📊 Evolución del Precio del Petróleo</h3>
             
             <div class="timeline">
                 <div class="timeline-item">
@@ -1105,15 +1128,46 @@
                 </div>
                 <div class="timeline-item">
                     <span class="timeline-time">18 Marzo</span>
-                    <strong>Brent: $126/barril</strong> (máximo histórico reciente)
+                    <strong>Brent: $126/barril</strong> (máximo histórico reciente - ataque South Pars)
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">8 Abril</span>
+                    <strong>Brent: $90/barril</strong> (caída drástica tras ceasefire)
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">11 Mayo</span>
+                    <strong>Brent: $90-95/barril</strong> (estabilizado pero volátil)
                 </div>
             </div>
 
-            <div class="key-point">
-                <strong>🔮 ESCENARIO PEOR:</strong> Si el Estrecho de Ormuz se cierra completamente, los precios podrían superar $150/barril, with consecuencias catastróficas for la economy global.
+            <h3>🚢 Bloqueo Naval de EE.UU.</h3>
+            <div class="info-box">
+                <strong>13 de abril de 2026:</strong> Las fuerzas navales estadounidenses establecieron un bloqueo en el Estrecho de Ormuz. Irán aceptó "en principio" el acuerdo naval, pero la situación sigue tensa.
+            </div>
+
+            <h3>📊 Datos Críticos</h3>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value orange">20%</span>
+                    <span class="stat-label">Petróleo mundial<br>transita por aquí</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value green">$90-95</span>
+                    <span class="stat-label">Brent crude<br>(11 mayo 2026)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value red">$126</span>
+                    <span class="stat-label">Pico histórico<br>(18 marzo)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value purple">40%</span>
+                    <span class="stat-label">Importaciones<br>de China</span>
+                </div>
             </div>
         </section>
 
+        <!-- RESPUESTA INTERNACIONAL -->
         <section id="respuesta-internacional">
             <h2><span class="icon">🌍</span> Respuesta Internacional</h2>
 
@@ -1122,7 +1176,7 @@
                     <h4>🇳🇦 NATO</h4>
                     <ul>
                         <li><strong>Rechazó</strong> apoyar misión Ormuz (16 marzo)</li>
-                        <li>Trump amenazó with abandonar alianza</li>
+                        <li>Trump amenazó con abandonar alianza</li>
                         <li>Primera fractura mayor en conflicto</li>
                         <li>Países europeos buscan evitar escalada</li>
                     </ul>
@@ -1131,40 +1185,21 @@
                 <div class="comparison-card">
                     <h4>🇷🇺 Rusia</h4>
                     <ul>
-                        <li><strong>Compartiendo inteligencia</strong> with Irán (according to Zelensky)</li>
-                        <li>Drones Shahed rusos usados against bases de US</li>
+                        <li><strong>Compartiendo inteligencia</strong> con Irán (según Zelensky)</li>
+                        <li>Drones Shahed rusos usados contra bases de US</li>
                         <li>Adaptaciones aumentan capacidad ofensiva</li>
-                        <li>Debilidades by guerra en Ucrania</li>
+                        <li>Debilidades por guerra en Ucrania</li>
                     </ul>
                 </div>
                 
                 <div class="comparison-card">
                     <h4>🇮🇱 Israel</h4>
                     <ul>
-                        <li>Ataques coordinados with US</li>
+                        <li>Ataques coordinados con US</li>
                         <li>Iron Dome interceptó >90% de misiles</li>
                         <li>9 civiles muertos, 68 heridos</li>
-                        <li>Planificando expandir campaña en Líbano</li>
-                    </ul>
-                </div>
-                
-                <div class="comparison-card">
-                    <h4>🇦🇪 Emiratos Árabes</h4>
-                    <ul>
-                        <li><strong>3 muertos, 58 heridos</strong></li>
-                        <li>Jebel Alí (puerto), Aeropuerto Dubai, Burj Al Arab dañados</li>
-                        <li>Bases militares de US en territorio</li>
-                        <li>Centro financiero bajo presión</li>
-                    </ul>
-                </div>
-                
-                <div class="comparison-card">
-                    <h4>🇦🇪 Proxies de Irán</h4>
-                    <ul>
-                        <li><strong>Hezbollah:</strong> Activo, lanzando misiles a Israel since 3 marzo</li>
-                        <li><strong>Houthis (Yemen):</strong> "Dedos en el gatillo", pero contienen</li>
-                        <li><strong>Kataeb Hezbollah (Irak):</strong> Unido a combate</li>
-                        <li><strong>Hamas (Gaza):</strong> Apoyo limitado</li>
+                        <li>Project Freedom (4-5 mayo)</li>
+                        <li>Ataques continuados en Líbano (11 mayo)</li>
                     </ul>
                 </div>
                 
@@ -1172,14 +1207,15 @@
                     <h4>🤝 Mediación</h4>
                     <ul>
                         <li><strong>Oman y Egipto</strong> intentan negociar cese al fuego</li>
-                        <li><strong>Sin éxito</strong> (14 marzo)</li>
-                        <li>Ni Irán ni US dispuestos a discutir</li>
-                        <li>Conflicto se profundiza without horizonte de paz</li>
+                        <li><strong>Islamabad Talks</strong> (11-12 abril)</li>
+                        <li><strong>Sin acuerdo nuclear</strong> (negociaciones "muertas")</li>
+                        <li>Ceasefire frágil "en soporte vital"</li>
                     </ul>
                 </div>
             </div>
         </section>
 
+        <!-- EXCUSA NUCLEAR -->
         <section id="excusa-nuclear">
             <h2><span class="icon">☢️</span> La Excusa Nuclear: ¿Verdad o Pretexto?</h2>
             
@@ -1191,172 +1227,61 @@
             <div class="info-box" style="margin-bottom: 25px;">
                 <strong>📖 TÉRMINOS CLAVE:</strong>
                 <ul style="margin-top: 10px; margin-left: 20px;">
-                    <li><strong>IAEA / OIEA:</strong> International Atomic Energy Agency / Organismo Internacional de Energía Atómica. Organización independiente de the UN que verifica que los países cumplan los acuerdos nucleares.</li>
-                    <li><strong>JCPOA:</strong> Joint Comprehensive Plan of Action / Plan de Acción Integral Conjunto. El "acuerdo nuclear" de 2015 between Irán y potencias mundiales (US, China, Rusia, Francia, Alemania, Reino Unido).</li>
+                    <li><strong>IAEA / OIEA:</strong> International Atomic Energy Agency / Organismo Internacional de Energía Atómica. Organización independiente de la ONU que verifica que los países cumplan los acuerdos nucleares.</li>
+                    <li><strong>JCPOA:</strong> Joint Comprehensive Plan of Action / Plan de Acción Integral Conjunto. El "acuerdo nuclear" de 2015 entre Irán y potencias mundiales.</li>
                 </ul>
             </div>
             
             <h3>📋 La Realidad Verificada</h3>
             <ul>
-                <li><strong>✅ La OIEA (Agencia Internacional de Energía Atómica) verificó</strong> que Irán cumplía sus compromisos bajo el JCPOA (2015-2018)</li>
-                <li><strong>✅ Cuando Trump retiró US</strong> del JCPOA (mayo 2018), Irán <em>aún estaba en cumplimiento</em> according to la OIEA</li>
+                <li><strong>✅ La OIEA verificó</strong> que Irán cumplía sus compromisos bajo el JCPOA (2015-2018)</li>
+                <li><strong>✅ Cuando Trump retiró US</strong> del JCPOA (mayo 2018), Irán <em>aún estaba en cumplimiento</em> según la OIEA</li>
                 <li><strong>⚠️ Irán dejó de cumplir DESPUÉS</strong> de la retirada de US (2019 en adelante)</li>
-                <li><strong>⚠️ La OIEA reportó</strong> que las inspecciones confirmaban cumplimiento until 2021</li>
+                <li><strong>⚠️ La OIEA reportó</strong> que las inspecciones confirmaban cumplimiento hasta 2021</li>
             </ul>
             
             <div class="warning">
                 <strong>🚨 CONCLUSIÓN:</strong> La excusa nuclear es <span class="highlight">parcialmente falsa</span>. Irán no estaba cerca de una bomba cuando Trump rompió el JCPOA en 2018.
             </div>
         </section>
-                    <div class="timeline-item">
-                        <span class="timeline-time">24 de Febrero 2026</span>
-                        NPR revela que el Departamento de Justicia <strong>retuvo archivos de Epstein vinculados a Trump</strong>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-time">28 de Febrero 2026</span>
-                        US e Israel lanzan ataques against Irán (<strong>4 días después</strong>)
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-time">Resultado</span>
-                        Los medios dejaron de cubrir Epstein for cubrir la guerra
-                    </div>
-                </div>
-            </div>
+
+        <!-- CASO EPSTEIN -->
+        <section id="caso-epstein">
+            <h2><span class="icon">🎭</span> Caso Epstein: "Operación Distracción"</h2>
             
+            <div class="alert-banner critical">
+                <strong>🔍 Teoría de Conspiración vs. Realidad:</strong> Esta sección recopila afirmaciones, teorías y datos verificables sobre la supuesta conexión entre los archivos Epstein y el conflicto con Irán.
+            </div>
+
+            <h3>📊 Encuesta: La Opinión Pública</h3>
+            <p>Según una encuesta de <strong>Newsweek (marzo 2026)</strong>, la mayoría de los votantes probablemente creen que el Presidente Donald Trump lanzó la guerra contra Irán al menos en parte para distraer de los archivos Jeffrey Epstein.</p>
+            
+            <blockquote class="quote-box">
+                "La mayoría de los votantes probablemente creen que el Presidente Donald Trump lanzó la guerra contra Irán al menos en parte para distraer de los archivos Jeffrey Epstein"
+                <br><em>— Newsweek, Marzo 2026</em>
+            </blockquote>
+
             <h3>🗣️ Lo que dicen los expertos</h3>
             
             <div class="quote-box">
-                "Todo de repente esto desaparece de las noticias y boom, ataques against Irán. Lo que NO está en las noticias son los Archivos Epstein. Creo que es absolutamente una distracción."
+                "Todo de repente esto desaparece de las noticias y boom, ataques contra Irán. Lo que NO está en las noticias son los Archivos Epstein. Creo que es absolutamente una distracción."
                 <span class="quote-author">— Hakeem Jeffries, Líder demócrata en la Cámara</span>
             </div>
             
             <div class="quote-box">
-                "Trump quiere distraer a los estadounidenses de escándalos en casa with una guerra de distracción."
+                "Trump quiere distraer a los estadounidenses de escándalos en casa con una guerra de distracción."
                 <span class="quote-author">— Christopher Chivvis, The Guardian</span>
             </div>
-            
-            <div class="quote-box">
-                "Trump parece creer que atacar a Irán será una victoria política —o al menos una distracción bienvenida de los archivos Epstein."
-                <span class="quote-author">— Arab Center DC</span>
-            </div>
-            
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-value red">80%</span>
-                    <span class="stat-label">Probabilidad de ser<br>distracción</span>
+                    <span class="stat-label">Probabilidad de ser<br>distracción (encuesta)</span>
                 </div>
-            </div>
-                <section id="caso-epstein" class="conspiracy-section">
-            <div class="section-header">
-                <h2>🎭 Caso Epstein: "Operación Distracción"</h2>
-                <p class="section-date">Actualizado: March 18, 2026</p>
-            </div>
-            
-            <div class="alert-banner critical">
-                <strong>🔍 Teoría de Conspiración vs. Realidad:</strong> Esta sección recopila afirmaciones, teorías y datos verificables about la supuesta conexión between los archivos Epstein y el conflicto with Irán.
-            </div>
-
-            <h3>📊 Encuesta: La Opinión Pública</h3>
-            <p class="lead">Según una encuesta de <strong>Newsweek (marzo 2026)</strong>, la mayoría de los votantes probably creen que el President Donald Trump lanzó la guerra against Irán al menos en parte for distraer de los archivos Jeffrey Epstein.</p>
-            
-            <blockquote class="quote-box">
-                "La mayoría de los votantes probably creen que el President Donald Trump lanzó la guerra against Irán al menos en parte for distraer de los archivos Jeffrey Epstein"
-                <br><em>— Newsweek, Marzo 2026</em>
-            </blockquote>
-
-            <h3>⏰ Cronología de la "Distracción"</h3>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>30 de enero 2026</strong>
-                        <p>El Departamento de Justicia de Trump publica un lote de 3 millones de documentos de Epstein, pero no cumple with el plazo de 30 días impuesto by el Congreso.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>26 de febrero 2026</strong>
-                        <p><em>The New York Times</em> reporta: Hillary Clinton testifica nuevamente about Epstein, diciendo "no sé cuántas veces tuve que decir que no conocía a Jeffrey Epstein".</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>1-2 de marzo 2026</strong>
-                        <p>Los ataques israelí-estadounidenses against Irán dominan los titulares globales. El interés público en las revelaciones de Epstein cae en picada according to datos de análisis.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>7 de marzo 2026</strong>
-                        <p><em>The Guardian</em> reporta que los comentarios se refieren a Hegseth como "GI Joke" o sugieren que la guerra with Irán se conozca como "Operación Distracción Epstein".</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <strong>16 de marzo 2026</strong>
-                        <p><em>The Guardian</em>: "La atención volverá a centrarse": El escándalo de Epstein probably no disminuirá a pesar de la guerra de Trump en Irán.</p>
-                    </div>
-                </div>
-            </div>
-
-            <h3>🇮🇷 Irán Usa el Escándalo Epstein</h3>
-            <p>Según expertos en desinformación, <strong>el régimen iraní está utilizando el escándalo Epstein for inflamar las tensiones US-Israel:</strong></p>
-            
-            <blockquote class="quote-box">
-                "Después de monitorear la campaña de desinformación iraní, no noté ninguna diferencia real en los tipos de mensajes siendo impulsados by cuentas oficiales y falsas..."
-                <br><em>— Siman-Tov, experto en desinformación iraní</em>
-            </blockquote>
-            
-            <p>Otros expertos creen que el régimen islámico está tratando de conectarse with teóricos de la conspiración y aquellos interesados en la corrupción asociada with los archivos de Epstein, quienes podrían entonces adherirse a la propaganda de Teherán.</p>
-
-            <h3>☠️ Afirmación Dramática de Irán</h3>
-            <div class="alert-banner warning">
-                <strong>3 de marzo 2026:</strong> Un alto funcionario de seguridad iraní emitió una afirmación dramática en medio of the conflict escalonado en Medio Oriente.
-            </div>
-            
-            <blockquote class="quote-box">
-                "Una red vinculada al difunto Jeffrey Epstein está planeando un ataque similar al 11 de septiembre for culpar a Teherán"
-                <br><em>— Alto funcionario de seguridad iraní, Times of India</em>
-            </blockquote>
-
-            <h3>🎯 Teorías de Conspiración</h3>
-            <div class="comparison-grid">
-                <div class="comparison-item">
-                    <h4>🇺🇸 "Operation Epstein Distraction"</h4>
-                    <p>Criticos sugieren que Trump lanzó la guerra for desviar la atención de los archivos Epstein que podrían incriminarlo a él o a aliados cercanos.</p>
-                    <ul>
-                        <li>El Departamento de Justicia no cumplió with los plazos del Congreso</li>
-                        <li>Los ataques a Irán coincidieron with el pico del escándalo Epstein</li>
-                        <li>Los titulares de US cambiaron de Epstein a Irán en menos de 48 horas</li>
-                    </ul>
-                </div>
-                <div class="comparison-item">
-                    <h4>🇮🇷 Propaganda Iraní</h4>
-                    <p>Irán está usando el escándalo for atacar la credibilidad de US y justificar su propia narrativa.</p>
-                    <ul>
-                        <li>Afirmaciones de "red Epstein" planeando ataques falsos</li>
-                        <li>Conexión with teóricos de la conspiración en Occidente</li>
-                        <li>Desvío de atención de los ataques iraníes against civiles</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h3>📰 Cobertura Mediática</h3>
-            <p>El <strong>BBC</strong> reportó que los titulares de los periódicos dominados by "la bomba de la foto de archivos Epstein" y "la guerra de Irán se descontrola", with ambas historias compitiendo by atención en las portadas.</p>
-            
-            <p><em>TRT World</em> analizó cómo la conversación global cambió repentinamente de los archivos Epstein a la guerra de Irán, with datos que muestran que el interés público en las revelaciones de Epstein se desplomó cuando los ataques israelí-estadounidenses dominaron los titulares.</p>
-
-            <div class="alert-banner info">
-                <strong>⚖️ Perspectiva Legal:</strong> El Departamento de Justicia de Trump tenía 30 días for divulgar públicamente todos los archivos de Epstein, with raras excepciones. No cumplieron with el plazo del Congreso, diseminando un lote en la marca de 30 días y varios otros días y semanas después.
             </div>
         </section>
 
-</section>
-
+        <!-- INTERESES GEOPOLÍTICOS -->
         <section id="intereses-geopoliticos">
             <h2><span class="icon">🌐</span> Intereses Geopolíticos</h2>
             
@@ -1364,7 +1289,7 @@
                 <div class="comparison-card">
                     <h4>🇨🇳 Contra China</h4>
                     <ul>
-                        <li>✅ Debilitar la economy china (petróleo caro)</li>
+                        <li>✅ Debilitar la economía china (petróleo caro)</li>
                         <li>✅ Forzar a China a depender más de Rusia</li>
                         <li>✅ Mostrar poder naval estadounidense</li>
                         <li>✅ Justificar mayor presencia en Asia-Pacífico</li>
@@ -1375,8 +1300,8 @@
                     <h4>🇷🇺 Contra Rusia</h4>
                     <ul>
                         <li>⚠️ Rusia no puede equilibrar militarmente la coalición</li>
-                        <li>⚠️ Sin capacidad económica for respaldar a Irán</li>
-                        <li>⚠️ Rusia ya está debilitada by la guerra en Ucrania</li>
+                        <li>⚠️ Sin capacidad económica para respaldar a Irán</li>
+                        <li>⚠️ Rusia ya está debilitada por la guerra en Ucrania</li>
                     </ul>
                 </div>
                 
@@ -1385,8 +1310,8 @@
                     <ul>
                         <li>✅ Eliminar amenaza iraní permanente</li>
                         <li>✅ Decapitar el liderazgo (Khamenei, Larijani, Soleimani muertos)</li>
-                        <li>✅ Posponer programa nuclear iraní by años</li>
-                        <li>✅ Expandir campaña en Líbano</li>
+                        <li>✅ Posponer programa nuclear iraní por años</li>
+                        <li>⚠️ Escalada en Líbano (11 mayo)</li>
                     </ul>
                 </div>
                 
@@ -1396,22 +1321,23 @@
                         <li>✅ Control de precios del petróleo</li>
                         <li>✅ Justificar venta de armas a la región</li>
                         <li>✅ Mantener hegemonía en Oriente Medio</li>
-                        <li>✅ Distracción interna (caso Epstein)</li>
                         <li>⚠️ Pérdida de apoyo NATO</li>
+                        <li>⚠️ ~16,000+ muertos en Irán</li>
                     </ul>
                 </div>
             </div>
         </section>
 
+        <!-- RIESGO TERRORISTA -->
         <section id="riesgo-terrorista">
             <h2><span class="icon">☠️</span> Riesgo de Atentados Terroristas en US</h2>
             
             <div class="quote-box">
-                "Aunque un ataque físico a gran escala es <strong>IMPROBABLE</strong>, Irán y sus proxies probably representan una amenaza persistente de ataques dirigidos en el territorio nacional."
+                "Aunque un ataque físico a gran escala es <strong>IMPROBABLE</strong>, Irán y sus proxies probablemente representan una amenaza persistente de ataques dirigidos en el territorio nacional."
                 <span class="quote-author">— Departamento de Seguridad Nacional (DHS), Marzo 2026</span>
             </div>
             
-            <h3>📊 Probabilidades according to evaluaciones de inteligencia</h3>
+            <h3>📊 Probabilidades según evaluaciones de inteligencia</h3>
             
             <table>
                 <thead>
@@ -1438,7 +1364,7 @@
                         <td>Muy probable</td>
                     </tr>
                     <tr>
-                        <td><strong>Ataques by proxies en región</strong></td>
+                        <td><strong>Ataques por proxies en región</strong></td>
                         <td><span class="tag">MUY ALTA &gt;80%</span></td>
                         <td>Casi seguro</td>
                     </tr>
@@ -1448,7 +1374,7 @@
             <div class="key-point">
                 <strong>🔒 Factores que REDUCEN riesgo de 11-S:</strong>
                 <ul>
-                    <li>Irán decapitado - Sin liderazgo central for coordinar</li>
+                    <li>Irán decapitado - Sin liderazgo central para coordinar</li>
                     <li>Inteligencia estadounidense - Monitoreo intenso</li>
                     <li>Seguridad reforzada - Aeronaves, edificios, eventos</li>
                     <li>Proxies concentrados en región - Hezbollah, Hamas, Houthis en Medio Oriente</li>
@@ -1460,13 +1386,14 @@
                 <ul>
                     <li>Venganza emocional - Muerte de Khamenei, Larijani, Soleimani genera rabia</li>
                     <li>Llamado a la acción - Líderes iraníes restantes pueden pedir retaliación</li>
-                    <li>"Lone wolves" - Individuos radicalizados en US without coordinación</li>
+                    <li>"Lone wolves" - Individuos radicalizados en US sin coordinación</li>
                     <li>Ciberataques - Infraestructura crítica vulnerable</li>
-                    <li>Rusia compartiendo inteligencia with Irán</li>
+                    <li>Rusia compartiendo inteligencia con Irán</li>
                 </ul>
             </div>
         </section>
 
+        <!-- CONSECUENCIAS -->
         <section id="consecuencias">
             <h2><span class="icon">📊</span> Consecuencias: Corto, Medio y Largo Plazo</h2>
             
@@ -1481,7 +1408,7 @@
                 <tbody>
                     <tr>
                         <td><strong>Petróleo</strong></td>
-                        <td>Brent $126 → Podría superar $150 si Ormuz se bloquea</td>
+                        <td>Brent $90-95 (caída desde $126). Volatilidad si ceasefire se rompe</td>
                     </tr>
                     <tr>
                         <td><strong>China</strong></td>
@@ -1493,7 +1420,7 @@
                     </tr>
                     <tr>
                         <td><strong>Israel</strong></td>
-                        <td>Ventaja militar temporal, pero riesgo de guerra prolongada</td>
+                        <td>Ventaja militar temporal, pero escalada en Líbano (11 mayo)</td>
                     </tr>
                     <tr>
                         <td><strong>US</strong></td>
@@ -1501,7 +1428,7 @@
                     </tr>
                     <tr>
                         <td><strong>Irán</strong></td>
-                        <td>3,114 muertos, vacío de poder, inestabilidad interna</td>
+                        <td>~16,000+ muertos, vacío de poder, Mojtaba Khamenei como nuevo líder</td>
                     </tr>
                 </tbody>
             </table>
@@ -1529,7 +1456,7 @@
                     </tr>
                     <tr>
                         <td><strong>Economía global</strong></td>
-                        <td>Inflación persistente by energía cara</td>
+                        <td>Inflación persistente por energía cara</td>
                     </tr>
                     <tr>
                         <td><strong>NATO</strong></td>
@@ -1537,7 +1464,7 @@
                     </tr>
                     <tr>
                         <td><strong>Nuclear</strong></td>
-                        <td>Irán podría acelerar programa nuclear en secreto</td>
+                        <td>Negociaciones "muertas". Irán podría acelerar programa nuclear en secreto</td>
                     </tr>
                 </tbody>
             </table>
@@ -1565,7 +1492,7 @@
                     <tr>
                         <td><strong>Guerra prolongada</strong></td>
                         <td><span class="tag">ALTA</span></td>
-                        <td>Miles de muertes adicionales, economy global deprimida</td>
+                        <td>Miles de muertes adicionales, economía global deprimida</td>
                     </tr>
                     <tr>
                         <td><strong>NATO debilitada</strong></td>
@@ -1575,12 +1502,13 @@
                     <tr>
                         <td><strong>China emerge más fuerte</strong></td>
                         <td><span class="tag">MEDIA</span></td>
-                        <td>Aprovecha debilidad US-Europa for expandir influencia</td>
+                        <td>Aprovecha debilidad US-Europa para expandir influencia</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
+        <!-- FUENTES -->
         <section id="fuentes" class="sources-section">
             <h2><span class="icon">📚</span> Fuentes y Referencias</h2>
             
@@ -1589,7 +1517,25 @@
                 <div class="source-info">
                     <div class="source-title">Wikipedia - 2026 Iran War</div>
                     <div class="source-url"><a href="https://en.wikipedia.org/wiki/2026_Iran_war" target="_blank">en.wikipedia.org/wiki/2026_Iran_war</a></div>
-                    <div class="source-url">Cronología completa, victims, líderes muertos</div>
+                    <div class="source-url">Cronología completa, víctimas, líderes muertos</div>
+                </div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-icon">📖</div>
+                <div class="source-info">
+                    <div class="source-title">Wikipedia - 2026 Iran War Ceasefire</div>
+                    <div class="source-url"><a href="https://en.wikipedia.org/wiki/2026_Iran_war_ceasefire" target="_blank">en.wikipedia.org/wiki/2026_Iran_war_ceasefire</a></div>
+                    <div class="source-url">Detalles del cese al fuego de mayo 2026</div>
+                </div>
+            </div>
+
+            <div class="source-item">
+                <div class="source-icon">📖</div>
+                <div class="source-info">
+                    <div class="source-title">Wikipedia - 2025-2026 Iran-US Negotiations</div>
+                    <div class="source-url"><a href="https://en.wikipedia.org/wiki/2025%E2%80%932026_Iran%E2%80%93United_States_negotiations" target="_blank">en.wikipedia.org/wiki/2025-2026_Iran-US_negotiations</a></div>
+                    <div class="source-url">Negociaciones y contexto diplomático</div>
                 </div>
             </div>
             
@@ -1625,13 +1571,21 @@
                     <div class="source-url"><a href="https://www.aljazeera.com/news/2026/3/3/questions-over-minab-girls-school-strike-as-israel-us-deny-involvement" target="_blank">aljazeera.com - "Probablemente deliberado"</a></div>
                 </div>
             </div>
+
+            <div class="source-item">
+                <div class="source-icon">🌍</div>
+                <div class="source-info">
+                    <div class="source-title">Al Jazeera - Iran Response to US Ceasefire Proposal</div>
+                    <div class="source-url"><a href="https://www.aljazeera.com/news/2026/5/8/what-we-know-about-irans-response-to-the-latest-us-ceasefire-proposal" target="_blank">aljazeera.com - Respuesta de Irán (8 mayo)</a></div>
+                </div>
+            </div>
             
             <div class="source-item">
                 <div class="source-icon">📊</div>
                 <div class="source-info">
                     <div class="source-title">HRANA - Casualty Figures</div>
                     <div class="source-url">Human Rights Analysis Network</div>
-                    <div class="source-url">3,114 muertos en Irán (17 marzo 2026)</div>
+                    <div class="source-url">3,114 muertos en Irán (17 marzo 2026). ~16,000+ (mayo 2026)</div>
                 </div>
             </div>
             
@@ -1683,11 +1637,35 @@
                     <div class="source-url"><a href="https://www.cnn.com/2026/03/17/politics/nato-allies-trump-iran-war" target="_blank">cnn.com - NATO rechaza apoyo Ormuz</a></div>
                 </div>
             </div>
+
+            <div class="source-item">
+                <div class="source-icon">🏛️</div>
+                <div class="source-info">
+                    <div class="source-title">Britannica - 2026 Iran War</div>
+                    <div class="source-url"><a href="https://www.britannica.com/event/2026-Iran-war" target="_blank">britannica.com - Enciclopedia</a></div>
+                </div>
+            </div>
+
+            <div class="source-item">
+                <div class="source-icon">🏛️</div>
+                <div class="source-info">
+                    <div class="source-title">CRS Report - Iran: Background and US Relations</div>
+                    <div class="source-url"><a href="https://www.congress.gov/crs-product/IF12106" target="_blank">congress.gov - Congressional Research Service</a></div>
+                </div>
+            </div>
+
+            <div class="source-item">
+                <div class="source-icon">📰</div>
+                <div class="source-info">
+                    <div class="source-title">Washington Post - Ceasefire "on life support"</div>
+                    <div class="source-url"><a href="https://apnews.com/article/iran-us-war-attack-may-10-2026-f8812db41837336d816efaea7bc1c44a" target="_blank">Ceasefire en soporte vital (11 mayo)</a></div>
+                </div>
+            </div>
         </section>
 
         <footer class="footer">
             <p><strong>🌍 Iran Crisis 2026 - Análisis Completo</strong></p>
-            <p>Last updated: 22 de Marzo de 2026 - 14:00 HRS (Día 23 of the conflict)</p>
+            <p>Last updated: 11 de Mayo de 2026 - Día 73 del conflicto</p>
             <p>Fuentes verificadas • Análisis geopolítico • Situación actualizada</p>
             <div class="cat-note">
                 <span>🐱</span>
@@ -1698,7 +1676,7 @@
     </div>
 
     <script>
-        // Función GLOBAL for toggle menú (accesible since onclick en HTML)
+        // Función GLOBAL para toggle menú (accesible desde onclick en HTML)
         function toggleMenu() {
             const menu = document.getElementById('navMenu');
             const btn = document.querySelector('.hamburger-btn');
@@ -1747,12 +1725,10 @@
         });
     </script>
 
-
-
     <!-- Language Switch Script -->
     <script>
         function toggleLanguage() {
-            window.location.href = 'https://raulgdmm.github.io/cocobot-pages/pages/iran-crisis-2026-fusion-en/index.html';
+            window.location.href = 'https://raulgdmm.github.io/cocobot-pages/pages/iran/iran-crisis-2026-fusion-en/index.html';
         }
     </script>
 
