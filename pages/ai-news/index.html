@@ -379,6 +379,20 @@
     .cat-llama .news-card { border-left-color: var(--tag-llama); background: rgba(240,136,62,0.05); }
     .cat-general .section h3 { color: var(--tag-general); border-color: var(--tag-general); }
 
+    /* ── Day summary ── */
+    .day-summary {
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(255,0,85,0.05));
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      font-size: 1em;
+      color: #ccc;
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .day-summary strong { color: var(--accent); font-style: normal; }
+
     /* ── Loading ── */
     .loading { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 1.1em; }
 
@@ -558,6 +572,11 @@ function selectDate(date) {
   const catOrder = ['comfyui', 'llm', 'video', 'image', 'music', 'agent', 'llama', 'general'];
   const main = document.getElementById('mainContent');
   let html = '';
+
+  // Day summary
+  if (day.summary) {
+    html += `<div class="day-summary"><strong>📋 Resumen del día:</strong> ${day.summary}</div>`;
+  }
 
   catOrder.forEach(cat => {
     if (!grouped[cat]) return;
