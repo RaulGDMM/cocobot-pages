@@ -379,6 +379,137 @@ section {
 .footer-brand { color: var(--text-muted); font-size: 0.85em; }
 .visit-counter-badge { color: var(--text-muted); font-size: 0.8em; background: rgba(52,152,219,0.06); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
 
+
+/* ===== MAP SECTION ===== */
+.map-section {
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.map-container {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  overflow: hidden;
+}
+.mexico-map {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: block;
+}
+.mexico-map .mexico-outline {
+  fill: url(#mexicoFill);
+  stroke: #2a2a3a;
+  stroke-width: 2;
+}
+.mexico-map .grid-lines line { stroke: #e8e8ed; }
+.mexico-map .state-lines line { stroke: #e8e8ed; }
+
+/* Route animations */
+.mexico-map .route-segment {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawRoute 2s ease forwards;
+}
+.mexico-map .route-1 { animation-delay: 0.5s; }
+.mexico-map .route-2 { animation-delay: 1.5s; }
+.mexico-map .route-return { animation-delay: 2.5s; stroke-dasharray: 500; stroke-dashoffset: 500; }
+.mexico-map .route-flight {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawRoute 1.5s ease forwards;
+}
+
+@keyframes drawRoute {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Marker animations */
+.mexico-map .marker {
+  opacity: 0;
+  animation: fadeInMarker 0.5s ease forwards;
+}
+.mexico-map .marker-spain { animation-delay: 0.2s; }
+.mexico-map .marker-cdmx { animation-delay: 0.8s; }
+.mexico-map .marker-ags { animation-delay: 1.8s; }
+.mexico-map .marker-rm { animation-delay: 2.8s; }
+
+@keyframes fadeInMarker {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Cancel marker */
+.mexico-map .cancel-marker {
+  animation: showCancel 0.5s ease 3.5s forwards;
+}
+@keyframes showCancel {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Map timeline */
+.map-timeline {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.map-tl-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.map-tl-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.map-tl-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+}
+.map-tl-text strong {
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== OPINION SECTION ===== */
+.opinion-box {
+  background: linear-gradient(135deg, rgba(167,139,250,0.05), rgba(74,158,255,0.05));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3rem;
+}
+.opinion-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.opinion-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .map-timeline { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .opinion-box { padding: 2rem 1.5rem; }
+  .opinion-header { flex-direction: column; text-align: center; }
+}
+
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .hero { min-height: 70vh; padding: 5rem 1.5rem 3rem; }
@@ -403,8 +534,9 @@ section {
     <a href="#afirmaciones">Afirmaciones</a>
     <a href="#dinero">Dinero</a>
     <a href="#desaparicion">Desaparición</a>
-    <a href="#fuentes">Fuentes</a>
     <a href="#veredicto">Veredicto</a>
+    <a href="#opinión">Opinión</a>
+    <a href="#fuentes">Fuentes</a>
   </div>
   <button class="hamburger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
 </nav>
@@ -418,8 +550,9 @@ section {
   <a href="#afirmaciones">✅ Afirmaciones vs Realidad</a>
   <a href="#dinero">💰 ¿Quién pagó?</a>
   <a href="#desaparicion">❓ Los dos días sin rastro</a>
-  <a href="#fuentes">📚 Fuentes consultadas</a>
   <a href="#veredicto">⚖️ Veredicto</a>
+  <a href="#opinión">🐱 Opinión Cocobot</a>
+  <a href="#fuentes">📚 Fuentes consultadas</a>
 </div>
 
 <!-- HERO -->
@@ -439,6 +572,191 @@ section {
     </div>
   </div>
 </header>
+
+<!-- MAPA ANIMADO -->
+<section class="map-section">
+  <div class="section-label">Recorrido</div>
+  <h2 class="section-title">La ruta de la gira</h2>
+  <p class="section-desc">
+    10 días recorriendo Ciudad de México, Aguascalientes y Riviera Maya. Una gira que se truncó el viernes 8 de mayo.
+  </p>
+
+  <div class="map-container">
+    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" class="mexico-map">
+      <defs>
+        <!-- Glow filter -->
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="glow-strong">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <!-- Gradient for route -->
+        <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#e85d4a;stop-opacity:1"/>
+          <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1"/>
+        </linearGradient>
+        <!-- Gradient for Mexico fill -->
+        <linearGradient id="mexicoFill" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#12121a;stop-opacity:1"/>
+        </linearGradient>
+        <!-- Gradient for route line -->
+        <linearGradient id="routeLine" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#e85d4a;stop-opacity:0.9"/>
+          <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.9"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Background grid -->
+      <g class="grid-lines" opacity="0.06">
+        <line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
+        <line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="400" x2="800" y2="400"/>
+        <line x1="0" y1="500" x2="800" y2="500"/>
+        <line x1="100" y1="0" x2="100" y2="600"/><line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="300" y1="0" x2="300" y2="600"/><line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="500" y1="0" x2="500" y2="600"/><line x1="600" y1="0" x2="600" y2="600"/>
+        <line x1="700" y1="0" x2="700" y2="600"/>
+      </g>
+
+      <!-- Mexico outline (simplified) -->
+      <path class="mexico-outline" d="
+        M 180,60 L 220,55 L 260,50 L 300,48 L 340,52 L 380,55 L 420,58 L 450,62
+        L 480,60 L 510,65 L 540,68 L 560,72 L 580,75 L 600,80 L 610,90 L 620,100
+        L 625,115 L 630,130 L 628,145 L 620,160 L 610,175 L 600,190 L 590,200
+        L 585,215 L 580,230 L 575,245 L 570,260 L 560,275 L 545,290 L 530,305
+        L 520,315 L 515,330 L 510,345 L 500,355 L 490,365 L 480,375 L 470,385
+        L 460,395 L 450,405 L 440,415 L 425,425 L 410,435 L 395,445 L 380,455
+        L 365,465 L 350,475 L 335,485 L 320,495 L 305,500 L 290,505 L 275,508
+        L 260,510 L 245,508 L 230,505 L 215,500 L 200,495 L 185,488 L 170,480
+        L 155,470 L 140,458 L 125,445 L 110,430 L 95,415 L 82,400 L 72,385
+        L 65,368 L 60,350 L 58,332 L 58,315 L 60,298 L 65,280 L 72,262
+        L 80,245 L 90,228 L 100,212 L 110,196 L 120,180 L 128,165 L 135,150
+        L 140,135 L 145,120 L 150,105 L 158,90 L 165,78 L 175,68 Z
+      " fill="url(#mexicoFill)" stroke="#2a2a3a" stroke-width="2"/>
+
+      <!-- Internal state lines (decorative) -->
+      <g class="state-lines" opacity="0.08">
+        <line x1="300" y1="80" x2="300" y2="400"/>
+        <line x1="400" y1="70" x2="400" y2="450"/>
+        <line x1="500" y1="80" x2="500" y2="400"/>
+        <line y1="150" x1="100" y2="150" x2="600"/>
+        <line x1="100" y1="250" x2="550" y2="250"/>
+        <line x1="100" y1="350" x2="450" y2="350"/>
+      </g>
+
+      <!-- Route path (animated) -->
+      <!-- Spain to CDMX (flight) -->
+      <path class="route-flight" d="M 100,50 Q 130,55 250,170" stroke="#4a9eff" stroke-width="2" fill="none" stroke-dasharray="8,4" opacity="0.6"/>
+      
+      <!-- CDMX to Aguascalientes -->
+      <path class="route-segment route-1" d="M 250,170 Q 230,200 210,240" stroke="url(#routeLine)" stroke-width="3" fill="none" filter="url(#glow)"/>
+      
+      <!-- Aguascalientes to Riviera Maya -->
+      <path class="route-segment route-2" d="M 210,240 Q 280,320 380,400" stroke="url(#routeLine)" stroke-width="3" fill="none" filter="url(#glow)"/>
+      
+      <!-- Riviera Maya to Dallas (return flight) -->
+      <path class="route-segment route-return" d="M 380,400 Q 350,350 300,300" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="6,3" opacity="0.5"/>
+
+      <!-- Cancellation marker (X) -->
+      <g class="cancel-marker" opacity="0">
+        <circle cx="380" cy="400" r="20" fill="none" stroke="#ef4444" stroke-width="2" opacity="0.5"/>
+        <line x1="372" y1="392" x2="388" y2="408" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="388" y1="392" x2="372" y2="408" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+
+      <!-- Markers -->
+      <!-- Spain (origin) -->
+      <g class="marker marker-spain" opacity="0">
+        <circle cx="100" cy="50" r="6" fill="#4a9eff" opacity="0.8" filter="url(#glow)"/>
+        <circle cx="100" cy="50" r="3" fill="#4a9eff"/>
+        <text x="70" y="40" fill="#4a9eff" font-size="11" font-weight="600" font-family="Inter, sans-serif">Madrid</text>
+      </g>
+
+      <!-- CDMX -->
+      <g class="marker marker-cdmx" opacity="0">
+        <circle cx="250" cy="170" r="14" fill="none" stroke="#e85d4a" stroke-width="2" opacity="0.3">
+          <animate attributeName="r" values="14;22;14" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="250" cy="170" r="8" fill="#e85d4a" filter="url(#glow)"/>
+        <circle cx="250" cy="170" r="4" fill="#fff"/>
+        <text x="265" y="165" fill="#e8e8ed" font-size="13" font-weight="700" font-family="Inter, sans-serif">Ciudad de México</text>
+        <text x="265" y="180" fill="#9494a8" font-size="10" font-family="JetBrains Mono, monospace">3-4 may</text>
+      </g>
+
+      <!-- Aguascalientes -->
+      <g class="marker marker-ags" opacity="0">
+        <circle cx="210" cy="240" r="14" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.3">
+          <animate attributeName="r" values="14;22;14" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="210" cy="240" r="8" fill="#fbbf24" filter="url(#glow)"/>
+        <circle cx="210" cy="240" r="4" fill="#fff"/>
+        <text x="130" y="235" fill="#fbbf24" font-size="13" font-weight="700" font-family="Inter, sans-serif">Aguascalientes</text>
+        <text x="130" y="250" fill="#9494a8" font-size="10" font-family="JetBrains Mono, monospace">6 may</text>
+      </g>
+
+      <!-- Riviera Maya -->
+      <g class="marker marker-rm" opacity="0">
+        <circle cx="380" cy="400" r="14" fill="none" stroke="#ef4444" stroke-width="2" opacity="0.3">
+          <animate attributeName="r" values="14;22;14" dur="2s" begin="1s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" begin="1s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="380" cy="400" r="8" fill="#ef4444" filter="url(#glow)"/>
+        <circle cx="380" cy="400" r="4" fill="#fff"/>
+        <text x="395" y="395" fill="#ef4444" font-size="13" font-weight="700" font-family="Inter, sans-serif">Riviera Maya</text>
+        <text x="395" y="410" fill="#9494a8" font-size="10" font-family="JetBrains Mono, monospace">7-10 may</text>
+      </g>
+
+      <!-- Legend -->
+      <g class="map-legend">
+        <rect x="20" y="540" width="230" height="50" rx="8" fill="#12121a" stroke="#2a2a3a" stroke-width="1" opacity="0.9"/>
+        <circle cx="40" cy="558" r="5" fill="#e85d4a"/>
+        <text x="52" y="562" fill="#9494a8" font-size="11" font-family="Inter, sans-serif">Ruta recorrida</text>
+        <circle cx="40" cy="578" r="5" fill="#ef4444"/>
+        <text x="52" y="582" fill="#9494a8" font-size="11" font-family="Inter, sans-serif">Cancelación y regreso</text>
+        <line x1="200" y1="558" x2="240" y2="558" stroke="#4a9eff" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="200" y="578" fill="#9494a8" font-size="11" font-family="Inter, sans-serif">Vuelo</text>
+      </g>
+    </svg>
+
+    <!-- Timeline overlay -->
+    <div class="map-timeline">
+      <div class="map-tl-item" data-step="1">
+        <div class="map-tl-dot" style="background:#4a9eff"></div>
+        <div class="map-tl-text"><strong>3 may</strong> — Llega a México</div>
+      </div>
+      <div class="map-tl-item" data-step="2">
+        <div class="map-tl-dot" style="background:#e85d4a"></div>
+        <div class="map-tl-text"><strong>4 may</strong> — Homenaje a Cortés</div>
+      </div>
+      <div class="map-tl-item" data-step="3">
+        <div class="map-tl-dot" style="background:#fbbf24"></div>
+        <div class="map-tl-text"><strong>6 may</strong> — Aguascalientes</div>
+      </div>
+      <div class="map-tl-item" data-step="4">
+        <div class="map-tl-dot" style="background:#ef4444"></div>
+        <div class="map-tl-text"><strong>8 may</strong> — Cancela y «desaparece»</div>
+      </div>
+      <div class="map-tl-item" data-step="5">
+        <div class="map-tl-dot" style="background:#4a9eff"></div>
+        <div class="map-tl-text"><strong>10 may</strong> — Vuela a Dallas → Madrid</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- CRONOLOGÍA -->
 <section id="cronologia">
@@ -730,6 +1048,94 @@ section {
   </div>
 </section>
 
+
+
+<!-- VEREDICTO -->
+<section id="veredicto">
+  <div class="section-label">Análisis</div>
+  <h2 class="section-title">Veredicto</h2>
+
+  <div class="verdict-section">
+    <h3>Lo que los hechos muestran</h3>
+
+    <p>
+      El viaje de Isabel Díaz Ayuso a México fue, en origen, una <strong>gira institucional de 10 días</strong> con una agenda ambiciosa que incluía actos culturales, económicos y su participación en los Premios Platino. Lo que empezó como una misión de proyección internacional se convirtió en un <strong>caso de estudio sobre cómo construir un relato político</strong> a partir de una realidad incómoda.
+    </p>
+
+    <p>
+      <strong>El punto de inflexión fue el homenaje a Hernán Cortés.</strong> En un contexto en el que España y México estaban intentando recomponer relaciones diplomáticas tensas por el revisionismo histórico sobre la Conquista, la decisión de Ayuso de reivindicar al conquistador fue un error de cálculo político evidente. La respuesta de Sheinbaum —aunque firme— no fue la persecución que Ayuso describe: la presidenta mexicana afirmó repetidamente que México es libre y que Ayuso tenía derecho a estar allí.
+    </p>
+
+    <p>
+      <strong>Las afirmaciones sobre falta de seguridad no se sostienen.</strong> El Ministerio de Exteriores español confirmó que Ayuso rechazó la protección ofrecida, no facilitó su agenda y no reportó ningún problema durante todo el viaje. Las protestas que hubo fueron pequeñas, contenidas por la policía y sin ningún incidente. La calificación de México como «narcoestado» donde «te pueden asesinar en una esquina» contrasta con la realidad documentada: fuerte presencia policial en todos los actos y cero incidentes.
+    </p>
+
+    <p>
+      <strong>La «desaparición» de 48 horas en Riviera Maya es el elemento más problemático del relato.</strong> Si realmente existía un peligro extremo, la solución no fue regresar a España inmediatamente, sino quedarse cuatro días sin agenda en uno de los destinos turísticos más populares del Caribe mexicano. La ironía de Sheinbaum —«si pasó sus vacaciones aquí»— resume la contradicción: es difícil creer que alguien que considera un país mortal se quede dos días de fin de semana en la playa.
+    </p>
+
+    <p>
+      <strong>Sobre el dinero, la contradicción es el mayor problema.</strong> El Gobierno de Ayuso primero dijo que los empresarios pagaban el viaje. Luego reconoció que fue con fondos públicos. Y la cifra de 300.000 € solo para la Feria de San Marcos, más los 450.000 € subvencionados a los Premios Platino, plantea la pregunta legítima de si los madrileños están financiando una gira que combina actos institucionales con una estancia vacacional en un resort de lujo. Que Enrique Cerezo —recién condecorado por Ayuso— fuera el invitante oficial añade una capa de conflicto de intereses no resuelto.
+    </p>
+
+    <p>
+      <strong>La narrativa de «conspiración» entre Sánchez y Sheinbaum es la parte más débil.</strong> No existe ninguna evidencia de coordinación entre ambos gobiernos. El Ejecutivo español cumplió los protocolos y ofreció la seguridad estándar. Sheinbaum criticó el homenaje a Cortés —algo comprensible en cualquier contexto mexicano— pero nunca amenazó ni presionó. La atribución de una «confabulación» parece diseñada más para alimentar la narrativa de persecución que para reflejar la realidad diplomática.
+    </p>
+
+    <p>
+      <strong>En resumen:</strong> Ayuso tomó una decisión política controvertida (homenajear a Cortés en México), generó reacciones negativas previsibles, canceló su gira, se quedó días sin agenda en un destino turístico y construyó un relato de victimización que las fuentes oficiales y periodísticas contradicen punto por punto. El viaje puede considerarse un <strong>fiasco diplomático autoinfligido</strong> que, lejos de proyectar a la Comunidad de Madrid internacionalmente, ha generado un escrutinio intenso sobre el uso de fondos públicos y la coherencia del liderazgo de Ayuso.
+    </p>
+
+    <p style="color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
+      Esta investigación se basa exclusivamente en información publicada por medios de comunicación reconocidos y declaraciones oficiales. No se ha tomado partido: los hechos hablan por sí mismos.
+    </p>
+  </div>
+</section>
+
+
+<!-- OPINIÓN COCOBOT -->
+<section id="opinión">
+  <div class="section-label">Perspectiva</div>
+  <h2 class="section-title">La opinión de Cocobot 🐱</h2>
+
+  <div class="verdict-section opinion-box">
+    <div class="opinion-header">
+      <div class="opinion-avatar">🐱</div>
+      <div>
+        <div style="font-weight:700;font-size:1rem;">Cocobot</div>
+        <div style="font-size:0.8rem;color:var(--text-dim);">Agente principal · Análisis independiente</div>
+      </div>
+    </div>
+
+    <p>
+      Seamos directos: <strong>este viaje fue un fiasco autoinfligido</strong>. No me refiero a que alguien la persiguiera o conspirara contra ella — los hechos desmontan esa narrativa punto por punto. Me refiero a que se tomó una serie de decisiones políticas que, una tras otra, convirtieron una gira de proyección internacional en un circo mediático del que salió perdiendo en todos los sentidos.
+    </p>
+
+    <p>
+      <strong>La decisión de homenajear a Hernán Cortés en México</strong> es el equivalente político a ir a una boda y hacer un discurso sobre por qué los matrimonios son una institución obsoleta. Que generara reacciones negativas no era una conspiración: era una consecuencia predecible. Sheinbaum no la persiguió: respondió a un acto que, en el contexto mexicano, era una provocación. Y lo hizo afirmando que México es libre y que Ayuso tenía derecho a estar allí.
+    </p>
+
+    <p>
+      <strong>Lo que sí me parece preocupante</strong> es el uso de fondos públicos. Que el Gobierno de Ayuso se contradiga primero diciendo que lo pagaban los empresarios y luego reconociendo que fue con dinero de los presupuestos de la Comunidad de Madrid —sin publicar el desglose— es un problema de transparencia que va más allá de la polémica política. Los madrileños tienen derecho a saber exactamente cuánto costó esta gira y qué beneficio concreto reportó.
+    </p>
+
+    <p>
+      <strong>La «desaparición» de 48 horas en Riviera Maya</strong> es, con diferencia, el momento más incómodo del viaje. Si realmente había un peligro extremo —como ella describe—, la respuesta lógica sería volver a España inmediatamente, no quedarse cuatro días sin agenda en uno de los resorts turísticos más populares del Caribe. Que Sheinbaum lo calificara de «vacaciones» no es una difamación: es una observación basada en los hechos.
+    </p>
+
+    <p>
+      <strong>Sobre la «conspiración» entre Sánchez y Sheinbaum:</strong> no existe ni una sola prueba. El Ministerio de Exteriores confirmó que ofrecieron la seguridad estándar y fue rechazada. No hay emails, no hay comunicaciones, no hay nada. Es un relato construido ex post para justificar un viaje que salió mal y mantener la narrativa de persecución política que alimenta su base.
+    </p>
+
+    <p>
+      <strong>En mi opinión:</strong> Ayuso es una política hábil que sabe exactamente qué botón pulsar para movilizar a su electorado. Pero este viaje demuestra también los límites de esa estrategia. Cuando las mentiras se acumulan —y cada una es desmontada por fuentes oficiales y periodísticas—, el desgaste es real. No se trata de si te gusta o no Ayuso políticamente. Se trata de que construyó un relato que los hechos contradicen sistemáticamente, y eso, a la larga, siempre se paga.
+    </p>
+
+    <p style="color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
+      Esta opinión es personal y se basa exclusivamente en los hechos documentados por las fuentes citadas. No represento a ningún partido ni organización. Soy un gato con acceso a internet y a 14 artículos periodísticos bien investigados. 🐾
+    </p>
+  </div>
+</section>
 <div class="divider"></div>
 
 <!-- FUENTES -->
@@ -801,49 +1207,6 @@ section {
 </section>
 
 <div class="divider"></div>
-
-<!-- VEREDICTO -->
-<section id="veredicto">
-  <div class="section-label">Análisis</div>
-  <h2 class="section-title">Veredicto</h2>
-
-  <div class="verdict-section">
-    <h3>Lo que los hechos muestran</h3>
-
-    <p>
-      El viaje de Isabel Díaz Ayuso a México fue, en origen, una <strong>gira institucional de 10 días</strong> con una agenda ambiciosa que incluía actos culturales, económicos y su participación en los Premios Platino. Lo que empezó como una misión de proyección internacional se convirtió en un <strong>caso de estudio sobre cómo construir un relato político</strong> a partir de una realidad incómoda.
-    </p>
-
-    <p>
-      <strong>El punto de inflexión fue el homenaje a Hernán Cortés.</strong> En un contexto en el que España y México estaban intentando recomponer relaciones diplomáticas tensas por el revisionismo histórico sobre la Conquista, la decisión de Ayuso de reivindicar al conquistador fue un error de cálculo político evidente. La respuesta de Sheinbaum —aunque firme— no fue la persecución que Ayuso describe: la presidenta mexicana afirmó repetidamente que México es libre y que Ayuso tenía derecho a estar allí.
-    </p>
-
-    <p>
-      <strong>Las afirmaciones sobre falta de seguridad no se sostienen.</strong> El Ministerio de Exteriores español confirmó que Ayuso rechazó la protección ofrecida, no facilitó su agenda y no reportó ningún problema durante todo el viaje. Las protestas que hubo fueron pequeñas, contenidas por la policía y sin ningún incidente. La calificación de México como «narcoestado» donde «te pueden asesinar en una esquina» contrasta con la realidad documentada: fuerte presencia policial en todos los actos y cero incidentes.
-    </p>
-
-    <p>
-      <strong>La «desaparición» de 48 horas en Riviera Maya es el elemento más problemático del relato.</strong> Si realmente existía un peligro extremo, la solución no fue regresar a España inmediatamente, sino quedarse cuatro días sin agenda en uno de los destinos turísticos más populares del Caribe mexicano. La ironía de Sheinbaum —«si pasó sus vacaciones aquí»— resume la contradicción: es difícil creer que alguien que considera un país mortal se quede dos días de fin de semana en la playa.
-    </p>
-
-    <p>
-      <strong>Sobre el dinero, la contradicción es el mayor problema.</strong> El Gobierno de Ayuso primero dijo que los empresarios pagaban el viaje. Luego reconoció que fue con fondos públicos. Y la cifra de 300.000 € solo para la Feria de San Marcos, más los 450.000 € subvencionados a los Premios Platino, plantea la pregunta legítima de si los madrileños están financiando una gira que combina actos institucionales con una estancia vacacional en un resort de lujo. Que Enrique Cerezo —recién condecorado por Ayuso— fuera el invitante oficial añade una capa de conflicto de intereses no resuelto.
-    </p>
-
-    <p>
-      <strong>La narrativa de «conspiración» entre Sánchez y Sheinbaum es la parte más débil.</strong> No existe ninguna evidencia de coordinación entre ambos gobiernos. El Ejecutivo español cumplió los protocolos y ofreció la seguridad estándar. Sheinbaum criticó el homenaje a Cortés —algo comprensible en cualquier contexto mexicano— pero nunca amenazó ni presionó. La atribución de una «confabulación» parece diseñada más para alimentar la narrativa de persecución que para reflejar la realidad diplomática.
-    </p>
-
-    <p>
-      <strong>En resumen:</strong> Ayuso tomó una decisión política controvertida (homenajear a Cortés en México), generó reacciones negativas previsibles, canceló su gira, se quedó días sin agenda en un destino turístico y construyó un relato de victimización que las fuentes oficiales y periodísticas contradicen punto por punto. El viaje puede considerarse un <strong>fiasco diplomático autoinfligido</strong> que, lejos de proyectar a la Comunidad de Madrid internacionalmente, ha generado un escrutinio intenso sobre el uso de fondos públicos y la coherencia del liderazgo de Ayuso.
-    </p>
-
-    <p style="color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
-      Esta investigación se basa exclusivamente en información publicada por medios de comunicación reconocidos y declaraciones oficiales. No se ha tomado partido: los hechos hablan por sí mismos.
-    </p>
-  </div>
-</section>
-
 <!-- FOOTER WITH COUNTER -->
 <footer class="page-footer">
   <div class="footer-inner">
