@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El viaje de Ayuso a México — Hechos, fuentes y análisis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-card-alt: #1a1a25;
+  --bg-accent: #1e1e2e;
+  --text: #e8e8ed;
+  --text-muted: #9494a8;
+  --text-dim: #6b6b80;
+  --accent: #e85d4a;
+  --accent-hover: #f07060;
+  --blue: #4a9eff;
+  --blue-dim: #2a6ab8;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --red: #ef4444;
+  --purple: #a78bfa;
+  --border: #2a2a3a;
+  --border-light: #3a3a4a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== NAVBAR ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem; height: 60px;
+  display: flex; align-items: center; gap: 1rem;
+}
+.back-btn {
+  color: var(--accent); font-size: 1.5rem; text-decoration: none;
+  transition: all 0.2s; flex-shrink: 0; line-height: 1;
+}
+.back-btn:hover { color: var(--accent-hover); transform: translateX(-2px); }
+.nav-title {
+  font-size: 0.8rem; font-weight: 700; color: var(--text);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  white-space: nowrap; flex-shrink: 0;
+}
+nav .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+nav .nav-links a {
+  color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+  font-weight: 500; transition: color 0.2s; white-space: nowrap;
+}
+nav .nav-links a:hover { color: var(--text); }
+
+/* HAMBURGER */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 8px;
+  background: none; border: none; z-index: 1002;
+}
+.hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--accent); border-radius: 2px;
+  transition: all 0.3s ease; transform-origin: center;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* OVERLAY */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 1000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.overlay.show { opacity: 1; pointer-events: all; }
+
+/* SIDE MENU */
+.side-menu {
+  position: fixed; top: 0; right: -300px;
+  width: 280px; height: 100vh;
+  background: var(--bg-card); border-left: 1px solid var(--border);
+  z-index: 1001; padding-top: 80px;
+  transition: right 0.35s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+.side-menu.open { right: 0; }
+.side-menu a {
+  display: block; padding: 14px 2rem;
+  color: var(--text-muted); text-decoration: none;
+  font-size: 0.9rem; font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.side-menu a:hover {
+  color: var(--accent); background: rgba(232,93,74,0.08); padding-left: 24px;
+}
+
+@media (max-width: 768px) {
+  nav .nav-links { display: none; }
+  .nav-title { display: none; }
+  .hamburger { display: flex; margin-left: auto; }
+}
+
+/* ===== HERO ===== */
+.hero {
+  margin-top: 60px;
+  min-height: 80vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(232,93,74,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(74,158,255,0.05) 0%, transparent 40%);
+}
+.hero-content { position: relative; max-width: 900px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(232,93,74,0.1);
+  border: 1px solid rgba(232,93,74,0.2);
+  padding: 0.4rem 1rem; border-radius: 100px;
+  font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 2rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900; line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 .accent { color: var(--accent); }
+.hero-sub {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.1rem; color: var(--text-muted);
+  max-width: 650px; margin: 0 auto 2.5rem;
+  line-height: 1.8;
+}
+.hero-meta {
+  display: flex; justify-content: center; gap: 2rem;
+  font-size: 0.8rem; color: var(--text-dim);
+}
+.hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+/* ===== SECTIONS ===== */
+section {
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.section-label {
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 1rem; line-height: 1.2;
+}
+.section-desc {
+  color: var(--text-muted); font-size: 1rem;
+  max-width: 700px; margin-bottom: 3rem; line-height: 1.8;
+}
+
+/* ===== TIMELINE ===== */
+.timeline { position: relative; padding-left: 3rem; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 11px; top: 0; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.timeline-item:hover {
+  border-color: var(--border-light);
+  transform: translateX(4px);
+}
+.timeline-item::before {
+  content: '';
+  position: absolute; left: -2.35rem; top: 1.75rem;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.timeline-item.blue::before { background: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+.timeline-item.green::before { background: var(--green); box-shadow: 0 0 0 2px var(--green); }
+.timeline-item.yellow::before { background: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+.timeline-item.purple::before { background: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+.timeline-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--accent); margin-bottom: 0.5rem;
+}
+.timeline-item.blue .timeline-date { color: var(--blue); }
+.timeline-item.green .timeline-date { color: var(--green); }
+.timeline-item.yellow .timeline-date { color: var(--yellow); }
+.timeline-item.purple .timeline-date { color: var(--purple); }
+.timeline-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+.timeline-text { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+/* ===== CLAIM VS FACT ===== */
+.claim-grid { display: grid; gap: 1.5rem; }
+.claim-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.claim-header {
+  padding: 1.25rem 1.5rem;
+  background: rgba(239,68,68,0.05);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.claim-icon {
+  flex-shrink: 0; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; font-size: 0.8rem; font-weight: 700;
+}
+.claim-icon.red { background: rgba(239,68,68,0.15); color: var(--red); }
+.claim-icon.yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.claim-label {
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-dim); margin-bottom: 0.3rem;
+}
+.claim-text { font-weight: 600; font-size: 0.95rem; line-height: 1.5; }
+.fact-body {
+  padding: 1.25rem 1.5rem;
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.fact-icon {
+  flex-shrink: 0; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(74,222,128,0.12);
+  color: var(--green);
+  font-size: 0.8rem; font-weight: 700;
+}
+.fact-text { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+.fact-text strong { color: var(--text); }
+
+/* ===== QUOTE ===== */
+.quote-block {
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+}
+.quote-block.blue { border-left-color: var(--blue); }
+.quote-block.green { border-left-color: var(--green); }
+.quote-block.purple { border-left-color: var(--purple); }
+.quote-text {
+  font-family: 'Merriweather', Georgia, serif;
+  font-style: italic; font-size: 1rem;
+  line-height: 1.8; color: var(--text);
+  margin-bottom: 0.75rem;
+}
+.quote-source { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+
+/* ===== COST CARDS ===== */
+.cost-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem; margin-bottom: 2rem;
+}
+.cost-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  text-align: center;
+}
+.cost-amount {
+  font-size: 2.5rem; font-weight: 900;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+.cost-amount.red { color: var(--red); }
+.cost-amount.blue { color: var(--blue); }
+.cost-amount.yellow { color: var(--yellow); }
+.cost-label { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ===== TWO COLUMN ===== */
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+}
+.col-box {
+  padding: 1.5rem; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.col-box h4 {
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+.col-box ul { list-style: none; display: grid; gap: 0.75rem; }
+.col-box li {
+  display: flex; gap: 0.5rem; align-items: flex-start;
+  font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;
+}
+.col-box li strong { color: var(--text); }
+
+/* ===== SOURCES ===== */
+.source-list { display: grid; gap: 0.75rem; }
+.source-item {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none; color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.source-item:hover { border-color: var(--blue); transform: translateX(4px); }
+.source-num {
+  flex-shrink: 0; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(74,158,255,0.1); color: var(--blue);
+  border-radius: 6px;
+  font-size: 0.75rem; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+.source-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+.source-where { font-size: 0.8rem; color: var(--text-dim); }
+
+/* ===== VERDICT ===== */
+.verdict-section {
+  background: linear-gradient(135deg, rgba(232,93,74,0.05), rgba(74,158,255,0.05));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3rem;
+  margin-top: 2rem;
+}
+.verdict-section h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; }
+.verdict-section p {
+  color: var(--text-muted); font-size: 0.95rem;
+  line-height: 1.8; margin-bottom: 1.25rem;
+}
+.verdict-section p:last-child { margin-bottom: 0; }
+.verdict-section strong { color: var(--text); }
+
+/* ===== DIVIDER ===== */
+.divider { max-width: 1100px; margin: 0 auto; height: 1px; background: var(--border); }
+
+/* ===== FOOTER ===== */
+.page-footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); margin-top: 30px; }
+.footer-inner { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
+.footer-brand { color: var(--text-muted); font-size: 0.85em; }
+.visit-counter-badge { color: var(--text-muted); font-size: 0.8em; background: rgba(52,152,219,0.06); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .hero { min-height: 70vh; padding: 5rem 1.5rem 3rem; }
+  .hero-meta { flex-direction: column; gap: 0.5rem; align-items: center; }
+  section { padding: 3rem 1.5rem; }
+  .timeline { padding-left: 2rem; }
+  .timeline-item::before { left: -1.85rem; }
+  .verdict-section { padding: 2rem 1.5rem; }
+  .cost-cards { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../../index.html" class="back-btn" aria-label="Volver">←</a>
+  <span class="nav-title">Ayuso · México</span>
+  <div class="nav-links">
+    <a href="#cronologia">Cronología</a>
+    <a href="#afirmaciones">Afirmaciones</a>
+    <a href="#dinero">Dinero</a>
+    <a href="#desaparicion">Desaparición</a>
+    <a href="#fuentes">Fuentes</a>
+    <a href="#veredicto">Veredicto</a>
+  </div>
+  <button class="hamburger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+<!-- SIDE MENU -->
+<div class="side-menu" id="sMenu">
+  <a href="#cronologia">📅 Cronología</a>
+  <a href="#afirmaciones">✅ Afirmaciones vs Realidad</a>
+  <a href="#dinero">💰 ¿Quién pagó?</a>
+  <a href="#desaparicion">❓ Los dos días sin rastro</a>
+  <a href="#fuentes">📚 Fuentes consultadas</a>
+  <a href="#veredicto">⚖️ Veredicto</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📋 Investigación periodística · Mayo 2026</div>
+    <h1>El viaje de <span class="accent">Ayuso</span> a México</h1>
+    <p class="hero-sub">
+      Una gira de diez días que se convirtió en controversia diplomática.
+      Hechos contrastados, fuentes verificadas y análisis independiente
+      sobre lo que realmente ocurrió.
+    </p>
+    <div class="hero-meta">
+      <span>📅 3–12 de mayo de 2026</span>
+      <span>🌍 CDMX, Aguascalientes, Riviera Maya</span>
+      <span>📊 14 fuentes verificadas</span>
+    </div>
+  </div>
+</header>
+
+<!-- CRONOLOGÍA -->
+<section id="cronologia">
+  <div class="section-label">Línea temporal</div>
+  <h2 class="section-title">Cronología de los hechos</h2>
+  <p class="section-desc">
+    Del 3 al 12 de mayo, una gira institucional que se convirtió en un torbellino de acusaciones cruzadas entre tres actores: el Gobierno de Madrid, el Ejecutivo español y las autoridades mexicanas.
+  </p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">30 abril 2026</div>
+      <div class="timeline-title">Anuncio del viaje</div>
+      <div class="timeline-text">
+        El Gobierno de la Comunidad de Madrid anuncia un viaje institucional de 10 días (3-12 mayo) con el objetivo de «intensificar las relaciones económicas y culturales». La agenda incluye un homenaje a Hernán Cortés, los Premios Platino en Riviera Maya y la Feria de San Marcos en Aguascalientes.
+      </div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-date">3 mayo 2026</div>
+      <div class="timeline-title">Llegada a México</div>
+      <div class="timeline-text">
+        Ayuso llega a Ciudad de México con una delegación de asesores. Comienza la gira con actos institucionales en la Cámara Española de Comercio y la Basílica de Guadalupe.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">4 mayo 2026</div>
+      <div class="timeline-title">Homenaje a Hernán Cortés — primer punto de inflexión</div>
+      <div class="timeline-text">
+        Ayuso participa en un acto de «Celebración por la Evangelización y el Mestizaje» que rinde homenaje a Hernán Cortés. La Arquidiócesis cancela una misa en la Catedral Metropolitana por falta de permisos de filmación, y el acto se traslada a otro lugar. Pequeñas protestas indígenas permanecen fuera del recinto. Ayuso defiende la Conquista como «proceso civilizatorio».
+      </div>
+    </div>
+
+    <div class="timeline-item yellow">
+      <div class="timeline-date">5 mayo 2026</div>
+      <div class="timeline-title">Sheinbaum responde en la Mañanera</div>
+      <div class="timeline-text">
+        La presidenta mexicana Claudia Sheinbaum, en su rueda de prensa diaria, dice que quienes buscan «reivindicar a Hernán Cortés y sus atrocidades están destinados a la derrota». Sin embargo, también afirma: «México es libre. Tiene toda la libertad para venir a hablar». Sus críticas se dirigieron principalmente a la oposición mexicana, no directamente a Ayuso.
+      </div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-date">6 mayo 2026</div>
+      <div class="timeline-title">Aguascalientes — Feria de San Marcos</div>
+      <div class="timeline-text">
+        Ayuso viaja a Aguascalientes. En el parlamento regional, ~20 manifestantes permanecen fuera, contenedos por la policía. En el ayuntamiento, una concejala de Morena interrumpe para protestar contra su propia administración local, no contra Ayuso. El acto de la Feria de San Marcos (con 300.000 € de fondos públicos madrileños) es cancelado por Ayuso y envía a su Consejero de Cultura. Finalmente, <strong>no aparecen protestas</strong> y el evento pasa desapercibido.
+      </div>
+    </div>
+
+    <div class="timeline-item yellow">
+      <div class="timeline-date">7–8 mayo 2026</div>
+      <div class="timeline-title">Riviera Maya — dos días sin agenda pública</div>
+      <div class="timeline-text">
+        Ayuso y su delegación se trasladan a la Riviera Maya antes de la gala de los Premios Platino. Sin actos programados. El Gobierno de Madrid dice que la invitación de EGEDA (productores de los Platino) incluía la estancia en el resort.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">8 mayo 2026 (viernes)</div>
+      <div class="timeline-title">Cancelación del resto de la gira</div>
+      <div class="timeline-text">
+        Ayuso anuncia la suspensión del resto de su viaje, citando un «clima de boicot» propiciado por el Gobierno mexicano. Acusa a Sheinbaum de amenazar con cerrar el hotel de los Premios Platino. <strong>Grupo Xcaret y la Secretaría de Gobernación de México niegan rotundamente haber presionado a nadie.</strong> Xcaret atribuye la retirada a las «desafortunadas declaraciones» de Ayuso.
+      </div>
+    </div>
+
+    <div class="timeline-item purple">
+      <div class="timeline-date">8–10 mayo 2026 (viernes a domingo)</div>
+      <div class="timeline-title">La «desaparición» en Riviera Maya</div>
+      <div class="timeline-text">
+        Ayuso y 4 asesores de confianza (Miguel Ángel Rodríguez, Paco García, José Luis Carreras, Mariano De Paco) desaparecen del ojo público durante más de 48 horas. Sin agenda, sin declaraciones, sin ubicación confirmada. Ayuso dirá después que «tuvieron que desaparecer» por seguridad. Sheinbaum responderá: «No creo que piense muy mal del país si pasó sus vacaciones aquí».
+      </div>
+    </div>
+
+    <div class="timeline-item blue">
+      <div class="timeline-date">10 mayo 2026 (domingo)</div>
+      <div class="timeline-title">Regreso a España</div>
+      <div class="timeline-text">
+        Ayuso toma un vuelo de regreso vía Dallas. Aterriza en España el lunes 11 a las 14:40.
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">11–14 mayo 2026</div>
+      <div class="timeline-title">Tormenta de acusaciones</div>
+      <div class="timeline-text">
+        Ayuso da entrevistas a COPE y Telemadrid donde acusa a Sánchez y Sheinbaum de conspirar contra ella, afirma que «nadie la protegió» y califica a México de «narcoestado». El Gobierno español y Exteriores desmienten: confirman que <strong>Ayuso rechazó la seguridad ofrecida, no facilitó su agenda y no comunicó ningún problema</strong>. En la Asamblea de Madrid, la oposición le pide cuentas sobre costes y la desaparición de fin de semana.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- AFIRMACIONES -->
+<section id="afirmaciones">
+  <div class="section-label">Fact-check</div>
+  <h2 class="section-title">Afirmaciones vs. Realidad</h2>
+  <p class="section-desc">
+    Cada una de las principales afirmaciones de Ayuso contrastadas con la información disponible de fuentes oficiales y periodísticas.
+  </p>
+
+  <div class="claim-grid">
+    <div class="claim-card">
+      <div class="claim-header">
+        <div class="claim-icon red">✗</div>
+        <div>
+          <div class="claim-label">Afirmación de Ayuso</div>
+          <div class="claim-text">«Sheinbaum me ha difamado todas las mañanas y me ha llamado al boicot.»</div>
+        </div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-icon">✓</div>
+        <div class="fact-text">
+          <strong>Realidad:</strong> Los transcritos de las ruedas de prensa de Sheinbaum muestran que sus críticas se dirigieron principalmente a la <strong>oposición mexicana de derecha</strong>. Las referencias a Ayuso fueron indirectas o irónicas. Sheinbaum repitió que «México es libre» y que Ayuso tenía derecho a estar allí. Nunca llamó al boicot ni amenazó con cerrar eventos.
+        </div>
+      </div>
+    </div>
+
+    <div class="claim-card">
+      <div class="claim-header">
+        <div class="claim-icon red">✗</div>
+        <div>
+          <div class="claim-label">Afirmación de Ayuso</div>
+          <div class="claim-text">«El Gobierno español no me protegió. Nadie me protegió, ni el Gobierno ni Sheinbaum.»</div>
+        </div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-icon">✓</div>
+        <div class="fact-text">
+          <strong>Realidad:</strong> Fuentes del Ministerio de Exteriores confirman que <strong>el equipo de Ayuso rechazó la seguridad</strong> que el Gobierno de México ofreció habitualmente (transmitida a través de la Embajada). Además, Ayuso <strong>no facilitó su agenda</strong> ni comunicó «ningún problema ni inquietud de seguridad» a la Embajada de España ni al Ministerio durante todo el viaje. El ministro Víctor Torres la reta: «Que demuestre que pidió protección».
+        </div>
+      </div>
+    </div>
+
+    <div class="claim-card">
+      <div class="claim-header">
+        <div class="claim-icon red">✗</div>
+        <div>
+          <div class="claim-label">Afirmación de Ayuso</div>
+          <div class="claim-text">«México es un narcoestado donde te pueden asesinar en una esquina.»</div>
+        </div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-icon">✓</div>
+        <div class="fact-text">
+          <strong>Realidad:</strong> En todos los actos de Ayuso hubo <strong>fuerte presencia policial</strong> (policía estatal y municipal). Las protestas se mantuvieron fuera de las vallas. No hubo ningún incidente de seguridad, ningún intento de brecha, ni ninguna amenaza física. El ministro Félix Bolaños resumió: «El único riesgo que corría era que sus vacaciones se acortaran».
+        </div>
+      </div>
+    </div>
+
+    <div class="claim-card">
+      <div class="claim-header">
+        <div class="claim-icon red">✗</div>
+        <div>
+          <div class="claim-label">Afirmación de Ayuso</div>
+          <div class="claim-text">«Sheinbaum amenazó con cerrar el hotel de los Premios Platino si yo acudía.»</div>
+        </div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-icon">✓</div>
+        <div class="fact-text">
+          <strong>Realidad:</strong> <strong>Grupo Xcaret lo negó categóricamente</strong>, señalando que fue Ayuso quien retiró su asistencia por las «desafortunadas declaraciones» previas. La Secretaría de Gobernación de México confirmó que «en ningún momento se intentó evitar alguna de las presentaciones» y que la región operaba en un entorno de «total libertad». Ayuso no aportó ninguna prueba.
+        </div>
+      </div>
+    </div>
+
+    <div class="claim-card">
+      <div class="claim-header">
+        <div class="claim-icon yellow">?</div>
+        <div>
+          <div class="claim-label">Afirmación de Ayuso</div>
+          <div class="claim-text">«Nosotros mismos nos buscamos seguridad privada.»</div>
+        </div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-icon">✓</div>
+        <div class="fact-text">
+          <strong>Realidad:</strong> Ayuso afirma que contrató «5 personas» de seguridad, pero <strong>no especifica si son privadas o públicas</strong>, ni quién las pagó, ni qué empresa. No hay información verificable al respecto. Si fue seguridad privada, el coste no ha sido publicado.
+        </div>
+      </div>
+    </div>
+
+    <div class="claim-card">
+      <div class="claim-header">
+        <div class="claim-icon red">✗</div>
+        <div>
+          <div class="claim-label">Afirmación de Ayuso</div>
+          <div class="claim-text">«Sánchez y Sheinbaum se confabularon para que mi viaje no tuviera éxito.»</div>
+        </div>
+      </div>
+      <div class="fact-body">
+        <div class="fact-icon">✓</div>
+        <div class="fact-text">
+          <strong>Realidad:</strong> No existe ninguna prueba de coordinación entre Sánchez y Sheinbaum contra Ayuso. El Gobierno español, según sus propios protocolos, ofreció la seguridad estándar que fue rechazada. Sheinbaum criticó el homenaje a Cortés (figura controvertida en México) pero también afirmó repetidamente que Ayuso tenía derecho a estar en México. La narrativa de «conspiración» carece de soporte factual.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DINERO -->
+<section id="dinero">
+  <div class="section-label">Financiación</div>
+  <h2 class="section-title">¿Quién pagó el viaje?</h2>
+  <p class="section-desc">
+    El Gobierno de Ayuso se ha contradicho públicamente sobre la financiación. Primero dijo que lo pagaban los empresarios de los Premios Platino. Después reconoció que fue con fondos públicos.
+  </p>
+
+  <div class="cost-cards">
+    <div class="cost-card">
+      <div class="cost-amount red">~300.000 €</div>
+      <div class="cost-label">Coste estimado del viaje completo (logística, alojamientos, delegación) según cálculos del PSOE</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-amount blue">300.000 €</div>
+      <div class="cost-label">Subvención pública de la Comunidad de Madrid para la Feria de San Marcos como «invitada de honor»</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-amount yellow">450.000 €</div>
+      <div class="cost-label">Subvención pública de la Comunidad de Madrid a los Premios Platino este año</div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">«Obviamente, cualquier viaje internacional que realiza cualquier miembro de cualquier gobierno se paga con cargo a los presupuestos correspondientes.»</div>
+    <div class="quote-source">— Miguel Ángel García, portavoz del Gobierno de la Comunidad de Madrid (Cadena SER, 11 mayo 2026)</div>
+  </div>
+
+  <div class="quote-block blue">
+    <div class="quote-text">«Pagamos los madrileños a 300.000 euros la medalla.»</div>
+    <div class="quote-source">— Óscar López, ministro del PSOE</div>
+  </div>
+
+  <div class="quote-block green">
+    <div class="quote-text">«Los madrileños estamos pagando dos veces por este viaje: los gastos del viaje y esta subvención internacional.»</div>
+    <div class="quote-source">— María Pastor, portavoz adjunta de Más Madrid</div>
+  </div>
+
+  <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
+    <strong style="color: var(--yellow);">⚠ Contexto adicional:</strong>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.7;">
+      La invitación oficial provenía de <strong>EGEDA</strong>, la entidad de productores presidida por <strong>Enrique Cerezo</strong> (presidente del Real Madrid), quien recibió de manos de Ayuso la <strong>Gran Cruz de la Orden del 2 de Mayo</strong> —la máxima condecoración de la Comunidad de Madrid— apenas una semana antes del viaje. Según el Gobierno de Madrid, la invitación de EGEDA incluía la estancia de Ayuso y toda su delegación en el resort de la Riviera Maya.
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DESAPARICIÓN -->
+<section id="desaparicion">
+  <div class="section-label">Lo no resuelto</div>
+  <h2 class="section-title">Los dos días sin rastro</h2>
+  <p class="section-desc">
+    Del viernes 8 al domingo 10 de mayo, Ayuso y su círculo más cercano desaparecieron del mapa. Sin agenda, sin declaraciones, sin ubicación confirmada. Solo 4 personas la acompañaron.
+  </p>
+
+  <div class="two-col">
+    <div class="col-box">
+      <h4 style="color: var(--accent);">Lo que dice Ayuso</h4>
+      <ul>
+        <li><span style="color: var(--accent);">▸</span> <span>«Hemos tenido que desaparecer» por seguridad</span></li>
+        <li><span style="color: var(--accent);">▸</span> <span>«Nadie sabía dónde estábamos, ni nuestras familias»</span></li>
+        <li><span style="color: var(--accent);">▸</span> <span>«Me busqué mi propia seguridad» con 5 personas</span></li>
+        <li><span style="color: var(--accent);">▸</span> <span>«No quise poner más en peligro a mi equipo»</span></li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4 style="color: var(--blue);">Lo que no se sabe</h4>
+      <ul>
+        <li><span style="color: var(--blue);">▸</span> <span><strong>Ubicación exacta:</strong> No se ha revelado dónde se alojaron</span></li>
+        <li><span style="color: var(--blue);">▸</span> <span><strong>Seguridad:</strong> No se sabe si fue privada o pública, ni quién pagó</span></li>
+        <li><span style="color: var(--blue);">▸</span> <span><strong>Coste:</strong> El gasto de estos días no ha sido publicado</span></li>
+        <li><span style="color: var(--blue);">▸</span> <span><strong>Amenazas:</strong> No se ha aportado ninguna prueba concreta</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quote-block purple" style="margin-top: 2rem;">
+    <div class="quote-text">«No creo que piense muy mal del país si pasó sus vacaciones aquí.»</div>
+    <div class="quote-source">— Claudia Sheinbaum, presidenta de México</div>
+  </div>
+
+  <div class="quote-block" style="margin-top: 1rem;">
+    <div class="quote-text">«El único riesgo que corría era que sus vacaciones se acortaran.»</div>
+    <div class="quote-source">— Félix Bolaños, ministro del Gobierno español</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FUENTES -->
+<section id="fuentes">
+  <div class="section-label">Transparencia</div>
+  <h2 class="section-title">Fuentes consultadas</h2>
+  <p class="section-desc">
+    Toda la información de esta investigación proviene de fuentes periodísticas verificables. Aquí están listadas para que puedas contrastar cada dato.
+  </p>
+
+  <div class="source-list">
+    <a class="source-item" href="https://elpais.com/espana/madrid/2026-05-13/el-viaje-de-ayuso-a-mexico-las-inconsistencias-y-exageraciones-del-relato-de-la-presidenta-madrilena.html" target="_blank">
+      <div class="source-num">01</div>
+      <div><div class="source-title">El viaje de Ayuso a México: las inconsistencias y exageraciones del relato</div><div class="source-where">El País · 13 mayo 2026 · Juan Diego Quesada, Elena San José</div></div>
+    </a>
+    <a class="source-item" href="https://www.lasexta.com/noticias/nacional/debil-contradictorio-relato-ayuso-viaje-mexico-que-utiliza-cargar-gobierno_202605136a04675bb5b06629960eab61.html" target="_blank">
+      <div class="source-num">02</div>
+      <div><div class="source-title">El débil y contradictorio relato de Ayuso sobre su viaje a México</div><div class="source-where">laSexta · 13 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://cadenaser.com/cmadrid/2026/05/11/cuanto-ha-costado-y-quien-lo-ha-pagado-la-contradiccion-del-gobierno-de-ayuso-sobre-la-financiacion-del-viaje-a-mexico-radio-madrid/" target="_blank">
+      <div class="source-num">03</div>
+      <div><div class="source-title">¿Cuánto ha costado y quién lo ha pagado? La contradicción del Gobierno de Ayuso</div><div class="source-where">Cadena SER · 11 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://es.euronews.com/my-europe/2026/05/13/sheinbaum-sanchez-ayuso-viaje-mexico-desato-tormenta-politica-diplomatica" target="_blank">
+      <div class="source-num">04</div>
+      <div><div class="source-title">Sheinbaum, Sánchez y Ayuso: el viaje a México que desató una tormenta diplomática</div><div class="source-where">Euronews · 13 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.europapress.es/nacional/noticia-exteriores-dice-ayuso-rechazo-seguridad-le-ofrecio-mexico-no-traslado-inquietud-ningun-momento-20260512145648.html" target="_blank">
+      <div class="source-num">05</div>
+      <div><div class="source-title">Exteriores dice que Ayuso rechazó la seguridad que le ofreció México</div><div class="source-where">Europa Press · 12 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.elconfidencial.com/espana/madrid/2026-05-12/ayuso-mexico-seguridad-gobierno-1tps_4353602/" target="_blank">
+      <div class="source-num">06</div>
+      <div><div class="source-title">Ayuso acusa a Sheinbaum y al Gobierno de no garantizar su seguridad</div><div class="source-where">El Confidencial · 12 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.infobae.com/mexico/2026/05/06/cuanto-costo-la-visita-de-ayuso-en-mexico-los-numeros-detras-de-la-polemica-gira/" target="_blank">
+      <div class="source-num">07</div>
+      <div><div class="source-title">¿Cuánto costó la visita de Ayuso en México? Los números detrás de la polémica gira</div><div class="source-where">Infobae · 6 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.rtve.es/noticias/20260511/sheinbaum-califica-fallida-visita-ayuso-mexico-critica-defensa-hernan-cortes/17064028.shtml" target="_blank">
+      <div class="source-num">08</div>
+      <div><div class="source-title">Sheinbaum califica de «fallida» la visita de Ayuso a su país</div><div class="source-where">RTVE · 11 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.elplural.com/autonomias/madrid/cuatro-dias-sin-agenda-riviera-maya-realidad-cancelacion-viaje-ayuso-mexico-entre-criticas-boicot-sheinbaum_389707102" target="_blank">
+      <div class="source-num">09</div>
+      <div><div class="source-title">Cuatro días sin agenda en Riviera Maya: la realidad de la cancelación</div><div class="source-where">El Plural · mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://vanguardia.com.mx/noticias/mexico/ayuso-cancela-el-resto-de-su-gira-por-mexico-por-clima-de-boicot-segob-y-xcaret-niegan-amenazas-CB20566895" target="_blank">
+      <div class="source-num">10</div>
+      <div><div class="source-title">Ayuso cancela el resto de su gira; Segob y Xcaret niegan amenazas</div><div class="source-where">Vanguardia México · mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.huffingtonpost.es/politica/ayuso-responde-criticas-polemico-viaje-mas-fuego-mexico-existio-llegaron-espanoles-f202605.html" target="_blank">
+      <div class="source-num">11</div>
+      <div><div class="source-title">Ayuso responde a las críticas por su polémico viaje con más fuego</div><div class="source-where">Huffington Post España · mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://elpais.com/expres/2026-05-15/diez-dias-en-mexico-y-un-gesto-incomodo-el-viaje-de-ayuso-divide-a-su-propio-partido.html" target="_blank">
+      <div class="source-num">12</div>
+      <div><div class="source-title">Diez días en México y un gesto incómodo: el viaje divide a su propio partido</div><div class="source-where">El País · 15 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://cnnespanol.cnn.com/2026/05/12/mexico/mexico-sheinbaum-diaz-ayuso-espania-orix" target="_blank">
+      <div class="source-num">13</div>
+      <div><div class="source-title">España vuelve a generar divisiones en la política mexicana de la mano de Ayuso</div><div class="source-where">CNN en Español · 12 mayo 2026</div></div>
+    </a>
+    <a class="source-item" href="https://www.lavozdegalicia.es/noticia/espana/2026/05/14/gobierno-reta-diaz-ayuso-demuestre-pidio-proteccion-mexico-espana/0003_202605G14P20993.htm" target="_blank">
+      <div class="source-num">14</div>
+      <div><div class="source-title">El Gobierno reta a Ayuso a que demuestre que pidió protección</div><div class="source-where">La Voz de Galicia · 14 mayo 2026</div></div>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- VEREDICTO -->
+<section id="veredicto">
+  <div class="section-label">Análisis</div>
+  <h2 class="section-title">Veredicto</h2>
+
+  <div class="verdict-section">
+    <h3>Lo que los hechos muestran</h3>
+
+    <p>
+      El viaje de Isabel Díaz Ayuso a México fue, en origen, una <strong>gira institucional de 10 días</strong> con una agenda ambiciosa que incluía actos culturales, económicos y su participación en los Premios Platino. Lo que empezó como una misión de proyección internacional se convirtió en un <strong>caso de estudio sobre cómo construir un relato político</strong> a partir de una realidad incómoda.
+    </p>
+
+    <p>
+      <strong>El punto de inflexión fue el homenaje a Hernán Cortés.</strong> En un contexto en el que España y México estaban intentando recomponer relaciones diplomáticas tensas por el revisionismo histórico sobre la Conquista, la decisión de Ayuso de reivindicar al conquistador fue un error de cálculo político evidente. La respuesta de Sheinbaum —aunque firme— no fue la persecución que Ayuso describe: la presidenta mexicana afirmó repetidamente que México es libre y que Ayuso tenía derecho a estar allí.
+    </p>
+
+    <p>
+      <strong>Las afirmaciones sobre falta de seguridad no se sostienen.</strong> El Ministerio de Exteriores español confirmó que Ayuso rechazó la protección ofrecida, no facilitó su agenda y no reportó ningún problema durante todo el viaje. Las protestas que hubo fueron pequeñas, contenidas por la policía y sin ningún incidente. La calificación de México como «narcoestado» donde «te pueden asesinar en una esquina» contrasta con la realidad documentada: fuerte presencia policial en todos los actos y cero incidentes.
+    </p>
+
+    <p>
+      <strong>La «desaparición» de 48 horas en Riviera Maya es el elemento más problemático del relato.</strong> Si realmente existía un peligro extremo, la solución no fue regresar a España inmediatamente, sino quedarse cuatro días sin agenda en uno de los destinos turísticos más populares del Caribe mexicano. La ironía de Sheinbaum —«si pasó sus vacaciones aquí»— resume la contradicción: es difícil creer que alguien que considera un país mortal se quede dos días de fin de semana en la playa.
+    </p>
+
+    <p>
+      <strong>Sobre el dinero, la contradicción es el mayor problema.</strong> El Gobierno de Ayuso primero dijo que los empresarios pagaban el viaje. Luego reconoció que fue con fondos públicos. Y la cifra de 300.000 € solo para la Feria de San Marcos, más los 450.000 € subvencionados a los Premios Platino, plantea la pregunta legítima de si los madrileños están financiando una gira que combina actos institucionales con una estancia vacacional en un resort de lujo. Que Enrique Cerezo —recién condecorado por Ayuso— fuera el invitante oficial añade una capa de conflicto de intereses no resuelto.
+    </p>
+
+    <p>
+      <strong>La narrativa de «conspiración» entre Sánchez y Sheinbaum es la parte más débil.</strong> No existe ninguna evidencia de coordinación entre ambos gobiernos. El Ejecutivo español cumplió los protocolos y ofreció la seguridad estándar. Sheinbaum criticó el homenaje a Cortés —algo comprensible en cualquier contexto mexicano— pero nunca amenazó ni presionó. La atribución de una «confabulación» parece diseñada más para alimentar la narrativa de persecución que para reflejar la realidad diplomática.
+    </p>
+
+    <p>
+      <strong>En resumen:</strong> Ayuso tomó una decisión política controvertida (homenajear a Cortés en México), generó reacciones negativas previsibles, canceló su gira, se quedó días sin agenda en un destino turístico y construyó un relato de victimización que las fuentes oficiales y periodísticas contradicen punto por punto. El viaje puede considerarse un <strong>fiasco diplomático autoinfligido</strong> que, lejos de proyectar a la Comunidad de Madrid internacionalmente, ha generado un escrutinio intenso sobre el uso de fondos públicos y la coherencia del liderazgo de Ayuso.
+    </p>
+
+    <p style="color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
+      Esta investigación se basa exclusivamente en información publicada por medios de comunicación reconocidos y declaraciones oficiales. No se ha tomado partido: los hechos hablan por sí mismos.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER WITH COUNTER -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+
+<script>
+// HAMBURGER MENU
+const burger = document.getElementById('burger');
+const sMenu = document.getElementById('sMenu');
+const overlay = document.getElementById('overlay');
+
+function closeMenu() {
+  burger.classList.remove('active');
+  sMenu.classList.remove('open');
+  overlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+burger.addEventListener('click', () => {
+  if (sMenu.classList.contains('open')) {
+    closeMenu();
+  } else {
+    burger.classList.add('active');
+    sMenu.classList.add('open');
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+});
+
+overlay.addEventListener('click', closeMenu);
+sMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+
+// SMOOTH SCROLL FOR NAV LINKS
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// VISITOR COUNTER
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/ayuso-mexico/index.html';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
+</body>
+</html>
