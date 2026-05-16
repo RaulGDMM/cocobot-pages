@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fondos Next Generation EU — La Polémica de los Desvíos en Europa</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #1a1a26;
+      --border: #2a2a3a;
+      --text: #e0e0e8;
+      --text-dim: #8888a0;
+      --accent-blue: #4a9eff;
+      --accent-red: #ff4a6a;
+      --accent-orange: #ff8c42;
+      --accent-green: #4aff8c;
+      --accent-purple: #a855f7;
+      --accent-yellow: #ffd74a;
+      --spain: #ff4a6a;
+      --poland: #ffd74a;
+      --italy: #4aff8c;
+      --greece: #4a9eff;
+      --eu: #a855f7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(74, 158, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255, 74, 106, 0.03) 0%, transparent 60%);
+      z-index: -1;
+      animation: bgShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgShift {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, #c0c0d0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* BIG NUMBERS */
+    .big-numbers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 60px 0 40px;
+    }
+
+    .big-num {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .big-num::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .big-num:nth-child(1)::before { background: var(--accent-blue); }
+    .big-num:nth-child(2)::before { background: var(--accent-red); }
+    .big-num:nth-child(3)::before { background: var(--accent-orange); }
+    .big-num:nth-child(4)::before { background: var(--accent-purple); }
+
+    .big-num .number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .big-num:nth-child(1) .number { color: var(--accent-blue); }
+    .big-num:nth-child(2) .number { color: var(--accent-red); }
+    .big-num:nth-child(3) .number { color: var(--accent-orange); }
+    .big-num:nth-child(4) .number { color: var(--accent-purple); }
+
+    .big-num .label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* SECTION */
+    section {
+      padding: 50px 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-blue), var(--accent-red), var(--accent-orange), var(--accent-purple));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 36px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.3s;
+    }
+
+    .timeline-item:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -33px;
+      top: 26px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-blue);
+      background: var(--bg);
+    }
+
+    .timeline-item:nth-child(2)::before { border-color: var(--accent-red); }
+    .timeline-item:nth-child(3)::before { border-color: var(--accent-orange); }
+    .timeline-item:nth-child(4)::before { border-color: var(--accent-purple); }
+    .timeline-item:nth-child(5)::before { border-color: var(--accent-green); }
+    .timeline-item:nth-child(6)::before { border-color: var(--accent-yellow); }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-bottom: 6px;
+    }
+
+    .timeline-item:nth-child(2) .timeline-date { color: var(--accent-red); }
+    .timeline-item:nth-child(3) .timeline-date { color: var(--accent-orange); }
+    .timeline-item:nth-child(4) .timeline-date { color: var(--accent-purple); }
+    .timeline-item:nth-child(5) .timeline-date { color: var(--accent-green); }
+    .timeline-item:nth-child(6) .timeline-date { color: var(--accent-yellow); }
+
+    .timeline-item h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .timeline-item p {
+      font-size: 0.92rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* COUNTRY CARDS */
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .country-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .country-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .country-card.spain:hover { border-color: var(--spain); }
+    .country-card.poland:hover { border-color: var(--poland); }
+    .country-card.italy:hover { border-color: var(--italy); }
+    .country-card.greece:hover { border-color: var(--greece); }
+
+    .country-header {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .country-flag {
+      font-size: 2rem;
+    }
+
+    .country-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .country-header .allocation {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .country-body {
+      padding: 0 24px 24px;
+    }
+
+    .country-body p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .country-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .tag-red { background: rgba(255, 74, 106, 0.15); color: var(--accent-red); }
+    .tag-orange { background: rgba(255, 140, 66, 0.15); color: var(--accent-orange); }
+    .tag-blue { background: rgba(74, 158, 255, 0.15); color: var(--accent-blue); }
+    .tag-green { background: rgba(74, 255, 140, 0.15); color: var(--accent-green); }
+    .tag-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+    .tag-yellow { background: rgba(255, 215, 74, 0.15); color: var(--accent-yellow); }
+
+    /* QUOTE BLOCK */
+    .quote-block {
+      background: var(--surface2);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 0 12px 12px 0;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+
+    .quote-block.red { border-left-color: var(--accent-red); }
+    .quote-block.orange { border-left-color: var(--accent-orange); }
+    .quote-block.purple { border-left-color: var(--accent-purple); }
+    .quote-block.green { border-left-color: var(--accent-green); }
+
+    .quote-block blockquote {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .quote-block cite {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      font-style: normal;
+    }
+
+    /* MECHANISM DIAGRAM */
+    .mechanism {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin: 30px 0;
+    }
+
+    .mechanism h3 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .flow-step {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: center;
+      min-width: 160px;
+    }
+
+    .flow-step .icon {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+
+    .flow-step .step-label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .flow-step .step-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    .flow-arrow {
+      font-size: 1.4rem;
+      color: var(--accent-blue);
+    }
+
+    .flow-step.warning {
+      border-color: var(--accent-red);
+      background: rgba(255, 74, 106, 0.08);
+    }
+
+    /* SOURCES */
+    .sources-section {
+      padding: 50px 0 80px;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .source-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.3s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .source-item:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .source-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .source-content {
+      flex: 1;
+    }
+
+    .source-content .source-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .source-content .source-meta {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .source-content .source-snippet {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 0.82rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .hero { padding: 50px 16px 40px; }
+      .big-numbers { grid-template-columns: repeat(2, 1fr); }
+      .country-grid { grid-template-columns: 1fr; }
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+      .mechanism { padding: 20px; }
+    }
+
+    /* VISITOR COUNTER */
+    .page-footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); margin-top: 30px; }
+    .footer-inner { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .footer-brand { color: var(--text-dim); font-size: 0.85em; }
+    .visit-counter-badge { color: var(--text-dim); font-size: 0.8em; background: rgba(74,158,255,0.06); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">Investigación · Mayo 2026</div>
+    <h1>Fondos Next Generation EU:<br><span>La Polémica de los Desvíos</span></h1>
+    <p class="hero-sub">
+      Millardos del plan de recuperación post-COVID de la UE han sido redirigidos a pensiones, gastos corrientes y compras dudosas en varios Estados miembros.
+    </p>
+  </header>
+
+  <div class="container">
+
+    <!-- BIG NUMBERS -->
+    <div class="big-numbers">
+      <div class="big-num">
+        <div class="number">€723B</div>
+        <div class="label">Total NextGenerationEU<br>(subvenciones + préstamos)</div>
+      </div>
+      <div class="big-num">
+        <div class="number">€577B</div>
+        <div class="label">Desembolsado hasta<br>enero 2026</div>
+      </div>
+      <div class="big-num">
+        <div class="number">€5.08B</div>
+        <div class="label">Estimado en fraude<br>según EPPO 2025</div>
+      </div>
+      <div class="big-num">
+        <div class="number">518</div>
+        <div class="label">Casos activos EPPO<br>relacionados con NGEU</div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <section>
+      <div class="section-label">Cronología</div>
+      <h2 class="section-title">Cómo ha evolucionado la polémica</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">2020 — Creación del fondo</div>
+          <h3>NextGenerationEU se establece tras la pandemia</h3>
+          <p>La UE aprueba el mayor programa de recuperación de su historia: €723.000 millones en subvenciones y préstamos para 27 Estados miembros. Los fondos están destinados a transición verde, transformación digital y resiliencia económica — <strong>explícitamente excluyendo pensiones y gasto corriente</strong>.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Abril 2024 — Primera alarma</div>
+          <h3>El Tribunal de Cuentas de la UE advierte de un «vacío de control»</h3>
+          <p>El presidente del Tribunal, Tony Murphy, identifica un «vacío de garantía y responsabilidad» en la protección de los fondos RRF. Se detecta un aumento drástico de contratos con oferta única (Grecia: 42,4%), señal de competencia decreciente en la contratación pública.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Agosto 2025 — Escándalo en Polonia</div>
+          <h3>Fondos usados para yates, saunas y clubes swinger</h3>
+          <p>Una mapa de transparencia del gobierno polaco revela que empresas del sector hostelero destinaron subvenciones a yates, saunas, solariums, muebles de lujo y máquinas de café. El PM Tusk ordena auditorías; la Comisión Europea exige respuestas. Se destituye a la directora de la Agencia de Desarrollo Empresarial.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Mayo 2026 — Estalla el caso España</div>
+          <h3>El Tribunal de Cuentas español detecta desvío a pensiones</h3>
+          <p>Auditors del Tribunal de Cuentas de España intentan bloquear la aprobación de las Cuentas Generales 2024 al descubrir desvíos de fondos Next Generation hacia gasto corriente, incluyendo <strong>pagos directos de pensiones</strong>. El dinero no comprometido se redirigió a través de la cuenta única del Tesoro. Se estima que €8.500 millones fueron desviados en 2025.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Mayo 2026 — Respuesta de la Comisión</div>
+          <h3>Fitto: «Es posible usar temporalmente la liquidez»</h3>
+          <p>Raffaele Fitto, Vicepresidente Ejecutivo del Comité de Cohesión y Reformas, aclara que aunque las pensiones no son elegibles, los Estados miembros pueden usar temporalmente parte de la liquidez de los pagos RRF para cubrir otros gastos presupuestarios. El eurodiputado Andreas Schwab advierte: «demasiada flexibilidad, quizás demasiada».</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Mayo 2026 — Informe del Tribunal de Cuentas UE</div>
+          <h3>«Miles de millones inrastreables» — alerta el ECA</h3>
+          <p>El Tribunal de Cuentas Europeo publica un informe devastador: de los €577.000 millones desembolsados, gran parte no puede rastrearse hasta los beneficiarios finales, especialmente en el sector privado. La auditora Ivana Maletić: «Sin esta información, no podemos evaluar si los fondos se distribuyen con equidad».</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNTRY CASES -->
+    <section>
+      <div class="section-label">Estados miembros</div>
+      <h2 class="section-title">Casos de desvío y fraude por país</h2>
+
+      <div class="country-grid">
+
+        <!-- SPAIN -->
+        <div class="country-card spain">
+          <div class="country-header">
+            <div class="country-flag">🇪🇸</div>
+            <div>
+              <h3>España</h3>
+              <div class="allocation">€60.500M subvenciones + €17.300M préstamos (2.º mayor receptor)</div>
+            </div>
+          </div>
+          <div class="country-body">
+            <p><strong>El caso más mediático.</strong> El Tribunal de Cuentas descubrió que fondos Next Generation no comprometidos se redirigieron a través de la cuenta única del Tesoro para cubrir déficits de gasto corriente, incluyendo <strong>pagos de pensiones</strong> — explícitamente no elegibles bajo las reglas RRF.</p>
+            <p>En 2024, el Tribunal ya había detectado €2.400 millones en irregularidades. En 2025, se estima que €8.500 millones fueron desviados al sistema de pensiones y gasto social.</p>
+            <p>El gobierno español califica las transferencias como «coyunturales» (ajustes contables temporales). Quedan €27.000 millones por ejecutar antes del plazo de <strong>agosto 2026</strong>.</p>
+            <div>
+              <span class="country-tag tag-red">Pensiones</span>
+              <span class="country-tag tag-orange">Gasto social</span>
+              <span class="country-tag tag-blue">Cuenta única del Tesoro</span>
+              <span class="country-tag tag-purple">Plazo agosto 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- POLAND -->
+        <div class="country-card poland">
+          <div class="country-header">
+            <div class="country-flag">🇵🇱</div>
+            <div>
+              <h3>Polonia</h3>
+              <div class="allocation">Casi €60.000M del Fondo de Reconstrucción y Resiliencia</div>
+            </div>
+          </div>
+          <div class="country-body">
+            <p><strong>Yates, saunas y clubes swinger.</strong> Tras desbloquearse los fondos (congelados bajo el gobierno PiS por disputas de estado de derecho), un mapa de transparencia del gobierno reveló que empresas del sector hostelero destinaron subvenciones a bienes de lujo.</p>
+            <p>Se estima que ~1.200 millones de złoty ($327M) fueron objeto de controversia. El PM Tusk ordenó auditorías completas. La directora de la Agencia de Desarrollo Empresarial fue destituida.</p>
+            <p>La Comisión Europea ha exigido explicaciones y ha advertido que activará al EPPO y OLAF si Polonia no actúa.</p>
+            <div>
+              <span class="country-tag tag-yellow">Yates y saunas</span>
+              <span class="country-tag tag-orange">Sector hostelero</span>
+              <span class="country-tag tag-red">Desbloqueo 2023</span>
+              <span class="country-tag tag-blue">Auditorías ordenadas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ITALY -->
+        <div class="country-card italy">
+          <div class="country-header">
+            <div class="country-flag">🇮🇹</div>
+            <div>
+              <h3>Italia</h3>
+              <div class="allocation">Mayor receptor individual de fondos RRF</div>
+            </div>
+          </div>
+          <div class="country-body">
+            <p><strong>Operación «Crimen Resiliente».</strong> El EPPO desarticuló una red criminal sospechosa de defraudar €600 millones del Plan Nacional de Recuperación italiano. 22 detenidos, registros y decomisos en múltiples ciudades.</p>
+            <p>La organización utilizó empresas ficticias y documentación falsa para obtener fondos del NRRP italiano entre 2021 y 2023. El esquema incluía evasión fiscal internacional con importaciones desde China.</p>
+            <p>Italia concentra la mayor parte de las investigaciones del EPPO relacionadas con NextGenerationEU.</p>
+            <div>
+              <span class="country-tag tag-green">Operación Resilient Crime</span>
+              <span class="country-tag tag-red">22 detenidos</span>
+              <span class="country-tag tag-orange">€600M defraudados</span>
+              <span class="country-tag tag-purple">Red criminal organizada</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- GREECE -->
+        <div class="country-card greece">
+          <div class="country-header">
+            <div class="country-flag">🇬🇷</div>
+            <div>
+              <h3>Grecia</h3>
+              <div class="allocation">Plan nacional de recuperación bajo investigación</div>
+            </div>
+          </div>
+          <div class="country-body">
+            <p><strong>€2.500 millones en sospechas de fraude.</strong> El EPPO y la Comisión Griega de Competencia investigan a 10 empresas (3 telecomunicaciones, 5 TI, 2 consultoras) acusadas de adjudicarse 600 proyectos lucrativos a través de licitaciones únicas a costes significativamente inflados.</p>
+            <p>La denuncia fue iniciada por un competidor. El 42,4% de los contratos públicos griegos se adjudicaron con oferta única en 2021 — la tasa más alta de la UE.</p>
+            <div>
+              <span class="country-tag tag-blue">€2.500M investigados</span>
+              <span class="country-tag tag-orange">10 empresas</span>
+              <span class="country-tag tag-red">600 proyectos</span>
+              <span class="country-tag tag-yellow">42,4% oferta única</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MECHANISM -->
+    <section>
+      <div class="section-label">Mecanismo</div>
+      <h2 class="section-title">¿Cómo funciona el desvío?</h2>
+
+      <div class="mechanism">
+        <h3>El camino del dinero: de la UE al gasto corriente</h3>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="icon">🇪🇺</div>
+            <div class="step-label">Comisión Europea</div>
+            <div class="step-value">€723B</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="icon">📋</div>
+            <div class="step-label">Plan RRF nacional</div>
+            <div class="step-value">Hitos y metas</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="icon">🏦</div>
+            <div class="step-label">Cuenta única del Tesoro</div>
+            <div class="step-value">Liquidez estatal</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step warning">
+            <div class="icon">⚠️</div>
+            <div class="step-label">Desvío detectado</div>
+            <div class="step-value">Pensiones / gasto corriente</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block red">
+        <blockquote>«Aunque el pago de pensiones y otras formas de gasto corriente no son elegibles bajo los fondos RRF, es posible que los Estados miembros usen temporalmente parte de la liquidez de estos pagos para cubrir otros conceptos presupuestarios.»</blockquote>
+        <cite>— Raffaele Fitto, Vicepresidente Ejecutivo, Comité de Cohesión y Reformas de la Comisión Europea (mayo 2026)</cite>
+      </div>
+
+      <div class="quote-block orange">
+        <blockquote>«Los Estados miembros han sido concedidos una gran cantidad de flexibilidad, quizás demasiada... más bien un uso de los fondos que contraviene la normativa. Las pensiones nunca han formado parte de los objetivos de estos fondos.»</blockquote>
+        <cite>— Andreas Schwab, eurodiputado (CDU) y Presidente de la Comisión de Control Presupuestario del PE</cite>
+      </div>
+
+      <div class="quote-block purple">
+        <blockquote>«Sin esta información, no podemos evaluar si los fondos se distribuyen de forma equitativa, si existen riesgos de concentración, o si el dinero de la UE aporta valor para los ciudadanos.»</blockquote>
+        <cite>— Ivana Maletić, Miembro del Tribunal de Cuentas Europeo, responsable de la auditoría RRF (mayo 2026)</cite>
+      </div>
+    </section>
+
+    <!-- EPPO DATA -->
+    <section>
+      <div class="section-label">Datos del EPPO</div>
+      <h2 class="section-title">La Fiscalía Europea en números</h2>
+
+      <div class="big-numbers">
+        <div class="big-num">
+          <div class="number">2023</div>
+          <div class="label">206 casos activos<br>daño estimado: &gt;€1.800M</div>
+        </div>
+        <div class="big-num">
+          <div class="number">2024</div>
+          <div class="label">311 casos activos<br>daño estimado: &gt;€2.800M (+25%)</div>
+        </div>
+        <div class="big-num">
+          <div class="number">2025</div>
+          <div class="label">518 casos activos<br>daño estimado: €5.080M</div>
+        </div>
+        <div class="big-num">
+          <div class="number">29%</div>
+          <div class="label">De las investigaciones<br>tienen dimensión transfronteriza</div>
+        </div>
+      </div>
+
+      <div class="quote-block green">
+        <blockquote>«Los patrones de fraude incluyen falsedad en solicitudes de subvenciones, facturas falsificadas, costes de proyecto inflados y manipulación de especificaciones de licitación.»</blockquote>
+        <cite>— Informe Anual 2025 del EPPO</cite>
+        </div>
+    </section>
+
+    <!-- SOURCES -->
+    <section class="sources-section">
+      <div class="section-label">Fuentes consultadas</div>
+      <h2 class="section-title">Referencias verificables</h2>
+
+      <div class="source-list">
+        <a class="source-item" href="https://brusselssignal.eu/2026/05/spanish-government-accused-of-diverting-eu-recovery-funds-to-pay-pensions/" target="_blank" rel="noopener">
+          <div class="source-num">1</div>
+          <div class="source-content">
+            <div class="source-title">Spanish Government Accused of Diverting EU Recovery Funds to Pay Pensions</div>
+            <div class="source-meta">Brussels Signal · 5 de mayo de 2026 · Carl Deconinck</div>
+            <div class="source-snippet">Senior auditors at Spain's Tribunal de Cuentas uncovered clear diversions of Next Generation EU funds into ordinary national spending, specifically direct top-ups for pension payments.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.eunews.it/en/2026/05/14/spain-recovery-pensions-eucommission/" target="_blank" rel="noopener">
+          <div class="source-num">2</div>
+          <div class="source-content">
+            <div class="source-title">Spain's use of PNRR funds: according to the Commission, "it is possible to temporarily use part of the funds to cover other budget items"</div>
+            <div class="source-meta">Eunews.it · 14 de mayo de 2026</div>
+            <div class="source-snippet">Raffaele Fitto confirms pensions are ineligible but permits temporary liquidity management. Andreas Schwab warns excessive flexibility may contravene regulations.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://brusselssignal.eu/2024/04/major-fraud-allegations-spur-concern-over-misuse-of-eu-covid-recovery-funds/" target="_blank" rel="noopener">
+          <div class="source-num">3</div>
+          <div class="source-content">
+            <div class="source-title">Major Fraud Allegations Spur Concern Over Misuse of EU Covid Recovery Funds</div>
+            <div class="source-meta">Brussels Signal · Abril 2024</div>
+            <div class="source-snippet">By end of 2023, EPPO had 206 active investigations with estimated damage over €1.8 billion. ECA identifies "assurance and accountability gap" in safeguarding RRF funds.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.europeaninterest.eu/eu-auditors-raise-concerns-over-untraceable-billions-in-covid-recovery-funds/" target="_blank" rel="noopener">
+          <div class="source-num">4</div>
+          <div class="source-content">
+            <div class="source-title">EU Auditors Raise Concerns Over Untraceable Billions in COVID Recovery Funds</div>
+            <div class="source-meta">European Interest · 6 de mayo de 2026 · European Court of Auditors / AP</div>
+            <div class="source-snippet">Despite €577 billion disbursed, auditors cannot clearly trace how billions are allocated to private-sector beneficiaries. €600 million suspected misappropriation documented.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.eppo.europa.eu/assets/annual-report-2025/index.html" target="_blank" rel="noopener">
+          <div class="source-num">5</div>
+          <div class="source-content">
+            <div class="source-title">Annual Report 2025 — European Public Prosecutor's Office</div>
+            <div class="source-meta">EPPO · Informe oficial 2025</div>
+            <div class="source-snippet">518 active cases related to NextGenerationEU, with estimated damage of €5.08 billion. Fraud patterns include misrepresentation, forged invoices, inflated costs.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.eppo.europa.eu/en/media/news/2024-annual-report-eppo-leading-charge-against-eu-fraud" target="_blank" rel="noopener">
+          <div class="source-num">6</div>
+          <div class="source-content">
+            <div class="source-title">2024 Annual Report: EPPO Leading the Charge Against EU Fraud</div>
+            <div class="source-meta">EPPO · 2024</div>
+            <div class="source-snippet">Over 300 active investigations related to NextGenerationEU, with estimated damage over €2.8 billion (+25% year-over-year).</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.euronews.com/my-europe/2025/08/09/eu-commission-demands-answers-from-poland-following-alleged-misuse-of-recovery-funds" target="_blank" rel="noopener">
+          <div class="source-num">7</div>
+          <div class="source-content">
+            <div class="source-title">EU Commission Demands Answers from Poland Following Alleged Misuse of Recovery Funds</div>
+            <div class="source-meta">Euronews · 9 de agosto de 2025 · Katarzyna-Maria Skiba</div>
+            <div class="source-snippet">Grants allegedly spent on company yachts, saunas, solariums, furniture and coffee machines. PM Tusk orders comprehensive audits. Agency head dismissed.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.verity.news/story/2025/poland-probes-eu-recovery-fund-misuse-after-transparency-backfires" target="_blank" rel="noopener">
+          <div class="source-num">8</div>
+          <div class="source-content">
+            <div class="source-title">Poland Probes Alleged EU COVID Recovery Fund Misuse</div>
+            <div class="source-meta">Verity News · 11 de agosto de 2025</div>
+            <div class="source-snippet">Transparency map revealed yachts, saunas, luxury cars and a swingers club. Disputed spending: ~1.2 billion złoty ($327M). Tusk declares "zero tolerance".</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://europeanconservative.com/articles/news/poland-faces-scrutiny-over-misuse-of-recovery-funds/" target="_blank" rel="noopener">
+          <div class="source-num">9</div>
+          <div class="source-content">
+            <div class="source-title">Luxury at EU Expense? Poland Faces Scrutiny Over Misuse of Recovery Funds</div>
+            <div class="source-meta">The European Conservative · 11 de agosto de 2025 · Javier Villamor</div>
+            <div class="source-snippet">€280 million earmarked for hospitality sector. Poland obliged to act to clarify awarding of aid. EPPO and OLAF may intervene.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://financialcrime.lu/2026/03/02/EPPO-Annual-Report-2025/" target="_blank" rel="noopener">
+          <div class="source-num">10</div>
+          <div class="source-content">
+            <div class="source-title">EPPO Annual Report 2025 — FinancialCrime.lu</div>
+            <div class="source-meta">FinancialCrime.lu · 2 de marzo de 2026</div>
+            <div class="source-snippet">518 active EPPO cases relate to NextGenerationEU funds, with estimated damage of €5.08 billion. Recovery and Resilience Facility is the primary target.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://transparency.eu/prosecuting-crime-in-the-eu-the-state-of-the-eppo-in-2025/" target="_blank" rel="noopener">
+          <div class="source-num">11</div>
+          <div class="source-content">
+            <div class="source-title">Prosecuting Crime in the EU: The State of the EPPO in 2025</div>
+            <div class="source-meta">Transparency International EU · 2025</div>
+            <div class="source-snippet">Almost 29% of investigations had a cross-border dimension, underscoring EPPO's role in addressing EU-wide financial crimes.</div>
+          </div>
+        </a>
+
+        <a class="source-item" href="https://www.ngeutracker.org/" target="_blank" rel="noopener">
+          <div class="source-num">12</div>
+          <div class="source-content">
+            <div class="source-title">NextGeneration EU Tracker</div>
+            <div class="source-meta">NGEU Tracker · Plataforma de seguimiento independiente</div>
+            <div class="source-snippet">Data, information and resources on EU member states' recovery and resilience plans. Interactive scoreboard of disbursements.</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER WITH COUNTER -->
+  <footer class="page-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">🐱 Cocobot</span>
+      <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+    </div>
+    <p style="margin-top:12px;">Investigación realizada en mayo de 2026 · Todas las fuentes enlazadas y verificables</p>
+    <p style="margin-top: 4px; opacity: 0.6;">Datos extraídos de informes oficiales del EPPO, Tribunal de Cuentas Europeo y medios especializados</p>
+  </footer>
+
+  <script>
+  (function(){
+    var w='https://cocobot-stats.rgarciademarina.workers.dev';
+    var p='/pages/fondos-next-generation-polemica/index.html';
+    var el=document.getElementById('visit-counter');
+    fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+    fetch(w+'/c?path='+encodeURIComponent(p))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+      })
+      .catch(function(){});
+  })();
+  </script>
+
+</body>
+</html>
