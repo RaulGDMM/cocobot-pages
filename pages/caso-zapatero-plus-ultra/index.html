@@ -3,1230 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caso Zapatero – Plus Ultra | Análisis Completo · 19 de mayo de 2026</title>
+<title>Caso Zapatero – Plus Ultra | Actualizado 20/05/2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg-primary: #0a0a0c;
-    --bg-secondary: #111115;
-    --bg-card: #16161b;
-    --bg-accent: #1a1a22;
-    --text-primary: #e8e6e3;
-    --text-secondary: #9a978f;
-    --text-muted: #6b6860;
-    --accent-red: #c0392b;
-    --accent-red-light: #e74c3c;
-    --accent-gold: #d4a843;
-    --accent-gold-dim: #a8863a;
-    --border: #2a2a30;
-    --border-light: #3a3a42;
-    --shadow: rgba(0,0,0,0.4);
-    --gradient-dark: linear-gradient(180deg, #0a0a0c 0%, #111115 100%);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-  }
-
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ===== NAV ===== */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 1000;
-    background: rgba(10,10,12,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    height: 56px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem;
-  }
-  nav .nav-brand {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700; font-size: 1rem;
-    color: var(--accent-gold);
-    letter-spacing: 0.02em;
-  }
-  nav .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-  nav .nav-links a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  nav .nav-links a:hover { color: var(--accent-gold); }
-  .nav-live {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 0.7rem; font-weight: 600;
-    color: var(--accent-red-light);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .nav-live::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent-red-light);
-    border-radius: 50%;
-    animation: pulse 1.5s ease infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* ===== HAMBURGER ===== */
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    z-index: 1002;
-    background: none; border: none;
-    padding: 8px;
-  }
-  .hamburger span {
-    display: block;
-    width: 22px; height: 2px;
-    background: var(--text-primary);
-    transition: all 0.3s;
-  }
-  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-  .hamburger.active span:nth-child(2) { opacity: 0; }
-  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
-  .overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 1000;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.35s ease;
-  }
-  .overlay.show { opacity: 1; pointer-events: all; }
-
-  .side-menu {
-    position: fixed; top: 0; right: -300px;
-    width: 280px; height: 100vh;
-    background: var(--bg-card);
-    border-left: 1px solid var(--border);
-    z-index: 1001;
-    padding-top: 80px;
-    transition: right 0.35s cubic-bezier(.4,0,.2,1);
-    overflow-y: auto;
-  }
-  .side-menu.open { right: 0; }
-  .side-menu a {
-    display: block;
-    padding: 14px 2rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-bottom: 1px solid var(--border);
-    transition: all 0.2s;
-  }
-  .side-menu a:hover {
-    color: var(--accent-gold);
-    padding-left: 24px;
-    background: var(--bg-accent);
-  }
-
-  /* ===== HERO ===== */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-align: center;
-    padding: 6rem 2rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 30%, rgba(192,57,43,0.08) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .hero-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent-gold);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    max-width: 900px;
-  }
-  .hero h1 .accent { color: var(--accent-red); }
-  .hero .subtitle {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: var(--text-secondary);
-    max-width: 700px;
-    line-height: 1.8;
-    margin-bottom: 3rem;
-  }
-  .hero-meta {
-    display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
-    margin-bottom: 3rem;
-  }
-  .hero-meta .meta-item {
-    text-align: center;
-  }
-  .hero-meta .meta-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-red-light);
-  }
-  .hero-meta .meta-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 4px;
-  }
-  .scroll-indicator {
-    position: absolute; bottom: 2rem;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    animation: float 2s ease-in-out infinite;
-  }
-  .scroll-indicator svg { width: 20px; height: 20px; stroke: var(--text-muted); }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
-  }
-
-  /* ===== SECTIONS ===== */
-  section {
-    padding: 5rem 2rem;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  section:nth-child(even) {
-    background: var(--bg-secondary);
-    max-width: 100%;
-    padding-left: max(2rem, calc((100% - 900px) / 2));
-    padding-right: max(2rem, calc((100% - 900px) / 2));
-  }
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent-gold);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-  }
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 2rem;
-  }
-  .section-text {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-  }
-  .section-text strong { color: var(--text-primary); font-weight: 600; }
-
-  /* ===== HIGHLIGHT BOX ===== */
-  .highlight-box {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent-red);
-    padding: 1.5rem 2rem;
-    margin: 2rem 0;
-    border-radius: 0 8px 8px 0;
-  }
-  .highlight-box.gold { border-left-color: var(--accent-gold); }
-  .highlight-box p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.7;
-  }
-  .highlight-box p strong { color: var(--text-primary); }
-
-  /* ===== CHARGES GRID ===== */
-  .charges-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-  .charge-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .charge-card:hover {
-    border-color: var(--accent-red);
-    transform: translateY(-2px);
-  }
-  .charge-card .charge-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  .charge-card .charge-name {
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-  }
-  .charge-card .charge-detail {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  /* ===== TIMELINE ===== */
-  .timeline {
-    position: relative;
-    padding-left: 2rem;
-    margin: 2rem 0;
-  }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--border);
-  }
-  .timeline-item {
-    position: relative;
-    padding: 0 0 2rem 2rem;
-  }
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -2rem; top: 6px;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: var(--bg-primary);
-    border: 2px solid var(--accent-gold);
-    transform: translateX(-5px);
-  }
-  .timeline-item.critical::before {
-    background: var(--accent-red);
-    border-color: var(--accent-red);
-  }
-  .timeline-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent-gold);
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-  }
-  .timeline-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-  }
-  .timeline-desc {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  /* ===== FIGURES TABLE ===== */
-  .figures-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    font-size: 0.9rem;
-  }
-  .figures-table thead th {
-    text-align: left;
-    padding: 12px 16px;
-    background: var(--bg-accent);
-    color: var(--accent-gold);
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border-bottom: 1px solid var(--border);
-  }
-  .figures-table tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-secondary);
-  }
-  .figures-table tbody tr:hover td {
-    background: var(--bg-accent);
-    color: var(--text-primary);
-  }
-  .figures-table .amount {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--accent-red-light);
-    font-weight: 500;
-  }
-
-  /* ===== KEY FIGURES ===== */
-  .key-figures {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-  .figure-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: border-color 0.3s;
-  }
-  .figure-card:hover { border-color: var(--accent-gold); }
-  .figure-card .figure-name {
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 4px;
-  }
-  .figure-card .figure-role {
-    font-size: 0.8rem;
-    color: var(--accent-gold);
-    margin-bottom: 8px;
-  }
-  .figure-card .figure-desc {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  /* ===== QUOTE ===== */
-  blockquote {
-    border-left: 3px solid var(--accent-gold);
-    padding: 1rem 1.5rem;
-    margin: 2rem 0;
-    background: var(--bg-card);
-    border-radius: 0 8px 8px 0;
-  }
-  blockquote p {
-    font-style: italic;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.7;
-  }
-  blockquote cite {
-    display: block;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-style: normal;
-  }
-
-  /* ===== OPINION SECTION ===== */
-  .opinion-section {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 2.5rem;
-    margin: 2rem 0;
-    position: relative;
-  }
-  .opinion-section::before {
-    content: 'ANÁLISIS';
-    position: absolute;
-    top: -10px; left: 2rem;
-    background: var(--accent-red);
-    color: white;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    padding: 4px 12px;
-    border-radius: 4px;
-  }
-  .opinion-section h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    margin-top: 0.5rem;
-  }
-  .opinion-section p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.8;
-    margin-bottom: 1rem;
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    text-align: center;
-    padding: 3rem 2rem;
-    border-top: 1px solid var(--border);
-    color: var(--text-muted);
-    font-size: 0.8rem;
-  }
-  footer .disclaimer {
-    max-width: 600px;
-    margin: 0 auto 1rem;
-    line-height: 1.6;
-  }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    nav .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .hero { min-height: 90vh; padding: 5rem 1.5rem 3rem; }
-    section { padding: 3rem 1.5rem; }
-    section:nth-child(even) { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .charges-grid { grid-template-columns: 1fr 1fr; }
-    .key-figures { grid-template-columns: 1fr; }
-    .hero-meta { gap: 1.5rem; }
-    .opinion-section { padding: 2rem 1.5rem; }
-    .figures-table { font-size: 0.8rem; }
-    .figures-table thead th,
-    .figures-table tbody td { padding: 8px 10px; }
-  }
-
-  @media (max-width: 480px) {
-    .charges-grid { grid-template-columns: 1fr; }
-  }
-
-  /* Mobile table card fallback */
-  @media (max-width: 600px) {
-    .figures-table thead { display: none; }
-    .figures-table, .figures-table tbody, .figures-table tr, .figures-table td {
-      display: block;
-    }
-    .figures-table tr {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-    }
-    .figures-table td {
-      border: none;
-      padding: 8px 0;
-      position: relative;
-      text-align: right;
-      padding-left: 55%;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-    .figures-table td:last-child { border-bottom: none; }
-    .figures-table td::before {
-      content: attr(data-label);
-      position: absolute;
-      left: 0; top: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      text-align: left;
-      width: 50%;
-      line-height: 1.4;
-    }
-  }
-
-/* ===== SOURCES ===== */
-.sources-list { display: grid; gap: 0.5rem; margin: 2rem 0; }
-.source-item {
-  display: flex; gap: 1rem; align-items: flex-start;
-  padding: 1rem 1.25rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  transition: border-color 0.2s;
-}
-.source-item:hover { border-color: var(--accent-gold); }
-.source-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-gold);
-  background: rgba(212,168,67,0.1);
-  padding: 2px 8px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  min-width: 24px;
-  text-align: center;
-}
-.source-item div { flex: 1; }
-.source-item strong { color: var(--text-primary); font-size: 0.9rem; }
-.source-item a {
-  color: var(--accent-gold);
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.source-item a:hover { color: var(--accent-gold-dim); text-decoration: underline; }
-
-/* ===== FOOTER ===== */
-.page-footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); margin-top: 30px; }
-.footer-inner { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
-.footer-brand { color: var(--text-muted); font-size: 0.85em; }
-.visit-counter-badge { color: var(--text-muted); font-size: 0.8em; background: rgba(212,168,67,0.06); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
-
-
-/* ===== SOURCES ===== */
-.sources-list { display: grid; gap: 0.5rem; margin: 2rem 0; }
-.source-item {
-  display: flex; gap: 1rem; align-items: flex-start;
-  padding: 1rem 1.25rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  transition: border-color 0.2s;
-}
-.source-item:hover { border-color: var(--accent-gold); }
-.source-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-gold);
-  background: rgba(212,168,67,0.1);
-  padding: 2px 8px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  min-width: 24px;
-  text-align: center;
-}
-.source-item div { flex: 1; }
-.source-item strong { color: var(--text-primary); font-size: 0.9rem; }
-.source-item a {
-  color: var(--accent-gold);
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.source-item a:hover { color: var(--accent-gold-dim); text-decoration: underline; }
-
-/* ===== FOOTER ===== */
-.page-footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); margin-top: 30px; }
-.footer-inner { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
-.footer-brand { color: var(--text-muted); font-size: 0.85em; }
-.visit-counter-badge { color: var(--text-muted); font-size: 0.8em; background: rgba(212,168,67,0.06); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
-
+:root{--bg:#0a0a0c;--bg2:#111115;--bgc:#16161b;--bga:#1a1a22;--t1:#e8e6e3;--t2:#9a978f;--tm:#6b6860;--ar:#c0392b;--arl:#e74c3c;--ag:#d4a843;--agd:#a8863a;--ab:#3498db;--b:#2a2a30}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--t1);line-height:1.7}
+.bb{background:linear-gradient(90deg,var(--ar),#e74c3c);color:#fff;padding:7px 1rem;font-size:.7rem;font-weight:600;text-align:center;position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.bb::before{content:'';width:8px;height:8px;background:#fff;border-radius:50%;animation:p 1s infinite;flex-shrink:0}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+nav{position:fixed;top:30px;left:0;right:0;z-index:1000;background:rgba(10,10,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
+.nb{font-family:'Playfair Display',serif;font-weight:700;color:var(--ag)}
+.nl{display:flex;gap:1.1rem}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap}.nl a:hover{color:var(--ag)}
+.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002;background:none;border:none;padding:8px}.ham span{display:block;width:22px;height:2px;background:var(--t1);transition:all .3s}.ham.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.ham.active span:nth-child(2){opacity:0}.ham.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s}.ov.s{opacity:1;pointer-events:all}
+.sm{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--bgc);border-left:1px solid var(--b);z-index:1001;padding-top:100px;transition:right .35s;overflow-y:auto}.sm.o{right:0}.sm a{display:block;padding:14px 2rem;color:var(--t2);text-decoration:none;font-size:.85rem;border-bottom:1px solid var(--b);transition:all .2s}.sm a:hover{color:var(--ag);padding-left:24px;background:var(--bga)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(192,57,43,.08),transparent 60%)}
+.hd{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--ag);letter-spacing:.15em;text-transform:uppercase;margin-bottom:2rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem;max-width:900px}.hero h1 .ac{color:var(--ar)}
+.sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--t2);max-width:700px;line-height:1.8;margin-bottom:3rem}
+.hm{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}.hi{text-align:center}.hv{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--arl)}.hla{font-size:.7rem;color:var(--tm);text-transform:uppercase;margin-top:4px}
+.si{position:absolute;bottom:2rem;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--tm);font-size:.7rem;animation:f 2s infinite}.si svg{width:20px;height:20px;stroke:var(--tm)}@keyframes f{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+section{padding:5rem 2rem;max-width:900px;margin:0 auto}
+section:nth-child(even){background:var(--bg2);max-width:100%;padding-left:max(2rem,calc((100%-900px)/2));padding-right:max(2rem,calc((100%-900px)/2))}
+.sl{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--ag);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem}
+.st{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;line-height:1.2;margin-bottom:2rem}
+.tx{color:var(--t2);font-size:1rem;line-height:1.8;margin-bottom:1.5rem}.tx strong{color:var(--t1);font-weight:600}
+.hb{background:var(--bgc);border:1px solid var(--b);border-left:3px solid var(--ar);padding:1.5rem 2rem;margin:2rem 0;border-radius:0 8px 8px 0}.hb.g{border-left-color:var(--ag)}.hb.b{border-left-color:var(--ab)}.hb p{color:var(--t2);font-size:.95rem;line-height:1.7}.hb p strong{color:var(--t1)}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0}.cc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.5rem;text-align:center;transition:border-color .3s,transform .3s}.cc:hover{border-color:var(--ar);transform:translateY(-2px)}.cc .ci2{font-size:1.5rem;margin-bottom:.5rem}.cc .cn{font-weight:600;font-size:.9rem;margin-bottom:.5rem}.cc .cd{font-size:.8rem;color:var(--tm);line-height:1.5}
+.tl{position:relative;padding-left:2rem;margin:2rem 0}.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--b)}.ti{position:relative;padding:0 0 2rem 2rem}.ti::before{content:'';position:absolute;left:-2rem;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ag);transform:translateX(-5px)}.ti.c::before{background:var(--ar);border-color:var(--ar)}.td{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--ag);margin-bottom:4px}.tt{font-weight:600;font-size:.95rem;margin-bottom:4px}.tde{font-size:.85rem;color:var(--t2);line-height:1.6}
+.ft{width:100%;border-collapse:collapse;margin:2rem 0;font-size:.9rem}.ft thead th{text-align:left;padding:12px 16px;background:var(--bga);color:var(--ag);font-weight:600;font-size:.75rem;text-transform:uppercase;border-bottom:1px solid var(--b)}.ft tbody td{padding:12px 16px;border-bottom:1px solid var(--b);color:var(--t2)}.ft tbody tr:hover td{background:var(--bga);color:var(--t1)}.ft .am{font-family:'JetBrains Mono',monospace;color:var(--arl);font-weight:500}
+.kf{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin:2rem 0}.fc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.5rem;transition:border-color .3s}.fc:hover{border-color:var(--ag)}.fc .fn{font-weight:700;font-size:1rem;margin-bottom:4px}.fc .fr{font-size:.8rem;color:var(--ag);margin-bottom:8px}.fc .fd{font-size:.85rem;color:var(--t2);line-height:1.6}
+blockquote{border-left:3px solid var(--ag);padding:1rem 1.5rem;margin:2rem 0;background:var(--bgc);border-radius:0 8px 8px 0}blockquote p{font-style:italic;color:var(--t2);font-size:.95rem;line-height:1.7}blockquote cite{display:block;margin-top:.5rem;font-size:.8rem;color:var(--tm);font-style:normal}
+.os{background:var(--bgc);border:1px solid var(--b);border-radius:12px;padding:2.5rem;margin:2rem 0;position:relative}.os::before{content:'ANÁLISIS';position:absolute;top:-10px;left:2rem;background:var(--ar);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:4px 12px;border-radius:4px}.os h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;margin-top:.5rem}.os p{color:var(--t2);font-size:.95rem;line-height:1.8;margin-bottom:1rem}
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:2rem 0}.rc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.25rem;border-left:3px solid var(--ar)}.rc:hover{border-left-color:var(--ag)}.ri{font-size:1.2rem;margin-bottom:.5rem}.rn{font-weight:600;font-size:.9rem;margin-bottom:4px}.rd{font-size:.8rem;color:var(--tm);line-height:1.5}
+.sr{display:grid;gap:.5rem;margin:2rem 0}.si2{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;background:var(--bgc);border:1px solid var(--b);border-radius:8px}.si2:hover{border-color:var(--ag)}.sn{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--ag);background:rgba(212,168,67,.1);padding:2px 8px;border-radius:4px;flex-shrink:0;min-width:24px;text-align:center}.si2 div{flex:1}.si2 strong{color:var(--t1);font-size:.9rem}.si2 a{color:var(--ag);font-size:.8rem;text-decoration:none}.si2 a:hover{color:var(--agd);text-decoration:underline}
+.pf{text-align:center;padding:20px;border-top:1px solid var(--b);margin-top:30px}.fi{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}.fb{color:var(--tm);font-size:.85em}.vc{color:var(--tm);font-size:.8em;background:rgba(212,168,67,.06);padding:4px 10px;border-radius:6px;border:1px solid var(--b)}
+h3.sub{font-family:'Playfair Display',serif;margin:2rem 0 1rem;font-size:1.3rem}
+h3.subs{font-family:'Playfair Display',serif;margin:1.5rem 0 1rem;font-size:1.15rem}
+@media(max-width:768px){.nl{display:none}.ham{display:flex}.hero{min-height:90vh;padding:7rem 1.5rem 3rem}section{padding:3rem 1.5rem}section:nth-child(even){padding-left:1.5rem;padding-right:1.5rem}.cg{grid-template-columns:1fr 1fr}.kf{grid-template-columns:1fr}.hm{gap:1.5rem}.os{padding:2rem 1.5rem}.rg{grid-template-columns:1fr}}
+@media(max-width:480px){.cg{grid-template-columns:1fr}}
+@media(max-width:600px){.ft thead{display:none}.ft,.ft tbody,.ft tr,.ft td{display:block}.ft tr{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:14px 16px;margin-bottom:10px}.ft td{border:none;padding:8px 0;position:relative;text-align:right;padding-left:55%;border-bottom:1px solid rgba(255,255,255,.04)}.ft td:last-child{border-bottom:none}.ft td::before{content:attr(data-label);position:absolute;left:0;top:8px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--ag);text-transform:uppercase;text-align:left;width:50%;line-height:1.4}}
 </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-brand">CASO PLUS ULTRA</div>
-  <div class="nav-links">
-    <a href="#imputacion">Imputación</a>
-    <a href="#caso">El Caso</a>
-    <a href="#pruebas">Pruebas</a>
-    <a href="#cronologia">Cronología</a>
-    <a href="#contexto">Contexto PSOE</a>
-    <a href="#lawfare">¿Lawfare?</a>
-    <a href="#analisis">Análisis</a>
-    <a href="#fuentes">Fuentes</a>
-  </div>
-  <div class="nav-live">En desarrollo</div>
-  <button class="hamburger" id="hamburger" aria-label="Menú">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<div class="overlay" id="overlay"></div>
-<div class="side-menu" id="sideMenu">
-  <a href="#imputacion">⚖️ La Imputación</a>
-  <a href="#caso">🔍 El Caso Plus Ultra</a>
-  <a href="#pruebas">📋 Pruebas y Evidencias</a>
-  <a href="#cronologia">📅 Cronología</a>
-  <a href="#figuras">👥 Figuras Clave</a>
-  <a href="#contexto">🏛️ Contexto PSOE</a>
-  <a href="#lawfare">❓ ¿Campaña Orquestada?</a>
-  <a href="#impacto">📊 Impacto Político</a>
-  <a href="#analisis">🧠 Análisis Final</a>
-  <a href="#fuentes">📚 Fuentes</a>
-</div>
-
-<!-- HERO -->
+<div class="bb">Actualizado 20/05/2026 · WhatsApp, offshore Dubái, cripto, conexión China, casi 2 M€ al entorno</div>
+<nav><div class="nb">CASO PLUS ULTRA</div><div class="nl"><a href="#imputacion">Imputación</a><a href="#operativo">Operativo</a><a href="#caso">El Caso</a><a href="#pruebas">Pruebas</a><a href="#cronologia">Cronología</a><a href="#contexto">Contexto</a><a href="#lawfare">¿Lawfare?</a><a href="#analisis">Análisis</a><a href="#fuentes">Fuentes</a></div><div class="nli">En desarrollo</div><button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button></nav>
+<div class="ov" id="overlay"></div>
+<div class="sm" id="sideMenu"><a href="#imputacion">⚖️ Imputación</a><a href="#operativo">🚨 Operativo UDEF</a><a href="#caso">🔍 El Caso</a><a href="#pruebas">📋 Pruebas</a><a href="#cronologia">📅 Cronología</a><a href="#figuras">👥 Figuras</a><a href="#contexto">🏛️ Contexto</a><a href="#lawfare">❓ ¿Lawfare?</a><a href="#impacto">📊 Impacto</a><a href="#analisis">🧠 Análisis</a><a href="#fuentes">📚 Fuentes</a></div>
 <header class="hero">
-  <div class="hero-date">19 de mayo de 2026 · Audiencia Nacional</div>
-  <h1>Zapatero, <span class="accent">imputado</span> por corrupción</h1>
-  <p class="subtitle">
-    Primer presidente del Gobierno en la democracia investigado por tráfico de influencias, organización criminal y blanqueo de capitales en el rescate de Plus Ultra.
-  </p>
-  <div class="hero-meta">
-    <div class="meta-item">
-      <div class="meta-value">53M€</div>
-      <div class="meta-label">Rescate público</div>
-    </div>
-    <div class="meta-item">
-      <div class="meta-value">661K€</div>
-      <div class="meta-label">Pagos a Zapatero</div>
-    </div>
-    <div class="meta-item">
-      <div class="meta-value">4</div>
-      <div class="meta-label">Delitos imputados</div>
-    </div>
-    <div class="meta-item">
-      <div class="meta-value">2 jun</div>
-      <div class="meta-label">Declaración</div>
-    </div>
-  </div>
-  <div class="scroll-indicator">
-    <span>Descubrir</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-      <path d="M12 5v14M19 12l-7 7-7-7"/>
-    </svg>
-  </div>
+<div class="hd">Actualizado 20 de mayo de 2026 · Audiencia Nacional · 88 folios</div>
+<h1>Zapatero, <span class="ac">imputado</span> por corrupción</h1>
+<p class="sub">Primer presidente en la democracia investigado por tráfico de influencias, organización criminal y blanqueo. Nuevas evidencias: WhatsApp, offshore Dubái, criptomonedas, conexión China y casi 2 M€ para su entorno.</p>
+<div class="hm"><div class="hi"><div class="hv">53M€</div><div class="hla">Rescate público</div></div><div class="hi"><div class="hv">~2M€</div><div class="hla">Al entorno</div></div><div class="hi"><div class="hv">4</div><div class="hla">Delitos</div></div><div class="hi"><div class="hv">2 jun</div><div class="hla">Declaración</div></div><div class="hi"><div class="hv">88</div><div class="hla">Folios</div></div></div>
+<div class="si"><span>Descubrir</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
 </header>
-
-<!-- IMPUTACIÓN -->
-<section id="imputacion">
-  <div class="section-label">⚖️ La Imputación</div>
-  <h2 class="section-title">Un precedente sin precedentes en la democracia</h2>
-  <p class="section-text">
-    El expresidente del Gobierno <strong>José Luis Rodríguez Zapatero</strong> ha sido formalmente imputado por el Juzgado Central de Instrucción número 4 de la Audiencia Nacional, bajo la dirección del juez <strong>José Luis Calama</strong>. Se convierte en el <strong>primer presidente del Gobierno en la historia democrática de España</strong> en ser investigado por presuntos delitos de corrupción.
-  </p>
-
-  <div class="charges-grid">
-    <div class="charge-card">
-      <div class="charge-icon">🏛️</div>
-      <div class="charge-name">Organización Criminal</div>
-      <div class="charge-detail">Presunta integración en una estructura jerarquizada de tráfico de influencias</div>
-    </div>
-    <div class="charge-card">
-      <div class="charge-icon">🤝</div>
-      <div class="charge-name">Tráfico de Influencias</div>
-      <div class="charge-detail">Ejercicio ilícito de influencias ante instancias públicas en favor de terceros</div>
-    </div>
-    <div class="charge-card">
-      <div class="charge-icon">📄</div>
-      <div class="charge-name">Falsedad Documental</div>
-      <div class="charge-detail">Contratos y operaciones mercantiles presuntamente ficticias</div>
-    </div>
-    <div class="charge-card">
-      <div class="charge-icon">💰</div>
-      <div class="charge-name">Blanqueo de Capitales</div>
-      <div class="charge-detail">Lavado de fondos a través de personas y empresas de su entorno</div>
-    </div>
-  </div>
-
-  <div class="highlight-box">
-    <p>
-      <strong>Pena máxima estimada: hasta 8 años de prisión.</strong> El juez Calama sitúa a Zapatero como el «líder de una estructura estable y jerarquizada de tráfico de influencias» cuya finalidad es «la obtención de beneficios económicos mediante la intermediación y el ejercicio de influencias ante instancias públicas en favor de terceros, principalmente Plus Ultra».
-    </p>
-  </div>
-
-  <p class="section-text">
-    El expresidente está citado a declarar como investigado el <strong>2 de junio de 2026</strong>. El juez ha levantado el secreto de sumario, lo que permite el seguimiento público de las diligencias. La decisión se ha tomado tras meses de investigación por parte de la <strong>Unidad de Delincuencia Económica y Fiscal (UDEF)</strong> de la Policía Nacional y la Fiscalía Anticorrupción.
-  </p>
-</section>
-
-<!-- EL CASO -->
-<section id="caso">
-  <div class="section-label">🔍 El Caso</div>
-  <h2 class="section-title">El rescate de Plus Ultra: 53 millones de fondos públicos</h2>
-  <p class="section-text">
-    En <strong>marzo de 2021</strong>, el Gobierno de Pedro Sánchez declaró «estratégica» a la aerolínea <strong>Plus Ultra Líneas Aéreas</strong>, fundada en 2011 por Julio Martínez Sola, y aprobó un rescate de <strong>53 millones de euros</strong> a cargo del Fondo de Apoyo a la Solvencia de Empresas Estratégicas, gestionado por la SEPI.
-  </p>
-  <p class="section-text">
-    La compañía se encontraba en una situación crítica tras la pandemia: de sus cuatro aviones alquilados, solo operaba uno. El rescate fue aprobado mediante procedimientos acelerados y excepcionales, lo que generó desde el inicio dudas sobre la transparencia del proceso.
-  </p>
-
-  <blockquote>
-    <p>«No tengo nada que ver con Plus Ultra. Todo lo que se ha dicho de mí son falsedades, enormes falsedades.»</p>
-    <cite>— Zapatero, comparecencia en el Senado (marzo 2026)</cite>
-  </blockquote>
-
-  <p class="section-text">
-    Sin embargo, las investigaciones sugieren un mecanismo complejo: los fondos públicos del rescate habrían sido utilizados para <strong>reembolsar préstamos</strong> que Plus Ultra había recibido de sociedades vinculadas a una red criminal operante en <strong>Venezuela</strong>, con conexiones a la petrolera estatal <strong>PDVSA</strong> y los programas gubernamentales de alimentos subsidiados del chavismo.
-  </p>
-
-  <div class="highlight-box gold">
-    <p>
-      <strong>El mecanismo sospechoso:</strong> Plus Ultra firmó contratos de préstamo con tres sociedades vinculadas a la organización criminal. Tras recibir la ayuda pública de 53 millones, reembolsó íntegramente esos préstamos a <strong>cuentas en el extranjero</strong> controladas por la trama. Parte de esos fondos habrían sido canalizados hacia empresas del entorno de Zapatero.
-    </p>
-  </div>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 2rem 0 1rem; font-size: 1.3rem;">Flujos económicos investigados</h3>
-
-  <table class="figures-table">
-    <thead>
-      <tr>
-        <th>Concepto</th>
-        <th>Importe</th>
-        <th>Destinatario</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-label="Concepto">Rescate público SEPI</td>
-        <td data-label="Importe" class="amount">53.000.000 €</td>
-        <td data-label="Destinatario">Plus Ultra</td>
-      </tr>
-      <tr>
-        <td data-label="Concepto">Comisión 1% (presunta)</td>
-        <td data-label="Importe" class="amount">~530.000 €</td>
-        <td data-label="Destinatario">Julio Martínez Martínez</td>
-      </tr>
-      <tr>
-        <td data-label="Concepto">Facturación consultoría</td>
-        <td data-label="Importe" class="amount">~463.000 €</td>
-        <td data-label="Destinatario">Zapatero (2020-2025)</td>
-      </tr>
-      <tr>
-        <td data-label="Concepto">Servicios diseño/comm.</td>
-        <td data-label="Importe" class="amount">~198.000 €</td>
-        <td data-label="Destinatario">Whathefav (hijas)</td>
-      </tr>
-      <tr>
-        <td data-label="Concepto">Venta de oro a EAU</td>
-        <td data-label="Importe" class="amount">30.000.000 €</td>
-        <td data-label="Destinatario">Sociedad en Emiratos</td>
-      </tr>
-      <tr>
-        <td data-label="Concepto">Efectivo hallado</td>
-        <td data-label="Importe" class="amount">300.000 €</td>
-        <td data-label="Destinatario">Vivienda Martínez Martínez</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- PRUEBAS -->
-<section id="pruebas">
-  <div class="section-label">📋 Pruebas y Evidencias</div>
-  <h2 class="section-title">Lo que saben los investigadores</h2>
-  <p class="section-text">
-    La investigación se ha basado en múltiples fuentes de información que se han ido concatenando durante más de dos años. Estas son las líneas probatorias principales:
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">1. Alertas internacionales</h3>
-  <p class="section-text">
-    Las autoridades de <strong>Suiza y Francia</strong> remitieron solicitudes de información a las autoridades españolas sobre operaciones sospechosas de blanqueo de capitales que involucraban cuentas y sociedades en sus jurisdicciones. Estas alertas fueron el detonante para que la Fiscalía Anticorrupción presentara querella en 2024.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">2. El contrato de comisión del 1%</h3>
-  <p class="section-text">
-    La policía encontró en los dispositivos de <strong>Julio Martínez Martínez</strong> un contrato entre Plus Ultra y Martínez que otorgaba a este último una <strong>comisión del 1% del rescate</strong> (unos 530.000 euros) a cambio de facilitar la aprobación de la ayuda pública. Este documento es una de las pruebas más contundentes de la investigación.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">3. Comunicaciones interceptadas</h3>
-  <p class="section-text">
-    Tras la detención de Julio Martínez Martínez en diciembre de 2025, la UDEF volcó sus dispositivos y descubrió <strong>comunicaciones constantes entre Zapatero y su amigo</strong>. Los investigadores aseguran que estas comunicaciones revelan la coordinación entre ambos para la gestión de las empresas involucradas.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">4. El «chivatazo» de diciembre</h3>
-  <p class="section-text">
-    Según la investigación, Zapatero se reunió con Julio Martínez Martínez durante una carrera conjunta el <strong>11 de diciembre de 2025</strong> —el mismo día en que la policía detuvo a Martínez Sola y Roselli—. Los investigadores consideran que Zapatero pudo haber alertado a su amigo sobre la inminencia de las detenciones.
-  </p>
-  <div class="highlight-box">
-    <p>
-      <strong>Zapatero ha negado rotundamente esta acusación:</strong> «Esa información fue un burdo montaje», afirmó el expresidente al respecto.
-    </p>
-  </div>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">5. Contradicción en el Senado</h3>
-  <p class="section-text">
-    En su comparecencia ante la comisión del Senado sobre el «caso Koldo», Zapatero afirmó <strong>no tener ninguna relación con Martínez Sola</strong> ni haber mantenido reuniones sobre Plus Ultra. Sin embargo, el exministro de Transportes <strong>José Luis Ábalos</strong> declaró que Zapatero se reunió con él y su asesor Koldo García en el ministerio para acelerar el rescate.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">6. Efectivo y activos ocultos</h3>
-  <p class="section-text">
-    En la detención de Julio Martínez Martínez se hallaron <strong>300.000 euros en efectivo</strong> en su vivienda. Además, la investigación ha identificado bienes inmuebles en el extranjero y activos registrados a nombre de terceros, incluyendo una <strong>sociedad off-shore en Dubái</strong> que, según el juez, Zapatero habría instruido crear.
-  </p>
-</section>
-
-<!-- CRONOLOGÍA -->
-<section id="cronologia">
-  <div class="section-label">📅 Cronología</div>
-  <h2 class="section-title">De la pandemia a la imputación</h2>
-
-  <div class="timeline">
-    <div class="timeline-item">
-      <div class="timeline-date">Febrero 2020</div>
-      <div class="timeline-title">Creación de Análisis Relevante</div>
-      <div class="timeline-desc">Julio Martínez Martínez funda la consultora geopolítica que será clave en la trama.</div>
-    </div>
-    <div class="timeline-item critical">
-      <div class="timeline-date">Marzo 2021</div>
-      <div class="timeline-title">Rescate de Plus Ultra</div>
-      <div class="timeline-desc">El Gobierno de Sánchez declara la aerolínea «estratégica» y aprueba 53 millones de euros a cargo de la SEPI.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-date">2021</div>
-      <div class="timeline-title">Vox se querella</div>
-      <div class="timeline-desc">Vox presenta querella y se personó como acusación popular por el rescate a Plus Ultra.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-date">Enero 2023</div>
-      <div class="timeline-title">Archivo preliminar</div>
-      <div class="timeline-desc">Un juez del Juzgado 15 de Madrid archiva el caso al considerar que los imputados «carecían de capacidad de decisión».</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-date">2024</div>
-      <div class="timeline-title">Querella de la Fiscalía</div>
-      <div class="timeline-desc">La Fiscalía Anticorrupción presenta querella tras las alertas de Suiza y Francia sobre blanqueo de capitales.</div>
-    </div>
-    <div class="timeline-item critical">
-      <div class="timeline-date">11 de diciembre 2025</div>
-      <div class="timeline-title">Detenciones</div>
-      <div class="timeline-desc">La UDEF detiene a Julio Martínez Sola (presidente de Plus Ultra), Roberto Roselli (CEO) y Julio Martínez Martínez. Se hallan 300.000 € en efectivo.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-date">Febrero 2026</div>
-      <div class="timeline-title">El caso pasa a la Audiencia Nacional</div>
-      <div class="timeline-desc">El Juzgado 15 de Madrid se inhibe. El juez Calama asume la instrucción.</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-date">Marzo 2026</div>
-      <div class="timeline-title">Zapatero en el Senado</div>
-      <div class="timeline-desc">Zapatero comparece en la comisión del «caso Koldo», niega toda vinculación con Plus Ultra y reconoce facturar ~400.000 € a Análisis Relevante.</div>
-    </div>
-    <div class="timeline-item critical">
-      <div class="timeline-date">19 de mayo 2026</div>
-      <div class="timeline-title">Imputación de Zapatero</div>
-      <div class="timeline-desc">El juez Calama imputa formalmente a Zapatero, levanta el secreto de sumario y ordena registros en el despacho del expresidente y la empresa de sus hijas.</div>
-    </div>
-    <div class="timeline-item critical">
-      <div class="timeline-date">2 de junio 2026</div>
-      <div class="timeline-title">Declaración de Zapatero</div>
-      <div class="timeline-desc">Fecha fijada para la comparecencia de Zapatero ante el juez Calama como investigado.</div>
-    </div>
-  </div>
-</section>
-
-<!-- FIGURAS CLAVE -->
-<section id="figuras">
-  <div class="section-label">👥 Figuras Clave</div>
-  <h2 class="section-title">Los protagonistas de la trama</h2>
-
-  <div class="key-figures">
-    <div class="figure-card">
-      <div class="figure-name">José Luis Rodríguez Zapatero</div>
-      <div class="figure-role">Expresidente del Gobierno · Imputado</div>
-      <div class="figure-desc">Líder presunto de la trama. Reconoce cobrar ~463.000 € a Análisis Relevante entre 2020 y 2025 por «asesoría global».</div>
-    </div>
-    <div class="figure-card">
-      <div class="figure-name">Julio Martínez Martínez</div>
-      <div class="figure-role">Empresario · Detenido</div>
-      <div class="figure-desc">Amigo personal de Zapatero. Propietario de Análisis Relevante. Presunto testaferro. 300.000 € en efectivo en su vivienda.</div>
-    </div>
-    <div class="figure-card">
-      <div class="figure-name">Julio Martínez Sola</div>
-      <div class="figure-role">Presidente de Plus Ultra · Detenido</div>
-      <div class="figure-desc">Fundador de la aerolínea. Rechazó las acusaciones de blanqueo en el Senado. Sin parentesco con Martínez Martínez.</div>
-    </div>
-    <div class="figure-card">
-      <div class="figure-name">Roberto Roselli</div>
-      <div class="figure-role">CEO de Plus Ultra · Detenido</div>
-      <div class="figure-desc">Consejero delegado de la aerolínea. Detenido junto a Martínez Sola en diciembre de 2025.</div>
-    </div>
-    <div class="figure-card">
-      <div class="figure-name">Laura y Alba Rodríguez Espinosa</div>
-      <div class="figure-role">Hijas de Zapatero</div>
-      <div class="figure-desc">Propietarias de Whathefav, agencia de marketing registrada por la UDEF. Recibieron ~198.000 € de Martínez Martínez.</div>
-    </div>
-    <div class="figure-card">
-      <div class="figure-name">José Luis Calama</div>
-      <div class="figure-role">Juez de la Audiencia Nacional</div>
-      <div class="figure-desc">Más de 30 años de carrera. Especializado en ciberdelito y fraude económico. Investigó Pegasus, Alcasec y Arbistar.</div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTEXTO PSOE -->
-<section id="contexto">
-  <div class="section-label">🏛️ Contexto Histórico</div>
-  <h2 class="section-title">La corrupción del PSOE: un patrón recurrente</h2>
-  <p class="section-text">
-    La imputación de Zapatero no ocurre en el vacío. El Partido Socialista ha sido protagonista de algunos de los mayores escándalos de corrupción de la democracia española. Analizar estos casos ayuda a comprender si existe un patrón estructural o si cada caso es un hecho aislado.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Caso Gürtel (2009-2013)</h3>
-  <p class="section-text">
-    La red de corrupción más extensa de la historia del PSOE. Una organización criminal vinculada al Partido Popular de la Comunidad Valenciana que <strong>extorsionaba a políticos de ambos signos</strong>, pero especialmente a cargos del PP. Sin embargo, múltiples imputados socialistas fueron condenados por cohecho, prevaricación y malversación. El expresidente <strong>José Bono</strong> fue uno de los principales imputados.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Caso ERE (Andalucía)</h3>
-  <p class="section-text">
-    Fraude millonario en los Expedientes de Regulación de Empleo de Andalucía durante los gobiernos de <strong>Manuel Chaves</strong>. Se estima que se desviaron más de <strong>1.000 millones de euros</strong> entre 2001 y 2011. La Audiencia Provincial de Málaga condenó a Chaves a 74 años de prisión por malversación, aunque parte de la condena fue revisada posteriormente.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Caso Pity Pity</h3>
-  <p class="section-text">
-    Investigación sobre supuestas comisiones ilegales cobradas por <strong>Alfonso Guerra</strong> (hermano de Fernando) y su esposa en los años 80, relacionadas con el contrato de construcción del tranvía de Alcobendas. El caso fue finalmente archivado por prescripción, pero dejó una huella duradera en la percepción pública.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Caso UGT (2023)</h3>
-  <p class="section-text">
-    La Audiencia Nacional investigó presuntas comisiones ilegales cobradas por altos cargos de la UGT relacionadas con la adjudicación de contratos públicos. El caso reveló un sistema de <strong>facturación ficticia</strong> y comisiones encubiertas que involucraba a sindicatos y empresas constructoras.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Caso Filemón</h3>
-  <p class="section-text">
-    La trama de facturas ficticias de la constructora Filemón, vinculada a <strong>Emilio Botín</strong> (exnúmero dos del PSOE). Se desveló un sistema de facturación irregular por valor de <strong>2,5 millones de euros</strong> que involucraba a empresas del entorno del partido.
-  </p>
-
-  <div class="highlight-box gold">
-    <p>
-      <strong>Patrón observable:</strong> Aunque cada caso tiene sus particularidades, existe un denominador común en varios de ellos: el uso de <strong>empresas intermediarias</strong> para canalizar comisiones y pagos encubiertos, un mecanismo sorprendentemente similar al que ahora se atribuye a Zapatero a través de Análisis Relevante y Whathefav.
-    </p>
-  </div>
-</section>
-
-<!-- ¿LAWFARE? -->
-<section id="lawfare">
-  <div class="section-label">❓ Análisis Crítico</div>
-  <h2 class="section-title">¿Campaña orquestada por la derecha?</h2>
-  <p class="section-text">
-    Tanto el PSOE como Sumar han calificado la imputación como un caso de <strong>«lawfare»</strong> (guerra judicial) —una supuesta manipulación del sistema judicial con fines políticos. Analicemos esta hipótesis con rigor, sin caer en narrativas preconcebidas.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Argumentos a favor de la hipótesis</h3>
-
-  <div class="highlight-box">
-    <p>
-      <strong>1. Origen de la denuncia:</strong> La primera denuncia que puso en marcha la investigación provino de <strong>Manos Limpias</strong>, una organización de extrema derecha conocida por su activismo político anticorrupción. Vox se querelló en 2021 y se personó como acusación popular. Esto sugiere que la derecha tenía interés político en el caso desde el inicio.
-    </p>
-  </div>
-
-  <div class="highlight-box">
-    <p>
-      <strong>2. Contexto político:</strong> Zapatero es una pieza clave del Gobierno actual. Actúa como asesor permanente de Sánchez, mediador en el independentismo catalán y figura institucional de primer orden. Su caída debilitaría significativamente al Ejecutivo.
-    </p>
-  </div>
-
-  <div class="highlight-box">
-    <p>
-      <strong>3. Timing sospechoso:</strong> El levantamiento del secreto de sumario coincide con un momento de debilidad política del Gobierno, lo que podría interpretarse como un cálculo estratégico para maximizar el impacto mediático y político.
-    </p>
-  </div>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Argumentos en contra</h3>
-
-  <div class="highlight-box gold">
-    <p>
-      <strong>1. El juez Calama:</strong> José Luis Calama es un magistrado con más de 30 años de carrera, especializado en ciberdelito y fraude económico. Ha investigado tanto a derechas como a izquierdas (caso Pegasus, que involucró a Sánchez y múltiples ministros). No existe un historial que lo vincule con la derecha política. Es un perfil técnico, no político.
-    </p>
-  </div>
-
-  <div class="highlight-box gold">
-    <p>
-      <strong>2. El origen real de la investigación:</strong> Aunque Manos Limpias y Vox denunciaron primero, la investigación judicial se puso en marcha de forma independiente cuando <strong>la Fiscalía Anticorrupción</strong> presentó querella en 2024 tras recibir alertas de <strong>Suiza y Francia</strong>. Las autoridades internacionales no tienen motivación política española.
-    </p>
-  </div>
-
-  <div class="highlight-box gold">
-    <p>
-      <strong>3. La evidencia es sólida:</strong> El contrato de comisión del 1%, los 300.000 € en efectivo, las comunicaciones interceptadas, el flujo de fondos a través de Análisis Relevante y la sociedad off-shore en Dubái constituyen un cuerpo probatorio que no se fabrica fácilmente. La investigación ha seguido un proceso judicial riguroso durante más de dos años.
-    </p>
-  </div>
-
-  <div class="highlight-box gold">
-    <p>
-      <strong>4. El caso no depende de la derecha:</strong> Aunque Vox y Manos Limpias fueron los primeros en denunciar, la investigación ha sido llevada por la UDEF (Policía Nacional), la Fiscalía Anticorrupción y un juez de la Audiencia Nacional. La derecha no controla estos órganos.
-    </p>
-  </div>
-
-  <div class="opinion-section">
-    <h3>Veredicto sobre el «lawfare»</h3>
-    <p>
-      La hipótesis de que la imputación sea una «campaña orquestada por la derecha» tiene <strong>elementos de verdad parcial</strong>, pero no resiste un análisis riguroso en su totalidad.
-    </p>
-    <p>
-      Es cierto que la derecha política —Vox en particular— tuvo interés en el caso desde el inicio y que Manos Limpias fue la primera en denunciar. Es también cierto que el timing del levantamiento del secreto de sumario coincide con un momento políticamente delicado.
-    </p>
-    <p>
-      Sin embargo, <strong>la investigación judicial ha sido independiente</strong>. El juez Calama no tiene afiliación política conocida, la evidencia se ha acumulado a través de procedimientos formales (alertas internacionales, detenciones, registros, análisis financiero), y los órganos que llevan la investigación (UDEF, Fiscalía Anticorrupción, Audiencia Nacional) no están bajo control de ningún partido.
-    </p>
-    <p>
-      Lo más probable es que se trate de un caso genuino de corrupción en el que la derecha política <strong>aprovechó la oportunidad</strong> de manera agresiva —como ha ocurrido históricamente en España con los casos de corrupción de ambos signos—, pero no lo orquestó. La diferencia entre «aprovechar» y «orquestar» es fundamental.
-    </p>
-  </div>
-</section>
-
-<!-- IMPACTO POLÍTICO -->
-<section id="impacto">
-  <div class="section-label">📊 Impacto Político</div>
-  <h2 class="section-title">Reacciones y consecuencias</h2>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">PSOE: Defensa institucional</h3>
-  <p class="section-text">
-    El Partido Socialista ha cerrado filas con Zapatero. La portavoz <strong>Montse Mínguez</strong> ha calificado la imputación de persecución y ha invocado la presunción de inocencia. <strong>Pedro Sánchez</strong> ha pedido «defender el buen nombre» del expresidente. La estrategia del PSOE es doble: defender legalmente a Zapatero y politizar el caso como «lawfare».
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">PP: Presión controlada</h3>
-  <p class="section-text">
-    <strong>Miguel Telledo</strong> ha sido el más agresivo: «El tinglado se desmorona y los capos de la trama empiezan a caer». Sin embargo, <strong>Feijóo</strong> ha mantenido una postura más contenida, evitando una escalada prematura que pueda reforzar la narrativa de persecución del Gobierno. El PP ve en el caso una oportunidad para demostrar el «desgaste» del Ejecutivo, pero teme el efecto rebote de una ofensiva demasiado dura.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Vox: Ofensiva total</h3>
-  <p class="section-text">
-    <strong>Santiago Abascal</strong> ha aprovechado la imputación para reclamar una <strong>moción de censura inmediata</strong> contra Pedro Sánchez, calificándolo de «número 1 de todas las tramas de corrupción». Vox ha recordado que fue el primer partido en denunciar el caso en 2021.
-  </p>
-
-  <h3 style="font-family: 'Playfair Display', serif; margin: 1.5rem 0 1rem; font-size: 1.15rem;">Sumar: Dudas estratégicas</h3>
-  <p class="section-text">
-    <strong>Ione Belarra</strong> ha expresado «dudas» sobre la investigación, apuntando a un posible lawfare. Sin embargo, ha querido recalcar que la investigación no afecta al Gobierno. La postura de Sumar es más ambigua: defiende a Zapatero (con quien Yolanda Díaz mantiene cercanía personal) pero no quiere arrastrar al Ejecutivo en un naufragio.
-  </p>
-
-  <div class="highlight-box">
-    <p>
-      <strong>Impacto a largo plazo:</strong> Si las acusaciones se confirman, el PSOE enfrentaría una crisis sin precedentes: la imputación de su presidente histórico y mentor del actual. Si se descartan, el partido podría presentar el caso como la prueba definitiva de «persecución judicial», aunque el daño mediático ya estaría hecho.
-    </p>
-  </div>
-</section>
-
-<!-- ANÁLISIS FINAL -->
-<section id="analisis">
-  <div class="section-label">🧠 Análisis Final</div>
-  <h2 class="section-title">Opinión y perspectiva</h2>
-
-  <div class="opinion-section">
-    <h3>Gravedad del caso</h3>
-    <p>
-      La imputación de Zapatero es, sin exageración, <strong>el caso de corrupción más grave que ha afectado a un presidente del Gobierno en la democracia española</strong>. No se trata de un caso de financiación irregular de un partido —aunque eso también sea grave—, sino de una presunta trama de tráfico de influencias que involucra fondos públicos, lavado de dinero internacional y conexiones con una organización criminal con raíces en Venezuela.
-    </p>
-    <p>
-      La gravedad se multiplica porque Zapatero no era un político cualquiera: fue el jefe del Estado de facto durante ocho años (2004-2011) y ocupa un lugar de honor en la memoria colectiva del país. Su imputación cuestiona directamente la narrativa de «modernización» y «transparencia» que el PSOE ha construido en torno a su liderazgo histórico.
-    </p>
-  </div>
-
-  <div class="opinion-section">
-    <h3>Sobre la presunción de inocencia</h3>
-    <p>
-      Es fundamental recordar que <strong>una imputación no es una condena</strong>. Zapatero es inocente hasta que se demuestre lo contrario. El auto del juez Calama describe una «presunta» trama y utiliza el lenguaje jurídico apropiado: «se investiga», «se sospecha», «se atribuye». La declaración del 2 de junio será un momento crucial.
-    </p>
-    <p>
-      Dicho esto, el cuerpo probatorio descrito por la prensa —basado en documentos, comunicaciones y flujos financieros— es considerablemente más sólido que el de muchos casos que han terminado en condenas. El contrato de comisión del 1% es, en particular, un documento que resulta muy difícil de explicar como algo legítimo.
-    </p>
-  </div>
-
-  <div class="opinion-section">
-    <h3>El impacto en la democracia española</h3>
-    <p>
-      Este caso tiene implicaciones que trascienden lo político. Si se confirma que un expresidente utilizó su influencia para obtener comisiones ilegales a cambio de un rescate público, estamos ante una <strong>erosión del contrato social</strong>: los ciudadanos perderían confianza en que las decisiones de política pública se toman por el interés general y no por el beneficio privado.
-    </p>
-    <p>
-      Si, por el contrario, se demuestra que Zapatero es inocente y que la investigación fue manipulada —lo cual considero poco probable dada la independencia del juez y la solidez de la evidencia—, el daño sería igualmente grave: la percepción de que la justicia está politizada y que cualquier investigación contra un líder político es sospechosa por definición.
-    </p>
-    <p>
-      En ambos escenarios, <strong>la democracia española sale perdiendo</strong>. La única ganadora es la ciudadanía informada, que merece conocer la verdad completa sin filtros ideológicos.
-    </p>
-  </div>
-
-  <div class="opinion-section">
-    <h3>Conclusión personal</h3>
-    <p>
-      Tras analizar la información disponible de múltiples fuentes, mi conclusión es que <strong>se trata de un caso de corrupción genuino</strong> con evidencia sólida, que la narrativa de «lawfare» tiene elementos de verdad parcial pero no resiste un análisis riguroso, y que el impacto político será devastador para el PSOE independientemente del desenlace judicial.
-    </p>
-    <p>
-      La fecha clave es el <strong>2 de junio de 2026</strong>. La declaración de Zapatero ante el juez Calama revelará mucho sobre la solidez real de la acusación y la estrategia de defensa. Hasta entonces, todo son indicios —importantísimos, pero indicios.
-    </p>
-    <p>
-      Lo que sí parece claro es que el rescate de Plus Ultra fue, en el mínimo, un ejemplo de cómo los procedimientos de emergencia y la opacidad en la adjudicación de fondos públicos pueden crear los conditions perfectos para la corrupción. Este caso debería servir de lección para que los próximos rescates y ayudas de emergencia estén sujetos a un escrutinio mucho más riguroso.
-    </p>
-  </div>
-</section>
-
-<!-- FUENTES -->
-<section id="fuentes">
-  <div class="section-label">📚 Fuentes</div>
-  <h2 class="section-title">Fuentes y referencias</h2>
-  <p class="section-text">
-    Todas las afirmaciones de este análisis están respaldadas por fuentes verificadas. Se incluyen los principales medios de comunicación que han cubierto la imputación de Zapatero.
-  </p>
-  <div class="sources-list">
-    <div class="source-item"><span class="source-num">1</span><div><strong>EL PAÍS</strong> — «Zapatero, imputado en el 'caso Plus Ultra' por tráfico de influencias»<br><a href="https://elpais.com/espana/2026-05-19/zapatero-imputado-por-blanqueo-de-capitales-en-el-caso-plus-ultra.html" target="_blank" rel="noopener">elpais.com</a></div></div>
-    <div class="source-item"><span class="source-num">2</span><div><strong>ABC</strong> — «Zapatero, imputado por el caso Plus Ultra: primer presidente investigado por corrupción»<br><a href="https://www.abc.es/espana/zapatero-primer-presidente-gobierno-imputado-blanqueo-plus-20260519090841-nt.html" target="_blank" rel="noopener">abc.es</a></div></div>
-    <div class="source-item"><span class="source-num">3</span><div><strong>El Confidencial</strong> — «Zapatero, imputado por blanqueo: la UDEF registra la empresa de sus hijas»<br><a href="https://www.elconfidencial.com/espana/2026-05-19/zapatero-investigacion-blanqueo-capitales-plus-ultra_4357268/" target="_blank" rel="noopener">elconfidencial.com</a></div></div>
-    <div class="source-item"><span class="source-num">4</span><div><strong>La Vanguardia</strong> — «Todas las claves del caso Plus Ultra por el que se investiga a Zapatero»<br><a href="https://www.lavanguardia.com/politica/20260519/11541985/todas-claves-caso-plus-ultra-investiga-zapatero.html" target="_blank" rel="noopener">lavanguardia.com</a></div></div>
-    <div class="source-item"><span class="source-num">5</span><div><strong>Cadena SER</strong> — «Zapatero, citado como imputado en la Audiencia Nacional el 2 de junio»<br><a href="https://cadenaser.com/nacional/2026/05/19/zapatero-citado-como-imputado-en-la-audiencia-nacional-el-2-de-junio-por-organizacion-criminal-trafico-influencias-y-falsedad-en-el-caso-plus-ultra-cadena-ser/" target="_blank" rel="noopener">cadenaser.com</a></div></div>
-    <div class="source-item"><span class="source-num">6</span><div><strong>El Mundo</strong> — «La Audiencia Nacional imputa al ex presidente Zapatero por tráfico de influencias y blanqueo»<br><a href="https://www.elmundo.es/espana/2026/05/19/6a0c0855e4d4d8804f8b4585.html" target="_blank" rel="noopener">elmundo.es</a></div></div>
-    <div class="source-item"><span class="source-num">7</span><div><strong>Libertad Digital</strong> — «Zapatero, imputado por organización criminal, tráfico de influencias y falsedad en el caso Plus Ultra»<br><a href="https://www.libertaddigital.com/espana/politica/2026-05-19/zapatero-imputado-7406216/" target="_blank" rel="noopener">libertaddigital.com</a></div></div>
-    <div class="source-item"><span class="source-num">8</span><div><strong>El Independiente</strong> — «Quién es José Luis Calama, el juez que ha imputado a Zapatero»<br><a href="https://www.elindependiente.com/espana/2026/05/19/quien-es-jose-luis-calama-el-juez-que-ha-imputado-a-zapatero/" target="_blank" rel="noopener">elindependiente.com</a></div></div>
-    <div class="source-item"><span class="source-num">9</span><div><strong>The Objective</strong> — «La Audiencia Nacional imputa a Zapatero por blanqueo de capitales en el 'caso Plus Ultra'»<br><a href="https://theobjective.com/espana/tribunales/2026-05-19/zapatero-imputado-blanqueo-audiencia-nacional/" target="_blank" rel="noopener">theobjective.com</a></div></div>
-    <div class="source-item"><span class="source-num">10</span><div><strong>Mundiario</strong> — «El PSOE se atrinchera con Zapatero y convierte el caso Plus Ultra en una batalla política total»<br><a href="https://www.mundiario.com/articulo/politica/psoe-atrinchera-zapatero-convierte-caso-plus-ultra-batalla-politica-total/20260519121608386992.html" target="_blank" rel="noopener">mundiario.com</a></div></div>
-    <div class="source-item"><span class="source-num">11</span><div><strong>La Sexta</strong> — «Zapatero, imputado por organización criminal, falsedad documental y tráfico de influencias en el 'caso Plus Ultra'»<br><a href="https://www.lasexta.com/noticias/nacional/zapatero-imputado-organizacion-criminal-falsedad-documental-trafico-influencias-caso-plus-ultra_202605196a0c0bf0dd62c3164d2f12f6.html" target="_blank" rel="noopener">lasexta.com</a></div></div>
-    <div class="source-item"><span class="source-num">12</span><div><strong>Expansión</strong> — «El juez acusa a Zapatero de liderar una 'estructura de tráfico de influencias'»<br><a href="https://www.expansion.com/economia/2026/05/19/6a0c48bee5fdea0a7f8b45a9.html" target="_blank" rel="noopener">expansion.com</a></div></div>
-    <div class="source-item"><span class="source-num">13</span><div><strong>El Español</strong> — «La Audiencia Nacional imputa a Zapatero por un presunto blanqueo de capitales en el rescate de Plus Ultra»<br><a href="https://www.elespanol.com/espana/tribunales/20260519/audiencia-nacional-imputa-zapatero-presunto-blanqueo-capitales-rescate-plus-ultra/1003744250635_0.html" target="_blank" rel="noopener">elespanol.com</a></div></div>
-    <div class="source-item"><span class="source-num">14</span><div><strong>EL PAÍS</strong> — «Julio Martínez, el empresario que llegó a Plus Ultra como 'conseguidor' por sus contactos en Venezuela»<br><a href="https://elpais.com/espana/2026-02-16/julio-martinez-el-empresario-que-llego-a-plus-ultra-como-conseguidor-por-sus-contactos-en-venezuela.html" target="_blank" rel="noopener">elpais.com</a></div></div>
-  </div>
-</section>
-
-<!-- FOOTER WITH COUNTER -->
-<footer class="page-footer">
-  <div class="footer-inner">
-    <span class="footer-brand">🐱 Cocobot</span>
-    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
-  </div>
-</footer>
-
-<script>
-(function(){
-  var w='https://cocobot-stats.rgarciademarina.workers.dev';
-  var p='/pages/caso-zapatero-plus-ultra/index.html';
-  var el=document.getElementById('visit-counter');
-  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
-  fetch(w+'/c?path='+encodeURIComponent(p))
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
-    })
-    .catch(function(){});
-})();
-</script>
-
-<script>
-  // Hamburger menu
-  const hamburger = document.getElementById('hamburger');
-  const overlay = document.getElementById('overlay');
-  const sideMenu = document.getElementById('sideMenu');
-
-  function toggleMenu() {
-    hamburger.classList.toggle('active');
-    overlay.classList.toggle('show');
-    sideMenu.classList.toggle('open');
-    document.body.style.overflow = sideMenu.classList.contains('open') ? 'hidden' : '';
-  }
-
-  hamburger.addEventListener('click', toggleMenu);
-  overlay.addEventListener('click', toggleMenu);
-
-  sideMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      if (sideMenu.classList.contains('open')) toggleMenu();
-    });
-  });
-
-  // Smooth scroll for nav links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        const offset = 60;
-        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    });
-  });
-</script>
+<section id="imputacion"><div class="sl">⚖️ La Imputación</div><h2 class="st">Un precedente sin precedentes</h2>
+<p class="tx">El expresidente <strong>José Luis Rodríguez Zapatero</strong> ha sido imputado por el Juzgado Central de Instrucción nº 4 de la Audiencia Nacional, bajo el juez <strong>José Luis Calama</strong>. Primer presidente en la democracia investigado por corrupción. El auto de <strong>88 folios</strong> detalla maniobras para ocultar el dinero: facturas falsas, offshore en Dubái y órdenes para borrar la palabra «comisión».</p>
+<div class="cg"><div class="cc"><div class="ci2">🏛️</div><div class="cn">Organización Criminal</div><div class="cd">Estructura con cuatro niveles jerárquicos</div></div><div class="cc"><div class="ci2">🤝</div><div class="cn">Tráfico de Influencias</div><div class="cd">Ejercicio ilícito ante instancias públicas</div></div><div class="cc"><div class="ci2">📄</div><div class="cn">Falsedad Documental</div><div class="cd">Facturas y contratos ficticios</div></div><div class="cc"><div class="ci2">💰</div><div class="cn">Blanqueo de Capitales</div><div class="cd">Offshore, cripto y empresas pantalla</div></div></div>
+<div class="hb"><p><strong>Hasta 8 años de prisión.</strong> El juez sitúa a Zapatero en el «vértice» de la estructura con «liderazgo estratégico» y «contactos de alto nivel».</p></div>
+<blockquote><p>«Jamás he realizado ninguna gestión para el rescate de Plus Ultra.»</p><cite>— Zapatero, 19/05/2026</cite></blockquote>
+<p class="tx">Citado a declarar el <strong>2 de junio de 2026</strong>. Secreto de sumario levantado tras meses de investigación de la UDEF y la Fiscalía Anticorrupción.</p></section>
+<section id="operativo"><div class="sl">🚨 Operativo UDEF</div><h2 class="st">Registros simultáneos y «reivindicación» policial</h2>
+<p class="tx">La mañana del <strong>19 de mayo</strong>, la UDEF ejecutó registros simultáneos (Operación Tibet), tras meses bajo secreto. Última prórroga: 23 de abril hasta el 28 de mayo.</p>
+<div class="rg"><div class="rc"><div class="ri">🏢</div><div class="rn">Oficina Zapatero (Ferraz 35)</div><div class="rd">Centro de operaciones. Se clonaron dispositivos, correos y repositorios. El juez optó por no registrar el domicilio.</div></div><div class="rc"><div class="ri">📱</div><div class="rn">Whathefav SL</div><div class="rd">Agencia de las hijas (eSports/marketing). Recibió ~985.000 € de la trama.</div></div><div class="rc"><div class="ri">📊</div><div class="rn">Análisis Relevante SL</div><div class="rd">Consultora de Martínez Martínez. El 25% pertenece a un exjefe del CNI.</div></div><div class="rc"><div class="ri">💼</div><div class="rn">Softgestor &amp; Int. Prospectiva</div><div class="rd">Entrada de fondos extranjeros. Administrada por hermanos venezolanos.</div></div><div class="rc"><div class="ri">🌎</div><div class="rn">Domicilio familia venezolana</div><div class="rd">Vinculada a pagos de comisiones.</div></div></div>
+<div class="hb b"><p><strong>«Reivindicación» de la UDEF:</strong> Tras años de marginalización, los agentes sienten «reivindicación profesional». «Hemos vuelto al centro del tablero». Los sindicatos SUP y Jupol defendieron públicamente a los investigadores.</p></div>
+<div class="hb"><p><strong>Filtraciones:</strong> El fiscal Luzón ordenó en enero no informar a superiores por riesgo de filtraciones. La UDEF espera orden judicial para detener a Zapatero: «Hay bastante carga probatoria».</p></div></section>
+<section id="caso"><div class="sl">🔍 El Caso</div><h2 class="st">53 millones de fondos públicos</h2>
+<p class="tx">En <strong>marzo de 2021</strong>, el Gobierno de Sánchez aprobó un rescate de <strong>53 millones de euros</strong> a Plus Ultra (solo un avión operativo de cuatro). Las investigaciones sugieren que los fondos reembolsaron préstamos vinculados a una red criminal en <strong>Venezuela</strong> (PDVSA, chavismo). Parte se canalizó al entorno de Zapatero.</p>
+<div class="hb g"><p><strong>Dos canales de influencia:</strong> vía Ábalos (ministro) y vía Zapatero (considerada «predominante» por el juez).</p></div>
+<h3 class="sub">Flujos económicos</h3>
+<table class="ft"><thead><tr><th>Concepto</th><th>Importe</th><th>Destinatario</th></tr></thead><tbody>
+<tr><td data-label="Concepto">Rescate SEPI</td><td data-label="Importe" class="am">53.000.000 €</td><td data-label="Destinatario">Plus Ultra</td></tr>
+<tr><td data-label="Concepto">Comisión 1% (Idella → Dubái)</td><td data-label="Importe" class="am">~530.000 €</td><td data-label="Destinatario">Landside Dubai Fzco</td></tr>
+<tr><td data-label="Concepto">Análisis Relevante → Zapatero</td><td data-label="Importe" class="am">490.780 €</td><td data-label="Destinatario">Zapatero</td></tr>
+<tr><td data-label="Concepto">Pagos a Whathefav (hijas)</td><td data-label="Importe" class="am">~985.219 €</td><td data-label="Destinatario">Hijas de Zapatero</td></tr>
+<tr><td data-label="Concepto">Venta de oro a EAU</td><td data-label="Importe" class="am">30.000.000 €</td><td data-label="Destinatario">Sociedad en Emiratos</td></tr>
+<tr><td data-label="Concepto">Efectivo hallado</td><td data-label="Importe" class="am">300.000 €</td><td data-label="Destinatario">Martínez Martínez</td></tr>
+<tr><td data-label="Concepto">Cuentas en Miami</td><td data-label="Importe" class="am">~1.000.000 €</td><td data-label="Destinatario">Martínez Martínez</td></tr>
+<tr><td data-label="Concepto">Factura falsa</td><td data-label="Importe" class="am">50.000 €</td><td data-label="Destinatario">Caletón (inexistente)</td></tr>
+<tr><td data-label="Concepto">Pago exnovia Ábalos</td><td data-label="Importe" class="am">2.000 €</td><td data-label="Destinatario">Expareja de Ábalos</td></tr>
+</tbody></table>
+<h3 class="sub">Offshore, Miami y criptomonedas</h3>
+<p class="tx">El juez atribuye a Zapatero la orden de crear <strong>Landside Dubai Fzco</strong> (zona franca de Dubái), con su secretaria <strong>María Gertrudis Alcázar</strong> y el gestor <strong>Cristóbal Cano</strong>. Solo seis días después del contrato de comisión del 1% con <strong>Idella</strong> (19/01/2021), se constituyó Landside (26/01/2021) para canalizar fondos al extranjero.</p>
+<p class="tx"><strong>Julio Martínez Martínez</strong> mantiene casi <strong>un millón de euros en cuentas bancarias en Miami</strong>, abiertas hace una década y activas.</p>
+<div class="hb"><p><strong>Criptomonedas:</strong> Se apresaron durante los registros para rastrear fondos ocultados.</p></div>
+<h3 class="sub">Conexión China: Gate Center y Fangyong Du</h3>
+<p class="tx">Zapatero fundó en abril de 2022 <strong>Gate Center</strong>, un think tank/lobby con <strong>Fangyong Du</strong> (alias Miguel Duch), empresario chino investigado por el <strong>CNI como espía de Pekín</strong> y al que se denegó la nacionalidad española. Whathefav realiza trabajos para Gate Center. La trama incluye operaciones de <strong>oro, petróleo, acciones y divisas</strong> con Venezuela, China y Emiratos.</p></section>
+<section id="pruebas"><div class="sl">📋 Pruebas</div><h2 class="st">Lo que saben los investigadores</h2>
+<h3 class="subs">1. Alertas internacionales</h3><p class="tx">Autoridades de <strong>Suiza y Francia</strong> alertaron sobre blanqueo. La Fiscalía Anticorrupción presentó querella en 2024.</p>
+<h3 class="subs">2. Contrato de comisión del 1%</h3><p class="tx">Encontrado en dispositivos de Martínez: contrato entre Plus Ultra e Idella por <strong>530.000 €</strong> a cambio de facilitar el rescate.</p>
+<h3 class="subs">3. WhatsApp: Zapatero llamado «Presidente»</h3>
+<blockquote><p>«Presidente, le reporto las novedades.»<br>«Presidente, nos mantenemos atentos a sus indicaciones.»<br>«Estamos totalmente de acuerdo, presidente.»</p><cite>— Martínez Martínez a Zapatero</cite></blockquote>
+<p class="tx">Un empresario venezolano atribuye a Zapatero: «<em>Me alegro de esa relación con Delcy</em>» (Delcy Rodríguez, Venezuela). Martínez se refería a sí mismo como «<strong>lacayo</strong>» del expresidente.</p>
+<div class="hb"><p><strong>Eliminación sistemática:</strong> Martínez borró mensajes a Zapatero, pero se conservaron al reenviarlos a empresarios venezolanos.</p></div>
+<h3 class="subs">4. Grabaciones de Plus Ultra</h3>
+<blockquote><p>«Vamos a follar aunque tengamos que pagar un poquitín.»<br>«Zapa es nuestro contacto.»</p><cite>— Julio Martínez Sola, dueño de Plus Ultra</cite></blockquote>
+<h3 class="subs">5. Facturas falsas y borrar «comisión»</h3><p class="tx">Factura de <strong>50.000 €</strong> por «aplicación informática» inexistente (Caletón). El juez señala que Zapatero ordenó <strong>borrar la palabra «comisión»</strong> de documentos.</p>
+<h3 class="subs">6. Reunión del 11 de diciembre</h3><p class="tx">Zapatero se reunió con Martínez durante una carrera el mismo día que la policía detuvo a Martínez Sola y Roselli. Zapatero: «Esa información fue un burdo montaje».</p>
+<h3 class="subs">7. Contradicción en el Senado</h3><p class="tx">Zapatero negó relación con Martínez Sola. Ábalos declaró que Zapatero se reunió con él para acelerar el rescate.</p>
+<h3 class="subs">8. Hijas: uso personal de fondos</h3><p class="tx">Laura y Alba inflaron <strong>447.000 € en cuentas personales</strong> con «adquisiciones patrimoniales y cancelaciones anticipadas de préstamos». Whathefav fue vehículo para falsear facturas y dar cobertura legal.</p></section>
+<section id="cronologia"><div class="sl">📅 Cronología</div><h2 class="st">De la pandemia a la imputación</h2>
+<div class="tl">
+<div class="ti"><div class="td">Feb 2020</div><div class="tt">Análisis Relevante</div><div class="tde">Martínez Martínez funda la consultora clave.</div></div>
+<div class="ti c"><div class="td">Mar 2021</div><div class="tt">Rescate de Plus Ultra</div><div class="tde">53 millones aprobados por el Gobierno de Sánchez.</div></div>
+<div class="ti"><div class="td">2021</div><div class="tt">Vox se querella</div><div class="tde">Por el rescate a Plus Ultra.</div></div>
+<div class="ti"><div class="td">Ene 2023</div><div class="tt">Archivo preliminar</div><div class="tde">Juzgado 15 de Madrid archiva el caso.</div></div>
+<div class="ti"><div class="td">2024</div><div class="tt">Querella Fiscalía</div><div class="tde">Tras alertas de Suiza y Francia.</div></div>
+<div class="ti c"><div class="td">11 Dic 2025</div><div class="tt">Detenciones</div><div class="tde">Martínez Sola, Roselli y Martínez Martínez. 300.000 € en efectivo.</div></div>
+<div class="ti"><div class="td">Feb 2026</div><div class="tt">Audiencia Nacional</div><div class="tde">El juez Calama asume la instrucción.</div></div>
+<div class="ti"><div class="td">Mar 2026</div><div class="tt">Zapatero en el Senado</div><div class="tde">Niega vinculación con Plus Ultra.</div></div>
+<div class="ti c"><div class="td">19 May 2026</div><div class="tt">Imputación + Registros</div><div class="tde">Zapatero imputado. UDEF registra oficina, Whathefav, Análisis Relevante y más.</div></div>
+<div class="ti c"><div class="td">2 Jun 2026</div><div class="tt">Declaración de Zapatero</div><div class="tde">Comparecencia ante el juez Calama.</div></div>
+</div></section>
+<section id="figuras"><div class="sl">👥 Figuras Clave</div><h2 class="st">Los protagonistas</h2>
+<div class="kf">
+<div class="fc"><div class="fn">José Luis Rodríguez Zapatero</div><div class="fr">Expresidente · Imputado</div><div class="fd">«Vértice» de la trama. Cobró 490.780 € de Análisis Relevante.</div></div>
+<div class="fc"><div class="fn">Julio Martínez Martínez</div><div class="fr">Empresario · Detenido</div><div class="fd">Amigo de Zapatero. 300K€ en efectivo + ~1M€ en Miami. Análisis Relevante.</div></div>
+<div class="fc"><div class="fn">Julio Martínez Sola</div><div class="fr">Presidente Plus Ultra · Detenido</div><div class="fd">Fundador de la aerolínea.</div></div>
+<div class="fc"><div class="fn">Roberto Roselli</div><div class="fr">CEO Plus Ultra · Detenido</div><div class="fd">Consejero delegado.</div></div>
+<div class="fc"><div class="fn">Laura y Alba Rodríguez</div><div class="fr">Hijas de Zapatero</div><div class="fd">Whathefav recibió ~985K€. Cuentas personales infladas 447K€.</div></div>
+<div class="fc"><div class="fn">José Luis Calama</div><div class="fr">Juez Audiencia Nacional</div><div class="fd">30+ años de carrera. Investigó Pegasus, Alcasec, Arbistar.</div></div>
+<div class="fc"><div class="fn">Ramón Gordils</div><div class="fr">Viceministro Maduro</div><div class="fd">Contactado para medir acceso a Zapatero.</div></div>
+<div class="fc"><div class="fn">Manuel A. Fajardo García</div><div class="fr">«Pieza de ZP en Venezuela»</div><div class="fd">Contactos en Aeronáutica Civil venezolana.</div></div>
+<div class="fc"><div class="fn">Fangyong Du (Miguel Duch)</div><div class="fr">Empresario chino · CNI</div><div class="fd">Cofundador Gate Center. Investigado como espía de Pekín.</div></div>
+<div class="fc"><div class="fn">Mª Gertrudis Alcázar</div><div class="fr">Secretaria de Zapatero</div><div class="fd">Colaboró en crear offshore Dubái. Ejecutó órdenes.</div></div>
+<div class="fc"><div class="fn">Cristóbal Cano</div><div class="fr">Gestor del entramado</div><div class="fd">Facturación ad hoc y societario.</div></div>
+<div class="fc"><div class="fn">Alejandro Luzón</div><div class="fr">Fiscal Anticorrupción</div><div class="fd">Ordenó secreto operativo por riesgo de filtraciones.</div></div>
+</div></section>
+<section id="contexto"><div class="sl">🏛️ Contexto Histórico</div><h2 class="st">Corrupción del PSOE: patrón recurrente</h2>
+<p class="tx">La imputación de Zapatero no ocurre en el vacío. El PSOE ha sido protagonista de algunos de los mayores escándalos de la democracia.</p>
+<h3 class="subs">Caso Gürtel</h3><p class="tx">Red de corrupción que extorsionaba a políticos de ambos signos. Múltiples socialistas condenados. El expresidente <strong>José Bono</strong> fue imputado.</p>
+<h3 class="subs">Caso ERE (Andalucía)</h3><p class="tx">Fraude en expedientes de empleo bajo <strong>Manuel Chaves</strong>. Más de <strong>1.000 millones</strong> desviados. Chaves condenado a 74 años.</p>
+<h3 class="subs">Caso Pity Pity</h3><p class="tx">Comisiones ilegales a <strong>Alfonso Guerra</strong> en los 80. Archivado por prescripción.</p>
+<h3 class="subs">Caso Filemón</h3><p class="tx">Facturas ficticias vinculadas a <strong>Emilio Botín</strong> (exnúmero 2 del PSOE). 2,5 millones en facturación irregular.</p>
+<div class="hb g"><p><strong>Patrón observable:</strong> Uso de <strong>empresas intermediarias</strong> para canalizar comisiones, similar al mecanismo de Análisis Relevante y Whathefav.</p></div></section>
+<section id="lawfare"><div class="sl">❓ Análisis Crítico</div><h2 class="st">¿Campaña orquestada?</h2>
+<p class="tx">El PSOE y Sumar calificaron la imputación como «lawfare». Analicemos la hipótesis.</p>
+<h3 class="subs">Argumentos a favor</h3>
+<div class="hb"><p><strong>1. Origen:</strong> Manos Limpias (extrema derecha) fue la primera en denunciar. Vox se querelló en 2021.</p></div>
+<div class="hb"><p><strong>2. Contexto:</strong> Zapatero es pieza clave del Gobierno: asesor de Sánchez, mediador en Cataluña.</p></div>
+<div class="hb"><p><strong>3. Timing:</strong> El levantamiento del secreto coincide con debilidad política del Gobierno.</p></div>
+<h3 class="subs">Argumentos en contra</h3>
+<div class="hb g"><p><strong>1. El juez Calama:</strong> 30+ años, técnico. Investigó Pegasus (contra Sánchez). Sin afiliación política.</p></div>
+<div class="hb g"><p><strong>2. Origen real:</strong> La investigación se puso en marcha con alertas de <strong>Suiza y Francia</strong>, no con denuncias políticas.</p></div>
+<div class="hb g"><p><strong>3. Evidencia sólida:</strong> Contrato del 1%, 300K€ en efectivo, WhatsApp, offshore, cripto, facturas falsas. Cuerpo probatorio difícil de fabricar.</p></div>
+<div class="hb g"><p><strong>4. Independencia:</strong> UDEF, Fiscalía Anticorrupción y Audiencia Nacional no dependen de la derecha.</p></div>
+<div class="os"><h3>Veredicto sobre el «lawfare»</h3><p>La hipótesis tiene <strong>elementos de verdad parcial</strong> pero no resiste un análisis riguroso. La derecha aprovechó agresivamente un caso genuino —como ha ocurrido históricamente—, pero no lo orquestó. La diferencia entre «aprovechar» y «orquestar» es fundamental.</p></div></section>
+<section id="impacto"><div class="sl">📊 Impacto Político</div><h2 class="st">Reacciones y consecuencias</h2>
+<h3 class="subs">PSOE: Defensa institucional</h3><p class="tx"><strong>Pedro Sánchez</strong> pidió «defender el buen nombre» del expresidente. Montse Mínguez calificó la imputación de persecución.</p>
+<h3 class="subs">ERC/Sumar: Giro dramático de Rufián</h3><p class="tx"><strong>Gabriel Rufián</strong> dio un giro notable. De hablar de «lawfare» pasó a reconocer que «<strong>el auto está muy bien escrito</strong>» y declaró: «<strong>Si esto es verdad, es una mierda</strong>» y «<strong>si es mentira es una mierda mayor</strong>». «Estoy jodido», añadió.</p>
+<p class="tx"><strong>Ione Belarra</strong> (Podemos) mantuvo dudas sobre la investigación pero recalcó que no afecta al Gobierno.</p>
+<h3 class="subs">PP: Presión controlada</h3><p class="tx"><strong>Telledo</strong> agresivo: «El tinglado se desmorona». <strong>Feijóo</strong> más contenido, evitando efecto reboto.</p>
+<h3 class="subs">Vox: Ofensiva total</h3><p class="tx"><strong>Abascal</strong> reclamó moción de censura, calificando a Sánchez de «número 1 de todas las tramas».</p>
+<div class="hb"><p><strong>Impacto a largo plazo:</strong> Si se confirman las acusaciones, crisis sin precedentes para el PSOE. Si se descartan, daño mediático ya hecho.</p></div></section>
+<section id="analisis"><div class="sl">🧠 Análisis Final</div><h2 class="st">Opinión y perspectiva</h2>
+<div class="os"><h3>Gravedad del caso</h3><p>La imputación de Zapatero es <strong>el caso más grave contra un presidente en la democracia</strong>. No es financiación irregular: es una trama de tráfico de influencias con fondos públicos, lavado internacional y conexiones con organizaciones criminales en Venezuela, China y Emiratos.</p></div>
+<div class="os"><h3>Presunción de inocencia</h3><p><strong>Imputación ≠ condena.</strong> El auto describe una «presunta» trama. Pero el cuerpo probatorio —documentos, comunicaciones, flujos financieros, offshore, cripto— es notablemente sólido. El contrato del 1% es muy difícil de explicar como legítimo.</p></div>
+<div class="os"><h3>Impacto democrático</h3><p>Si se confirma: <strong>erosión del contrato social</strong> — los ciudadanos perderían confianza en que las decisiones públicas se toman por interés general. Si se descarta: percepción de justicia politizada. En ambos escenarios, <strong>la democracia sale perdiendo</strong>.</p></div>
+<div class="os"><h3>Conclusión</h3><p>Se trata de un <strong>caso genuino con evidencia sólida</strong>. La narrativa de «lawfare» tiene elementos parciales pero no resiste el análisis. El impacto será devastador para el PSOE independientemente del desenlace. La fecha clave: <strong>2 de junio de 2026</strong>.</p></div></section>
+<section id="fuentes"><div class="sl">📚 Fuentes</div><h2 class="st">Fuentes y referencias</h2><div class="sr">
+<div class="si2"><span class="sn">1</span><div><strong>EL PAÍS</strong> — Zapatero imputado por blanqueo en Plus Ultra<br><a href="https://elpais.com/espana/2026-05-19/zapatero-imputado-por-blanqueo-de-capitales-en-el-caso-plus-ultra.html" target="_blank">elpais.com</a></div></div>
+<div class="si2"><span class="sn">2</span><div><strong>El Confidencial</strong> — UDEF registra empresa de las hijas<br><a href="https://www.elconfidencial.com/espana/2026-05-19/zapatero-investigacion-blanqueo-capitales-plus-ultra_4357268/" target="_blank">elconfidencial.com</a></div></div>
+<div class="si2"><span class="sn">3</span><div><strong>The Objective</strong> — Euforia policial por el golpe UDEF<br><a href="https://theobjective.com/espana/2026-05-20/euforia-policia-golpe-udef-zapatero-descredito-unidad/" target="_blank">theobjective.com</a></div></div>
+<div class="si2"><span class="sn">4</span><div><strong>El Independiente</strong> — UDEF espera órdenes para detener<br><a href="https://www.elindependiente.com/espana/2026/05/20/udef-espera-ordenes-juez-para-detener-zapatero-hay-carga-probatoria/" target="_blank">elindependiente.com</a></div></div>
+<div class="si2"><span class="sn">5</span><div><strong>Infobae</strong> — Con conversaciones: «Vamos a follar aunque paguemos»<br><a href="https://www.infobae.com/espana/2026/05/20/guia-para-entender-el-caso-plus-ultra/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">6</span><div><strong>ABC</strong> — Whathefav investigada con vínculos Venezuela<br><a href="https://www.abc.es/espana/whathefav-agencia-hijas-zapatero-investigada-plus-ultra-20260519173101-nt.html" target="_blank">abc.es</a></div></div>
+<div class="si2"><span class="sn">7</span><div><strong>El Mundo</strong> — Martínez oculta millón en Miami<br><a href="https://www.elmundo.es/espana/2026/05/12/6a036093fdddff20578b45af.html" target="_blank">elmundo.es</a></div></div>
+<div class="si2"><span class="sn">8</span><div><strong>La Razón</strong> — Audiencia atribuye ~2M€ a Zapatero e hijas<br><a href="https://www.larazon.es/espana/audiencia-nacional-atribuye-zapatero-sus-hijas-cobro-casi-dos-millones-trama-plus-ultra_202605196a0c47f5b5b066299615b352.html" target="_blank">larazon.es</a></div></div>
+<div class="si2"><span class="sn">9</span><div><strong>Voz Populi</strong> — Hijas inflaron 447K€ cuentas personales<br><a href="https://www.vozpopuli.com/espana/politica/las-hijas-de-zapatero-inflaron-en-447000-euros-sus-cuentas-personales-con-el-dinero-de-la-trama.html" target="_blank">vozpopuli.com</a></div></div>
+<div class="si2"><span class="sn">10</span><div><strong>EL PAÍS</strong> — Juez: Zapatero traficaba con influencias chinas y venezolanas<br><a href="https://elpais.com/espana/2026-05-20/el-juez-apunta-a-que-zapatero-traficaba-con-sus-influencias-con-empresas-chinas-y-venezolanas-a-traves-de-una-consultora-tapadera.html" target="_blank">elpais.com</a></div></div>
+<div class="si2"><span class="sn">11</span><div><strong>Infobae</strong> — Rufián: «Si esto es verdad, es una mierda»<br><a href="https://www.infobae.com/espana/2026/05/20/rufian-ya-no-habla-de-lawfare-y-reconoce-que-el-auto-sobre-zapatero-esta-muy-bien-escrito-si-esto-es-verdad-es-una-mierda/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">12</span><div><strong>El Confidencial</strong> — Hijas cobraron casi millón por trabajos simulados<br><a href="https://www.elconfidencial.com/espana/2026-05-20/operacion-tibet-hijas-zapatero-cobro-millon-trabajos-simulados_4358005/" target="_blank">elconfidencial.com</a></div></div>
+<div class="si2"><span class="sn">13</span><div><strong>Infobae</strong> — Maniobras para ocultar: facturas falsas, offshore, borrar «comisión»<br><a href="https://www.infobae.com/espana/2026/05/20/las-presuntas-maniobras-de-zapatero-para-ocultar-el-dinero-del-caso-plus-ultra-facturas-falsas-de-50000-euros-una-sociedad-offshore-en-dubai-y-ordenes-para-borrar-la-palabra-comision/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">14</span><div><strong>Libertad Digital</strong> — Lobby chino de Zapatero: inversor controlado por CNI<br><a href="https://www.libertaddigital.com/espana/politica/2025-02-10/el-lobby-chino-de-zapatero-un-inversor-controlado-por-el-cni-donaciones-opacas-y-oficina-en-madrid-7217907/" target="_blank">libertaddigital.com</a></div></div>
+<div class="si2"><span class="sn">15</span><div><strong>Efecto Cocuyo</strong> — Intermediación Zapatero: Venezuela, China, Emiratos<br><a href="https://efectococuyo.com/internacionales/juez-del-caso-plus-ultra-desvela-la-presunta-intermediacion-de-zapatero-en-millonarios-negocios-de-petroleo-y-oro-entre-venezuela-china-y-emiratos/" target="_blank">efectococuyo.com</a></div></div>
+<div class="si2"><span class="sn">16</span><div><strong>La Sexta</strong> — «Pana Zapatero», «vértice» con «liderazgo estratégico»<br><a href="https://www.lasexta.com/noticias/nacional/pana-zapatero-nucleo-decisor-vertice-liderazgo-estrategico-contactos-alto-nivel-papel-expresidente-auto-caso-plus-ultra_202605196a0cb430b5b0662996163763.html" target="_blank">lasexta.com</a></div></div>
+</div></section>
+<footer class="pf"><div class="fi"><span class="fb">🐱 Cocobot</span><span id="visit-counter" class="vc">👁️ -- visitas</span></div></footer>
+<script>(function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/caso-zapatero-plus-ultra/index.html';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();</script>
+<script>const hamburger=document.getElementById('hamburger');const overlay=document.getElementById('overlay');const sideMenu=document.getElementById('sideMenu');function toggleMenu(){hamburger.classList.toggle('active');overlay.classList.toggle('s');sideMenu.classList.toggle('o');document.body.style.overflow=sideMenu.classList.contains('o')?'hidden':'';}hamburger.addEventListener('click',toggleMenu);overlay.addEventListener('click',toggleMenu);sideMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){if(sideMenu.classList.contains('o'))toggleMenu();});});document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t){window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-88,behavior:'smooth'});}});});</script>
 </body>
 </html>
