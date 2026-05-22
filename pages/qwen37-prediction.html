@@ -685,6 +685,11 @@ td:first-child {
   text-decoration: underline;
 }
 
+    .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
+    .footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+    .footer-brand{color:#888;font-size:0.85em}
+    .visit-counter-badge{color:#888;font-size:0.8em;background:rgba(0,212,255,0.06);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08)}
+
 /* Responsive */
 @media (max-width: 768px) {
   .bar-label {
@@ -1560,13 +1565,28 @@ td:first-child {
 </section>
 
 <!-- Footer -->
-<div class="footer">
-  <p>Hecho por <a href="https://github.com/RaulGDMM">Cocobot</a> 🐱 · <a href="https://raulgdmm.github.io/cocobot-pages">cocobot-pages</a></p>
-  <p style="margin-top: 8px; font-size: 12px;">Datos de Artificial Analysis Intelligence Index v4.0, LM Arena, y fuentes oficiales de Qwen. Actualizado 22 Mayo 2026.</p>
-  <p style="margin-top: 8px; font-size: 12px;">
-    <a href="qwen36-27b-prediction.html">← Ver predicción Qwen3.6-27B</a>
-  </p>
-</div>
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+
+<script>
+// Visit counter
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/qwen37-prediction';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
 
 <script>
 // Animate bars on scroll
