@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen3.7 Open Weights: Predicciones 27B & 35B-A3B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #7c3aed;
+  --primary-light: #a78bfa;
+  --primary-soft: rgba(124, 58, 237, 0.15);
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.1);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.1);
+  --miss: #f87171;
+  --miss-bg: rgba(248, 113, 113, 0.1);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96, 165, 250, 0.1);
+  --cyan: #22d3ee;
+  --cyan-bg: rgba(34, 211, 238, 0.1);
+  --orange: #fb923c;
+  --orange-bg: rgba(251, 146, 60, 0.1);
+  --bg-dark: #06060b;
+  --bg-card: rgba(18, 18, 30, 0.9);
+  --bg-card-hover: rgba(25, 25, 40, 0.95);
+  --text-primary: #f0f0f0;
+  --text-secondary: #909090;
+  --text-muted: #606060;
+  --border: rgba(124, 58, 237, 0.2);
+  --border-soft: rgba(255, 255, 255, 0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -30%;
+  left: 20%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Back link */
+.back-link {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 1000;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(18, 18, 30, 0.9);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+.back-link a:hover {
+  border-color: var(--border);
+  color: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+}
+
+/* Hamburger Menu */
+.hamburger {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  background: rgba(124, 58, 237, 0.9);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+}
+.hamburger:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(124, 58, 237, 0.5);
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  margin: 5px 0;
+  transition: all 0.3s;
+  border-radius: 2px;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.nav-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100vh;
+  background: rgba(6, 6, 11, 0.98);
+  backdrop-filter: blur(40px);
+  z-index: 999;
+  padding: 100px 36px;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 1px solid var(--border);
+}
+.nav-menu.active { right: 0; }
+.nav-menu a {
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: all 0.3s;
+}
+.nav-menu a:hover {
+  color: var(--primary-light);
+  padding-left: 12px;
+}
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 140px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+.hero h1 {
+  font-size: clamp(48px, 10vw, 84px);
+  font-weight: 800;
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 40%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  letter-spacing: -3px;
+  line-height: 1.05;
+}
+.hero h2 {
+  font-size: clamp(20px, 4vw, 30px);
+  font-weight: 400;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.hero-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+.hero-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.badge {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-light);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.badge.live {
+  background: var(--success-bg);
+  border-color: rgba(74, 222, 128, 0.3);
+  color: var(--success);
+}
+.badge.blue {
+  background: var(--blue-bg);
+  border-color: rgba(96, 165, 250, 0.3);
+  color: var(--blue);
+}
+.badge.orange {
+  background: var(--orange-bg);
+  border-color: rgba(251, 146, 60, 0.3);
+  color: var(--orange);
+}
+.badge.cyan {
+  background: var(--cyan-bg);
+  border-color: rgba(34, 211, 238, 0.3);
+  color: var(--cyan);
+}
+
+/* Sections */
+section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  scroll-margin-top: 24px;
+  position: relative;
+  z-index: 1;
+}
+section h2 {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -1.5px;
+}
+section h2 .accent {
+  color: var(--primary);
+}
+section h3 {
+  font-size: clamp(20px, 3.5vw, 26px);
+  font-weight: 600;
+  color: var(--primary-light);
+  margin: 48px 0 16px;
+  letter-spacing: -0.5px;
+}
+section h4 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--blue);
+  margin: 32px 0 10px;
+}
+section p {
+  margin-bottom: 18px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+}
+section ul {
+  margin: 18px 0;
+  padding-left: 28px;
+  color: var(--text-secondary);
+}
+section li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 28px 0;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th, td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+}
+th {
+  background: rgba(124, 58, 237, 0.08);
+  color: var(--primary-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover { background: rgba(124, 58, 237, 0.04); }
+td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.winner { color: var(--success) !important; font-weight: 600; }
+.loser { color: var(--miss) !important; font-weight: 600; }
+.draw { color: var(--warning) !important; font-weight: 600; }
+
+.prediction-cell {
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+.prediction-range {
+  color: var(--cyan);
+}
+.prediction-point {
+  color: var(--orange);
+}
+
+/* Highlight boxes */
+.highlight {
+  background: var(--primary-soft);
+  border-left: 3px solid var(--primary);
+  padding: 22px 26px;
+  border-radius: 0 12px 12px 0;
+  margin: 28px 0;
+}
+.highlight.success {
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+.highlight.warning {
+  background: var(--warning-bg);
+  border-color: var(--warning);
+}
+.highlight.miss {
+  background: var(--miss-bg);
+  border-color: var(--miss);
+}
+.highlight.blue {
+  background: var(--blue-bg);
+  border-color: var(--blue);
+}
+.highlight.cyan {
+  background: var(--cyan-bg);
+  border-color: var(--cyan);
+}
+.highlight.orange {
+  background: var(--orange-bg);
+  border-color: var(--orange);
+}
+.highlight strong { color: var(--text-primary); }
+.highlight p { color: var(--text-secondary); margin-bottom: 0; }
+
+/* Result cards */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.result-card:hover {
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+.result-card .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.result-card .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.result-card .sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.result-card.purple .value { color: var(--primary-light); }
+.result-card.blue .value { color: var(--blue); }
+.result-card.cyan .value { color: var(--cyan); }
+.result-card.orange .value { color: var(--orange); }
+.result-card.green .value { color: var(--success); }
+
+/* Comparison bars */
+.bar-chart {
+  margin: 28px 0;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+.bar-label {
+  min-width: 180px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+.bar-track {
+  flex: 1;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(255, 255, 255, 0.9);
+}
+.bar-fill.purple { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+.bar-fill.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.bar-fill.cyan { background: linear-gradient(90deg, #0891b2, #22d3ee); }
+.bar-fill.green { background: linear-gradient(90deg, #16a34a, #4ade80); }
+.bar-fill.orange { background: linear-gradient(90deg, #ea580c, #fb923c); }
+.bar-fill.red { background: linear-gradient(90deg, #dc2626, #f87171); }
+.bar-fill.gray { background: linear-gradient(90deg, #4b5563, #6b7280); }
+.bar-fill.prediction {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(124, 58, 237, 0.3),
+    rgba(124, 58, 237, 0.3) 4px,
+    rgba(124, 58, 237, 0.15) 4px,
+    rgba(124, 58, 237, 0.15) 8px
+  );
+  border: 1px dashed var(--primary-light);
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  margin: 40px 0;
+  padding-left: 40px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--blue), var(--cyan));
+  border-radius: 2px;
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 32px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.timeline-item:hover {
+  border-color: var(--border);
+  transform: translateX(4px);
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 24px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--bg-dark);
+}
+.timeline-item.future::before {
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+}
+.timeline-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan);
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+.timeline-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.timeline-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Methodology */
+.methodology-steps {
+  counter-reset: step;
+  margin: 28px 0;
+}
+.methodology-step {
+  position: relative;
+  padding: 20px 20px 20px 64px;
+  margin-bottom: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  counter-increment: step;
+}
+.methodology-step::before {
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  border: 1px solid var(--border);
+  color: var(--primary-light);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.methodology-step h4 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: 15px;
+}
+.methodology-step p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Data points table */
+.data-point {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+.data-point:hover {
+  border-color: var(--border);
+}
+.data-point .model-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+}
+.data-point .score {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  text-align: center;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.data-point .jump {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  text-align: center;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.data-point .status {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.status.confirmed {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.status.predicted {
+  background: var(--cyan-bg);
+  color: var(--cyan);
+}
+.score.val { color: var(--blue); }
+.jump.positive { color: var(--success); }
+.jump.negative { color: var(--miss); }
+
+/* Confidence meter */
+.confidence-meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+.confidence-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.confidence-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s;
+}
+.confidence-fill.high { background: var(--success); }
+.confidence-fill.medium { background: var(--warning); }
+.confidence-fill.low { background: var(--miss); }
+.confidence-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 40px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
+}
+.footer a {
+  color: var(--primary-light);
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bar-label {
+    min-width: 120px;
+    font-size: 11px;
+  }
+  .data-point {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .data-point .model-name {
+    grid-column: 1 / -1;
+  }
+  .timeline {
+    padding-left: 32px;
+  }
+  .timeline-item::before {
+    left: -24px;
+    width: 10px;
+    height: 10px;
+  }
+  section {
+    padding: 60px 16px;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Update log */
+.update-log {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 28px 0;
+}
+.update-log h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-light);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.update-entry {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 13px;
+}
+.update-entry:last-child { border-bottom: none; }
+.update-entry .date {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cyan);
+  font-weight: 500;
+  min-width: 100px;
+}
+.update-entry .desc {
+  color: var(--text-secondary);
+}
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<div class="back-link">
+  <a href="../index.html">← Cocobot</a>
+</div>
+
+<!-- Hamburger -->
+<div class="hamburger" onclick="this.classList.toggle('active'); document.querySelector('.nav-menu').classList.toggle('active');">
+  <span></span><span></span><span></span>
+</div>
+
+<!-- Nav Menu -->
+<div class="nav-menu">
+  <a href="#metodologia">Metodología</a>
+  <a href="#salto-max">Salto Qwen3.6→3.7 Max</a>
+  <a href="#predicciones">Predicciones</a>
+  <a href="#comparativa">vs Claude & Frontier</a>
+  <a href="#timeline">Timeline & Fechas</a>
+  <a href="#datos">Datos de Referencia</a>
+  <a href="#riesgos">Riesgos & Caveats</a>
+  <a href="#actualizaciones">Actualizaciones</a>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Predicción · Actualizado 22 Mayo 2026</div>
+  <h1>Qwen3.7<br>Open Weights</h1>
+  <h2>Predicciones para 27B y 35B-A3B</h2>
+  <p class="hero-sub">
+    Basado en el salto real de Qwen3.6 Max → Qwen3.7 Max, patrones históricos de lanzamientos y la metodología delta-extrapolación. Actualizable conforme salgan más datos.
+  </p>
+  <div class="hero-meta">
+    <span class="badge">27B Dense</span>
+    <span class="badge blue">35B-A3B MoE</span>
+    <span class="badge orange">Predicción</span>
+    <span class="badge cyan">Metodología abierta</span>
+  </div>
+</div>
+
+<!-- Metodología -->
+<section id="metodologia">
+  <h2>📐 <span class="accent">Metodología</span></h2>
+  <p>
+    Esta predicción usa un enfoque de <strong>delta-extrapolación multi-fuente</strong>: comparamos el salto real entre versiones en los modelos Max (proprietarios) y lo extrapolamos a los modelos open weights (27B y 35B-A3B), ajustando por patrones históricos observados en la transición 3.5→3.6.
+  </p>
+
+  <div class="methodology-steps">
+    <div class="methodology-step">
+      <h4>Señal principal: salto Max → Max</h4>
+      <p>Qwen3.6 Max Preview (51.8) → Qwen3.7 Max (56.6) = <strong>+4.8 pts</strong> en Intelligence Index v4.0. Este es nuestro dato de referencia más fiable.</p>
+    </div>
+    <div class="methodology-step">
+      <h4>Ajuste por tamaño: los modelos pequeños saltan más</h4>
+      <p>En la transición 3.5→3.6, el 27B dense saltó ~8 pts mientras el 35B-A3B solo ~3 pts. Los modelos densos benefician más de mejoras en data+RL porque activan todos los parámetros.</p>
+    </div>
+    <div class="methodology-step">
+      <h4>Análisis de distribución del salto</h4>
+      <p>El salto de 3.7 Max no es uniforme: CritPt +9.7, HLE +9.2, Terminal-Bench +6.9, pero otros benchmarks planos. Los modelos open weights históricamente sobresalen en agentic tasks.</p>
+    </div>
+    <div class="methodology-step">
+      <h4>Predicción de fecha: patrones de lanzamiento</h4>
+      <p>Qwen3.6 Max Preview (20 Abr) → Qwen3.7 Max (20 May) = ~30 días. Los open weights suelen salir 2-6 días después del Max de la misma generación. Proyección: ~junio 2026.</p>
+    </div>
+    <div class="methodology-step">
+      <h4>Rangos, no puntos fijos</h4>
+      <p>Cada predicción incluye un rango conservador y optimista, con un punto central estimado. La confianza varía según la cantidad de datos disponibles.</p>
+    </div>
+  </div>
+
+  <div class="highlight cyan">
+    <strong>📌 Nota importante:</strong>
+    <p>Esta página está diseñada para ser actualizable. Conforme salgan más modelos (Qwen3.7 Plus, open weights, etc.), se añadirán como nuevos puntos de datos y las predicciones se refinaremos.</p>
+  </div>
+</section>
+
+<!-- Salto Max -->
+<section id="salto-max">
+  <h2>🔬 El salto real: <span class="accent">Qwen3.6 Max → Qwen3.7 Max</span></h2>
+  <p>
+    Qwen3.7 Max fue anunciado el 20 de mayo de 2026 en la Alibaba Cloud Summit. Los previews aparecieron en LM Arena el 13-14 de mayo. Aquí está el desglose completo del salto.
+  </p>
+
+  <div class="result-grid">
+    <div class="result-card purple">
+      <div class="label">Qwen3.6 Max Preview</div>
+      <div class="value">51.8</div>
+      <div class="sub">Intelligence Index v4.0</div>
+    </div>
+    <div class="result-card green">
+      <div class="label">Qwen3.7 Max</div>
+      <div class="value">56.6</div>
+      <div class="sub">#5 Global</div>
+    </div>
+    <div class="result-card cyan">
+      <div class="label">Salto absoluto</div>
+      <div class="value">+4.8</div>
+      <div class="sub">puntos</div>
+    </div>
+    <div class="result-card orange">
+      <div class="label">Salto relativo</div>
+      <div class="value">+9.3%</div>
+      <div class="sub">mejora</div>
+    </div>
+  </div>
+
+  <h3>Desglose por benchmark</h3>
+  <p>El salto <strong>no es uniforme</strong>. Se concentra en 4 áreas clave:</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Benchmark</th>
+          <th>Qwen3.6 Max</th>
+          <th>Qwen3.7 Max</th>
+          <th>Cambio</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CritPt</td>
+          <td>3.7%</td>
+          <td>13.4%</td>
+          <td class="winner">+9.7 pts</td>
+          <td>Razonamiento crítico</td>
+        </tr>
+        <tr>
+          <td>Humanity's Last Exam</td>
+          <td>28.9%</td>
+          <td>38.1%</td>
+          <td class="winner">+9.2 pts</td>
+          <td>Razonamiento profundo</td>
+        </tr>
+        <tr>
+          <td>Terminal-Bench Hard</td>
+          <td>43.9%</td>
+          <td>50.8%</td>
+          <td class="winner">+6.9 pts</td>
+          <td>Agentic</td>
+        </tr>
+        <tr>
+          <td>GDPval-AA</td>
+          <td>1504 Elo</td>
+          <td>1546 Elo</td>
+          <td class="winner">+42 Elo</td>
+          <td>General</td>
+        </tr>
+        <tr>
+          <td>GPQA Diamond</td>
+          <td>~similar</td>
+          <td>~similar</td>
+          <td class="draw">Plano</td>
+          <td>STEM</td>
+        </tr>
+        <tr>
+          <td>SciCode</td>
+          <td>~similar</td>
+          <td>~similar</td>
+          <td class="draw">Plano</td>
+          <td>Coding</td>
+        </tr>
+        <tr>
+          <td>AA-Omniscience</td>
+          <td>37.7%</td>
+          <td>30.1%</td>
+          <td class="loser">−7.6 pts</td>
+          <td>Knowledge (⚠️ abstención)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ El trade-off de abstención:</strong>
+    <p>Qwen3.7 Max solo intenta responder al <strong>48%</strong> de las preguntas en AA-Omniscience (el más bajo de los modelos frontier). La tasa de alucinaciones cayó 21.3 pts (44.2% → 22.9%), pero la precisión bruta bajó porque el modelo dice más "no lo sé". Esto infla métricas de fiabilidad sin mejorar conocimiento real.</p>
+  </div>
+
+  <h3>Resumen del salto</h3>
+  <ul>
+    <li><strong>Razonamiento profundo:</strong> Salto masivo (+9.2 en HLE, +9.7 en CritPt)</li>
+    <li><strong>Agentic:</strong> Mejora significativa (+6.9 en Terminal-Bench)</li>
+    <li><strong>Coding/STEM:</strong> Plano — ya estaban cerca del techo</li>
+    <li><strong>Knowledge:</strong> Baja aparente por estrategia de abstención</li>
+    <li><strong>Context:</strong> 256K → 1M tokens (4x)</li>
+  </ul>
+</section>
+
+<!-- Predicciones -->
+<section id="predicciones">
+  <h2>🎯 <span class="accent">Predicciones</span></h2>
+
+  <h3>Qwen3.7-27B (Dense)</h3>
+  <p>
+    El 27B dense activó todas sus 27B de parámetros por token y mostró el mayor salto en la transición 3.5→3.6 (+~8 pts). En 3.6→3.7, el salto del Max fue de +4.8, pero el 27B históricamente amplía los saltos en agentic tasks.
+  </p>
+
+  <div class="result-grid">
+    <div class="result-card blue">
+      <div class="label">Qwen3.6-27B Actual</div>
+      <div class="value">46</div>
+      <div class="sub">Intelligence Index v4.0</div>
+    </div>
+    <div class="result-card cyan">
+      <div class="label">Predicción conservadora</div>
+      <div class="value">50–52</div>
+      <div class="sub">+4–6 pts</div>
+    </div>
+    <div class="result-card orange">
+      <div class="label">Predicción central</div>
+      <div class="value">52</div>
+      <div class="sub">+6 pts (estimada)</div>
+    </div>
+    <div class="result-card purple">
+      <div class="label">Predicción optimista</div>
+      <div class="value">53–55</div>
+      <div class="sub">+7–9 pts</div>
+    </div>
+  </div>
+
+  <div class="confidence-meter">
+    <span class="confidence-label" style="color: var(--warning);">Media</span>
+    <div class="confidence-bar">
+      <div class="confidence-fill medium" style="width: 55%;"></div>
+    </div>
+    <span style="font-size: 12px; color: var(--text-muted);">Confianza: 55%</span>
+  </div>
+
+  <h4>Razonamiento de la predicción 27B:</h4>
+  <ul>
+    <li><strong>Base:</strong> +4.8 pts del salto Max como mínimo (conservador: +4-5)</li>
+    <li><strong>Factor de amplificación:</strong> En 3.5→3.6, el 27B saltó ~8 pts (casi 3x el salto del 35B-A3B). El patrón sugiere que el 27B amplía los saltos un 1.5-2x vs Max</li>
+    <li><strong>Agentic boost:</strong> El salto de 3.7 Max es especialmente fuerte en agentic (+6.9 Terminal-Bench). El 27B de 3.6 ya saltó +17.7 pts en Terminal-Bench en 3.5→3.6, sugiriendo que el 27B es el modelo que más se beneficia de mejoras en agentic data+RL</li>
+    <li><strong>Ceiling:</strong> Claude Opus 4.6 Max está en 53. Superarlo significaría que un modelo open de 27B supera al flagship de Anthropic — posible pero ambicioso</li>
+  </ul>
+
+  <h3>Qwen3.7-35B-A3B (MoE)</h3>
+  <p>
+    El 35B-A3B tiene solo 3B de parámetros activos por token (de 35B totales). Es eficiente pero el routing MoE limita el razonamiento profundo. Históricamente muestra saltos más pequeños entre generaciones.
+  </p>
+
+  <div class="result-grid">
+    <div class="result-card blue">
+      <div class="label">Qwen3.6-35B-A3B Actual</div>
+      <div class="value">43</div>
+      <div class="sub">Intelligence Index v4.0</div>
+    </div>
+    <div class="result-card cyan">
+      <div class="label">Predicción conservadora</div>
+      <div class="value">45–46</div>
+      <div class="sub">+2–3 pts</div>
+    </div>
+    <div class="result-card orange">
+      <div class="label">Predicción central</div>
+      <div class="value">46</div>
+      <div class="sub">+3 pts (estimada)</div>
+    </div>
+    <div class="result-card purple">
+      <div class="label">Predicción optimista</div>
+      <div class="value">47–49</div>
+      <div class="sub">+4–6 pts</div>
+    </div>
+  </div>
+
+  <div class="confidence-meter">
+    <span class="confidence-label" style="color: var(--warning);">Media</span>
+    <div class="confidence-bar">
+      <div class="confidence-fill medium" style="width: 50%;"></div>
+    </div>
+    <span style="font-size: 12px; color: var(--text-muted);">Confianza: 50%</span>
+  </div>
+
+  <h4>Razonamiento de la predicción 35B-A3B:</h4>
+  <ul>
+    <li><strong>Base:</strong> El 35B-A3B saltó ~3 pts en 3.5→3.6. Con el salto Max de +4.8, proyectamos +3 como central</li>
+    <li><strong>Límite MoE:</strong> Con solo 3B activos, el modelo está estructuralmente limitado. Las mejoras en data+RL ayudan, pero el bottleneck es el ancho de razonamiento por token</li>
+    <li><strong>Posible cambio arquitectónico:</strong> Si Qwen3.7 cambia el MoE (más expertos activos, mejor routing), el salto podría ser mayor. Pero sin confirmación, asumimos arquitectura similar</li>
+    <li><strong>Eficiencia:</strong> El 35B-A3B de 3.6 ya genera a 190 t/s — es el rey de la eficiencia. La ventaja 3.7 probablemente mantenga este perfil</li>
+  </ul>
+
+  <h3>Resumen comparativo</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>Qwen3.6-27B</th>
+          <th>Qwen3.7-27B (pred.)</th>
+          <th>Qwen3.6-35B-A3B</th>
+          <th>Qwen3.7-35B-A3B (pred.)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Intelligence Index</td>
+          <td>46</td>
+          <td class="prediction-cell prediction-range">50–54</td>
+          <td>43</td>
+          <td class="prediction-cell prediction-range">45–49</td>
+        </tr>
+        <tr>
+          <td>Punto central</td>
+          <td>—</td>
+          <td class="prediction-cell prediction-point">52</td>
+          <td>—</td>
+          <td class="prediction-cell prediction-point">46</td>
+        </tr>
+        <tr>
+          <td>Salto estimado</td>
+          <td>—</td>
+          <td class="winner">+6 pts</td>
+          <td>—</td>
+          <td class="winner">+3 pts</td>
+        </tr>
+        <tr>
+          <td>Salto % relativo</td>
+          <td>—</td>
+          <td class="winner">+13%</td>
+          <td>—</td>
+          <td class="winner">+7%</td>
+        </tr>
+        <tr>
+          <td>vs Claude Opus 4.6 Max</td>
+          <td class="loser">−7 pts</td>
+          <td class="draw">−1 pts</td>
+          <td class="loser">−10 pts</td>
+          <td class="loser">−7 pts</td>
+        </tr>
+        <tr>
+          <td>vs Claude Opus 4.6 High</td>
+          <td class="draw">0 pts</td>
+          <td class="winner">+6 pts</td>
+          <td class="loser">−3 pts</td>
+          <td class="draw">0 pts</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Comparativa -->
+<section id="comparativa">
+  <h2>🥊 <span class="accent">Comparativa</span> vs Frontier</h2>
+  <p>
+    Si las predicciones se cumplen, así quedaría el panorama competitivo. Los modelos con patrón de rayas son predicciones.
+  </p>
+
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">GPT-5.5</div>
+      <div class="bar-track">
+        <div class="bar-fill red" style="width: 60.2%;">60.2</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Claude Opus 4.7</div>
+      <div class="bar-track">
+        <div class="bar-fill orange" style="width: 57.3%;">57.3</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Gemini 3.1 Pro</div>
+      <div class="bar-track">
+        <div class="bar-fill gray" style="width: 57.2%;">57.2</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Qwen3.7 Max</div>
+      <div class="bar-track">
+        <div class="bar-fill purple" style="width: 56.6%;">56.6</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Gemini 3.5 Flash</div>
+      <div class="bar-track">
+        <div class="bar-fill gray" style="width: 55.3%;">55.3</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Qwen3.7-27B ⭐</div>
+      <div class="bar-track">
+        <div class="bar-fill prediction" style="width: 52%;">~52</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Claude Opus 4.6 Max</div>
+      <div class="bar-track">
+        <div class="bar-fill blue" style="width: 53%;">53.0</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Qwen3.6 Max Preview</div>
+      <div class="bar-track">
+        <div class="bar-fill purple" style="width: 51.8%; opacity: 0.6;">51.8</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Claude Opus 4.6 High</div>
+      <div class="bar-track">
+        <div class="bar-fill blue" style="width: 46%; opacity: 0.8;">46.0</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Qwen3.6-27B</div>
+      <div class="bar-track">
+        <div class="bar-fill purple" style="width: 46%; opacity: 0.6;">46.0</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Qwen3.7-35B-A3B ⭐</div>
+      <div class="bar-track">
+        <div class="bar-fill prediction" style="width: 46%;">~46</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Qwen3.6-35B-A3B</div>
+      <div class="bar-track">
+        <div class="bar-fill purple" style="width: 43%; opacity: 0.6;">43.0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight success">
+    <strong>🏆 Si la predicción central es correcta:</strong>
+    <p>El Qwen3.7-27B (~52) estaría a solo <strong>1 punto de Claude Opus 4.6 Max</strong> (53) y por delante de Claude Opus 4.6 High (46). Un modelo open weights de 27B compitiendo con el flagship de Anthropic — eso sería un hito histórico para el ecosistema open source.</p>
+  </div>
+
+  <h3>Contexto: la brecha China vs EE.UU.</h3>
+  <p>
+    Incluso con Qwen3.7 Max en #5 (56.6), los modelos de EE.UU. mantienen una ventaja de 3-4 puntos. DeepSeek ha reconocido públicamente estar 3-6 meses detrás de los labs estadounidenses. El salto de 4.8 puntos en Qwen3.7 es significativo pero no suficiente para cerrar la brecha completa.
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Score</th>
+          <th>Origen</th>
+          <th>Tipo</th>
+          <th>vs Qwen3.7 Max</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GPT-5.5</td>
+          <td><strong>60.2</strong></td>
+          <td>🇺🇸 OpenAI</td>
+          <td>Propietario</td>
+          <td class="loser">+3.6</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 4.7</td>
+          <td><strong>57.3</strong></td>
+          <td>🇺🇸 Anthropic</td>
+          <td>Propietario</td>
+          <td class="loser">+0.7</td>
+        </tr>
+        <tr>
+          <td>Gemini 3.1 Pro Preview</td>
+          <td><strong>57.2</strong></td>
+          <td>🇺🇸 Google</td>
+          <td>Propietario</td>
+          <td class="loser">+0.6</td>
+        </tr>
+        <tr style="background: rgba(124, 58, 237, 0.08);">
+          <td><strong>Qwen3.7 Max</strong></td>
+          <td><strong>56.6</strong></td>
+          <td>🇨🇳 Alibaba</td>
+          <td>Propietario</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Gemini 3.5 Flash</td>
+          <td>55.3</td>
+          <td>🇺🇸 Google</td>
+          <td>Propietario</td>
+          <td class="winner">−1.3</td>
+        </tr>
+        <tr>
+          <td>Qwen3.6-27B ⭐ (pred. 3.7: ~52)</td>
+          <td>46 → ~52</td>
+          <td>🇨🇳 Alibaba</td>
+          <td>Open Weights</td>
+          <td class="loser">−4.6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section id="timeline">
+  <h2>📅 <span class="accent">Timeline</span> & Predicción de Fechas</h2>
+  <p>
+    Basado en los patrones históricos de lanzamientos de Qwen, aquí está la línea temporal conocida y la predicción para los open weights de 3.7.
+  </p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Nov 2024</div>
+      <div class="timeline-title">Qwen 2.5</div>
+      <div class="timeline-desc">Última generación 2.x. Open weights. Predecesor de la arquitectura 3.x.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Abr 2025</div>
+      <div class="timeline-title">Qwen 3 / 3.5</div>
+      <div class="timeline-desc">Lanzamiento de la generación 3. Qwen3.5 incluye la arquitectura Gated DeltaNet. Open weights en múltiples tamaños.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">16 Abr 2026</div>
+      <div class="timeline-title">Qwen3.6-35B-A3B</div>
+      <div class="timeline-desc">MoE 35B/3B activos. Apache 2.0. Intelligence Index: 43.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">20 Abr 2026</div>
+      <div class="timeline-title">Qwen3.6 Max Preview</div>
+      <div class="timeline-desc">Primer flagship cerrado de Qwen. Intelligence Index: 51.8. 6 primeros puestos en benchmarks de coding/agent.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">22 Abr 2026</div>
+      <div class="timeline-title">Qwen3.6-27B</div>
+      <div class="timeline-desc">Dense 27B. Apache 2.0. Intelligence Index: 46. Batie a Qwen3.5-397B-A17B en coding.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">13-14 May 2026</div>
+      <div class="timeline-title">Qwen3.7 Preview en LM Arena</div>
+      <div class="timeline-desc">Max-Preview y Plus-Preview aparecen en LM Arena sin anuncio oficial. Alibaba #6 lab en Text, #5 en Vision.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">20 May 2026</div>
+      <div class="timeline-title">Qwen3.7 Max (oficial)</div>
+      <div class="timeline-desc">Anunciado en Alibaba Cloud Summit. Intelligence Index: 56.6 (#5 global). Context 1M tokens. Pricing: $2.50/$7.50 por M tokens.</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-date">~Jun 2026 (predicción)</div>
+      <div class="timeline-title">Qwen3.7 Open Weights ⭐</div>
+      <div class="timeline-desc">
+        <strong>Predicción: mediados-finales de junio 2026.</strong><br>
+        Basado en: Qwen3.6 Max (20 Abr) → 3.7 Max (20 May) = ~30 días entre generaciones Max. Open weights de la misma generación salen 2-6 días después del Max. Proyección: ~30 días tras 3.7 Max = ~mediados de junio.<br>
+        <span class="prediction-range">Rango: 1-30 junio 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>Patrón de lanzamientos</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Generación</th>
+          <th>Max / Propietario</th>
+          <th>Open Weights</th>
+          <th>Gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Qwen3.5</td>
+          <td>Qwen3.5 Max (prop.)</td>
+          <td>3.5 open weights</td>
+          <td>~simultáneo</td>
+        </tr>
+        <tr>
+          <td>Qwen3.6</td>
+          <td>20 Abr 2026</td>
+          <td>16-22 Abr 2026</td>
+          <td class="winner">−4 a +2 días</td>
+        </tr>
+        <tr>
+          <td>Qwen3.7</td>
+          <td>20 May 2026</td>
+          <td class="prediction-cell prediction-range">~1-30 Jun 2026</td>
+          <td class="prediction-cell prediction-range">~+12 a +40 días</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight orange">
+    <strong>📊 Predicción de fecha:</strong>
+    <p><strong>Más probable: 8-20 junio 2026.</strong> Alibaba tiende a anunciar en eventos (Cloud Summit, etc.). Si mantienen el patrón de ~30 días entre generaciones Max, los open weights de 3.7 llegarían aproximadamente un mes después del anuncio de 3.7 Max. Confianza: media (45%).</p>
+  </div>
+</section>
+
+<!-- Datos de Referencia -->
+<section id="datos">
+  <h2>📊 <span class="accent">Datos de Referencia</span></h2>
+  <p>
+    Todos los puntos de datos conocidos. Esta sección se actualiza conforme salgan más modelos.
+  </p>
+
+  <h3>Intelligence Index v4.0 — Todos los Qwen</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Score</th>
+          <th>Salto</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="model-name">Qwen3.7 Max</td>
+          <td class="score val">56.6</td>
+          <td class="jump positive">+4.8</td>
+          <td><span class="status confirmed">Confirmado</span></td>
+        </tr>
+        <tr>
+          <td class="model-name">Qwen3.6 Max Preview</td>
+          <td class="score val">51.8</td>
+          <td>—</td>
+          <td><span class="status confirmed">Confirmado</span></td>
+        </tr>
+        <tr>
+          <td class="model-name">Qwen3.6-27B</td>
+          <td class="score val">46</td>
+          <td>~+8 (vs 3.5)</td>
+          <td><span class="status confirmed">Confirmado</span></td>
+        </tr>
+        <tr>
+          <td class="model-name">Qwen3.6-35B-A3B</td>
+          <td class="score val">43</td>
+          <td>~+3 (vs 3.5)</td>
+          <td><span class="status confirmed">Confirmado</span></td>
+        </tr>
+        <tr style="background: rgba(34, 211, 238, 0.05);">
+          <td class="model-name">Qwen3.7-27B ⭐</td>
+          <td class="score" style="color: var(--cyan);">50–54</td>
+          <td class="jump" style="color: var(--cyan);">+4–8</td>
+          <td><span class="status predicted">Predicción</span></td>
+        </tr>
+        <tr style="background: rgba(34, 211, 238, 0.05);">
+          <td class="model-name">Qwen3.7-35B-A3B ⭐</td>
+          <td class="score" style="color: var(--cyan);">45–49</td>
+          <td class="jump" style="color: var(--cyan);">+2–6</td>
+          <td><span class="status predicted">Predicción</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>LM Arena Rankings — Qwen3.7 Max</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Categoría</th>
+          <th>Ranking</th>
+          <th>Elo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Overall Text</td>
+          <td>#13</td>
+          <td>1,475</td>
+        </tr>
+        <tr>
+          <td>Math</td>
+          <td>#7</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Expert Prompts</td>
+          <td>#9</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Software/IT</td>
+          <td>#9</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Coding</td>
+          <td>#10</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Vision (Plus-Preview)</td>
+          <td>#16</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Modelos frontier de referencia</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Intelligence Index</th>
+          <th>Lab</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GPT-5.5</td>
+          <td><strong>60.2</strong></td>
+          <td>OpenAI</td>
+          <td>Propietario</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 4.7</td>
+          <td><strong>57.3</strong></td>
+          <td>Anthropic</td>
+          <td>Propietario</td>
+        </tr>
+        <tr>
+          <td>Gemini 3.1 Pro Preview</td>
+          <td><strong>57.2</strong></td>
+          <td>Google</td>
+          <td>Propietario</td>
+        </tr>
+        <tr>
+          <td>Qwen3.7 Max</td>
+          <td><strong>56.6</strong></td>
+          <td>Alibaba</td>
+          <td>Propietario</td>
+        </tr>
+        <tr>
+          <td>Gemini 3.5 Flash</td>
+          <td>55.3</td>
+          <td>Google</td>
+          <td>Propietario</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 4.6 (Adaptive)</td>
+          <td>53.0</td>
+          <td>Anthropic</td>
+          <td>Propietario</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 4.6 (High)</td>
+          <td>46.0</td>
+          <td>Anthropic</td>
+          <td>Propietario</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Riesgos -->
+<section id="riesgos">
+  <h2>⚠️ <span class="accent">Riesgos</span> & Caveats</h2>
+
+  <div class="highlight miss">
+    <strong>1. Arquitectura podría cambiar</strong>
+    <p>Si Qwen3.7 introduce cambios arquitectónicos significativos en los modelos open weights (nuevo MoE, más expertos activos, nueva atención), las predicciones basadas en delta podrían ser muy inexactas. El salto podría ser mucho mayor o menor.</p>
+  </div>
+
+  <div class="highlight warning">
+    <strong>2. El salto Max no es lineal</strong>
+    <p>Un salto de +4.8 en Max no garantiza un salto proporcional en 27B/35B-A3B. Los modelos densos y MoE responden diferente a las mejoras en data y RL. Nuestra extrapolación asume patrones históricos consistentes.</p>
+  </div>
+
+  <div class="highlight">
+    <strong>3. Estrategia de abstención</strong>
+    <p>Qwen3.7 Max muestra una estrategia de abstención agresiva (48% attempt rate). Si los open weights replican esto, los scores de Intelligence Index podrían inflarse artificialmente por menos alucinaciones, no por más inteligencia.</p>
+  </div>
+
+  <div class="highlight blue">
+    <strong>4. Timeline incierto</strong>
+    <p>Alibaba no ha anunciado fecha para los open weights de 3.7. La predicción de junio 2026 se basa en patrones históricos que podrían cambiar. El equipo de Qwen dijo "Can't wait to release Qwen3.7 series models! Stay tuned!" — pero sin compromiso temporal.</p>
+  </div>
+
+  <div class="highlight cyan">
+    <strong>5. Benchmarks no publicados</strong>
+    <p>Qwen3.7 Max aún no tiene benchmarks oficiales publicados (SWE-bench, GPQA, AIME, LiveCodeBench). Los scores de Intelligence Index de Artificial Analysis son la única fuente independiente — y tienen sus propias limitaciones metodológicas.</p>
+  </div>
+
+  <div class="highlight success">
+    <strong>6. Precedente positivo: 3.5→3.6</strong>
+    <p>La metodología delta-extrapolación fue 4/5 precisa para Qwen3.6-27B. Terminal-Bench fue el único fallo (+17.7 real vs +11 predicho), y fue un fallo "bueno" — el modelo superó las expectativas. Esto da cierta confianza en el método.</p>
+  </div>
+</section>
+
+<!-- Actualizaciones -->
+<section id="actualizaciones">
+  <h2>🔄 <span class="accent">Actualizaciones</span></h2>
+  <p>Esta sección se actualiza conforme salgan nuevos datos.</p>
+
+  <div class="update-log">
+    <h4>Log de Actualizaciones</h4>
+    <div class="update-entry">
+      <span class="date">22 May 2026</span>
+      <span class="desc">Página creada. Datos basados en Qwen3.7 Max (anunciado 20 May), Qwen3.6-27B y Qwen3.6-35B-A3B confirmados. Predicciones iniciales para 27B (~52) y 35B-A3B (~46).</span>
+    </div>
+    <!-- Future updates will be added here -->
+  </div>
+
+  <div class="highlight cyan">
+    <strong>📌 Cómo actualizar:</strong>
+    <p>Cuando salga un nuevo modelo Qwen3.7, añade una entrada al log, actualiza la tabla de datos de referencia, y recalibra las predicciones del otro modelo. Si salen los open weights, cambia el estado de "Predicción" a "Confirmado" y compara con la predicción.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Hecho por <a href="https://github.com/RaulGDMM">Cocobot</a> 🐱 · <a href="https://raulgdmm.github.io/cocobot-pages">cocobot-pages</a></p>
+  <p style="margin-top: 8px; font-size: 12px;">Datos de Artificial Analysis Intelligence Index v4.0, LM Arena, y fuentes oficiales de Qwen. Actualizado 22 Mayo 2026.</p>
+  <p style="margin-top: 8px; font-size: 12px;">
+    <a href="qwen36-27b-prediction.html">← Ver predicción Qwen3.6-27B</a>
+  </p>
+</div>
+
+<script>
+// Animate bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.width = entry.target.dataset.width || entry.target.style.width;
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.bar-fill').forEach(bar => {
+  bar.dataset.width = bar.style.width;
+  bar.style.width = '0%';
+  observer.observe(bar);
+});
+
+// Close menu on link click
+document.querySelectorAll('.nav-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.nav-menu').classList.remove('active');
+    document.querySelector('.hamburger').classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>
