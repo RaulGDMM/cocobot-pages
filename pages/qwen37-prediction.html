@@ -213,9 +213,24 @@ body::after {
   background: rgba(6, 6, 11, 0.98);
   backdrop-filter: blur(40px);
   z-index: 999;
-  padding: 100px 36px;
+  padding: 100px 36px 36px;
   transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border-left: 1px solid var(--border);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.nav-menu::-webkit-scrollbar {
+  width: 6px;
+}
+.nav-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nav-menu::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+.nav-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }
 .nav-menu.active { right: 0; }
 .nav-menu a {
@@ -1021,11 +1036,11 @@ td:first-child {
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow">Predicción · Actualizado 26 Mayo 2026</div>
+  <div class="hero-eyebrow">Predicción · Actualizado 23 Mayo 2026</div>
   <h1>Qwen3.7<br>Open Weights</h1>
   <h2>Predicciones para 27B y 35B-A3B</h2>
   <p class="hero-sub">
-    Basado en el salto real de Qwen3.6 Max → Qwen3.7 Max, benchmarks oficiales confirmados y la metodología delta-extrapolación. Benchmarks concretos añadidos el 26 de mayo.
+    Basado en el salto real de Qwen3.6 Max → Qwen3.7 Max, benchmarks oficiales confirmados y la metodología delta-extrapolación. Benchmarks concretos añadidos el 23 de mayo.
   </p>
   <div class="hero-meta">
     <span class="badge">27B Dense</span>
@@ -1185,7 +1200,7 @@ td:first-child {
     <li><strong>Context:</strong> 256K → 1M tokens (4x)</li>
   </ul>
 
-  <h3>🆕 Benchmarks concretos confirmados (26 May 2026)</h3>
+  <h3>🆕 Benchmarks concretos confirmados (23 May 2026)</h3>
   <p>
     Alibaba ha publicado benchmarks oficiales y fuentes independientes han verificado scores adicionales. Estos datos son clave para ajustar las predicciones de los open weights.
   </p>
@@ -1926,7 +1941,7 @@ td:first-child {
   <div class="update-log">
     <h4>Log de Actualizaciones</h4>
     <div class="update-entry">
-      <span class="date">26 May 2026</span>
+      <span class="date">23 May 2026</span>
       <span class="desc">🆕 Actualización mayor: Benchmarks oficiales confirmados — GPQA Diamond 92.4% (leader), SWE-Pro 60.6%, SWE-Verified 80.4%, HLE 41.4%, HMMT 97.1%, IMOAnswerBench 90.0%, Apex Reasoning 44.5%. Pricing confirmado ($2.50/$7.50, cache $0.25). Soporte Anthropic API + MCP. Añadido DeepSeek V4 Pro (52.0) a comparativa. Nuevo riesgo: posible salto a Qwen 4 en Nov/Dic 2026. Coding/STEM no están planos — Qwen3.7 Max es leader en 9 de 11 benchmarks.</span>
     </div>
     <div class="update-entry">
