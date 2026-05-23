@@ -11,12 +11,13 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--t1);line-height:1.7;overflow-x:hidden}
-/* Reading progress bar */
 .progress-bar{position:fixed;top:54px;left:0;height:2px;background:linear-gradient(90deg,var(--ar),var(--ag));z-index:1001;width:0%;transition:width .1s linear;box-shadow:0 0 8px rgba(192,57,43,.4)}
-nav{position:fixed;top:0px;left:0;right:0;z-index:1000;background:rgba(10,10,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
 .nb{font-family:'Playfair Display',serif;font-weight:700;color:var(--ag)}
-.nl{display:flex;gap:1.1rem}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap}.nl a:hover{color:var(--ag)}
-.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}
+.nl{display:flex;gap:1.1rem;align-items:center}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap}.nl a:hover{color:var(--ag)}
+/* Lang toggle */
+.lt{display:inline-flex;border:1px solid var(--b);border-radius:4px;overflow:hidden;margin-left:8px}.lt button{background:transparent;border:none;color:var(--tm);font-size:.65rem;font-weight:700;padding:3px 8px;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;transition:all .2s}.lt button.act{background:var(--ag);color:var(--bg);border-radius:3px}.lt button:hover:not(.act){color:var(--t1)}
+.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002;background:none;border:none;padding:8px}.ham span{display:block;width:22px;height:2px;background:var(--t1);transition:all .3s}.ham.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.ham.active span:nth-child(2){opacity:0}.ham.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s}.ov.s{opacity:1;pointer-events:all}
 .sm{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--bgc);border-left:1px solid var(--b);z-index:1001;padding-top:100px;transition:right .35s;overflow-y:auto}.sm.o{right:0}.sm a{display:block;padding:14px 2rem;color:var(--t2);text-decoration:none;font-size:.85rem;border-bottom:1px solid var(--b);transition:all .2s}.sm a:hover{color:var(--ag);padding-left:24px;background:var(--bga)}
@@ -32,65 +33,116 @@ section:nth-child(even){background:var(--bg2);max-width:100%;padding-left:max(2r
 .ft{width:100%;border-collapse:collapse;margin:2rem 0;font-size:.9rem}.ft thead th{text-align:left;padding:12px 16px;background:var(--bga);color:var(--ag);font-weight:600;font-size:.75rem;text-transform:uppercase;border-bottom:1px solid var(--b)}.ft tbody td{padding:12px 16px;border-bottom:1px solid var(--b);color:var(--t2)}.ft tbody tr:hover td{background:var(--bga);color:var(--t1)}.ft .am{font-family:'JetBrains Mono',monospace;color:var(--arl);font-weight:500}
 .kf{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin:2rem 0}.fc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.5rem;transition:border-color .3s}.fc:hover{border-color:var(--ag)}.fc .fn{font-weight:700;font-size:1rem;margin-bottom:4px}.fc .fr{font-size:.8rem;color:var(--ag);margin-bottom:8px}.fc .fd{font-size:.85rem;color:var(--t2);line-height:1.6}
 blockquote{border-left:3px solid var(--ag);padding:1rem 1.5rem;margin:2rem 0;background:var(--bgc);border-radius:0 8px 8px 0}blockquote p{font-style:italic;color:var(--t2);font-size:.95rem;line-height:1.7}blockquote cite{display:block;margin-top:.5rem;font-size:.8rem;color:var(--tm);font-style:normal}
-.os{background:var(--bgc);border:1px solid var(--b);border-radius:12px;padding:2.5rem;margin:2rem 0;position:relative}.os::before{content:'ANÁLISIS';position:absolute;top:-10px;left:2rem;background:var(--ar);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:4px 12px;border-radius:4px}.os h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;margin-top:.5rem}.os p{color:var(--t2);font-size:.95rem;line-height:1.8;margin-bottom:1rem}
+.os{background:var(--bgc);border:1px solid var(--b);border-radius:12px;padding:2.5rem;margin:2rem 0;position:relative}.os::before{content:'ANÁLISIS';position:absolute;top:-10px;left:2rem;background:var(--ar);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:4px 12px;border-radius:4px}.os.en::before{content:'ANALYSIS'}.os h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;margin-top:.5rem}.os p{color:var(--t2);font-size:.95rem;line-height:1.8;margin-bottom:1rem}
 .rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:2rem 0}.rc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.25rem;border-left:3px solid var(--ar)}.rc:hover{border-left-color:var(--ag)}.ri{font-size:1.2rem;margin-bottom:.5rem}.rn{font-weight:600;font-size:.9rem;margin-bottom:4px}.rd{font-size:.8rem;color:var(--tm);line-height:1.5}
 .sr{display:grid;gap:.5rem;margin:2rem 0}.si2{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;background:var(--bgc);border:1px solid var(--b);border-radius:8px}.si2:hover{border-color:var(--ag)}.sn{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--ag);background:rgba(212,168,67,.1);padding:2px 8px;border-radius:4px;flex-shrink:0;min-width:24px;text-align:center}.si2 div{flex:1}.si2 strong{color:var(--t1);font-size:.9rem}.si2 a{color:var(--ag);font-size:.8rem;text-decoration:none}.si2 a:hover{color:var(--agd);text-decoration:underline}
 .pf{text-align:center;padding:20px;border-top:1px solid var(--b);margin-top:30px}.fi{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}.fb{color:var(--tm);font-size:.85em}.vc{color:var(--tm);font-size:.8em;background:rgba(212,168,67,.06);padding:4px 10px;border-radius:6px;border:1px solid var(--b)}
 h3.sub{font-family:'Playfair Display',serif;margin:2rem 0 1rem;font-size:1.3rem}
 h3.subs{font-family:'Playfair Display',serif;margin:1.5rem 0 1rem;font-size:1.15rem}
+/* Lang toggle: hide non-active lang */
+[data-lang]{display:none}.lang-es [data-lang="es"],.lang-en [data-lang="en"]{display:block}.lang-es [data-lang="en"],.lang-en [data-lang="es"]{display:none}
+/* Inline lang toggle */
+[data-lang-i]{display:none}.lang-es [data-lang-i="es"],.lang-en [data-lang-i="en"]{display:inline}.lang-es [data-lang-i="en"],.lang-en [data-lang-i="es"]{display:none}
+/* Hero lang */
+.hero[data-lang]{display:none}.lang-es .hero[data-lang="es"],.lang-en .hero[data-lang="en"]{display:flex}.lang-es .hero[data-lang="en"],.lang-en .hero[data-lang="es"]{display:none}
+/* Section lang */
+section[data-lang]{display:none}.lang-es section[data-lang="es"],.lang-en section[data-lang="en"]{display:block}.lang-es section[data-lang="en"],.lang-en section[data-lang="es"]{display:none}
 /* Scroll reveal */
 .rv{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.rv.vis{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}
-/* Glow hover cards */
 .cc,.fc,.rc,.si2{position:relative;overflow:hidden}.cc::after,.fc::after,.rc::after{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(192,57,43,.06),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}.cc:hover::after,.fc:hover::after,.rc:hover::after{opacity:1}
 .os{position:relative}
-/* Timeline animated line */
 .tl{position:relative;padding-left:2rem;margin:2rem 0}.tl::before{content:'';position:absolute;left:0;top:0;width:2px;background:var(--b);height:0;transition:height .6s ease}.tl.vis::before{height:100%;background:linear-gradient(to bottom,var(--ag),var(--ar))}.ti{opacity:0;transform:translateX(-15px);transition:opacity .5s ease,transform .5s ease}.tl.vis .ti{opacity:1;transform:translateX(0)}.tl.vis .ti:nth-child(1){transition-delay:.1s}.tl.vis .ti:nth-child(2){transition-delay:.15s}.tl.vis .ti:nth-child(3){transition-delay:.2s}.tl.vis .ti:nth-child(4){transition-delay:.25s}.tl.vis .ti:nth-child(5){transition-delay:.3s}.tl.vis .ti:nth-child(6){transition-delay:.35s}.tl.vis .ti:nth-child(7){transition-delay:.4s}.tl.vis .ti:nth-child(8){transition-delay:.45s}.tl.vis .ti:nth-child(9){transition-delay:.5s}.tl.vis .ti:nth-child(10){transition-delay:.55s}.tl.vis .ti:nth-child(11){transition-delay:.6s}.tl.vis .ti:nth-child(12){transition-delay:.65s}
-/* Table row animation */
 .ft tbody tr{opacity:0;transform:translateX(-10px);transition:opacity .4s ease,transform .4s ease,background .2s,color .2s}.ft.vis tbody tr{opacity:1;transform:translateX(0)}.ft.vis tbody tr:nth-child(1){transition-delay:.05s}.ft.vis tbody tr:nth-child(2){transition-delay:.1s}.ft.vis tbody tr:nth-child(3){transition-delay:.15s}.ft.vis tbody tr:nth-child(4){transition-delay:.2s}.ft.vis tbody tr:nth-child(5){transition-delay:.25s}.ft.vis tbody tr:nth-child(6){transition-delay:.3s}.ft.vis tbody tr:nth-child(7){transition-delay:.35s}.ft.vis tbody tr:nth-child(8){transition-delay:.4s}.ft.vis tbody tr:nth-child(9){transition-delay:.45s}.ft.vis tbody tr:nth-child(10){transition-delay:.5s}.ft.vis tbody tr:nth-child(11){transition-delay:.55s}.ft.vis tbody tr:nth-child(12){transition-delay:.6s}
-/* Hero parallax */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;padding:6rem 2rem 5rem;position:relative;overflow:hidden;max-width:900px;margin:0 auto;will-change:transform}.hero::before{content:'';position:absolute;inset:-20%;background:radial-gradient(ellipse at 50% 30%,rgba(192,57,43,.08),transparent 60%);will-change:transform}
-/* Hero title animation */
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1rem;max-width:900px;opacity:0;transform:translateY(20px);animation:heroIn .8s cubic-bezier(.22,1,.36,1) .2s forwards}.hero h1 .ac{color:var(--ar);position:relative;display:inline-block}.hero h1 .ac::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:3px;background:var(--ar);opacity:.3;transform:scaleX(0);transform-origin:left;animation:underlineIn .6s cubic-bezier(.22,1,.36,1) .8s forwards}@keyframes heroIn{to{opacity:1;transform:translateY(0)}}@keyframes underlineIn{to{transform:scaleX(1)}}
 .hd{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--ag);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:heroIn .6s cubic-bezier(.22,1,.36,1) .1s forwards}
 .sub{font-size:clamp(.9rem,1.8vw,1.1rem);color:var(--t2);max-width:700px;line-height:1.7;margin-bottom:2rem;opacity:0;transform:translateY(15px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) .4s forwards}
-.hm{display:flex;gap:2rem;flex-wrap:wrap;justify-content:flex-start;margin-bottom:2rem;opacity:0;transform:translateY(15px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) .6s forwards}.hm{gap:1.5rem}.hv{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--arl)}.hla{font-size:.7rem;color:var(--tm);text-transform:uppercase;margin-top:4px}
+.hm{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:flex-start;margin-bottom:2rem;opacity:0;transform:translateY(15px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) .6s forwards}.hv{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--arl)}.hla{font-size:.7rem;color:var(--tm);text-transform:uppercase;margin-top:4px}
 .hi{opacity:0;transform:translateY(10px)}.hm.animate .hi{animation:metricIn .5s cubic-bezier(.22,1,.36,1) forwards}.hm.animate .hi:nth-child(1){animation-delay:.6s}.hm.animate .hi:nth-child(2){animation-delay:.7s}.hm.animate .hi:nth-child(3){animation-delay:.8s}.hm.animate .hi:nth-child(4){animation-delay:.9s}.hm.animate .hi:nth-child(5){animation-delay:1s}@keyframes metricIn{to{opacity:1;transform:translateY(0)}}
 .si{opacity:0;animation:heroIn .5s cubic-bezier(.22,1,.36,1) 1.2s forwards}
-/* Section titles animation */
 .st{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.st.vis{opacity:1;transform:translateY(0)}
 .sl{opacity:0;transition:opacity .5s ease}.sl.vis{opacity:1}
-/* Nav link active indicator */
 .nl a{position:relative}.nl a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--ag);transition:width .3s ease}.nl a:hover::after{width:100%}
-/* Blockquote pulse */
-blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-left-color:var(--ar);box-shadow:0 0 20px rgba(192,57,43,.1)}
-/* Scrollbar */
+blockquote{transition:border-color .3s,box-shadow .3s}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--b);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--ag)}
 @media(max-width:768px){.nl{display:none}.ham{display:flex}.hero{min-height:90vh;padding:6rem 1.5rem 3rem}section{padding:3rem 1.5rem}section:nth-child(even){padding-left:1.5rem;padding-right:1.5rem}.cg{grid-template-columns:1fr 1fr}.kf{grid-template-columns:1fr}.hm{gap:1.5rem}.os{padding:2rem 1.5rem}.rg{grid-template-columns:1fr}}
 @media(max-width:480px){.cg{grid-template-columns:1fr}}
 @media(max-width:600px){.ft thead{display:none}.ft,.ft tbody,.ft tr,.ft td{display:block}.ft tr{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:14px 16px;margin-bottom:10px}.ft td{border:none;padding:8px 0;position:relative;text-align:right;padding-left:55%;border-bottom:1px solid rgba(255,255,255,.04)}.ft td:last-child{border-bottom:none}.ft td::before{content:attr(data-label);position:absolute;left:0;top:8px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--ag);text-transform:uppercase;text-align:left;width:50%;line-height:1.4}}
 </style>
 </head>
-<body>
+<body class="lang-es">
+
 <div class="progress-bar" id="progressBar"></div>
-<nav><div class="nb">CASO ANDIC</div><div class="nl"><a href="#resumen">Resumen</a><a href="#cronologia">Cronología</a><a href="#pruebas">Pruebas</a><a href="#defensa">Defensa</a><a href="#motivo">Motivo</a><a href="#probabilidad">Probabilidad</a><a href="#analisis">Análisis</a><a href="#fuentes">Fuentes</a></div><div class="nli">Caso activo</div><button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button></nav>
+
+<nav>
+  <div class="nb">CASO ANDIC</div>
+  <div class="nl">
+    <span data-lang-i="es">
+      <a href="#resumen">Resumen</a><a href="#cronologia">Cronología</a><a href="#pruebas">Pruebas</a><a href="#defensa">Defensa</a><a href="#motivo">Motivo</a><a href="#probabilidad">Probabilidad</a><a href="#analisis">Análisis</a><a href="#fuentes">Fuentes</a>
+    </span>
+    <span data-lang-i="en">
+      <a href="#overview">Overview</a><a href="#timeline">Timeline</a><a href="#evidence">Evidence</a><a href="#defense">Defense</a><a href="#motive">Motive</a><a href="#probability">Probability</a><a href="#opinion">Analysis</a><a href="#sources">Sources</a>
+    </span>
+    <div class="lt"><button class="act" id="btnEs" onclick="setLang('es')">ES</button><button id="btnEn" onclick="setLang('en')">EN</button></div>
+  </div>
+  <div class="nli"><span data-lang-i="es">Caso activo</span><span data-lang-i="en">Active case</span></div>
+  <button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
 <div class="ov" id="overlay"></div>
-<div class="sm" id="sideMenu"><a href="#resumen">📜 Resumen del caso</a><a href="#cronologia">📅 Cronología</a><a href="#pruebas">🔍 Pruebas fiscalía</a><a href="#defensa">🛡️ Arguments defensa</a><a href="#motivo">💰 Motivo y familia</a><a href="#probabilidad">📊 Probabilidad</a><a href="#analisis">🧠 Análisis final</a><a href="#fuentes">📚 Fuentes</a></div>
-<header class="hero">
+<div class="sm" id="sideMenu">
+  <span data-lang="es">
+    <a href="#resumen">📜 Resumen del caso</a><a href="#cronologia">📅 Cronología</a><a href="#pruebas">🔍 Pruebas fiscalía</a><a href="#defensa">🛡️ Argumentos defensa</a><a href="#motivo">💰 Motivo y familia</a><a href="#probabilidad">📊 Probabilidad</a><a href="#analisis">🧠 Análisis final</a><a href="#fuentes">📚 Fuentes</a>
+  </span>
+  <span data-lang="en">
+    <a href="#overview">📜 Case Overview</a><a href="#timeline">📅 Timeline</a><a href="#evidence">🔍 Prosecution Evidence</a><a href="#defense">🛡️ Defense Arguments</a><a href="#motive">💰 Motive &amp; Family</a><a href="#probability">📊 Probability</a><a href="#opinion">🧠 Final Analysis</a><a href="#sources">📚 Sources</a>
+  </span>
+</div>
+
+<!-- ==================== HERO ES ==================== -->
+<header class="hero" data-lang="es">
 <div class="hd">Actualizado 20 de mayo de 2026 · Barcelona · Investigación por homicidio en curso</div>
 <h1>¿<span class="ac">Asesinato</span> o accidente?</h1>
 <p class="sub">El fundador de Mango cae 150 metros en Montserrat durante una ruta de montaña con su hijo. Un año después, la juez Raquel Nieto Galvan ordena abrir investigación por homicidio: «pruebas suficientes para considerar la muerte no accidental, con participación activa y premeditada de Jonathan Andic».</p>
 <div class="hm"><div class="hi"><div class="hv">150 m</div><div class="hla">Caída mortal</div></div><div class="hi"><div class="hv">3</div><div class="hla">Visitas GPS previas</div></div><div class="hi"><div class="hv">€1M</div><div class="hla">Fianza</div></div><div class="hi"><div class="hv">68%</div><div class="hla">Probabilidad estimada</div></div><div class="hi"><div class="hv">€3.3B</div><div class="hla">Imperio Mango</div></div></div>
 <div class="si"><span>Descubrir</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
 </header>
-<section id="resumen"><div class="sl">📜 Resumen del Caso</div><h2 class="st">La caída de un magnate</h2>
+
+<!-- ==================== HERO EN ==================== -->
+<header class="hero" data-lang="en">
+<div class="hd">Updated May 20, 2026 · Barcelona · Active homicide investigation</div>
+<h1>Murder or <span class="ac">accident</span>?</h1>
+<p class="sub">The founder of Mango falls 150 meters in Montserrat during a hiking trip with his son. A year later, Judge Raquel Nieto Galvan orders a homicide investigation: «sufficient evidence to consider the death non-accidental, with active and premeditated participation by Jonathan Andic».</p>
+<div class="hm"><div class="hi"><div class="hv">150 m</div><div class="hla">Fatal fall</div></div><div class="hi"><div class="hv">3</div><div class="hla">Pre-hike GPS visits</div></div><div class="hi"><div class="hv">€1M</div><div class="hla">Bail</div></div><div class="hi"><div class="hv">68%</div><div class="hla">Estimated probability</div></div><div class="hi"><div class="hv">€3.3B</div><div class="hla">Mango empire</div></div></div>
+<div class="si"><span>Discover</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+</header>
+
+<!-- ==================== RESUMEN / OVERVIEW ES ==================== -->
+<section id="resumen" data-lang="es">
+<div class="sl">📜 Resumen del Caso</div><h2 class="st">La caída de un magnate</h2>
 <p class="tx">El <strong>14 de diciembre de 2024</strong>, <strong>Isak Andic</strong> — fundador de la cadena de moda global <strong>Mango</strong>, uno de los hombres más ricos de España, y un hombre que construyó un imperio de <strong>3.300 millones de euros</strong> desde una única tienda en el Paseo de Gracia de Barcelona — murió tras caer aproximadamente <strong>150 metros</strong> desde un acantilado durante una ruta de montaña en la <strong>serra de Montserrat</strong>, cerca de las cuevas del Salnitre en Collbató.</p>
 <p class="tx">La única otra persona en el sendero era su hijo mayor, <strong>Jonathan Andic</strong>, de 45 años, vicepresidente del consejo de Mango y copropietario de la holding que controla el <strong>95% del negocio</strong>.</p>
 <p class="tx">Inicialmente, las autoridades catalanas trataron la muerte como un <strong>accidente trágico</strong>. Un juez archivó el caso en enero de 2025, determinando que Isak resbaló en el terreno empinado. Pero inconsistencias en el testimonio de Jonathan, anomalías forenses y nuevas pruebas digitales llevaron a los Mossos d'Esquadra a <strong>reabrir la investigación en octubre de 2025</strong>.</p>
 <p class="tx">En mayo de 2026, el caso se transformó de un accidente de montaña en una de las investigaciones por homicidio más mediáticas de España. La juez Raquel Nieto Galvan encontró <strong>«pruebas suficientes para considerar la muerte no accidental, con la participación activa y premeditada de Jonathan Andic»</strong>. Jonathan fue arrestado y luego liberado con <strong>fianza de 1 millón de euros</strong>. No ha sido formalmente acusado aún.</p>
 <div class="cg"><div class="cc"><div class="ci2">🏔️</div><div class="cn">Caída de 150 metros</div><div class="cd">Acantilado de Montserrat, cerca de las cuevas del Salnitre en Collbató</div></div><div class="cc"><div class="ci2">👨‍👦</div><div class="cn">Solo padre e hijo</div><div class="cd">Jonathan fue el único testigo presente durante la ruta</div></div><div class="cc"><div class="ci2">🔍</div><div class="cn">Caso reabierto</div><div class="cd">Octubre 2025: investigación por homicidio tras inconsistencias</div></div><div class="cc"><div class="ci2">⚖️</div><div class="cn">Arrestado en mayo</div><div class="cd">Jonathan detenido y liberado con fianza de 1 millón de euros</div></div></div>
 <blockquote><p>«Pruebas suficientes para considerar la muerte no accidental, con la participación activa y premeditada de Jonathan Andic.»</p><cite>— Juez Raquel Nieto Galvan, mayo de 2026</cite></blockquote>
-<div class="hb"><p><strong>Cuatro simulaciones policiales</strong> fallaron en reproducir la escena mediante un mecanismo accidental. El informe forense describió la caída como <em>«como si se hubiera lanzado por un tobogán, de pies»</em>. No había heridas en las palmas de las manos, lo que descarta un tropiezo.</p></div></section>
-<section id="cronologia"><div class="sl">📅 Cronología</div><h2 class="st">De la ruptura familiar al arresto</h2>
+<div class="hb"><p><strong>Cuatro simulaciones policiales</strong> fallaron en reproducir la escena mediante un mecanismo accidental. El informe forense describió la caída como <em>«como si se hubiera lanzado por un tobogán, de pies»</em>. No había heridas en las palmas de las manos, lo que descarta un tropiezo.</p></div>
+</section>
+
+<!-- ==================== OVERVIEW EN ==================== -->
+<section id="overview" data-lang="en">
+<div class="sl">📜 Case Overview</div><h2 class="st">The fall of a tycoon</h2>
+<p class="tx">On <strong>December 14, 2024</strong>, <strong>Isak Andic</strong> — founder of the global fashion retailer <strong>Mango</strong>, one of Spain's wealthiest individuals, a man who built a <strong>€3.3 billion empire</strong> from a single shop on Barcelona's Passeig de Gràcia — died after falling approximately <strong>150 meters (500 feet)</strong> from a cliff during a hiking excursion in the <strong>Montserrat mountain range</strong>, near the Salnitre caves in Collbató.</p>
+<p class="tx">The only other person on the trail was his eldest son, <strong>Jonathan Andic</strong>, 45, vice-chairman of Mango's board and co-owner of the holding company that controls <strong>95% of the business</strong>.</p>
+<p class="tx">Initially, Catalan authorities treated the death as a <strong>tragic accident</strong>. A judge closed the case in January 2025, ruling that Isak had slipped on the steep terrain. But inconsistencies in Jonathan's testimony, forensic anomalies, and newly uncovered digital evidence prompted the Mossos d'Esquadra to <strong>reopen the investigation in October 2025</strong>.</p>
+<p class="tx">By May 2026, the case had transformed from a mountaineering accident into one of Spain's most high-profile homicide investigations. Judge Raquel Nieto Galvan found <strong>«sufficient evidence to consider the death non-accidental, with the active and premeditated participation of Jonathan Andic»</strong>. Jonathan was arrested, then released on <strong>€1 million bail</strong>. He has not yet been formally charged.</p>
+<div class="cg"><div class="cc"><div class="ci2">🏔️</div><div class="cn">150-meter fall</div><div class="cd">Montserrat cliff, near the Salnitre caves in Collbató</div></div><div class="cc"><div class="ci2">👨‍👦</div><div class="cn">Only father and son</div><div class="cd">Jonathan was the sole witness present during the hike</div></div><div class="cc"><div class="ci2">🔍</div><div class="cn">Case reopened</div><div class="cd">October 2025: homicide investigation after inconsistencies</div></div><div class="cc"><div class="ci2">⚖️</div><div class="cn">Arrested in May</div><div class="cd">Jonathan detained and released on €1 million bail</div></div></div>
+<blockquote><p>«Sufficient evidence to consider the death non-accidental, with the active and premeditated participation of Jonathan Andic.»</p><cite>— Judge Raquel Nieto Galvan, May 2026</cite></blockquote>
+<div class="hb"><p><strong>Four police simulations</strong> failed to reproduce the scene through an accidental mechanism. The forensic report described the fall as <em>«as if he had launched himself down a slide, feet first»</em>. No injuries to the palms ruled out tripping on a rock.</p></div>
+</section>
+
+<!-- ==================== CRONOLOGÍA / TIMELINE ES ==================== -->
+<section id="cronologia" data-lang="es">
+<div class="sl">📅 Cronología</div><h2 class="st">De la ruptura familiar al arresto</h2>
 <div class="tl">
 <div class="ti"><div class="td">2015</div><div class="tt">Ruptura padre-hijo</div><div class="tde">Isak concede responsabilidades de liderazgo a Jonathan en Mango, luego las retira abruptamente. Crisis profesional, personal y familiar.</div></div>
 <div class="ti"><div class="td">Jul 2023</div><div class="tt">Último testamento</div><div class="tde">Isak firma su testamento final: activos divididos equitativamente entre sus tres hijos. La fundación benéfica es excluida.</div></div>
@@ -105,7 +157,28 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="ti c"><div class="td">19 May 2026</div><div class="tt">Arresto de Jonathan</div><div class="tde">Jonathan Andic es <strong>arrestado y detenido</strong>. La juez Nieto Galvan abre investigación por homicidio, citando evidencias de premeditación.</div></div>
 <div class="ti c"><div class="td">20 May 2026</div><div class="tt">Liberación con fianza</div><div class="tde">Jonathan es liberado con <strong>fianza de 1 millón de euros</strong>: pasaporte retenido, comparecencias semanales y prohibición de salir de España.</div></div>
 </div></section>
-<section id="pruebas"><div class="sl">🔍 Pruebas de la Fiscalía</div><h2 class="st">Lo que encontraron los investigadores</h2>
+
+<!-- ==================== TIMELINE EN ==================== -->
+<section id="timeline" data-lang="en">
+<div class="sl">📅 Timeline</div><h2 class="st">From family rift to arrest</h2>
+<div class="tl">
+<div class="ti"><div class="td">2015</div><div class="tt">Father-son rift</div><div class="tde">Isak grants Jonathan leadership at Mango, then abruptly withdraws it. Professional, personal and family crisis.</div></div>
+<div class="ti"><div class="td">Jul 2023</div><div class="tt">Final will</div><div class="tde">Isak signs his final will: assets divided equally among three children. Charitable foundation excluded.</div></div>
+<div class="ti"><div class="td">Dec 2023</div><div class="tt">5% transfer</div><div class="tde">Isak transfers 5% of Mango to CEO Toni Ruiz — first third-party transfer in company history.</div></div>
+<div class="ti"><div class="td">Mid-2024</div><div class="tt">Foundation discovery</div><div class="tde">Jonathan discovers his father plans to alter his will to create a charitable foundation. Investigators note a «marked change» in his behavior.</div></div>
+<div class="ti"><div class="td">Sep 2024</div><div class="tt">Jonathan's first child</div><div class="tde">Jonathan's first child is born with his partner, influencer Paula Nata.</div></div>
+<div class="ti c"><div class="td">Dec 7-10, 2024</div><div class="tt">Three GPS visits</div><div class="tde">Jonathan's car GPS places him at the exact fall site <strong>three times</strong> in the preceding week. Contradicts his claim of only one prior visit.</div></div>
+<div class="ti c"><div class="td">Dec 14, 2024</div><div class="tt">Fatal fall</div><div class="tde"><strong>Isak Andic dies</strong> after falling ~150m during a solo hike with Jonathan. Jonathan calls emergency services. Scene initially treated as accident.</div></div>
+<div class="ti"><div class="td">Jan 2025</div><div class="tt">Case closed</div><div class="tde">A judge closes the case, ruling the death an accident with no criminal evidence.</div></div>
+<div class="ti"><div class="td">Mar 2025</div><div class="tt">Phone change</div><div class="tde">Jonathan changes his phone, claiming it was stolen in Quito, Ecuador. Coincides with news of possible case reopening.</div></div>
+<div class="ti"><div class="td">Oct 2025</div><div class="tt">Investigation reopened</div><div class="tde">Mossos d'Esquadra and prosecutors <strong>reopen the investigation</strong> citing inconsistencies in Jonathan's testimony and forensic anomalies.</div></div>
+<div class="ti c"><div class="td">May 19, 2026</div><div class="tt">Jonathan arrested</div><div class="tde">Jonathan Andic is <strong>arrested and detained</strong>. Judge Nieto Galvan opens homicide investigation citing evidence of premeditation.</div></div>
+<div class="ti c"><div class="td">May 20, 2026</div><div class="tt">Released on bail</div><div class="tde">Jonathan released on <strong>€1 million bail</strong>: passport surrendered, weekly court appearances, travel ban from Spain.</div></div>
+</div></section>
+
+<!-- ==================== PRUEBAS / EVIDENCE ES ==================== -->
+<section id="pruebas" data-lang="es">
+<div class="sl">🔍 Pruebas de la Fiscalía</div><h2 class="st">Lo que encontraron los investigadores</h2>
 <p class="tx">El caso contra Jonathan se basa en una convergencia de pruebas forenses, digitales y testimoniales. A continuación, las piezas clave citadas por la fiscalía.</p>
 <h3 class="sub">Pruebas forenses</h3>
 <p class="tx">El informe forense describió la caída de Isak como <em>«como si se hubiera lanzado por un tobogán, de pies»</em>. <strong>Cuatro simulaciones policiales</strong> determinaron que la posición del cuerpo y las heridas eran inconsistentes con un resbalón. No había heridas en las palmas de las manos, lo que descarta un tropiezo sobre una roca. Una <strong>«marca de pisada»</strong> cerca del lugar de la caída fue determinada como <em>«hecha deliberadamente, ejerciendo presión contra el suelo»</em>.</p>
@@ -120,49 +193,143 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <blockquote><p>«O encontrar una manera de recibir la herencia mientras su padre seguía vivo, o que la figura del padre dejara de existir, ya sea en sus pensamientos o en la realidad.»</p><cite>— Mensajes de WhatsApp citados por la juez Raquel Nieto Galvan</cite></blockquote>
 <h3 class="sub">Desaparición del teléfono: timing sospechoso</h3>
 <p class="tx">Jonathan reemplazó su teléfono en marzo de 2025, alegando que fue robado durante un viaje a Ecuador. La juez señaló que esto coincidió precisamente con noticias de prensa de que el caso había sido reabierto — generando preguntas sobre si las pruebas fueron destruidas intencionalmente.</p>
-<div class="hb"><p><strong>Timing sospechoso:</strong> El cambio de teléfono coincide exactamente con las noticias de reapertura del caso. La juez lo considera un indicio de posible destrucción de pruebas digitales.</p></div></section>
-<section id="defensa"><div class="sl">🛡️ Arguments de la Defensa</div><h2 class="st">La versión de Jonathan</h2>
+<div class="hb"><p><strong>Timing sospechoso:</strong> El cambio de teléfono coincide exactamente con las noticias de reapertura del caso. La juez lo considera un indicio de posible destrucción de pruebas digitales.</p></div>
+</section>
+
+<!-- ==================== EVIDENCE EN ==================== -->
+<section id="evidence" data-lang="en">
+<div class="sl">🔍 Prosecution Evidence</div><h2 class="st">What investigators found</h2>
+<p class="tx">The case against Jonathan rests on a convergence of forensic, digital, and testimonial evidence. Below are the key pieces cited by the prosecution.</p>
+<h3 class="sub">Forensic evidence</h3>
+<p class="tx">The forensic report described Isak's fall as <em>«as if he had launched himself down a slide, feet first»</em>. <strong>Four police simulations</strong> determined the body position and injuries were inconsistent with a slip. No injuries to the palms ruled out tripping on a rock. A <strong>«scuff mark»</strong> near the fall site was determined to have been made <em>«deliberately, by exerting pressure against the ground»</em>.</p>
+<div class="hb"><p><strong>Four police simulations</strong> failed to reproduce the scene through an accidental mechanism. The body's final position is incompatible with a simple slip according to forensic experts.</p></div>
+<h3 class="sub">GPS data: three reconnaissance visits</h3>
+<p class="tx">Jonathan claimed he had hiked the route only once before, roughly two weeks prior. Car GPS data places him at the exact fall site on <strong>December 7, 8, and 10</strong> — three separate visits in the week leading up to the fatal hike. The judge described this as <em>«a planning and study of the site»</em>.</p>
+<div class="hb g"><p><strong>Direct contradiction:</strong> Jonathan claimed to have visited the site only once, two weeks before. GPS proves three additional visits in the week before the incident.</p></div>
+<h3 class="sub">Contradictory testimony</h3>
+<p class="tx">Jonathan gave conflicting accounts in two separate emergency service calls and his later police statement. He initially claimed Isak was taking photos moments before falling — but investigators recovered the phone in Isak's pocket, with photos taken only at the beginning of the hike. His position relative to his father during the incident also shifted between accounts.</p>
+<h3 class="sub">WhatsApp messages: hostility and financial demands</h3>
+<p class="tx">Court-examined messages between father and son revealed Jonathan's <em>«obsession with money»</em>, repeated demands for an advance inheritance, and <em>«feelings of hatred, resentment, and thoughts of death, blaming his father for his situation»</em>.</p>
+<blockquote><p>«Either find a way to receive the inheritance while his father was still alive, or for the figure of the father to cease to exist, either in his thoughts or in reality.»</p><cite>— WhatsApp messages cited by Judge Raquel Nieto Galvan</cite></blockquote>
+<h3 class="sub">Phone disappearance: suspicious timing</h3>
+<p class="tx">Jonathan replaced his phone in March 2025, claiming it was stolen during a trip to Ecuador. The judge noted this coincided precisely with press reports that the case had been reopened — raising questions about whether evidence was intentionally destroyed.</p>
+<div class="hb"><p><strong>Suspicious timing:</strong> The phone change coincides exactly with news of the case reopening. The judge considers it an indicator of possible digital evidence destruction.</p></div>
+</section>
+
+<!-- ==================== DEFENSA / DEFENSE ES ==================== -->
+<section id="defensa" data-lang="es">
+<div class="sl">🛡️ Argumentos de la Defensa</div><h2 class="st">La versión de Jonathan</h2>
 <p class="tx">El abogado de Jonathan, <strong>Cristóbal Martell</strong>, calificó la teoría del homicidio como <em>«incoherente y dolorosa — estigmatiza a un hombre inocente»</em>. La familia mantiene que <em>«no existe, ni existirá, evidencia legítima contra él»</em>.</p>
 <div class="rg"><div class="rc"><div class="ri">🔬</div><div class="rn">Sin pruebas físicas directas</div><div class="rd">No hay huellas dactilares, marcas de lucha ni testigos de un empujón. La «marca de pisada» podría ser de cualquier persona, en cualquier momento.</div></div><div class="rc"><div class="ri">⛰️</div><div class="rn">Terreno inherentemente peligroso</div><div class="rd">Collbató tiene terreno empinado, con barrancos y rocas sueltas. Una caída de 150 metros es plausible como accidente, incluso si la posición final del cuerpo parece inusual.</div></div><div class="rc"><div class="ri">💬</div><div class="rn">Motivo ≠ culpabilidad</div><div class="rd">Las disputas financieras entre familias adineradas son comunes. Mensajes hostiles, aunque preocupantes, no constituyen prueba de un acto criminal.</div></div><div class="rc"><div class="ri">📍</div><div class="rn">Visitas GPS con explicaciones inocentes</div><div class="rd">Montserrat es un destino turístico popular. Conducir por la zona tres veces no necesariamente indica reconocimiento criminal.</div></div><div class="rc"><div class="ri">🆘</div><div class="rn">Respuesta inmediata</div><div class="rd">Jonathan llamó a emergencias inmediatamente y permaneció en la escena — comportamiento inconsistente con alguien que acababa de cometer un asesinato.</div></div></div>
-<div class="hb g"><p><strong>Argumento clave de la defensa:</strong> La ausencia total de contacto físico entre Jonathan y su padre en el momento de la caída. Si Jonathan empujó a su padre, debería haber rastros de ese contacto.</p></div></section>
-<section id="motivo"><div class="sl">💰 Motivo y Contexto Familiar</div><h2 class="st">El imperio familiar Andic</h2>
-<p class="tx">Para comprender el presunto motivo, es necesario entender el panorama financiero y emocional de la familia Andic. Isak Andic nació en Estambul y se mudó a Cataluña como adolescente a finales de los 60. Él y su hermano Nahman abrieron la primera tienda Mango en el Paseo de Gracia de Barcelona en 1984. En el momento de su muerte, Mango empleaba a más de <strong>16.400 personas</strong> en <strong>2.850 tiendas</strong> en más de 120 mercados, con una facturación de <strong>3.300 millones de euros</strong> en 2024. El patrimonio personal de Isak se estimaba en <strong>4.000-4.500 millones de dólares</strong>, lo que lo convertía en la persona más rica de Cataluña y el quinto más rico de España.</p>
+<div class="hb g"><p><strong>Argumento clave de la defensa:</strong> La ausencia total de contacto físico entre Jonathan y su padre en el momento de la caída. Si Jonathan empujó a su padre, debería haber rastros de ese contacto.</p></div>
+</section>
+
+<!-- ==================== DEFENSE EN ==================== -->
+<section id="defense" data-lang="en">
+<div class="sl">🛡️ Defense Arguments</div><h2 class="st">Jonathan's version</h2>
+<p class="tx">Jonathan's lawyer, <strong>Cristóbal Martell</strong>, called the homicide theory <em>«incoherent and painful — it stigmatizes an innocent man»</em>. The family maintains <em>«there does not exist, nor will there exist, legitimate evidence against him»</em>.</p>
+<div class="rg"><div class="rc"><div class="ri">🔬</div><div class="rn">No direct physical evidence</div><div class="rd">No fingerprints, struggle marks, or witnesses to a push. The «scuff mark» could have been made by anyone, at any time.</div></div><div class="rc"><div class="ri">⛰️</div><div class="rn">Inherently dangerous terrain</div><div class="rd">Collbató has steep terrain with ravines and loose rock. A 150-meter fall is plausible as an accident, even if the body's final position appears unusual.</div></div><div class="rc"><div class="ri">💬</div><div class="rn">Motive ≠ guilt</div><div class="rd">Financial disputes between wealthy families are common. Hostile messages, while concerning, do not constitute proof of a criminal act.</div></div><div class="rc"><div class="ri">📍</div><div class="rn">GPS visits with innocent explanations</div><div class="rd">Montserrat is a popular tourist destination. Driving through the area three times doesn't necessarily indicate criminal reconnaissance.</div></div><div class="rc"><div class="ri">🆘</div><div class="rn">Immediate response</div><div class="rd">Jonathan immediately called emergency services and stayed at the scene — behavior inconsistent with someone who just committed murder.</div></div></div>
+<div class="hb g"><p><strong>Key defense argument:</strong> The complete absence of physical contact between Jonathan and his father at the time of the fall. If Jonathan pushed his father, there should be traces of that contact.</p></div>
+</section>
+
+<!-- ==================== MOTIVO / MOTIVE ES ==================== -->
+<section id="motivo" data-lang="es">
+<div class="sl">💰 Motivo y Contexto Familiar</div><h2 class="st">El imperio familiar Andic</h2>
+<p class="tx">Para comprender el presunto motivo, es necesario entender el panorama financiero y emocional de la familia Andic. Isak Andic nació en Estambul y se mudó a Cataluña como adolescente a finales de los 60. Él y su hermano Nahman abrieron la primera tienda Mango en el Paseo de Gracia de Barcelona en 1984. En el momento de su muerte, Mango empleaba a más de <strong>16.400 personas</strong> en <strong>2.850 tiendas</strong> en más de 120 mercados, con una facturación de <strong>3.300 millones de euros</strong> en 2024. El patrimonio personal de Isak se estimaba en <strong>4.000-4.500 millones de dólares</strong>.</p>
 <p class="tx">Jonathan se unió a la empresa en 2005 tras estudiar en Estados Unidos y España. Dirigió la línea Mango Man desde 2007 durante casi dos décadas. Pero en 2015, Isak le concedió mayores responsabilidades de liderazgo — y luego las retiró abruptamente. La juez describió las consecuencias como <em>«una crisis a nivel profesional, personal y familiar, particularmente con su padre»</em>.</p>
 <p class="tx">El catalizador crítico parece haber sido el descubrimiento de Jonathan en mediados de 2024 de que Isak planeaba alterar su testamento para crear una <strong>fundación benéfica</strong>. Aunque la idea de la fundación fue discutida con abogados y amigos, nunca fue formalizada — el último testamento, firmado en julio de 2023, dividía los activos equitativamente entre los tres hijos. Sin embargo, la mera posibilidad de una fundación absorbiendo una porción significativa de la herencia provocó lo que los investigadores describen como un <em>«cambio marcado»</em> en el comportamiento de Jonathan.</p>
 <p class="tx">Según la juez, los mensajes de WhatsApp revelaron que Jonathan tenía una <em>«obsesión con el dinero hasta el punto de pedirle a su padre una herencia mientras seguía vivo»</em>. Isak se sintió aparentemente <em>«obligado a aceptar para poder continuar teniendo una relación con su hijo»</em>.</p>
 <div class="hb"><p><strong>La ruta de reconciliación:</strong> Fue Jonathan quien propuso la ruta de montaña del 14 de diciembre — enmarcada como un esfuerzo de reconciliación. Isak aceptó. Los dos hicieron la ruta solos. Isak cayó. Jonathan fue el único testigo.</p></div>
-<div class="hb g"><p><strong>Si el objetivo era reconciliación genuina:</strong> existían infinitos entornos más seguros. Un restaurante. Un parque. Un paseo por la ciudad. En su lugar, Jonathan eligió un sendero de acantilado con caídas de 150 metros.</p></div></section>
-<section id="probabilidad"><div class="sl">📊 Análisis Predictivo</div><h2 class="st">Probabilidad de involvement</h2>
-<p class="tx">A continuación, una evaluación analítica que pondera las pruebas a favor y en contra de la participación de Jonathan Andic en la muerte de su padre. Esto no es un veredicto legal — Jonathan no ha sido formalmente acusado y, bajo la ley española (como en la mayoría de jurisdicciones), la presunción de inocencia permanece absoluta hasta que un tribunal decida lo contrario.</p>
+<div class="hb g"><p><strong>Si el objetivo era reconciliación genuina:</strong> existían infinitos entornos más seguros. Un restaurante. Un parque. Un paseo por la ciudad. En su lugar, Jonathan eligió un sendero de acantilado con caídas de 150 metros.</p></div>
+</section>
+
+<!-- ==================== MOTIVE EN ==================== -->
+<section id="motive" data-lang="en">
+<div class="sl">💰 Motive &amp; Context</div><h2 class="st">The Andic family empire</h2>
+<p class="tx">To understand the alleged motive, it is necessary to understand the Andic family's financial and emotional landscape. Isak Andic was born in Istanbul and moved to Catalonia as a teenager in the late 1960s. He and his brother Nahman opened the first Mango store on Barcelona's Passeig de Gràcia in 1984. At the time of his death, Mango employed over <strong>16,400 people</strong> across <strong>2,850 stores</strong> in 120+ markets, with a 2024 turnover of <strong>€3.3 billion</strong>. Isak's personal net worth was estimated at <strong>$4-4.5 billion</strong>.</p>
+<p class="tx">Jonathan joined the company in 2005 after studying in the United States and Spain. He led the Mango Man line from 2007 for nearly two decades. But in 2015, Isak granted him greater leadership responsibilities — then abruptly withdrew them. The judge described the aftermath as <em>«a crisis on a professional, personal, and family level, particularly with his father»</em>.</p>
+<p class="tx">The critical catalyst appears to have been Jonathan's discovery in mid-2024 that Isak planned to alter his will to create a <strong>charitable foundation</strong>. While the foundation idea was discussed with lawyers and friends, it was never formalized — the final will, signed in July 2023, divided assets equally among the three children. Nevertheless, the mere possibility of a foundation absorbing a significant portion of the estate triggered what investigators describe as a <em>«marked change»</em> in Jonathan's behavior.</p>
+<p class="tx">According to the judge, WhatsApp messages revealed Jonathan had an <em>«obsession with money to the extent that he asked his father for an inheritance while he was still alive»</em>. Isak reportedly felt <em>«compelled to accept in order to continue having a relationship with his son»</em>.</p>
+<div class="hb"><p><strong>The reconciliation hike:</strong> Jonathan proposed the December 14 mountain hike — framed as a reconciliation effort. Isak accepted. The two hiked alone. Isak fell. Jonathan was the only witness.</p></div>
+<div class="hb g"><p><strong>If the goal was genuine reconciliation:</strong> there were infinitely safer settings. A restaurant. A park. A walk in the city. Instead, Jonathan chose a cliffside trail with 150-meter drops.</p></div>
+</section>
+
+<!-- ==================== PROBABILIDAD / PROBABILITY ES ==================== -->
+<section id="probabilidad" data-lang="es">
+<div class="sl">📊 Análisis Predictivo</div><h2 class="st">Probabilidad de involvement</h2>
+<p class="tx">A continuación, una evaluación analítica que pondera las pruebas a favor y en contra de la participación de Jonathan Andic en la muerte de su padre. Esto no es un veredicto legal — Jonathan no ha sido formalmente acusado y, bajo la ley española, la presunción de inocencia permanece absoluta hasta que un tribunal decida lo contrario.</p>
 <div style="text-align:center;margin:3rem 0;padding:2.5rem;background:var(--bgc);border:1px solid var(--b);border-radius:12px;position:relative"><div style="font-size:4rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--arl);line-height:1">68%</div><div style="font-size:1rem;color:var(--ag);font-weight:600;margin-top:0.5rem;letter-spacing:.1em;text-transform:uppercase">Probabilidad estimada de involvement</div><div style="font-size:.8rem;color:var(--tm);margin-top:0.5rem">Basado en evidencia pública · Actualizado mayo 2026</div></div>
 <h3 class="sub">Factores que AUMENTAN la probabilidad (+)</h3>
 <table class="ft"><thead><tr><th>Factor</th><th>Peso</th><th>Detalle</th></tr></thead><tbody>
 <tr><td data-label="Factor">Inconsistencia forense</td><td data-label="Peso" style="color:var(--arl);font-weight:700">++</td><td data-label="Detalle">La caída tipo «tobogán» y la marca de pisada deliberada son difíciles de conciliar con un simple resbalón. Cuatro simulaciones policiales fallaron.</td></tr>
-<tr><td data-label="Factor">Tres visitas GPS previas</td><td data-label="Peso" style="color:var(--arl);font-weight:700">++</td><td data-label="Detalle">Datos GPS mostrando familiaridad de nivel reconocimiento con el lugar exacto de la caída los días antes del incidente. Muy sospechoso.</td></tr>
-<tr><td data-label="Factor">Testimonio contradictorio</td><td data-label="Peso" style="color:var(--arl);font-weight:700">++</td><td data-label="Detalle">Múltiples inconsistencias entre llamadas a emergencias y declaraciones policiales, incluyendo la falsa afirmación sobre fotos en el lugar.</td></tr>
-<tr><td data-label="Factor">Evidencia digital de hostilidad</td><td data-label="Peso" style="color:var(--arl);font-weight:700">+</td><td data-label="Detalle">WhatsApp expresando odio, resentimiento y pensamientos explícitos sobre el padre «dejando de existir». Perfil psicológico consistente con violencia.</td></tr>
-<tr><td data-label="Factor">Motivo financiero claro</td><td data-label="Peso" style="color:var(--arl);font-weight:700">+</td><td data-label="Detalle">El plan de fundación amenazaba una herencia de miles de millones. Cronología: descubrimiento → cambio de comportamiento → ruta de reconciliación → muerte.</td></tr>
-<tr><td data-label="Factor">Desaparición del teléfono</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Reemplazar el teléfono exactamente cuando se reabrió el caso sugiere conciencia de evidencia digital incriminatoria.</td></tr>
+<tr><td data-label="Factor">Tres visitas GPS previas</td><td data-label="Peso" style="color:var(--arl);font-weight:700">++</td><td data-label="Detalle">Datos GPS mostrando familiaridad de nivel reconocimiento con el lugar exacto de la caída los días antes del incidente.</td></tr>
+<tr><td data-label="Factor">Testimonio contradictorio</td><td data-label="Peso" style="color:var(--arl);font-weight:700">++</td><td data-label="Detalle">Múltiples inconsistencias entre llamadas a emergencias y declaraciones policiales.</td></tr>
+<tr><td data-label="Factor">Evidencia digital de hostilidad</td><td data-label="Peso" style="color:var(--arl);font-weight:700">+</td><td data-label="Detalle">WhatsApp expresando odio, resentimiento y pensamientos explícitos sobre el padre «dejando de existir».</td></tr>
+<tr><td data-label="Factor">Motivo financiero claro</td><td data-label="Peso" style="color:var(--arl);font-weight:700">+</td><td data-label="Detalle">El plan de fundación amenazaba una herencia de miles de millones.</td></tr>
+<tr><td data-label="Factor">Desaparición del teléfono</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Reemplazar el teléfono exactamente cuando se reabrió el caso sugiere conciencia de evidencia incriminatoria.</td></tr>
 </tbody></table>
 <h3 class="sub">Factores que DISMINUYEN la probabilidad (−)</h3>
 <table class="ft"><thead><tr><th>Factor</th><th>Peso</th><th>Detalle</th></tr></thead><tbody>
 <tr><td data-label="Factor">Sin evidencia física directa</td><td data-label="Peso" style="color:var(--ag);font-weight:700">++</td><td data-label="Detalle">Sin huellas dactilares, marcas de lucha ni testigo de un empujón. El caso de la fiscalía es circunstancial.</td></tr>
-<tr><td data-label="Factor">Terreno peligroso</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Una caída de 150 metros desde acantilados empinados y rocosos es inherentemente plausible como accidente. La gravedad puede producir posiciones inusuales del cuerpo.</td></tr>
-<tr><td data-label="Factor">Motivo ≠ acción</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Muchas personas expresan frustración extrema en mensajes privados sin actuar. La hostilidad verbal no es un acto criminal.</td></tr>
+<tr><td data-label="Factor">Terreno peligroso</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Una caída de 150 metros desde acantilados empinados es inherentemente plausible como accidente.</td></tr>
+<tr><td data-label="Factor">Motivo ≠ acción</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Muchas personas expresan frustración extrema en mensajes privados sin actuar.</td></tr>
 <tr><td data-label="Factor">Visitas GPS inocentes</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Montserrat es un destino popular. Conducir por la zona tres veces no necesariamente indica reconocimiento criminal.</td></tr>
-<tr><td data-label="Factor">Respuesta inmediata</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Jonathan llamó a emergencias y permaneció en la escena — comportamiento inconsistente con alguien que acababa de cometer un asesinato.</td></tr>
-<tr><td data-label="Factor">Fundación no formalizada</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">El testamento de julio 2023 dividía los activos equitativamente. La fundación permaneció como discusión — Jonathan pudo estar reaccionando a una amenaza que nunca se materializó.</td></tr>
+<tr><td data-label="Factor">Respuesta inmediata</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">Jonathan llamó a emergencias y permaneció en la escena.</td></tr>
+<tr><td data-label="Factor">Fundación no formalizada</td><td data-label="Peso" style="color:var(--ag);font-weight:700">+</td><td data-label="Detalle">El testamento de julio 2023 dividía los activos equitativamente. La fundación permaneció como discusión.</td></tr>
 </tbody></table>
-<div class="os"><h3>Metodología del cálculo</h3><p>Este porcentaje se basa en un análisis ponderado de 12 factores, comparado con <strong>casos similares de homicidio basado en evidencia circunstancial</strong>. La convergencia de anomalías forenses, datos GPS, testimonio contradictorio, hostilidad digital y motivo claro crea un caso circunstancial convincente. Sin embargo, la ausencia de evidencia física directa (huellas, marcas de lucha, testigo) deja una brecha significativa.</p><p>El elemento más damning es la <strong>combinación de las tres visitas GPS y el hallazgo forense del «tobogán»</strong>. Juntos, sugieren conocimiento previo del terreno y un mecanismo de muerte inconsistente con un resbalón. El eslabón más débil del caso de la fiscalía es la <strong>ausencia de cualquier evidencia de contacto físico</strong> — si Jonathan empujó a su padre, debería haber rastros de ese contacto.</p></div>
-<div class="hb"><p><strong>⚠️ Disclaimer:</strong> Este cálculo es un análisis predictivo basado en evidencia pública disponible hasta mayo de 2026. No constituye opinión legal. Jonathan Andic no ha sido formalmente acusado y la presunción de inocencia se mantiene hasta sentencia firme.</p></div></section>
-<section id="analisis"><div class="sl">🧠 Análisis Final</div><h2 class="st">Opinión y perspectiva</h2>
-<div class="os"><h3>El peso de la circunstancia</h3><p>El caso Isak Andic es un ejemplo de libro de texto de cómo la evidencia circunstancial puede acumularse en una narrativa que parece ineludible — incluso cuando ninguna pieza individual de evidencia es concluyente por sí sola.</p><p>Individualmente, cada prueba contra Jonathan puede racionalizarse. El terreno era peligroso. La gente visita montañas populares por razones inocentes. Las familias adineradas discuten sobre dinero. Los mensajes hostiles son lamentables pero no criminales. Un teléfono puede ser genuinamente robado en el extranjero.</p><p><strong>Pero colectivamente, el patrón es profundamente preocupante.</strong></p><p>La convergencia de tres visitas al lugar antes de la ruta, un informe forense que contradice explícitamente la narrativa del «resbalón accidental», testimonio contradictorio sobre hechos básicos (¿se estaba usando el teléfono?), y mensajes de WhatsApp que leen como un mapa psicológico desde el resentimiento hasta la violencia — esto no es el perfil de un hijo que vio accidentalmente morir a su padre. Esto es el perfil de alguien que había estado pensando en este momento.</p></div>
-<div class="os"><h3>El detalle más inquietante</h3><p>El detalle más perturbador es la <strong>misma ruta de reconciliación</strong>. Jonathan la propuso. Isak aceptó. Fue un viaje en solitario — solo padre e hijo, solos en una montaña que Jonathan había visitado tres veces en la semana anterior. Si el objetivo era reconciliación genuina, existían infinitos entornos más seguros. Un restaurante. Un parque. Un paseo por la ciudad. En su lugar, Jonathan eligió un sendero de acantilado con caídas de 150 metros.</p></div>
-<div class="os"><h3>Veredicto</h3><p>Dicho esto, <strong>la evidencia circunstancial no es prueba</strong>. La ausencia de evidencia de contacto físico es una brecha genuina. Es posible —por incómodo que sea— que la hostilidad de Jonathan fuera verbal y emocional, no física, y que la muerte de su padre fue un accidente horroroso que ocurrió por casualidad bajo circunstancias profundamente sospechosas.</p><p>Mi evaluación: <strong>la evidencia se inclina hacia la involvement, pero no al nivel de certeza requerido para una condena</strong>. El 68% refleja esto — una mayoría, pero no una supermayoría. Si este caso llega a juicio, la fiscalía necesitará cerrar la brecha de evidencia física. Sin ella, la duda razonable permanecerá, y la duda razonable es la piedra angular de un sistema de justicia funcional.</p><p>Lo que es innegable es que este caso revela el lado oscuro de uno de los grandes negocios familiares de Europa — la intersección de miles de millones en riqueza, relaciones familiares fracturadas y el tipo de desesperación que solo la dependencia financiera total puede crear. Ya sea que Jonathan Andic sea culpable o inocente, el imperio familiar Andic ya ha sido irremediablemente dañado.</p></div></section>
-<section id="fuentes"><div class="sl">📚 Fuentes</div><h2 class="st">Fuentes y referencias</h2><div class="sr">
+<div class="os"><h3>Metodología del cálculo</h3><p>Este porcentaje se basa en un análisis ponderado de 12 factores, comparado con <strong>casos similares de homicidio basado en evidencia circunstancial</strong>. La convergencia de anomalías forenses, datos GPS, testimonio contradictorio, hostilidad digital y motivo claro crea un caso circunstancial convincente. Sin embargo, la ausencia de evidencia física directa deja una brecha significativa.</p><p>El elemento más damning es la <strong>combinación de las tres visitas GPS y el hallazgo forense del «tobogán»</strong>. El eslabón más débil del caso de la fiscalía es la <strong>ausencia de cualquier evidencia de contacto físico</strong>.</p></div>
+<div class="hb"><p><strong>⚠️ Disclaimer:</strong> Este cálculo es un análisis predictivo basado en evidencia pública disponible hasta mayo de 2026. No constituye opinión legal. Jonathan Andic no ha sido formalmente acusado y la presunción de inocencia se mantiene hasta sentencia firme.</p></div>
+</section>
+
+<!-- ==================== PROBABILITY EN ==================== -->
+<section id="probability" data-lang="en">
+<div class="sl">📊 Predictive Analysis</div><h2 class="st">Probability of involvement</h2>
+<p class="tx">Below is an analytical assessment weighing evidence for and against Jonathan Andic's involvement in his father's death. This is not a legal verdict — Jonathan has not been formally charged and, under Spanish law, the presumption of innocence remains absolute until a court rules otherwise.</p>
+<div style="text-align:center;margin:3rem 0;padding:2.5rem;background:var(--bgc);border:1px solid var(--b);border-radius:12px;position:relative"><div style="font-size:4rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--arl);line-height:1">68%</div><div style="font-size:1rem;color:var(--ag);font-weight:600;margin-top:0.5rem;letter-spacing:.1em;text-transform:uppercase">Estimated probability of involvement</div><div style="font-size:.8rem;color:var(--tm);margin-top:0.5rem">Based on public evidence · Updated May 2026</div></div>
+<h3 class="sub">Factors INCREASING probability (+)</h3>
+<table class="ft"><thead><tr><th>Factor</th><th>Weight</th><th>Detail</th></tr></thead><tbody>
+<tr><td data-label="Factor">Forensic inconsistency</td><td data-label="Weight" style="color:var(--arl);font-weight:700">++</td><td data-label="Detail">The «slide» fall and deliberate scuff mark are hard to reconcile with a simple slip. Four police simulations failed.</td></tr>
+<tr><td data-label="Factor">Three pre-hike GPS visits</td><td data-label="Weight" style="color:var(--arl);font-weight:700">++</td><td data-label="Detail">GPS data showing reconnaissance-level familiarity with the exact fall site days before the incident.</td></tr>
+<tr><td data-label="Factor">Contradictory testimony</td><td data-label="Weight" style="color:var(--arl);font-weight:700">++</td><td data-label="Detail">Multiple inconsistencies between emergency calls and police statements.</td></tr>
+<tr><td data-label="Factor">Digital hostility evidence</td><td data-label="Weight" style="color:var(--arl);font-weight:700">+</td><td data-label="Detail">WhatsApp expressing hatred, resentment and explicit thoughts about father «ceasing to exist».</td></tr>
+<tr><td data-label="Factor">Clear financial motive</td><td data-label="Weight" style="color:var(--arl);font-weight:700">+</td><td data-label="Detail">Foundation plan threatened a multi-billion-euro inheritance.</td></tr>
+<tr><td data-label="Factor">Phone disappearance</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">Replacing phone exactly when case reopened suggests awareness of incriminating evidence.</td></tr>
+</tbody></table>
+<h3 class="sub">Factors DECREASING probability (−)</h3>
+<table class="ft"><thead><tr><th>Factor</th><th>Weight</th><th>Detail</th></tr></thead><tbody>
+<tr><td data-label="Factor">No direct physical evidence</td><td data-label="Weight" style="color:var(--ag);font-weight:700">++</td><td data-label="Detail">No fingerprints, struggle marks or witness to a push. Prosecution's case is circumstantial.</td></tr>
+<tr><td data-label="Factor">Dangerous terrain</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">A 150m fall from steep cliffs is inherently plausible as an accident.</td></tr>
+<tr><td data-label="Factor">Motive ≠ action</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">Many people express extreme frustration in private messages without acting on it.</td></tr>
+<tr><td data-label="Factor">Innocent GPS visits</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">Montserrat is a popular destination. Driving through the area three times doesn't necessarily indicate reconnaissance.</td></tr>
+<tr><td data-label="Factor">Immediate response</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">Jonathan called emergency services and stayed at the scene.</td></tr>
+<tr><td data-label="Factor">Foundation not finalized</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">The July 2023 will divided assets equally. Foundation remained a discussion.</td></tr>
+</tbody></table>
+<div class="os en"><h3>Calculation methodology</h3><p>This percentage is based on a weighted analysis of 12 factors, compared with <strong>similar homicide cases based on circumstantial evidence</strong>. The convergence of forensic anomalies, GPS data, contradictory testimony, digital hostility and clear motive creates a compelling circumstantial case. However, the absence of direct physical evidence leaves a significant gap.</p><p>The most damning element is the <strong>combination of three GPS visits and the forensic «slide» finding</strong>. The weakest link in the prosecution's case is the <strong>absence of any physical contact evidence</strong>.</p></div>
+<div class="hb"><p><strong>⚠️ Disclaimer:</strong> This calculation is a predictive analysis based on publicly available evidence through May 2026. It does not constitute legal opinion. Jonathan Andic has not been formally charged and the presumption of innocence remains until final conviction.</p></div>
+</section>
+
+<!-- ==================== ANÁLISIS / OPINION ES ==================== -->
+<section id="analisis" data-lang="es">
+<div class="sl">🧠 Análisis Final</div><h2 class="st">Opinión y perspectiva</h2>
+<div class="os"><h3>El peso de la circunstancia</h3><p>El caso Isak Andic es un ejemplo de libro de texto de cómo la evidencia circunstancial puede acumularse en una narrativa que parece ineludible — incluso cuando ninguna pieza individual de evidencia es concluyente por sí sola.</p><p>Individualmente, cada prueba contra Jonathan puede racionalizarse. El terreno era peligroso. La gente visita montañas populares por razones inocentes. Las familias adineradas discuten sobre dinero. Los mensajes hostiles son lamentables pero no criminales. Un teléfono puede ser genuinamente robado en el extranjero.</p><p><strong>Pero colectivamente, el patrón es profundamente preocupante.</strong></p><p>La convergencia de tres visitas al lugar antes de la ruta, un informe forense que contradice explícitamente la narrativa del «resbalón accidental», testimonio contradictorio sobre hechos básicos, y mensajes de WhatsApp que leen como un mapa psicológico desde el resentimiento hasta la violencia — esto no es el perfil de un hijo que vio accidentalmente morir a su padre.</p></div>
+<div class="os"><h3>El detalle más inquietante</h3><p>El detalle más perturbador es la <strong>misma ruta de reconciliación</strong>. Jonathan la propuso. Isak aceptó. Fue un viaje en solitario — solo padre e hijo, solos en una montaña que Jonathan había visitado tres veces en la semana anterior.</p></div>
+<div class="os"><h3>Veredicto</h3><p>Dicho esto, <strong>la evidencia circunstancial no es prueba</strong>. La ausencia de evidencia de contacto físico es una brecha genuina. Es posible —por incómodo que sea— que la hostilidad de Jonathan fuera verbal y emocional, no física, y que la muerte de su padre fue un accidente horroroso bajo circunstancias profundamente sospechosas.</p><p>Mi evaluación: <strong>la evidencia se inclina hacia la involvement, pero no al nivel de certeza requerido para una condena</strong>. El 68% refleja esto — una mayoría, pero no una supermayoría. Si este caso llega a juicio, la fiscalía necesitará cerrar la brecha de evidencia física.</p><p>Lo que es innegable es que este caso revela el lado oscuro de uno de los grandes negocios familiares de Europa — la intersección de miles de millones en riqueza, relaciones familiares fracturadas y el tipo de desesperación que solo la dependencia financiera total puede crear.</p></div>
+</section>
+
+<!-- ==================== OPINION EN ==================== -->
+<section id="opinion" data-lang="en">
+<div class="sl">🧠 Final Analysis</div><h2 class="st">Opinion and perspective</h2>
+<div class="os en"><h3>The weight of circumstance</h3><p>The Isak Andic case is a textbook example of how circumstantial evidence can accumulate into a narrative that feels inescapable — even when no single piece of evidence is conclusive on its own.</p><p>Individually, each piece of evidence against Jonathan can be rationalized. The terrain was dangerous. People visit popular mountains for innocent reasons. Wealthy families argue about money. Hostile messages are regrettable but not criminal. A phone can genuinely be stolen abroad.</p><p><strong>But collectively, the pattern is deeply troubling.</strong></p><p>The convergence of three pre-hike site visits, a forensic report that explicitly contradicts the «accidental slip» narrative, contradictory testimony about basic facts, and WhatsApp messages that read like a psychological roadmap from resentment to violence — this is not the profile of a son who accidentally watched his father die.</p></div>
+<div class="os en"><h3>The most unsettling detail</h3><p>The most disturbing detail is the <strong>reconciliation hike itself</strong>. Jonathan proposed it. Isak accepted. It was a solo trip — just father and son, alone on a mountain Jonathan had visited three times in the preceding week.</p></div>
+<div class="os en"><h3>Verdict</h3><p>That said, <strong>circumstantial evidence is not proof</strong>. The absence of physical contact evidence is a genuine gap. It is possible —however uncomfortable— that Jonathan's hostility was verbal and emotional, not physical, and that his father's death was a horrific accident that happened under deeply suspicious circumstances.</p><p>My assessment: <strong>the evidence leans toward involvement, but not to the level of certainty required for a conviction</strong>. The 68% reflects this — a majority, but not a supermajority. If this case goes to trial, the prosecution will need to close the physical evidence gap.</p><p>What is undeniable is that this case reveals the dark underbelly of one of Europe's great family businesses — the intersection of billions in wealth, fractured family relationships, and the kind of desperation that only total financial dependence can create.</p></div>
+</section>
+
+<!-- ==================== FUENTES / SOURCES ES ==================== -->
+<section id="fuentes" data-lang="es">
+<div class="sl">📚 Fuentes</div><h2 class="st">Fuentes y referencias</h2><div class="sr">
 <div class="si2"><span class="sn">1</span><div><strong>BBC News</strong> — «¿Asesinato o accidente? El misterio de la muerte del magnate de Mango tras el arresto de su hijo»<br><a href="https://www.bbc.com/news/articles/cwy2g09yvgmo" target="_blank">bbc.com</a></div></div>
-<div class="si2"><span class="sn">2</span><div><strong>Reuters</strong> — «El heredero del magnate de Mango tenía rencor financiero y dio versiones contradictorias de la muerte de su padre»<br><a href="https://www.reuters.com/business/retail-consumer/mango-tycoons-heir-held-financial-grudge-gave-contradictory-versions-fathers-2026-05-20/" target="_blank">reuters.com</a></div></div>
-<div class="si2"><span class="sn">3</span><div><strong>Forbes</strong> — «El hijo del millonario de Mango y posible asesino tenía obsesión con el dinero, dice la juez»<br><a href="https://www.forbes.com/sites/zacharyfolk/2026/05/20/mango-billionaires-son-and-possible-killer-had-obsession-with-money-judge-says/" target="_blank">forbes.com</a></div></div>
+<div class="si2"><span class="sn">2</span><div><strong>Reuters</strong> — «El heredero del magnate de Mango tenía rencor financiero y dio versiones contradictorias»<br><a href="https://www.reuters.com/business/retail-consumer/mango-tycoons-heir-held-financial-grudge-gave-contradictory-versions-fathers-2026-05-20/" target="_blank">reuters.com</a></div></div>
+<div class="si2"><span class="sn">3</span><div><strong>Forbes</strong> — «El hijo del millonario de Mango y posible asesino tenía obsesión con el dinero»<br><a href="https://www.forbes.com/sites/zacharyfolk/2026/05/20/mango-billionaires-son-and-possible-killer-had-obsession-with-money-judge-says/" target="_blank">forbes.com</a></div></div>
 <div class="si2"><span class="sn">4</span><div><strong>France 24</strong> — «El heredero de Mango liberado con fianza tras arresto por muerte de su padre»<br><a href="https://www.france24.com/en/live-news/20260519-mango-founder-s-son-arrested-in-spain-over-father-s-death" target="_blank">france24.com</a></div></div>
 <div class="si2"><span class="sn">5</span><div><strong>The Independent</strong> — «Jonathan Andic 'tuvo un rol activo y premeditado en la muerte de su padre'»<br><a href="https://www.independent.co.uk/news/world/europe/mango-founder-death-isak-jonathan-andic-barcelona-b2980657.html" target="_blank">independent.co.uk</a></div></div>
 <div class="si2"><span class="sn">6</span><div><strong>Global Banking &amp; Finance</strong> — «El hijo del magnate de moda de Mango detenido en investigación financiera en España»<br><a href="https://www.globalbankingandfinance.com/son-mango-fashion-tycoon-detained-investigation-fathers/" target="_blank">globalbankingandfinance.com</a></div></div>
@@ -171,9 +338,41 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="si2"><span class="sn">9</span><div><strong>Russpain</strong> — «Escándalo sobre la herencia de Mango: Fundación Isak Andic y sospechas de asesinato»<br><a href="https://russpain.com/en/news-3/scandal-over-mango-heritage-isak-andik-foundation-and-murder-suspicions-463945/" target="_blank">russpain.com</a></div></div>
 <div class="si2"><span class="sn">10</span><div><strong>CBS News</strong> — «Los mensajes de texto revelan que el hijo arrestado del fundador de Mango estaba obsesionado con el dinero»<br><a href="https://www.cbsnews.com/video/text-messages-reveal-arrested-mango-founders-son-was-obsessed-with-money/" target="_blank">cbsnews.com</a></div></div>
 </div></section>
+
+<!-- ==================== SOURCES EN ==================== -->
+<section id="sources" data-lang="en">
+<div class="sl">📚 Sources</div><h2 class="st">Sources and references</h2><div class="sr">
+<div class="si2"><span class="sn">1</span><div><strong>BBC News</strong> — «Murder or accident? Mystery of Mango tycoon's hiking death after son's arrest»<br><a href="https://www.bbc.com/news/articles/cwy2g09yvgmo" target="_blank">bbc.com</a></div></div>
+<div class="si2"><span class="sn">2</span><div><strong>Reuters</strong> — «Mango tycoon's heir held financial grudge, gave contradictory versions of father's death»<br><a href="https://www.reuters.com/business/retail-consumer/mango-tycoons-heir-held-financial-grudge-gave-contradictory-versions-fathers-2026-05-20/" target="_blank">reuters.com</a></div></div>
+<div class="si2"><span class="sn">3</span><div><strong>Forbes</strong> — «Mango Billionaire's Son and Possible Killer Had Obsession with Money, Judge Says»<br><a href="https://www.forbes.com/sites/zacharyfolk/2026/05/20/mango-billionaires-son-and-possible-killer-had-obsession-with-money-judge-says/" target="_blank">forbes.com</a></div></div>
+<div class="si2"><span class="sn">4</span><div><strong>France 24</strong> — «Mango scion released on bail after arrest over father's death»<br><a href="https://www.france24.com/en/live-news/20260519-mango-founder-s-son-arrested-in-spain-over-father-s-death" target="_blank">france24.com</a></div></div>
+<div class="si2"><span class="sn">5</span><div><strong>The Independent</strong> — «Jonathan Andic 'played active and premeditated role in his father's death'»<br><a href="https://www.independent.co.uk/news/world/europe/mango-founder-death-isak-jonathan-andic-barcelona-b2980657.html" target="_blank">independent.co.uk</a></div></div>
+<div class="si2"><span class="sn">6</span><div><strong>Global Banking &amp; Finance</strong> — «Mango Founder Death: Son Detained in Spain Finance Investigation»<br><a href="https://www.globalbankingandfinance.com/son-mango-fashion-tycoon-detained-investigation-fathers/" target="_blank">globalbankingandfinance.com</a></div></div>
+<div class="si2"><span class="sn">7</span><div><strong>The Business Times</strong> — «Mango father-son rift over inheritance cited in heir bail order»<br><a href="https://www.businesstimes.com.sg/international/mango-father-son-rift-over-inheritance-cited-heir-bail-order" target="_blank">businesstimes.com.sg</a></div></div>
+<div class="si2"><span class="sn">8</span><div><strong>Türkiye Today</strong> — «Mango's founder's son released on bail in father's death case»<br><a href="https://www.turkiyetoday.com/region/mangos-founders-son-released-on-bail-in-father-s-death-case-3220293" target="_blank">turkiyetoday.com</a></div></div>
+<div class="si2"><span class="sn">9</span><div><strong>Russpain</strong> — «Scandal Over Mango's Legacy: Isak Andik Foundation and Murder Suspicions»<br><a href="https://russpain.com/en/news-3/scandal-over-mango-heritage-isak-andik-foundation-and-murder-suspicions-463945/" target="_blank">russpain.com</a></div></div>
+<div class="si2"><span class="sn">10</span><div><strong>CBS News</strong> — «Text messages reveal arrested Mango founder's son was obsessed with money»<br><a href="https://www.cbsnews.com/video/text-messages-reveal-arrested-mango-founders-son-was-obsessed-with-money/" target="_blank">cbsnews.com</a></div></div>
+</div></section>
+
 <footer class="pf"><div class="fi"><span class="fb">🐱 Cocobot</span><span id="visit-counter" class="vc">👁️ -- visitas</span></div></footer>
-<script>(function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/andic-case/index.html';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();</script>
+
 <script>
+(function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/andic-case/index.html';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();
+
+// Language toggle
+function setLang(lang){
+  document.body.className='lang-'+lang;
+  document.getElementById('btnEs').className=lang==='es'?'act':'';
+  document.getElementById('btnEn').className=lang==='en'?'act':'';
+  localStorage.setItem('andic-lang',lang);
+  // Re-trigger scroll reveal for newly visible elements
+  initReveal();
+}
+(function(){
+  var saved=localStorage.getItem('andic-lang');
+  if(saved&&saved!=='es')setLang(saved);
+})();
+
 // Hamburger menu
 const hamburger=document.getElementById('hamburger');const overlay=document.getElementById('overlay');const sideMenu=document.getElementById('sideMenu');function toggleMenu(){hamburger.classList.toggle('active');overlay.classList.toggle('s');sideMenu.classList.toggle('o');document.body.style.overflow=sideMenu.classList.contains('o')?'hidden':'';}hamburger.addEventListener('click',toggleMenu);overlay.addEventListener('click',toggleMenu);sideMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){if(sideMenu.classList.contains('o'))toggleMenu();});});
 
@@ -183,17 +382,23 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
 // Reading progress bar
 (function(){var bar=document.getElementById('progressBar');if(!bar)return;function update(){var s=document.documentElement;var h=s.scrollHeight-s.clientHeight;var p=(s.scrollTop/h)*100;bar.style.width=p+'%';}window.addEventListener('scroll',update,{passive:true});update();})();
 
-// Scroll reveal (IntersectionObserver)
-(function(){var els=document.querySelectorAll('.cg,.kf,.rg,.hb,.tx,.si2,blockquote,.os,.ft,.tl,.sl,.st,.cc,.fc,.rc,.ti,.ft tbody tr');els.forEach(function(el,idx){el.classList.add('rv');if(el.classList.contains('cc')||el.classList.contains('fc')||el.classList.contains('rc')){el.classList.add('d'+(Math.min(idx%4+1,4)));}});var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el){obs.observe(el);});})();
+// Scroll reveal
+function initReveal(){
+  var els=document.querySelectorAll('.lang-es .cg,.lang-es .kf,.lang-es .rg,.lang-es .hb,.lang-es .tx,.lang-es .si2,.lang-es blockquote,.lang-es .os,.lang-es .ft,.lang-es .tl,.lang-es .sl,.lang-es .st,.lang-es .cc,.lang-es .fc,.lang-es .rc,.lang-es .ti,.lang-es .ft tbody tr,.lang-en .cg,.lang-en .kf,.lang-en .rg,.lang-en .hb,.lang-en .tx,.lang-en .si2,.lang-en blockquote,.lang-en .os,.lang-en .ft,.lang-en .tl,.lang-en .sl,.lang-en .st,.lang-en .cc,.lang-en .fc,.lang-en .rc,.lang-en .ti,.lang-en .ft tbody tr');
+  els.forEach(function(el,idx){if(!el.classList.contains('rv')){el.classList.add('rv');if(el.classList.contains('cc')||el.classList.contains('fc')||el.classList.contains('rc')){el.classList.add('d'+(Math.min(idx%4+1,4)));}}});
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(function(el){obs.observe(el);});
+}
+initReveal();
 
-// Hero metrics stagger animation
-(function(){var hm=document.querySelector('.hm');if(!hm){return;}var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('animate');obs.unobserve(e.target);}});},{threshold:0.5});obs.observe(hm);})();
+// Hero metrics stagger
+(function(){var hm=document.querySelector('.hero[data-lang="es"].hm,.hero[data-lang="en"].hm');if(!hm){hm=document.querySelector('.hm');}if(!hm)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('animate');obs.unobserve(e.target);}});},{threshold:0.5});obs.observe(hm);})();
 
-// Glow follow effect on cards
-(function(){var cards=document.querySelectorAll('.cc,.fc,.rc');cards.forEach(function(card){card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();var x=((e.clientX-r.left)/r.width)*100;var y=((e.clientY-r.top)/r.height)*100;card.style.setProperty('--mx',x+'%');card.style.setProperty('--my',y+'%');});});})();
+// Glow follow
+(function(){var cards=document.querySelectorAll('.cc,.fc,.rc');cards.forEach(function(card){card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();card.style.setProperty('--mx',((e.clientX-r.left)/r.width)*100+'%');card.style.setProperty('--my',((e.clientY-r.top)/r.height)*100+'%');});});})();
 
-// Parallax on hero background
-(function(){var hero=document.querySelector('.hero');if(!hero)return;window.addEventListener('scroll',function(){var y=window.pageYOffset;if(y<window.innerHeight){hero.style.transform='translateY('+y*0.15+'px)';hero.querySelector('.hd').style.transform='translateY('+y*0.05+'px)';hero.querySelector('h1').style.transform='translateY('+(y*0.08)+'px)';hero.querySelector('.sub').style.transform='translateY('+(y*0.06)+'px)';}},{passive:true});})();
+// Parallax hero
+(function(){var hero=document.querySelector('.hero[data-lang="es"]')||document.querySelector('.hero[data-lang="en"]');if(!hero)return;window.addEventListener('scroll',function(){var y=window.pageYOffset;if(y<window.innerHeight){hero.style.transform='translateY('+y*0.15+'px)';}},{passive:true});})();
 </script>
 </body>
 </html>
