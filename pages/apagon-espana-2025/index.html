@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apagón España 2025 — Informe Completo</title>
+<meta name="description" content="Estudio completo del apagón eléctrico del 28 de abril de 2025 en España y Portugal. Causas, timeline, impacto y lecciones aprendidas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --border: #2a2a3a;
+  --text: #e8e8f0;
+  --text-muted: #8888a0;
+  --accent: #00d4ff;
+  --accent2: #ff6b35;
+  --accent3: #ffd700;
+  --danger: #ff3355;
+  --success: #00ff88;
+  --glow: 0 0 20px rgba(0,212,255,0.3);
+  --glow-danger: 0 0 20px rgba(255,51,85,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ═══════ THREE.JS CANVAS ═══════ */
+#grid-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+/* ═══════ BANNER ═══════ */
+.bb {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 34px; z-index: 1002;
+  background: linear-gradient(90deg, var(--accent2), var(--danger));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px;
+  color: #fff;
+  animation: bannerPulse 3s ease-in-out infinite;
+}
+@keyframes bannerPulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+.bb span { padding: 0 20px; }
+
+/* ═══════ NAV ═══════ */
+nav {
+  position: fixed; top: 34px; left: 0; right: 0;
+  height: 56px; z-index: 1000;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-logo {
+  font-weight: 800; font-size: 1rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-links {
+  display: flex; gap: 2rem; list-style: none;
+}
+.nav-links a {
+  color: var(--text-muted); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* Hamburger */
+.hamburger {
+  display: none; cursor: pointer;
+  flex-direction: column; gap: 5px;
+  z-index: 1003; padding: 8px;
+}
+.hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--text);
+  transition: all 0.3s;
+  transform-origin: center;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  position: fixed; top: 90px; left: 0; right: 0; bottom: 0;
+  background: rgba(10,10,15,0.97);
+  backdrop-filter: blur(30px);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2rem;
+}
+.mobile-menu.active { display: flex; }
+.mobile-menu a {
+  color: var(--text); text-decoration: none;
+  font-size: 1.5rem; font-weight: 600;
+  transition: color 0.3s;
+}
+.mobile-menu a:hover { color: var(--accent); }
+
+/* ═══════ HERO ═══════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+.hero-content {
+  position: relative; z-index: 1;
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,51,85,0.15);
+  border: 1px solid rgba(255,51,85,0.3);
+  color: var(--danger);
+  padding: 6px 16px; border-radius: 20px;
+  font-size: 0.8rem; font-weight: 600;
+  margin-bottom: 1.5rem;
+  animation: fadeInDown 0.8s ease;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+.hero h1 .gradient {
+  background: linear-gradient(135deg, var(--accent), var(--accent3), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: 0 auto 2rem;
+  animation: fadeInUp 0.8s ease 0.4s both;
+}
+.hero-stats {
+  display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease 0.6s both;
+}
+.hero-stat {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 140px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.hero-stat:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+.hero-stat .number {
+  font-size: 2rem; font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-stat .label {
+  font-size: 0.8rem; color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute; bottom: 2rem;
+  left: 50%; transform: translateX(-50%);
+  z-index: 1;
+  animation: bounce 2s infinite;
+}
+.scroll-indicator svg { opacity: 0.5; }
+
+/* ═══════ SECTIONS ═══════ */
+section {
+  padding: 5rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.section-tag {
+  display: inline-block;
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+.section-header p {
+  color: var(--text-muted);
+  max-width: 600px; margin: 0 auto;
+}
+
+/* ═══════ TIMELINE ═══════ */
+.timeline {
+  position: relative;
+  padding-left: 3rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute; left: 12px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--danger));
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+  opacity: 0; transform: translateX(-20px);
+  transition: all 0.6s ease;
+}
+.timeline-item.visible {
+  opacity: 1; transform: translateX(0);
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -3rem; top: 6px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--accent);
+  z-index: 1;
+}
+.timeline-item.critical::before {
+  border-color: var(--danger);
+  box-shadow: var(--glow-danger);
+  animation: pulseDot 1.5s infinite;
+}
+.timeline-item.success::before {
+  border-color: var(--success);
+}
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,51,85,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(255,51,85,0); }
+}
+.timeline-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+.timeline-item.critical .timeline-time { color: var(--danger); }
+.timeline-title {
+  font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.timeline-desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ═══════ CARDS GRID ═══════ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s;
+  opacity: 0; transform: translateY(20px);
+}
+.card.visible {
+  opacity: 1; transform: translateY(0);
+}
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
+}
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.card h3 {
+  font-size: 1.15rem; font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ═══════ RULLED OUT ═══════ */
+.ruled-out {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.ruled-item {
+  background: rgba(255,51,85,0.05);
+  border: 1px solid rgba(255,51,85,0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.ruled-item::before {
+  content: '✕';
+  position: absolute; top: 12px; right: 16px;
+  font-size: 1.2rem;
+  color: var(--danger);
+  opacity: 0.5;
+}
+.ruled-item h4 {
+  color: var(--danger);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.ruled-item p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ═══════ DATA TABLE ═══════ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+}
+.data-table th {
+  background: var(--bg3);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+.data-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.data-table tr:hover td {
+  background: rgba(0,212,255,0.03);
+}
+.data-table .mono {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent3);
+}
+
+/* ═══════ QUOTE BOX ═══════ */
+.quote-box {
+  background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(255,215,0,0.05));
+  border-left: 4px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 2rem;
+  margin: 2rem 0;
+  font-style: italic;
+}
+.quote-box p {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+.quote-box cite {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: normal;
+}
+
+/* ═══════ PROGRESS BAR ═══════ */
+.progress-section { margin: 2rem 0; }
+.progress-item { margin-bottom: 1.5rem; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 0.9rem; margin-bottom: 0.5rem;
+}
+.progress-label span:last-child {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+}
+.progress-bar {
+  height: 8px;
+  background: var(--bg3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  width: 0;
+  transition: width 1.5s ease;
+}
+
+/* ═══════ FOOTER ═══════ */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+.footer-inner {
+  display: flex; justify-content: center; align-items: center;
+  gap: 20px; flex-wrap: wrap;
+}
+.footer-brand {
+  color: var(--text-muted); font-size: 0.85rem;
+}
+#visit-counter {
+  color: var(--text-muted); font-size: 0.85em;
+  background: rgba(0,212,255,0.06);
+  padding: 4px 12px; border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* ═══════ BACK BUTTON ═══════ */
+.back-btn {
+  position: fixed; bottom: 2rem; right: 2rem;
+  width: 44px; height: 44px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 999;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.back-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.back-btn:hover svg path { stroke: var(--bg); }
+.back-btn svg { width: 20px; height: 20px; }
+
+/* ═══════ ANIMATIONS ═══════ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+  40% { transform: translateX(-50%) translateY(-10px); }
+  60% { transform: translateX(-50%) translateY(-5px); }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  5% { opacity: 0.3; }
+  10% { opacity: 1; }
+  15% { opacity: 0.5; }
+  20% { opacity: 1; }
+  50% { opacity: 1; }
+  55% { opacity: 0.7; }
+  60% { opacity: 1; }
+}
+.flicker-text {
+  animation: flicker 4s infinite;
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  nav { padding: 0 1rem; }
+  .hero { padding: 5rem 1rem 3rem; }
+  .hero-stats { gap: 1rem; }
+  .hero-stat { min-width: 100px; padding: 1rem; }
+  .hero-stat .number { font-size: 1.5rem; }
+  section { padding: 3rem 1rem; }
+  .timeline { padding-left: 2rem; }
+  .timeline::before { left: 8px; }
+  .timeline-item::before { left: -2rem; width: 20px; height: 20px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .ruled-out { grid-template-columns: 1fr; }
+  .data-table { font-size: 0.8rem; }
+  .data-table th, .data-table td { padding: 8px 10px; }
+  .table-wrapper { overflow-x: auto; }
+}
+
+/* ═══════ SPARKLE DIVIDER ═══════ */
+.divider {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--accent);
+  font-size: 1.5rem;
+  opacity: 0.3;
+  letter-spacing: 1rem;
+}
+
+/* ═══════ GLOW TEXT ═══════ */
+.glow { text-shadow: 0 0 10px rgba(0,212,255,0.5); }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="bb">
+  <span>⚡ INFORME: Apagón Peninsular — 28 de abril de 2025</span>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#grad)" stroke-width="2">
+      <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#ffd700"/></linearGradient></defs>
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </svg>
+    APAGÓN 2025
+  </div>
+  <ul class="nav-links">
+    <li><a href="#resumen">Resumen</a></li>
+    <li><a href="#cronologia">Cronología</a></li>
+    <li><a href="#causas">Causas</a></li>
+    <li><a href="#mitos">Mitos</a></li>
+    <li><a href="#impacto">Impacto</a></li>
+    <li><a href="#recuperacion">Recuperación</a></li>
+    <li><a href="#futuro">Futuro</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#resumen" onclick="toggleMenu()">Resumen</a>
+  <a href="#cronologia" onclick="toggleMenu()">Cronología</a>
+  <a href="#causas" onclick="toggleMenu()">Causas</a>
+  <a href="#mitos" onclick="toggleMenu()">Mitos</a>
+  <a href="#impacto" onclick="toggleMenu()">Impacto</a>
+  <a href="#recuperacion" onclick="toggleMenu()">Recuperación</a>
+  <a href="#futuro" onclick="toggleMenu()">Futuro</a>
+</div>
+
+<!-- Hero Section -->
+<header class="hero">
+  <canvas id="grid-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">⚠️ Informe Técnico Completo</div>
+    <h1>El Gran <span class="gradient flicker-text">Apagón</span><br>de la Península Ibérica</h1>
+    <p>El 28 de abril de 2025, más de 50 millones de personas perdieron electricidad en minutos. Un análisis exhaustivo basado en el informe de 470 páginas de ENTSO-E revela las verdaderas causas del colapso.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number" data-count="84">0</div>
+        <div class="label">Segundos críticos</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-count="50">0</div>
+        <div class="label">Millones afectados</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-count="15000">0</div>
+        <div class="label">MW desconectados</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-count="8">0</div>
+        <div class="label">Víctimas mortales</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
+      <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+    </svg>
+  </div>
+</header>
+
+<!-- ═══════ RESUMEN ═══════ -->
+<section id="resumen">
+  <div class="section-header">
+    <div class="section-tag">Resumen Ejecutivo</div>
+    <h2>¿Qué Pasó el 28 de Abril?</h2>
+    <p>Una cadena de fallos en el control de tensión provocó el mayor apagón europeo en dos décadas</p>
+  </div>
+
+  <div class="quote-box">
+    <p>"El colapso del sistema eléctrico ibérico no obedeció a un único fallo, sino a la convergencia de múltiples factores que se desencadenaron de forma simultánea y acabaron retroalimentándose."</p>
+    <cite>— Panel de Expertos ENTSO-E, Informe Final (470 páginas)</cite>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Sobretensión en Cascada</h3>
+      <p>Un aumento rápido e incontrolado de la tensión en el sur de España desencadenó desconexiones masivas de generación. En solo 5 segundos se perdieron 15.000 MW — el 60% de la producción española.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>Oscilaciones Previa</h3>
+      <p>30 minutos antes del colapso se detectaron dos tipos de oscilaciones: una local de 0,63 Hz vinculada a convertidores de potencia, y otra interárea de 0,2 Hz en el eje Este-Centro-Oeste.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Defensas Insuficientes</h3>
+      <p>Solo el 32,5% de la capacidad de reactores en serie del sur de España estaba pre-conectada. El resto requería activación manual, demasiado lenta para contrarrestar la sobretensión rápida.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Control Reactivo Deficiente</h3>
+      <p>Las plantas convencionales no cumplieron con la potencia reactiva requerida, alcanzando los objetivos en menos del 75% de las muestras horarias. Las renovables operaban con factor de potencia fijo.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <h3>Isla Energética</h3>
+      <p>La Península Ibérica opera como una "isla energética" con solo un 2% de interconexión con Europa (el objetivo UE es 15% para 2030). Francia se desconectó automáticamente para proteger su red.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>Técnicamente Corregible</h3>
+      <p>El informe concluye que el evento era prevenible con mejores medidas de control dinámico de tensión, condensadores síncronos automáticos y mayor margen de potencia reactiva.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ CRONOLOGÍA ═══════ -->
+<section id="cronologia">
+  <div class="section-header">
+    <div class="section-tag">Cronología</div>
+    <h2>Los 84 Segundos que Cambiaron Todo</h2>
+    <p>De las primeras oscilaciones al colapso total del sistema</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time">Diciembre 2024</div>
+      <div class="timeline-title">Alertas tempranas</div>
+      <div class="timeline-desc">Se activó el mecanismo de respuesta a la demanda (SRAD) dos veces por alta demanda y bajo viento. Primeras señales de estrés en el sistema.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Enero 2025</div>
+      <div class="timeline-title">Advertencia CNMC</div>
+      <div class="timeline-desc">La CNMC alerta sobre dificultades en el control de tensión y oscilaciones del sistema. Se detectan problemas de estabilidad recurrentes.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Semana Santa 2025</div>
+      <div class="timeline-title">Exceso de renovables</div>
+      <div class="timeline-desc">Alta producción renovable + baja demanda → precios negativos → las centrales nucleares reducen producción. De 7 unidades activas, solo 2-3 mantienen carga.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">22 Abril 2025</div>
+      <div class="timeline-title">Inestabilidad previa</div>
+      <div class="timeline-desc">La inestabilidad de la red afecta a la refinería de Cartagena y al tren de alta velocidad. El sistema muestra signos de estrés creciente.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">28 Abril — 12:03 CEST</div>
+      <div class="timeline-title">Oscilación local detectada</div>
+      <div class="timeline-desc">Se detecta una oscilación forzada local de 0,63 Hz vinculada a convertidores de potencia. El sistema comienza a perder estabilidad progresivamente.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">28 Abril — 12:19 CEST</div>
+      <div class="timeline-title">Oscilación interárea</div>
+      <div class="timeline-desc">Oscilación de 0,2 Hz en el eje Este-Centro-Oeste. Las medidas de mitigación aplicadas inadvertidamente elevan aún más la tensión ibérica.</div>
+    </div>
+    <div class="timeline-item critical">
+      <div class="timeline-time">28 Abril — 12:32:00 CEST</div>
+      <div class="timeline-title">⚠️ Inicio de sobretensión</div>
+      <div class="timeline-desc">Aumento rápido e incontrolado de la tensión en toda la red ibérica. Comienza la desconexión en cascada de plantas de generación. Se pierden más de 2,5 GW en los primeros segundos.</div>
+    </div>
+    <div class="timeline-item critical">
+      <div class="timeline-time">28 Abril — 12:32:05 CEST</div>
+      <div class="timeline-title">⚠️ 15.000 MW desconectados</div>
+      <div class="timeline-desc">En solo 5 segundos se desconecta el 60% de la producción española. Los mecanismos de protección automáticos propagan la falla en lugar de contenerla.</div>
+    </div>
+    <div class="timeline-item critical">
+      <div class="timeline-time">28 Abril — 12:33:19 CEST</div>
+      <div class="timeline-title">⚠️ Pérdida de sincronismo</div>
+      <div class="timeline-desc">Se pierde la sincronización entre España/Portugal y el sistema síncrono europeo. Francia se desconecta automáticamente. La Península queda aislada.</div>
+    </div>
+    <div class="timeline-item critical">
+      <div class="timeline-time">28 Abril — 12:33:24 CEST</div>
+      <div class="timeline-title">⚠️ APAGÓN TOTAL</div>
+      <div class="timeline-desc">Colapso completo del sistema eléctrico. Más de 50 millones de personas sin electricidad. Semáforos, trenes, metro, ascensores y telecomunicaciones caen. El tráfico de internet se reduce al 17%.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">28 Abril — 17:00 CEST</div>
+      <div class="timeline-title">Inicio de recuperación</div>
+      <div class="timeline-desc">REE inicia el arranque en negro usando centrales hidroeléctricas con embalses llenos. Se crean micro-redes independientes para estabilizar por zonas.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">28 Abril — 19:00 CEST</div>
+      <div class="timeline-title">35% demanda restaurada</div>
+      <div class="timeline-desc">Se restaura parcialmente el suministro. Marruecos aporta hasta 900 MW a través de los interconectores. Francia envía hasta 2 GW.</div>
+    </div>
+    <div class="timeline-item success">
+      <div class="timeline-time">29 Abril — 06:00 CEST</div>
+      <div class="timeline-title">✓ 99% red restaurada</div>
+      <div class="timeline-desc">La red eléctrica peninsular se recupera casi completamente. Se restablece la sincronización con el sistema europeo.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ CAUSAS ═══════ -->
+<section id="causas">
+  <div class="section-header">
+    <div class="section-tag">Análisis Técnico</div>
+    <h2>Las Verdaderas Causas</h2>
+    <p>Tres fallos simultáneos en la gestión de potencia reactiva</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🌞</div>
+      <h3>Limitación Renovables</h3>
+      <p>Las plantas eólicas y solares operaban bajo un <strong>factor de potencia fijo</strong> según la normativa vigente, lo que les impedía responder dinámicamente a las fluctuaciones de tensión. No podían inyectar potencia reactiva cuando el sistema la necesitaba.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <h3>Plantas Convencionales</h3>
+      <p>Las plantas tradicionales no proporcionaron consistentemente la potencia reactiva requerida, cumpliendo los objetivos en <strong>menos del 75% de las muestras horarias</strong>. La normativa carecía de criterios de comportamiento dinámico y penalizaciones económicas.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <h3>Reactores en Serie Manuales</h3>
+      <p>Solo el <strong>32,5%</strong> de la capacidad de reactores en serie disponible en el sur de España estaba pre-conectada. El resto requería activación manual, demasiado lenta para contrarrestar la sobretensión que se desarrolló en segundos.</p>
+    </div>
+  </div>
+
+  <div class="quote-box" style="margin-top: 2rem;">
+    <p>"Las acciones para mitigar el evento contribuyeron a un aumento adicional de la tensión en la red: la causa no fue una dependencia excesiva de renovables, sino una sucesión de fallos en cadena."</p>
+    <cite>— Informe ENTSO-E, octubre 2025</cite>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem;">Configuración de Protección Incorrecta</h3>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Factor</th>
+            <th>Detalle</th>
+            <th>Impacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Umbral de desconexión</td>
+            <td>Plantas configuradas por debajo de los límites regulatorios</td>
+            <td>Desconexiones prematuras durante la sobretensión</td>
+          </tr>
+          <tr>
+            <td>Oscilación 0,63 Hz</td>
+            <td>Forzada local vinculada a convertidores</td>
+            <td>Inestabilidad progresiva del sistema</td>
+          </tr>
+          <tr>
+            <td>Oscilación 0,2 Hz</td>
+            <td>Interárea en eje Este-Centro-Oeste</td>
+            <td>Medidas de mitigación elevaron la tensión</td>
+          </tr>
+          <tr>
+            <td>Pérdida de par sincronizante</td>
+            <td>Desconexión masiva redujo la rigidez del sistema</td>
+            <td>Punto de no retorno alcanzado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ MITOS ═══════ -->
+<section id="mitos">
+  <div class="section-header">
+    <div class="section-tag">Desmintiendo Mitos</div>
+    <h2>Lo que NO Causó el Apagón</h2>
+    <p>Hipótesis descartadas oficialmente por los informes de investigación</p>
+  </div>
+
+  <div class="ruled-out">
+    <div class="ruled-item">
+      <h4>Ciberataque</h4>
+      <p>Investigado por CNI, CCN, INCIBE, CNPIC y Audiencia Nacional. Informe final: <strong>cero intrusiones maliciosas detectadas</strong>.</p>
+    </div>
+    <div class="ruled-item">
+      <h4>Falta de Inercia</h4>
+      <p>Descartado. Incluso con mayor inercia, las desconexiones en cascada habrían provocado pérdida de sincronismo.</p>
+    </div>
+    <div class="ruled-item">
+      <h4>Exceso de Solar / Renovables</h4>
+      <p>Descartado. El problema fue la deficiencia en el control de tensión, no el tipo de generación. La pérdida de sincronismo fue consecuencia, no causa.</p>
+    </div>
+    <div class="ruled-item">
+      <h4>Fenómeno Atmosférico</h4>
+      <p>AEMET confirmó: <strong>no hubo condiciones meteorológicas inusuales</strong> ni picos de temperatura el 28 de abril.</p>
+    </div>
+    <div class="ruled-item">
+      <h4>Incendio en Francia</h4>
+      <p>RTE negó oficialmente que hubiera incendios afectando líneas de transmisión en el sur de Francia.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ IMPACTO ═══════ -->
+<section id="impacto">
+  <div class="section-header">
+    <div class="section-tag">Consecuencias</div>
+    <h2>Impacto Social y Económico</h2>
+    <p>Las cifras del mayor apagón europeo en dos décadas</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">💀</div>
+      <h3>8 Muertos · 25+ Heridos</h3>
+      <p>Víctimas mortales relacionadas directamente con el apagón. Personas en ascensores, equipos médicos domésticos y accidentes de tráfico por semáforos en negro.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚗</div>
+      <h3>Colapso del Transporte</h3>
+      <p>Semáforos, AVE, metro y ascensores paralizados. Madrid vivió uno de los mayores atascos de su historia. Las estaciones de gasolina no pudieron bombear combustible.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <h3>Internet al 17%</h3>
+      <p>El tráfico de internet se redujo drásticamente. Las telecomunicaciones colapsaron. La radio se convirtió en la principal fuente de información.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>Precios x5</h3>
+      <p>Los precios de la electricidad se multiplicaron por 5. De una media de ~5,79 €/MWh (a menudo negativos) a niveles récord por la dependencia de centrales de gas ciclo combinado.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <h3>Pánico en Supermercados</h3>
+      <p>Compras compulsivas, transacciones solo en efectivo, y colas en farmacias. Se declaró el Estado de Alarma nacional.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏥</div>
+      <h3>Hospitales en Emergencia</h3>
+      <p>Solo los hospitales e infraestructuras críticas con generadores de respaldo permanecieron operativos. Se activaron protocolos de emergencia sanitaria.</p>
+    </div>
+  </div>
+
+  <div class="progress-section" style="margin-top: 3rem;">
+    <h3 style="margin-bottom: 1.5rem;">Zonas Afectadas</h3>
+    <div class="progress-item">
+      <div class="progress-label"><span>España Peninsular</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>Portugal Continental</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>Andorra</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>Sur de Francia</span><span>Parcial</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="30"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>Islas Canarias / Baleares</span><span>No afectadas</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="0"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ RECUPERACIÓN ═══════ -->
+<section id="recuperacion">
+  <div class="section-header">
+    <div class="section-tag">Recuperación</div>
+    <h2>El Arranque en Negro</h2>
+    <p>Cómo se reconstruyó la red desde cero en 18 horas</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">💧</div>
+      <h3>Hidroeléctricas como Base</h3>
+      <p>Las lluvias de marzo dejaron los embalses llenos. REE usó centrales como <strong>Aldeadávila II, Riba-Roja d'Ebre, Sau y Saltos de Mequinenza</strong> para iniciar el arranque en negro.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏝️</div>
+      <h3>Estrategia de Islamiento</h3>
+      <p>REE creó micro-redes independientes: Galicia-León, Aragón-Cataluña y Duero-Francia. Cada una se estabilizó por separado antes de sincronizarlas cuidadosamente.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <h3>Ayuda Internacional</h3>
+      <p><strong>Marruecos:</strong> hasta 900 MW (38% de su capacidad nacional) vía interconectores de Gibraltar. <strong>Francia:</strong> hasta 2 GW por las líneas de Cataluña y País Vasco.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚛️</div>
+      <h3>Nuclear en SCRAM</h3>
+      <p>Todas las centrales nucleares españolas se pararon por protocolo SCRAM. El reinicio tomó días. Las plantas de gas ciclo combinado asumieron la carga, disparando los costes.</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <h3 style="margin-bottom: 1.5rem;">Recuperación del Suministro</h3>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Demanda Restaurada</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">17:00</td>
+            <td>Inicio arranque en negro</td>
+            <td>🔴 Crítico</td>
+          </tr>
+          <tr>
+            <td class="mono">19:00</td>
+            <td class="mono">35%</td>
+            <td>🟠 Parcial</td>
+          </tr>
+          <tr>
+            <td class="mono">22:00</td>
+            <td class="mono">43%</td>
+            <td>🟠 Parcial</td>
+          </tr>
+          <tr>
+            <td class="mono">06:00</td>
+            <td class="mono">99%</td>
+            <td>🟢 Restaurado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ FUTURO ═══════ -->
+<section id="futuro">
+  <div class="section-header">
+    <div class="section-tag">Lecciones y Futuro</div>
+    <h2>¿Se Puede Repetir?</h2>
+    <p>El informe de ENTSO-E alerta que es posible sin medidas correctoras</p>
+  </div>
+
+  <div class="quote-box">
+    <p>"El sistema eléctrico ibérico alcanzó un punto de no retorno. Sin las medidas correctoras adecuadas, un escenario similar podría repetirse."</p>
+    <cite>— Panel de Expertos ENTSO-E</cite>
+  </div>
+
+  <div class="cards-grid" style="margin-top: 2rem;">
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>8 Condensadores Síncronos</h3>
+      <p>El plan de Red Eléctrica 2021-2026 incluye 8 nuevos condensadores síncronos que, según los expertos, habrían prevenido las desconexiones en cascada.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>Real Decreto-ley 7/2025</h3>
+      <p>Medidas urgentes: almacenamiento energético declarado de utilidad pública, prioridad de despacho para renovables + almacenamiento, y aceleración de la planificación de red.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Certificación Renovables</h3>
+      <p>Proceso acelerado de homologación para que las renovables participen en el control dinámico de tensión. A febrero 2026: <strong>74 plantas certificadas (6,7 GW)</strong> de 365 solicitantes.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3>Interconexión Europa</h3>
+      <p>La Península necesita pasar del 2% actual al 15% de interconexión con Europa (objetivo UE 2030) para dejar de ser una "isla energética" vulnerable.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Reactores Automáticos</h3>
+      <p>Conexión automática de reactores en serie para respuesta rápida ante sobretensiones. Los simuladores confirman que esto habría detenido la cascada inicial.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>Modo Reforzado</h3>
+      <p>REE implementó un "modo reforzado" operativo: mantener plantas convencionales (gas) en línea para estabilidad técnica, aunque sean económicamente no competitivas.</p>
+    </div>
+  </div>
+
+  <div class="progress-section" style="margin-top: 2rem;">
+    <h3 style="margin-bottom: 1.5rem;">Progreso de Certificación de Renovables</h3>
+    <div class="progress-item">
+      <div class="progress-label"><span>Plantas solicitantes</span><span class="mono">365</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>En pruebas</span><span class="mono">155</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="42"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>Certificadas (6,7 GW)</span><span class="mono">74</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-width="20"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-brand">⚡ Apagón España 2025 — Estudio Completo</span>
+    <span id="visit-counter">👁️ -- visitas</span>
+  </div>
+  <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 1rem;">
+    Basado en el informe de 470 páginas del Panel de Expertos ENTSO-E · Datos actualizados a marzo 2026
+  </p>
+</footer>
+
+<!-- Back Button -->
+<a href="javascript:history.back()" class="back-btn" title="Volver">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
+    <path d="M19 12H5M12 19l-7-7 7-7"/>
+  </svg>
+</a>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ═══════ THREE.JS: Electric Grid Animation ═══════
+(function() {
+  const canvas = document.getElementById('grid-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Grid nodes
+  const nodes = [];
+  const nodeCount = 80;
+  const nodeGeometry = new THREE.SphereGeometry(0.08, 8, 8);
+  const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.8 });
+
+  for (let i = 0; i < nodeCount; i++) {
+    const node = new THREE.Mesh(nodeGeometry, nodeMaterial.clone());
+    node.position.set(
+      (Math.random() - 0.5) * 20,
+      (Math.random() - 0.5) * 12,
+      (Math.random() - 0.5) * 8 - 2
+    );
+    node.userData = {
+      originalPos: node.position.clone(),
+      speed: 0.5 + Math.random() * 1.5,
+      phase: Math.random() * Math.PI * 2,
+      amplitude: 0.1 + Math.random() * 0.3
+    };
+    nodes.push(node);
+    scene.add(node);
+  }
+
+  // Connections
+  const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.15 });
+  const connections = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dist = nodes[i].position.distanceTo(nodes[j].position);
+      if (dist < 4) {
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+          nodes[i].position, nodes[j].position
+        ]);
+        const line = new THREE.Line(geometry, lineMaterial.clone());
+        line.userData = { nodeA: i, nodeB: j };
+        connections.push(line);
+        scene.add(line);
+      }
+    }
+  }
+
+  // Energy particles
+  const particleCount = 200;
+  const particleGeometry = new THREE.BufferGeometry();
+  const particlePositions = new Float32Array(particleCount * 3);
+  const particleColors = new Float32Array(particleCount * 3);
+  const particleData = [];
+
+  for (let i = 0; i < particleCount; i++) {
+    particlePositions[i * 3] = (Math.random() - 0.5) * 20;
+    particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+    particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 8;
+
+    const colorChoice = Math.random();
+    if (colorChoice < 0.6) {
+      particleColors[i * 3] = 0; particleColors[i * 3 + 1] = 0.83; particleColors[i * 3 + 2] = 1;
+    } else if (colorChoice < 0.85) {
+      particleColors[i * 3] = 1; particleColors[i * 3 + 1] = 0.84; particleColors[i * 3 + 2] = 0;
+    } else {
+      particleColors[i * 3] = 1; particleColors[i * 3 + 1] = 0.42; particleColors[i * 3 + 2] = 0.21;
+    }
+
+    particleData.push({
+      speed: 0.01 + Math.random() * 0.03,
+      direction: Math.random() > 0.5 ? 1 : -1
+    });
+  }
+
+  particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+  particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+
+  const particleMaterial = new THREE.PointsMaterial({
+    size: 0.06,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.6,
+    blending: THREE.AdditiveBlending
+  });
+
+  const particles = new THREE.Points(particleGeometry, particleMaterial);
+  scene.add(particles);
+
+  // Lightning bolts (occasional)
+  const lightningBolts = [];
+  function createLightning() {
+    if (connections.length === 0) return;
+    const idx = Math.floor(Math.random() * connections.length);
+    const conn = connections[idx];
+    conn.material.opacity = 1;
+    conn.material.color.setHex(0xffd700);
+    lightningBolts.push({ line: conn, time: 0, duration: 0.3 });
+  }
+
+  camera.position.z = 8;
+  let time = 0;
+  let blackoutPhase = false;
+  let blackoutTimer = 0;
+  let cycleTimer = 0;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    time += 0.016;
+    cycleTimer += 0.016;
+
+    // Periodic blackout effect (every 15 seconds)
+    if (cycleTimer > 15 && !blackoutPhase) {
+      blackoutPhase = true;
+      blackoutTimer = 0;
+    }
+    if (blackoutPhase) {
+      blackoutTimer += 0.016;
+      if (blackoutTimer > 2) {
+        blackoutPhase = false;
+        cycleTimer = 0;
+      }
+    }
+
+    // Animate nodes
+    nodes.forEach(node => {
+      const d = node.userData;
+      node.position.y = d.originalPos.y + Math.sin(time * d.speed + d.phase) * d.amplitude;
+      node.position.x = d.originalPos.x + Math.cos(time * d.speed * 0.7 + d.phase) * d.amplitude * 0.5;
+    });
+
+    // Update connections
+    connections.forEach(conn => {
+      const pos = conn.geometry.attributes.position;
+      if (pos) {
+        const nodeA = nodes[conn.userData.nodeA];
+        const nodeB = conn.userData.nodeB;
+        pos.setXYZ(0, nodeA.position.x, nodeA.position.y, nodeA.position.z);
+        pos.setXYZ(1, nodeB.position.x, nodeB.position.y, nodeB.position.z);
+        pos.needsUpdate = true;
+      }
+    });
+
+    // Lightning
+    if (Math.random() < 0.02) createLightning();
+    lightningBolts.forEach((bolt, i) => {
+      bolt.time += 0.016;
+      const progress = bolt.time / bolt.duration;
+      if (progress >= 1) {
+        bolt.line.material.opacity = 0.15;
+        bolt.line.material.color.setHex(0x00d4ff);
+        lightningBolts.splice(i, 1);
+      } else {
+        bolt.line.material.opacity = 1 - progress;
+      }
+    });
+
+    // Animate particles
+    const positions = particles.geometry.attributes.position.array;
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3 + 1] += particleData[i].speed * particleData[i].direction;
+      if (positions[i * 3 + 1] > 6) positions[i * 3 + 1] = -6;
+      if (positions[i * 3 + 1] < -6) positions[i * 3 + 1] = 6;
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+
+    // Blackout effect
+    if (blackoutPhase) {
+      const progress = blackoutTimer;
+      const dimFactor = progress < 0.5 ? progress * 2 : (2 - progress) * 2;
+      nodes.forEach(node => {
+        node.material.opacity = 0.8 * (1 - dimFactor * 0.7);
+      });
+      particleMaterial.opacity = 0.6 * (1 - dimFactor * 0.7);
+    } else {
+      nodes.forEach(node => {
+        node.material.opacity = 0.8;
+      });
+      particleMaterial.opacity = 0.6;
+    }
+
+    // Camera gentle movement
+    camera.position.x = Math.sin(time * 0.1) * 0.5;
+    camera.position.y = Math.cos(time * 0.08) * 0.3;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ═══════ HAMBURGER MENU ═══════
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('active');
+  document.getElementById('mobileMenu').classList.toggle('active');
+}
+
+// ═══════ SCROLL ANIMATIONS ═══════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.timeline-item, .card').forEach(el => observer.observe(el));
+
+// Progress bars animation
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const fill = entry.target;
+      const width = fill.getAttribute('data-width');
+      fill.style.width = width + '%';
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.progress-fill').forEach(el => progressObserver.observe(el));
+
+// ═══════ COUNTER ANIMATION ═══════
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.getAttribute('data-count'));
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = Math.floor(current).toLocaleString('es-ES');
+      }, 16);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.hero-stat .number').forEach(el => counterObserver.observe(el));
+</script>
+
+<!-- Cocobot Stats -->
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/apagon-espana-2025';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
+
+</body>
+</html>
