@@ -1258,279 +1258,267 @@ footer {
   </svg>
 </a>
 
-<!-- Three.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Three.js / Canvas Animation -->
 <script>
-// ═══════ THREE.JS: 3D Power Grid Animation ═══════
+// ═══════ 3D Power Grid Animation (Canvas 2D fallback) ═══════
 (function() {
   const canvas = document.getElementById('grid-canvas');
-  if (!canvas || !window.WebGLRenderingContext) return;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-  // ── Iberian Peninsula wireframe ──
-  const iberiaPoints = [
-    [-3, 3.5], [-2.5, 4], [-1, 4.2], [0, 4], [1, 3.8], [2, 3.5], [3, 3],
-    [3.5, 2.5], [3.5, 2], [3, 1.5], [2.5, 1], [2, 0.5], [1.5, 0],
-    [1, -0.5], [0.5, -1], [0, -1.5], [-0.5, -1.5], [-1, -1], [-1.5, -0.5],
-    [-2, 0], [-2.5, 0.5], [-3, 1], [-3.5, 1.5], [-3.5, 2], [-3.5, 2.5],
-    [-3, 3], [-2.5, 3.5]
+  // ── Iberian Peninsula outline (normalized coords) ──
+  const iberiaPath = [
+    [-0.23, 0.33], [-0.18, 0.38], [-0.05, 0.40], [0.05, 0.38], [0.15, 0.36], [0.25, 0.33],
+    [0.30, 0.28], [0.35, 0.23], [0.35, 0.18], [0.30, 0.13], [0.25, 0.08], [0.20, 0.03],
+    [0.15, -0.02], [0.10, -0.07], [0.05, -0.12], [0.00, -0.17], [-0.05, -0.17], [-0.10, -0.12],
+    [-0.15, -0.07], [-0.20, -0.02], [-0.25, 0.03], [-0.30, 0.08], [-0.30, 0.13], [-0.30, 0.18],
+    [-0.28, 0.23], [-0.23, 0.30]
   ];
-  const iberiaVerts = [];
-  iberiaPoints.forEach(p => { iberiaVerts.push(p[0], p[1], 0); });
-  const iberiaGeo = new THREE.BufferGeometry();
-  iberiaGeo.setAttribute('position', new THREE.BufferAttribute(iberiaVerts, 3));
-  const iberiaLine = new THREE.LineLoop(iberiaGeo, new THREE.LineBasicMaterial({
-    color: 0x00d4ff, transparent: true, opacity: 0.25
-  }));
-  scene.add(iberiaLine);
 
-  // ── Grid nodes (cities/power stations) ──
-  const cityPositions = [
-    [-2.5, 3.5], [-1, 4], [0.5, 3.8], [2, 3.5], [3, 2.5],
-    [-3, 2], [-1.5, 2.5], [0, 2], [1.5, 2], [3, 1.5],
-    [-2, 1], [-0.5, 1.5], [1, 1], [2.5, 1],
-    [-1.5, 0.5], [0, 0.5], [1.5, 0.5], [2.5, 0],
-    [-1, -0.5], [0.5, -0.5], [1, -1],
-    [-2.5, 1.5], [2, 2], [0, 1.5], [1, 2.5]
+  // ── Power grid nodes ──
+  const nodes = [
+    {x: -0.20, y: 0.33, hub: true}, {x: -0.05, y: 0.38, hub: true}, {x: 0.10, y: 0.36, hub: true},
+    {x: 0.25, y: 0.33, hub: true}, {x: 0.30, y: 0.23, hub: true},
+    {x: -0.28, y: 0.18}, {x: -0.15, y: 0.23}, {x: 0.00, y: 0.18}, {x: 0.15, y: 0.20}, {x: 0.28, y: 0.13},
+    {x: -0.18, y: 0.08}, {x: -0.05, y: 0.13}, {x: 0.10, y: 0.10}, {x: 0.22, y: 0.08},
+    {x: -0.12, y: 0.03}, {x: 0.02, y: 0.03}, {x: 0.15, y: 0.03}, {x: 0.22, y: 0.00},
+    {x: -0.08, y: -0.05}, {x: 0.05, y: -0.05}, {x: 0.10, y: -0.10},
+    {x: -0.22, y: 0.13}, {x: 0.18, y: 0.18}, {x: 0.02, y: 0.13}, {x: 0.08, y: 0.25}
   ];
-  const nodeCount = cityPositions.length;
-  const nodes = [];
-  const nodeGeo = new THREE.SphereGeometry(0.12, 12, 12);
 
-  cityPositions.forEach((pos, i) => {
-    const mat = new THREE.MeshBasicMaterial({
-      color: i < 5 ? 0xffd700 : 0x00d4ff,
-      transparent: true, opacity: 0.9
-    });
-    const node = new THREE.Mesh(nodeGeo, mat);
-    node.position.set(pos[0], pos[1], Math.sin(i * 0.5) * 0.3);
-    node.userData = {
-      origPos: node.position.clone(),
-      phase: Math.random() * Math.PI * 2,
-      isHub: i < 5
-    };
-    nodes.push(node);
-    scene.add(node);
-
-    // Glow ring for hubs
-    if (i < 5) {
-      const ringGeo = new THREE.RingGeometry(0.2, 0.35, 24);
-      const ringMat = new THREE.MeshBasicMaterial({
-        color: 0xffd700, transparent: true, opacity: 0.3, side: THREE.DoubleSide
-      });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.position.copy(node.position);
-      ring.userData.parentIdx = i;
-      nodes[i].userData.ring = ring;
-      scene.add(ring);
-    }
-  });
-
-  // ── Power lines connecting nodes ──
-  const powerLines = [];
+  // ── Connections ──
+  const connections = [];
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
-      const dist = nodes[i].position.distanceTo(nodes[j].position);
-      if (dist < 3.5 && dist > 0.5) {
-        const points = [nodes[i].position.clone(), nodes[j].position.clone()];
-        const geo = new THREE.BufferGeometry().setFromPoints(points);
-        const mat = new THREE.LineBasicMaterial({
-          color: 0x00d4ff, transparent: true, opacity: 0.35
-        });
-        const line = new THREE.Line(geo, mat);
-        line.userData = { a: i, b: j, dist };
-        powerLines.push(line);
-        scene.add(line);
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 0.20 && dist > 0.03) {
+        connections.push({a: i, b: j, dist});
       }
     }
   }
 
-  // ── Energy pulse particles along lines ──
-  const pulseCount = 60;
-  const pulseGeo = new THREE.BufferGeometry();
-  const pulsePos = new Float32Array(pulseCount * 3);
-  const pulseCol = new Float32Array(pulseCount * 3);
+  // ── Energy pulses ──
   const pulses = [];
-
-  for (let i = 0; i < pulseCount; i++) {
-    const lineIdx = Math.floor(Math.random() * powerLines.length);
-    const line = powerLines[lineIdx];
-    const t = Math.random();
-    const ax = nodes[line.userData.a].position.x;
-    const ay = nodes[line.userData.a].position.y;
-    const az = nodes[line.userData.a].position.z;
-    const bx = nodes[line.userData.b].position.x;
-    const by = nodes[line.userData.b].position.y;
-    const bz = nodes[line.userData.b].position.z;
-    pulsePos[i*3] = ax + (bx-ax)*t;
-    pulsePos[i*3+1] = ay + (by-ay)*t;
-    pulsePos[i*3+2] = az + (bz-az)*t;
-
-    const isWarm = Math.random() > 0.5;
-    pulseCol[i*3] = isWarm ? 1 : 0;
-    pulseCol[i*3+1] = isWarm ? 0.84 : 0.83;
-    pulseCol[i*3+2] = isWarm ? 0 : 1;
-
-    pulses.push({ lineIdx, t, speed: 0.003 + Math.random()*0.006, dir: Math.random()>0.5?1:-1 });
+  for (let i = 0; i < 40; i++) {
+    const connIdx = Math.floor(Math.random() * connections.length);
+    pulses.push({
+      connIdx,
+      t: Math.random(),
+      speed: 0.002 + Math.random() * 0.005,
+      dir: Math.random() > 0.5 ? 1 : -1,
+      warm: Math.random() > 0.5
+    });
   }
-  pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePos, 3));
-  pulseGeo.setAttribute('color', new THREE.BufferAttribute(pulseCol, 3));
-  const pulseMat = new THREE.PointsMaterial({
-    size: 0.15, vertexColors: true, transparent: true, opacity: 0.9,
-    blending: THREE.AdditiveBlending
-  });
-  const pulsePoints = new THREE.Points(pulseGeo, pulseMat);
-  scene.add(pulsePoints);
 
-  // ── Floating ambient particles ──
-  const ambCount = 300;
-  const ambGeo = new THREE.BufferGeometry();
-  const ambPos = new Float32Array(ambCount * 3);
-  for (let i = 0; i < ambCount; i++) {
-    ambPos[i*3] = (Math.random()-0.5)*16;
-    ambPos[i*3+1] = (Math.random()-0.5)*10;
-    ambPos[i*3+2] = (Math.random()-0.5)*6 - 1;
+  // ── Ambient particles ──
+  const ambParticles = [];
+  for (let i = 0; i < 200; i++) {
+    ambParticles.push({
+      x: Math.random(),
+      y: Math.random(),
+      size: 0.5 + Math.random() * 1.5,
+      speed: 0.0001 + Math.random() * 0.0004,
+      opacity: 0.1 + Math.random() * 0.3
+    });
   }
-  ambGeo.setAttribute('position', new THREE.BufferAttribute(ambPos, 3));
-  const ambMat = new THREE.PointsMaterial({
-    size: 0.04, color: 0x00d4ff, transparent: true, opacity: 0.3,
-    blending: THREE.AdditiveBlending
-  });
-  scene.add(new THREE.Points(ambGeo, ambMat));
-
-  // ── Camera ──
-  camera.position.set(0, 1, 8);
-  camera.lookAt(0, 0.5, 0);
-
-  function resizeRenderer() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-  resizeRenderer();
 
   // ── Blackout cycle ──
   let time = 0;
-  let blackoutState = 'normal'; // normal, falling, dark, recovering
+  let blackoutState = 'normal';
   let blackoutTimer = 0;
-  let cycleInterval = 12 + Math.random() * 5;
+  let cycleInterval = 10 + Math.random() * 5;
 
-  function animate() {
-    requestAnimationFrame(animate);
+  function toScreen(nx, ny) {
+    const scale = Math.min(W, H) * 0.8;
+    return {
+      x: W * 0.5 + (nx + 0.3) * scale * 0.5,
+      y: H * 0.5 + (ny + 0.15) * scale * 0.5
+    };
+  }
+
+  function draw() {
+    requestAnimationFrame(draw);
     const dt = 0.016;
     time += dt;
     blackoutTimer += dt;
 
     // Blackout cycle
     if (blackoutState === 'normal' && blackoutTimer > cycleInterval) {
-      blackoutState = 'falling';
-      blackoutTimer = 0;
+      blackoutState = 'falling'; blackoutTimer = 0;
     }
     if (blackoutState === 'falling' && blackoutTimer > 1.5) {
-      blackoutState = 'dark';
-      blackoutTimer = 0;
+      blackoutState = 'dark'; blackoutTimer = 0;
     }
     if (blackoutState === 'dark' && blackoutTimer > 2) {
-      blackoutState = 'recovering';
-      blackoutTimer = 0;
+      blackoutState = 'recovering'; blackoutTimer = 0;
     }
     if (blackoutState === 'recovering' && blackoutTimer > 2) {
-      blackoutState = 'normal';
-      blackoutTimer = 0;
-      cycleInterval = 12 + Math.random() * 5;
+      blackoutState = 'normal'; blackoutTimer = 0;
+      cycleInterval = 10 + Math.random() * 5;
     }
 
-    // Dim factor based on blackout state
-    let dimFactor = 1;
-    if (blackoutState === 'falling') dimFactor = 1 - (blackoutTimer / 1.5) * 0.9;
-    else if (blackoutState === 'dark') dimFactor = 0.1;
-    else if (blackoutState === 'recovering') dimFactor = 0.1 + (blackoutTimer / 2) * 0.9;
+    let dim = 1;
+    if (blackoutState === 'falling') dim = 1 - (blackoutTimer / 1.5) * 0.9;
+    else if (blackoutState === 'dark') dim = 0.1;
+    else if (blackoutState === 'recovering') dim = 0.1 + (blackoutTimer / 2) * 0.9;
+    if (blackoutState === 'recovering' && Math.random() < 0.05) dim *= 0.3;
 
-    // Flicker during recovery
-    if (blackoutState === 'recovering' && Math.random() < 0.05) {
-      dimFactor *= 0.3;
-    }
+    // Clear
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.15)';
+    ctx.fillRect(0, 0, W, H);
 
-    // Animate nodes
-    nodes.forEach((node, i) => {
-      const d = node.userData;
-      node.position.y = d.origPos.y + Math.sin(time * 0.8 + d.phase) * 0.15;
-      node.position.x = d.origPos.x + Math.cos(time * 0.5 + d.phase) * 0.08;
-      node.material.opacity = 0.9 * dimFactor;
-      const scale = d.isHub ? 1.2 + Math.sin(time*2+i)*0.2 : 1;
-      node.scale.setScalar(scale * dimFactor);
+    // Iberia outline
+    ctx.beginPath();
+    iberiaPath.forEach((p, i) => {
+      const s = toScreen(p[0], p[1]);
+      if (i === 0) ctx.moveTo(s.x, s.y);
+      else ctx.lineTo(s.x, s.y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = blackoutState === 'falling'
+      ? `rgba(255, 51, 85, ${0.3 * dim})`
+      : `rgba(0, 212, 255, ${0.2 * dim})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
 
-      // Update ring
-      if (d.ring) {
-        d.ring.position.copy(node.position);
-        d.ring.material.opacity = 0.3 * dimFactor;
-        d.ring.rotation.z = time * 0.5;
-        d.ring.scale.setScalar(scale);
+    // Fill iberia with subtle gradient
+    const grad = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.3);
+    grad.addColorStop(0, `rgba(0, 212, 255, ${0.03 * dim})`);
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Connections
+    connections.forEach(conn => {
+      const a = toScreen(nodes[conn.a].x, nodes[conn.a].y);
+      const b = toScreen(nodes[conn.b].x, nodes[conn.b].y);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+
+      let lineColor, lineOpacity;
+      if (blackoutState === 'falling' && Math.random() < 0.15) {
+        lineColor = '255, 51, 85';
+        lineOpacity = 0.6;
+      } else {
+        lineColor = '0, 212, 255';
+        lineOpacity = 0.2 * dim;
       }
+      ctx.strokeStyle = `rgba(${lineColor}, ${lineOpacity})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
     });
 
-    // Animate power lines
-    powerLines.forEach(line => {
-      const pos = line.geometry.attributes.position;
-      const a = nodes[line.userData.a].position;
-      const b = nodes[line.userData.b].position;
-      pos.setXYZ(0, a.x, a.y, a.z);
-      pos.setXYZ(1, b.x, b.y, b.z);
-      pos.needsUpdate = true;
-      line.material.opacity = 0.35 * dimFactor;
-
-      // Flash lines during blackout
-      if (blackoutState === 'falling' && Math.random() < 0.1) {
-        line.material.color.setHex(0xff3355);
-        line.material.opacity = 0.8;
-      } else if (blackoutState === 'normal') {
-        line.material.color.setHex(0x00d4ff);
-      }
-    });
-
-    // Animate energy pulses
-    const pArr = pulsePoints.geometry.attributes.position.array;
-    for (let i = 0; i < pulseCount; i++) {
-      const p = pulses[i];
+    // Energy pulses
+    pulses.forEach(p => {
       p.t += p.speed * p.dir;
       if (p.t > 1) p.t = 0;
       if (p.t < 0) p.t = 1;
 
-      const line = powerLines[p.lineIdx];
-      if (!line) continue;
-      const a = nodes[line.userData.a].position;
-      const b = nodes[line.userData.b].position;
-      pArr[i*3] = a.x + (b.x-a.x)*p.t;
-      pArr[i*3+1] = a.y + (b.y-a.y)*p.t;
-      pArr[i*3+2] = a.z + (b.z-a.z)*p.t;
+      const conn = connections[p.connIdx];
+      if (!conn) return;
+      const a = toScreen(nodes[conn.a].x, nodes[conn.a].y);
+      const b = toScreen(nodes[conn.b].x, nodes[conn.b].y);
+
+      const px = a.x + (b.x - a.x) * p.t;
+      const py = a.y + (b.y - a.y) * p.t;
+
+      const color = p.warm ? '255, 215, 0' : '0, 212, 255';
+      ctx.beginPath();
+      ctx.arc(px, py, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${0.9 * dim})`;
+      ctx.fill();
+
+      // Glow
+      ctx.beginPath();
+      ctx.arc(px, py, 8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${0.2 * dim})`;
+      ctx.fill();
+    });
+
+    // Nodes
+    nodes.forEach((node, i) => {
+      const s = toScreen(node.x, node.y);
+      const bobY = Math.sin(time * 0.8 + i * 0.7) * 3;
+      const bobX = Math.cos(time * 0.5 + i * 0.5) * 2;
+      const nx = s.x + bobX;
+      const ny = s.y + bobY;
+
+      if (node.hub) {
+        // Hub glow ring
+        const ringSize = 12 + Math.sin(time * 2 + i) * 3;
+        ctx.beginPath();
+        ctx.arc(nx, ny, ringSize, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255, 215, 0, ${0.3 * dim})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Hub outer glow
+        ctx.beginPath();
+        ctx.arc(nx, ny, 20, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 215, 0, ${0.08 * dim})`;
+        ctx.fill();
+      }
+
+      // Node dot
+      const nodeSize = node.hub ? 5 : 3;
+      ctx.beginPath();
+      ctx.arc(nx, ny, nodeSize, 0, Math.PI * 2);
+      ctx.fillStyle = node.hub
+        ? `rgba(255, 215, 0, ${0.9 * dim})`
+        : `rgba(0, 212, 255, ${0.8 * dim})`;
+      ctx.fill();
+
+      // Node glow
+      ctx.beginPath();
+      ctx.arc(nx, ny, nodeSize * 3, 0, Math.PI * 2);
+      const glowColor = node.hub ? '255, 215, 0' : '0, 212, 255';
+      ctx.fillStyle = `rgba(${glowColor}, ${0.15 * dim})`;
+      ctx.fill();
+    });
+
+    // Ambient particles
+    ambParticles.forEach(p => {
+      p.y -= p.speed;
+      if (p.y < 0) { p.y = 1; p.x = Math.random(); }
+
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 212, 255, ${p.opacity * dim})`;
+      ctx.fill();
+    });
+
+    // Blackout overlay
+    if (blackoutState === 'dark') {
+      ctx.fillStyle = 'rgba(10, 10, 15, 0.7)';
+      ctx.fillRect(0, 0, W, H);
+
+      // Flickering text
+      if (Math.random() < 0.03) {
+        ctx.font = `bold ${Math.min(W, H) * 0.08}px Inter, sans-serif`;
+        ctx.fillStyle = 'rgba(255, 51, 85, 0.3)';
+        ctx.textAlign = 'center';
+        ctx.fillText('⚡ BLACKOUT ⚡', W/2, H/2);
+      }
     }
-    pulsePoints.geometry.attributes.position.needsUpdate = true;
-    pulseMat.opacity = 0.9 * dimFactor;
-
-    // Camera orbit
-    camera.position.x = Math.sin(time * 0.08) * 1.5;
-    camera.position.y = 1 + Math.cos(time * 0.06) * 0.5;
-    camera.lookAt(0, 0.5, 0);
-
-    // Iberia outline pulse
-    iberiaLine.material.opacity = 0.25 * dimFactor;
-    if (blackoutState === 'falling') {
-      iberiaLine.material.color.setHex(0xff3355);
-    } else if (blackoutState === 'normal') {
-      iberiaLine.material.color.setHex(0x00d4ff);
-    }
-
-    renderer.render(scene, camera);
   }
 
-  animate();
+  // Initial clear
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
 
-  window.addEventListener('resize', resizeRenderer);
+  draw();
 })();
 
 // ═══════ HAMBURGER MENU ═══════
