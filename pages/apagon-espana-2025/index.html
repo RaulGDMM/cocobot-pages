@@ -42,9 +42,9 @@ body {
 
 /* ═══════ THREE.JS CANVAS ═══════ */
 #grid-canvas {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100%; height: 100%;
   z-index: 0;
   pointer-events: none;
 }
@@ -1269,11 +1269,14 @@ footer {
 
   let W, H;
   function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    const hero = document.querySelector('.hero');
+    W = canvas.width = hero ? hero.offsetWidth : window.innerWidth;
+    H = canvas.height = hero ? hero.offsetHeight : window.innerHeight;
   }
   resize();
   window.addEventListener('resize', resize);
+  // Also resize when hero changes (after fonts load, etc.)
+  new ResizeObserver(resize).observe(document.querySelector('.hero'));
 
   // ── Iberian Peninsula outline (normalized coords) ──
   const iberiaPath = [
@@ -1340,10 +1343,10 @@ footer {
   let cycleInterval = 10 + Math.random() * 5;
 
   function toScreen(nx, ny) {
-    const scale = Math.min(W, H) * 0.8;
+    const scale = Math.min(W, H) * 0.9;
     return {
-      x: W * 0.5 + (nx + 0.3) * scale * 0.5,
-      y: H * 0.5 + (ny + 0.15) * scale * 0.5
+      x: W * 0.5 + (nx + 0.1) * scale * 0.6,
+      y: H * 0.5 + (ny + 0.05) * scale * 0.6
     };
   }
 
@@ -1506,18 +1509,9 @@ footer {
       ctx.fill();
     });
 
-    // Blackout overlay
+    // Blackout dim effect (subtle - don't cover content)
     if (blackoutState === 'dark') {
-      ctx.fillStyle = 'rgba(10, 10, 15, 0.7)';
-      ctx.fillRect(0, 0, W, H);
-
-      // Flickering text
-      if (Math.random() < 0.03) {
-        ctx.font = `bold ${Math.min(W, H) * 0.08}px Inter, sans-serif`;
-        ctx.fillStyle = 'rgba(255, 51, 85, 0.3)';
-        ctx.textAlign = 'center';
-        ctx.fillText('⚡ BLACKOUT ⚡', W/2, H/2);
-      }
+      // Just dim the canvas elements via the dim variable, no overlay
     }
   }
 
