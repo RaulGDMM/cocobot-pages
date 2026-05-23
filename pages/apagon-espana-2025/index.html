@@ -44,11 +44,13 @@ body {
 .canvas-banner {
   position: relative;
   width: 100%;
-  height: 45vh;
-  min-height: 300px;
-  max-height: 500px;
+  height: 35vh;
+  min-height: 250px;
+  max-height: 400px;
   overflow: hidden;
-  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin: 2rem 0;
 }
 #grid-canvas {
   position: absolute;
@@ -146,9 +148,11 @@ nav {
 
 /* ═══════ HERO ═══════ */
 .hero {
+  position: relative;
   padding: 3rem 1.5rem;
   text-align: center;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  background: radial-gradient(ellipse at center, rgba(0,212,255,0.04) 0%, transparent 70%);
+  overflow: hidden;
 }
 .hero-content {
   max-width: 900px;
@@ -698,40 +702,42 @@ footer {
   <a href="#fuentes" onclick="toggleMenu()">Fuentes</a>
 </div>
 
-<!-- Canvas Animation Banner -->
-<div class="canvas-banner">
-  <canvas id="grid-canvas"></canvas>
-  <div class="scroll-indicator">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
-      <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
-    </svg>
-  </div>
-</div>
-
 <!-- Hero Section -->
 <header class="hero">
   <div class="hero-content">
     <div class="hero-badge">⚠️ Informe Técnico Completo</div>
     <h1>El Gran <span class="gradient flicker-text">Apagón</span><br>de la Península Ibérica</h1>
     <p>El 28 de abril de 2025, más de 50 millones de personas perdieron electricidad en minutos. Un análisis exhaustivo basado en el informe de 470 páginas de ENTSO-E revela las verdaderas causas del colapso.</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="number" data-count="84">0</div>
-        <div class="label">Segundos críticos</div>
-      </div>
-      <div class="hero-stat">
-        <div class="number" data-count="50">0</div>
-        <div class="label">Millones afectados</div>
-      </div>
-      <div class="hero-stat">
-        <div class="number" data-count="15000">0</div>
-        <div class="label">MW desconectados</div>
-      </div>
-      <div class="hero-stat">
-        <div class="number" data-count="8">0</div>
-        <div class="label">Víctimas mortales</div>
-      </div>
+  </div>
+
+  <!-- Canvas Animation Banner -->
+  <div class="canvas-banner">
+    <canvas id="grid-canvas"></canvas>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="number" data-count="84">0</div>
+      <div class="label">Segundos críticos</div>
     </div>
+    <div class="hero-stat">
+      <div class="number" data-count="50">0</div>
+      <div class="label">Millones afectados</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number" data-count="15000">0</div>
+      <div class="label">MW desconectados</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number" data-count="8">0</div>
+      <div class="label">Víctimas mortales</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
+      <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+    </svg>
   </div>
 </header>
 
