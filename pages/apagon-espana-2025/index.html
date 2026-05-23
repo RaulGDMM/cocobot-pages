@@ -46,6 +46,7 @@ body {
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 0;
+  pointer-events: none;
 }
 
 /* ═══════ BANNER ═══════ */
@@ -137,12 +138,13 @@ nav {
 /* ═══════ HERO ═══════ */
 .hero {
   position: relative;
-  min-height: auto;
+  min-height: 70vh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center;
-  padding: 4rem 1.5rem 2rem;
+  padding: 4rem 1.5rem 3rem;
   overflow: hidden;
+  background: radial-gradient(ellipse at center, rgba(0,212,255,0.04) 0%, transparent 70%);
 }
 .hero-content {
   position: relative; z-index: 1;
@@ -1259,194 +1261,262 @@ footer {
 <!-- Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ═══════ THREE.JS: Electric Grid Animation ═══════
+// ═══════ THREE.JS: 3D Power Grid Animation ═══════
 (function() {
   const canvas = document.getElementById('grid-canvas');
+  if (!canvas || !window.WebGLRenderingContext) return;
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Grid nodes
-  const nodes = [];
-  const nodeCount = 80;
-  const nodeGeometry = new THREE.SphereGeometry(0.08, 8, 8);
-  const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.8 });
+  // ── Iberian Peninsula wireframe ──
+  const iberiaPoints = [
+    [-3, 3.5], [-2.5, 4], [-1, 4.2], [0, 4], [1, 3.8], [2, 3.5], [3, 3],
+    [3.5, 2.5], [3.5, 2], [3, 1.5], [2.5, 1], [2, 0.5], [1.5, 0],
+    [1, -0.5], [0.5, -1], [0, -1.5], [-0.5, -1.5], [-1, -1], [-1.5, -0.5],
+    [-2, 0], [-2.5, 0.5], [-3, 1], [-3.5, 1.5], [-3.5, 2], [-3.5, 2.5],
+    [-3, 3], [-2.5, 3.5]
+  ];
+  const iberiaVerts = [];
+  iberiaPoints.forEach(p => { iberiaVerts.push(p[0], p[1], 0); });
+  const iberiaGeo = new THREE.BufferGeometry();
+  iberiaGeo.setAttribute('position', new THREE.BufferAttribute(iberiaVerts, 3));
+  const iberiaLine = new THREE.LineLoop(iberiaGeo, new THREE.LineBasicMaterial({
+    color: 0x00d4ff, transparent: true, opacity: 0.25
+  }));
+  scene.add(iberiaLine);
 
-  for (let i = 0; i < nodeCount; i++) {
-    const node = new THREE.Mesh(nodeGeometry, nodeMaterial.clone());
-    node.position.set(
-      (Math.random() - 0.5) * 20,
-      (Math.random() - 0.5) * 12,
-      (Math.random() - 0.5) * 8 - 2
-    );
+  // ── Grid nodes (cities/power stations) ──
+  const cityPositions = [
+    [-2.5, 3.5], [-1, 4], [0.5, 3.8], [2, 3.5], [3, 2.5],
+    [-3, 2], [-1.5, 2.5], [0, 2], [1.5, 2], [3, 1.5],
+    [-2, 1], [-0.5, 1.5], [1, 1], [2.5, 1],
+    [-1.5, 0.5], [0, 0.5], [1.5, 0.5], [2.5, 0],
+    [-1, -0.5], [0.5, -0.5], [1, -1],
+    [-2.5, 1.5], [2, 2], [0, 1.5], [1, 2.5]
+  ];
+  const nodeCount = cityPositions.length;
+  const nodes = [];
+  const nodeGeo = new THREE.SphereGeometry(0.12, 12, 12);
+
+  cityPositions.forEach((pos, i) => {
+    const mat = new THREE.MeshBasicMaterial({
+      color: i < 5 ? 0xffd700 : 0x00d4ff,
+      transparent: true, opacity: 0.9
+    });
+    const node = new THREE.Mesh(nodeGeo, mat);
+    node.position.set(pos[0], pos[1], Math.sin(i * 0.5) * 0.3);
     node.userData = {
-      originalPos: node.position.clone(),
-      speed: 0.5 + Math.random() * 1.5,
+      origPos: node.position.clone(),
       phase: Math.random() * Math.PI * 2,
-      amplitude: 0.1 + Math.random() * 0.3
+      isHub: i < 5
     };
     nodes.push(node);
     scene.add(node);
-  }
 
-  // Connections
-  const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.15 });
-  const connections = [];
+    // Glow ring for hubs
+    if (i < 5) {
+      const ringGeo = new THREE.RingGeometry(0.2, 0.35, 24);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0xffd700, transparent: true, opacity: 0.3, side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(node.position);
+      ring.userData.parentIdx = i;
+      nodes[i].userData.ring = ring;
+      scene.add(ring);
+    }
+  });
 
+  // ── Power lines connecting nodes ──
+  const powerLines = [];
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const dist = nodes[i].position.distanceTo(nodes[j].position);
-      if (dist < 4) {
-        const geometry = new THREE.BufferGeometry().setFromPoints([
-          nodes[i].position, nodes[j].position
-        ]);
-        const line = new THREE.Line(geometry, lineMaterial.clone());
-        line.userData = { nodeA: i, nodeB: j };
-        connections.push(line);
+      if (dist < 3.5 && dist > 0.5) {
+        const points = [nodes[i].position.clone(), nodes[j].position.clone()];
+        const geo = new THREE.BufferGeometry().setFromPoints(points);
+        const mat = new THREE.LineBasicMaterial({
+          color: 0x00d4ff, transparent: true, opacity: 0.35
+        });
+        const line = new THREE.Line(geo, mat);
+        line.userData = { a: i, b: j, dist };
+        powerLines.push(line);
         scene.add(line);
       }
     }
   }
 
-  // Energy particles
-  const particleCount = 200;
-  const particleGeometry = new THREE.BufferGeometry();
-  const particlePositions = new Float32Array(particleCount * 3);
-  const particleColors = new Float32Array(particleCount * 3);
-  const particleData = [];
+  // ── Energy pulse particles along lines ──
+  const pulseCount = 60;
+  const pulseGeo = new THREE.BufferGeometry();
+  const pulsePos = new Float32Array(pulseCount * 3);
+  const pulseCol = new Float32Array(pulseCount * 3);
+  const pulses = [];
 
-  for (let i = 0; i < particleCount; i++) {
-    particlePositions[i * 3] = (Math.random() - 0.5) * 20;
-    particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 12;
-    particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 8;
+  for (let i = 0; i < pulseCount; i++) {
+    const lineIdx = Math.floor(Math.random() * powerLines.length);
+    const line = powerLines[lineIdx];
+    const t = Math.random();
+    const ax = nodes[line.userData.a].position.x;
+    const ay = nodes[line.userData.a].position.y;
+    const az = nodes[line.userData.a].position.z;
+    const bx = nodes[line.userData.b].position.x;
+    const by = nodes[line.userData.b].position.y;
+    const bz = nodes[line.userData.b].position.z;
+    pulsePos[i*3] = ax + (bx-ax)*t;
+    pulsePos[i*3+1] = ay + (by-ay)*t;
+    pulsePos[i*3+2] = az + (bz-az)*t;
 
-    const colorChoice = Math.random();
-    if (colorChoice < 0.6) {
-      particleColors[i * 3] = 0; particleColors[i * 3 + 1] = 0.83; particleColors[i * 3 + 2] = 1;
-    } else if (colorChoice < 0.85) {
-      particleColors[i * 3] = 1; particleColors[i * 3 + 1] = 0.84; particleColors[i * 3 + 2] = 0;
-    } else {
-      particleColors[i * 3] = 1; particleColors[i * 3 + 1] = 0.42; particleColors[i * 3 + 2] = 0.21;
-    }
+    const isWarm = Math.random() > 0.5;
+    pulseCol[i*3] = isWarm ? 1 : 0;
+    pulseCol[i*3+1] = isWarm ? 0.84 : 0.83;
+    pulseCol[i*3+2] = isWarm ? 0 : 1;
 
-    particleData.push({
-      speed: 0.01 + Math.random() * 0.03,
-      direction: Math.random() > 0.5 ? 1 : -1
-    });
+    pulses.push({ lineIdx, t, speed: 0.003 + Math.random()*0.006, dir: Math.random()>0.5?1:-1 });
   }
-
-  particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-  particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
-
-  const particleMaterial = new THREE.PointsMaterial({
-    size: 0.06,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.6,
+  pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePos, 3));
+  pulseGeo.setAttribute('color', new THREE.BufferAttribute(pulseCol, 3));
+  const pulseMat = new THREE.PointsMaterial({
+    size: 0.15, vertexColors: true, transparent: true, opacity: 0.9,
     blending: THREE.AdditiveBlending
   });
+  const pulsePoints = new THREE.Points(pulseGeo, pulseMat);
+  scene.add(pulsePoints);
 
-  const particles = new THREE.Points(particleGeometry, particleMaterial);
-  scene.add(particles);
-
-  // Lightning bolts (occasional)
-  const lightningBolts = [];
-  function createLightning() {
-    if (connections.length === 0) return;
-    const idx = Math.floor(Math.random() * connections.length);
-    const conn = connections[idx];
-    conn.material.opacity = 1;
-    conn.material.color.setHex(0xffd700);
-    lightningBolts.push({ line: conn, time: 0, duration: 0.3 });
+  // ── Floating ambient particles ──
+  const ambCount = 300;
+  const ambGeo = new THREE.BufferGeometry();
+  const ambPos = new Float32Array(ambCount * 3);
+  for (let i = 0; i < ambCount; i++) {
+    ambPos[i*3] = (Math.random()-0.5)*16;
+    ambPos[i*3+1] = (Math.random()-0.5)*10;
+    ambPos[i*3+2] = (Math.random()-0.5)*6 - 1;
   }
+  ambGeo.setAttribute('position', new THREE.BufferAttribute(ambPos, 3));
+  const ambMat = new THREE.PointsMaterial({
+    size: 0.04, color: 0x00d4ff, transparent: true, opacity: 0.3,
+    blending: THREE.AdditiveBlending
+  });
+  scene.add(new THREE.Points(ambGeo, ambMat));
 
-  camera.position.z = 8;
+  // ── Camera ──
+  camera.position.set(0, 1, 8);
+  camera.lookAt(0, 0.5, 0);
+
+  // ── Blackout cycle ──
   let time = 0;
-  let blackoutPhase = false;
+  let blackoutState = 'normal'; // normal, falling, dark, recovering
   let blackoutTimer = 0;
-  let cycleTimer = 0;
+  let cycleInterval = 12 + Math.random() * 5;
 
   function animate() {
     requestAnimationFrame(animate);
-    time += 0.016;
-    cycleTimer += 0.016;
+    const dt = 0.016;
+    time += dt;
+    blackoutTimer += dt;
 
-    // Periodic blackout effect (every 15 seconds)
-    if (cycleTimer > 15 && !blackoutPhase) {
-      blackoutPhase = true;
+    // Blackout cycle
+    if (blackoutState === 'normal' && blackoutTimer > cycleInterval) {
+      blackoutState = 'falling';
       blackoutTimer = 0;
     }
-    if (blackoutPhase) {
-      blackoutTimer += 0.016;
-      if (blackoutTimer > 2) {
-        blackoutPhase = false;
-        cycleTimer = 0;
-      }
+    if (blackoutState === 'falling' && blackoutTimer > 1.5) {
+      blackoutState = 'dark';
+      blackoutTimer = 0;
+    }
+    if (blackoutState === 'dark' && blackoutTimer > 2) {
+      blackoutState = 'recovering';
+      blackoutTimer = 0;
+    }
+    if (blackoutState === 'recovering' && blackoutTimer > 2) {
+      blackoutState = 'normal';
+      blackoutTimer = 0;
+      cycleInterval = 12 + Math.random() * 5;
+    }
+
+    // Dim factor based on blackout state
+    let dimFactor = 1;
+    if (blackoutState === 'falling') dimFactor = 1 - (blackoutTimer / 1.5) * 0.9;
+    else if (blackoutState === 'dark') dimFactor = 0.1;
+    else if (blackoutState === 'recovering') dimFactor = 0.1 + (blackoutTimer / 2) * 0.9;
+
+    // Flicker during recovery
+    if (blackoutState === 'recovering' && Math.random() < 0.05) {
+      dimFactor *= 0.3;
     }
 
     // Animate nodes
-    nodes.forEach(node => {
+    nodes.forEach((node, i) => {
       const d = node.userData;
-      node.position.y = d.originalPos.y + Math.sin(time * d.speed + d.phase) * d.amplitude;
-      node.position.x = d.originalPos.x + Math.cos(time * d.speed * 0.7 + d.phase) * d.amplitude * 0.5;
-    });
+      node.position.y = d.origPos.y + Math.sin(time * 0.8 + d.phase) * 0.15;
+      node.position.x = d.origPos.x + Math.cos(time * 0.5 + d.phase) * 0.08;
+      node.material.opacity = 0.9 * dimFactor;
+      const scale = d.isHub ? 1.2 + Math.sin(time*2+i)*0.2 : 1;
+      node.scale.setScalar(scale * dimFactor);
 
-    // Update connections
-    connections.forEach(conn => {
-      const pos = conn.geometry.attributes.position;
-      if (pos) {
-        const nodeA = nodes[conn.userData.nodeA];
-        const nodeB = conn.userData.nodeB;
-        pos.setXYZ(0, nodeA.position.x, nodeA.position.y, nodeA.position.z);
-        pos.setXYZ(1, nodeB.position.x, nodeB.position.y, nodeB.position.z);
-        pos.needsUpdate = true;
+      // Update ring
+      if (d.ring) {
+        d.ring.position.copy(node.position);
+        d.ring.material.opacity = 0.3 * dimFactor;
+        d.ring.rotation.z = time * 0.5;
+        d.ring.scale.setScalar(scale);
       }
     });
 
-    // Lightning
-    if (Math.random() < 0.02) createLightning();
-    lightningBolts.forEach((bolt, i) => {
-      bolt.time += 0.016;
-      const progress = bolt.time / bolt.duration;
-      if (progress >= 1) {
-        bolt.line.material.opacity = 0.15;
-        bolt.line.material.color.setHex(0x00d4ff);
-        lightningBolts.splice(i, 1);
-      } else {
-        bolt.line.material.opacity = 1 - progress;
+    // Animate power lines
+    powerLines.forEach(line => {
+      const pos = line.geometry.attributes.position;
+      const a = nodes[line.userData.a].position;
+      const b = nodes[line.userData.b].position;
+      pos.setXYZ(0, a.x, a.y, a.z);
+      pos.setXYZ(1, b.x, b.y, b.z);
+      pos.needsUpdate = true;
+      line.material.opacity = 0.35 * dimFactor;
+
+      // Flash lines during blackout
+      if (blackoutState === 'falling' && Math.random() < 0.1) {
+        line.material.color.setHex(0xff3355);
+        line.material.opacity = 0.8;
+      } else if (blackoutState === 'normal') {
+        line.material.color.setHex(0x00d4ff);
       }
     });
 
-    // Animate particles
-    const positions = particles.geometry.attributes.position.array;
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3 + 1] += particleData[i].speed * particleData[i].direction;
-      if (positions[i * 3 + 1] > 6) positions[i * 3 + 1] = -6;
-      if (positions[i * 3 + 1] < -6) positions[i * 3 + 1] = 6;
-    }
-    particles.geometry.attributes.position.needsUpdate = true;
+    // Animate energy pulses
+    const pArr = pulsePoints.geometry.attributes.position.array;
+    for (let i = 0; i < pulseCount; i++) {
+      const p = pulses[i];
+      p.t += p.speed * p.dir;
+      if (p.t > 1) p.t = 0;
+      if (p.t < 0) p.t = 1;
 
-    // Blackout effect
-    if (blackoutPhase) {
-      const progress = blackoutTimer;
-      const dimFactor = progress < 0.5 ? progress * 2 : (2 - progress) * 2;
-      nodes.forEach(node => {
-        node.material.opacity = 0.8 * (1 - dimFactor * 0.7);
-      });
-      particleMaterial.opacity = 0.6 * (1 - dimFactor * 0.7);
-    } else {
-      nodes.forEach(node => {
-        node.material.opacity = 0.8;
-      });
-      particleMaterial.opacity = 0.6;
+      const line = powerLines[p.lineIdx];
+      if (!line) continue;
+      const a = nodes[line.userData.a].position;
+      const b = nodes[line.userData.b].position;
+      pArr[i*3] = a.x + (b.x-a.x)*p.t;
+      pArr[i*3+1] = a.y + (b.y-a.y)*p.t;
+      pArr[i*3+2] = a.z + (b.z-a.z)*p.t;
     }
+    pulsePoints.geometry.attributes.position.needsUpdate = true;
+    pulseMat.opacity = 0.9 * dimFactor;
 
-    // Camera gentle movement
-    camera.position.x = Math.sin(time * 0.1) * 0.5;
-    camera.position.y = Math.cos(time * 0.08) * 0.3;
-    camera.lookAt(0, 0, 0);
+    // Camera orbit
+    camera.position.x = Math.sin(time * 0.08) * 1.5;
+    camera.position.y = 1 + Math.cos(time * 0.06) * 0.5;
+    camera.lookAt(0, 0.5, 0);
+
+    // Iberia outline pulse
+    iberiaLine.material.opacity = 0.25 * dimFactor;
+    if (blackoutState === 'falling') {
+      iberiaLine.material.color.setHex(0xff3355);
+    } else if (blackoutState === 'normal') {
+      iberiaLine.material.color.setHex(0x00d4ff);
+    }
 
     renderer.render(scene, camera);
   }
