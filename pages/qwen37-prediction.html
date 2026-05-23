@@ -56,6 +56,7 @@ body::before {
   background: radial-gradient(circle, rgba(124, 58, 237, 0.07) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: float 20s ease-in-out infinite;
 }
 body::after {
   content: '';
@@ -67,7 +68,80 @@ body::after {
   background: radial-gradient(circle, rgba(96, 165, 250, 0.04) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: float 25s ease-in-out infinite reverse;
 }
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #a78bfa, #22d3ee);
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+  z-index: 10000;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+/* Scroll-triggered animations */
+.scroll-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.scroll-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.scroll-left.scroll-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.scroll-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.scroll-right.scroll-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.scroll-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.scroll-scale.scroll-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Staggered children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stagger-children.scroll-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(2) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(3) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(4) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(5) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(6) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(7) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(8) { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(9) { transition-delay: 0.45s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(10) { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(11) { transition-delay: 0.55s; opacity: 1; transform: translateY(0); }
+.stagger-children.scroll-visible > *:nth-child(12) { transition-delay: 0.6s; opacity: 1; transform: translateY(0); }
 
 /* Back link */
 .back-link {
@@ -179,6 +253,8 @@ body::after {
   text-transform: uppercase;
   margin-bottom: 24px;
   font-weight: 500;
+  opacity: 0;
+  animation: fadeInUp 0.8s 0.2s forwards;
 }
 .hero h1 {
   font-size: clamp(48px, 10vw, 84px);
@@ -190,6 +266,22 @@ body::after {
   margin-bottom: 20px;
   letter-spacing: -3px;
   line-height: 1.05;
+  opacity: 0;
+  animation: fadeInUp 0.8s 0.4s forwards;
+  animation-fill-mode: forwards;
+}
+.hero h1::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+  animation: heroGlow 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
 }
 .hero h2 {
   font-size: clamp(20px, 4vw, 30px);
@@ -198,18 +290,24 @@ body::after {
   max-width: 680px;
   margin-bottom: 16px;
   letter-spacing: -0.5px;
+  opacity: 0;
+  animation: fadeInUp 0.8s 0.6s forwards;
 }
 .hero-sub {
   font-size: 15px;
   color: var(--text-muted);
   max-width: 560px;
   margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeInUp 0.8s 0.8s forwards;
 }
 .hero-meta {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
+  opacity: 0;
+  animation: fadeInUp 0.8s 1s forwards;
 }
 .badge {
   background: rgba(124, 58, 237, 0.08);
@@ -251,6 +349,26 @@ section {
   scroll-margin-top: 24px;
   position: relative;
   z-index: 1;
+}
+.section-divider {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  position: relative;
+  z-index: 1;
+}
+.section-divider::after {
+  content: '◆';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-dark);
+  padding: 0 16px;
+  color: var(--primary-light);
+  font-size: 8px;
+  opacity: 0.5;
 }
 section h2 {
   font-size: clamp(28px, 5vw, 42px);
@@ -299,6 +417,11 @@ section li {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+}
+.table-wrapper:hover {
+  border-color: var(--border);
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.4);
 }
 table {
   width: 100%;
@@ -319,7 +442,10 @@ th {
   letter-spacing: 1.2px;
 }
 tr:last-child td { border-bottom: none; }
-tr:hover { background: rgba(124, 58, 237, 0.04); }
+tr {
+  transition: all 0.3s;
+}
+tr:hover { background: rgba(124, 58, 237, 0.06); }
 td:first-child {
   font-weight: 600;
   color: var(--text-primary);
@@ -346,31 +472,55 @@ td:first-child {
   padding: 22px 26px;
   border-radius: 0 12px 12px 0;
   margin: 28px 0;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+  opacity: 0.5;
+}
+.highlight:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 .highlight.success {
   background: var(--success-bg);
   border-color: var(--success);
 }
+.highlight.success::before { background: var(--success); box-shadow: 0 0 10px var(--success); }
 .highlight.warning {
   background: var(--warning-bg);
   border-color: var(--warning);
 }
+.highlight.warning::before { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
 .highlight.miss {
   background: var(--miss-bg);
   border-color: var(--miss);
 }
+.highlight.miss::before { background: var(--miss); box-shadow: 0 0 10px var(--miss); }
 .highlight.blue {
   background: var(--blue-bg);
   border-color: var(--blue);
 }
+.highlight.blue::before { background: var(--blue); box-shadow: 0 0 10px var(--blue); }
 .highlight.cyan {
   background: var(--cyan-bg);
   border-color: var(--cyan);
 }
+.highlight.cyan::before { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
 .highlight.orange {
   background: var(--orange-bg);
   border-color: var(--orange);
 }
+.highlight.orange::before { background: var(--orange); box-shadow: 0 0 10px var(--orange); }
 .highlight strong { color: var(--text-primary); }
 .highlight p { color: var(--text-secondary); margin-bottom: 0; }
 
@@ -387,11 +537,34 @@ td:first-child {
   border-radius: 12px;
   padding: 20px;
   text-align: center;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.result-card.purple::before { box-shadow: inset 0 0 20px rgba(124, 58, 237, 0.2); }
+.result-card.blue::before { box-shadow: inset 0 0 20px rgba(96, 165, 250, 0.2); }
+.result-card.cyan::before { box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.2); }
+.result-card.orange::before { box-shadow: inset 0 0 20px rgba(251, 146, 60, 0.2); }
+.result-card.green::before { box-shadow: inset 0 0 20px rgba(74, 222, 128, 0.2); }
 .result-card:hover {
   border-color: var(--border);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.result-card:hover::before {
+  opacity: 1;
 }
 .result-card .label {
   font-size: 11px;
@@ -512,10 +685,16 @@ td:first-child {
   border-radius: 50%;
   background: var(--primary);
   border: 2px solid var(--bg-dark);
+  transition: all 0.3s;
+}
+.timeline-item:hover::before {
+  animation: pulse 1s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
 }
 .timeline-item.future::before {
   background: var(--cyan);
   box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+  animation: pulse 2s ease-in-out infinite;
 }
 .timeline-date {
   font-family: 'JetBrains Mono', monospace;
@@ -718,11 +897,66 @@ td:first-child {
 
 /* Animations */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(5px) rotate(-1deg); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes borderGlow {
+  0%, 100% { border-color: var(--border-soft); }
+  50% { border-color: var(--border); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRow {
+  from { opacity: 0; transform: translateX(-15px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes heroGlow {
+  0%, 100% { text-shadow: 0 0 40px rgba(124, 58, 237, 0.3); }
+  50% { text-shadow: 0 0 80px rgba(124, 58, 237, 0.5), 0 0 120px rgba(124, 58, 237, 0.2); }
+}
 .animate-in {
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.animate-left {
+  animation: fadeInLeft 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.animate-right {
+  animation: fadeInRight 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.animate-scale {
+  animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Update log */
@@ -804,12 +1038,12 @@ td:first-child {
 
 <!-- Metodología -->
 <section id="metodologia">
-  <h2>📐 <span class="accent">Metodología</span></h2>
-  <p>
+  <h2 class="scroll-hidden">📐 <span class="accent">Metodología</span></h2>
+  <p class="scroll-hidden">
     Esta predicción usa un enfoque de <strong>delta-extrapolación multi-fuente</strong>: comparamos el salto real entre versiones en los modelos Max (proprietarios) y lo extrapolamos a los modelos open weights (27B y 35B-A3B), ajustando por patrones históricos observados en la transición 3.5→3.6.
   </p>
 
-  <div class="methodology-steps">
+  <div class="methodology-steps stagger-children">
     <div class="methodology-step">
       <h4>Señal principal: salto Max → Max</h4>
       <p>Qwen3.6 Max Preview (51.8) → Qwen3.7 Max (56.6) = <strong>+4.8 pts</strong> en Intelligence Index v4.0. Este es nuestro dato de referencia más fiable.</p>
@@ -839,13 +1073,14 @@ td:first-child {
 </section>
 
 <!-- Salto Max -->
+<div class="section-divider"></div>
 <section id="salto-max">
-  <h2>🔬 El salto real: <span class="accent">Qwen3.6 Max → Qwen3.7 Max</span></h2>
-  <p>
+  <h2 class="scroll-hidden">🔬 El salto real: <span class="accent">Qwen3.6 Max → Qwen3.7 Max</span></h2>
+  <p class="scroll-hidden">
     Qwen3.7 Max fue anunciado el 20 de mayo de 2026 en la Alibaba Cloud Summit. Los previews aparecieron en LM Arena el 13-14 de mayo. Aquí está el desglose completo del salto.
   </p>
 
-  <div class="result-grid">
+  <div class="result-grid stagger-children">
     <div class="result-card purple">
       <div class="label">Qwen3.6 Max Preview</div>
       <div class="value">51.8</div>
@@ -1071,8 +1306,9 @@ td:first-child {
 </section>
 
 <!-- Predicciones -->
+<div class="section-divider"></div>
 <section id="predicciones">
-  <h2>🎯 <span class="accent">Predicciones</span></h2>
+  <h2 class="scroll-hidden">🎯 <span class="accent">Predicciones</span></h2>
 
   <h3>Qwen3.7-27B (Dense)</h3>
   <p>
@@ -1223,8 +1459,9 @@ td:first-child {
 </section>
 
 <!-- Comparativa -->
+<div class="section-divider"></div>
 <section id="comparativa">
-  <h2>🥊 <span class="accent">Comparativa</span> vs Frontier</h2>
+  <h2 class="scroll-hidden">🥊 <span class="accent">Comparativa</span> vs Frontier</h2>
   <p>
     Si las predicciones se cumplen, así quedaría el panorama competitivo. Los modelos con patrón de rayas son predicciones.
   </p>
@@ -1381,8 +1618,9 @@ td:first-child {
 </section>
 
 <!-- Timeline -->
+<div class="section-divider"></div>
 <section id="timeline">
-  <h2>📅 <span class="accent">Timeline</span> & Predicción de Fechas</h2>
+  <h2 class="scroll-hidden">📅 <span class="accent">Timeline</span> & Predicción de Fechas</h2>
   <p>
     Basado en los patrones históricos de lanzamientos de Qwen, aquí está la línea temporal conocida y la predicción para los open weights de 3.7.
   </p>
@@ -1475,8 +1713,9 @@ td:first-child {
 </section>
 
 <!-- Datos de Referencia -->
+<div class="section-divider"></div>
 <section id="datos">
-  <h2>📊 <span class="accent">Datos de Referencia</span></h2>
+  <h2 class="scroll-hidden">📊 <span class="accent">Datos de Referencia</span></h2>
   <p>
     Todos los puntos de datos conocidos. Esta sección se actualiza conforme salgan más modelos.
   </p>
@@ -1638,8 +1877,9 @@ td:first-child {
 </section>
 
 <!-- Riesgos -->
+<div class="section-divider"></div>
 <section id="riesgos">
-  <h2>⚠️ <span class="accent">Riesgos</span> & Caveats</h2>
+  <h2 class="scroll-hidden">⚠️ <span class="accent">Riesgos</span> & Caveats</h2>
 
   <div class="highlight miss">
     <strong>1. Arquitectura podría cambiar</strong>
@@ -1678,8 +1918,9 @@ td:first-child {
 </section>
 
 <!-- Actualizaciones -->
+<div class="section-divider"></div>
 <section id="actualizaciones">
-  <h2>🔄 <span class="accent">Actualizaciones</span></h2>
+  <h2 class="scroll-hidden">🔄 <span class="accent">Actualizaciones</span></h2>
   <p>Esta sección se actualiza conforme salgan nuevos datos.</p>
 
   <div class="update-log">
@@ -1726,6 +1967,34 @@ td:first-child {
 </script>
 
 <script>
+// Progress bar
+(function() {
+  var bar = document.createElement('div');
+  bar.className = 'progress-bar';
+  document.body.appendChild(bar);
+  window.addEventListener('scroll', function() {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrollPercent = (scrollTop / docHeight) * 100;
+    bar.style.width = scrollPercent + '%';
+  });
+})();
+
+// Scroll-triggered animations
+(function() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('scroll-visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.scroll-hidden, .scroll-left, .scroll-right, .scroll-scale, .stagger-children').forEach(function(el) {
+    observer.observe(el);
+  });
+})();
+
 // Animate bars on scroll
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -1748,6 +2017,49 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
     document.querySelector('.hamburger').classList.remove('active');
   });
 });
+
+// Active nav link highlighting
+(function() {
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav-menu a');
+  window.addEventListener('scroll', function() {
+    var scrollY = window.pageYOffset;
+    sections.forEach(function(section) {
+      var sectionTop = section.offsetTop - 100;
+      var sectionHeight = section.offsetHeight;
+      var sectionId = section.getAttribute('id');
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        navLinks.forEach(function(link) {
+          link.style.color = '';
+          if (link.getAttribute('href') === '#' + sectionId) {
+            link.style.color = 'var(--primary-light)';
+          }
+        });
+      }
+    });
+  });
+})();
+
+// Smooth reveal for methodology steps
+(function() {
+  var steps = document.querySelectorAll('.methodology-step');
+  var stepObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, index) {
+      if (entry.isIntersecting) {
+        setTimeout(function() {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateX(0)';
+        }, index * 100);
+      }
+    });
+  }, { threshold: 0.2 });
+  steps.forEach(function(step) {
+    step.style.opacity = '0';
+    step.style.transform = 'translateX(-20px)';
+    step.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    stepObserver.observe(step);
+  });
+})();
 </script>
 
 </body>
