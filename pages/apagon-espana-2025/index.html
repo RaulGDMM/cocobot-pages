@@ -1278,24 +1278,24 @@ footer {
   // Also resize when hero changes (after fonts load, etc.)
   new ResizeObserver(resize).observe(document.querySelector('.hero'));
 
-  // ── Iberian Peninsula outline (normalized coords) ──
+  // ── Iberian Peninsula outline (more detailed shape) ──
   const iberiaPath = [
-    [-0.23, 0.33], [-0.18, 0.38], [-0.05, 0.40], [0.05, 0.38], [0.15, 0.36], [0.25, 0.33],
-    [0.30, 0.28], [0.35, 0.23], [0.35, 0.18], [0.30, 0.13], [0.25, 0.08], [0.20, 0.03],
-    [0.15, -0.02], [0.10, -0.07], [0.05, -0.12], [0.00, -0.17], [-0.05, -0.17], [-0.10, -0.12],
-    [-0.15, -0.07], [-0.20, -0.02], [-0.25, 0.03], [-0.30, 0.08], [-0.30, 0.13], [-0.30, 0.18],
-    [-0.28, 0.23], [-0.23, 0.30]
+    [-0.35, 0.35], [-0.28, 0.40], [-0.18, 0.42], [-0.08, 0.43], [0.02, 0.42], [0.12, 0.40], [0.22, 0.37],
+    [0.30, 0.32], [0.36, 0.26], [0.38, 0.20], [0.38, 0.14], [0.36, 0.08], [0.32, 0.02],
+    [0.28, -0.04], [0.22, -0.10], [0.16, -0.14], [0.10, -0.18], [0.04, -0.22], [-0.02, -0.24],
+    [-0.08, -0.22], [-0.14, -0.18], [-0.18, -0.14], [-0.22, -0.08], [-0.26, -0.02],
+    [-0.30, 0.04], [-0.33, 0.10], [-0.35, 0.16], [-0.36, 0.22], [-0.35, 0.28]
   ];
 
   // ── Power grid nodes ──
   const nodes = [
-    {x: -0.20, y: 0.33, hub: true}, {x: -0.05, y: 0.38, hub: true}, {x: 0.10, y: 0.36, hub: true},
-    {x: 0.25, y: 0.33, hub: true}, {x: 0.30, y: 0.23, hub: true},
-    {x: -0.28, y: 0.18}, {x: -0.15, y: 0.23}, {x: 0.00, y: 0.18}, {x: 0.15, y: 0.20}, {x: 0.28, y: 0.13},
-    {x: -0.18, y: 0.08}, {x: -0.05, y: 0.13}, {x: 0.10, y: 0.10}, {x: 0.22, y: 0.08},
-    {x: -0.12, y: 0.03}, {x: 0.02, y: 0.03}, {x: 0.15, y: 0.03}, {x: 0.22, y: 0.00},
-    {x: -0.08, y: -0.05}, {x: 0.05, y: -0.05}, {x: 0.10, y: -0.10},
-    {x: -0.22, y: 0.13}, {x: 0.18, y: 0.18}, {x: 0.02, y: 0.13}, {x: 0.08, y: 0.25}
+    {x: -0.28, y: 0.35, hub: true}, {x: -0.10, y: 0.40, hub: true}, {x: 0.08, y: 0.37, hub: true},
+    {x: 0.25, y: 0.32, hub: true}, {x: 0.35, y: 0.20, hub: true},
+    {x: -0.32, y: 0.22}, {x: -0.18, y: 0.28}, {x: 0.00, y: 0.25}, {x: 0.15, y: 0.25}, {x: 0.32, y: 0.12},
+    {x: -0.22, y: 0.12}, {x: -0.08, y: 0.15}, {x: 0.08, y: 0.12}, {x: 0.22, y: 0.08},
+    {x: -0.15, y: 0.02}, {x: 0.02, y: 0.02}, {x: 0.18, y: 0.02}, {x: 0.28, y: -0.02},
+    {x: -0.10, y: -0.08}, {x: 0.05, y: -0.10}, {x: 0.12, y: -0.15},
+    {x: -0.25, y: 0.08}, {x: 0.22, y: 0.15}, {x: 0.02, y: 0.15}, {x: 0.12, y: 0.20}
   ];
 
   // ── Connections ──
@@ -1326,13 +1326,13 @@ footer {
 
   // ── Ambient particles ──
   const ambParticles = [];
-  for (let i = 0; i < 300; i++) {
+  for (let i = 0; i < 100; i++) {
     ambParticles.push({
       x: Math.random(),
       y: Math.random(),
-      size: 1 + Math.random() * 2.5,
-      speed: 0.0002 + Math.random() * 0.0006,
-      opacity: 0.2 + Math.random() * 0.5
+      size: 0.5 + Math.random() * 1,
+      speed: 0.0001 + Math.random() * 0.0003,
+      opacity: 0.05 + Math.random() * 0.15
     });
   }
 
@@ -1343,10 +1343,10 @@ footer {
   let cycleInterval = 10 + Math.random() * 5;
 
   function toScreen(nx, ny) {
-    const scale = Math.min(W, H) * 0.9;
+    const scale = Math.min(W, H) * 0.85;
     return {
-      x: W * 0.5 + (nx + 0.1) * scale * 0.6,
-      y: H * 0.5 + (ny + 0.05) * scale * 0.6
+      x: W * 0.5 + nx * scale * 0.55,
+      y: H * 0.5 + ny * scale * 0.55
     };
   }
 
@@ -1381,7 +1381,7 @@ footer {
     ctx.fillStyle = 'rgba(10, 10, 15, 0.15)';
     ctx.fillRect(0, 0, W, H);
 
-    // Iberia outline
+    // Iberia outline - thick and visible
     ctx.beginPath();
     iberiaPath.forEach((p, i) => {
       const s = toScreen(p[0], p[1]);
@@ -1389,14 +1389,20 @@ footer {
       else ctx.lineTo(s.x, s.y);
     });
     ctx.closePath();
-    ctx.strokeStyle = blackoutState === 'falling'
-      ? `rgba(255, 51, 85, ${0.5 * dim})`
-      : `rgba(0, 212, 255, ${0.35 * dim})`;
-    ctx.lineWidth = 2;
-    ctx.stroke();
 
-    // Fill iberia with subtle gradient
-    const grad = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.3);
+    // Outer glow
+    ctx.save();
+    ctx.shadowColor = blackoutState === 'falling' ? 'rgba(255, 51, 85, 0.5)' : 'rgba(0, 212, 255, 0.4)';
+    ctx.shadowBlur = 15;
+    ctx.strokeStyle = blackoutState === 'falling'
+      ? `rgba(255, 51, 85, ${0.6 * dim})`
+      : `rgba(0, 212, 255, ${0.5 * dim})`;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    ctx.restore();
+
+    // Subtle fill
+    const grad = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.35);
     grad.addColorStop(0, `rgba(0, 212, 255, ${0.06 * dim})`);
     grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = grad;
@@ -1413,13 +1419,13 @@ footer {
       let lineColor, lineOpacity;
       if (blackoutState === 'falling' && Math.random() < 0.15) {
         lineColor = '255, 51, 85';
-        lineOpacity = 0.8;
+        lineOpacity = 0.5;
       } else {
         lineColor = '0, 212, 255';
-        lineOpacity = 0.35 * dim;
+        lineOpacity = 0.15 * dim;
       }
       ctx.strokeStyle = `rgba(${lineColor}, ${lineOpacity})`;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 0.8;
       ctx.stroke();
     });
 
@@ -1438,63 +1444,44 @@ footer {
       const py = a.y + (b.y - a.y) * p.t;
 
       const color = p.warm ? '255, 215, 0' : '0, 212, 255';
-      // Core
       ctx.beginPath();
-      ctx.arc(px, py, 4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${color}, ${0.95 * dim})`;
-      ctx.fill();
-
-      // Glow
-      ctx.beginPath();
-      ctx.arc(px, py, 12, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${color}, ${0.3 * dim})`;
-      ctx.fill();
-
-      // Outer glow
-      ctx.beginPath();
-      ctx.arc(px, py, 20, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${color}, ${0.1 * dim})`;
+      ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${0.8 * dim})`;
       ctx.fill();
     });
 
     // Nodes
     nodes.forEach((node, i) => {
       const s = toScreen(node.x, node.y);
-      const bobY = Math.sin(time * 0.8 + i * 0.7) * 4;
-      const bobX = Math.cos(time * 0.5 + i * 0.5) * 3;
+      const bobY = Math.sin(time * 0.8 + i * 0.7) * 2;
+      const bobX = Math.cos(time * 0.5 + i * 0.5) * 1.5;
       const nx = s.x + bobX;
       const ny = s.y + bobY;
 
       if (node.hub) {
-        // Hub glow ring
-        const ringSize = 16 + Math.sin(time * 2 + i) * 4;
+        // Hub ring (subtle)
+        const ringSize = 8 + Math.sin(time * 2 + i) * 2;
         ctx.beginPath();
         ctx.arc(nx, ny, ringSize, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 215, 0, ${0.5 * dim})`;
-        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = `rgba(255, 215, 0, ${0.25 * dim})`;
+        ctx.lineWidth = 1;
         ctx.stroke();
-
-        // Hub outer glow
-        ctx.beginPath();
-        ctx.arc(nx, ny, 28, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 215, 0, ${0.12 * dim})`;
-        ctx.fill();
       }
 
-      // Node dot
-      const nodeSize = node.hub ? 7 : 4;
+      // Node dot (small)
+      const nodeSize = node.hub ? 3 : 1.8;
       ctx.beginPath();
       ctx.arc(nx, ny, nodeSize, 0, Math.PI * 2);
       ctx.fillStyle = node.hub
-        ? `rgba(255, 215, 0, ${0.95 * dim})`
-        : `rgba(0, 212, 255, ${0.9 * dim})`;
+        ? `rgba(255, 215, 0, ${0.9 * dim})`
+        : `rgba(0, 212, 255, ${0.7 * dim})`;
       ctx.fill();
 
-      // Node glow
+      // Tiny glow
       ctx.beginPath();
-      ctx.arc(nx, ny, nodeSize * 4, 0, Math.PI * 2);
+      ctx.arc(nx, ny, nodeSize * 2.5, 0, Math.PI * 2);
       const glowColor = node.hub ? '255, 215, 0' : '0, 212, 255';
-      ctx.fillStyle = `rgba(${glowColor}, ${0.2 * dim})`;
+      ctx.fillStyle = `rgba(${glowColor}, ${0.08 * dim})`;
       ctx.fill();
     });
 
