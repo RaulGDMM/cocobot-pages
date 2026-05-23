@@ -511,20 +511,54 @@ footer {
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  nav { padding: 0 1rem; }
-  .hero { padding: 5rem 1rem 3rem; }
-  .hero-stats { gap: 1rem; }
-  .hero-stat { min-width: 100px; padding: 1rem; }
-  .hero-stat .number { font-size: 1.5rem; }
-  section { padding: 3rem 1rem; }
+  nav { padding: 0 1rem; height: 50px; }
+  .bb { height: 30px; font-size: 0.7rem; }
+  nav { top: 30px; }
+  .mobile-menu { top: 80px; }
+  .hero {
+    min-height: auto;
+    padding: 4.5rem 1rem 2rem;
+  }
+  .hero h1 { font-size: 2rem; margin-bottom: 1rem; }
+  .hero p { font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .hero-stats { gap: 0.5rem; }
+  .hero-stat { min-width: 70px; padding: 0.75rem 0.5rem; }
+  .hero-stat .number { font-size: 1.3rem; }
+  .hero-stat .label { font-size: 0.65rem; }
+  .scroll-indicator { display: none; }
+  section { padding: 2rem 0.75rem; }
+  .section-header { margin-bottom: 1.5rem; }
+  .section-header h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .section-header p { font-size: 0.9rem; }
+  .section-tag { font-size: 0.65rem; margin-bottom: 0.5rem; }
   .timeline { padding-left: 2rem; }
   .timeline::before { left: 8px; }
+  .timeline-item { margin-bottom: 1.5rem; }
   .timeline-item::before { left: -2rem; width: 20px; height: 20px; }
-  .cards-grid { grid-template-columns: 1fr; }
-  .ruled-out { grid-template-columns: 1fr; }
-  .data-table { font-size: 0.8rem; }
-  .data-table th, .data-table td { padding: 8px 10px; }
+  .timeline-time { font-size: 0.7rem; }
+  .timeline-title { font-size: 0.95rem; }
+  .timeline-desc { font-size: 0.85rem; }
+  .cards-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .card { padding: 1.25rem; }
+  .card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .card p { font-size: 0.85rem; }
+  .ruled-out { grid-template-columns: 1fr; gap: 0.75rem; }
+  .ruled-item { padding: 1rem; }
+  .ruled-item h4 { font-size: 0.85rem; }
+  .ruled-item p { font-size: 0.8rem; }
+  .data-table { font-size: 0.75rem; }
+  .data-table th, .data-table td { padding: 6px 8px; }
   .table-wrapper { overflow-x: auto; }
+  .quote-box { padding: 1.25rem; margin: 1.5rem 0; }
+  .quote-box p { font-size: 0.95rem; }
+  .quote-box cite { font-size: 0.75rem; }
+  .progress-section { margin: 1.5rem 0; }
+  .progress-item { margin-bottom: 1rem; }
+  .progress-label { font-size: 0.8rem; }
+  .divider { padding: 0.5rem 0; font-size: 1rem; letter-spacing: 0.5rem; }
+  footer { padding: 1.5rem 1rem; margin-top: 1.5rem; }
+  .back-btn { bottom: 1rem; right: 1rem; width: 38px; height: 38px; }
 }
 
 /* ═══════ SPARKLE DIVIDER ═══════ */
@@ -539,6 +573,82 @@ footer {
 
 /* ═══════ GLOW TEXT ═══════ */
 .glow { text-shadow: 0 0 10px rgba(0,212,255,0.5); }
+
+/* ═══════ UTILITY MARGINS ═══════ */
+.cards-margin { margin-top: 2rem; }
+.progress-margin { margin-top: 2rem; }
+.quote-mobile { margin-top: 2rem; }
+.section-sub { margin-top: 2rem; }
+.section-sub h3 { margin-bottom: 1.5rem; font-size: 1.3rem; }
+
+/* ═══════ OPINION SECTION ═══════ */
+.opinion-box {
+  background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,107,53,0.08));
+  border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+.opinion-box h3 {
+  font-size: 1.2rem;
+  color: var(--accent3);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.opinion-box p {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+}
+.opinion-box p:last-child { margin-bottom: 0; }
+.opinion-box strong { color: var(--accent3); }
+
+/* ═══════ SOURCES SECTION ═══════ */
+.sources-list {
+  list-style: none;
+  padding: 0;
+}
+.sources-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+.sources-list li:last-child { border-bottom: none; }
+.sources-list .source-num {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-size: 0.8rem;
+  min-width: 24px;
+}
+.sources-list a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.3s;
+  word-break: break-all;
+}
+.sources-list a:hover { color: var(--accent); }
+.sources-list .source-site {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .cards-margin, .progress-margin, .quote-mobile, .section-sub { margin-top: 1.5rem; }
+  .section-sub h3 { font-size: 1.1rem; margin-bottom: 1rem; }
+  .opinion-box { padding: 1.25rem; }
+  .opinion-box h3 { font-size: 1rem; }
+  .opinion-box p { font-size: 0.85rem; }
+  .sources-list li { flex-direction: column; gap: 0.25rem; }
+  .sources-list .source-site { min-width: auto; }
+}
 </style>
 </head>
 <body>
@@ -565,6 +675,8 @@ footer {
     <li><a href="#impacto">Impacto</a></li>
     <li><a href="#recuperacion">Recuperación</a></li>
     <li><a href="#futuro">Futuro</a></li>
+    <li><a href="#opinion">Opinión</a></li>
+    <li><a href="#fuentes">Fuentes</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -580,6 +692,8 @@ footer {
   <a href="#impacto" onclick="toggleMenu()">Impacto</a>
   <a href="#recuperacion" onclick="toggleMenu()">Recuperación</a>
   <a href="#futuro" onclick="toggleMenu()">Futuro</a>
+  <a href="#opinion" onclick="toggleMenu()">Opinión</a>
+  <a href="#fuentes" onclick="toggleMenu()">Fuentes</a>
 </div>
 
 <!-- Hero Section -->
@@ -769,13 +883,13 @@ footer {
     </div>
   </div>
 
-  <div class="quote-box" style="margin-top: 2rem;">
+  <div class="quote-box quote-mobile">
     <p>"Las acciones para mitigar el evento contribuyeron a un aumento adicional de la tensión en la red: la causa no fue una dependencia excesiva de renovables, sino una sucesión de fallos en cadena."</p>
     <cite>— Informe ENTSO-E, octubre 2025</cite>
   </div>
 
-  <div style="margin-top: 2rem;">
-    <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem;">Configuración de Protección Incorrecta</h3>
+  <div class="section-sub">
+    <h3>Configuración de Protección Incorrecta</h3>
     <div class="table-wrapper">
       <table class="data-table">
         <thead>
@@ -1000,7 +1114,7 @@ footer {
     <cite>— Panel de Expertos ENTSO-E</cite>
   </div>
 
-  <div class="cards-grid" style="margin-top: 2rem;">
+  <div class="cards-grid cards-margin">
     <div class="card">
       <div class="card-icon">🔧</div>
       <h3>8 Condensadores Síncronos</h3>
@@ -1033,8 +1147,8 @@ footer {
     </div>
   </div>
 
-  <div class="progress-section" style="margin-top: 2rem;">
-    <h3 style="margin-bottom: 1.5rem;">Progreso de Certificación de Renovables</h3>
+  <div class="progress-section progress-margin">
+    <h3>Progreso de Certificación de Renovables</h3>
     <div class="progress-item">
       <div class="progress-label"><span>Plantas solicitantes</span><span class="mono">365</span></div>
       <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
@@ -1048,6 +1162,84 @@ footer {
       <div class="progress-bar"><div class="progress-fill" data-width="20"></div></div>
     </div>
   </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ OPINIÓN ═══════ -->
+<section id="opinion">
+  <div class="section-header">
+    <div class="section-tag">Análisis</div>
+    <h2>Opinión del Autor</h2>
+  </div>
+
+  <div class="opinion-box">
+    <h3>💡 Mi perspectiva sobre el apagón</h3>
+    <p>Tras analizar el informe de 470 páginas de ENTSO-E y las fuentes técnicas disponibles, creo que el apagón del 28 de abril de 2025 revela <strong>un problema estructural que venía gestándose desde hace años</strong>: la Península Ibérica es una isla energética con una interconexión ridículamente baja (2%) respecto al objetivo europeo del 15%.</p>
+    <p>Lo que más me preocupa es que <strong>las señales de alerta existían con meses de antelación</strong>. La CNMC advirtió en enero de 2025 sobre problemas de control de tensión, y en diciembre de 2024 ya se activó el mecanismo SRAD dos veces. Sin embargo, no se tomaron medidas preventivas suficientes.</p>
+    <p>Sobre el debate de las renovables: <strong>el informe es claro — no fueron la causa</strong>. El problema real fue la gestión deficiente del control de tensión y la falta de automatización en los reactores en serie. Culpar a las renovables es como culpar a los coches por un atasco causado por un semáforo roto.</p>
+    <p>La velocidad de respuesta ha sido preocupantemente lenta: a casi un año del apagón, solo 74 de 365 plantas renovables han obtenido la certificación para participar en el control dinámico de tensión. <strong>Se necesita urgencia, no burocracia.</strong></p>
+    <p>En definitiva: el apagón fue un <strong>sintoma de un sistema eléctrico que no se adaptó suficientemente a la transición energética</strong>. Las soluciones existen (condensadores síncronos, reactores automáticos, interconexión), pero requieren inversión y voluntad política.</p>
+  </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- ═══════ FUENTES ═══════ -->
+<section id="fuentes">
+  <div class="section-header">
+    <div class="section-tag">Transparencia</div>
+    <h2>Fuentes y Referencias</h2>
+    <p>Toda la información de este estudio proviene de fuentes verificadas</p>
+  </div>
+
+  <ol class="sources-list">
+    <li>
+      <span class="source-num">01</span>
+      <span class="source-site">Wikipedia</span>
+      <a href="https://es.wikipedia.org/wiki/Apag%C3%B3n_en_la_pen%C3%ADnsula_ib%C3%A9rica_de_2025" target="_blank">Apagón en la península ibérica de 2025</a>
+    </li>
+    <li>
+      <span class="source-num">02</span>
+      <span class="source-site">Híbridos y Eléctricos</span>
+      <a href="https://www.hibridosyelectricos.com/energia/ya-se-conocen-causas-gran-apagon-en-espana-expertos-describen-en-470-paginas-84-segundos-nos-llevaron-caos_85920_102.html" target="_blank">Ya se conocen las causas del gran apagón en España: los expertos describen en 470 páginas los 84 segundos</a>
+    </li>
+    <li>
+      <span class="source-num">03</span>
+      <span class="source-site">DW</span>
+      <a href="https://www.dw.com/es/combinaci%C3%B3n-de-m%C3%BAltiples-factores-propici%C3%B3-apag%C3%B3n-de-2025-en-espa%C3%B1a-y-portugal-seg%C3%BAn-expertos/a-76453185" target="_blank">"Combinación" de "factores" causó apagón de 2025 en España</a>
+    </li>
+    <li>
+      <span class="source-num">04</span>
+      <span class="source-site">National Geographic</span>
+      <a href="https://www.nationalgeographic.com.es/ciencia/informe-definitivo-que-explica-causas-apagon-espana-un-aumento-rapido-tension-perdida-control-desencadenaron-colapso_27849" target="_blank">El informe definitivo que explica las causas del apagón en España</a>
+    </li>
+    <li>
+      <span class="source-num">05</span>
+      <span class="source-site">pv magazine España</span>
+      <a href="https://www.pv-magazine.es/2025/10/03/entso-e-confirma-la-sobretension-como-principal-causa-del-apagon/" target="_blank">Entso-E confirma la sobretensión como principal causa del apagón</a>
+    </li>
+    <li>
+      <span class="source-num">06</span>
+      <span class="source-site">Infobae</span>
+      <a href="https://www.infobae.com/espana/2025/10/03/cinco-meses-del-apagon-en-espana-un-informe-revela-que-fue-el-primero-relacionado-con-una-subida-de-tension-en-europa/" target="_blank">Cinco meses del apagón en España: un informe revela que fue el "primero" relacionado con una subida de tensión</a>
+    </li>
+    <li>
+      <span class="source-num">07</span>
+      <span class="source-site">Negocios.com</span>
+      <a href="https://www.negocios.com/articulo/empresas/informe-entso-concluye-que-apagon-fue-cascada-fallos-alerta-que-puede-repetirse/20260320164803482538.html" target="_blank">El informe de Entso-e concluye que el apagón fue una cascada de fallos y alerta de que puede repetirse</a>
+    </li>
+    <li>
+      <span class="source-num">08</span>
+      <span class="source-site">Optimaria</span>
+      <a href="https://optimaria.es/causas-apagon-analisis/" target="_blank">El gran apagón del 28 de abril de 2025 en España: causas, hipótesis y lecciones</a>
+    </li>
+    <li>
+      <span class="source-num">09</span>
+      <span class="source-site">MARCA</span>
+      <a href="https://www.marca.com/tiramillas/economia/2026/04/27/ano-apagon-espana-investigacion-principales-hipotesis-consecuencias-economicas.html" target="_blank">Un año del apagón en España: estado de la investigación, principales hipótesis y consecuencias económicas</a>
+    </li>
+  </ol>
 </section>
 
 <!-- Footer -->
