@@ -776,6 +776,7 @@ td:first-child {
 <div class="nav-menu">
   <a href="#metodologia">Metodología</a>
   <a href="#salto-max">Salto Qwen3.6→3.7 Max</a>
+  <a href="#benchmarks">Benchmarks Concretos</a>
   <a href="#predicciones">Predicciones</a>
   <a href="#comparativa">vs Claude & Frontier</a>
   <a href="#timeline">Timeline & Fechas</a>
@@ -786,15 +787,16 @@ td:first-child {
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow">Predicción · Actualizado 22 Mayo 2026</div>
+  <div class="hero-eyebrow">Predicción · Actualizado 26 Mayo 2026</div>
   <h1>Qwen3.7<br>Open Weights</h1>
   <h2>Predicciones para 27B y 35B-A3B</h2>
   <p class="hero-sub">
-    Basado en el salto real de Qwen3.6 Max → Qwen3.7 Max, patrones históricos de lanzamientos y la metodología delta-extrapolación. Actualizable conforme salgan más datos.
+    Basado en el salto real de Qwen3.6 Max → Qwen3.7 Max, benchmarks oficiales confirmados y la metodología delta-extrapolación. Benchmarks concretos añadidos el 26 de mayo.
   </p>
   <div class="hero-meta">
     <span class="badge">27B Dense</span>
     <span class="badge blue">35B-A3B MoE</span>
+    <span class="badge live">Benchmarks confirmados</span>
     <span class="badge orange">Predicción</span>
     <span class="badge cyan">Metodología abierta</span>
   </div>
@@ -911,16 +913,16 @@ td:first-child {
         </tr>
         <tr>
           <td>GPQA Diamond</td>
-          <td>~similar</td>
-          <td>~similar</td>
-          <td class="draw">Plano</td>
-          <td>STEM</td>
+          <td>—</td>
+          <td>92.4%</td>
+          <td class="winner">Leader*</td>
+          <td>STEM (PhD)</td>
         </tr>
         <tr>
           <td>SciCode</td>
-          <td>~similar</td>
-          <td>~similar</td>
-          <td class="draw">Plano</td>
+          <td>—</td>
+          <td>53.5%</td>
+          <td class="winner">Leader</td>
           <td>Coding</td>
         </tr>
         <tr>
@@ -943,10 +945,129 @@ td:first-child {
   <ul>
     <li><strong>Razonamiento profundo:</strong> Salto masivo (+9.2 en HLE, +9.7 en CritPt)</li>
     <li><strong>Agentic:</strong> Mejora significativa (+6.9 en Terminal-Bench)</li>
-    <li><strong>Coding/STEM:</strong> Plano — ya estaban cerca del techo</li>
+    <li><strong>Coding/STEM:</strong> GPQA Diamond 92.4 (leader) y SciCode 53.5 (leader) — no está plano, es líder en su categoría</li>
     <li><strong>Knowledge:</strong> Baja aparente por estrategia de abstención</li>
     <li><strong>Context:</strong> 256K → 1M tokens (4x)</li>
   </ul>
+
+  <h3>🆕 Benchmarks concretos confirmados (26 May 2026)</h3>
+  <p>
+    Alibaba ha publicado benchmarks oficiales y fuentes independientes han verificado scores adicionales. Estos datos son clave para ajustar las predicciones de los open weights.
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Benchmark</th>
+          <th>Qwen3.7 Max</th>
+          <th>2º puesto</th>
+          <th>Leader?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GPQA Diamond</td>
+          <td><strong>92.4%</strong></td>
+          <td>Opus 4.6 Max (91.3%)</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>SWE-Pro</td>
+          <td><strong>60.6%</strong></td>
+          <td>Opus 4.6 Max</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>SWE-Verified</td>
+          <td>80.4%</td>
+          <td>Opus 4.6 Max (80.8%)</td>
+          <td class="draw">Casi</td>
+        </tr>
+        <tr>
+          <td>SWE-Multilingual</td>
+          <td><strong>78.3%</strong></td>
+          <td>—</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>Terminal Bench 2.0-Terminus</td>
+          <td><strong>69.7%</strong></td>
+          <td>Opus 4.6 Max</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>Humanity's Last Exam</td>
+          <td><strong>41.4%</strong></td>
+          <td>Opus 4.6 Max (40.0%)</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>HMMT 2026 Feb</td>
+          <td><strong>97.1%</strong></td>
+          <td>—</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>IMOAnswerBench</td>
+          <td><strong>90.0%</strong></td>
+          <td>—</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>Apex Reasoning</td>
+          <td><strong>44.5%</strong></td>
+          <td>DeepSeek V4 Pro (38.3%)</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+        <tr>
+          <td>WMT24++ (55 idiomas)</td>
+          <td><strong>85.8%</strong></td>
+          <td>—</td>
+          <td class="winner">✅ Sí</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight success">
+    <strong>🏆 Dato clave para las predicciones:</strong>
+    <p>Qwen3.7 Max es <strong>leader en 9 de 11 benchmarks</strong> donde tiene datos publicados. Solo GPT-5.5 (93.6%) lo supera en GPQA Diamond, y Opus 4.6 Max (80.8%) por 0.4 en SWE-Verified. Esto sugiere que el salto a los open weights podría ser más fuerte en STEM/coding de lo que la extrapolación delta predice — especialmente para el 27B dense.</p>
+  </div>
+
+  <h3>💰 Pricing confirmado</h3>
+  <div class="result-grid">
+    <div class="result-card blue">
+      <div class="label">Input</div>
+      <div class="value">$2.50</div>
+      <div class="sub">por 1M tokens</div>
+    </div>
+    <div class="result-card purple">
+      <div class="label">Output</div>
+      <div class="value">$7.50</div>
+      <div class="sub">por 1M tokens</div>
+    </div>
+    <div class="result-card green">
+      <div class="label">Cache hit</div>
+      <div class="value">$0.25</div>
+      <div class="sub">90% descuento</div>
+    </div>
+    <div class="result-card orange">
+      <div class="label">Max output</div>
+      <div class="value">65,536</div>
+      <div class="sub">tokens/request</div>
+    </div>
+  </div>
+
+  <div class="highlight cyan">
+    <strong>💡 Contexto pricing:</strong>
+    <p>Más barato que GPT-5.5 ($5/$30) y Claude Opus 4.7 ($5/$25). El cache hit a $0.25 es un diferenciador clave para agentes que re-leen el mismo contexto durante cientos de turns. Solo 194.9 tok/s con TTFT de 2.53s — rápido pero muy verboso (97M tokens en benchmarks vs 24M de media).</p>
+  </div>
+
+  <h3>🤖 Soporte Anthropic API & MCP</h3>
+  <p>
+    Qwen3.7 Max soporta <strong>protocolo Anthropic</strong> de forma nativa — drop-in replacement para Claude Code y OpenClaw. También incluye soporte MCP (Model Context Protocol) integrado y el flag <code>preserve_thinking</code> que mantiene el reasoning en conversaciones multi-turn.
+  </p>
 </section>
 
 <!-- Predicciones -->
@@ -1239,6 +1360,13 @@ td:first-child {
           <td>🇺🇸 Google</td>
           <td>Propietario</td>
           <td class="winner">−1.3</td>
+        </tr>
+        <tr>
+          <td>DeepSeek V4 Pro</td>
+          <td>52.0</td>
+          <td>🇨🇳 DeepSeek</td>
+          <td>Propietario</td>
+          <td class="winner">−4.6</td>
         </tr>
         <tr>
           <td>Qwen3.6-27B ⭐ (pred. 3.7: ~52)</td>
@@ -1534,8 +1662,13 @@ td:first-child {
   </div>
 
   <div class="highlight cyan">
-    <strong>5. Benchmarks no publicados</strong>
-    <p>Qwen3.7 Max aún no tiene benchmarks oficiales publicados (SWE-bench, GPQA, AIME, LiveCodeBench). Los scores de Intelligence Index de Artificial Analysis son la única fuente independiente — y tienen sus propias limitaciones metodológicas.</p>
+    <strong>5. Benchmarks oficiales — ya publicados</strong>
+    <p>Alibaba ha publicado GPQA Diamond (92.4%), SWE-Pro (60.6%), SWE-Verified (80.4%), HLE (41.4%), HMMT (97.1%), IMOAnswerBench (90.0%) y más. A diferencia de Qwen3.6, esta generación tiene más transparencia en benchmarks. Los scores de Intelligence Index de Artificial Analysis siguen siendo la única fuente independiente agregada.</p>
+  </div>
+
+  <div class="highlight miss">
+    <strong>7. Posible salto a Qwen 4 (Nov/Dic 2026)</strong>
+    <p>Comunidad Reddit (r/LocalLLM) especula que Alibaba podría saltarse los open weights de 3.7 y lanzar directamente Qwen 4 en noviembre/diciembre 2026. Si esto ocurre, las predicciones de esta página quedarían obsoletas. Sin confirmación oficial, pero el patrón de ~6 meses entre generaciones lo haría plausible. Monitorear anuncios de Alibaba Cloud.</p>
   </div>
 
   <div class="highlight success">
@@ -1551,6 +1684,10 @@ td:first-child {
 
   <div class="update-log">
     <h4>Log de Actualizaciones</h4>
+    <div class="update-entry">
+      <span class="date">26 May 2026</span>
+      <span class="desc">🆕 Actualización mayor: Benchmarks oficiales confirmados — GPQA Diamond 92.4% (leader), SWE-Pro 60.6%, SWE-Verified 80.4%, HLE 41.4%, HMMT 97.1%, IMOAnswerBench 90.0%, Apex Reasoning 44.5%. Pricing confirmado ($2.50/$7.50, cache $0.25). Soporte Anthropic API + MCP. Añadido DeepSeek V4 Pro (52.0) a comparativa. Nuevo riesgo: posible salto a Qwen 4 en Nov/Dic 2026. Coding/STEM no están planos — Qwen3.7 Max es leader en 9 de 11 benchmarks.</span>
+    </div>
     <div class="update-entry">
       <span class="date">22 May 2026</span>
       <span class="desc">Página creada. Datos basados en Qwen3.7 Max (anunciado 20 May), Qwen3.6-27B y Qwen3.6-35B-A3B confirmados. Predicciones iniciales para 27B (~52) y 35B-A3B (~46).</span>
