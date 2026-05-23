@@ -1310,12 +1310,12 @@ footer {
 
   // ── Energy pulses ──
   const pulses = [];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 60; i++) {
     const connIdx = Math.floor(Math.random() * connections.length);
     pulses.push({
       connIdx,
       t: Math.random(),
-      speed: 0.002 + Math.random() * 0.005,
+      speed: 0.003 + Math.random() * 0.008,
       dir: Math.random() > 0.5 ? 1 : -1,
       warm: Math.random() > 0.5
     });
@@ -1323,13 +1323,13 @@ footer {
 
   // ── Ambient particles ──
   const ambParticles = [];
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 300; i++) {
     ambParticles.push({
       x: Math.random(),
       y: Math.random(),
-      size: 0.5 + Math.random() * 1.5,
-      speed: 0.0001 + Math.random() * 0.0004,
-      opacity: 0.1 + Math.random() * 0.3
+      size: 1 + Math.random() * 2.5,
+      speed: 0.0002 + Math.random() * 0.0006,
+      opacity: 0.2 + Math.random() * 0.5
     });
   }
 
@@ -1387,14 +1387,14 @@ footer {
     });
     ctx.closePath();
     ctx.strokeStyle = blackoutState === 'falling'
-      ? `rgba(255, 51, 85, ${0.3 * dim})`
-      : `rgba(0, 212, 255, ${0.2 * dim})`;
-    ctx.lineWidth = 1.5;
+      ? `rgba(255, 51, 85, ${0.5 * dim})`
+      : `rgba(0, 212, 255, ${0.35 * dim})`;
+    ctx.lineWidth = 2;
     ctx.stroke();
 
     // Fill iberia with subtle gradient
     const grad = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, W*0.3);
-    grad.addColorStop(0, `rgba(0, 212, 255, ${0.03 * dim})`);
+    grad.addColorStop(0, `rgba(0, 212, 255, ${0.06 * dim})`);
     grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = grad;
     ctx.fill();
@@ -1410,13 +1410,13 @@ footer {
       let lineColor, lineOpacity;
       if (blackoutState === 'falling' && Math.random() < 0.15) {
         lineColor = '255, 51, 85';
-        lineOpacity = 0.6;
+        lineOpacity = 0.8;
       } else {
         lineColor = '0, 212, 255';
-        lineOpacity = 0.2 * dim;
+        lineOpacity = 0.35 * dim;
       }
       ctx.strokeStyle = `rgba(${lineColor}, ${lineOpacity})`;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.5;
       ctx.stroke();
     });
 
@@ -1435,56 +1435,63 @@ footer {
       const py = a.y + (b.y - a.y) * p.t;
 
       const color = p.warm ? '255, 215, 0' : '0, 212, 255';
+      // Core
       ctx.beginPath();
-      ctx.arc(px, py, 3, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${color}, ${0.9 * dim})`;
+      ctx.arc(px, py, 4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${0.95 * dim})`;
       ctx.fill();
 
       // Glow
       ctx.beginPath();
-      ctx.arc(px, py, 8, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${color}, ${0.2 * dim})`;
+      ctx.arc(px, py, 12, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${0.3 * dim})`;
+      ctx.fill();
+
+      // Outer glow
+      ctx.beginPath();
+      ctx.arc(px, py, 20, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${0.1 * dim})`;
       ctx.fill();
     });
 
     // Nodes
     nodes.forEach((node, i) => {
       const s = toScreen(node.x, node.y);
-      const bobY = Math.sin(time * 0.8 + i * 0.7) * 3;
-      const bobX = Math.cos(time * 0.5 + i * 0.5) * 2;
+      const bobY = Math.sin(time * 0.8 + i * 0.7) * 4;
+      const bobX = Math.cos(time * 0.5 + i * 0.5) * 3;
       const nx = s.x + bobX;
       const ny = s.y + bobY;
 
       if (node.hub) {
         // Hub glow ring
-        const ringSize = 12 + Math.sin(time * 2 + i) * 3;
+        const ringSize = 16 + Math.sin(time * 2 + i) * 4;
         ctx.beginPath();
         ctx.arc(nx, ny, ringSize, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 215, 0, ${0.3 * dim})`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(255, 215, 0, ${0.5 * dim})`;
+        ctx.lineWidth = 2.5;
         ctx.stroke();
 
         // Hub outer glow
         ctx.beginPath();
-        ctx.arc(nx, ny, 20, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 215, 0, ${0.08 * dim})`;
+        ctx.arc(nx, ny, 28, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 215, 0, ${0.12 * dim})`;
         ctx.fill();
       }
 
       // Node dot
-      const nodeSize = node.hub ? 5 : 3;
+      const nodeSize = node.hub ? 7 : 4;
       ctx.beginPath();
       ctx.arc(nx, ny, nodeSize, 0, Math.PI * 2);
       ctx.fillStyle = node.hub
-        ? `rgba(255, 215, 0, ${0.9 * dim})`
-        : `rgba(0, 212, 255, ${0.8 * dim})`;
+        ? `rgba(255, 215, 0, ${0.95 * dim})`
+        : `rgba(0, 212, 255, ${0.9 * dim})`;
       ctx.fill();
 
       // Node glow
       ctx.beginPath();
-      ctx.arc(nx, ny, nodeSize * 3, 0, Math.PI * 2);
+      ctx.arc(nx, ny, nodeSize * 4, 0, Math.PI * 2);
       const glowColor = node.hub ? '255, 215, 0' : '0, 212, 255';
-      ctx.fillStyle = `rgba(${glowColor}, ${0.15 * dim})`;
+      ctx.fillStyle = `rgba(${glowColor}, ${0.2 * dim})`;
       ctx.fill();
     });
 
