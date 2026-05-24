@@ -13,15 +13,17 @@ html{scroll-behavior:smooth}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--t1);line-height:1.7;overflow-x:hidden}
 .progress-bar{position:fixed;top:54px;left:0;height:2px;background:linear-gradient(90deg,var(--ar),var(--ag));z-index:1001;width:0%;transition:width .1s linear;box-shadow:0 0 8px rgba(192,57,43,.4)}
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);height:54px;display:flex;align-items:center;padding:0 2rem}
-.nb{font-family:'Playfair Display',serif;font-weight:700;color:var(--ag);flex-shrink:0}
-.nl{display:flex;align-items:center;flex:1;justify-content:center;gap:0;margin:0 1rem}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap;margin-right:1.1rem}.nl a:hover{color:var(--ag)}
-/* Inline nav toggle (inside .nl, desktop only) */
-.lt{display:inline-flex;border:1px solid var(--b);border-radius:4px;overflow:hidden}.lt button{background:transparent;border:none;color:var(--tm);font-size:.65rem;font-weight:700;padding:3px 8px;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;transition:all .2s}.lt button.act{background:var(--ag);color:var(--bg);border-radius:3px}.lt button:hover:not(.act){color:var(--t1)}
-.nl .lt{margin-left:8px}
-/* Mobile lang toggle: hidden on desktop, visible on mobile */
-#mobileLangToggle{display:none;margin-left:8px}
-@media(max-width:1200px){#mobileLangToggle{display:inline-flex}}
-.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+/* Left zone: lang toggle + brand */
+.nav-left{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.nb{font-family:'Playfair Display',serif;font-weight:700;color:var(--ag);white-space:nowrap}
+/* Center zone: nav links */
+.nl{display:flex;align-items:center;flex:1;justify-content:center;gap:1.5rem;margin:0 2rem}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap}.nl a:hover{color:var(--ag)}
+/* Right zone: status + hamburger */
+.nav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+/* Lang toggle pill */
+.lt{display:inline-flex;border:1px solid var(--b);border-radius:4px;overflow:hidden;flex-shrink:0}.lt button{background:transparent;border:none;color:var(--tm);font-size:.65rem;font-weight:700;padding:3px 8px;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;transition:all .2s}.lt button.act{background:var(--ag);color:var(--bg);border-radius:3px}.lt button:hover:not(.act){color:var(--t1)}
+
+.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase;white-space:nowrap}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002;background:none;border:none;padding:8px}.ham span{display:block;width:22px;height:2px;background:var(--t1);transition:all .3s}.ham.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.ham.active span:nth-child(2){opacity:0}.ham.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s}.ov.s{opacity:1;pointer-events:all}
 .sm{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--bgc);border-left:1px solid var(--b);z-index:1001;padding-top:100px;transition:right .35s;overflow-y:auto}.sm.o{right:0}.sm a{display:block;padding:14px 2rem;color:var(--t2);text-decoration:none;font-size:.85rem;border-bottom:1px solid var(--b);transition:all .2s}.sm a:hover{color:var(--ag);padding-left:24px;background:var(--bga)}
@@ -76,7 +78,7 @@ section[data-lang]{display:none}.lang-es section[data-lang="es"],.lang-en sectio
 .nl a{position:relative}.nl a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--ag);transition:width .3s ease}.nl a:hover::after{width:100%}
 blockquote{transition:border-color .3s,box-shadow .3s}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--b);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--ag)}
-@media(max-width:1400px){.nl{display:none}.ham{display:flex}.hero{min-height:90vh;padding:6rem 1.5rem 3rem}section{padding:3rem 1.5rem}section:nth-child(even){padding-left:1.5rem;padding-right:1.5rem}.cg{grid-template-columns:1fr 1fr}.kf{grid-template-columns:1fr}.hm{gap:1.5rem}.os{padding:2rem 1.5rem}.rg{grid-template-columns:1fr}}
+@media(max-width:1100px){.nl{display:none}.ham{display:flex}.nav-right .nli{display:none}.hero{min-height:90vh;padding:6rem 1.5rem 3rem}section{padding:3rem 1.5rem}section:nth-child(even){padding-left:1.5rem;padding-right:1.5rem}.cg{grid-template-columns:1fr 1fr}.kf{grid-template-columns:1fr}.hm{gap:1.5rem}.os{padding:2rem 1.5rem}.rg{grid-template-columns:1fr}}
 @media(max-width:480px){.cg{grid-template-columns:1fr}}
 @media(max-width:600px){.ft thead{display:none}.ft,.ft tbody,.ft tr,.ft td{display:block}.ft tr{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:14px 16px;margin-bottom:10px}.ft td{border:none;padding:8px 0;position:relative;text-align:right;padding-left:55%;border-bottom:1px solid rgba(255,255,255,.04)}.ft td:last-child{border-bottom:none}.ft td::before{content:attr(data-label);position:absolute;left:0;top:8px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--ag);text-transform:uppercase;text-align:left;width:50%;line-height:1.4}}
 </style>
@@ -86,7 +88,10 @@ blockquote{transition:border-color .3s,box-shadow .3s}
 <div class="progress-bar" id="progressBar"></div>
 
 <nav>
-  <div class="nb">CASO ANDIC</div>
+  <div class="nav-left">
+    <div class="lt"><button class="act" id="btnEs" onclick="setLang('es')">ES</button><button id="btnEn" onclick="setLang('en')">EN</button></div>
+    <div class="nb">CASO ANDIC</div>
+  </div>
   <div class="nl">
     <span data-lang-i="es">
       <a href="#resumen">Resumen</a><a href="#cronologia">Cronología</a><a href="#pruebas">Pruebas</a><a href="#defensa">Defensa</a><a href="#motivo">Motivo</a><a href="#probabilidad">Probabilidad</a><a href="#analisis">Análisis</a><a href="#fuentes">Fuentes</a>
@@ -94,12 +99,11 @@ blockquote{transition:border-color .3s,box-shadow .3s}
     <span data-lang-i="en">
       <a href="#overview">Overview</a><a href="#timeline">Timeline</a><a href="#evidence">Evidence</a><a href="#defense">Defense</a><a href="#motive">Motive</a><a href="#probability">Probability</a><a href="#opinion">Analysis</a><a href="#sources">Sources</a>
     </span>
-    <div class="lt"><button class="act" id="btnEs" onclick="setLang('es')">ES</button><button id="btnEn" onclick="setLang('en')">EN</button></div>
   </div>
-  <!-- Mobile lang toggle (visible only on small screens) -->
-  <div class="lt" id="mobileLangToggle"><button class="act" id="btnEsMobile" onclick="setLang('es')">ES</button><button id="btnEnMobile" onclick="setLang('en')">EN</button></div>
-  <div class="nli"><span data-lang-i="es">Caso activo</span><span data-lang-i="en">Active case</span></div>
-  <button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <div class="nli"><span data-lang-i="es">Caso activo</span><span data-lang-i="en">Active case</span></div>
+    <button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
 </nav>
 <div class="ov" id="overlay"></div>
 <div class="sm" id="sideMenu">
@@ -378,8 +382,8 @@ function setLang(lang){
   document.body.className='lang-'+lang;
   var c=lang==='es'?'act':'';
   var nc=c==='act'?'':'act';
-  ['btnEs','btnEsMobile','btnEsSm'].forEach(function(id){var el=document.getElementById(id);if(el)el.className=c;});
-  ['btnEn','btnEnMobile','btnEnSm'].forEach(function(id){var el=document.getElementById(id);if(el)el.className=nc;});
+  ['btnEs','btnEsSm'].forEach(function(id){var el=document.getElementById(id);if(el)el.className=c;});
+  ['btnEn','btnEnSm'].forEach(function(id){var el=document.getElementById(id);if(el)el.className=nc;});
   localStorage.setItem('andic-lang',lang);
   // Re-trigger scroll reveal for newly visible elements
   initReveal();
