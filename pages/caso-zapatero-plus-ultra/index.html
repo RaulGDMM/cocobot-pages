@@ -46,6 +46,7 @@ h3.subs{font-family:'Playfair Display',serif;margin:1.5rem 0 1rem;font-size:1.15
 [data-lang]{display:none}.lang-es [data-lang="es"],.lang-en [data-lang="en"]{display:block}.lang-es [data-lang="en"],.lang-en [data-lang="es"]{display:none}
 /* Inline lang toggle */
 [data-lang-i]{display:none}.lang-es [data-lang-i="es"],.lang-en [data-lang-i="en"]{display:inline-flex}.lang-es [data-lang-i="en"],.lang-en [data-lang-i="es"]{display:none}
+.lang-es .sm [data-lang-i="es"],.lang-en .sm [data-lang-i="en"]{display:block!important}
 /* Hero lang */
 .hero[data-lang]{display:none}.lang-es .hero[data-lang="es"],.lang-en .hero[data-lang="en"]{display:flex}.lang-es .hero[data-lang="en"],.lang-en .hero[data-lang="es"]{display:none}
 /* Section lang */
@@ -112,10 +113,10 @@ blockquote{transition:border-color .3s,box-shadow .3s}
 <div class="ov" id="overlay"></div>
 <div class="sm" id="sideMenu">
   <div class="lt" style="padding:12px 2rem;display:flex;margin-bottom:8px"><button class="act" id="btnEsSm" onclick="setLang('es')">ES</button><button id="btnEnSm" onclick="setLang('en')">EN</button></div>
-  <span data-lang-i="es" style="display:block">
+  <span data-lang-i="es">
     <a href="#imputacion">⚖️ Imputación</a><a href="#operativo">🚨 Operativo UDEF</a><a href="#caso">🔍 El Caso</a><a href="#pruebas">📋 Pruebas</a><a href="#cronologia">📅 Cronología</a><a href="#figuras">👥 Figuras</a><a href="#contexto">🏛️ Contexto</a><a href="#lawfare">❓ ¿Lawfare?</a><a href="#impacto">📊 Impacto</a><a href="#analisis">🧠 Análisis</a><a href="#probabilidad">📊 Probabilidad</a><a href="#fuentes">📚 Fuentes</a>
   </span>
-  <span data-lang-i="en" style="display:block">
+  <span data-lang-i="en">
     <a href="#imputacion">⚖️ Indictment</a><a href="#operativo">🚨 UDEF Operation</a><a href="#caso">🔍 The Case</a><a href="#pruebas">📋 Evidence</a><a href="#cronologia">📅 Timeline</a><a href="#figuras">👥 Key Figures</a><a href="#contexto">🏛️ Context</a><a href="#lawfare">❓ Lawfare?</a><a href="#impacto">📊 Impact</a><a href="#analisis">🧠 Analysis</a><a href="#probabilidad">📊 Probability</a><a href="#fuentes">📚 Sources</a>
   </span>
 </div>
@@ -673,7 +674,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
 (function(){var els=document.querySelectorAll('.cg,.kf,.rg,.hb,.tx,.si2,blockquote,.os,.ft,.tl,.sl,.st,.cc,.fc,.rc,.ti,.ft tbody tr');els.forEach(function(el,idx){el.classList.add('rv');if(el.classList.contains('cc')||el.classList.contains('fc')||el.classList.contains('rc')){el.classList.add('d'+(Math.min(idx%4+1,4)));}});var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el){obs.observe(el);});})();
 
 // Hero metrics stagger animation
-(function(){var hms=document.querySelectorAll('.hm');hms.forEach(function(hm){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('animate');obs.unobserve(e.target);}});},{threshold:0.5});obs.observe(hm);})();
+(function(){var hms=document.querySelectorAll('.hm');hms.forEach(function(hm){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('animate');obs.unobserve(e.target);}});},{threshold:0.5});obs.observe(hm);});})();
 
 // Glow follow effect on cards
 (function(){var cards=document.querySelectorAll('.cc,.fc,.rc');cards.forEach(function(card){card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();var x=((e.clientX-r.left)/r.width)*100;var y=((e.clientY-r.top)/r.height)*100;card.style.setProperty('--mx',x+'%');card.style.setProperty('--my',y+'%');});});})();
