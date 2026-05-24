@@ -13,10 +13,14 @@ html{scroll-behavior:smooth}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--t1);line-height:1.7;overflow-x:hidden}
 /* Reading progress bar */
 .progress-bar{position:fixed;top:54px;left:0;height:2px;background:linear-gradient(90deg,var(--ar),var(--ag));z-index:1001;width:0%;transition:width .1s linear;box-shadow:0 0 8px rgba(192,57,43,.4)}
-nav{position:fixed;top:0px;left:0;right:0;z-index:1000;background:rgba(10,10,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
-.nb{font-family:'Playfair Display',serif;font-weight:700;color:var(--ag)}
-.nl{display:flex;gap:1.1rem}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap}.nl a:hover{color:var(--ag)}
-.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}
+/* === NAV === */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);height:54px;display:flex;align-items:center;padding:0 2rem}
+.nav-left{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.nav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0;margin-left:auto}
+.nb{font-family:'Playfair Display',serif;font-weight:700;color:var(--ag);white-space:nowrap}
+.nl{display:flex;align-items:center;flex:1;justify-content:center;gap:2rem;margin:0 1rem}.nl span{display:flex;gap:1.5rem}.nl a{color:var(--t2);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;transition:color .2s;white-space:nowrap}.nl a:hover{color:var(--ag)}
+.lt{display:inline-flex;border:1px solid var(--b);border-radius:4px;overflow:hidden;flex-shrink:0}.lt button{background:transparent;border:none;color:var(--tm);font-size:.65rem;font-weight:700;padding:3px 8px;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;transition:all .2s}.lt button.act{background:var(--ag);color:var(--bg);border-radius:3px}.lt button:hover:not(.act){color:var(--t1)}
+.nli{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--arl);text-transform:uppercase;white-space:nowrap}.nli::before{content:'';width:6px;height:6px;background:var(--arl);border-radius:50%;animation:p 1.5s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1002;background:none;border:none;padding:8px}.ham span{display:block;width:22px;height:2px;background:var(--t1);transition:all .3s}.ham.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.ham.active span:nth-child(2){opacity:0}.ham.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .35s}.ov.s{opacity:1;pointer-events:all}
 .sm{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--bgc);border-left:1px solid var(--b);z-index:1001;padding-top:100px;transition:right .35s;overflow-y:auto}.sm.o{right:0}.sm a{display:block;padding:14px 2rem;color:var(--t2);text-decoration:none;font-size:.85rem;border-bottom:1px solid var(--b);transition:all .2s}.sm a:hover{color:var(--ag);padding-left:24px;background:var(--bga)}
@@ -32,12 +36,27 @@ section:nth-child(even){background:var(--bg2);max-width:100%;padding-left:max(2r
 .ft{width:100%;border-collapse:collapse;margin:2rem 0;font-size:.9rem}.ft thead th{text-align:left;padding:12px 16px;background:var(--bga);color:var(--ag);font-weight:600;font-size:.75rem;text-transform:uppercase;border-bottom:1px solid var(--b)}.ft tbody td{padding:12px 16px;border-bottom:1px solid var(--b);color:var(--t2)}.ft tbody tr:hover td{background:var(--bga);color:var(--t1)}.ft .am{font-family:'JetBrains Mono',monospace;color:var(--arl);font-weight:500}
 .kf{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin:2rem 0}.fc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.5rem;transition:border-color .3s}.fc:hover{border-color:var(--ag)}.fc .fn{font-weight:700;font-size:1rem;margin-bottom:4px}.fc .fr{font-size:.8rem;color:var(--ag);margin-bottom:8px}.fc .fd{font-size:.85rem;color:var(--t2);line-height:1.6}
 blockquote{border-left:3px solid var(--ag);padding:1rem 1.5rem;margin:2rem 0;background:var(--bgc);border-radius:0 8px 8px 0}blockquote p{font-style:italic;color:var(--t2);font-size:.95rem;line-height:1.7}blockquote cite{display:block;margin-top:.5rem;font-size:.8rem;color:var(--tm);font-style:normal}
-.os{background:var(--bgc);border:1px solid var(--b);border-radius:12px;padding:2.5rem;margin:2rem 0;position:relative}.os::before{content:'ANÁLISIS';position:absolute;top:-10px;left:2rem;background:var(--ar);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:4px 12px;border-radius:4px}.os h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;margin-top:.5rem}.os p{color:var(--t2);font-size:.95rem;line-height:1.8;margin-bottom:1rem}
+.os{background:var(--bgc);border:1px solid var(--b);border-radius:12px;padding:2.5rem;margin:2rem 0;position:relative}.os::before{content:'ANÁLISIS';position:absolute;top:-10px;left:2rem;background:var(--ar);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:4px 12px;border-radius:4px}.os.en::before{content:'ANALYSIS'}.os h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;margin-top:.5rem}.os p{color:var(--t2);font-size:.95rem;line-height:1.8;margin-bottom:1rem}
 .rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:2rem 0}.rc{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:1.25rem;border-left:3px solid var(--ar)}.rc:hover{border-left-color:var(--ag)}.ri{font-size:1.2rem;margin-bottom:.5rem}.rn{font-weight:600;font-size:.9rem;margin-bottom:4px}.rd{font-size:.8rem;color:var(--tm);line-height:1.5}
 .sr{display:grid;gap:.5rem;margin:2rem 0}.si2{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;background:var(--bgc);border:1px solid var(--b);border-radius:8px}.si2:hover{border-color:var(--ag)}.sn{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--ag);background:rgba(212,168,67,.1);padding:2px 8px;border-radius:4px;flex-shrink:0;min-width:24px;text-align:center}.si2 div{flex:1}.si2 strong{color:var(--t1);font-size:.9rem}.si2 a{color:var(--ag);font-size:.8rem;text-decoration:none}.si2 a:hover{color:var(--agd);text-decoration:underline}
 .pf{text-align:center;padding:20px;border-top:1px solid var(--b);margin-top:30px}.fi{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}.fb{color:var(--tm);font-size:.85em}.vc{color:var(--tm);font-size:.8em;background:rgba(212,168,67,.06);padding:4px 10px;border-radius:6px;border:1px solid var(--b)}
 h3.sub{font-family:'Playfair Display',serif;margin:2rem 0 1rem;font-size:1.3rem}
 h3.subs{font-family:'Playfair Display',serif;margin:1.5rem 0 1rem;font-size:1.15rem}
+/* Lang toggle: hide non-active lang */
+[data-lang]{display:none}.lang-es [data-lang="es"],.lang-en [data-lang="en"]{display:block}.lang-es [data-lang="en"],.lang-en [data-lang="es"]{display:none}
+/* Inline lang toggle */
+[data-lang-i]{display:none}.lang-es [data-lang-i="es"],.lang-en [data-lang-i="en"]{display:inline-flex}.lang-es [data-lang-i="en"],.lang-en [data-lang-i="es"]{display:none}
+/* Hero lang */
+.hero[data-lang]{display:none}.lang-es .hero[data-lang="es"],.lang-en .hero[data-lang="en"]{display:flex}.lang-es .hero[data-lang="en"],.lang-en .hero[data-lang="es"]{display:none}
+/* Section lang */
+section[data-lang]{display:none}.lang-es section[data-lang="es"],.lang-en section[data-lang="en"]{display:block}.lang-es section[data-lang="en"],.lang-en section[data-lang="es"]{display:none}
+/* Hero metrics: ensure visible when parent hero is flex */
+.hero .hm{display:flex!important;opacity:1!important;transform:none!important}
+.hero .hm .hi{opacity:1!important;transform:none!important}
+.hero .si{opacity:1!important}
+.hero .hd{opacity:1!important}
+.hero h1{opacity:1!important;transform:none!important}
+.hero .sub{opacity:1!important;transform:none!important}
 /* Scroll reveal */
 .rv{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.rv.vis{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}
 /* Glow hover cards */
@@ -53,50 +72,113 @@ h3.subs{font-family:'Playfair Display',serif;margin:1.5rem 0 1rem;font-size:1.15
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:1rem;max-width:900px;opacity:0;transform:translateY(20px);animation:heroIn .8s cubic-bezier(.22,1,.36,1) .2s forwards}.hero h1 .ac{color:var(--ar);position:relative;display:inline-block}.hero h1 .ac::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:3px;background:var(--ar);opacity:.3;transform:scaleX(0);transform-origin:left;animation:underlineIn .6s cubic-bezier(.22,1,.36,1) .8s forwards}@keyframes heroIn{to{opacity:1;transform:translateY(0)}}@keyframes underlineIn{to{transform:scaleX(1)}}
 .hd{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--ag);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:heroIn .6s cubic-bezier(.22,1,.36,1) .1s forwards}
 .sub{font-size:clamp(.9rem,1.8vw,1.1rem);color:var(--t2);max-width:700px;line-height:1.7;margin-bottom:2rem;opacity:0;transform:translateY(15px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) .4s forwards}
-.hm{display:flex;gap:2rem;flex-wrap:wrap;justify-content:flex-start;margin-bottom:2rem;opacity:0;transform:translateY(15px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) .6s forwards}.hm{gap:1.5rem}.hv{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--arl)}.hla{font-size:.7rem;color:var(--tm);text-transform:uppercase;margin-top:4px}
+.hm{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:flex-start;margin-bottom:2rem;opacity:0;transform:translateY(15px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) .6s forwards}.hv{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--arl)}.hla{font-size:.7rem;color:var(--tm);text-transform:uppercase;margin-top:4px}
 .hi{opacity:0;transform:translateY(10px)}.hm.animate .hi{animation:metricIn .5s cubic-bezier(.22,1,.36,1) forwards}.hm.animate .hi:nth-child(1){animation-delay:.6s}.hm.animate .hi:nth-child(2){animation-delay:.7s}.hm.animate .hi:nth-child(3){animation-delay:.8s}.hm.animate .hi:nth-child(4){animation-delay:.9s}.hm.animate .hi:nth-child(5){animation-delay:1s}@keyframes metricIn{to{opacity:1;transform:translateY(0)}}
 .si{opacity:0;animation:heroIn .5s cubic-bezier(.22,1,.36,1) 1.2s forwards}
-/* Section titles animation */
 .st{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.st.vis{opacity:1;transform:translateY(0)}
 .sl{opacity:0;transition:opacity .5s ease}.sl.vis{opacity:1}
-/* Nav link active indicator */
 .nl a{position:relative}.nl a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--ag);transition:width .3s ease}.nl a:hover::after{width:100%}
-/* Blockquote pulse */
-blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-left-color:var(--ar);box-shadow:0 0 20px rgba(192,57,43,.1)}
-/* Scrollbar */
+blockquote{transition:border-color .3s,box-shadow .3s}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--b);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--ag)}
-@media(max-width:768px){.nl{display:none}.ham{display:flex}.hero{min-height:90vh;padding:6rem 1.5rem 3rem}section{padding:3rem 1.5rem}section:nth-child(even){padding-left:1.5rem;padding-right:1.5rem}.cg{grid-template-columns:1fr 1fr}.kf{grid-template-columns:1fr}.hm{gap:1.5rem}.os{padding:2rem 1.5rem}.rg{grid-template-columns:1fr}}
+@media(max-width:1100px){.nl{display:none!important}.ham{display:flex!important}.nav-right .nli{display:none}.hero{min-height:90vh;padding:6rem 1.5rem 3rem}section{padding:3rem 1.5rem}section:nth-child(even){padding-left:1.5rem;padding-right:1.5rem}.cg{grid-template-columns:1fr 1fr}.kf{grid-template-columns:1fr}.hm{gap:1.5rem}.os{padding:2rem 1.5rem}.rg{grid-template-columns:1fr}}
+@media(min-width:1101px){.ham{display:none!important}.nl{display:flex!important}.nav-right .nli{display:inline-flex!important}}
 @media(max-width:480px){.cg{grid-template-columns:1fr}}
 @media(max-width:600px){.ft thead{display:none}.ft,.ft tbody,.ft tr,.ft td{display:block}.ft tr{background:var(--bgc);border:1px solid var(--b);border-radius:8px;padding:14px 16px;margin-bottom:10px}.ft td{border:none;padding:8px 0;position:relative;text-align:right;padding-left:55%;border-bottom:1px solid rgba(255,255,255,.04)}.ft td:last-child{border-bottom:none}.ft td::before{content:attr(data-label);position:absolute;left:0;top:8px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--ag);text-transform:uppercase;text-align:left;width:50%;line-height:1.4}}
 </style>
 </head>
-<body>
+<body class="lang-es">
+
 <div class="progress-bar" id="progressBar"></div>
-<nav><div class="nb">CASO PLUS ULTRA</div><div class="nl"><a href="#imputacion">Imputación</a><a href="#operativo">Operativo</a><a href="#caso">El Caso</a><a href="#pruebas">Pruebas</a><a href="#cronologia">Cronología</a><a href="#contexto">Contexto</a><a href="#lawfare">¿Lawfare?</a><a href="#analisis">Análisis</a><a href="#probabilidad">Probabilidad</a><a href="#fuentes">Fuentes</a></div><div class="nli">En desarrollo</div><button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button></nav>
+
+<nav>
+  <div class="nav-left">
+    <div class="lt"><button class="act" id="btnEs" onclick="setLang('es')">ES</button><button id="btnEn" onclick="setLang('en')">EN</button></div>
+    <div class="nb">CASO PLUS ULTRA</div>
+  </div>
+  <div class="nl">
+    <span data-lang-i="es">
+      <a href="#imputacion">Imputación</a><a href="#operativo">Operativo</a><a href="#caso">El Caso</a><a href="#pruebas">Pruebas</a><a href="#cronologia">Cronología</a><a href="#contexto">Contexto</a><a href="#lawfare">¿Lawfare?</a><a href="#analisis">Análisis</a><a href="#probabilidad">Probabilidad</a><a href="#fuentes">Fuentes</a>
+    </span>
+    <span data-lang-i="en">
+      <a href="#imputacion">Indictment</a><a href="#operativo">Operation</a><a href="#caso">The Case</a><a href="#pruebas">Evidence</a><a href="#cronologia">Timeline</a><a href="#contexto">Context</a><a href="#lawfare">Lawfare?</a><a href="#analisis">Analysis</a><a href="#probabilidad">Probability</a><a href="#fuentes">Sources</a>
+    </span>
+  </div>
+  <div class="nav-right">
+    <div class="nli"><span data-lang-i="es">En desarrollo</span><span data-lang-i="en">Ongoing</span></div>
+    <button class="ham" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
 <div class="ov" id="overlay"></div>
-<div class="sm" id="sideMenu"><a href="#imputacion">⚖️ Imputación</a><a href="#operativo">🚨 Operativo UDEF</a><a href="#caso">🔍 El Caso</a><a href="#pruebas">📋 Pruebas</a><a href="#cronologia">📅 Cronología</a><a href="#figuras">👥 Figuras</a><a href="#contexto">🏛️ Contexto</a><a href="#lawfare">❓ ¿Lawfare?</a><a href="#impacto">📊 Impacto</a><a href="#analisis">🧠 Análisis</a><a href="#probabilidad">📊 Probabilidad</a><a href="#fuentes">📚 Fuentes</a></div>
-<header class="hero">
+<div class="sm" id="sideMenu">
+  <div class="lt" style="padding:12px 2rem;display:flex;margin-bottom:8px"><button class="act" id="btnEsSm" onclick="setLang('es')">ES</button><button id="btnEnSm" onclick="setLang('en')">EN</button></div>
+  <span data-lang-i="es" style="display:block">
+    <a href="#imputacion">⚖️ Imputación</a><a href="#operativo">🚨 Operativo UDEF</a><a href="#caso">🔍 El Caso</a><a href="#pruebas">📋 Pruebas</a><a href="#cronologia">📅 Cronología</a><a href="#figuras">👥 Figuras</a><a href="#contexto">🏛️ Contexto</a><a href="#lawfare">❓ ¿Lawfare?</a><a href="#impacto">📊 Impacto</a><a href="#analisis">🧠 Análisis</a><a href="#probabilidad">📊 Probabilidad</a><a href="#fuentes">📚 Fuentes</a>
+  </span>
+  <span data-lang-i="en" style="display:block">
+    <a href="#imputacion">⚖️ Indictment</a><a href="#operativo">🚨 UDEF Operation</a><a href="#caso">🔍 The Case</a><a href="#pruebas">📋 Evidence</a><a href="#cronologia">📅 Timeline</a><a href="#figuras">👥 Key Figures</a><a href="#contexto">🏛️ Context</a><a href="#lawfare">❓ Lawfare?</a><a href="#impacto">📊 Impact</a><a href="#analisis">🧠 Analysis</a><a href="#probabilidad">📊 Probability</a><a href="#fuentes">📚 Sources</a>
+  </span>
+</div>
+
+<!-- ===== HERO ===== -->
+<header class="hero" data-lang="es">
 <div class="hd">Actualizado 23 de mayo de 2026 · Audiencia Nacional · Operativa de facturas falsas revelada · Declaración el 2 de junio</div>
 <h1>Zapatero, <span class="ac">imputado</span> por corrupción</h1>
 <p class="sub">Primer presidente en la democracia investigado por tráfico de influencias, organización criminal y blanqueo. Cuentas bloqueadas, 1,9 M€ en beneficios presuntos, offshore Dubái, caja fuerte oculta, chat "AR", conexión China, auditor testifica y operativa de facturas falsas coordinadas.</p>
 <div class="hm"><div class="hi"><div class="hv">53M€</div><div class="hla">Rescate público</div></div><div class="hi"><div class="hv">1,9M€</div><div class="hla">Beneficios presuntos</div></div><div class="hi"><div class="hv">4</div><div class="hla">Delitos</div></div><div class="hi"><div class="hv">2 jun</div><div class="hla">Declaración</div></div><div class="hi"><div class="hv">🔒</div><div class="hla">Cuentas bloqueadas</div></div></div>
 <div class="si"><span>Descubrir</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
 </header>
-<section id="imputacion"><div class="sl">⚖️ La Imputación</div><h2 class="st">Un precedente sin precedentes</h2>
+<header class="hero" data-lang="en">
+<div class="hd">Updated May 23, 2026 · National Court · Fake invoice operation revealed · Testimony on June 2</div>
+<h1>Zapatero, <span class="ac">indicted</span> for corruption</h1>
+<p class="sub">First president in the democracy investigated for influence peddling, criminal organization and money laundering. Blocked accounts, €1.9M in alleged profits, Dubai offshore, hidden safe, "AR" chat, China connection, auditor testifies, and coordinated fake invoice operation.</p>
+<div class="hm"><div class="hi"><div class="hv">€53M</div><div class="hla">Public bailout</div></div><div class="hi"><div class="hv">€1.9M</div><div class="hla">Alleged profits</div></div><div class="hi"><div class="hv">4</div><div class="hla">Crimes</div></div><div class="hi"><div class="hv">Jun 2</div><div class="hla">Testimony</div></div><div class="hi"><div class="hv">🔒</div><div class="hla">Accounts blocked</div></div></div>
+<div class="si"><span>Discover</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+</header>
+
+<!-- ===== IMPUTACION ===== -->
+<section id="imputacion" data-lang="es">
+<div class="sl">⚖️ La Imputación</div><h2 class="st">Un precedente sin precedentes</h2>
 <p class="tx">El expresidente <strong>José Luis Rodríguez Zapatero</strong> ha sido imputado por el Juzgado Central de Instrucción nº 4 de la Audiencia Nacional, bajo el juez <strong>José Luis Calama</strong>. Primer presidente en la democracia investigado por corrupción. El auto de <strong>88 folios</strong> detalla maniobras para ocultar el dinero: facturas falsas, offshore en Dubái y órdenes para borrar la palabra «comisión».</p>
 <p class="tx">La Audiencia Nacional ha ordenado el <strong>bloqueo proporcional de las cuentas bancarias</strong> de Zapatero donde recibió aproximadamente <strong>490.780 €</strong> de la consultora investigada. El juez cifra los beneficios presuntos en <strong>1.948.857 €</strong>: 1.525.078 € para Zapatero y 423.779 € para sus hijas.</p>
 <p class="tx">Zapatero y su esposa, <strong>María Sonsoles Espinosa Díaz</strong>, compartieron una cuenta que ingresó <strong>1,5 millones de euros</strong> entre 2020 y 2025 procedentes de empresas vinculadas a la trama. De estos, <strong>445.200 €</strong> fueron transferidos entre el 11/03/2021 y el 20/06/2025, y <strong>29.680 €</strong> en 2020. El juez atribuye las demás transferencias a pagos por servicios profesionales legítimos (conferencias, mediación, asesoramiento estratégico y docencia).</p>
 <div class="cg"><div class="cc"><div class="ci2">🏛️</div><div class="cn">Organización Criminal</div><div class="cd">Estructura con cuatro niveles jerárquicos</div></div><div class="cc"><div class="ci2">🤝</div><div class="cn">Tráfico de Influencias</div><div class="cd">Ejercicio ilícito ante instancias públicas</div></div><div class="cc"><div class="ci2">📄</div><div class="cn">Falsedad Documental</div><div class="cd">Facturas y contratos ficticios</div></div><div class="cc"><div class="ci2">💰</div><div class="cn">Blanqueo de Capitales</div><div class="cd">Offshore, cripto y empresas pantalla</div></div></div>
 <div class="hb"><p><strong>Hasta 8 años de prisión.</strong> El juez sitúa a Zapatero en el «vértice» de la estructura con «liderazgo estratégico» y «contactos de alto nivel».</p></div>
 <blockquote><p>«Jamás he realizado ninguna gestión para el rescate de Plus Ultra.»</p><cite>— Zapatero, 19/05/2026</cite></blockquote>
-<p class="tx">Citado a declarar el <strong>2 de junio de 2026</strong>. <strong>Vox y Hazte Oír</strong> han pedido al juez que le retire el pasaporte y fije una fianza superior a <strong>700.000 €</strong> por riesgo de fuga. Secreto de sumario levantado tras meses de investigación de la UDEF y la Fiscalía Anticorrupción.</p></section>
-<section id="operativo"><div class="sl">🚨 Operativo UDEF</div><h2 class="st">Registros simultáneos y «reivindicación» policial</h2>
+<p class="tx">Citado a declarar el <strong>2 de junio de 2026</strong>. <strong>Vox y Hazte Oír</strong> han pedido al juez que le retire el pasaporte y fije una fianza superior a <strong>700.000 €</strong> por riesgo de fuga. Secreto de sumario levantado tras meses de investigación de la UDEF y la Fiscalía Anticorrupción.</p>
+</section>
+<section id="imputacion" data-lang="en">
+<div class="sl">⚖️ The Indictment</div><h2 class="st">An unprecedented precedent</h2>
+<p class="tx">Former president <strong>José Luis Rodríguez Zapatero</strong> has been indicted by the Central Instruction Court No. 4 of the National Court, under judge <strong>José Luis Calama</strong>. First president in the democracy investigated for corruption. The <strong>88-page</strong> ruling details maneuvers to hide money: fake invoices, Dubai offshore, and orders to delete the word "commission".</p>
+<p class="tx">The National Court has ordered <strong>proportional blocking of Zapatero's bank accounts</strong> where he received approximately <strong>€490,780</strong> from the investigated consultancy. The judge estimates alleged profits at <strong>€1,948,857</strong>: €1,525,078 for Zapatero and €423,779 for his daughters.</p>
+<p class="tx">Zapatero and his wife, <strong>María Sonsoles Espinosa Díaz</strong>, shared an account that received <strong>€1.5 million</strong> between 2020 and 2025 from companies linked to the scheme. Of these, <strong>€445,200</strong> were transferred between 03/11/2021 and 06/20/2025, and <strong>€29,680</strong> in 2020. The judge attributes the remaining transfers to legitimate professional service payments (conferences, mediation, strategic consulting, and teaching).</p>
+<div class="cg"><div class="cc"><div class="ci2">🏛️</div><div class="cn">Criminal Organization</div><div class="cd">Structure with four hierarchical levels</div></div><div class="cc"><div class="ci2">🤝</div><div class="cn">Influence Peddling</div><div class="cd">Illegal influence before public authorities</div></div><div class="cc"><div class="ci2">📄</div><div class="cn">Document Forgery</div><div class="cd">Fake invoices and contracts</div></div><div class="cc"><div class="ci2">💰</div><div class="cn">Money Laundering</div><div class="cd">Offshore, crypto, and shell companies</div></div></div>
+<div class="hb"><p><strong>Up to 8 years in prison.</strong> The judge places Zapatero at the "apex" of the structure with "strategic leadership" and "high-level contacts".</p></div>
+<blockquote><p>"I have never carried out any management for the Plus Ultra bailout."</p><cite>— Zapatero, 05/19/2026</cite></blockquote>
+<p class="tx">Summoned to testify on <strong>June 2, 2026</strong>. <strong>Vox and Hazte Oír</strong> have asked the judge to revoke his passport and set bail above <strong>€700,000</strong> due to flight risk. Investigation secrecy lifted after months of UDEF and Anti-Corruption Prosecutor investigation.</p>
+</section>
+
+<!-- ===== OPERATIVO ===== -->
+<section id="operativo" data-lang="es">
+<div class="sl">🚨 Operativo UDEF</div><h2 class="st">Registros simultáneos y «reivindicación» policial</h2>
 <p class="tx">La mañana del <strong>19 de mayo</strong>, la UDEF ejecutó registros simultáneos (Operación Tibet), tras meses bajo secreto. Última prórroga: 23 de abril hasta el 28 de mayo.</p>
 <div class="rg"><div class="rc"><div class="ri">🏢</div><div class="rn">Oficina Zapatero (Ferraz 35)</div><div class="rd">Centro de operaciones. Se clonaron dispositivos, correos y repositorios. El juez optó por no registrar el domicilio.</div></div><div class="rc"><div class="ri">📱</div><div class="rn">Whathefav SL</div><div class="rd">Agencia de las hijas (eSports/marketing). Recibió ~985.000 € de la trama.</div></div><div class="rc"><div class="ri">📊</div><div class="rn">Análisis Relevante SL</div><div class="rd">Consultora de Martínez Martínez. El 25% pertenece a un exjefe del CNI.</div></div><div class="rc"><div class="ri">💼</div><div class="rn">Softgestor &amp; Int. Prospectiva</div><div class="rd">Entrada de fondos extranjeros. Administrada por hermanos venezolanos.</div></div><div class="rc"><div class="ri">🌎</div><div class="rn">Domicilio familia venezolana</div><div class="rd">Vinculada a pagos de comisiones.</div></div></div>
 <div class="hb b"><p><strong>«Reivindicación» de la UDEF:</strong> Tras años de marginalización, los agentes sienten «reivindicación profesional». «Hemos vuelto al centro del tablero». Los sindicatos SUP y Jupol defendieron públicamente a los investigadores.</p></div>
 <div class="hb"><p><strong>Filtraciones:</strong> El fiscal Luzón ordenó en enero no informar a superiores por riesgo de filtraciones. La UDEF espera orden judicial para detener a Zapatero: «Hay bastante carga probatoria».</p></div>
-<div class="hb"><p><strong>Caja fuerte oculta:</strong> La UDEF descubrió una caja fuerte oculta en el despacho profesional de Zapatero. Su abogado inicialmente se negó a facilitar la llave, requiriendo la intervención de la unidad especializada GOIT, antes de acceder a colaborar.</p></div></section>
-<section id="caso"><div class="sl">🔍 El Caso</div><h2 class="st">53 millones de fondos públicos</h2>
+<div class="hb"><p><strong>Caja fuerte oculta:</strong> La UDEF descubrió una caja fuerte oculta en el despacho profesional de Zapatero. Su abogado inicialmente se negó a facilitar la llave, requiriendo la intervención de la unidad especializada GOIT, antes de acceder a colaborar.</p></div>
+</section>
+<section id="operativo" data-lang="en">
+<div class="sl">🚨 UDEF Operation</div><h2 class="st">Simultaneous raids and police "vindication"</h2>
+<p class="tx">On the morning of <strong>May 19</strong>, UDEF executed simultaneous raids (Operation Tibet), after months under secrecy. Last extension: April 23 until May 28.</p>
+<div class="rg"><div class="rc"><div class="ri">🏢</div><div class="rn">Zapatero Office (Ferraz 35)</div><div class="rd">Operations center. Devices, emails and repositories were cloned. The judge opted not to search the residence.</div></div><div class="rc"><div class="ri">📱</div><div class="rn">Whathefav SL</div><div class="rd">Daughters' agency (eSports/marketing). Received ~€985,000 from the scheme.</div></div><div class="rc"><div class="ri">📊</div><div class="rn">Análisis Relevante SL</div><div class="rd">Martínez Martínez's consultancy. 25% owned by a former CNI chief.</div></div><div class="rc"><div class="ri">💼</div><div class="rn">Softgestor &amp; Int. Prospectiva</div><div class="rd">Entry of foreign funds. Managed by Venezuelan brothers.</div></div><div class="rc"><div class="ri">🌎</div><div class="rn">Venezuelan family residence</div><div class="rd">Linked to commission payments.</div></div></div>
+<div class="hb b"><p><strong>UDEF "vindication":</strong> After years of marginalization, agents feel "professional vindication". "We've returned to the center of the board". SUP and Jupol unions publicly defended the investigators.</p></div>
+<div class="hb"><p><strong>Leaks:</strong> Prosecutor Luzón ordered in January not to inform superiors due to leak risk. UDEF awaits judicial order to arrest Zapatero: "There is considerable evidence".</p></div>
+<div class="hb"><p><strong>Hidden safe:</strong> UDEF discovered a hidden safe in Zapatero's professional office. His lawyer initially refused to provide the key, requiring intervention from the specialized GOIT unit, before agreeing to cooperate.</p></div>
+</section>
+
+<!-- ===== CASO ===== -->
+<section id="caso" data-lang="es">
+<div class="sl">🔍 El Caso</div><h2 class="st">53 millones de fondos públicos</h2>
 <p class="tx">En <strong>marzo de 2021</strong>, el Gobierno de Sánchez aprobó un rescate de <strong>53 millones de euros</strong> a Plus Ultra (solo un avión operativo de cuatro). Las investigaciones sugieren que los fondos reembolsaron préstamos vinculados a una red criminal en <strong>Venezuela</strong> (PDVSA, chavismo). Parte se canalizó al entorno de Zapatero.</p>
 <div class="hb g"><p><strong>Dos canales de influencia:</strong> vía Ábalos (ministro) y vía Zapatero (considerada «predominante» por el juez).</p></div>
 <h3 class="sub">Flujos económicos</h3>
@@ -108,7 +190,7 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <tr><td data-label="Concepto">Beneficio presunto Zapatero</td><td data-label="Importe" class="am">1.525.078 €</td><td data-label="Destinatario">Zapatero</td></tr>
 <tr><td data-label="Concepto">Beneficio presunto hijas</td><td data-label="Importe" class="am">423.779 €</td><td data-label="Destinatario">Hijas de Zapatero</td></tr>
 <tr><td data-label="Concepto">Pagos a Whathefav (hijas)</td><td data-label="Importe" class="am">~985.219 €</td><td data-label="Destinatario">Hijas de Zapatero</td></tr>
-<tr><td data-label="Concepto">Int. Prospectiva → Whathefav</td><td data-label="Importe" class="am">>500.000 €</td><td data-label="Destinatario">Whathefav SL</td></tr>
+<tr><td data-label="Concepto">Int. Prospectiva → Whathefav</td><td data-label="Importe" class="am">&gt;500.000 €</td><td data-label="Destinatario">Whathefav SL</td></tr>
 <tr><td data-label="Concepto">Venta de oro a EAU</td><td data-label="Importe" class="am">30.000.000 €</td><td data-label="Destinatario">Sociedad en Emiratos</td></tr>
 <tr><td data-label="Concepto">Efectivo hallado</td><td data-label="Importe" class="am">300.000 €</td><td data-label="Destinatario">Martínez Martínez</td></tr>
 <tr><td data-label="Concepto">Cuentas en Miami</td><td data-label="Importe" class="am">~1.000.000 €</td><td data-label="Destinatario">Martínez Martínez</td></tr>
@@ -123,8 +205,42 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="hb"><p><strong>Criptomonedas:</strong> Se apresaron durante los registros para rastrear fondos ocultados.</p></div>
 <div class="hb g"><p><strong>Testimonio del auditor Carbajo:</strong> Jesús Ángel Carbajo (Audicar) compareció ante el Senado y confirmó que la <strong>comisión del 1% sobre los 53 millones</strong> figuraba reflejada en la contabilidad oficial vinculada a Idella con sede en Dubái. Admitió haber visto «alguna factura de Julio Martínez» y advirtió que rastrear «dinero ilícito en esa maraña» accionarial sería «muy complicado».</p></div>
 <h3 class="sub">Conexión China: Gate Center y Fangyong Du</h3>
-<p class="tx">Zapatero fundó en abril de 2022 <strong>Gate Center</strong>, un think tank/lobby con <strong>Fangyong Du</strong> (alias Miguel Duch), empresario chino investigado por el <strong>CNI como espía de Pekín</strong> y al que se denegó la nacionalidad española. Whathefav realiza trabajos para Gate Center. La trama incluye operaciones de <strong>oro, petróleo, acciones y divisas</strong> con Venezuela, China y Emiratos.</p></section>
-<section id="pruebas"><div class="sl">📋 Pruebas</div><h2 class="st">Lo que saben los investigadores</h2>
+<p class="tx">Zapatero fundó en abril de 2022 <strong>Gate Center</strong>, un think tank/lobby con <strong>Fangyong Du</strong> (alias Miguel Duch), empresario chino investigado por el <strong>CNI como espía de Pekín</strong> y al que se denegó la nacionalidad española. Whathefav realiza trabajos para Gate Center. La trama incluye operaciones de <strong>oro, petróleo, acciones y divisas</strong> con Venezuela, China y Emiratos.</p>
+</section>
+<section id="caso" data-lang="en">
+<div class="sl">🔍 The Case</div><h2 class="st">€53 million in public funds</h2>
+<p class="tx">In <strong>March 2021</strong>, the Sánchez government approved a <strong>€53 million</strong> bailout for Plus Ultra (only one operational plane out of four). Investigations suggest the funds repaid loans linked to a criminal network in <strong>Venezuela</strong> (PDVSA, Chavismo). Part was channeled to Zapatero's circle.</p>
+<div class="hb g"><p><strong>Two channels of influence:</strong> via Ábalos (minister) and via Zapatero (considered "predominant" by the judge).</p></div>
+<h3 class="sub">Financial flows</h3>
+<table class="ft"><thead><tr><th>Item</th><th>Amount</th><th>Recipient</th></tr></thead><tbody>
+<tr><td data-label="Item">SEPI bailout</td><td data-label="Amount" class="am">€53,000,000</td><td data-label="Recipient">Plus Ultra</td></tr>
+<tr><td data-label="Item">1% commission + VAT (Idella)</td><td data-label="Amount" class="am">€641,300</td><td data-label="Recipient">Idella Consulenza Strategica</td></tr>
+<tr><td data-label="Item">Offshore business plan</td><td data-label="Amount" class="am">€3,000,000</td><td data-label="Recipient">Landside Dubai Fzco</td></tr>
+<tr><td data-label="Item">Análisis Relevante → Zapatero</td><td data-label="Amount" class="am">€490,780</td><td data-label="Recipient">Zapatero</td></tr>
+<tr><td data-label="Item">Alleged profit Zapatero</td><td data-label="Amount" class="am">€1,525,078</td><td data-label="Recipient">Zapatero</td></tr>
+<tr><td data-label="Item">Alleged profit daughters</td><td data-label="Amount" class="am">€423,779</td><td data-label="Recipient">Zapatero's daughters</td></tr>
+<tr><td data-label="Item">Payments to Whathefav (daughters)</td><td data-label="Amount" class="am">~€985,219</td><td data-label="Recipient">Zapatero's daughters</td></tr>
+<tr><td data-label="Item">Int. Prospectiva → Whathefav</td><td data-label="Amount" class="am">&gt;€500,000</td><td data-label="Recipient">Whathefav SL</td></tr>
+<tr><td data-label="Item">Gold sale to UAE</td><td data-label="Amount" class="am">€30,000,000</td><td data-label="Recipient">UAE company</td></tr>
+<tr><td data-label="Item">Cash found</td><td data-label="Amount" class="am">€300,000</td><td data-label="Recipient">Martínez Martínez</td></tr>
+<tr><td data-label="Item">Miami accounts</td><td data-label="Amount" class="am">~€1,000,000</td><td data-label="Recipient">Martínez Martínez</td></tr>
+<tr><td data-label="Item">Fake invoice</td><td data-label="Amount" class="am">€50,000</td><td data-label="Recipient">Caletón (non-existent)</td></tr>
+<tr><td data-label="Item">Caletón Consultores (charter)</td><td data-label="Amount" class="am">€1,160,000</td><td data-label="Recipient">Caletón → Iot Domotic + Voli Analítica</td></tr>
+<tr><td data-label="Item">Payment to Ábalos ex-girlfriend</td><td data-label="Amount" class="am">€2,000</td><td data-label="Recipient">Ábalos's ex-partner</td></tr>
+<tr><td data-label="Item">Social Security debt Plus Ultra</td><td data-label="Amount" class="am">€451,954.79</td><td data-label="Recipient">Social Security</td></tr>
+</tbody></table>
+<h3 class="sub">Offshore, Miami and cryptocurrencies</h3>
+<p class="tx">The judge attributes to Zapatero the order to create <strong>Landside Dubai Fzco</strong> (Dubai free zone), with his secretary <strong>María Gertrudis Alcázar</strong> and manager <strong>Cristóbal Cano</strong>. Only six days after the 1% commission contract with <strong>Idella</strong> (01/19/2021), Landside was established (01/26/2021) to channel funds abroad. The offshore business plan amounts to <strong>€3 million</strong>.</p>
+<p class="tx"><strong>Julio Martínez Martínez</strong> holds nearly <strong>one million euros in bank accounts in Miami</strong>, opened a decade ago and still active.</p>
+<div class="hb"><p><strong>Cryptocurrencies:</strong> Seized during raids to trace hidden funds.</p></div>
+<div class="hb g"><p><strong>Auditor Carbajo's testimony:</strong> Jesús Ángel Carbajo (Audicar) testified before the Senate and confirmed that the <strong>1% commission on the €53 million</strong> was reflected in official accounting linked to Idella based in Dubai. He admitted having seen "some invoices from Julio Martínez" and warned that tracing "illicit money in that maze" of shareholdings would be "very complicated".</p></div>
+<h3 class="sub">China connection: Gate Center and Fangyong Du</h3>
+<p class="tx">Zapatero founded in April 2022 <strong>Gate Center</strong>, a think tank/lobby with <strong>Fangyong Du</strong> (alias Miguel Duch), Chinese businessman investigated by the <strong>CNI as a Beijing spy</strong> and denied Spanish nationality. Whathefav does work for Gate Center. The scheme includes <strong>gold, oil, stocks and currency</strong> operations with Venezuela, China and the Emirates.</p>
+</section>
+
+<!-- ===== PRUEBAS ===== -->
+<section id="pruebas" data-lang="es">
+<div class="sl">📋 Pruebas</div><h2 class="st">Lo que saben los investigadores</h2>
 <h3 class="subs">1. Alertas internacionales</h3><p class="tx">Autoridades de <strong>Suiza y Francia</strong> alertaron sobre blanqueo. La Fiscalía Anticorrupción presentó querella en 2024.</p>
 <h3 class="subs">2. Contrato de comisión del 1%</h3><p class="tx">Encontrado en dispositivos de Martínez: contrato entre Plus Ultra e Idella por <strong>530.000 €</strong> a cambio de facilitar el rescate.</p>
 <h3 class="subs">3. WhatsApp: Zapatero llamado «Presidente»</h3>
@@ -154,8 +270,45 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <p class="tx"><strong>Caletón Consultores SL</strong> recibió <strong>1,16 millones de euros</strong> de Plus Ultra (2020-2025) supuestamente por «comisiones por operaciones chárter». El dinero se desvió a dos empresas más de Martínez Martínez: <strong>Iot Domotic Europe</strong> (transferencias sin justificación económica acreditada) y <strong>Voli Analítica</strong> (con cobertura contractual de «elementos de gestión atípicos»). <strong>Judith Laure Wells</strong>, otra secretaria de Zapatero, también participó en la coordinación desde Ferraz 35.</p>
 <div class="hb"><p><strong>Palabra «comisión» borrada:</strong> En un contrato de octubre de 2021 entre Grupo Aldesa (chino) e Idella, la palabra «comisión» fue explícitamente eliminada durante las negociaciones.</p></div>
 <h3 class="subs">16. Rescate sin aprobación de Bruselas</h3>
-<p class="tx">El rescate de 53M€ no requirió aprobación directa de Bruselas al no superar el umbral de 250M€, pero usó fondos del <strong>FASEE</strong> (autorizado por la UE para la pandemia). El PP exige revisión por posible vulneración de transparencia y buena administración.</p></section>
-<section id="cronologia"><div class="sl">📅 Cronología</div><h2 class="st">De la pandemia a la imputación</h2>
+<p class="tx">El rescate de 53M€ no requirió aprobación directa de Bruselas al no superar el umbral de 250M€, pero usó fondos del <strong>FASEE</strong> (autorizado por la UE para la pandemia). El PP exige revisión por posible vulneración de transparencia y buena administración.</p>
+</section>
+<section id="pruebas" data-lang="en">
+<div class="sl">📋 Evidence</div><h2 class="st">What investigators know</h2>
+<h3 class="subs">1. International alerts</h3><p class="tx">Authorities in <strong>Switzerland and France</strong> alerted about money laundering. The Anti-Corruption Prosecutor filed charges in 2024.</p>
+<h3 class="subs">2. 1% commission contract</h3><p class="tx">Found on Martínez's devices: contract between Plus Ultra and Idella for <strong>€530,000</strong> in exchange for facilitating the bailout.</p>
+<h3 class="subs">3. WhatsApp: Zapatero called "President"</h3>
+<blockquote><p>"President, I report the updates."<br>"President, we remain attentive to your instructions."<br>"We fully agree, president."</p><cite>— Martínez Martínez to Zapatero</cite></blockquote>
+<p class="tx">A Venezuelan businessman attributes to Zapatero: "<em>I'm glad about that relationship with Delcy</em>" (Delcy Rodríguez, Venezuela). Martínez referred to himself as the former president's "<strong>lackey</strong>".</p>
+<div class="hb"><p><strong>Systematic deletion:</strong> Martínez deleted messages to Zapatero, but they were preserved when forwarded to Venezuelan businessmen.</p></div>
+<h3 class="subs">4. Plus Ultra recordings</h3>
+<blockquote><p>"We're going to f*** even if we have to pay a little."<br>"Zapa is our contact."</p><cite>— Julio Martínez Sola, owner of Plus Ultra</cite></blockquote>
+<h3 class="subs">5. Fake invoices and deleting "commission"</h3><p class="tx">Invoice of <strong>€50,000</strong> for non-existent "computer application" (Caletón). The judge notes that Zapatero ordered <strong>deleting the word "commission"</strong> from documents.</p>
+<h3 class="subs">6. December 11 meeting</h3><p class="tx">Zapatero met with Martínez during a run on the same day police arrested Martínez Sola and Roselli. Zapatero: "That information was a crude fabrication".</p>
+<h3 class="subs">7. Contradiction in the Senate</h3><p class="tx">Zapatero denied relationship with Martínez Sola. Ábalos stated that Zapatero met with him to accelerate the bailout.</p>
+<h3 class="subs">8. Daughters: personal use of funds</h3>
+<p class="tx">Laura and Alba inflated <strong>€447,000 in personal accounts</strong> with "asset acquisitions and early loan cancellations". Whathefav was the vehicle for falsifying invoices and providing legal cover.</p>
+<h3 class="subs">9. International collaboration: HSI (USA)</h3>
+<p class="tx"><strong>Homeland Security Investigations (HSI)</strong> from the US Department of Homeland Security provided data extracted from <strong>Rodolfo Reyes</strong>'s phone (Venezuelan partner of Plus Ultra). The Department publicly confirmed the collaboration.</p>
+<h3 class="subs">10. Koldo case connection</h3>
+<p class="tx">Intercepted conversations reveal <strong>burner phones</strong> and the code <strong>"have coffee"</strong>, linked to the Koldo scheme, suggesting Zapatero's network shares modus operandi with other corruption investigations.</p>
+<h3 class="subs">11. Plus Ultra statements</h3>
+<blockquote><p>"We can request support from Zapatero; we will move forward even if it implies a small cost."<br>"He already told Julio they set up their 'finance boutique'. The commission will come through there."</p><cite>— Plus Ultra owners and executives (recordings)</cite></blockquote>
+<p class="tx">Plus Ultra has issued a statement acknowledging awareness of the lifting of investigation secrecy and reiterating its "willingness to cooperate with justice".</p>
+<h3 class="subs">12. "AR" chat: Zapatero + Movistar+</h3>
+<p class="tx">The judge has identified a WhatsApp group called <strong>"AR"</strong> linking Zapatero with Movistar+ president <strong>Javier de Paz</strong>, and the consultancy <strong>Análisis Relevante</strong>. The judge uses it to demonstrate Zapatero's <strong>"active and direct participation"</strong> in the organization. The chat was active during the pandemic and has been inactive since October 2020.</p>
+<h3 class="subs">13. Inteligencia Prospectiva</h3>
+<p class="tx">The National Police has requested information from <strong>Inteligencia Prospectiva</strong> after being unable to execute a judge-ordered search. It is being investigated whether this entity <strong>paid the former president's daughters</strong>.</p>
+<h3 class="subs">15. Coordinated fake invoice operation (05/23)</h3>
+<p class="tx">The judge's ruling reveals a <strong>systematic fake invoice operation</strong> coordinated between Zapatero's secretaries and Martínez Martínez's team. Intercepted WhatsApps show: <em>"We'll adjust the invoice"</em>, <em>"we can go agreeing on the items"</em>, <em>"[tell me] ok or if I have to put more amount. With what you tell me on Monday I'll send you the signed one"</em>. The judge concludes that the invoicing process was <strong>"not directly linked to the provision of services, but articulated later and through coordination of the parties involved"</strong>.</p>
+<p class="tx"><strong>Caletón Consultores SL</strong> received <strong>€1.16 million</strong> from Plus Ultra (2020-2025) allegedly for "charter operation commissions". The money was diverted to two more Martínez Martínez companies: <strong>Iot Domotic Europe</strong> (transfers without accredited economic justification) and <strong>Voli Analítica</strong> (with contractual cover of "atypical management elements"). <strong>Judith Laure Wells</strong>, another secretary of Zapatero, also participated in coordination from Ferraz 35.</p>
+<div class="hb"><p><strong>Word "commission" deleted:</strong> In an October 2021 contract between Grupo Aldesa (Chinese) and Idella, the word "commission" was explicitly removed during negotiations.</p></div>
+<h3 class="subs">16. Bailout without Brussels approval</h3>
+<p class="tx">The €53M bailout did not require direct Brussels approval as it did not exceed the €250M threshold, but used funds from <strong>FASEE</strong> (authorized by the EU for the pandemic). PP demands review for possible breach of transparency and good governance.</p>
+</section>
+
+<!-- ===== CRONOLOGIA ===== -->
+<section id="cronologia" data-lang="es">
+<div class="sl">📅 Cronología</div><h2 class="st">De la pandemia a la imputación</h2>
 <div class="tl">
 <div class="ti"><div class="td">Feb 2020</div><div class="tt">Análisis Relevante</div><div class="tde">Martínez Martínez funda la consultora clave.</div></div>
 <div class="ti c"><div class="td">Mar 2021</div><div class="tt">Rescate de Plus Ultra</div><div class="tde">53 millones aprobados por el Gobierno de Sánchez.</div></div>
@@ -171,8 +324,31 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="ti c"><div class="td">22 May 2026</div><div class="tt">Ábalos acusa a Zapatero</div><div class="tde">«Zapatero me puentea, habla con Pedro Saura». Yolanda Díaz insta al PP a presentar moción de censura. Cuenta conjunta Zapatero-esposa: 1,5M€. Chat "AR" revelado. Caja fuerte oculta. Fiscalía pide 24 años para Ábalos. Alcázar citada por Senado.</div></div>
 <div class="ti c"><div class="td">23 May 2026</div><div class="tt">Operativa facturas falsas revelada</div><div class="tde">EL PAÍS destapa coordinación sistemática de facturas entre secretarias de Zapatero y equipo de Martínez. Caletón: 1,16M€. Palabra «comisión» borrada de contratos.</div></div>
 <div class="ti c"><div class="td">2 Jun 2026</div><div class="tt">Declaración de Zapatero</div><div class="tde">Comparecencia ante el juez Calama.</div></div>
-</div></section>
-<section id="figuras"><div class="sl">👥 Figuras Clave</div><h2 class="st">Los protagonistas</h2>
+</div>
+</section>
+<section id="cronologia" data-lang="en">
+<div class="sl">📅 Timeline</div><h2 class="st">From the pandemic to indictment</h2>
+<div class="tl">
+<div class="ti"><div class="td">Feb 2020</div><div class="tt">Análisis Relevante</div><div class="tde">Martínez Martínez founds the key consultancy.</div></div>
+<div class="ti c"><div class="td">Mar 2021</div><div class="tt">Plus Ultra bailout</div><div class="tde">€53 million approved by the Sánchez government.</div></div>
+<div class="ti"><div class="td">2021</div><div class="tt">Vox files charges</div><div class="tde">Over the Plus Ultra bailout.</div></div>
+<div class="ti"><div class="td">Jan 2023</div><div class="tt">Preliminary dismissal</div><div class="tde">Madrid Court 15 dismisses the case.</div></div>
+<div class="ti"><div class="td">2024</div><div class="tt">Prosecutor charges</div><div class="tde">Following alerts from Switzerland and France.</div></div>
+<div class="ti c"><div class="td">Dec 11, 2025</div><div class="tt">Arrests</div><div class="tde">Martínez Sola, Roselli and Martínez Martínez. €300,000 in cash.</div></div>
+<div class="ti"><div class="td">Feb 2026</div><div class="tt">National Court</div><div class="tde">Judge Calama takes over the investigation.</div></div>
+<div class="ti"><div class="td">Mar 2026</div><div class="tt">Zapatero at the Senate</div><div class="tde">Denies links to Plus Ultra.</div></div>
+<div class="ti c"><div class="td">May 19, 2026</div><div class="tt">Indictment + Raids</div><div class="tde">Zapatero indicted. UDEF raids office, Whathefav, Análisis Relevante and more.</div></div>
+<div class="ti c"><div class="td">May 20, 2026</div><div class="tt">Accounts blocked</div><div class="tde">National Court orders proportional blocking. Auditor Carbajo testifies in the Senate. Vox demands passport retention.</div></div>
+<div class="ti c"><div class="td">May 21, 2026</div><div class="tt">PP summons Bank of Spain</div><div class="tde">Senate SEPI committee summons Bank of Spain governor. Government acknowledges ruling as "serious".</div></div>
+<div class="ti c"><div class="td">May 22, 2026</div><div class="tt">Ábalos accuses Zapatero</div><div class="tde">"Zapatero bypasses me, talks to Pedro Saura". Yolanda Díaz urges PP to file motion of no confidence. Joint Zapatero-wife account: €1.5M. "AR" chat revealed. Hidden safe. Prosecutor demands 24 years for Ábalos. Alcázar summoned by Senate.</div></div>
+<div class="ti c"><div class="td">May 23, 2026</div><div class="tt">Fake invoice operation revealed</div><div class="tde">EL PAÍS uncovers systematic invoice coordination between Zapatero's secretaries and Martínez's team. Caletón: €1.16M. Word "commission" deleted from contracts.</div></div>
+<div class="ti c"><div class="td">Jun 2, 2026</div><div class="tt">Zapatero's testimony</div><div class="tde">Appearance before Judge Calama.</div></div>
+</div>
+</section>
+
+<!-- ===== FIGURAS ===== -->
+<section id="figuras" data-lang="es">
+<div class="sl">👥 Figuras Clave</div><h2 class="st">Los protagonistas</h2>
 <div class="kf">
 <div class="fc"><div class="fn">José Luis Rodríguez Zapatero</div><div class="fr">Expresidente · Imputado</div><div class="fd">«Vértice» de la trama. Cobró 490.780 € de Análisis Relevante.</div></div>
 <div class="fc"><div class="fn">Julio Martínez Martínez</div><div class="fr">Empresario · Detenido</div><div class="fd">Amigo de Zapatero. 300K€ en efectivo + ~1M€ en Miami. Análisis Relevante.</div></div>
@@ -192,15 +368,55 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="fc"><div class="fn">Rodolfo Reyes</div><div class="fr">Socio venezolano Plus Ultra</div><div class="fd">Inició discusiones de lobby. HSI extrajo datos de su teléfono.</div></div>
 <div class="fc"><div class="fn">Jesús Ángel Carbajo</div><div class="fr">Auditor (Audicar)</div><div class="fd">Confirmó comisión del 1% en contabilidad ante el Senado.</div></div>
 <div class="fc"><div class="fn">Judith Laure Wells</div><div class="fr">Secretaria de Zapatero</div><div class="fd">Coordinó facturas falsas desde Ferraz 35 con equipo de Martínez.</div></div>
-</div></section>
-<section id="contexto"><div class="sl">🏛️ Contexto Histórico</div><h2 class="st">Corrupción del PSOE: patrón recurrente</h2>
+</div>
+</section>
+<section id="figuras" data-lang="en">
+<div class="sl">👥 Key Figures</div><h2 class="st">The main players</h2>
+<div class="kf">
+<div class="fc"><div class="fn">José Luis Rodríguez Zapatero</div><div class="fr">Former President · Indicted</div><div class="fd">"Apex" of the scheme. Received €490,780 from Análisis Relevante.</div></div>
+<div class="fc"><div class="fn">Julio Martínez Martínez</div><div class="fr">Businessman · Arrested</div><div class="fd">Friend of Zapatero. €300K in cash + ~€1M in Miami. Análisis Relevante.</div></div>
+<div class="fc"><div class="fn">Julio Martínez Sola</div><div class="fr">Plus Ultra President · Arrested</div><div class="fd">Founder of the airline.</div></div>
+<div class="fc"><div class="fn">Roberto Roselli</div><div class="fr">Plus Ultra CEO · Arrested</div><div class="fd">Managing director.</div></div>
+<div class="fc"><div class="fn">Laura and Alba Rodríguez</div><div class="fr">Zapatero's daughters</div><div class="fd">Whathefav received ~€985K. Personal accounts inflated €447K.</div></div>
+<div class="fc"><div class="fn">José Luis Calama</div><div class="fr">National Court Judge</div><div class="fd">30+ years career. Investigated Pegasus, Alcasec, Arbistar.</div></div>
+<div class="fc"><div class="fn">Ramón Gordils</div><div class="fr">Maduro's Vice Minister</div><div class="fd">Contacted to gauge access to Zapatero.</div></div>
+<div class="fc"><div class="fn">Manuel A. Fajardo García</div><div class="fr">"ZP's piece in Venezuela"</div><div class="fd">Contacts in Venezuelan Civil Aviation.</div></div>
+<div class="fc"><div class="fn">Fangyong Du (Miguel Duch)</div><div class="fr">Chinese businessman · CNI</div><div class="fd">Co-founder Gate Center. Investigated as Beijing spy.</div></div>
+<div class="fc"><div class="fn">Mª Gertrudis Alcázar</div><div class="fr">Zapatero's secretary</div><div class="fd">Collaborated in creating Dubai offshore. Executed orders. Summoned by Senate.</div></div>
+<div class="fc"><div class="fn">Javier de Paz</div><div class="fr">Movistar+ President</div><div class="fd">Linked to Zapatero in "AR" chat with Análisis Relevante.</div></div>
+<div class="fc"><div class="fn">Pedro Saura</div><div class="fr">Former Transport Secretary</div><div class="fd">Ábalos accuses Zapatero of speaking directly to him. Saura denies it.</div></div>
+<div class="fc"><div class="fn">María Sonsoles Espinosa Díaz</div><div class="fr">Zapatero's wife</div><div class="fd">Joint account received €1.5M (2020-2025) from scheme companies.</div></div>
+<div class="fc"><div class="fn">Cristóbal Cano</div><div class="fr">Network manager</div><div class="fd">Ad hoc invoicing and corporate affairs.</div></div>
+<div class="fc"><div class="fn">Alejandro Luzón</div><div class="fr">Anti-Corruption Prosecutor</div><div class="fd">Ordered operational secrecy due to leak risk.</div></div>
+<div class="fc"><div class="fn">Rodolfo Reyes</div><div class="fr">Venezuelan Plus Ultra partner</div><div class="fd">Initiated lobbying discussions. HSI extracted data from his phone.</div></div>
+<div class="fc"><div class="fn">Jesús Ángel Carbajo</div><div class="fr">Auditor (Audicar)</div><div class="fd">Confirmed 1% commission in accounting before the Senate.</div></div>
+<div class="fc"><div class="fn">Judith Laure Wells</div><div class="fr">Zapatero's secretary</div><div class="fd">Coordinated fake invoices from Ferraz 35 with Martínez's team.</div></div>
+</div>
+</section>
+
+<!-- ===== CONTEXTO ===== -->
+<section id="contexto" data-lang="es">
+<div class="sl">🏛️ Contexto Histórico</div><h2 class="st">Corrupción del PSOE: patrón recurrente</h2>
 <p class="tx">La imputación de Zapatero no ocurre en el vacío. El PSOE ha sido protagonista de algunos de los mayores escándalos de la democracia.</p>
 <h3 class="subs">Caso Gürtel</h3><p class="tx">Red de corrupción que extorsionaba a políticos de ambos signos. Múltiples socialistas condenados. El expresidente <strong>José Bono</strong> fue imputado.</p>
 <h3 class="subs">Caso ERE (Andalucía)</h3><p class="tx">Fraude en expedientes de empleo bajo <strong>Manuel Chaves</strong>. Más de <strong>1.000 millones</strong> desviados. Chaves condenado a 74 años.</p>
 <h3 class="subs">Caso Pity Pity</h3><p class="tx">Comisiones ilegales a <strong>Alfonso Guerra</strong> en los 80. Archivado por prescripción.</p>
 <h3 class="subs">Caso Filemón</h3><p class="tx">Facturas ficticias vinculadas a <strong>Emilio Botín</strong> (exnúmero 2 del PSOE). 2,5 millones en facturación irregular.</p>
-<div class="hb g"><p><strong>Patrón observable:</strong> Uso de <strong>empresas intermediarias</strong> para canalizar comisiones, similar al mecanismo de Análisis Relevante y Whathefav.</p></div></section>
-<section id="lawfare"><div class="sl">❓ Análisis Crítico</div><h2 class="st">¿Campaña orquestada?</h2>
+<div class="hb g"><p><strong>Patrón observable:</strong> Uso de <strong>empresas intermediarias</strong> para canalizar comisiones, similar al mecanismo de Análisis Relevante y Whathefav.</p></div>
+</section>
+<section id="contexto" data-lang="en">
+<div class="sl">🏛️ Historical Context</div><h2 class="st">PSOE corruption: recurring pattern</h2>
+<p class="tx">Zapatero's indictment does not occur in a vacuum. The PSOE has been at the center of some of the largest scandals of the democracy.</p>
+<h3 class="subs">Gürtel case</h3><p class="tx">Corruption network that extorted politicians from both sides. Multiple socialists convicted. Former president <strong>José Bono</strong> was indicted.</p>
+<h3 class="subs">ERE case (Andalusia)</h3><p class="tx">Fraud in employment files under <strong>Manuel Chaves</strong>. Over <strong>€1 billion</strong> diverted. Chaves sentenced to 74 years.</p>
+<h3 class="subs">Pity Pity case</h3><p class="tx">Illegal commissions to <strong>Alfonso Guerra</strong> in the 80s. Dismissed due to statute of limitations.</p>
+<h3 class="subs">Filemón case</h3><p class="tx">Fictitious invoices linked to <strong>Emilio Botín</strong> (former PSOE No. 2). €2.5 million in irregular billing.</p>
+<div class="hb g"><p><strong>Observable pattern:</strong> Use of <strong>intermediary companies</strong> to channel commissions, similar to the mechanism of Análisis Relevante and Whathefav.</p></div>
+</section>
+
+<!-- ===== LAWFARE ===== -->
+<section id="lawfare" data-lang="es">
+<div class="sl">❓ Análisis Crítico</div><h2 class="st">¿Campaña orquestada?</h2>
 <p class="tx">El PSOE y Sumar calificaron la imputación como «lawfare». Analicemos la hipótesis.</p>
 <h3 class="subs">Argumentos a favor</h3>
 <div class="hb"><p><strong>1. Origen:</strong> Manos Limpias (extrema derecha) fue la primera en denunciar. Vox se querelló en 2021.</p></div>
@@ -211,8 +427,26 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="hb g"><p><strong>2. Origen real:</strong> La investigación se puso en marcha con alertas de <strong>Suiza y Francia</strong>, no con denuncias políticas.</p></div>
 <div class="hb g"><p><strong>3. Evidencia sólida:</strong> Contrato del 1%, 300K€ en efectivo, WhatsApp, offshore, cripto, facturas falsas. Cuerpo probatorio difícil de fabricar.</p></div>
 <div class="hb g"><p><strong>4. Independencia:</strong> UDEF, Fiscalía Anticorrupción y Audiencia Nacional no dependen de la derecha.</p></div>
-<div class="os"><h3>Veredicto sobre el «lawfare»</h3><p>La hipótesis tiene <strong>elementos de verdad parcial</strong> pero no resiste un análisis riguroso. La derecha aprovechó agresivamente un caso genuino —como ha ocurrido históricamente—, pero no lo orquestó. La diferencia entre «aprovechar» y «orquestar» es fundamental.</p></div></section>
-<section id="impacto"><div class="sl">📊 Impacto Político</div><h2 class="st">Reacciones y consecuencias</h2>
+<div class="os"><h3>Veredicto sobre el «lawfare»</h3><p>La hipótesis tiene <strong>elementos de verdad parcial</strong> pero no resiste un análisis riguroso. La derecha aprovechó agresivamente un caso genuino —como ha ocurrido históricamente—, pero no lo orquestó. La diferencia entre «aprovechar» y «orquestar» es fundamental.</p></div>
+</section>
+<section id="lawfare" data-lang="en">
+<div class="sl">❓ Critical Analysis</div><h2 class="st">Orchestrated campaign?</h2>
+<p class="tx">The PSOE and Sumar characterized the indictment as "lawfare". Let's examine the hypothesis.</p>
+<h3 class="subs">Arguments in favor</h3>
+<div class="hb"><p><strong>1. Origin:</strong> Manos Limpias (far-right) was the first to denounce. Vox filed charges in 2021.</p></div>
+<div class="hb"><p><strong>2. Context:</strong> Zapatero is a key piece of the Government: advisor to Sánchez, mediator in Catalonia.</p></div>
+<div class="hb"><p><strong>3. Timing:</strong> The lifting of secrecy coincides with the Government's political weakness.</p></div>
+<h3 class="subs">Arguments against</h3>
+<div class="hb g"><p><strong>1. Judge Calama:</strong> 30+ years, technical. Investigated Pegasus (against Sánchez). No political affiliation.</p></div>
+<div class="hb g"><p><strong>2. Real origin:</strong> The investigation was launched with alerts from <strong>Switzerland and France</strong>, not political complaints.</p></div>
+<div class="hb g"><p><strong>3. Solid evidence:</strong> 1% contract, €300K in cash, WhatsApp, offshore, crypto, fake invoices. Evidence body difficult to fabricate.</p></div>
+<div class="hb g"><p><strong>4. Independence:</strong> UDEF, Anti-Corruption Prosecutor and National Court do not depend on the right wing.</p></div>
+<div class="os en"><h3>Verdict on "lawfare"</h3><p>The hypothesis has <strong>elements of partial truth</strong> but does not withstand rigorous analysis. The right aggressively exploited a genuine case —as has occurred historically—, but did not orchestrate it. The difference between "exploit" and "orchestrate" is fundamental.</p></div>
+</section>
+
+<!-- ===== IMPACTO ===== -->
+<section id="impacto" data-lang="es">
+<div class="sl">📊 Impacto Político</div><h2 class="st">Reacciones y consecuencias</h2>
 <h3 class="subs">Gobierno/PSOE: Reconocen que el auto es «serio»</h3>
 <p class="tx"><strong>Pedro Sánchez</strong> mantiene pleno respaldo: «Todo el respeto a la presunción de inocencia y todo mi apoyo al presidente Zapatero». <strong>Descarta elecciones anticipadas</strong>. Moncloa considera a Zapatero «honorable» y «referente», insiste en la «falta de pruebas documentales» y defiende la legalidad del rescate.</p>
 <p class="tx"><strong>Félix Bolaños</strong> (Justicia): «inicial y embrionaria» con «simples indicios». <strong>Arcadi España</strong> (Hacienda): «pleno apoyo y confianza». <strong>Patxi López</strong> (PSOE): «incompatible el Zapatero que conocemos con las acusaciones».</p>
@@ -226,17 +460,53 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <h3 class="subs">PP: Ofensiva en el Senado y Parlamento Europeo</h3>
 <p class="tx"><strong>Feijóo</strong> exige dimisión de Sánchez. El PP prepara «estrategia global» en la <strong>comisión SEPI del Senado</strong>: cita a Escrivá, la secretaria de Zapatero y al <strong>gobernador del Banco de España</strong>. La <strong>delegación del PP en el Parlamento Europeo</strong> insta a la Comisión a revisar las condiciones del rescate de 53M€.</p>
 <h3 class="subs">Vox: Pide retener pasaporte</h3>
-<p class="tx">Vox y <strong>Hazte Oír</strong> piden al juez que retire el pasaporte a Zapatero y fije fianza > <strong>700.000 €</strong> por riesgo de fuga.</p>
+<p class="tx">Vox y <strong>Hazte Oír</strong> piden al juez que retire el pasaporte a Zapatero y fije fianza &gt; <strong>700.000 €</strong> por riesgo de fuga.</p>
 <h3 class="subs">Otros aliados: En tensión</h3>
 <p class="tx"><strong>PNV</strong>: «tensa calma» — la continuidad dependerá del 2 de junio. <strong>Joan Baldoví</strong> (Compromís): pide prudencia, rechaza «lawfare», descarta adelantar elecciones. <strong>Imanol Pradales</strong> (Lehendakari): auto «contundente» y «hecho muy grave».</p>
-<div class="hb"><p><strong>Medidas cautelares activas:</strong> Bloqueo proporcional de cuentas bancarias. Iustitia Europa pide prisión provisional.</p></div></section>
-<section id="analisis"><div class="sl">🧠 Análisis Final</div><h2 class="st">Opinión y perspectiva</h2>
+<div class="hb"><p><strong>Medidas cautelares activas:</strong> Bloqueo proporcional de cuentas bancarias. Iustitia Europa pide prisión provisional.</p></div>
+</section>
+<section id="impacto" data-lang="en">
+<div class="sl">📊 Political Impact</div><h2 class="st">Reactions and consequences</h2>
+<h3 class="subs">Government/PSOE: Acknowledge the ruling is "serious"</h3>
+<p class="tx"><strong>Pedro Sánchez</strong> maintains full support: "Full respect for the presumption of innocence and my full support for President Zapatero". <strong>Rules out early elections</strong>. Moncloa considers Zapatero "honorable" and "a reference", insists on the "lack of documentary evidence" and defends the legality of the bailout.</p>
+<p class="tx"><strong>Félix Bolaños</strong> (Justice): "initial and embryonic" with "simple indications". <strong>Arcadi España</strong> (Finance): "full support and confidence". <strong>Patxi López</strong> (PSOE): "the Zapatero we know is incompatible with the accusations".</p>
+<h3 class="subs">Ábalos: "Zapatero bypasses me"</h3>
+<p class="tx"><strong>José Luis Ábalos</strong> (former minister, in prison) distances himself from the bailout: "No one approaches me in any way. I found out in the Council of Ministers. <strong>Zapatero bypasses me and speaks directly to Pedro Saura</strong>". Denounces "double standards" in PSOE: "Zapatero is wrapped up, protected, while I was not given a chance". He told Sánchez it "was not a consolidated airline". <strong>Saura denies it</strong>: "Zapatero never called me". The Prosecutor demands <strong>24 years in prison</strong> for Ábalos.</p>
+<h3 class="subs">Yolanda Díaz: urges PP to file motion of no confidence</h3>
+<p class="tx"><strong>Yolanda Díaz</strong> (Sumar/2nd VP): "The PP must be a party of the State and, even if out of dignity, present it, so that Spaniards can see what country project they have. <strong>Be brave and take the step</strong>". Demands Zapatero "give quick explanations".</p>
+<p class="tx"><strong>Ernest Urtasun</strong> (Sumar): demands explanations and respect for justice. <strong>Lara Hernández</strong> (Sumar) demands legislative reform to monitor former presidents' activities.</p>
+<h3 class="subs">ERC/Sumar: Dramatic turn</h3>
+<p class="tx"><strong>Gabriel Rufián</strong> made a complete turn. From "lawfare" to "<strong>the ruling is f***ing serious and I'd be lying if I said otherwise</strong>". He has read it "fifteen times". Rules out elections: "the PP-Vox alternative is much worse". <strong>Offers joint lists</strong> with Sumar.</p>
+<h3 class="subs">PP: Offensive in the Senate and European Parliament</h3>
+<p class="tx"><strong>Feijóo</strong> demands Sánchez's resignation. PP prepares "global strategy" in the <strong>Senate SEPI committee</strong>: summons Escrivá, Zapatero's secretary and the <strong>Bank of Spain governor</strong>. The <strong>PP delegation in the European Parliament</strong> urges the Commission to review the conditions of the €53M bailout.</p>
+<h3 class="subs">Vox: Demands passport retention</h3>
+<p class="tx">Vox and <strong>Hazte Oír</strong> ask the judge to revoke Zapatero's passport and set bail &gt; <strong>€700,000</strong> due to flight risk.</p>
+<h3 class="subs">Other allies: Under tension</h3>
+<p class="tx"><strong>PNV</strong>: "tense calm" — continuity will depend on June 2. <strong>Joan Baldoví</strong> (Compromís): calls for caution, rejects "lawfare", rules out early elections. <strong>Imanol Pradales</strong> (Lehendakari): ruling "conclusive" and "very serious fact".</p>
+<div class="hb"><p><strong>Active precautionary measures:</strong> Proportional blocking of bank accounts. Iustitia Europa demands provisional detention.</p></div>
+</section>
+
+<!-- ===== ANALISIS ===== -->
+<section id="analisis" data-lang="es">
+<div class="sl">🧠 Análisis Final</div><h2 class="st">Opinión y perspectiva</h2>
 <div class="os"><h3>Gravedad del caso</h3><p>La imputación de Zapatero es <strong>el caso más grave contra un presidente en la democracia</strong>. No es financiación irregular: es una trama de tráfico de influencias con fondos públicos, lavado internacional y conexiones con organizaciones criminales en Venezuela, China y Emiratos. La caja fuerte oculta descubierta por la UDEF, el chat "AR" con Movistar+ y la cuenta conjunta con su esposa que ingresó 1,5M€ refuerzan la gravedad. La <strong>operativa de facturas falsas revelada el 23 de mayo</strong> —con WhatsApps coordinando importes y conceptos entre secretarias de Zapatero y el equipo de Martínez— añade otro nivel de sofisticación al esquema: Caletón Consultores recibió 1,16M€ que se desvió a empresas sin justificación económica.</p></div>
 <div class="os"><h3>Presunción de inocencia</h3><p><strong>Imputación ≠ condena.</strong> El auto describe una «presunta» trama. Pero el cuerpo probatorio —documentos, comunicaciones, flujos financieros, offshore, cripto, testimonio del auditor, caja fuerte, chat "AR"— es notablemente sólido. El contrato del 1% confirmado por el auditor Carbajo en el Senado es muy difícil de explicar como legítimo. La colaboración de HSI (EE.UU.) con datos de comunicaciones añade un nivel probatorio internacional sin precedentes.</p></div>
 <div class="os"><h3>Impacto político inmediato</h3><p>Las reacciones del 22 de mayo son reveladoras: <strong>Ábalos acusa a Zapatero de «puentearle»</strong> y denuncia «doble rasero» en el PSOE; <strong>Yolanda Díaz insta al PP a presentar moción de censura</strong>; el PP ataca en el Senado y en el Parlamento Europeo; <strong>la Fiscalía pide 24 años para Ábalos</strong>. Incluso los aliados más cercanos están en modo contención de daños.</p></div>
 <div class="os"><h3>Impacto democrático</h3><p>Si se confirma: <strong>erosión del contrato social</strong> — los ciudadanos perderían confianza en que las decisiones públicas se toman por interés general. Si se descarta: percepción de justicia politizada. En ambos escenarios, <strong>la democracia sale perdiendo</strong>. La conexión con el caso Koldo añade otra capa: un posible patrón repetido de uso de empresas intermediarias para comisiones encubiertas.</p></div>
-<div class="os"><h3>Veredicto</h3><p>Caso genuino con evidencia sólida que se refuerza día a día. La narrativa de «lawfare» tiene elementos parciales pero no resiste el análisis. El testimonio del auditor, los datos de HSI, las cuentas bloqueadas, la caja fuerte oculta y el chat "AR" apuntan en una dirección clara. El impacto será devastador para el PSOE independientemente del desenlace. La fecha clave: <strong>declaración de Zapatero el 2 de junio de 2026</strong>.</p></div></section>
-<section id="probabilidad"><div class="sl">📊 Análisis Predictivo</div><h2 class="st">Probabilidad de condena</h2>
+<div class="os"><h3>Veredicto</h3><p>Caso genuino con evidencia sólida que se refuerza día a día. La narrativa de «lawfare» tiene elementos parciales pero no resiste el análisis. El testimonio del auditor, los datos de HSI, las cuentas bloqueadas, la caja fuerte oculta y el chat "AR" apuntan en una dirección clara. El impacto será devastador para el PSOE independientemente del desenlace. La fecha clave: <strong>declaración de Zapatero el 2 de junio de 2026</strong>.</p></div>
+</section>
+<section id="analisis" data-lang="en">
+<div class="sl">🧠 Final Analysis</div><h2 class="st">Opinion and perspective</h2>
+<div class="os en"><h3>Severity of the case</h3><p>Zapatero's indictment is <strong>the most serious case against a president in the democracy</strong>. It is not irregular funding: it is an influence peddling scheme with public funds, international laundering and connections with criminal organizations in Venezuela, China and the Emirates. The hidden safe discovered by UDEF, the "AR" chat with Movistar+ and the joint account with his wife that received €1.5M reinforce the severity. The <strong>fake invoice operation revealed on May 23</strong> —with WhatsApps coordinating amounts and items between Zapatero's secretaries and Martínez's team— adds another level of sophistication to the scheme: Caletón Consultores received €1.16M that was diverted to companies without economic justification.</p></div>
+<div class="os en"><h3>Presumption of innocence</h3><p><strong>Indictment ≠ conviction.</strong> The ruling describes an "alleged" scheme. But the evidence body —documents, communications, financial flows, offshore, crypto, auditor testimony, hidden safe, "AR" chat— is notably solid. The 1% contract confirmed by auditor Carbajo in the Senate is very difficult to explain as legitimate. HSI's (USA) collaboration with communications data adds an unprecedented international evidentiary level.</p></div>
+<div class="os en"><h3>Immediate political impact</h3><p>Reactions on May 22 are revealing: <strong>Ábalos accuses Zapatero of "bypassing him"</strong> and denounces "double standards" in PSOE; <strong>Yolanda Díaz urges PP to file motion of no confidence</strong>; PP attacks in the Senate and European Parliament; <strong>the Prosecutor demands 24 years for Ábalos</strong>. Even the closest allies are in damage control mode.</p></div>
+<div class="os en"><h3>Democratic impact</h3><p>If confirmed: <strong>erosion of the social contract</strong> — citizens would lose confidence that public decisions are made in the general interest. If dismissed: perception of politicized justice. In both scenarios, <strong>democracy loses</strong>. The connection with the Koldo case adds another layer: a possible repeated pattern of using intermediary companies for hidden commissions.</p></div>
+<div class="os en"><h3>Verdict</h3><p>Genuine case with solid evidence that strengthens day by day. The "lawfare" narrative has partial elements but does not withstand analysis. The auditor's testimony, HSI data, blocked accounts, hidden safe and "AR" chat point in a clear direction. The impact will be devastating for PSOE regardless of the outcome. Key date: <strong>Zapatero's testimony on June 2, 2026</strong>.</p></div>
+</section>
+
+<!-- ===== PROBABILIDAD ===== -->
+<section id="probabilidad" data-lang="es">
+<div class="sl">📊 Análisis Predictivo</div><h2 class="st">Probabilidad de condena</h2>
 <p class="tx">Basándonos en el cuerpo probatorio actual, la jurisprudencia española en casos de corrupción y los precedentes comparables, calculamos la probabilidad de que Zapatero sea <strong>condenado como culpable</strong> en sentencia firme.</p>
 <div style="text-align:center;margin:3rem 0;padding:2.5rem;background:var(--bgc);border:1px solid var(--b);border-radius:12px;position:relative"><div style="font-size:4rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--arl);line-height:1">78%</div><div style="font-size:1rem;color:var(--ag);font-weight:600;margin-top:0.5rem;letter-spacing:.1em;text-transform:uppercase">Probabilidad estimada de condena</div><div style="font-size:.8rem;color:var(--tm);margin-top:0.5rem">Basado en evidencia actual · Actualizado 23/05/2026</div></div>
 <h3 class="sub">Factores que AUMENTAN la probabilidad (+)</h3>
@@ -265,8 +535,44 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <p><strong>🔴 Condena (78%):</strong> El juez estima acreditados los delitos. Zapatero recibe entre 6 y 8 años de prisión. Las pruebas documentales y financieras resultan determinantes. La defensa no logra crear duda razonable sobre los flujos de dinero y las comunicaciones.</p>
 <p><strong>🟡 Condena parcial (12%):</strong> Se estima acreditado solo blanqueo de capitales o tráfico de influencias, pero no organización criminal. Condena reducida (3-5 años). El juez considera insuficiente la prueba de liderazgo estratégico.</p>
 <p><strong>🟢 Absolución (10%):</strong> La declaración del 2 de junio presenta pruebas o explicaciones que generan duda razonable. El juez estima que las pruebas son insuficientes para superar el estándar de «más allá de duda razonable». Escenario menos probable dado el volumen de evidencia.</p></div>
-<div class="hb"><p><strong>⚠️ Disclaimer:</strong> Este cálculo es un análisis predictivo basado en la evidencia pública disponible hasta el 23 de mayo de 2026. No constituye opinión legal. La probabilidad puede cambiar significativamente tras la declaración de Zapatero (2 de junio), nuevas pruebas o resoluciones judiciales. La presunción de inocencia se mantiene hasta sentencia firme.</p></div></section>
-<section id="fuentes"><div class="sl">📚 Fuentes</div><h2 class="st">Fuentes y referencias</h2><div class="sr">
+<div class="hb"><p><strong>⚠️ Disclaimer:</strong> Este cálculo es un análisis predictivo basado en la evidencia pública disponible hasta el 23 de mayo de 2026. No constituye opinión legal. La probabilidad puede cambiar significativamente tras la declaración de Zapatero (2 de junio), nuevas pruebas o resoluciones judiciales. La presunción de inocencia se mantiene hasta sentencia firme.</p></div>
+</section>
+<section id="probabilidad" data-lang="en">
+<div class="sl">📊 Predictive Analysis</div><h2 class="st">Probability of conviction</h2>
+<p class="tx">Based on the current evidence body, Spanish jurisprudence in corruption cases and comparable precedents, we calculate the probability that Zapatero will be <strong>convicted as guilty</strong> in a final judgment.</p>
+<div style="text-align:center;margin:3rem 0;padding:2.5rem;background:var(--bgc);border:1px solid var(--b);border-radius:12px;position:relative"><div style="font-size:4rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--arl);line-height:1">78%</div><div style="font-size:1rem;color:var(--ag);font-weight:600;margin-top:0.5rem;letter-spacing:.1em;text-transform:uppercase">Estimated probability of conviction</div><div style="font-size:.8rem;color:var(--tm);margin-top:0.5rem">Based on current evidence · Updated 05/23/2026</div></div>
+<h3 class="sub">Factors that INCREASE probability (+)</h3>
+<table class="ft"><thead><tr><th>Factor</th><th>Weight</th><th>Detail</th></tr></thead><tbody>
+<tr><td data-label="Factor">Solid documentary evidence</td><td data-label="Weight" style="color:var(--arl);font-weight:700">++</td><td data-label="Detail">1% contract, fake invoices, Dubai offshore, crypto, hidden safe. Documents hard to explain as legitimate.</td></tr>
+<tr><td data-label="Factor">Intercepted communications</td><td data-label="Weight" style="color:var(--arl);font-weight:700">++</td><td data-label="Detail">WhatsApp: "President", invoice coordination, "agree on items", deletion of "commission". Documented modus operandi.</td></tr>
+<tr><td data-label="Factor">Traceable financial flows</td><td data-label="Weight" style="color:var(--arl);font-weight:700">++</td><td data-label="Detail">€490K (Análisis Relevante), €985K (Whathefav), €1.5M (joint account), €1.16M (Caletón). Complete bank tracing.</td></tr>
+<tr><td data-label="Factor">Independent third-party testimony</td><td data-label="Weight" style="color:var(--arl);font-weight:700">+</td><td data-label="Detail">Auditor Carbajo confirms 1% commission before the Senate. Expert and collaborator testimony.</td></tr>
+<tr><td data-label="Factor">International cooperation</td><td data-label="Weight" style="color:var(--arl);font-weight:700">+</td><td data-label="Detail">HSI (USA), Switzerland/France alerts, Venezuelan phone data. Multi-jurisdictional evidence hard to challenge.</td></tr>
+<tr><td data-label="Factor">Organized structure</td><td data-label="Weight" style="color:var(--arl);font-weight:700">+</td><td data-label="Detail">4 hierarchical levels, Zapatero at the "apex". Repeated pattern (Koldo case). Secretaries coordinating invoices.</td></tr>
+<tr><td data-label="Factor">Detected contradictions</td><td data-label="Weight" style="color:var(--arl);font-weight:700">+</td><td data-label="Detail">Denied relationship with Martínez Sola before the Senate (false). Ábalos confirms meeting. Saura denies it. Inconsistencies in his version.</td></tr>
+<tr><td data-label="Factor">Evidence manipulation</td><td data-label="Weight" style="color:var(--ag);font-weight:700">+</td><td data-label="Detail">WhatsApp message deletion, "commission" word removal, hidden safe, offshore. Indications of consciousness of guilt.</td></tr>
+</tbody></table>
+<h3 class="sub">Factors that DECREASE probability (−)</h3>
+<table class="ft"><thead><tr><th>Factor</th><th>Weight</th><th>Detail</th></tr></thead><tbody>
+<tr><td data-label="Factor">Presumption of innocence</td><td data-label="Weight" style="color:var(--ag);font-weight:700">−</td><td data-label="Detail">Indictment ≠ conviction. Burden of proof: beyond reasonable doubt. Defense has the right to dismantle each piece of evidence.</td></tr>
+<tr><td data-label="Factor">Partly indirect evidence</td><td data-label="Weight" style="color:var(--ag);font-weight:700">−</td><td data-label="Detail">Some evidence is circumstantial. Zapatero did not personally sign the 1% contract. Use of intermediaries as a screen.</td></tr>
+<tr><td data-label="Factor">June 2 testimony</td><td data-label="Weight" style="color:var(--ag);font-weight:700">−</td><td data-label="Detail">Can offer alternative explanations, present defense evidence, or cooperate by denouncing others. Main uncertainty factor.</td></tr>
+<tr><td data-label="Factor">Partial "lawfare" argument</td><td data-label="Weight" style="color:var(--ag);font-weight:700">−</td><td data-label="Detail">Manos Limpias initiated the complaint. Questionable political timing. Defense can claim political motivation to sow doubt.</td></tr>
+<tr><td data-label="Factor">Network complexity</td><td data-label="Weight" style="color:var(--ag);font-weight:700">−</td><td data-label="Detail">Multiple companies, offshore, crypto, jurisdictions. Defense can argue tracing is speculative at key points.</td></tr>
+</tbody></table>
+<div class="os en"><h3>Calculation methodology</h3><p>This percentage is based on a weighted analysis of 13 factors, compared with <strong>previous corruption cases in Spain</strong> with similar structures:</p>
+<p><strong>Gürtel case:</strong> Final convictions in 85% of indicted with documentary evidence. <strong>ERE case:</strong> 92% convictions with traceable financial flows. <strong>Filemón case:</strong> 70% with intermediaries and shell companies. <strong>Nóos case:</strong> 65% with complex structure and offshore.</p>
+<p>The Zapatero case presents a combination of factors placing it above average: <strong>documentary evidence + communications + financial flows + international cooperation + independent testimony</strong>. However, the June 2 testimony and the possibility that the defense dismantles individual evidence keep the probability below 85%.</p></div>
+<div class="os en"><h3>Possible scenarios</h3>
+<p><strong>🔴 Conviction (78%):</strong> The judge finds the crimes proven. Zapatero receives between 6 and 8 years in prison. Documentary and financial evidence prove decisive. The defense fails to create reasonable doubt about money flows and communications.</p>
+<p><strong>🟡 Partial conviction (12%):</strong> Only money laundering or influence peddling is proven, but not criminal organization. Reduced sentence (3-5 years). The judge considers the strategic leadership evidence insufficient.</p>
+<p><strong>🟢 Acquittal (10%):</strong> The June 2 testimony presents evidence or explanations that generate reasonable doubt. The judge finds evidence insufficient to meet the "beyond reasonable doubt" standard. Least likely scenario given the volume of evidence.</p></div>
+<div class="hb"><p><strong>⚠️ Disclaimer:</strong> This calculation is a predictive analysis based on publicly available evidence as of May 23, 2026. It does not constitute legal opinion. Probability may change significantly after Zapatero's testimony (June 2), new evidence, or judicial rulings. The presumption of innocence remains until final judgment.</p></div>
+</section>
+
+<!-- ===== FUENTES ===== -->
+<section id="fuentes" data-lang="es">
+<div class="sl">📚 Fuentes</div><h2 class="st">Fuentes y referencias</h2><div class="sr">
 <div class="si2"><span class="sn">1</span><div><strong>EL PAÍS</strong> — Zapatero imputado por blanqueo en Plus Ultra<br><a href="https://elpais.com/espana/2026-05-19/zapatero-imputado-por-blanqueo-de-capitales-en-el-caso-plus-ultra.html" target="_blank">elpais.com</a></div></div>
 <div class="si2"><span class="sn">2</span><div><strong>El Confidencial</strong> — UDEF registra empresa de las hijas<br><a href="https://www.elconfidencial.com/espana/2026-05-19/zapatero-investigacion-blanqueo-capitales-plus-ultra_4357268/" target="_blank">elconfidencial.com</a></div></div>
 <div class="si2"><span class="sn">3</span><div><strong>The Objective</strong> — Euforia policial por el golpe UDEF<br><a href="https://theobjective.com/espana/2026-05-20/euforia-policia-golpe-udef-zapatero-descredito-unidad/" target="_blank">theobjective.com</a></div></div>
@@ -284,7 +590,7 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="si2"><span class="sn">15</span><div><strong>Efecto Cocuyo</strong> — Intermediación Zapatero: Venezuela, China, Emiratos<br><a href="https://efectococuyo.com/internacionales/juez-del-caso-plus-ultra-desvela-la-presunta-intermediacion-de-zapatero-en-millonarios-negocios-de-petroleo-y-oro-entre-venezuela-china-y-emiratos/" target="_blank">efectococuyo.com</a></div></div>
 <div class="si2"><span class="sn">16</span><div><strong>La Sexta</strong> — «Pana Zapatero», «vértice» con «liderazgo estratégico»<br><a href="https://www.lasexta.com/noticias/nacional/pana-zapatero-nucleo-decisor-vertice-liderazgo-estrategico-contactos-alto-nivel-papel-expresidente-auto-caso-plus-ultra_202605196a0cb430b5b0662996163763.html" target="_blank">lasexta.com</a></div></div>
 <div class="si2"><span class="sn">17</span><div><strong>EL PAÍS</strong> — Actualizado 21/05: Reacciones políticas y bloqueo de cuentas<br><a href="https://elpais.com/espana/2026-05-21/imputacion-de-zapatero-por-el-caso-plus-ultra-y-reacciones-politicas-en-directo.html" target="_blank">elpais.com</a></div></div>
-<div class="si2"><span class="sn">18</span><div><strong>elDiario.es</strong> — Vox pide retener pasaporte, Hazte Oír pide fianza >700K€<br><a href="https://www.eldiario.es/politica/ultima-hora-imputacion-zapatero-caso-plus-ultra-directo_6_13234842.html" target="_blank">eldiario.es</a></div></div>
+<div class="si2"><span class="sn">18</span><div><strong>elDiario.es</strong> — Vox pide retener pasaporte, Hazte Oír pide fianza &gt;700K€<br><a href="https://www.eldiario.es/politica/ultima-hora-imputacion-zapatero-caso-plus-ultra-directo_6_13234842.html" target="_blank">eldiario.es</a></div></div>
 <div class="si2"><span class="sn">19</span><div><strong>La Vanguardia</strong> — HSI (EE.UU.) colabora, auditor confirma comisión 1%<br><a href="https://www.lavanguardia.com/politica/20260520/11542572/jose-luis-rodriguez-zapatero-imputado-blanqueo-capitales-plus-ultra-audiencia-nacional-udef-ultima-hora-hoy-en-directo.html" target="_blank">lavanguardia.com</a></div></div>
 <div class="si2"><span class="sn">20</span><div><strong>NuevaRadio</strong> — «Finance boutique», declaraciones propietarios Plus Ultra<br><a href="https://www.nuevaradio.org/2026/05/21/declaraciones-de-los-propietarios-de-plus-ultra-en-el-auto-de-imputacion-podemos-solicitar-apoyo-a-zapatero-continuaremos-adelante-aunque-implique-un-pequeno-costo/" target="_blank">nuevaradio.org</a></div></div>
 <div class="si2"><span class="sn">21</span><div><strong>Infobae</strong> — Gobierno reconoce auto «serio», Rufián leído 15 veces<br><a href="https://www.infobae.com/espana/2026/05/20/ultima-hora-de-la-imputacion-de-zapatero-indicios-reacciones-y-novedades-del-caso-plus-ultra-en-directo/" target="_blank">infobae.com</a></div></div>
@@ -293,12 +599,69 @@ blockquote{transition:border-color .3s,box-shadow .3s}.blockquote:hover{border-l
 <div class="si2"><span class="sn">24</span><div><strong>elDiario.es</strong> — 22/05: Gobierno defiende legalidad rescate, Sumar pide reformas<br><a href="https://www.eldiario.es/politica/ultima-hora-imputacion-zapatero-caso-plus-ultra-directo_6_13241461.html" target="_blank">eldiario.es</a></div></div>
 <div class="si2"><span class="sn">25</span><div><strong>El Confidencial</strong> — 22/05: Caja fuerte oculta, chat "AR", Inteligencia Prospectiva<br><a href="https://www.elconfidencial.com/espana/2026-05-22/zapatero-imputado-blanqueo-plus-ultra-directo_4359236/" target="_blank">elconfidencial.com</a></div></div>
 <div class="si2"><span class="sn">26</span><div><strong>EL PAÍS</strong> — 23/05: Operativa facturas falsas: "podemos consensuar los conceptos"<br><a href="https://elpais.com/espana/2026-05-23/el-caso-plus-ultra-destapa-una-operativa-de-facturas-falsas-podemos-consensuar-los-conceptos.html" target="_blank">elpais.com</a></div></div>
-</div></section>
-<footer class="pf"><div class="fi"><span class="fb">🐱 Cocobot</span><span id="visit-counter" class="vc">👁️ -- visitas</span></div></footer>
-<script>(function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/caso-zapatero-plus-ultra/index.html';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();</script>
+</div>
+</section>
+<section id="fuentes" data-lang="en">
+<div class="sl">📚 Sources</div><h2 class="st">Sources and references</h2><div class="sr">
+<div class="si2"><span class="sn">1</span><div><strong>EL PAÍS</strong> — Zapatero indicted for money laundering in Plus Ultra<br><a href="https://elpais.com/espana/2026-05-19/zapatero-imputado-por-blanqueo-de-capitales-en-el-caso-plus-ultra.html" target="_blank">elpais.com</a></div></div>
+<div class="si2"><span class="sn">2</span><div><strong>El Confidencial</strong> — UDEF raids daughters' company<br><a href="https://www.elconfidencial.com/espana/2026-05-19/zapatero-investigacion-blanqueo-capitales-plus-ultra_4357268/" target="_blank">elconfidencial.com</a></div></div>
+<div class="si2"><span class="sn">3</span><div><strong>The Objective</strong> — Police euphoria over UDEF blow<br><a href="https://theobjective.com/espana/2026-05-20/euforia-policia-golpe-udef-zapatero-descredito-unidad/" target="_blank">theobjective.com</a></div></div>
+<div class="si2"><span class="sn">4</span><div><strong>El Independiente</strong> — UDEF awaits orders to arrest<br><a href="https://www.elindependiente.com/espana/2026/05/20/udef-espera-ordenes-juez-para-detener-zapatero-hay-carga-probatoria/" target="_blank">elindependiente.com</a></div></div>
+<div class="si2"><span class="sn">5</span><div><strong>Infobae</strong> — With conversations: "We're going to f*** even if we pay"<br><a href="https://www.infobae.com/espana/2026/05/20/guia-para-entender-el-caso-plus-ultra/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">6</span><div><strong>ABC</strong> — Whathefav investigated with Venezuela links<br><a href="https://www.abc.es/espana/whathefav-agencia-hijas-zapatero-investigada-plus-ultra-20260519173101-nt.html" target="_blank">abc.es</a></div></div>
+<div class="si2"><span class="sn">7</span><div><strong>El Mundo</strong> — Martínez hides million in Miami<br><a href="https://www.elmundo.es/espana/2026/05/12/6a036093fdddff20578b45af.html" target="_blank">elmundo.es</a></div></div>
+<div class="si2"><span class="sn">8</span><div><strong>La Razón</strong> — National Court attributes ~€2M to Zapatero and daughters<br><a href="https://www.larazon.es/espana/audiencia-nacional-atribuye-zapatero-sus-hijas-cobro-casi-dos-millones-trama-plus-ultra_202605196a0c47f5b5b066299615b352.html" target="_blank">larazon.es</a></div></div>
+<div class="si2"><span class="sn">9</span><div><strong>Voz Populi</strong> — Daughters inflated €447K personal accounts<br><a href="https://www.vozpopuli.com/espana/politica/las-hijas-de-zapatero-inflaron-en-447000-euros-sus-cuentas-personales-con-el-dinero-de-la-trama.html" target="_blank">vozpopuli.com</a></div></div>
+<div class="si2"><span class="sn">10</span><div><strong>EL PAÍS</strong> — Judge: Zapatero trafficked Chinese and Venezuelan influence<br><a href="https://elpais.com/espana/2026-05-20/el-juez-apunta-a-que-zapatero-traficaba-con-sus-influencias-con-empresas-chinas-y-venezolanas-a-traves-de-una-consultora-tapadera.html" target="_blank">elpais.com</a></div></div>
+<div class="si2"><span class="sn">11</span><div><strong>Infobae</strong> — Rufián: "If this is true, it's shit"<br><a href="https://www.infobae.com/espana/2026/05/20/rufian-ya-no-habla-de-lawfare-y-reconoce-que-el-auto-sobre-zapatero-esta-muy-bien-escrito-si-esto-es-verdad-es-una-mierda/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">12</span><div><strong>El Confidencial</strong> — Daughters received almost a million for simulated work<br><a href="https://www.elconfidencial.com/espana/2026-05-20/operacion-tibet-hijas-zapatero-cobro-millon-trabajos-simulados_4358005/" target="_blank">elconfidencial.com</a></div></div>
+<div class="si2"><span class="sn">13</span><div><strong>Infobae</strong> — Maneuvers to hide: fake invoices, offshore, delete "commission"<br><a href="https://www.infobae.com/espana/2026/05/20/las-presuntas-maniobras-de-zapatero-para-ocultar-el-dinero-del-caso-plus-ultra-facturas-falsas-de-50000-euros-una-sociedad-offshore-en-dubai-y-ordenes-para-borrar-la-palabra-comision/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">14</span><div><strong>Libertad Digital</strong> — Zapatero's Chinese lobby: investor controlled by CNI<br><a href="https://www.libertaddigital.com/espana/politica/2025-02-10/el-lobby-chino-de-zapatero-un-inversor-controlado-por-el-cni-donaciones-opacas-y-oficina-en-madrid-7217907/" target="_blank">libertaddigital.com</a></div></div>
+<div class="si2"><span class="sn">15</span><div><strong>Efecto Cocuyo</strong> — Zapatero's intermediation: Venezuela, China, Emirates<br><a href="https://efectococuyo.com/internacionales/juez-del-caso-plus-ultra-desvela-la-presunta-intermediacion-de-zapatero-en-millonarios-negocios-de-petroleo-y-oro-entre-venezuela-china-y-emiratos/" target="_blank">efectococuyo.com</a></div></div>
+<div class="si2"><span class="sn">16</span><div><strong>La Sexta</strong> — "Buddy Zapatero", "apex" with "strategic leadership"<br><a href="https://www.lasexta.com/noticias/nacional/pana-zapatero-nucleo-decisor-vertice-liderazgo-estrategico-contactos-alto-nivel-papel-expresidente-auto-caso-plus-ultra_202605196a0cb430b5b0662996163763.html" target="_blank">lasexta.com</a></div></div>
+<div class="si2"><span class="sn">17</span><div><strong>EL PAÍS</strong> — Updated 05/21: Political reactions and account blocking<br><a href="https://elpais.com/espana/2026-05-21/imputacion-de-zapatero-por-el-caso-plus-ultra-y-reacciones-politicas-en-directo.html" target="_blank">elpais.com</a></div></div>
+<div class="si2"><span class="sn">18</span><div><strong>elDiario.es</strong> — Vox demands passport retention, Hazte Oír demands bail &gt;€700K<br><a href="https://www.eldiario.es/politica/ultima-hora-imputacion-zapatero-caso-plus-ultra-directo_6_13234842.html" target="_blank">eldiario.es</a></div></div>
+<div class="si2"><span class="sn">19</span><div><strong>La Vanguardia</strong> — HSI (USA) collaborates, auditor confirms 1% commission<br><a href="https://www.lavanguardia.com/politica/20260520/11542572/jose-luis-rodriguez-zapatero-imputado-blanqueo-capitales-plus-ultra-audiencia-nacional-udef-ultima-hora-hoy-en-directo.html" target="_blank">lavanguardia.com</a></div></div>
+<div class="si2"><span class="sn">20</span><div><strong>NuevaRadio</strong> — "Finance boutique", Plus Ultra owners' statements<br><a href="https://www.nuevaradio.org/2026/05/21/declaraciones-de-los-propietarios-de-plus-ultra-en-el-auto-de-imputacion-podemos-solicitar-apoyo-a-zapatero-continuaremos-adelante-aunque-implique-un-pequeno-costo/" target="_blank">nuevaradio.org</a></div></div>
+<div class="si2"><span class="sn">21</span><div><strong>Infobae</strong> — Government acknowledges ruling "serious", Rufián read 15 times<br><a href="https://www.infobae.com/espana/2026/05/20/ultima-hora-de-la-imputacion-de-zapatero-indicios-reacciones-y-novedades-del-caso-plus-ultra-en-directo/" target="_blank">infobae.com</a></div></div>
+<div class="si2"><span class="sn">22</span><div><strong>EL PAÍS</strong> — 05/22: Ábalos accuses Zapatero, Yolanda Díaz demands no confidence motion<br><a href="https://elpais.com/espana/2026-05-22/ultima-hora-de-la-actualidad-politica-y-reacciones-tras-la-imputacion-de-zapatero-por-el-caso-plus-ultra-en-directo.html" target="_blank">elpais.com</a></div></div>
+<div class="si2"><span class="sn">23</span><div><strong>El Español</strong> — Ábalos: "Zapatero bypasses me, talks to Pedro Saura"<br><a href="https://www.elespanol.com/espana/politica/20260522/abalos-senala-zapatero-rescate-plus-ultra-puentea-habla-secretario-saura/1003744255912_0.html" target="_blank">elespanol.com</a></div></div>
+<div class="si2"><span class="sn">24</span><div><strong>elDiario.es</strong> — 05/22: Government defends bailout legality, Sumar demands reforms<br><a href="https://www.eldiario.es/politica/ultima-hora-imputacion-zapatero-caso-plus-ultra-directo_6_13241461.html" target="_blank">eldiario.es</a></div></div>
+<div class="si2"><span class="sn">25</span><div><strong>El Confidencial</strong> — 05/22: Hidden safe, "AR" chat, Inteligencia Prospectiva<br><a href="https://www.elconfidencial.com/espana/2026-05-22/zapatero-imputado-blanqueo-plus-ultra-directo_4359236/" target="_blank">elconfidencial.com</a></div></div>
+<div class="si2"><span class="sn">26</span><div><strong>EL PAÍS</strong> — 05/23: Fake invoice operation: "we can agree on the items"<br><a href="https://elpais.com/espana/2026-05-23/el-caso-plus-ultra-destapa-una-operativa-de-facturas-falsas-podemos-consensuar-los-conceptos.html" target="_blank">elpais.com</a></div></div>
+</div>
+</section>
+
+<footer class="pf"><div class="fi"><span class="fb">🐱 Cocobot</span><span id="visit-counter" class="vc">👁️ -- <span data-lang-i="es">visitas</span><span data-lang-i="en">visits</span></span></div></footer>
+
+<script>(function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/caso-zapatero-plus-ultra/index.html';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){var lang=document.body.classList.contains('lang-en')?' visits':' visitas';el.innerHTML='👁️ '+d.count+' '+lang;}}).catch(function(){});})();</script>
+
 <script>
 // Hamburger menu
 const hamburger=document.getElementById('hamburger');const overlay=document.getElementById('overlay');const sideMenu=document.getElementById('sideMenu');function toggleMenu(){hamburger.classList.toggle('active');overlay.classList.toggle('s');sideMenu.classList.toggle('o');document.body.style.overflow=sideMenu.classList.contains('o')?'hidden':'';}hamburger.addEventListener('click',toggleMenu);overlay.addEventListener('click',toggleMenu);sideMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){if(sideMenu.classList.contains('o'))toggleMenu();});});
+
+// Language toggle
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('.lt button').forEach(function(btn) {
+    btn.classList.remove('act');
+  });
+  var ids = ['btnEs', 'btnEn', 'btnEsSm', 'btnEnSm'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('act');
+  });
+  if (lang === 'es') {
+    ['btnEs', 'btnEsSm'].forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.add('act'); });
+  } else {
+    ['btnEn', 'btnEnSm'].forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.add('act'); });
+  }
+  localStorage.setItem('zapatero-lang', lang);
+}
+(function() {
+  var saved = localStorage.getItem('zapatero-lang');
+  if (saved) setLang(saved);
+})();
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t){window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-88,behavior:'smooth'});}});});
@@ -310,13 +673,13 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
 (function(){var els=document.querySelectorAll('.cg,.kf,.rg,.hb,.tx,.si2,blockquote,.os,.ft,.tl,.sl,.st,.cc,.fc,.rc,.ti,.ft tbody tr');els.forEach(function(el,idx){el.classList.add('rv');if(el.classList.contains('cc')||el.classList.contains('fc')||el.classList.contains('rc')){el.classList.add('d'+(Math.min(idx%4+1,4)));}});var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el){obs.observe(el);});})();
 
 // Hero metrics stagger animation
-(function(){var hm=document.querySelector('.hm');if(!hm){return;}var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('animate');obs.unobserve(e.target);}});},{threshold:0.5});obs.observe(hm);})();
+(function(){var hms=document.querySelectorAll('.hm');hms.forEach(function(hm){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('animate');obs.unobserve(e.target);}});},{threshold:0.5});obs.observe(hm);})();
 
 // Glow follow effect on cards
 (function(){var cards=document.querySelectorAll('.cc,.fc,.rc');cards.forEach(function(card){card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect();var x=((e.clientX-r.left)/r.width)*100;var y=((e.clientY-r.top)/r.height)*100;card.style.setProperty('--mx',x+'%');card.style.setProperty('--my',y+'%');});});})();
 
 // Parallax on hero background
-(function(){var hero=document.querySelector('.hero');if(!hero)return;var bg=hero.querySelector(':scope::before');window.addEventListener('scroll',function(){var y=window.pageYOffset;if(y<window.innerHeight){hero.style.transform='translateY('+y*0.15+'px)';hero.querySelector('.hd').style.transform='translateY('+y*0.05+'px)';hero.querySelector('h1').style.transform='translateY('+(y*0.08)+'px)';hero.querySelector('.sub').style.transform='translateY('+(y*0.06)+'px)';}},{passive:true});})();
+(function(){var heros=document.querySelectorAll('.hero');heros.forEach(function(hero){window.addEventListener('scroll',function(){var y=window.pageYOffset;if(y<window.innerHeight){var activeHero=hero;var hd=activeHero.querySelector('.hd');var h1=activeHero.querySelector('h1');var sub=activeHero.querySelector('.sub');if(hd)hd.style.transform='translateY('+y*0.05+'px)';if(h1)h1.style.transform='translateY('+(y*0.08)+'px)';if(sub)sub.style.transform='translateY('+(y*0.06)+'px)';}},{passive:true});});})();
 </script>
 </body>
 </html>
