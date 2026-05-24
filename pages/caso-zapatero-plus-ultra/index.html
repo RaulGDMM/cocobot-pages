@@ -665,7 +665,7 @@ function setLang(lang) {
 })();
 
 // Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t){window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-88,behavior:'smooth'});}});});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var href=this.getAttribute('href');var targets=document.querySelectorAll(href);var t=null;for(var i=0;i<targets.length;i++){var cs=window.getComputedStyle(targets[i]);if(cs.display!=='none'){t=targets[i];break;}}if(!t&&targets.length>0){t=targets[0];}if(t){window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-88,behavior:'smooth'});}});});
 
 // Reading progress bar
 (function(){var bar=document.getElementById('progressBar');if(!bar)return;function update(){var s=document.documentElement;var h=s.scrollHeight-s.clientHeight;var p=(s.scrollTop/h)*100;bar.style.width=p+'%';}window.addEventListener('scroll',update,{passive:true});update();})();
