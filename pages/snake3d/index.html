@@ -29,8 +29,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 #err-box{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;color:#ff4444;font-size:.85em;background:rgba(0,0,0,.9);padding:8px 16px;border-radius:8px;display:none;text-align:center;max-width:90%;border:1px solid #ff4444}
 
 /* ─── MUSIC PLAYER ─── */
-#music-player{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:6px;background:rgba(10,10,18,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:6px 14px;pointer-events:auto;opacity:0;transition:opacity .3s;white-space:nowrap}
-#music-player.visible{opacity:1}
+#music-player{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:6px;background:rgba(10,10,18,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:6px 14px;pointer-events:auto;white-space:nowrap}
 #music-player button{background:none;border:1px solid rgba(0,212,255,.3);color:#00d4ff;border-radius:6px;padding:4px 10px;font-size:.85em;cursor:pointer;transition:all .15s;font-family:inherit}
 #music-player button:hover{background:rgba(0,212,255,.15);border-color:rgba(0,212,255,.6)}
 #music-player button:active{transform:scale(.95)}
@@ -221,7 +220,6 @@ function playTrack(index) {
       mpPlayBtn.textContent = '⏸';
       mpTrackEl.textContent = track.name;
       mpNumEl.textContent = (currentTrack + 1) + '/' + playlist.length;
-      musicPlayerEl.classList.add('visible');
       log('🎵 Playing: ' + track.name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
     }).catch(function(e) {
       log('⚠️ Music play failed: ' + e.message);
@@ -272,7 +270,6 @@ function stopMusic() {
     musicEl.currentTime = 0;
     musicPlaying = false;
     mpPlayBtn.textContent = '▶';
-    musicPlayerEl.classList.remove('visible');
     log('🎵 Music stopped');
   }
 }
@@ -529,9 +526,6 @@ function initGame() {
   lookSmoothX = gw(-7) + 4;
   lookSmoothZ = gw(0);
   log('Snake: '+snake.length+' seg, dir=0');
-
-  // Start music
-  startMusic();
 }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
@@ -572,7 +566,6 @@ function die() {
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');
   hintL.style.opacity='1'; hintR.style.opacity='1';
-  stopMusic();
 }
 
 // ─── CAMERA ───
@@ -675,6 +668,8 @@ startBtn.addEventListener('click', function() {
 // ─── INIT ───
 buildSnake(); buildObstacles(); buildApples();
 initMusic();
+// Start music on page load
+startMusic();
 requestAnimationFrame(loop);
 log('✅ INIT COMPLETE');
 </script>
