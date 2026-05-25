@@ -171,15 +171,19 @@ floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
 var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
 flr.rotation.x = -Math.PI/2; flr.position.y = -.02; scene.add(flr);
 
-// Dark border around the grid
-var borderGeo = new THREE.RingGeometry(GRID_SIZE/2, GRID_SIZE/2 + 1, 4);
+// Dark outer floor — area between checkerboard and walls
+var outerF = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE+1.2, GRID_SIZE+1.2), new THREE.MeshStandardMaterial({color:0x080810, roughness:1}));
+outerF.rotation.x = -Math.PI/2; outerF.position.y = -.025; scene.add(outerF);
+
+// Dark border around the grid — visible gap between playable area and border
+var borderGeo = new THREE.RingGeometry(GRID_SIZE/2 - .3, GRID_SIZE/2 + .5, 4);
 var borderMat = new THREE.MeshStandardMaterial({color:0x080810, roughness:1});
 var border = new THREE.Mesh(borderGeo, borderMat);
 border.rotation.x = -Math.PI/2; border.position.y = -.03; scene.add(border);
 
-// Walls
+// Walls — placed clearly outside the playable area
 var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.3});
-var hw = half + .15;
+var hw = half + .6;
 var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.5,.2),wm); w1.position.set(0,.25,-hw); scene.add(w1);
 var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.5,.2),wm); w2.position.set(0,.25,hw); scene.add(w2);
 var w3=new THREE.Mesh(new THREE.BoxGeometry(.2,.5,GRID_SIZE+.5),wm); w3.position.set(-hw,.25,0); scene.add(w3);
