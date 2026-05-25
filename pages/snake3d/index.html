@@ -27,7 +27,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 #debug.visible{opacity:.5}
 #debug.visible:hover{opacity:1}
 #err-box{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;color:#ff4444;font-size:.85em;background:rgba(0,0,0,.9);padding:8px 16px;border-radius:8px;display:none;text-align:center;max-width:90%;border:1px solid #ff4444}
-@media(max-width:600px){#hud{padding:8px 12px}#score-box,#highscore-box{padding:6px 12px;font-size:.85em}.touch-hint{font-size:2.5em}#debug{font-size:8px;max-width:200px;top:42px}}
+
+/* ─── MUSIC PLAYER ─── */
+#music-player{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:6px;background:rgba(10,10,18,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:6px 14px;pointer-events:auto;opacity:0;transition:opacity .3s;white-space:nowrap}
+#music-player.visible{opacity:1}
+#music-player button{background:none;border:1px solid rgba(0,212,255,.3);color:#00d4ff;border-radius:6px;padding:4px 10px;font-size:.85em;cursor:pointer;transition:all .15s;font-family:inherit}
+#music-player button:hover{background:rgba(0,212,255,.15);border-color:rgba(0,212,255,.6)}
+#music-player button:active{transform:scale(.95)}
+#music-player .track-name{color:#8899aa;font-size:.8em;font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+#music-player .track-num{color:#556677;font-size:.7em}
+@media(max-width:600px){#hud{padding:8px 12px}#score-box,#highscore-box{padding:6px 12px;font-size:.85em}.touch-hint{font-size:2.5em}#debug{font-size:8px;max-width:200px;top:42px}#music-player{top:auto;bottom:10px;bottom:10px;padding:4px 10px;gap:4px}#music-player .track-name{max-width:100px;font-size:.7em}#music-player button{padding:3px 7px;font-size:.75em}}
 </style>
 <link rel="icon" href="data:;base64,=">
 </head>
@@ -37,6 +46,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 <div id="hud"><div id="score-box">🍎 <span id="score">0</span></div><div id="highscore-box">🏆 <span id="highscore">0</span></div></div>
 <div id="touch-overlay"><div class="touch-zone" id="tz-left"></div><div class="touch-zone" id="tz-right"></div></div>
 <div class="touch-hint left" id="hint-l">◀</div><div class="touch-hint right" id="hint-r">▶</div>
+
+<!-- Music Player -->
+<div id="music-player">
+  <button id="mp-prev" title="Anterior">⏮</button>
+  <button id="mp-play" title="Pausar/Reanudar">⏸</button>
+  <button id="mp-next" title="Siguiente">⏭</button>
+  <span class="track-name" id="mp-track">—</span>
+  <span class="track-num" id="mp-num"></span>
+</div>
 
 <div id="overlay">
   <h1>🐍 Snake 3D</h1>
@@ -108,7 +126,7 @@ var hintL = document.getElementById('hint-l');
 var hintR = document.getElementById('hint-r');
 highscoreEl.textContent = highScore;
 
-// ─── AUDIO ───
+// ─── AUDIO (SFX) ───
 var actx = null;
 function initAudio() {
   if(!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} }
@@ -128,6 +146,137 @@ function sfxTurn(){tone(440,.03,'sine',.03);}
 function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
 function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
 
+// ─── MUSIC PLAYER ───
+var playlist = [
+  {name: '🐍 Super Serpiente', file: 'music/retro-1.mp3'},
+  {name: '🐍 Cobra Turbo', file: 'music/retro-2.mp3'},
+  {name: '🐍 Pitón Retro', file: 'music/retro-3.mp3'},
+  {name: '🐍 Víbora Eléctrica', file: 'music/retro-4.mp3'},
+  {name: '🐍 Anaconda Arcade', file: 'music/retro-5.mp3'},
+  {name: '🐍 Serpiente Loca', file: 'music/retro-6.mp3'},
+  {name: '🐍 Boa Neon', file: 'music/retro-7.mp3'},
+  {name: '🐍 Mamba Digital', file: 'music/retro-8.mp3'},
+  {name: '🐍 Aspic Pixel', file: 'music/retro-9.mp3'},
+  {name: '🐍 Natrix Chiptune', file: 'music/retro-10.mp3'}
+];
+var currentTrack = 0;
+var musicEl = null;
+var musicPlaying = false;
+var musicPlayerEl = null;
+var mpPlayBtn = null;
+var mpTrackEl = null;
+var mpNumEl = null;
+
+function initMusic() {
+  musicEl = document.createElement('audio');
+  musicEl.preload = 'none';
+  musicEl.volume = 0.4;
+  musicPlayerEl = document.getElementById('music-player');
+  mpPlayBtn = document.getElementById('mp-play');
+  mpTrackEl = document.getElementById('mp-track');
+  mpNumEl = document.getElementById('mp-num');
+
+  // Shuffle playlist on init
+  shufflePlaylist();
+
+  // Bind controls
+  document.getElementById('mp-prev').addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
+  mpPlayBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleMusic(); });
+  document.getElementById('mp-next').addEventListener('click', function(e) { e.stopPropagation(); nextTrack(); });
+
+  // Auto-advance to next track
+  musicEl.addEventListener('ended', function() {
+    log('🎵 Track ended, playing next');
+    nextTrack();
+  });
+
+  musicEl.addEventListener('error', function(e) {
+    log('❌ Music error: ' + (musicEl.error ? musicEl.error.message : 'unknown'));
+  });
+
+  log('🎵 Music player initialized with ' + playlist.length + ' tracks');
+}
+
+function shufflePlaylist() {
+  for(var i = playlist.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = playlist[i];
+    playlist[i] = playlist[j];
+    playlist[j] = temp;
+  }
+  currentTrack = 0;
+  log('🎵 Playlist shuffled, first track: ' + playlist[0].name);
+}
+
+function playTrack(index) {
+  if(!musicEl) return;
+  currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
+  var track = playlist[currentTrack];
+  musicEl.src = track.file;
+  musicEl.load();
+  var playPromise = musicEl.play();
+  if(playPromise) {
+    playPromise.then(function() {
+      musicPlaying = true;
+      mpPlayBtn.textContent = '⏸';
+      mpTrackEl.textContent = track.name;
+      mpNumEl.textContent = (currentTrack + 1) + '/' + playlist.length;
+      musicPlayerEl.classList.add('visible');
+      log('🎵 Playing: ' + track.name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+    }).catch(function(e) {
+      log('⚠️ Music play failed: ' + e.message);
+    });
+  }
+}
+
+function toggleMusic() {
+  if(!musicEl) return;
+  if(musicPlaying) {
+    musicEl.pause();
+    musicPlaying = false;
+    mpPlayBtn.textContent = '▶';
+    log('🎵 Music paused');
+  } else {
+    musicEl.play().then(function() {
+      musicPlaying = true;
+      mpPlayBtn.textContent = '⏸';
+      log('🎵 Music resumed');
+    }).catch(function(e) {
+      log('⚠️ Music resume failed: ' + e.message);
+    });
+  }
+}
+
+function nextTrack() {
+  playTrack(currentTrack + 1);
+}
+
+function prevTrack() {
+  if(musicEl && musicEl.currentTime > 3) {
+    musicEl.currentTime = 0;
+    log('🎵 Restarted: ' + playlist[currentTrack].name);
+  } else {
+    playTrack(currentTrack - 1);
+  }
+}
+
+function startMusic() {
+  if(!musicEl) initMusic();
+  initAudio();
+  playTrack(currentTrack);
+}
+
+function stopMusic() {
+  if(musicEl && musicPlaying) {
+    musicEl.pause();
+    musicEl.currentTime = 0;
+    musicPlaying = false;
+    mpPlayBtn.textContent = '▶';
+    musicPlayerEl.classList.remove('visible');
+    log('🎵 Music stopped');
+  }
+}
+
 // ─── THREE.JS ───
 log('3. Creating renderer...');
 var renderer;
@@ -141,7 +290,6 @@ var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a12);
 scene.fog = new THREE.Fog(0x0a0a12, 18, 38);
 
-// PERSPECTIVE camera — third person behind snake
 var aspect = window.innerWidth / window.innerHeight;
 var FOV = 55;
 var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
@@ -172,22 +320,18 @@ floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
 var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
 flr.rotation.x = -Math.PI/2; flr.position.y = -.02; scene.add(flr);
 
-// Walls — right at the edge of the checkerboard
+// Walls
 var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
 var hw = half;
 var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w1.position.set(0,.2,-hw); scene.add(w1);
 var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w2.position.set(0,.2,hw); scene.add(w2);
 var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w3.position.set(-hw,.2,0); scene.add(w3);
 var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w4.position.set(hw,.2,0); scene.add(w4);
-log('4. Floor+walls OK (grid: -'+half+' to +'+half+', walls at '+hw+')');
+log('4. Floor+walls OK');
 
-// ─── COORDINATE SYSTEM ───
-// Grid coords range from -half to (half-1). Each cell is 1x1 world unit.
-// The floor plane spans [-half, +half] centered at origin.
-// Cell center = grid_coord + 0.5
+// Cell centering
 var CELL_CENTER = 0.5;
 function gw(g) { return g + CELL_CENTER; }
-log('4b. Cell center offset: ' + CELL_CENTER);
 
 // ─── SNAKE ───
 var sGroup = new THREE.Group(); scene.add(sGroup);
@@ -210,12 +354,8 @@ function buildSnake() {
 
 function refreshSnake() {
   if(!snake.length) return;
-
-  // Head — direct placement, no interpolation (retro grid-to-grid)
   headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
   headM.rotation.y = -direction;
-
-  // Body — direct placement
   for(var i = 1; i < snake.length; i++) {
     if(i < bodyMs.length) {
       bodyMs[i].visible = true;
@@ -282,7 +422,7 @@ function initApples() {
     if(a) apples.push(a);
   }
   refreshApples();
-  log('Apples: ' + apples.length + ' spawned at [' + apples.map(function(a){return '('+a.x+','+a.z+') w('+gw(a.x)+','+gw(a.z)+')'}).join(' ') + ']');
+  log('Apples: ' + apples.length + ' spawned');
 }
 
 // ─── OBSTACLES ───
@@ -338,12 +478,12 @@ function spawnObstacle() {
     if(isSafeForObstacle(x, z)) {
       obstacles.push({x:x, z:z});
       refreshObstacles();
-      log('Obstacle spawned at ('+x+','+z+') w('+gw(x)+','+gw(z)+') — total: '+obstacles.length);
+      log('Obstacle spawned at ('+x+','+z+') — total: '+obstacles.length);
       sfxObstacle();
       return;
     }
   }
-  log('⚠️ Could not place obstacle (no safe spot)');
+  log('⚠️ Could not place obstacle');
 }
 
 // ─── PARTICLES ───
@@ -378,46 +518,34 @@ function initGame() {
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
   scoreEl.textContent='0';
-
-  // Head at grid (-7,0), body trailing
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
   snake.push({x:-9,z:0}); snake.push({x:-10,z:0});
-
   buildSnake(); buildObstacles(); buildApples();
   refreshObstacles();
   initApples();
-
   refreshSnake();
-
-  // Camera: start behind the snake
   camSmoothX = gw(-7) - 7;
   camSmoothZ = gw(0);
   lookSmoothX = gw(-7) + 4;
   lookSmoothZ = gw(0);
+  log('Snake: '+snake.length+' seg, dir=0');
 
-  log('Snake: '+snake.length+' seg at ['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+'], dir=0');
+  // Start music
+  startMusic();
 }
 
-function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();log('Turn LEFT dir='+Math.round(direction/(Math.PI/2))+'/90°');}
-function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();log('Turn RIGHT dir='+Math.round(direction/(Math.PI/2))+'/90°');}
+function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
+function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
 
 function step() {
   if(gameOver) return;
-
   var h=snake[0];
   var nx=h.x+Math.round(Math.cos(direction));
   var nz=h.z+Math.round(Math.sin(direction));
-
-  // Wall collision
   if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
-  // Self collision
   if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
-  // Obstacle collision
   if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
-
   snake.unshift({x:nx,z:nz});
-
-  // Apple collision
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
     if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
@@ -444,43 +572,31 @@ function die() {
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');
   hintL.style.opacity='1'; hintR.style.opacity='1';
+  stopMusic();
 }
 
-// ─── CAMERA: Third-person behind snake, smooth lerp ───
+// ─── CAMERA ───
 function updateCam() {
   if(!snake.length) return;
-
   var camDist = 7;
   var camHeight = 6;
   var lookAhead = 4;
-
   var dx = Math.cos(direction);
   var dz = Math.sin(direction);
-
-  // Head world position (direct, no interp)
   var headWX = gw(snake[0].x);
   var headWZ = gw(snake[0].z);
-
-  // Ideal camera position: behind the snake
   var idealX = headWX - dx * camDist;
   var idealZ = headWZ - dz * camDist;
-
-  // Smooth follow (lerp — camera is always smooth even if snake jumps)
   camSmoothX += (idealX - camSmoothX) * 0.08;
   camSmoothZ += (idealZ - camSmoothZ) * 0.08;
-
   camera.position.x = camSmoothX;
   camera.position.y = camHeight;
   camera.position.z = camSmoothZ;
-
-  // Smooth look-ahead
   var targetLookX = headWX + dx * lookAhead;
   var targetLookZ = headWZ + dz * lookAhead;
   lookSmoothX += (targetLookX - lookSmoothX) * 0.08;
   lookSmoothZ += (targetLookZ - lookSmoothZ) * 0.08;
   camera.lookAt(lookSmoothX, 0, lookSmoothZ);
-
-  // Point light follows head
   pLight.position.set(headWX, 5, headWZ);
 }
 
@@ -496,7 +612,6 @@ canvas.addEventListener('webglcontextrestored', function(e) {
 
 // ─── ANIMATION LOOP ───
 var frameCount = 0;
-var camDebugTimer = 0;
 log('6. Starting loop...');
 function loop(now) {
   requestAnimationFrame(loop);
@@ -504,15 +619,11 @@ function loop(now) {
   try {
     var dt = Math.min((now-(loop._p||now))/1000, .05);
     loop._p = now;
-
     if(frameCount===1) log('7. First frame OK');
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
     if(running && !gameOver) {
-      if(now - lastMoveTime >= MOVE_INTERVAL) {
-        step(now);
-        lastMoveTime = now;
-      }
+      if(now-lastMoveTime >= MOVE_INTERVAL) { step(); lastMoveTime=now; }
       refreshSnake();
     }
 
@@ -529,12 +640,6 @@ function loop(now) {
     tickParts(dt);
     updateCam();
     renderer.render(scene, camera);
-
-    // Camera debug every 3 seconds
-    if(now - camDebugTimer > 3000) {
-      camDebugTimer = now;
-      log('CAM: pos('+camera.position.x.toFixed(1)+','+camera.position.y.toFixed(1)+','+camera.position.z.toFixed(1)+') look('+lookSmoothX.toFixed(1)+','+lookSmoothZ.toFixed(1)+')');
-    }
   } catch(e) {
     log('❌ Loop err f'+frameCount+': '+e.message); showErr(e.message);
   }
@@ -551,7 +656,6 @@ log('9. Controls ready');
 document.addEventListener('keydown', function(e) {
   if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A'){e.preventDefault();turnL();}
   if(e.key==='ArrowRight'||e.key==='d'||e.key==='D'){e.preventDefault();turnR();}
-  if(e.key==='l'||e.key==='L'){dbg.classList.toggle('visible');}
 });
 document.getElementById('tz-left').addEventListener('touchstart',function(e){e.preventDefault();turnL();},{passive:false});
 document.getElementById('tz-right').addEventListener('touchstart',function(e){e.preventDefault();turnR();},{passive:false});
@@ -570,6 +674,7 @@ startBtn.addEventListener('click', function() {
 
 // ─── INIT ───
 buildSnake(); buildObstacles(); buildApples();
+initMusic();
 requestAnimationFrame(loop);
 log('✅ INIT COMPLETE');
 </script>
