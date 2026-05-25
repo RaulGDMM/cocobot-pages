@@ -264,6 +264,25 @@ function startMusic() {
   playTrack(currentTrack);
 }
 
+// Try to start music on first user interaction (fallback for autoplay policy)
+var musicStarted = false;
+document.addEventListener('click', function tryStartMusic() {
+  if(!musicStarted && !musicPlaying) {
+    musicStarted = true;
+    log('🎵 First click — trying to start music');
+    initAudio();
+    if(musicEl) {
+      musicEl.play().then(function() {
+        musicPlaying = true;
+        mpPlayBtn.textContent = '⏸';
+        log('🎵 Playing: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+      }).catch(function(e) {
+        log('⚠️ Music start on click failed: ' + e.message);
+      });
+    }
+  }
+}, {once: false});
+
 function stopMusic() {
   if(musicEl && musicPlaying) {
     musicEl.pause();
