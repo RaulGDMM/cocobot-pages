@@ -15,8 +15,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 .touch-zone{flex:1}.touch-zone:active::after{content:'';position:absolute;inset:0;background:rgba(0,100,255,.08)}
 .touch-hint{position:fixed;bottom:20%;z-index:6;font-size:3em;color:rgba(255,255,255,.15);pointer-events:none;transition:opacity .3s}
 .touch-hint.left{left:15%}.touch-hint.right{right:15%}
-#overlay{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,18,.9);transition:opacity .3s}
-#overlay.hidden{opacity:0;pointer-events:none}
+#overlay{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,18,.9)}
+#overlay.hidden{display:none !important}
 #overlay h1{font-size:clamp(2em,8vw,3.5em);color:#00d4ff;text-shadow:0 0 30px rgba(0,212,255,.5);margin-bottom:8px}
 #overlay .subtitle{color:#8899aa;font-size:1em;margin-bottom:25px;text-align:center;padding:0 20px}
 #overlay .final-score{color:#ffaa00;font-size:1.4em;font-weight:700;margin-bottom:15px;display:none}
@@ -334,8 +334,11 @@ function updateCam() {
 
 // ─── ANIMATION LOOP ───
 var frameCount = 0;
+var stepsExecuted = 0;
+var loopActive = true;
 log('10. Starting animation loop...');
 function loop(time) {
+  if(!loopActive) { log('❌ LOOP STOPPED at frame ' + frameCount); return; }
   requestAnimationFrame(loop);
   frameCount++;
   try {
@@ -344,9 +347,13 @@ function loop(time) {
 
     if(frameCount === 1) log('11. First frame rendered, time=' + time);
     if(frameCount === 60) log('60 frames rendered, FPS OK');
+    if(frameCount % 30 === 0) log('Frame ' + frameCount + ' | running=' + running + ' gameOver=' + gameOver + ' steps=' + stepsExecuted + ' snakeLen=' + snake.length);
 
     if(running && !gameOver) {
-      if(time - lastMove >= MOVE_INTERVAL) {
+      var timeSinceLast = time - lastMove;
+      if(timeSinceLast >= MOVE_INTERVAL) {
+        stepsExecuted++;
+        log('STEP ' + stepsExecuted + ' at t=' + Math.round(time) + ' (delta=' + Math.round(timeSinceLast) + 'ms)');
         step();
         lastMove = time;
       }
@@ -360,11 +367,21 @@ function loop(time) {
 
     tickParts(dt);
     updateCam();
+
+    // Check WebGL context
+    if(frameCount % 60 === 0) {
+      if(renderer.getContext && renderer.getContext().isContextLost) {
+        log('❌ WebGL context LOST!');
+        showErr('WebGL context lost');
+      }
+    }
+
     renderer.render(scene, camera);
   } catch(e) {
     log('❌ Loop error frame ' + frameCount + ': ' + e.message);
     showErr('Error frame ' + frameCount + ': ' + e.message);
     console.error(e);
+    loopActive = false;
   }
 }
 
