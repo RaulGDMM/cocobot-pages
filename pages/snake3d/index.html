@@ -90,11 +90,11 @@ if(typeof THREE === 'undefined') { showErr('Three.js no cargó'); throw new Erro
 log('2. Three.js v' + THREE.REVISION);
 
 // ─── CONFIG ───
-var GRID_SIZE = 30;
+var GRID_SIZE = 22;
 var MOVE_INTERVAL = 200;
 var TURN_ANGLE = Math.PI / 2;
 var half = GRID_SIZE / 2;
-var NUM_APPLES = 4;
+var NUM_APPLES = 3;
 var OBSTACLE_SPAWN_EVERY = 3;
 var OBSTACLE_MIN_DIST_SNAKE = 6;
 var OBSTACLE_MIN_DIST_EACH = 3;
@@ -321,7 +321,7 @@ log('3. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight);
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a12);
-scene.fog = new THREE.Fog(0x0a0a12, 18, 38);
+scene.fog = new THREE.Fog(0x0a0a12, 12, 28);
 
 var aspect = window.innerWidth / window.innerHeight;
 var FOV = 55;
@@ -551,15 +551,15 @@ function initGame() {
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
   scoreEl.textContent='0';
+  snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
-  snake.push({x:-9,z:0}); snake.push({x:-10,z:0});
   buildSnake(); buildObstacles(); buildApples();
   refreshObstacles();
   initApples();
   refreshSnake();
-  camSmoothX = gw(-7) - 7;
+  camSmoothX = gw(-5) - 5;
   camSmoothZ = gw(0);
-  lookSmoothX = gw(-7) + 4;
+  lookSmoothX = gw(-5) + 3;
   lookSmoothZ = gw(0);
   log('Snake: '+snake.length+' seg, dir=0');
 }
@@ -607,9 +607,9 @@ function die() {
 // ─── CAMERA ───
 function updateCam() {
   if(!snake.length) return;
-  var camDist = 7;
-  var camHeight = 6;
-  var lookAhead = 4;
+  var camDist = 5;
+  var camHeight = 4.5;
+  var lookAhead = 3;
   var dx = Math.cos(direction);
   var dz = Math.sin(direction);
   var headWX = gw(snake[0].x);
