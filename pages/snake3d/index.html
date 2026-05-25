@@ -217,11 +217,18 @@ function shufflePlaylist() {
   log('🎵 Playlist shuffled, first track: ' + playlist[0].name);
 }
 
+// Pick a random track and set it as current
+function pickRandomTrack() {
+  currentTrack = Math.floor(Math.random() * playlist.length);
+  musicEl.src = playlist[currentTrack].file + '?t=' + Date.now();
+  log('🎵 Picked random track: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+}
+
 function playTrack(index) {
   if(!musicEl) return;
   currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
   var track = playlist[currentTrack];
-  musicEl.src = track.file;
+  musicEl.src = track.file + '?t=' + Date.now();
   musicEl.load();
   var playPromise = musicEl.play();
   if(playPromise) {
@@ -270,7 +277,8 @@ function prevTrack() {
 
 function startMusic() {
   if(!musicEl) initMusic();
-  // Always show track display
+  // Pick random track on each page load
+  pickRandomTrack();
   updateTrackDisplay();
   initAudio();
   var playPromise = musicEl.play();
