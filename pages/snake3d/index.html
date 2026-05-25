@@ -72,7 +72,7 @@ if(typeof THREE === 'undefined') { showErr('Three.js no cargó'); throw new Erro
 log('2. Three.js v' + THREE.REVISION);
 
 // ─── CONFIG ───
-var GRID_SIZE = 40;
+var GRID_SIZE = 30;
 var MOVE_INTERVAL = 200;
 var TURN_ANGLE = Math.PI / 2;
 var half = GRID_SIZE / 2;
@@ -94,6 +94,7 @@ var running = false;
 var lastMove = 0;
 var gameOver = false;
 var camSmoothX = 0, camSmoothZ = 0; // smooth camera target
+var prevSnake = []; // previous positions for interpolation
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -137,14 +138,14 @@ log('3. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight);
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a12);
-scene.fog = new THREE.Fog(0x0a0a12, 25, 55);
+scene.fog = new THREE.Fog(0x0a0a12, 18, 38);
 
 // PERSPECTIVE camera — third person behind snake
 var aspect = window.innerWidth / window.innerHeight;
-var FOV = 50;
+var FOV = 55;
 var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
-camera.position.set(-15, 12, 8);
-camera.lookAt(-10, 0, 0);
+camera.position.set(-12, 10, 6);
+camera.lookAt(-7, 0, 0);
 
 scene.add(new THREE.AmbientLight(0x4466aa, .7));
 var sun = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -154,10 +155,27 @@ scene.add(sun);
 var pLight = new THREE.PointLight(0x00ccff, .4, 25);
 scene.add(pLight);
 
-// Floor
-var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE+8, GRID_SIZE+8), new THREE.MeshStandardMaterial({color:0x0e0e1a, roughness:1}));
-flr.rotation.x = -Math.PI/2; flr.position.y = -.05; scene.add(flr);
-var gridH = new THREE.GridHelper(GRID_SIZE, GRID_SIZE, 0x1a1a3a, 0x141428); gridH.position.y = .01; scene.add(gridH);
+// Floor — checkerboard texture
+var floorCanvas = document.createElement('canvas');
+floorCanvas.width = 256; floorCanvas.height = 256;
+var fctx = floorCanvas.getContext('2d');
+var sq = 256 / GRID_SIZE;
+for(var fy = 0; fy < GRID_SIZE; fy++) {
+  for(var fx = 0; fx < GRID_SIZE; fx++) {
+    fctx.fillStyle = (fx + fy) % 2 === 0 ? '#111122' : '#0c0c18';
+    fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
+  }
+}
+var floorTex = new THREE.CanvasTexture(floorCanvas);
+floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
+var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
+flr.rotation.x = -Math.PI/2; flr.position.y = -.02; scene.add(flr);
+
+// Dark border around the grid
+var borderGeo = new THREE.RingGeometry(GRID_SIZE/2, GRID_SIZE/2 + 1, 4);
+var borderMat = new THREE.MeshStandardMaterial({color:0x080810, roughness:1});
+var border = new THREE.Mesh(borderGeo, borderMat);
+border.rotation.x = -Math.PI/2; border.position.y = -.03; scene.add(border);
 
 // Walls
 var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.3});
@@ -187,16 +205,38 @@ function buildSnake() {
   }
 }
 
-function refreshSnake() {
+function refreshSnake(time) {
   if(!snake.length) return;
-  headM.position.set(snake[0].x, .25, snake[0].z);
+
+  // Interpolation progress: 0 = prev positions, 1 = current positions
+  var t = 1;
+  if(running && prevSnake.length === snake.length && time && lastMove) {
+    t = Math.min((time - lastMove) / MOVE_INTERVAL, 1);
+  }
+
+  // Lerp head position
+  var hx = snake[0].x;
+  var hz = snake[0].z;
+  if(prevSnake.length && t < 1) {
+    hx = prevSnake[0].x + (snake[0].x - prevSnake[0].x) * t;
+    hz = prevSnake[0].z + (snake[0].z - prevSnake[0].z) * t;
+  }
+  headM.position.set(hx, .25, hz);
   headM.rotation.y = -direction;
+
+  // Lerp body positions
   for(var i = 1; i < snake.length; i++) {
     if(i < bodyMs.length) {
       bodyMs[i].visible = true;
-      bodyMs[i].position.set(snake[i].x, .225, snake[i].z);
-      var t = i / Math.max(snake.length, 1);
-      var s = 1 - t * .4;
+      var bx = snake[i].x;
+      var bz = snake[i].z;
+      if(prevSnake[i] && t < 1) {
+        bx = prevSnake[i].x + (snake[i].x - prevSnake[i].x) * t;
+        bz = prevSnake[i].z + (snake[i].z - prevSnake[i].z) * t;
+      }
+      bodyMs[i].position.set(bx, .225, bz);
+      var frac = i / Math.max(snake.length, 1);
+      var s = 1 - frac * .4;
       bodyMs[i].scale.set(s, 1, s);
     }
   }
@@ -357,16 +397,17 @@ function initGame() {
   log('initGame()');
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
-  camSmoothX = -10; camSmoothZ = 0;
-  lookSmoothX = -5; lookSmoothZ = 0;
+  camSmoothX = -7; camSmoothZ = 0;
+  lookSmoothX = -2; lookSmoothZ = 0;
   scoreEl.textContent='0';
-  // Head at -10, body trailing
-  snake.push({x:-10,z:0}); snake.push({x:-11,z:0});
-  snake.push({x:-12,z:0}); snake.push({x:-13,z:0});
+  // Head at -7, body trailing
+  snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
+  snake.push({x:-9,z:0}); snake.push({x:-10,z:0});
   buildSnake(); buildObstacles(); buildApples();
   refreshObstacles();
   initApples();
   refreshSnake();
+  prevSnake = snake.map(function(s){return {x:s.x, z:s.z};});
   log('Snake: '+snake.length+' seg at ['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+'], dir=0');
 }
 
@@ -375,6 +416,9 @@ function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();lo
 
 function step() {
   if(gameOver) return;
+  // Save previous positions for interpolation
+  prevSnake = snake.map(function(s){return {x:s.x, z:s.z};});
+
   var h=snake[0];
   var nx=h.x+Math.round(Math.cos(direction));
   var nz=h.z+Math.round(Math.sin(direction));
@@ -382,7 +426,7 @@ function step() {
   // Wall collision
   if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
   // Self collision
-  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
+  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+') snake=['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+']');die();return;}
   // Obstacle collision
   if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
 
@@ -404,7 +448,10 @@ function step() {
     }
   }
   if(!ate) snake.pop();
-  refreshSnake();
+  // When snake grows, prevSnake is one shorter — prepend head position
+  if(ate && prevSnake.length < snake.length) {
+    prevSnake.unshift({x:snake[0].x, z:snake[0].z});
+  }
   refreshApples();
 }
 
@@ -428,9 +475,9 @@ function updateCam(time) {
   var h = snake[0];
 
   // Target: behind and above the snake, looking ahead
-  var camDist = 10;
-  var camHeight = 8;
-  var lookAhead = 5;
+  var camDist = 7;
+  var camHeight = 6;
+  var lookAhead = 4;
 
   // Direction vector
   var dx = Math.cos(direction);
@@ -490,6 +537,8 @@ function loop(time) {
 
     if(running && !gameOver) {
       if(time-lastMove >= MOVE_INTERVAL) { step(); lastMove=time; }
+      // Interpolate snake positions every frame for smooth movement
+      refreshSnake(time);
     }
 
     // Apple animation
