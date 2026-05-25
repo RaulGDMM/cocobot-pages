@@ -27,6 +27,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 #debug.visible{opacity:.5}
 #debug.visible:hover{opacity:1}
 #err-box{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;color:#ff4444;font-size:.85em;background:rgba(0,0,0,.9);padding:8px 16px;border-radius:8px;display:none;text-align:center;max-width:90%;border:1px solid #ff4444}
+#games-counter{position:fixed;bottom:12px;right:12px;z-index:15;background:rgba(10,10,18,.85);backdrop-filter:blur(8px);border:1px solid rgba(255,170,0,.2);border-radius:10px;padding:6px 12px;color:#ffaa00;font-size:.75em;font-weight:600;pointer-events:none}
 
 /* ─── MUSIC PLAYER ─── */
 #music-player{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:35;display:flex;align-items:center;gap:6px;background:rgba(10,10,18,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:6px 14px;pointer-events:auto;white-space:nowrap}
@@ -49,7 +50,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 <!-- Music Player -->
 <div id="music-player">
   <button id="mp-prev" title="Anterior">⏮</button>
-  <button id="mp-play" title="Pausar/Reanudar">⏸</button>
+  <button id="mp-play" title="Reproducir">▶</button>
   <button id="mp-next" title="Siguiente">⏭</button>
   <span class="track-name" id="mp-track">—</span>
   <span class="track-num" id="mp-num"></span>
@@ -68,6 +69,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 
 <div id="debug"></div>
 <div id="err-box"></div>
+<div id="games-counter">🎮 Partidas: <span id="games-count">0</span></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -108,6 +110,7 @@ var apples = [];
 var obstacles = [];
 var score = 0;
 var highScore = parseInt(localStorage.getItem('snake3d_hs') || '0');
+var totalGames = parseInt(localStorage.getItem('snake3d_games') || '0');
 var running = false;
 var lastMoveTime = 0;
 var gameOver = false;
@@ -123,7 +126,9 @@ var startBtn = document.getElementById('start-btn');
 var finalScoreEl = document.getElementById('final-score');
 var hintL = document.getElementById('hint-l');
 var hintR = document.getElementById('hint-r');
+var gamesCountEl = document.getElementById('games-count');
 highscoreEl.textContent = highScore;
+gamesCountEl.textContent = totalGames;
 
 // ─── AUDIO (SFX) ───
 var actx = null;
@@ -281,15 +286,16 @@ function startMusic() {
   pickRandomTrack();
   updateTrackDisplay();
   initAudio();
+  // Try autoplay but don't change button state on failure
   var playPromise = musicEl.play();
   if(playPromise) {
     playPromise.then(function() {
       musicPlaying = true;
       mpPlayBtn.textContent = '⏸';
-      log('🎵 Autoplay: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
-    }).catch(function(e) {
-      log('⚠️ Autoplay blocked: ' + e.message + ' — waiting for user interaction');
-      mpPlayBtn.textContent = '▶';
+      log('🎵 Autoplay: ' + playlist[currentTrack].name);
+    }).catch(function() {
+      // Autoplay blocked — button stays ▶, waiting for user
+      musicPlaying = false;
     });
   }
 }
@@ -515,7 +521,6 @@ function isSafeForObstacle(x, z) {
     if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_APPLE) return false;
   }
   if(isOccupied(x, z)) return false;
-  if(x < -half+1 || x >= half-1 || z < -half+1 || z >= half-1) return false;
   return true;
 }
 
@@ -613,6 +618,10 @@ function die() {
   gameOver=true; running=false; sfxDie();
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   if(score>highScore){highScore=score;localStorage.setItem('snake3d_hs',highScore);highscoreEl.textContent=highScore;}
+  // Increment games counter
+  totalGames++;
+  localStorage.setItem('snake3d_games', totalGames);
+  gamesCountEl.textContent = totalGames;
   finalScoreEl.textContent='Puntuación: '+score+' 🍎';
   finalScoreEl.style.display='block';
   startBtn.textContent='REINTENTAR';
@@ -621,11 +630,12 @@ function die() {
 }
 
 // ─── CAMERA ───
+var isMobile = window.innerWidth < 600;
 function updateCam() {
   if(!snake.length) return;
-  var camDist = 5;
-  var camHeight = 4.5;
-  var lookAhead = 3;
+  var camDist = isMobile ? 7 : 5;
+  var camHeight = isMobile ? 6 : 4.5;
+  var lookAhead = isMobile ? 4 : 3;
   var dx = Math.cos(direction);
   var dz = Math.sin(direction);
   var headWX = gw(snake[0].x);
