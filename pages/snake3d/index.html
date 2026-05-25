@@ -23,10 +23,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 #start-btn{background:linear-gradient(135deg,#00d4ff,#0088ff);color:#0a0a18;border:none;border-radius:14px;padding:14px 48px;font-size:1.1em;font-weight:700;cursor:pointer;pointer-events:auto;transition:transform .15s;box-shadow:0 4px 20px rgba(0,212,255,.3)}
 #start-btn:active{transform:scale(.95)}
 .controls-hint{color:#556677;font-size:.8em;margin-top:18px;text-align:center;line-height:1.6}
-#debug{position:fixed;top:50px;left:10px;z-index:25;color:#0a0;font-family:monospace;font-size:9px;background:rgba(0,0,0,.7);padding:4px 8px;border-radius:4px;max-height:20vh;overflow:hidden;pointer-events:none;white-space:pre-wrap;line-height:1.2;max-width:240px;opacity:.5;transition:opacity .2s}
+#debug{position:fixed;top:50px;left:10px;z-index:25;color:#0a0;font-family:monospace;font-size:9px;background:rgba(0,0,0,.7);padding:4px 8px;border-radius:4px;max-height:25vh;overflow:hidden;pointer-events:none;white-space:pre-wrap;line-height:1.2;max-width:280px;opacity:.4;transition:opacity .2s}
 #debug:hover{opacity:1}
 #err-box{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;color:#ff4444;font-size:.85em;background:rgba(0,0,0,.9);padding:8px 16px;border-radius:8px;display:none;text-align:center;max-width:90%;border:1px solid #ff4444}
-@media(max-width:600px){#hud{padding:8px 12px}#score-box,#highscore-box{padding:6px 12px;font-size:.85em}.touch-hint{font-size:2.5em}#debug{font-size:8px;max-width:220px;top:42px}}
+@media(max-width:600px){#hud{padding:8px 12px}#score-box,#highscore-box{padding:6px 12px;font-size:.85em}.touch-hint{font-size:2.5em}#debug{font-size:8px;max-width:200px;top:42px}}
 </style>
 <link rel="icon" href="data:;base64,=">
 </head>
@@ -39,7 +39,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 
 <div id="overlay">
   <h1>🐍 Snake 3D</h1>
-  <div class="subtitle">Recoge las manzanas y crece sin chocar contigo mismo</div>
+  <div class="subtitle">Recoge manzanas, esquiva obstáculos y crece sin chocar</div>
   <div class="final-score" id="final-score"></div>
   <button id="start-btn">JUGAR</button>
   <div class="controls-hint">
@@ -59,20 +59,16 @@ var logs = [];
 function log(msg) {
   var ts = new Date().toLocaleTimeString();
   logs.push('[' + ts + '] ' + msg);
-  if(logs.length > 50) logs.shift();
+  if(logs.length > 60) logs.shift();
   dbg.textContent = logs.join('\n');
   console.log('[Snake3D]', msg);
 }
-function showErr(msg) { errBox.textContent = msg; errBox.style.display = 'block'; }
+function showErr(msg) { errBox.textContent = msg; errBox.style.display = msg ? 'block' : 'none'; }
 
-window.onerror = function(msg) {
-  showErr('ERROR: ' + msg);
-  log('❌ onerror: ' + msg);
-  return true;
-};
+window.onerror = function(msg) { showErr('ERROR: '+msg); log('❌ onerror: '+msg); return true; };
 
 log('1. Script starting...');
-if(typeof THREE === 'undefined') { showErr('Three.js no cargó'); log('❌ THREE undefined'); throw new Error('Three.js not loaded'); }
+if(typeof THREE === 'undefined') { showErr('Three.js no cargó'); throw new Error('Three.js not loaded'); }
 log('2. Three.js v' + THREE.REVISION);
 
 // ─── CONFIG ───
@@ -80,18 +76,24 @@ var GRID_SIZE = 40;
 var MOVE_INTERVAL = 200;
 var TURN_ANGLE = Math.PI / 2;
 var half = GRID_SIZE / 2;
+var NUM_APPLES = 4;
+var OBSTACLE_SPAWN_EVERY = 3; // spawn obstacle every N apples eaten
+var OBSTACLE_MIN_DIST_SNAKE = 6;
+var OBSTACLE_MIN_DIST_EACH = 3;
+var OBSTACLE_MIN_DIST_APPLE = 3;
+var MAX_OBSTACLES = 30;
 
 // ─── STATE ───
 var snake = [];
 var direction = 0;
-var apple = null;
+var apples = [];
+var obstacles = [];
 var score = 0;
 var highScore = parseInt(localStorage.getItem('snake3d_hs') || '0');
 var running = false;
 var lastMove = 0;
 var gameOver = false;
-var camAngle = 0;
-var targetCamAngle = 0;
+var camSmoothX = 0, camSmoothZ = 0; // smooth camera target
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -122,78 +124,77 @@ function tone(f,d,t,v) {
 function sfxEat(){tone(587,.1,'square',.08);setTimeout(function(){tone(784,.12,'square',.08)},70);}
 function sfxTurn(){tone(440,.03,'sine',.03);}
 function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
+function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
 
-// ─── THREE.JS — SHARED MATERIALS ───
-log('4. Creating renderer...');
+// ─── THREE.JS ───
+log('3. Creating renderer...');
 var renderer;
-try {
-  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'default' });
-} catch(e) { showErr('WebGL: '+e.message); log('❌ '+e.message); throw e; }
+try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'default' }); }
+catch(e) { showErr('WebGL: '+e.message); log('❌ '+e.message); throw e; }
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
-log('4. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight);
+log('3. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight);
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a12);
-scene.fog = new THREE.Fog(0x0a0a12, 22, 45);
+scene.fog = new THREE.Fog(0x0a0a12, 25, 55);
 
+// PERSPECTIVE camera — third person behind snake
 var aspect = window.innerWidth / window.innerHeight;
-var viewSize = 16;
-var camera = new THREE.OrthographicCamera(-viewSize*aspect/2, viewSize*aspect/2, viewSize/2, -viewSize/2, .1, 200);
-camera.position.set(0, 16, 12);
-camera.lookAt(0, 0, 0);
+var FOV = 50;
+var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
+camera.position.set(-15, 12, 8);
+camera.lookAt(-10, 0, 0);
 
-scene.add(new THREE.AmbientLight(0x4466aa, .8));
-var sun = new THREE.DirectionalLight(0xffffff, .9);
-sun.position.set(8, 20, 8);
+scene.add(new THREE.AmbientLight(0x4466aa, .7));
+var sun = new THREE.DirectionalLight(0xffffff, 1.0);
+sun.position.set(10, 25, 10);
+sun.castShadow = false;
 scene.add(sun);
-var pLight = new THREE.PointLight(0x00ccff, .3, 20);
+var pLight = new THREE.PointLight(0x00ccff, .4, 25);
 scene.add(pLight);
 
 // Floor
-var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE+4, GRID_SIZE+4), new THREE.MeshStandardMaterial({color:0x0e0e1a, roughness:1}));
+var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE+8, GRID_SIZE+8), new THREE.MeshStandardMaterial({color:0x0e0e1a, roughness:1}));
 flr.rotation.x = -Math.PI/2; flr.position.y = -.05; scene.add(flr);
 var gridH = new THREE.GridHelper(GRID_SIZE, GRID_SIZE, 0x1a1a3a, 0x141428); gridH.position.y = .01; scene.add(gridH);
 
-// Walls — shared material
+// Walls
 var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.3});
 var hw = half + .15;
-var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.4,.2),wm); w1.position.set(0,.2,-hw); scene.add(w1);
-var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.4,.2),wm); w2.position.set(0,.2,hw); scene.add(w2);
-var w3=new THREE.Mesh(new THREE.BoxGeometry(.2,.4,GRID_SIZE+.5),wm); w3.position.set(-hw,.2,0); scene.add(w3);
-var w4=new THREE.Mesh(new THREE.BoxGeometry(.2,.4,GRID_SIZE+.5),wm); w4.position.set(hw,.2,0); scene.add(w4);
-log('5. Floor+walls OK');
+var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.5,.2),wm); w1.position.set(0,.25,-hw); scene.add(w1);
+var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.5,.2),wm); w2.position.set(0,.25,hw); scene.add(w2);
+var w3=new THREE.Mesh(new THREE.BoxGeometry(.2,.5,GRID_SIZE+.5),wm); w3.position.set(-hw,.25,0); scene.add(w3);
+var w4=new THREE.Mesh(new THREE.BoxGeometry(.2,.5,GRID_SIZE+.5),wm); w4.position.set(hw,.25,0); scene.add(w4);
+log('4. Floor+walls OK');
 
-// ─── SNAKE — SHARED MATERIALS (FIX for WebGL context loss) ───
+// ─── SNAKE ───
 var sGroup = new THREE.Group(); scene.add(sGroup);
-var hGeo = new THREE.BoxGeometry(.78, .45, .78);
+var hGeo = new THREE.BoxGeometry(.8, .5, .8);
 var hMat = new THREE.MeshStandardMaterial({color:0x00ff88, emissive:0x00aa44, emissiveIntensity:.35});
-var bGeo = new THREE.BoxGeometry(.68, .4, .68);
-// SINGLE shared body material — no per-segment materials!
+var bGeo = new THREE.BoxGeometry(.7, .45, .7);
 var bMat = new THREE.MeshStandardMaterial({color:0x00cc66, emissive:0x004422, emissiveIntensity:.15});
 var headM = null;
 var bodyMs = [];
 
 function buildSnake() {
-  while(sGroup.children.length) { var c=sGroup.children[0]; sGroup.remove(c); }
+  while(sGroup.children.length) { var c=sGroup.children[0]; sGroup.remove(c); c.geometry&&c.geometry.dispose(); }
   bodyMs = [];
-  headM = new THREE.Mesh(hGeo, hMat); headM.position.y = .225; sGroup.add(headM);
-  // All body segments share the SAME material
+  headM = new THREE.Mesh(hGeo, hMat); headM.position.y = .25; sGroup.add(headM);
   for(var i = 0; i < 200; i++) {
     var m = new THREE.Mesh(bGeo, bMat);
-    m.position.y = .2; m.visible = false; sGroup.add(m); bodyMs.push(m);
+    m.position.y = .225; m.visible = false; sGroup.add(m); bodyMs.push(m);
   }
-  log('Snake: 1 head + 200 body (1 shared material)');
 }
 
 function refreshSnake() {
   if(!snake.length) return;
-  headM.position.set(snake[0].x, .225, snake[0].z);
+  headM.position.set(snake[0].x, .25, snake[0].z);
   headM.rotation.y = -direction;
   for(var i = 1; i < snake.length; i++) {
     if(i < bodyMs.length) {
       bodyMs[i].visible = true;
-      bodyMs[i].position.set(snake[i].x, .2, snake[i].z);
+      bodyMs[i].position.set(snake[i].x, .225, snake[i].z);
       var t = i / Math.max(snake.length, 1);
       var s = 1 - t * .4;
       bodyMs[i].scale.set(s, 1, s);
@@ -202,20 +203,130 @@ function refreshSnake() {
   for(var i = snake.length; i < bodyMs.length; i++) bodyMs[i].visible = false;
 }
 
-// ─── APPLE ───
-var aGroup = new THREE.Group(); scene.add(aGroup);
-var appleM = new THREE.Mesh(new THREE.SphereGeometry(.28, 10, 10), new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5}));
-aGroup.add(appleM);
-var aGlow = new THREE.PointLight(0xff3344, .5, 3); aGroup.add(aGlow);
+// ─── APPLES ───
+var appleGroup = new THREE.Group(); scene.add(appleGroup);
+var appleMeshes = [];
+var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
+var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
 
-function spawnApple() {
-  var p;
-  do { p = {x:Math.floor(Math.random()*GRID_SIZE)-half, z:Math.floor(Math.random()*GRID_SIZE)-half}; }
-  while(snake.some(function(s){return s.x===p.x&&s.z===p.z;}));
-  apple = p; aGroup.position.set(p.x, .28, p.z);
+function buildApples() {
+  while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
+  appleMeshes = [];
+  for(var i = 0; i < NUM_APPLES; i++) {
+    var g = new THREE.Group();
+    var m = new THREE.Mesh(appleGeo, appleMat);
+    g.add(m);
+    var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
+    appleGroup.add(g);
+    appleMeshes.push(g);
+    g.visible = false;
+  }
 }
 
-// ─── PARTICLES (shared material) ───
+function isOccupied(x, z) {
+  if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
+  if(apples.some(function(a){return a&&a.x===x&&a.z===z;})) return true;
+  if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
+  return false;
+}
+
+function spawnOneApple() {
+  for(var tries = 0; tries < 200; tries++) {
+    var x = Math.floor(Math.random()*GRID_SIZE)-half;
+    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    if(!isOccupied(x,z)) return {x:x, z:z};
+  }
+  return null;
+}
+
+function refreshApples() {
+  for(var i = 0; i < NUM_APPLES; i++) {
+    if(i < apples.length && apples[i]) {
+      appleMeshes[i].visible = true;
+      appleMeshes[i].position.set(apples[i].x, .25, apples[i].z);
+    } else {
+      appleMeshes[i].visible = false;
+    }
+  }
+}
+
+function initApples() {
+  apples = [];
+  for(var i = 0; i < NUM_APPLES; i++) {
+    var a = spawnOneApple();
+    if(a) apples.push(a);
+  }
+  refreshApples();
+  log('Apples: ' + apples.length + ' spawned');
+}
+
+// ─── OBSTACLES ───
+var obsGroup = new THREE.Group(); scene.add(obsGroup);
+var obsMeshes = [];
+var obsGeo = new THREE.BoxGeometry(.8, .7, .8);
+var obsMat = new THREE.MeshStandardMaterial({color:0x664444, emissive:0x331111, emissiveIntensity:.2, roughness:.6});
+
+function buildObstacles() {
+  while(obsGroup.children.length) { var c=obsGroup.children[0]; obsGroup.remove(c); }
+  obsMeshes = [];
+  for(var i = 0; i < MAX_OBSTACLES; i++) {
+    var m = new THREE.Mesh(obsGeo, obsMat);
+    m.position.y = .35; m.visible = false; obsGroup.add(m); obsMeshes.push(m);
+  }
+}
+
+function refreshObstacles() {
+  for(var i = 0; i < MAX_OBSTACLES; i++) {
+    if(i < obstacles.length) {
+      obsMeshes[i].visible = true;
+      obsMeshes[i].position.set(obstacles[i].x, .35, obstacles[i].z);
+    } else {
+      obsMeshes[i].visible = false;
+    }
+  }
+}
+
+function isSafeForObstacle(x, z) {
+  // Min distance from snake
+  for(var i = 0; i < snake.length; i++) {
+    var dx = snake[i].x - x, dz = snake[i].z - z;
+    if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_SNAKE) return false;
+  }
+  // Min distance from other obstacles
+  for(var i = 0; i < obstacles.length; i++) {
+    var dx = obstacles[i].x - x, dz = obstacles[i].z - z;
+    if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_EACH) return false;
+  }
+  // Min distance from apples
+  for(var i = 0; i < apples.length; i++) {
+    if(!apples[i]) continue;
+    var dx = apples[i].x - x, dz = apples[i].z - z;
+    if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_APPLE) return false;
+  }
+  // Not on snake/apple/obstacle
+  if(isOccupied(x, z)) return false;
+  // Within grid
+  if(x < -half+1 || x >= half-1 || z < -half+1 || z >= half-1) return false;
+  return true;
+}
+
+function spawnObstacle() {
+  if(obstacles.length >= MAX_OBSTACLES) return;
+  for(var tries = 0; tries < 300; tries++) {
+    var x = Math.floor(Math.random()*GRID_SIZE)-half;
+    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    if(isSafeForObstacle(x, z)) {
+      obstacles.push({x:x, z:z});
+      refreshObstacles();
+      log('Obstacle spawned at ('+x+','+z+') — total: '+obstacles.length);
+      sfxObstacle();
+      return;
+    }
+  }
+  log('⚠️ Could not place obstacle (no safe spot)');
+}
+
+// ─── PARTICLES ───
 var parts = [];
 var partMat = new THREE.MeshBasicMaterial({color:0xffaa00, transparent:true});
 var partGeo = new THREE.SphereGeometry(.05, 4, 4);
@@ -239,42 +350,68 @@ function tickParts(dt) {
   }
 }
 
-log('6. Scene ready');
+log('5. Scene ready');
 
 // ─── GAME ───
 function initGame() {
   log('initGame()');
   snake=[]; direction=0; score=0; gameOver=false;
-  camAngle=0; targetCamAngle=0; scoreEl.textContent='0';
-  // Head at -10, body trailing at -11, -12, -13
-  snake.push({x:-10,z:0}); // head (index 0)
-  snake.push({x:-11,z:0});
-  snake.push({x:-12,z:0});
-  snake.push({x:-13,z:0});
-  buildSnake(); spawnApple(); refreshSnake();
-  log('Snake: '+snake.length+' seg at ['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+'], dir=0, apple at ('+apple.x+','+apple.z+')');
+  obstacles=[]; apples=[];
+  camSmoothX = -10; camSmoothZ = 0;
+  lookSmoothX = -5; lookSmoothZ = 0;
+  scoreEl.textContent='0';
+  // Head at -10, body trailing
+  snake.push({x:-10,z:0}); snake.push({x:-11,z:0});
+  snake.push({x:-12,z:0}); snake.push({x:-13,z:0});
+  buildSnake(); buildObstacles(); buildApples();
+  refreshObstacles();
+  initApples();
+  refreshSnake();
+  log('Snake: '+snake.length+' seg at ['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+'], dir=0');
 }
 
-function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;targetCamAngle-=TURN_ANGLE;sfxTurn();}
-function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;targetCamAngle+=TURN_ANGLE;sfxTurn();}
+function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();log('Turn LEFT dir='+Math.round(direction/(Math.PI/2))+'/90°');}
+function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();log('Turn RIGHT dir='+Math.round(direction/(Math.PI/2))+'/90°');}
 
 function step() {
   if(gameOver) return;
   var h=snake[0];
   var nx=h.x+Math.round(Math.cos(direction));
   var nz=h.z+Math.round(Math.sin(direction));
-  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit');die();return;}
-  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit');die();return;}
+
+  // Wall collision
+  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
+  // Self collision
+  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
+  // Obstacle collision
+  if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
+
   snake.unshift({x:nx,z:nz});
-  if(apple&&nx===apple.x&&nz===apple.z){score++;scoreEl.textContent=score;sfxEat();burst(apple.x,apple.z,0xff6644,8);spawnApple();log('Eat! score='+score);}
-  else{snake.pop();}
+
+  // Apple collision
+  var ate = false;
+  for(var i = 0; i < apples.length; i++) {
+    if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+      score++; scoreEl.textContent=score; ate=true;
+      sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
+      log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+      // Replace eaten apple
+      var newA = spawnOneApple();
+      apples[i] = newA;
+      // Spawn obstacle every N apples
+      if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+      break;
+    }
+  }
+  if(!ate) snake.pop();
   refreshSnake();
+  refreshApples();
 }
 
 function die() {
   log('GAME OVER score='+score);
   gameOver=true; running=false; sfxDie();
-  if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,10);
+  if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   if(score>highScore){highScore=score;localStorage.setItem('snake3d_hs',highScore);highscoreEl.textContent=highScore;}
   finalScoreEl.textContent='Puntuación: '+score+' 🍎';
   finalScoreEl.style.display='block';
@@ -283,44 +420,64 @@ function die() {
   hintL.style.opacity='1'; hintR.style.opacity='1';
 }
 
-// Camera
-function updateCam() {
+// ─── CAMERA: Third-person behind snake, smooth ───
+var camLogTimer = 0;
+var lookSmoothX = 0, lookSmoothZ = 0;
+function updateCam(time) {
   if(!snake.length) return;
-  var h=snake[0];
-  var diff=targetCamAngle-camAngle;
-  while(diff>Math.PI)diff-=Math.PI*2; while(diff<-Math.PI)diff+=Math.PI*2;
-  camAngle+=diff*.07;
-  var dist=14;
-  camera.position.x+=(h.x-Math.sin(camAngle)*dist*.3-camera.position.x)*.05;
-  camera.position.z+=(h.z-Math.cos(camAngle)*dist*.3+dist*.7-camera.position.z)*.05;
-  camera.position.y=dist;
-  camera.lookAt(h.x+Math.cos(direction)*2, 0, h.z+Math.sin(direction)*2);
-  pLight.position.set(h.x,5,h.z);
+  var h = snake[0];
+
+  // Target: behind and above the snake, looking ahead
+  var camDist = 10;
+  var camHeight = 8;
+  var lookAhead = 5;
+
+  // Direction vector
+  var dx = Math.cos(direction);
+  var dz = Math.sin(direction);
+
+  // Ideal camera position: behind the snake
+  var idealX = h.x - dx * camDist;
+  var idealZ = h.z - dz * camDist;
+
+  // Smooth follow (lerp position — avoids snaps)
+  camSmoothX += (idealX - camSmoothX) * 0.08;
+  camSmoothZ += (idealZ - camSmoothZ) * 0.08;
+
+  camera.position.x = camSmoothX;
+  camera.position.y = camHeight;
+  camera.position.z = camSmoothZ;
+
+  // Smooth look-ahead point
+  var targetLookX = h.x + dx * lookAhead;
+  var targetLookZ = h.z + dz * lookAhead;
+  lookSmoothX += (targetLookX - lookSmoothX) * 0.08;
+  lookSmoothZ += (targetLookZ - lookSmoothZ) * 0.08;
+  camera.lookAt(lookSmoothX, 0, lookSmoothZ);
+
+  // Point light follows head
+  pLight.position.set(h.x, 5, h.z);
+
+  // Debug log every 2 seconds
+  if(time && time - (camLogTimer || 0) > 2000) {
+    camLogTimer = time;
+    log('CAM: pos('+camSmoothX.toFixed(1)+','+camHeight+','+camSmoothZ.toFixed(1)+') look('+lookSmoothX.toFixed(1)+','+lookSmoothZ.toFixed(1)+')');
+  }
 }
 
-// ─── WebGL context loss handling ───
+// ─── WebGL context loss ───
 canvas.addEventListener('webglcontextlost', function(e) {
-  e.preventDefault();
-  log('⚠️ WebGL context LOST');
-  showErr('WebGL perdido — recuperando...');
-  running = false;
+  e.preventDefault(); log('⚠️ WebGL LOST'); showErr('WebGL perdido...'); running = false;
 });
 canvas.addEventListener('webglcontextrestored', function(e) {
-  log('✅ WebGL context RESTORED');
-  showErr(''); errBox.style.display='none';
-  // Only rebuild if game is not running
-  if(!running && !gameOver) {
-    try { buildSnake(); refreshSnake(); log('Scene rebuilt (idle)'); } catch(err) { log('❌ Rebuild: '+err.message); }
-  } else {
-    log('Context restored during game — continuing');
-    if(running) { lastMove = performance.now(); } // reset timer to avoid burst
-  }
+  log('✅ WebGL RESTORED'); showErr('');
+  if(!running && !gameOver) { try { buildSnake(); refreshSnake(); refreshApples(); refreshObstacles(); log('Scene rebuilt'); } catch(err) { log('❌ Rebuild: '+err.message); } }
+  else if(running) { lastMove = performance.now(); log('Context restored — continuing'); }
 });
 
 // ─── ANIMATION LOOP ───
 var frameCount = 0;
-var stepsExecuted = 0;
-log('7. Starting loop...');
+log('6. Starting loop...');
 function loop(time) {
   requestAnimationFrame(loop);
   frameCount++;
@@ -328,37 +485,39 @@ function loop(time) {
     var dt = Math.min((time-(loop._p||time))/1000, .05);
     loop._p = time;
 
-    if(frameCount===1) log('8. First frame OK');
-    if(frameCount===60) log('9. 60 frames OK, waiting for JUGAR');
+    if(frameCount===1) log('7. First frame OK');
+    if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
     if(running && !gameOver) {
-      if(time-lastMove >= MOVE_INTERVAL) {
-        stepsExecuted++;
-        step();
-        lastMove=time;
+      if(time-lastMove >= MOVE_INTERVAL) { step(); lastMove=time; }
+    }
+
+    // Apple animation
+    if(appleMeshes.length) {
+      for(var i = 0; i < appleMeshes.length; i++) {
+        if(appleMeshes[i].visible) {
+          appleMeshes[i].position.y = .25 + Math.sin(time*.003 + i)*.1;
+          appleMeshes[i].rotation.y = time*.002 + i;
+        }
       }
     }
 
-    if(apple) { aGroup.position.y=.28+Math.sin(time*.003)*.1; aGroup.rotation.y=time*.002; }
     tickParts(dt);
-    updateCam();
+    updateCam(time);
     renderer.render(scene, camera);
   } catch(e) {
-    log('❌ Loop err f'+frameCount+': '+e.message);
-    showErr(e.message);
+    log('❌ Loop err f'+frameCount+': '+e.message); showErr(e.message);
   }
 }
 
 // ─── RESIZE ───
 window.addEventListener('resize', function() {
   var w=window.innerWidth,h=window.innerHeight,a=w/h;
-  camera.left=-viewSize*a/2;camera.right=viewSize*a/2;
-  camera.top=viewSize/2;camera.bottom=-viewSize/2;
-  camera.updateProjectionMatrix(); renderer.setSize(w,h);
+  camera.aspect = a; camera.updateProjectionMatrix(); renderer.setSize(w,h);
 });
 
 // ─── CONTROLS ───
-log('10. Controls ready');
+log('9. Controls ready');
 document.addEventListener('keydown', function(e) {
   if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A'){e.preventDefault();turnL();}
   if(e.key==='ArrowRight'||e.key==='d'||e.key==='D'){e.preventDefault();turnR();}
@@ -374,11 +533,11 @@ startBtn.addEventListener('click', function() {
   hintL.style.opacity='0'; hintR.style.opacity='0';
   initGame();
   running=true; lastMove=performance.now();
-  log('RUNNING! lastMove='+lastMove);
+  log('RUNNING!');
 });
 
 // ─── INIT ───
-buildSnake();
+buildSnake(); buildObstacles(); buildApples();
 requestAnimationFrame(loop);
 log('✅ INIT COMPLETE');
 </script>
