@@ -168,7 +168,7 @@ var mpNumEl = null;
 
 function initMusic() {
   musicEl = document.createElement('audio');
-  musicEl.preload = 'none';
+  musicEl.preload = 'auto';
   musicEl.volume = 0.4;
   musicPlayerEl = document.getElementById('music-player');
   mpPlayBtn = document.getElementById('mp-play');
@@ -177,6 +177,12 @@ function initMusic() {
 
   // Shuffle playlist on init
   shufflePlaylist();
+
+  // Show track name immediately
+  var firstTrack = playlist[0];
+  musicEl.src = firstTrack.file;
+  mpTrackEl.textContent = firstTrack.name;
+  mpNumEl.textContent = '1/' + playlist.length;
 
   // Bind controls
   document.getElementById('mp-prev').addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
@@ -261,27 +267,38 @@ function prevTrack() {
 function startMusic() {
   if(!musicEl) initMusic();
   initAudio();
-  playTrack(currentTrack);
+  var playPromise = musicEl.play();
+  if(playPromise) {
+    playPromise.then(function() {
+      musicPlaying = true;
+      mpPlayBtn.textContent = '⏸';
+      log('🎵 Autoplay: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+    }).catch(function(e) {
+      log('⚠️ Autoplay blocked: ' + e.message + ' — waiting for user interaction');
+    });
+  }
 }
 
 // Try to start music on first user interaction (fallback for autoplay policy)
 var musicStarted = false;
-document.addEventListener('click', function tryStartMusic() {
+function tryStartMusicOnInteraction() {
   if(!musicStarted && !musicPlaying) {
     musicStarted = true;
-    log('🎵 First click — trying to start music');
     initAudio();
     if(musicEl) {
       musicEl.play().then(function() {
         musicPlaying = true;
         mpPlayBtn.textContent = '⏸';
-        log('🎵 Playing: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+        log('🎵 Playing on interaction: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
       }).catch(function(e) {
-        log('⚠️ Music start on click failed: ' + e.message);
+        log('⚠️ Music start on interaction failed: ' + e.message);
       });
     }
   }
-}, {once: false});
+}
+document.addEventListener('click', tryStartMusicOnInteraction);
+document.addEventListener('touchstart', tryStartMusicOnInteraction);
+document.addEventListener('keydown', tryStartMusicOnInteraction);
 
 function stopMusic() {
   if(musicEl && musicPlaying) {
