@@ -76,6 +76,7 @@ var GRID_SIZE = 30;
 var MOVE_INTERVAL = 200;
 var TURN_ANGLE = Math.PI / 2;
 var half = GRID_SIZE / 2;
+var cellOff = -half + 0.5; // offset to center grid coords in cell centers
 var NUM_APPLES = 4;
 var OBSTACLE_SPAWN_EVERY = 3; // spawn obstacle every N apples eaten
 var OBSTACLE_MIN_DIST_SNAKE = 6;
@@ -95,6 +96,7 @@ var lastMove = 0;
 var gameOver = false;
 var camSmoothX = 0, camSmoothZ = 0; // smooth camera target
 var prevSnake = []; // previous positions for interpolation
+var moveElapsed = 0; // time since last move, for smooth interpolation
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -144,8 +146,8 @@ scene.fog = new THREE.Fog(0x0a0a12, 18, 38);
 var aspect = window.innerWidth / window.innerHeight;
 var FOV = 55;
 var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
-camera.position.set(-12, 10, 6);
-camera.lookAt(-7, 0, 0);
+camera.position.set(-12 + cellOff, 10, 6);
+camera.lookAt(-7 + cellOff, 0, 0);
 
 scene.add(new THREE.AmbientLight(0x4466aa, .7));
 var sun = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -171,23 +173,13 @@ floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
 var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
 flr.rotation.x = -Math.PI/2; flr.position.y = -.02; scene.add(flr);
 
-// Dark outer floor — area between checkerboard and walls
-var outerF = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE+1.2, GRID_SIZE+1.2), new THREE.MeshStandardMaterial({color:0x080810, roughness:1}));
-outerF.rotation.x = -Math.PI/2; outerF.position.y = -.025; scene.add(outerF);
-
-// Dark border around the grid — visible gap between playable area and border
-var borderGeo = new THREE.RingGeometry(GRID_SIZE/2 - .3, GRID_SIZE/2 + .5, 4);
-var borderMat = new THREE.MeshStandardMaterial({color:0x080810, roughness:1});
-var border = new THREE.Mesh(borderGeo, borderMat);
-border.rotation.x = -Math.PI/2; border.position.y = -.03; scene.add(border);
-
-// Walls — placed clearly outside the playable area
-var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.3});
-var hw = half + .6;
-var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.5,.2),wm); w1.position.set(0,.25,-hw); scene.add(w1);
-var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.5,.2),wm); w2.position.set(0,.25,hw); scene.add(w2);
-var w3=new THREE.Mesh(new THREE.BoxGeometry(.2,.5,GRID_SIZE+.5),wm); w3.position.set(-hw,.25,0); scene.add(w3);
-var w4=new THREE.Mesh(new THREE.BoxGeometry(.2,.5,GRID_SIZE+.5),wm); w4.position.set(hw,.25,0); scene.add(w4);
+// Walls — right at the edge of the checkerboard
+var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
+var hw = half;
+var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w1.position.set(0,.2,-hw); scene.add(w1);
+var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w2.position.set(0,.2,hw); scene.add(w2);
+var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w3.position.set(-hw,.2,0); scene.add(w3);
+var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w4.position.set(hw,.2,0); scene.add(w4);
 log('4. Floor+walls OK');
 
 // ─── SNAKE ───
@@ -209,34 +201,31 @@ function buildSnake() {
   }
 }
 
-function refreshSnake(time) {
+function refreshSnake() {
   if(!snake.length) return;
 
-  // Interpolation progress: 0 = prev positions, 1 = current positions
-  var t = 1;
-  if(running && prevSnake.length === snake.length && time && lastMove) {
-    t = Math.min((time - lastMove) / MOVE_INTERVAL, 1);
-  }
+  // Interpolation progress: 0 = prev, 1 = current
+  var t = Math.min(moveElapsed / MOVE_INTERVAL, 1);
 
-  // Lerp head position
-  var hx = snake[0].x;
-  var hz = snake[0].z;
+  // Lerp head
+  var hx = snake[0].x + cellOff;
+  var hz = snake[0].z + cellOff;
   if(prevSnake.length && t < 1) {
-    hx = prevSnake[0].x + (snake[0].x - prevSnake[0].x) * t;
-    hz = prevSnake[0].z + (snake[0].z - prevSnake[0].z) * t;
+    hx = (prevSnake[0].x + (snake[0].x - prevSnake[0].x) * t) + cellOff;
+    hz = (prevSnake[0].z + (snake[0].z - prevSnake[0].z) * t) + cellOff;
   }
   headM.position.set(hx, .25, hz);
   headM.rotation.y = -direction;
 
-  // Lerp body positions
+  // Lerp body
   for(var i = 1; i < snake.length; i++) {
     if(i < bodyMs.length) {
       bodyMs[i].visible = true;
-      var bx = snake[i].x;
-      var bz = snake[i].z;
+      var bx = snake[i].x + cellOff;
+      var bz = snake[i].z + cellOff;
       if(prevSnake[i] && t < 1) {
-        bx = prevSnake[i].x + (snake[i].x - prevSnake[i].x) * t;
-        bz = prevSnake[i].z + (snake[i].z - prevSnake[i].z) * t;
+        bx = (prevSnake[i].x + (snake[i].x - prevSnake[i].x) * t) + cellOff;
+        bz = (prevSnake[i].z + (snake[i].z - prevSnake[i].z) * t) + cellOff;
       }
       bodyMs[i].position.set(bx, .225, bz);
       var frac = i / Math.max(snake.length, 1);
@@ -287,7 +276,7 @@ function refreshApples() {
   for(var i = 0; i < NUM_APPLES; i++) {
     if(i < apples.length && apples[i]) {
       appleMeshes[i].visible = true;
-      appleMeshes[i].position.set(apples[i].x, .25, apples[i].z);
+      appleMeshes[i].position.set(apples[i].x + cellOff, .25, apples[i].z + cellOff);
     } else {
       appleMeshes[i].visible = false;
     }
@@ -323,7 +312,7 @@ function refreshObstacles() {
   for(var i = 0; i < MAX_OBSTACLES; i++) {
     if(i < obstacles.length) {
       obsMeshes[i].visible = true;
-      obsMeshes[i].position.set(obstacles[i].x, .35, obstacles[i].z);
+      obsMeshes[i].position.set(obstacles[i].x + cellOff, .35, obstacles[i].z + cellOff);
     } else {
       obsMeshes[i].visible = false;
     }
@@ -377,7 +366,7 @@ var partGeo = new THREE.SphereGeometry(.05, 4, 4);
 function burst(x, z, col, n) {
   for(var i = 0; i < (n||8); i++) {
     var m = new THREE.Mesh(partGeo, partMat.clone());
-    m.position.set(x, .3, z);
+    m.position.set(x + cellOff, .3, z + cellOff);
     m.material.color.setHex(col); m.material.opacity = 1;
     m.userData = {vx:(Math.random()-.5)*.2, vy:Math.random()*.1+.05, vz:(Math.random()-.5)*.2, life:1};
     scene.add(m); parts.push(m);
@@ -401,8 +390,8 @@ function initGame() {
   log('initGame()');
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
-  camSmoothX = -7; camSmoothZ = 0;
-  lookSmoothX = -2; lookSmoothZ = 0;
+  camSmoothX = -7 + cellOff; camSmoothZ = 0 + cellOff;
+  lookSmoothX = -2 + cellOff; lookSmoothZ = 0 + cellOff;
   scoreEl.textContent='0';
   // Head at -7, body trailing
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
@@ -487,9 +476,13 @@ function updateCam(time) {
   var dx = Math.cos(direction);
   var dz = Math.sin(direction);
 
+  // Head world position (with cell offset)
+  var hwX = h.x + cellOff;
+  var hwZ = h.z + cellOff;
+
   // Ideal camera position: behind the snake
-  var idealX = h.x - dx * camDist;
-  var idealZ = h.z - dz * camDist;
+  var idealX = hwX - dx * camDist;
+  var idealZ = hwZ - dz * camDist;
 
   // Smooth follow (lerp position — avoids snaps)
   camSmoothX += (idealX - camSmoothX) * 0.08;
@@ -500,20 +493,14 @@ function updateCam(time) {
   camera.position.z = camSmoothZ;
 
   // Smooth look-ahead point
-  var targetLookX = h.x + dx * lookAhead;
-  var targetLookZ = h.z + dz * lookAhead;
+  var targetLookX = hwX + dx * lookAhead;
+  var targetLookZ = hwZ + dz * lookAhead;
   lookSmoothX += (targetLookX - lookSmoothX) * 0.08;
   lookSmoothZ += (targetLookZ - lookSmoothZ) * 0.08;
   camera.lookAt(lookSmoothX, 0, lookSmoothZ);
 
   // Point light follows head
-  pLight.position.set(h.x, 5, h.z);
-
-  // Debug log every 2 seconds
-  if(time && time - (camLogTimer || 0) > 2000) {
-    camLogTimer = time;
-    log('CAM: pos('+camSmoothX.toFixed(1)+','+camHeight+','+camSmoothZ.toFixed(1)+') look('+lookSmoothX.toFixed(1)+','+lookSmoothZ.toFixed(1)+')');
-  }
+  pLight.position.set(hwX, 5, hwZ);
 }
 
 // ─── WebGL context loss ───
@@ -540,9 +527,13 @@ function loop(time) {
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
     if(running && !gameOver) {
-      if(time-lastMove >= MOVE_INTERVAL) { step(); lastMove=time; }
-      // Interpolate snake positions every frame for smooth movement
-      refreshSnake(time);
+      if(time-lastMove >= MOVE_INTERVAL) {
+        moveElapsed = 0; // reset for smooth interpolation
+        step();
+        lastMove = time;
+      }
+      moveElapsed += dt * 1000; // accumulate ms since last move
+      refreshSnake();
     }
 
     // Apple animation
