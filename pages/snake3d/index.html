@@ -178,11 +178,9 @@ function initMusic() {
   // Shuffle playlist on init
   shufflePlaylist();
 
-  // Show track name immediately
+  // Set first track source
   var firstTrack = playlist[0];
   musicEl.src = firstTrack.file;
-  mpTrackEl.textContent = firstTrack.name;
-  mpNumEl.textContent = '1/' + playlist.length;
 
   // Bind controls
   document.getElementById('mp-prev').addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
@@ -200,6 +198,12 @@ function initMusic() {
   });
 
   log('🎵 Music player initialized with ' + playlist.length + ' tracks');
+}
+
+function updateTrackDisplay() {
+  var track = playlist[currentTrack];
+  mpTrackEl.textContent = track.name;
+  mpNumEl.textContent = (currentTrack + 1) + '/' + playlist.length;
 }
 
 function shufflePlaylist() {
@@ -266,6 +270,8 @@ function prevTrack() {
 
 function startMusic() {
   if(!musicEl) initMusic();
+  // Always show track display
+  updateTrackDisplay();
   initAudio();
   var playPromise = musicEl.play();
   if(playPromise) {
@@ -275,6 +281,7 @@ function startMusic() {
       log('🎵 Autoplay: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
     }).catch(function(e) {
       log('⚠️ Autoplay blocked: ' + e.message + ' — waiting for user interaction');
+      mpPlayBtn.textContent = '▶';
     });
   }
 }
@@ -284,6 +291,7 @@ var musicStarted = false;
 function tryStartMusicOnInteraction() {
   if(!musicStarted && !musicPlaying) {
     musicStarted = true;
+    updateTrackDisplay();
     initAudio();
     if(musicEl) {
       musicEl.play().then(function() {
