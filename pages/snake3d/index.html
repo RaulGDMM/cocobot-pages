@@ -59,7 +59,7 @@ var logs = [];
 function log(msg) {
   var ts = new Date().toLocaleTimeString();
   logs.push('[' + ts + '] ' + msg);
-  if(logs.length > 60) logs.shift();
+  if(logs.length > 80) logs.shift();
   dbg.textContent = logs.join('\n');
   console.log('[Snake3D]', msg);
 }
@@ -76,9 +76,8 @@ var GRID_SIZE = 30;
 var MOVE_INTERVAL = 200;
 var TURN_ANGLE = Math.PI / 2;
 var half = GRID_SIZE / 2;
-var cellOff = -half + 0.5; // offset to center grid coords in cell centers
 var NUM_APPLES = 4;
-var OBSTACLE_SPAWN_EVERY = 3; // spawn obstacle every N apples eaten
+var OBSTACLE_SPAWN_EVERY = 3;
 var OBSTACLE_MIN_DIST_SNAKE = 6;
 var OBSTACLE_MIN_DIST_EACH = 3;
 var OBSTACLE_MIN_DIST_APPLE = 3;
@@ -92,11 +91,16 @@ var obstacles = [];
 var score = 0;
 var highScore = parseInt(localStorage.getItem('snake3d_hs') || '0');
 var running = false;
-var lastMove = 0;
+var lastMoveTime = 0;
 var gameOver = false;
-var camSmoothX = 0, camSmoothZ = 0; // smooth camera target
-var prevSnake = []; // previous positions for interpolation
-var moveElapsed = 0; // time since last move, for smooth interpolation
+var camSmoothX = 0, camSmoothZ = 0;
+var lookSmoothX = 0, lookSmoothZ = 0;
+
+// Interpolation state
+var interpFrom = []; // world positions at start of current interp
+var interpTo = [];   // world positions at end of current interp
+var interpStart = 0; // timestamp when current interp started
+var interpDuration = MOVE_INTERVAL;
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -146,8 +150,8 @@ scene.fog = new THREE.Fog(0x0a0a12, 18, 38);
 var aspect = window.innerWidth / window.innerHeight;
 var FOV = 55;
 var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
-camera.position.set(-12 + cellOff, 10, 6);
-camera.lookAt(-7 + cellOff, 0, 0);
+camera.position.set(-12, 10, 6);
+camera.lookAt(-7, 0, 0);
 
 scene.add(new THREE.AmbientLight(0x4466aa, .7));
 var sun = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -180,7 +184,100 @@ var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w1.positio
 var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w2.position.set(0,.2,hw); scene.add(w2);
 var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w3.position.set(-hw,.2,0); scene.add(w3);
 var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w4.position.set(hw,.2,0); scene.add(w4);
-log('4. Floor+walls OK');
+log('4. Floor+walls OK (grid: -'+half+' to +'+half+', walls at '+hw+')');
+
+// ─── COORDINATE SYSTEM ───
+// Grid coords: -half to (half-1), e.g. -15 to 14
+// World coords: grid coord maps directly to world position
+// Cell at grid (-7, 0) occupies world space x:[-8,-7], z:[-1,1]... NO
+// Actually the floor plane is centered at (0,0) with size GRID_SIZE x GRID_SIZE
+// It spans from -half to +half in both axes.
+// The texture maps (0,0) to (-half,-half) and (GRID_SIZE,GRID_SIZE) to (half,half)
+// So texture pixel (fx,fy) maps to world (-half + fx/GRID_SIZE*GRID_SIZE, -half + fy/GRID_SIZE*GRID_SIZE)
+// = (-half + fx, -half + fy)
+// Cell (fx=0,fy=0) spans world x:[-half, -half+1], z:[-half, -half+1]
+// Its CENTER is at (-half+0.5, -half+0.5)
+// Grid coord g maps to texture pixel fx = g + half
+// Cell center = (-half + (g+half) + 0.5, ...) = (g + 0.5, ...)
+// So world position for grid coord g is (g + 0.5)
+// BUT: if the snake starts at grid -7 and moves +X, it should go -7 -> -6 -> -5...
+// And world positions should be -6.5 -> -5.5 -> -4.5...
+// Wait, that seems off. Let me reconsider.
+//
+// The simplest approach: grid coord g maps to world position g.
+// The checkerboard texture is drawn so that cell (0,0) of the texture corresponds to
+// the top-left of the floor plane. The floor plane spans [-half, half] x [-half, half].
+// Each cell is 1x1 world units. Cell at world position (gx, gz) where gx,gz are integers
+// from -half to half-1.
+//
+// The center of cell at world (gx, gz) is at (gx + 0.5, gz + 0.5) if the cell spans
+// from (gx, gz) to (gx+1, gz+1).
+//
+// But actually the floor plane is centered at origin. Cell at grid (-15, -15) is the
+// bottom-left corner of the plane. Its world span is [-15, -14] x [-15, -14].
+// Its center is at (-14.5, -14.5).
+// Grid coord -15 -> center at -14.5 = -15 + 0.5 ✓
+// Grid coord -7 -> center at -6.5 = -7 + 0.5 ✓
+// Grid coord 0 -> center at 0.5 ✓
+// Grid coord 14 -> center at 14.5 ✓
+//
+// So the offset from grid coord to cell center is +0.5
+//
+// HOWEVER: the checkerboard pattern draws cell (fx=0, fy=0) as the first square.
+// If fx=0 maps to grid coord -half = -15, then the first square of the texture is at
+// world position [-15, -14] x [-15, -14].
+// The snake at grid -15 should be centered in that cell at world -14.5.
+//
+// But actually, I think the issue is simpler. Let me just check: does the snake at
+// grid position 0 render at world position 0, and is that the center of a cell?
+//
+// Floor plane: centered at (0,0), size 30x30, spans [-15,15]x[-15,15]
+// Texture: 30x30 cells, each 1x1 world unit
+// Cell with texture index (15, 15) is at world position [0,1]x[0,1]... no.
+//
+// Let me think about it differently. The texture UV (0,0) maps to the bottom-left
+// corner of the plane which is at world (-15, -15). UV (1,1) maps to (15, 15).
+// So UV (u, v) maps to world (-15 + u*30, -15 + v*30).
+// A texture cell at index (fx, fy) has UV center at ((fx+0.5)/30, (fy+0.5)/30).
+// World center: (-15 + (fx+0.5), -15 + (fy+0.5)) = (fx - 14.5, fy - 14.5)
+//
+// Grid coord g corresponds to texture index fx = g + 15 (since g ranges from -15 to 14)
+// World center: (g + 15 - 14.5, ...) = (g + 0.5, g + 0.5)
+//
+// So the offset is +0.5. Grid coord g -> world position (g + 0.5).
+//
+// But wait, I need to verify this against the actual rendering. If the snake is at
+// grid (-7, 0) and I place it at world (-7, 0), it should be at the corner of 4 cells,
+// not the center of one. That's why it looks like it's on the lines!
+//
+// The fix: place everything at (grid_x + 0.5, grid_z + 0.5) to center in cells.
+//
+// Actually, let me reconsider the floor texture mapping. Three.js PlaneGeometry is
+// centered at origin with UVs from (0,0) at bottom-left to (1,1) at top-right.
+// The texture is drawn with cell (0,0) at the top-left of the canvas.
+// But CanvasTexture in Three.js maps (0,0) UV to the bottom-left of the texture.
+// So the canvas origin (top-left) maps to UV (0, 1) which maps to the bottom-left of the plane.
+//
+// This means the checkerboard is flipped vertically. Cell (fx, 0) in the canvas (top row)
+// maps to the bottom row of the plane. Cell (fx, GRID_SIZE-1) maps to the top row.
+//
+// Regardless of the visual pattern, each cell is 1x1 world unit. The key question is:
+// where is the grid line vs the cell center?
+//
+// The plane spans [-15, 15]. Grid lines are at integer positions: -15, -14, ..., 14, 15.
+// Cell centers are at half-integer positions: -14.5, -13.5, ..., 14.5.
+//
+// If the snake is at world position -7, it's on a grid line (between cells).
+// If the snake is at world position -6.5, it's in the center of a cell.
+//
+// So the offset from grid coord to cell center is +0.5.
+
+var CELL_CENTER = 0.5;
+
+// Helper: grid coord to world position (centered in cell)
+function gw(g) { return g + CELL_CENTER; }
+
+log('4b. Cell center offset: ' + CELL_CENTER + ' (grid coord g -> world g+' + CELL_CENTER + ')');
 
 // ─── SNAKE ───
 var sGroup = new THREE.Group(); scene.add(sGroup);
@@ -201,33 +298,33 @@ function buildSnake() {
   }
 }
 
-function refreshSnake() {
+function refreshSnake(now) {
   if(!snake.length) return;
 
-  // Interpolation progress: 0 = prev, 1 = current
-  var t = Math.min(moveElapsed / MOVE_INTERVAL, 1);
+  // Interpolation progress
+  var elapsed = now - interpStart;
+  var t = Math.min(elapsed / interpDuration, 1);
 
-  // Lerp head
-  var hx = snake[0].x + cellOff;
-  var hz = snake[0].z + cellOff;
-  if(prevSnake.length && t < 1) {
-    hx = (prevSnake[0].x + (snake[0].x - prevSnake[0].x) * t) + cellOff;
-    hz = (prevSnake[0].z + (snake[0].z - prevSnake[0].z) * t) + cellOff;
-  }
-  headM.position.set(hx, .25, hz);
+  // Ease: use smoothstep for buttery movement
+  var ease = t * t * (3 - 2 * t); // smoothstep
+
+  // Head
+  var fromH = interpFrom[0] || interpTo[0];
+  var toH = interpTo[0];
+  headM.position.x = fromH.x + (toH.x - fromH.x) * ease;
+  headM.position.z = fromH.z + (toH.z - fromH.z) * ease;
+  headM.position.y = .25;
   headM.rotation.y = -direction;
 
-  // Lerp body
+  // Body
   for(var i = 1; i < snake.length; i++) {
     if(i < bodyMs.length) {
       bodyMs[i].visible = true;
-      var bx = snake[i].x + cellOff;
-      var bz = snake[i].z + cellOff;
-      if(prevSnake[i] && t < 1) {
-        bx = (prevSnake[i].x + (snake[i].x - prevSnake[i].x) * t) + cellOff;
-        bz = (prevSnake[i].z + (snake[i].z - prevSnake[i].z) * t) + cellOff;
-      }
-      bodyMs[i].position.set(bx, .225, bz);
+      var fromB = interpFrom[i] || interpTo[i];
+      var toB = interpTo[i];
+      bodyMs[i].position.x = fromB.x + (toB.x - fromB.x) * ease;
+      bodyMs[i].position.z = fromB.z + (toB.z - fromB.z) * ease;
+      bodyMs[i].position.y = .225;
       var frac = i / Math.max(snake.length, 1);
       var s = 1 - frac * .4;
       bodyMs[i].scale.set(s, 1, s);
@@ -276,7 +373,7 @@ function refreshApples() {
   for(var i = 0; i < NUM_APPLES; i++) {
     if(i < apples.length && apples[i]) {
       appleMeshes[i].visible = true;
-      appleMeshes[i].position.set(apples[i].x + cellOff, .25, apples[i].z + cellOff);
+      appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
     } else {
       appleMeshes[i].visible = false;
     }
@@ -290,7 +387,7 @@ function initApples() {
     if(a) apples.push(a);
   }
   refreshApples();
-  log('Apples: ' + apples.length + ' spawned');
+  log('Apples: ' + apples.length + ' spawned at [' + apples.map(function(a){return '('+a.x+','+a.z+') w('+gw(a.x)+','+gw(a.z)+')'}).join(' ') + ']');
 }
 
 // ─── OBSTACLES ───
@@ -312,7 +409,7 @@ function refreshObstacles() {
   for(var i = 0; i < MAX_OBSTACLES; i++) {
     if(i < obstacles.length) {
       obsMeshes[i].visible = true;
-      obsMeshes[i].position.set(obstacles[i].x + cellOff, .35, obstacles[i].z + cellOff);
+      obsMeshes[i].position.set(gw(obstacles[i].x), .35, gw(obstacles[i].z));
     } else {
       obsMeshes[i].visible = false;
     }
@@ -320,25 +417,20 @@ function refreshObstacles() {
 }
 
 function isSafeForObstacle(x, z) {
-  // Min distance from snake
   for(var i = 0; i < snake.length; i++) {
     var dx = snake[i].x - x, dz = snake[i].z - z;
     if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_SNAKE) return false;
   }
-  // Min distance from other obstacles
   for(var i = 0; i < obstacles.length; i++) {
     var dx = obstacles[i].x - x, dz = obstacles[i].z - z;
     if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_EACH) return false;
   }
-  // Min distance from apples
   for(var i = 0; i < apples.length; i++) {
     if(!apples[i]) continue;
     var dx = apples[i].x - x, dz = apples[i].z - z;
     if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_APPLE) return false;
   }
-  // Not on snake/apple/obstacle
   if(isOccupied(x, z)) return false;
-  // Within grid
   if(x < -half+1 || x >= half-1 || z < -half+1 || z >= half-1) return false;
   return true;
 }
@@ -351,7 +443,7 @@ function spawnObstacle() {
     if(isSafeForObstacle(x, z)) {
       obstacles.push({x:x, z:z});
       refreshObstacles();
-      log('Obstacle spawned at ('+x+','+z+') — total: '+obstacles.length);
+      log('Obstacle spawned at ('+x+','+z+') w('+gw(x)+','+gw(z)+') — total: '+obstacles.length);
       sfxObstacle();
       return;
     }
@@ -366,7 +458,7 @@ var partGeo = new THREE.SphereGeometry(.05, 4, 4);
 function burst(x, z, col, n) {
   for(var i = 0; i < (n||8); i++) {
     var m = new THREE.Mesh(partGeo, partMat.clone());
-    m.position.set(x + cellOff, .3, z + cellOff);
+    m.position.set(gw(x), .3, gw(z));
     m.material.color.setHex(col); m.material.opacity = 1;
     m.userData = {vx:(Math.random()-.5)*.2, vy:Math.random()*.1+.05, vz:(Math.random()-.5)*.2, life:1};
     scene.add(m); parts.push(m);
@@ -387,31 +479,48 @@ log('5. Scene ready');
 
 // ─── GAME ───
 function initGame() {
-  log('initGame()');
+  log('=== initGame() ===');
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
-  camSmoothX = -7 + cellOff; camSmoothZ = 0 + cellOff;
-  lookSmoothX = -2 + cellOff; lookSmoothZ = 0 + cellOff;
   scoreEl.textContent='0';
-  // Head at -7, body trailing
+
+  // Head at grid (-7,0), body trailing
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
   snake.push({x:-9,z:0}); snake.push({x:-10,z:0});
+
   buildSnake(); buildObstacles(); buildApples();
   refreshObstacles();
   initApples();
-  refreshSnake();
-  prevSnake = snake.map(function(s){return {x:s.x, z:s.z};});
-  log('Snake: '+snake.length+' seg at ['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+'], dir=0');
+
+  // Initialize interpolation state: both from and to at current positions (world coords)
+  interpFrom = snake.map(function(s){return {x:gw(s.x), z:gw(s.z)};});
+  interpTo = snake.map(function(s){return {x:gw(s.x), z:gw(s.z)};});
+  interpStart = performance.now();
+
+  refreshSnake(interpStart);
+
+  // Camera: start behind the snake
+  var headWorld = {x: gw(-7), z: gw(0)};
+  camSmoothX = headWorld.x - 7; // behind by camDist
+  camSmoothZ = headWorld.z;
+  lookSmoothX = headWorld.x + 4; // look ahead
+  lookSmoothZ = headWorld.z;
+
+  log('Snake: '+snake.length+' seg grid=['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+']');
+  log('Snake world: ['+interpTo.map(function(s){return '('+s.x.toFixed(1)+','+s.z.toFixed(1)+')'}).join(' ')+']');
+  log('Camera start: ('+camSmoothX.toFixed(1)+','+camSmoothZ.toFixed(1)+') look ('+lookSmoothX.toFixed(1)+','+lookSmoothZ.toFixed(1)+')');
 }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();log('Turn LEFT dir='+Math.round(direction/(Math.PI/2))+'/90°');}
 function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();log('Turn RIGHT dir='+Math.round(direction/(Math.PI/2))+'/90°');}
 
-function step() {
+function step(now) {
   if(gameOver) return;
-  // Save previous positions for interpolation
-  prevSnake = snake.map(function(s){return {x:s.x, z:s.z};});
 
+  // interpFrom = current world positions (where we are now)
+  interpFrom = interpTo.slice();
+
+  // Compute new grid positions
   var h=snake[0];
   var nx=h.x+Math.round(Math.cos(direction));
   var nz=h.z+Math.round(Math.sin(direction));
@@ -419,7 +528,7 @@ function step() {
   // Wall collision
   if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
   // Self collision
-  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+') snake=['+snake.map(function(s){return '('+s.x+','+s.z+')'}).join(' ')+']');die();return;}
+  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
   // Obstacle collision
   if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
 
@@ -432,19 +541,24 @@ function step() {
       score++; scoreEl.textContent=score; ate=true;
       sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
       log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-      // Replace eaten apple
       var newA = spawnOneApple();
       apples[i] = newA;
-      // Spawn obstacle every N apples
       if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
       break;
     }
   }
   if(!ate) snake.pop();
-  // When snake grows, prevSnake is one shorter — prepend head position
-  if(ate && prevSnake.length < snake.length) {
-    prevSnake.unshift({x:snake[0].x, z:snake[0].z});
+
+  // When snake grows, interpFrom needs an extra entry for the new tail
+  if(ate && interpFrom.length < snake.length) {
+    interpFrom.push({x: gw(snake[snake.length-1].x), z: gw(snake[snake.length-1].z)});
   }
+
+  // interpTo = new world positions
+  interpTo = snake.map(function(s){return {x:gw(s.x), z:gw(s.z)};});
+  interpStart = now;
+  interpDuration = MOVE_INTERVAL;
+
   refreshApples();
 }
 
@@ -461,30 +575,31 @@ function die() {
 }
 
 // ─── CAMERA: Third-person behind snake, smooth ───
-var camLogTimer = 0;
-var lookSmoothX = 0, lookSmoothZ = 0;
-function updateCam(time) {
+function updateCam(now) {
   if(!snake.length) return;
-  var h = snake[0];
 
-  // Target: behind and above the snake, looking ahead
   var camDist = 7;
   var camHeight = 6;
   var lookAhead = 4;
 
-  // Direction vector
   var dx = Math.cos(direction);
   var dz = Math.sin(direction);
 
-  // Head world position (with cell offset)
-  var hwX = h.x + cellOff;
-  var hwZ = h.z + cellOff;
+  // Use interpolated head position for camera target (matches what's rendered)
+  var elapsed = now - interpStart;
+  var t = Math.min(elapsed / interpDuration, 1);
+  var ease = t * t * (3 - 2 * t);
+
+  var fromH = interpFrom[0] || interpTo[0];
+  var toH = interpTo[0];
+  var headWX = fromH.x + (toH.x - fromH.x) * ease;
+  var headWZ = fromH.z + (toH.z - fromH.z) * ease;
 
   // Ideal camera position: behind the snake
-  var idealX = hwX - dx * camDist;
-  var idealZ = hwZ - dz * camDist;
+  var idealX = headWX - dx * camDist;
+  var idealZ = headWZ - dz * camDist;
 
-  // Smooth follow (lerp position — avoids snaps)
+  // Smooth follow
   camSmoothX += (idealX - camSmoothX) * 0.08;
   camSmoothZ += (idealZ - camSmoothZ) * 0.08;
 
@@ -492,15 +607,15 @@ function updateCam(time) {
   camera.position.y = camHeight;
   camera.position.z = camSmoothZ;
 
-  // Smooth look-ahead point
-  var targetLookX = hwX + dx * lookAhead;
-  var targetLookZ = hwZ + dz * lookAhead;
+  // Smooth look-ahead
+  var targetLookX = headWX + dx * lookAhead;
+  var targetLookZ = headWZ + dz * lookAhead;
   lookSmoothX += (targetLookX - lookSmoothX) * 0.08;
   lookSmoothZ += (targetLookZ - lookSmoothZ) * 0.08;
   camera.lookAt(lookSmoothX, 0, lookSmoothZ);
 
   // Point light follows head
-  pLight.position.set(hwX, 5, hwZ);
+  pLight.position.set(headWX, 5, headWZ);
 }
 
 // ─── WebGL context loss ───
@@ -509,46 +624,51 @@ canvas.addEventListener('webglcontextlost', function(e) {
 });
 canvas.addEventListener('webglcontextrestored', function(e) {
   log('✅ WebGL RESTORED'); showErr('');
-  if(!running && !gameOver) { try { buildSnake(); refreshSnake(); refreshApples(); refreshObstacles(); log('Scene rebuilt'); } catch(err) { log('❌ Rebuild: '+err.message); } }
-  else if(running) { lastMove = performance.now(); log('Context restored — continuing'); }
+  if(!running && !gameOver) { try { buildSnake(); refreshSnake(performance.now()); refreshApples(); refreshObstacles(); log('Scene rebuilt'); } catch(err) { log('❌ Rebuild: '+err.message); } }
+  else if(running) { interpStart = performance.now(); log('Context restored — continuing'); }
 });
 
 // ─── ANIMATION LOOP ───
 var frameCount = 0;
+var camDebugTimer = 0;
 log('6. Starting loop...');
-function loop(time) {
+function loop(now) {
   requestAnimationFrame(loop);
   frameCount++;
   try {
-    var dt = Math.min((time-(loop._p||time))/1000, .05);
-    loop._p = time;
+    var dt = Math.min((now-(loop._p||now))/1000, .05);
+    loop._p = now;
 
     if(frameCount===1) log('7. First frame OK');
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
     if(running && !gameOver) {
-      if(time-lastMove >= MOVE_INTERVAL) {
-        moveElapsed = 0; // reset for smooth interpolation
-        step();
-        lastMove = time;
+      if(now - lastMoveTime >= MOVE_INTERVAL) {
+        step(now);
+        lastMoveTime = now;
       }
-      moveElapsed += dt * 1000; // accumulate ms since last move
-      refreshSnake();
+      refreshSnake(now);
     }
 
     // Apple animation
     if(appleMeshes.length) {
       for(var i = 0; i < appleMeshes.length; i++) {
         if(appleMeshes[i].visible) {
-          appleMeshes[i].position.y = .25 + Math.sin(time*.003 + i)*.1;
-          appleMeshes[i].rotation.y = time*.002 + i;
+          appleMeshes[i].position.y = .25 + Math.sin(now*.003 + i)*.1;
+          appleMeshes[i].rotation.y = now*.002 + i;
         }
       }
     }
 
     tickParts(dt);
-    updateCam(time);
+    updateCam(now);
     renderer.render(scene, camera);
+
+    // Camera debug every 3 seconds
+    if(now - camDebugTimer > 3000) {
+      camDebugTimer = now;
+      log('CAM: pos('+camera.position.x.toFixed(1)+','+camera.position.y.toFixed(1)+','+camera.position.z.toFixed(1)+') look('+lookSmoothX.toFixed(1)+','+lookSmoothZ.toFixed(1)+')');
+    }
   } catch(e) {
     log('❌ Loop err f'+frameCount+': '+e.message); showErr(e.message);
   }
@@ -576,8 +696,9 @@ startBtn.addEventListener('click', function() {
   overlay.classList.add('hidden');
   hintL.style.opacity='0'; hintR.style.opacity='0';
   initGame();
-  running=true; lastMove=performance.now();
-  log('RUNNING!');
+  running=true;
+  lastMoveTime = performance.now();
+  log('RUNNING! MOVE_INTERVAL='+MOVE_INTERVAL+'ms');
 });
 
 // ─── INIT ───
