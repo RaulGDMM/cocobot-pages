@@ -8,20 +8,13 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:'Segoe UI',system-ui,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none}
 #game-canvas{display:block;width:100%;height:100%;position:fixed;top:0;left:0;z-index:1}
-
-/* HUD */
 #hud{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;pointer-events:none}
 #score-box{background:rgba(10,10,18,.8);backdrop-filter:blur(8px);border:1px solid rgba(0,212,255,.25);border-radius:12px;padding:8px 18px;color:#00d4ff;font-size:1.1em;font-weight:700}
 #highscore-box{background:rgba(10,10,18,.8);backdrop-filter:blur(8px);border:1px solid rgba(255,170,0,.25);border-radius:12px;padding:8px 18px;color:#ffaa00;font-size:.95em;font-weight:600}
-
-/* Touch zones - full screen */
 #touch-overlay{position:fixed;inset:0;z-index:5;display:flex}
-.touch-zone{flex:1;position:relative}
-.touch-zone:active::after{content:'';position:absolute;inset:0;background:rgba(0,100,255,.08)}
+.touch-zone{flex:1}.touch-zone:active::after{content:'';position:absolute;inset:0;background:rgba(0,100,255,.08)}
 .touch-hint{position:fixed;bottom:20%;z-index:6;font-size:3em;color:rgba(255,255,255,.15);pointer-events:none;transition:opacity .3s}
 .touch-hint.left{left:15%}.touch-hint.right{right:15%}
-
-/* Overlay */
 #overlay{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,18,.9);transition:opacity .3s}
 #overlay.hidden{opacity:0;pointer-events:none}
 #overlay h1{font-size:clamp(2em,8vw,3.5em);color:#00d4ff;text-shadow:0 0 30px rgba(0,212,255,.5);margin-bottom:8px}
@@ -30,33 +23,18 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
 #start-btn{background:linear-gradient(135deg,#00d4ff,#0088ff);color:#0a0a18;border:none;border-radius:14px;padding:14px 48px;font-size:1.1em;font-weight:700;cursor:pointer;pointer-events:auto;transition:transform .15s;box-shadow:0 4px 20px rgba(0,212,255,.3)}
 #start-btn:active{transform:scale(.95)}
 .controls-hint{color:#556677;font-size:.8em;margin-top:18px;text-align:center;line-height:1.6}
-
-/* Error display */
-#err{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;color:#ff4444;font-size:.8em;background:rgba(0,0,0,.8);padding:6px 14px;border-radius:8px;display:none;text-align:center;max-width:90%}
-
-@media(max-width:600px){
-  #hud{padding:8px 12px}
-  #score-box,#highscore-box{padding:6px 12px;font-size:.85em}
-  .touch-hint{font-size:2.5em}
-}
+#debug{position:fixed;top:50px;left:10px;z-index:25;color:#0f0;font-family:monospace;font-size:11px;background:rgba(0,0,0,.85);padding:8px 12px;border-radius:6px;max-height:45vh;overflow-y:auto;pointer-events:none;white-space:pre-wrap;line-height:1.4;max-width:350px}
+#err-box{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;color:#ff4444;font-size:.85em;background:rgba(0,0,0,.9);padding:8px 16px;border-radius:8px;display:none;text-align:center;max-width:90%;border:1px solid #ff4444}
+@media(max-width:600px){#hud{padding:8px 12px}#score-box,#highscore-box{padding:6px 12px;font-size:.85em}.touch-hint{font-size:2.5em}#debug{font-size:9px;max-width:250px;top:45px}}
 </style>
 <link rel="icon" href="data:;base64,=">
 </head>
 <body>
 
 <canvas id="game-canvas"></canvas>
-
-<div id="hud">
-  <div id="score-box">🍎 <span id="score">0</span></div>
-  <div id="highscore-box">🏆 <span id="highscore">0</span></div>
-</div>
-
-<div id="touch-overlay">
-  <div class="touch-zone" id="tz-left"></div>
-  <div class="touch-zone" id="tz-right"></div>
-</div>
-<div class="touch-hint left" id="hint-l">◀</div>
-<div class="touch-hint right" id="hint-r">▶</div>
+<div id="hud"><div id="score-box">🍎 <span id="score">0</span></div><div id="highscore-box">🏆 <span id="highscore">0</span></div></div>
+<div id="touch-overlay"><div class="touch-zone" id="tz-left"></div><div class="touch-zone" id="tz-right"></div></div>
+<div class="touch-hint left" id="hint-l">◀</div><div class="touch-hint right" id="hint-r">▶</div>
 
 <div id="overlay">
   <h1>🐍 Snake 3D</h1>
@@ -69,25 +47,39 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:
   </div>
 </div>
 
-<div id="err"></div>
+<div id="debug"></div>
+<div id="err-box"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ─── ERROR HANDLING ───
-var errEl = document.getElementById('err');
-window.onerror = function(msg, url, line) {
-  errEl.textContent = 'Error: ' + msg + ' (linea ' + line + ')';
-  errEl.style.display = 'block';
-  console.error('GAME ERROR:', msg, 'at line', line);
+var dbg = document.getElementById('debug');
+var errBox = document.getElementById('err-box');
+function log(msg) {
+  var ts = new Date().toLocaleTimeString();
+  dbg.textContent += '[' + ts + '] ' + msg + '\n';
+  dbg.scrollTop = dbg.scrollHeight;
+  console.log('[Snake3D]', msg);
+}
+function showErr(msg) { errBox.textContent = msg; errBox.style.display = 'block'; }
+
+window.onerror = function(msg, url, line, col, err) {
+  showErr('ERROR: ' + msg + ' (linea ' + line + ')');
+  log('❌ window.onerror: ' + msg + ' line:' + line);
   return true;
 };
+window.addEventListener('unhandledrejection', function(e) {
+  showErr('Promise rejected: ' + e.reason);
+  log('❌ unhandledrejection: ' + e.reason);
+});
 
-// Check Three.js loaded
+log('1. Script starting...');
+
 if (typeof THREE === 'undefined') {
-  errEl.textContent = 'Error: Three.js no cargó. Revisa tu conexión.';
-  errEl.style.display = 'block';
+  showErr('Three.js NO CARGADO — revisa conexión a cdnjs.cloudflare.com');
+  log('❌ THREE undefined');
   throw new Error('Three.js not loaded');
 }
+log('2. Three.js loaded: v' + THREE.REVISION);
 
 // ─── CONFIG ───
 var GRID_SIZE = 40;
@@ -117,22 +109,19 @@ var finalScoreEl = document.getElementById('final-score');
 var hintL = document.getElementById('hint-l');
 var hintR = document.getElementById('hint-r');
 highscoreEl.textContent = highScore;
+log('3. DOM elements found');
 
 // ─── AUDIO ───
 var actx = null;
 function initAudio() {
-  if (!actx) {
-    try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
+  if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); log('AudioContext created'); } catch(e) { log('AudioContext failed: ' + e.message); } }
   if (actx && actx.state === 'suspended') actx.resume();
 }
 function tone(f, d, t, v) {
   if (!actx) return;
   try {
-    var o = actx.createOscillator();
-    var g = actx.createGain();
-    o.type = t || 'square';
-    o.frequency.value = f;
+    var o = actx.createOscillator(), g = actx.createGain();
+    o.type = t || 'square'; o.frequency.value = f;
     g.gain.value = v || 0.08;
     g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + d);
     o.connect(g); g.connect(actx.destination);
@@ -143,16 +132,26 @@ function sfxEat() { tone(587,.1,'square',.08); setTimeout(function(){tone(784,.1
 function sfxTurn() { tone(440,.03,'sine',.03); }
 function sfxDie() { tone(180,.3,'sawtooth',.08); setTimeout(function(){tone(120,.4,'sawtooth',.06)},150); }
 
-// ─── THREE.JS SETUP ───
-var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+// ─── THREE.JS ───
+log('4. Creating renderer...');
+var renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+  log('4. Renderer created OK');
+} catch(e) {
+  showErr('WebGL error: ' + e.message);
+  log('❌ Renderer failed: ' + e.message);
+  throw e;
+}
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
+log('4b. Renderer size: ' + window.innerWidth + 'x' + window.innerHeight);
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a12);
 scene.fog = new THREE.Fog(0x0a0a12, 22, 45);
+log('5. Scene created');
 
-// Top-down orthographic camera
 var aspect = window.innerWidth / window.innerHeight;
 var viewSize = 16;
 var camera = new THREE.OrthographicCamera(
@@ -161,264 +160,251 @@ var camera = new THREE.OrthographicCamera(
 );
 camera.position.set(0, 16, 12);
 camera.lookAt(0, 0, 0);
+log('6. Camera created at (0,16,12)');
 
-// Lights
 scene.add(new THREE.AmbientLight(0x4466aa, 0.7));
 var sun = new THREE.DirectionalLight(0xffffff, 0.9);
 sun.position.set(8, 20, 8);
 scene.add(sun);
 var pLight = new THREE.PointLight(0x00ccff, 0.3, 20);
 scene.add(pLight);
+log('7. Lights added');
 
-// ─── FLOOR ───
+// Floor
 var flr = new THREE.Mesh(
   new THREE.PlaneGeometry(GRID_SIZE + 4, GRID_SIZE + 4),
   new THREE.MeshStandardMaterial({ color: 0x0e0e1a, roughness: 1 })
 );
-flr.rotation.x = -Math.PI / 2;
-flr.position.y = -0.05;
+flr.rotation.x = -Math.PI / 2; flr.position.y = -0.05;
 scene.add(flr);
 
-var grid = new THREE.GridHelper(GRID_SIZE, GRID_SIZE, 0x1a1a3a, 0x141428);
-grid.position.y = 0.01;
-scene.add(grid);
+var gridH = new THREE.GridHelper(GRID_SIZE, GRID_SIZE, 0x1a1a3a, 0x141428);
+gridH.position.y = 0.01; scene.add(gridH);
 
-// Walls
 var wm = new THREE.MeshStandardMaterial({ color: 0x1a2a4a, transparent: true, opacity: 0.3 });
 var hw = half + 0.15;
-var wl1 = new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE + 0.5, 0.4, 0.2), wm); wl1.position.set(0, 0.2, -hw); scene.add(wl1);
-var wl2 = new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE + 0.5, 0.4, 0.2), wm); wl2.position.set(0, 0.2, hw); scene.add(wl2);
-var wl3 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.4, GRID_SIZE + 0.5), wm); wl3.position.set(-hw, 0.2, 0); scene.add(wl3);
-var wl4 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.4, GRID_SIZE + 0.5), wm); wl4.position.set(hw, 0.2, 0); scene.add(wl4);
+var w1 = new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.4,.2),wm); w1.position.set(0,.2,-hw); scene.add(w1);
+var w2 = new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.5,.4,.2),wm); w2.position.set(0,.2,hw); scene.add(w2);
+var w3 = new THREE.Mesh(new THREE.BoxGeometry(.2,.4,GRID_SIZE+.5),wm); w3.position.set(-hw,.2,0); scene.add(w3);
+var w4 = new THREE.Mesh(new THREE.BoxGeometry(.2,.4,GRID_SIZE+.5),wm); w4.position.set(hw,.2,0); scene.add(w4);
+log('8. Floor + walls added');
 
-// ─── SNAKE ───
-var sGroup = new THREE.Group();
-scene.add(sGroup);
-
-var hGeo = new THREE.BoxGeometry(0.78, 0.45, 0.78);
-var hMat = new THREE.MeshStandardMaterial({ color: 0x00ff88, emissive: 0x00aa44, emissiveIntensity: 0.35 });
-var bGeo = new THREE.BoxGeometry(0.68, 0.4, 0.68);
+// Snake
+var sGroup = new THREE.Group(); scene.add(sGroup);
+var hGeo = new THREE.BoxGeometry(.78,.45,.78);
+var hMat = new THREE.MeshStandardMaterial({ color: 0x00ff88, emissive: 0x00aa44, emissiveIntensity: .35 });
+var bGeo = new THREE.BoxGeometry(.68,.4,.68);
 var headM = null;
 var bodyMs = [];
 
 function buildSnake() {
-  while (sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); if(c.geometry) c.geometry.dispose(); }
+  while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); c.geometry.dispose(); }
   bodyMs = [];
-  headM = new THREE.Mesh(hGeo, hMat);
-  headM.position.y = 0.225;
-  sGroup.add(headM);
-  for (var i = 0; i < 300; i++) {
+  headM = new THREE.Mesh(hGeo, hMat); headM.position.y = .225; sGroup.add(headM);
+  for(var i = 0; i < 300; i++) {
     var m = new THREE.Mesh(bGeo, new THREE.MeshStandardMaterial({
-      color: new THREE.Color().setHSL(0.38 - i * 0.0005, 0.8, 0.45),
-      emissive: 0x004422, emissiveIntensity: 0.1
+      color: new THREE.Color().setHSL(.38 - i*.0005, .8, .45),
+      emissive: 0x004422, emissiveIntensity: .1
     }));
-    m.position.y = 0.2;
-    m.visible = false;
-    sGroup.add(m);
-    bodyMs.push(m);
+    m.position.y = .2; m.visible = false; sGroup.add(m); bodyMs.push(m);
   }
+  log('Snake meshes built: 1 head + 300 body');
 }
 
 function refreshSnake() {
-  if (!snake.length) return;
-  headM.position.set(snake[0].x, 0.225, snake[0].z);
+  if(!snake.length) return;
+  headM.position.set(snake[0].x, .225, snake[0].z);
   headM.rotation.y = -direction;
-  for (var i = 1; i < snake.length; i++) {
-    if (i < bodyMs.length) {
+  for(var i = 1; i < snake.length; i++) {
+    if(i < bodyMs.length) {
       bodyMs[i].visible = true;
-      bodyMs[i].position.set(snake[i].x, 0.2, snake[i].z);
+      bodyMs[i].position.set(snake[i].x, .2, snake[i].z);
       var t = i / Math.max(snake.length, 1);
-      var s = 1 - t * 0.4;
+      var s = 1 - t * .4;
       bodyMs[i].scale.set(s, 1, s);
     }
   }
-  for (var i = snake.length; i < bodyMs.length; i++) bodyMs[i].visible = false;
+  for(var i = snake.length; i < bodyMs.length; i++) bodyMs[i].visible = false;
 }
 
-// ─── APPLE ───
-var aGroup = new THREE.Group();
-scene.add(aGroup);
+// Apple
+var aGroup = new THREE.Group(); scene.add(aGroup);
 var appleM = new THREE.Mesh(
-  new THREE.SphereGeometry(0.28, 10, 10),
-  new THREE.MeshStandardMaterial({ color: 0xff2233, emissive: 0x881122, emissiveIntensity: 0.5 })
+  new THREE.SphereGeometry(.28, 10, 10),
+  new THREE.MeshStandardMaterial({ color: 0xff2233, emissive: 0x881122, emissiveIntensity: .5 })
 );
 aGroup.add(appleM);
-var aGlow = new THREE.PointLight(0xff3344, 0.5, 3);
-aGroup.add(aGlow);
+var aGlow = new THREE.PointLight(0xff3344, .5, 3); aGroup.add(aGlow);
 
 function spawnApple() {
   var p;
-  do {
-    p = { x: Math.floor(Math.random() * GRID_SIZE) - half, z: Math.floor(Math.random() * GRID_SIZE) - half };
-  } while (snake.some(function(s){ return s.x === p.x && s.z === p.z; }));
-  apple = p;
-  aGroup.position.set(p.x, 0.28, p.z);
+  do { p = { x: Math.floor(Math.random()*GRID_SIZE)-half, z: Math.floor(Math.random()*GRID_SIZE)-half }; }
+  while(snake.some(function(s){ return s.x===p.x && s.z===p.z; }));
+  apple = p; aGroup.position.set(p.x, .28, p.z);
+  log('Apple spawned at (' + p.x + ',' + p.z + ')');
 }
 
-// ─── PARTICLES ───
+// Particles
 var parts = [];
 function burst(x, z, col, n) {
-  for (var i = 0; i < (n||10); i++) {
+  for(var i = 0; i < (n||10); i++) {
     var pm = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 1 });
-    var pg = new THREE.SphereGeometry(0.05, 4, 4);
-    var m = new THREE.Mesh(pg, pm);
-    m.position.set(x, 0.3, z);
+    var pg = new THREE.SphereGeometry(.05, 4, 4);
+    var m = new THREE.Mesh(pg, pm); m.position.set(x,.3,z);
     m.userData = { vx:(Math.random()-.5)*.2, vy:Math.random()*.12+.05, vz:(Math.random()-.5)*.2, life:1 };
-    scene.add(m);
-    parts.push(m);
+    scene.add(m); parts.push(m);
   }
 }
 function tickParts(dt) {
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var p = parts[i];
-    p.userData.life -= dt * 2.5;
-    p.position.x += p.userData.vx;
-    p.position.y += p.userData.vy;
-    p.position.z += p.userData.vz;
-    p.userData.vy -= dt * 0.3;
+  for(var i = parts.length-1; i >= 0; i--) {
+    var p = parts[i]; p.userData.life -= dt*2.5;
+    p.position.x += p.userData.vx; p.position.y += p.userData.vy; p.position.z += p.userData.vz;
+    p.userData.vy -= dt*.3;
     p.material.opacity = Math.max(0, p.userData.life);
     p.scale.setScalar(Math.max(.01, p.userData.life));
-    if (p.userData.life <= 0) { scene.remove(p); p.geometry.dispose(); p.material.dispose(); parts.splice(i, 1); }
+    if(p.userData.life <= 0) { scene.remove(p); p.geometry.dispose(); p.material.dispose(); parts.splice(i,1); }
   }
 }
 
+log('9. Scene objects created');
+
 // ─── GAME ───
 function initGame() {
+  log('initGame() called');
   snake = []; direction = 0; score = 0; gameOver = false;
   camAngle = 0; targetCamAngle = 0;
   scoreEl.textContent = '0';
-  for (var i = 4; i >= 0; i--) snake.push({ x: -i, z: 0 });
+  for(var i = 4; i >= 0; i--) snake.push({ x: -i, z: 0 });
+  log('Snake init: ' + snake.length + ' segments, dir=' + direction);
   buildSnake();
   spawnApple();
   refreshSnake();
+  log('initGame() complete');
 }
 
-function turnL() { if (!running || gameOver) return; direction -= TURN_ANGLE; targetCamAngle -= TURN_ANGLE; sfxTurn(); }
-function turnR() { if (!running || gameOver) return; direction += TURN_ANGLE; targetCamAngle += TURN_ANGLE; sfxTurn(); }
+function turnL() { if(!running||gameOver) return; direction -= TURN_ANGLE; targetCamAngle -= TURN_ANGLE; sfxTurn(); log('Turn LEFT, dir=' + (direction/(Math.PI/2))); }
+function turnR() { if(!running||gameOver) return; direction += TURN_ANGLE; targetCamAngle += TURN_ANGLE; sfxTurn(); log('Turn RIGHT, dir=' + (direction/(Math.PI/2))); }
 
 function step() {
-  if (gameOver) return;
+  if(gameOver) return;
   var h = snake[0];
   var nx = h.x + Math.round(Math.cos(direction));
   var nz = h.z + Math.round(Math.sin(direction));
 
-  if (nx < -half || nx >= half || nz < -half || nz >= half) { die(); return; }
-  if (snake.some(function(s){ return s.x === nx && s.z === nz; })) { die(); return; }
+  if(nx < -half || nx >= half || nz < -half || nz >= half) { log('Wall collision at ('+nx+','+nz+')'); die(); return; }
+  if(snake.some(function(s){ return s.x===nx && s.z===nz; })) { log('Self collision at ('+nx+','+nz+')'); die(); return; }
 
   snake.unshift({ x: nx, z: nz });
-  if (apple && nx === apple.x && nz === apple.z) {
-    score++; scoreEl.textContent = score;
-    sfxEat(); burst(apple.x, apple.z, 0xff6644, 12);
-    spawnApple();
+  if(apple && nx === apple.x && nz === apple.z) {
+    score++; scoreEl.textContent = score; sfxEat(); burst(apple.x, apple.z, 0xff6644, 12); spawnApple();
+    log('Ate apple! Score: ' + score);
   } else { snake.pop(); }
   refreshSnake();
 }
 
 function die() {
-  gameOver = true; running = false;
-  sfxDie();
-  if (snake.length) burst(snake[0].x, snake[0].z, 0xff0000, 15);
-  if (score > highScore) { highScore = score; localStorage.setItem('snake3d_hs', highScore); highscoreEl.textContent = highScore; }
+  log('GAME OVER score=' + score);
+  gameOver = true; running = false; sfxDie();
+  if(snake.length) burst(snake[0].x, snake[0].z, 0xff0000, 15);
+  if(score > highScore) { highScore = score; localStorage.setItem('snake3d_hs', highScore); highscoreEl.textContent = highScore; }
   finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎';
   finalScoreEl.style.display = 'block';
   startBtn.textContent = 'REINTENTAR';
   overlay.classList.remove('hidden');
-  hintL.style.opacity = '1';
-  hintR.style.opacity = '1';
+  hintL.style.opacity = '1'; hintR.style.opacity = '1';
 }
 
-// ─── CAMERA ───
+// Camera
 function updateCam() {
-  if (!snake.length) return;
+  if(!snake.length) return;
   var h = snake[0];
-
-  // Smooth rotation
   var diff = targetCamAngle - camAngle;
-  while (diff > Math.PI) diff -= Math.PI * 2;
-  while (diff < -Math.PI) diff += Math.PI * 2;
-  camAngle += diff * 0.07;
-
-  // Camera position: above and behind the snake
+  while(diff > Math.PI) diff -= Math.PI*2;
+  while(diff < -Math.PI) diff += Math.PI*2;
+  camAngle += diff * .07;
   var dist = 14;
-  var tx = h.x - Math.sin(camAngle) * dist * 0.3;
-  var tz = h.z - Math.cos(camAngle) * dist * 0.3;
-  camera.position.x += (tx - camera.position.x) * 0.05;
-  camera.position.z += (tz + dist * 0.7 - camera.position.z) * 0.05;
+  var tx = h.x - Math.sin(camAngle)*dist*.3;
+  var tz = h.z - Math.cos(camAngle)*dist*.3;
+  camera.position.x += (tx - camera.position.x)*.05;
+  camera.position.z += (tz + dist*.7 - camera.position.z)*.05;
   camera.position.y = dist;
-
-  // Look ahead of snake
-  var lx = h.x + Math.cos(direction) * 2;
-  var lz = h.z + Math.sin(direction) * 2;
-  camera.lookAt(lx, 0, lz);
-
+  camera.lookAt(h.x + Math.cos(direction)*2, 0, h.z + Math.sin(direction)*2);
   pLight.position.set(h.x, 5, h.z);
 }
 
-// ─── LOOP ───
-var prevTime = 0;
+// ─── ANIMATION LOOP ───
+var frameCount = 0;
+log('10. Starting animation loop...');
 function loop(time) {
   requestAnimationFrame(loop);
+  frameCount++;
   try {
-    var dt = Math.min((time - prevTime) / 1000, 0.05);
-    prevTime = time;
+    var dt = Math.min((time - (loop._prev || time)) / 1000, .05);
+    loop._prev = time;
 
-    if (running && !gameOver) {
-      if (time - lastMove >= MOVE_INTERVAL) {
+    if(frameCount === 1) log('11. First frame rendered, time=' + time);
+    if(frameCount === 60) log('60 frames rendered, FPS OK');
+
+    if(running && !gameOver) {
+      if(time - lastMove >= MOVE_INTERVAL) {
         step();
         lastMove = time;
       }
     }
 
-    // Apple bob
-    if (apple) {
-      aGroup.position.y = 0.28 + Math.sin(time * 0.003) * 0.1;
-      aGroup.rotation.y = time * 0.002;
-      aGlow.intensity = 0.4 + Math.sin(time * 0.005) * 0.2;
+    if(apple) {
+      aGroup.position.y = .28 + Math.sin(time*.003)*.1;
+      aGroup.rotation.y = time*.002;
+      aGlow.intensity = .4 + Math.sin(time*.005)*.2;
     }
 
     tickParts(dt);
     updateCam();
     renderer.render(scene, camera);
   } catch(e) {
-    console.error('Loop error:', e);
-    errEl.textContent = 'Error en juego: ' + e.message;
-    errEl.style.display = 'block';
+    log('❌ Loop error frame ' + frameCount + ': ' + e.message);
+    showErr('Error frame ' + frameCount + ': ' + e.message);
+    console.error(e);
   }
 }
 
 // ─── RESIZE ───
 window.addEventListener('resize', function() {
-  var w = window.innerWidth, h = window.innerHeight, a = w / h;
-  camera.left = -viewSize * a / 2; camera.right = viewSize * a / 2;
-  camera.top = viewSize / 2; camera.bottom = -viewSize / 2;
+  var w = window.innerWidth, h = window.innerHeight, a = w/h;
+  camera.left = -viewSize*a/2; camera.right = viewSize*a/2;
+  camera.top = viewSize/2; camera.bottom = -viewSize/2;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
+  log('Resize: ' + w + 'x' + h);
 });
 
 // ─── CONTROLS ───
+log('12. Setting up controls...');
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') { e.preventDefault(); turnL(); }
-  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') { e.preventDefault(); turnR(); }
+  if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A') { e.preventDefault(); turnL(); }
+  if(e.key==='ArrowRight'||e.key==='d'||e.key==='D') { e.preventDefault(); turnR(); }
 });
-
-// Touch
 document.getElementById('tz-left').addEventListener('touchstart', function(e){ e.preventDefault(); turnL(); }, {passive:false});
 document.getElementById('tz-right').addEventListener('touchstart', function(e){ e.preventDefault(); turnR(); }, {passive:false});
 
 // ─── START ───
 startBtn.addEventListener('click', function() {
+  log('▶ START BUTTON CLICKED');
   initAudio();
   overlay.classList.add('hidden');
-  hintL.style.opacity = '0';
-  hintR.style.opacity = '0';
+  hintL.style.opacity = '0'; hintR.style.opacity = '0';
   initGame();
   running = true;
   lastMove = performance.now();
+  log('Game started! running=true, lastMove=' + lastMove);
 });
 
 // ─── INIT ───
+log('13. Building initial snake meshes...');
 buildSnake();
+log('14. Launching requestAnimationFrame...');
 requestAnimationFrame(loop);
+log('15. INIT COMPLETE — waiting for JUGAR button');
 </script>
 </body>
 </html>
