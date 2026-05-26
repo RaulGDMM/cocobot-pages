@@ -181,12 +181,10 @@ function initMusic() {
   mpTrackEl = document.getElementById('mp-track');
   mpNumEl = document.getElementById('mp-num');
 
-  // Shuffle playlist on init
-  shufflePlaylist();
-
-  // Set first track source
+  // Set first track source (playlist stays in defined order)
   var firstTrack = playlist[0];
   musicEl.src = firstTrack.file;
+  currentTrack = 0;
 
   // Bind controls
   document.getElementById('mp-prev').addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
@@ -284,46 +282,8 @@ function prevTrack() {
 }
 
 function startMusic() {
-  if(!musicEl) initMusic();
-  // Pick random track on each page load
-  pickRandomTrack();
-  updateTrackDisplay();
-  initAudio();
-  // Try autoplay but don't change button state on failure
-  var playPromise = musicEl.play();
-  if(playPromise) {
-    playPromise.then(function() {
-      musicPlaying = true;
-      mpPlayBtn.textContent = '⏸';
-      log('🎵 Autoplay: ' + playlist[currentTrack].name);
-    }).catch(function() {
-      // Autoplay blocked — button stays ▶, waiting for user
-      musicPlaying = false;
-    });
-  }
+  // No-op: music only plays when user presses ▶
 }
-
-// Try to start music on first user interaction (fallback for autoplay policy)
-var musicStarted = false;
-function tryStartMusicOnInteraction() {
-  if(!musicStarted && !musicPlaying && !userPausedMusic) {
-    musicStarted = true;
-    updateTrackDisplay();
-    initAudio();
-    if(musicEl) {
-      musicEl.play().then(function() {
-        musicPlaying = true;
-        mpPlayBtn.textContent = '⏸';
-        log('🎵 Playing on interaction: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
-      }).catch(function(e) {
-        log('⚠️ Music start on interaction failed: ' + e.message);
-      });
-    }
-  }
-}
-document.addEventListener('click', tryStartMusicOnInteraction);
-document.addEventListener('touchstart', tryStartMusicOnInteraction);
-document.addEventListener('keydown', tryStartMusicOnInteraction);
 
 function stopMusic() {
   if(musicEl && musicPlaying) {
@@ -722,18 +682,6 @@ document.getElementById('tz-right').addEventListener('touchstart',function(e){e.
 startBtn.addEventListener('click', function() {
   log('▶ CLICK ' + startBtn.textContent);
   initAudio();
-  // Start music if not playing and user didn't explicitly pause it
-  if(!musicPlaying && !userPausedMusic && musicEl) {
-    musicEl.play().then(function() {
-      musicPlaying = true;
-      mpPlayBtn.textContent = '⏸';
-      log('🎵 Music started on ' + startBtn.textContent);
-    }).catch(function(e) {
-      log('⚠️ Music start on ' + startBtn.textContent + ' failed: ' + e.message);
-    });
-  } else if(userPausedMusic) {
-    log('🎵 Music not started — user paused it');
-  }
   overlay.classList.add('hidden');
   hintL.style.opacity='0'; hintR.style.opacity='0';
   initGame();
@@ -745,8 +693,6 @@ startBtn.addEventListener('click', function() {
 // ─── INIT ───
 buildSnake(); buildObstacles(); buildApples();
 initMusic();
-// Start music on page load
-startMusic();
 requestAnimationFrame(loop);
 log('✅ INIT COMPLETE');
 </script>
