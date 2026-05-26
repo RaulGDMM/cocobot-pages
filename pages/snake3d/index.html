@@ -181,10 +181,11 @@ function initMusic() {
   mpTrackEl = document.getElementById('mp-track');
   mpNumEl = document.getElementById('mp-num');
 
-  // Set first track source (playlist stays in defined order)
-  var firstTrack = playlist[0];
-  musicEl.src = firstTrack.file;
-  currentTrack = 0;
+  // Pick random starting track (no autoplay — user must press ▶)
+  currentTrack = Math.floor(Math.random() * playlist.length);
+  musicEl.src = playlist[currentTrack].file;
+  updateTrackDisplay();
+  log('🎵 Ready: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ') — press ▶ to play');
 
   // Bind controls
   document.getElementById('mp-prev').addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
