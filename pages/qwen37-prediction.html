@@ -1036,7 +1036,7 @@ td:first-child {
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow">Predicción · Actualizado 23 Mayo 2026</div>
+  <div class="hero-eyebrow">Predicción · Actualizado 27 Mayo 2026</div>
   <h1>Qwen3.7<br>Open Weights</h1>
   <h2>Predicciones para 27B y 35B-A3B</h2>
   <p class="hero-sub">
@@ -1677,12 +1677,12 @@ td:first-child {
       <div class="timeline-desc">Anunciado en Alibaba Cloud Summit. Intelligence Index: 56.6 (#5 global). Context 1M tokens. Pricing: $2.50/$7.50 por M tokens.</div>
     </div>
     <div class="timeline-item future">
-      <div class="timeline-date">~Jun 2026 (predicción)</div>
+      <div class="timeline-date">~5-15 Jun 2026 (predicción)</div>
       <div class="timeline-title">Qwen3.7 Open Weights ⭐</div>
       <div class="timeline-desc">
-        <strong>Predicción: mediados-finales de junio 2026.</strong><br>
-        Basado en: Qwen3.6 Max (20 Abr) → 3.7 Max (20 May) = ~30 días entre generaciones Max. Open weights de la misma generación salen 2-6 días después del Max. Proyección: ~30 días tras 3.7 Max = ~mediados de junio.<br>
-        <span class="prediction-range">Rango: 1-30 junio 2026</span>
+        <strong>Predicción: primera-mitad de junio 2026 (5-15 junio más probable).</strong><br>
+        Basado en: Qwen3.6 Max (20 Abr) → 3.7 Max (20 May) = ~30 días entre generaciones Max. Open weights de la misma generación salen 2-6 días después del Max. Múltiples fuentes confirman ventana de 2-4 semanas post-anuncio Max = ~5-15 junio.<br>
+        <span class="prediction-range">Rango amplio: 1-25 junio 2026</span>
       </div>
     </div>
   </div>
@@ -1714,16 +1714,52 @@ td:first-child {
         <tr>
           <td>Qwen3.7</td>
           <td>20 May 2026</td>
-          <td class="prediction-cell prediction-range">~1-30 Jun 2026</td>
-          <td class="prediction-cell prediction-range">~+12 a +40 días</td>
+          <td class="prediction-cell prediction-range">~5-15 Jun 2026</td>
+          <td class="prediction-cell prediction-range">~+16 a +26 días</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="highlight orange">
-    <strong>📊 Predicción de fecha:</strong>
-    <p><strong>Más probable: 8-20 junio 2026.</strong> Alibaba tiende a anunciar en eventos (Cloud Summit, etc.). Si mantienen el patrón de ~30 días entre generaciones Max, los open weights de 3.7 llegarían aproximadamente un mes después del anuncio de 3.7 Max. Confianza: media (45%).</p>
+    <strong>📊 Predicción de fecha (refinada 27 May):</strong>
+    <p><strong>Más probable: 5-15 junio 2026.</strong> Alibaba tiende a anunciar en eventos (Cloud Summit, etc.). Múltiples fuentes confirman ventana de 2-4 semanas post-anuncio Max. Confianza: media-alta (55%).</p>
+  </div>
+
+  <h3>💾 Requisitos VRAM estimados (cuantizado)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Q4_K_M</th>
+          <th>Q5_K_M</th>
+          <th>Q8_0</th>
+          <th>Tarjeta mínima</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Qwen3.7-27B (Dense)</td>
+          <td>~15-16 GiB</td>
+          <td>~18-20 GiB</td>
+          <td>~26-28 GiB</td>
+          <td>RTX 3090/4090 (24 GB)</td>
+        </tr>
+        <tr>
+          <td>Qwen3.7-35B-A3B (MoE)</td>
+          <td>~18-22 GiB</td>
+          <td>~22-26 GiB</td>
+          <td>~34-38 GiB</td>
+          <td>RTX 3090/4090 (24 GB) Q4</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight cyan">
+    <strong>🔧 GGUF disponible en 24-72h:</strong>
+    <p>Tras el release oficial, los GGUF cuantizados típicamente aparecen en 24-72 horas. Principales fuentes: Bartowski, Unsloth, RDson en Hugging Face. El 27B en Q4_K_M cabe cómodamente en 24 GB de VRAM. El 35B-A3B en Q4 también cabe pero con menos margen.</p>
   </div>
 </section>
 
@@ -1940,6 +1976,10 @@ td:first-child {
 
   <div class="update-log">
     <h4>Log de Actualizaciones</h4>
+    <div class="update-entry">
+      <span class="date">27 May 2026</span>
+      <span class="desc">📊 Refinamiento: Open weights siguen sin salir. Ventana más probable ajustada a 5-15 junio (vs 1-30 anterior) basándonos en confirmación de 2-4 semanas post-anuncio Max. Añadidos requisitos VRAM estimados (27B Q4: ~15-16 GiB, 35B-A3B Q4: ~18-22 GiB). GGUF típicamente 24-72h post-release. Especulación Qwen 4 (Nov/Dic) gana tracción en Reddit r/LocalLLM.</span>
+    </div>
     <div class="update-entry">
       <span class="date">23 May 2026</span>
       <span class="desc">🆕 Actualización mayor: Benchmarks oficiales confirmados — GPQA Diamond 92.4% (leader), SWE-Pro 60.6%, SWE-Verified 80.4%, HLE 41.4%, HMMT 97.1%, IMOAnswerBench 90.0%, Apex Reasoning 44.5%. Pricing confirmado ($2.50/$7.50, cache $0.25). Soporte Anthropic API + MCP. Añadido DeepSeek V4 Pro (52.0) a comparativa. Nuevo riesgo: posible salto a Qwen 4 en Nov/Dic 2026. Coding/STEM no están planos — Qwen3.7 Max es leader en 9 de 11 benchmarks.</span>
