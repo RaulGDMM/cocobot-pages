@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Cocina vs La Cocina — Comparativa de Corrupción PP y PSOE</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-card-alt: #16161f;
+  --border: #2a2a3a;
+  --text: #e0e0e8;
+  --text-muted: #8888a0;
+  --pp-red: #e63946;
+  --pp-red-dim: #e6394633;
+  --psoe-red: #c1121f;
+  --psoe-red-dim: #c1121f33;
+  --accent: #4488ff;
+  --accent-dim: #4488ff22;
+  --yellow: #f0c040;
+  --yellow-dim: #f0c04022;
+  --green: #40c070;
+  --orange: #e88a20;
+  --gradient-pp: linear-gradient(135deg, #e63946, #a82030);
+  --gradient-psoe: linear-gradient(135deg, #c1121f, #7b0000);
+  --gradient-dark: linear-gradient(180deg, #0a0a0f 0%, #141420 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--gradient-dark);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* BANNER */
+.bb {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1002;
+  background: linear-gradient(90deg, #1a0000, #200020, #00001a);
+  color: var(--yellow);
+  text-align: center;
+  padding: 8px 20px;
+  font-size: 0.85em;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #333;
+}
+.bb span { opacity: 0.7; }
+
+/* NAV */
+nav {
+  position: fixed; top: 36px; left: 0; right: 0; z-index: 1000;
+  background: #0d0d14ee;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 54px;
+}
+nav .nav-brand {
+  font-size: 1em;
+  font-weight: bold;
+  color: var(--yellow);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+nav .nav-links {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+  list-style: none;
+}
+nav .nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8em;
+  font-family: 'Courier New', monospace;
+  transition: color 0.2s;
+}
+nav .nav-links a:hover { color: var(--yellow); }
+
+.hamburger {
+  display: none;
+  background: none; border: none;
+  color: var(--text);
+  font-size: 1.5em;
+  cursor: pointer;
+  margin-left: auto;
+  z-index: 1003;
+}
+
+/* HERO */
+.hero {
+  padding: 130px 24px 60px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero h1 {
+  font-size: clamp(2em, 5vw, 3.2em);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--pp-red), var(--yellow), var(--psoe-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle {
+  font-size: 1.1em;
+  color: var(--text-muted);
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+.hero .date {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* SECTIONS */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.section {
+  margin-bottom: 60px;
+}
+.section-title {
+  font-size: 1.6em;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .icon {
+  font-size: 1.2em;
+}
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95em;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+/* COMPARISON CARDS */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 30px 0;
+}
+.comp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.comp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.comp-card.pp::before { background: var(--gradient-pp); }
+.comp-card.psoe::before { background: var(--gradient-psoe); }
+.comp-card h3 {
+  font-size: 1.1em;
+  margin-bottom: 4px;
+}
+.comp-card.pp h3 { color: var(--pp-red); }
+.comp-card.psoe h3 { color: #e8505a; }
+.comp-card .label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.comp-card p, .comp-card li {
+  font-size: 0.9em;
+  color: var(--text);
+  line-height: 1.6;
+}
+.comp-card ul {
+  list-style: none;
+  padding: 0;
+}
+.comp-card ul li {
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+.comp-card ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+/* VS DIVIDER */
+.vs-divider {
+  text-align: center;
+  padding: 40px 0;
+  position: relative;
+}
+.vs-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.vs-text {
+  display: inline-block;
+  background: var(--bg);
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
+  color: var(--yellow);
+  letter-spacing: 3px;
+}
+
+/* TABLE */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 24px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88em;
+}
+thead {
+  background: #1a1a28;
+}
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8em;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) { background: var(--bg-card-alt); }
+td:first-child {
+  font-weight: bold;
+  white-space: nowrap;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78em;
+  font-family: 'Courier New', monospace;
+}
+.badge-pp { background: var(--pp-red-dim); color: var(--pp-red); border: 1px solid var(--pp-red); }
+.badge-psoe { background: var(--psoe-red-dim); color: #e8505a; border: 1px solid #e8505a; }
+.badge-judicial { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+.badge-active { background: rgba(64,192,112,0.1); color: var(--green); border: 1px solid var(--green); }
+.badge-trial { background: rgba(232,138,32,0.1); color: var(--orange); border: 1px solid var(--orange); }
+
+/* QUOTE BLOCK */
+.quote-block {
+  background: var(--bg-card);
+  border-left: 4px solid var(--yellow);
+  padding: 20px 24px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  position: relative;
+}
+.quote-block::before {
+  content: '"';
+  position: absolute;
+  top: -5px; left: 10px;
+  font-size: 3em;
+  color: var(--yellow);
+  opacity: 0.3;
+  font-style: normal;
+}
+.quote-block .attribution {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+}
+
+/* TIMELINE */
+.timeline {
+  position: relative;
+  padding-left: 30px;
+  margin: 24px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -26px; top: 20px;
+  width: 12px; height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+.timeline-item .date {
+  font-family: 'Courier New', monospace;
+  font-size: 0.78em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.timeline-item h4 {
+  font-size: 0.95em;
+  margin-bottom: 4px;
+}
+.timeline-item p {
+  font-size: 0.88em;
+  color: var(--text-muted);
+}
+
+/* OPINION */
+.opinion {
+  background: linear-gradient(135deg, #1a1020, #101020);
+  border: 1px solid #3a2a4a;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 30px 0;
+}
+.opinion h3 {
+  color: var(--yellow);
+  font-size: 1.2em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.opinion p {
+  margin-bottom: 14px;
+  font-size: 0.95em;
+}
+.opinion strong { color: var(--yellow); }
+
+/* SEVERITY METER */
+.severity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+}
+.severity-bar {
+  flex: 1;
+  height: 8px;
+  background: #1a1a28;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.severity-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s;
+}
+.severity-fill.high { background: linear-gradient(90deg, var(--orange), var(--pp-red)); }
+.severity-fill.critical { background: linear-gradient(90deg, var(--orange), #ff0000); }
+.severity-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75em;
+  color: var(--text-muted);
+  min-width: 60px;
+  text-align: right;
+}
+
+/* SOURCES */
+.sources {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.sources h3 {
+  font-size: 1em;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+}
+.sources ul {
+  list-style: none;
+  padding: 0;
+}
+.sources li {
+  padding: 6px 0;
+  font-size: 0.85em;
+  border-bottom: 1px solid #1a1a28;
+}
+.sources li:last-child { border-bottom: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+.sources a:hover { text-decoration: underline; }
+.sources .source-label {
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+  font-size: 0.75em;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 30px 24px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+.footer .brand {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  font-family: 'Courier New', monospace;
+}
+.footer .disclaimer {
+  color: var(--text-muted);
+  font-size: 0.75em;
+  opacity: 0.5;
+  margin-top: 8px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#visit-counter {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  background: rgba(68,136,255,0.06);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-top: 12px;
+  display: inline-block;
+  font-family: 'Courier New', monospace;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  background: #1a1a28;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.8em;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.back-btn:hover {
+  background: #242438;
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .comparison { grid-template-columns: 1fr; }
+  nav .nav-links { display: none; }
+  .hamburger { display: block; }
+  nav .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 54px; left: 0; right: 0;
+    background: #0d0d14ee;
+    backdrop-filter: blur(12px);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero { padding: 120px 20px 40px; }
+  .hero h1 { font-size: 1.8em; }
+  th, td { padding: 8px 10px; font-size: 0.82em; }
+  td { padding-left: 55%; }
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 50%;
+    font-weight: bold;
+    font-size: 0.82em;
+    color: var(--text-muted);
+  }
+  td { position: relative; }
+}
+
+/* SIDEBAR */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 998;
+}
+.sidebar-overlay.open { display: block; }
+</style>
+</head>
+<body>
+
+<div class="bb">
+  <span>📋</span> Análisis comparativo · Mayo 2026 · Información actualizada
+</div>
+
+<nav>
+  <div class="nav-brand">🐱 cocobot</div>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#comparativa">Comparativa</a></li>
+    <li><a href="#gravedad">Gravedad</a></li>
+    <li><a href="#kitchen">Kitchen</a></li>
+    <li><a href="#psoe">PSOE</a></li>
+    <li><a href="#declaraciones">Declaraciones</a></li>
+    <li><a href="#opinion">Opinión</a></li>
+    <li><a href="#fuentes">Fuentes</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <h1>La Cocina vs La Cocina</h1>
+  <p class="subtitle">Comparativa entre el Caso Kitchen del PP y la trama de financiación ilegal del PSOE. Dos partidos, dos cocinas, un mismo patrón.</p>
+  <p class="date">Actualizado: 28 de mayo de 2026</p>
+</header>
+
+<main class="container">
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 1: COMPARATIVA GENERAL -->
+  <!-- ============================================ -->
+  <section class="section" id="comparativa">
+    <h2 class="section-title"><span class="icon">⚖️</span> Comparativa General</h2>
+    <p class="section-subtitle">Dos casos de corrupción en los dos grandes partidos españoles. Hechos, cifras y alcance.</p>
+
+    <div class="comparison">
+      <div class="comp-card pp">
+        <div class="label">Caso Kitchen · PP</div>
+        <h3>Operación Kitchen</h3>
+        <p>Operación parapolicial desarrollada entre <strong>2013-2015</strong> desde el Ministerio del Interior para espiar al extesorero del PP, Luis Bárcenas, y destruir pruebas de la caja B del partido durante la investigación del caso Gürtel.</p>
+        <br>
+        <ul>
+          <li><strong>Inicio:</strong> 2013 (operación), 2026 (juicio oral)</li>
+          <li><strong>Juicio:</strong> En curso — Audiencia Nacional</li>
+          <li><strong>Acusados:</strong> ~10 (Fernández Díaz, Martínez, Villarejo…)</li>
+          <li><strong>Penas solicitadas:</strong> Hasta 19 años (Villarejo)</li>
+          <li><strong>Financiación:</strong> Fondos reservados del Estado</li>
+          <li><strong>Beneficiario:</strong> Cúpula del PP (Rajoy, Cospedal)</li>
+        </ul>
+      </div>
+      <div class="comp-card psoe">
+        <div class="label">Caso Leire Díez · PSOE</div>
+        <h3>Trama de Financiación Ilegal</h3>
+        <p>Red de financiación opaca del PSOE que inyectaba fondos irregulares en la contabilidad del partido para financiar sus «cloacas» y acabar con enemigos políticos, judiciales y policiales. Operativa descubierta por el juez Pedraz.</p>
+        <br>
+        <ul>
+          <li><strong>Inicio:</strong> 2025 (imputación Cerdán), 2026 (registro Ferraz)</li>
+          <li><strong>Estado:</strong> Investigación abierta — UCO</li>
+          <li><strong>Imputados:</strong> Fuentes (gerente), Cerdán, Zapatero…</li>
+          <li><strong>Delitos:</strong> 9 tipos delictivos investigados</li>
+          <li><strong>Financiación:</strong> Facturas falsas, sobornos, fondos extranjeros</li>
+          <li><strong>Beneficiario:</strong> Estructura del PSOE</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vs-divider">
+      <span class="vs-text">VS</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspecto</th>
+            <th>Kitchen (PP)</th>
+            <th>Ferraz (PSOE)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Aspecto">Naturaleza</td>
+            <td data-label="Kitchen">Operación parapolicial para destruir pruebas de corrupción</td>
+            <td data-label="Ferraz">Red de financiación ilegal + cloacas para atacar enemigos</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Año de origen</td>
+            <td data-label="Kitchen">2013-2015</td>
+            <td data-label="Ferraz">En curso (detectada 2025)</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Estado judicial</td>
+            <td data-label="Kitchen"><span class="badge badge-trial">Juicio oral en curso</span></td>
+            <td data-label="Ferraz"><span class="badge badge-active">Investigación / Registros</span></td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Órgano judicial</td>
+            <td data-label="Kitchen">Audiencia Nacional (Teresa Palacios)</td>
+            <td data-label="Ferraz">Audiencia Nacional (Santiago Pedraz)</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Mecanismo</td>
+            <td data-label="Kitchen">Espionaje, sustracción de datos, eliminación de pruebas en la nube</td>
+            <td data-label="Ferraz">Facturas falsas, contabilidad paralela, efectivo sin control, sobornos</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Implicados de alto perfil</td>
+            <td data-label="Kitchen">Rajoy, Cospedal, Sáenz de Santamaría (como testigos)</td>
+            <td data-label="Ferraz">Zapatero (imputado), Cerdán, Ábalos, Fuentes</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Uso del Estado</td>
+            <td data-label="Kitchen">70 agentes policiales, CNI, comisarios, fondos reservados</td>
+            <td data-label="Ferraz">Red de cloacas, SEPI, Correos, Guardia Civil implicada</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Objetivo</td>
+            <td data-label="Kitchen">Proteger al PP de la investigación Gürtel</td>
+            <td data-label="Ferraz">Financiar el partido y «acabar» con enemigos</td>
+          </tr>
+          <tr>
+            <td data-label="Aspecto">Acusaciones</td>
+            <td data-label="Kitchen">Encubrimiento, malversación, vulneración de intimidad</td>
+            <td data-label="Ferraz">9 delitos: organización criminal, cohecho, prevaricación, tráfico de influencias…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 2: GRAVEDAD -->
+  <!-- ============================================ -->
+  <section class="section" id="gravedad">
+    <h2 class="section-title"><span class="icon">🔥</span> Gravedad de los Casos</h2>
+    <p class="section-subtitle">Evaluación de la magnitud de cada caso en función de alcance, implicados y delitos.</p>
+
+    <div class="comparison">
+      <div class="comp-card pp">
+        <h3>Caso Kitchen</h3>
+        <div class="label">Gravedad: MUY ALTA</div>
+        <div class="severity">
+          <div class="severity-bar"><div class="severity-fill high" style="width: 85%"></div></div>
+          <span class="severity-label">85%</span>
+        </div>
+        <br>
+        <ul>
+          <li>Uso de <strong>70 agentes policiales</strong> en operación ilegal</strong></li>
+          <li>Participación del <strong>CNI</strong> (servicio de inteligencia)</li>
+          <li><strong>Eliminación activa de pruebas</strong> de corrupción (audios, documentos)</li>
+          <li>Control del recluso Bárcenas desde la <strong>prisión</strong></li>
+          <li>Cámara de vigilancia fuera de la oficina de un <strong>abogado</strong></li>
+          <li>Secuestro del episodio Olivares (no incluido en el juicio)</li>
+          <li><strong>Exministro del Interior</strong> como cabecilla</li>
+        </ul>
+      </div>
+      <div class="comp-card psoe">
+        <h3>Caso Ferraz</h3>
+        <div class="label">Gravedad: EXTREMA</div>
+        <div class="severity">
+          <div class="severity-bar"><div class="severity-fill critical" style="width: 95%"></div></div>
+          <span class="severity-label">95%</span>
+        </div>
+        <br>
+        <ul>
+          <li><strong>9 delitos</strong> distintos investigados simultáneamente</li>
+          <li>Organización criminal con <strong>facturas falsas</strong> sistemáticas</li>
+          <li>Contabilidad paralela (caja B) con <strong>efectivo sin control</strong></li>
+          <li><strong>Sobornos</strong> de empresarios a cambio de contratos públicos</li>
+          <li><strong>Fondos extranjeros</strong> (Venezuela)</li>
+          <li>Objetivo declarado: «acabar con» jueces, fiscales y la propia <strong>UCO</strong></li>
+          <li><strong>Expresidente del Gobierno</strong> imputado (Zapatero)</li>
+          <li>Guardia Civil investigada internamente por proteger al partido</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      La diferencia fundamental: Kitchen fue una operación de <em>defensa</em> (destruir pruebas propias), mientras que la trama del PSOE incluye una operación de <em>ataque</em> (usar fondos del partido para eliminar enemigos, incluidos jueces y policías).
+      <span class="attribution">— Análisis comparativo</span>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 3: EVOLUCIÓN KITCHEN -->
+  <!-- ============================================ -->
+  <section class="section" id="kitchen">
+    <h2 class="section-title"><span class="icon">📋</span> Evolución del Juicio Kitchen</h2>
+    <p class="section-subtitle">Cronología del caso más mediático de corrupción parapolicial en la historia reciente de España.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="date">2013-2015</div>
+        <h4>Operación Kitchen</h4>
+        <p>Se desarrolla la operación parapolicial desde el Ministerio del Interior. 70 agentes policiales espiaban a Bárcenas y su familia. Se sustraen teléfonos, tabletas y documentos. Se intentan eliminar audios comprometedores de la nube.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">2013</div>
+        <h4>Destrucción de discos duros</h4>
+        <p>Los ordenadores de Bárcenas son destruidos en la sede del PP en Génova. Bárcenas afirma que fue por orden directa de la cúpula del PP.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">2018</div>
+        <h4>Caso Gürtel — Sentencia</h4>
+        <p>La Audiencia Provincial de Málaga condena al PP por delitos de corrupción. El juicio Kitchen intenta demostrar que esta sentencia se logró gracias a la operación parapolicial.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">2022</div>
+        <h4>Intentos de reapertura</h4>
+        <p>Se solicitan reaperturas del caso para incluir a Cospedal y al PP como ente jurídico. Ambas peticiones son denegadas.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Febrero 2026</div>
+        <h4>Cambio de ponente</h4>
+        <p>El magistrado Martel Rivero se jubila durante el juicio. La magistrada Teresa Palacios (investigadora de los casos Botín y Mario Conde) asume la redacción de la sentencia.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">6 de abril 2026</div>
+        <h4>Inicio del juicio oral</h4>
+        <p>Comienza en la Audiencia Nacional. ~10 acusados en el banquillo. El PSOE y Podemos actúan como acusación popular. La familia Bárcenas como acusación particular.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Abril 2026</div>
+        <h4>Declaraciones de Rajoy y Cospedal</h4>
+        <p>Ambos niegan cualquier conocimiento de la operación. Rajoy: «En todo este tema no ha habido ninguna operación política». Cospedal defiende la integridad de Fernández Díaz.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Junio 2026 (previsto)</div>
+        <h4>Fin del juicio y sentencia</h4>
+        <p>Se espera la declaración de los principales acusados y la posterior deliberación del tribunal. La sentencia podría tardar varios meses más.</p>
+      </div>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Acusados y Penas Solicitadas</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Acusado</th>
+            <th>Rol</th>
+            <th>Pena Solicitada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>José Manuel Villarejo</td>
+            <td>Excomisario — cabecilla operativo</td>
+            <td><strong>19 años</strong> + soborno pasivo</td>
+          </tr>
+          <tr>
+            <td>Jorge Fernández Díaz</td>
+            <td>Exministro del Interior</td>
+            <td><strong>15 años</strong></td>
+          </tr>
+          <tr>
+            <td>Francisco Martínez</td>
+            <td>ExSecretario de Estado de Seguridad</td>
+            <td><strong>15 años</strong></td>
+          </tr>
+          <tr>
+            <td>Marcelino Martín Blas</td>
+            <td>Comisario</td>
+            <td><strong>2,5 años</strong></td>
+          </tr>
+          <tr>
+            <td>Sergio Ríos</td>
+            <td>Exchofer de Bárcenas (colaborador)</td>
+            <td>No especificada</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Probabilidad de Condena</h3>
+    <div class="comp-card pp">
+      <p>La probabilidad de condena para los acusados principales es <strong>alta</strong>. Los motivos:</p>
+      <br>
+      <ul>
+        <li><strong>Evidencia documental sólida:</strong> Mensajes de WhatsApp, notas de Villarejo, archivos de audio, documentación bancaria</li>
+        <li><strong>Confesiones parciales:</strong> El comisario García Castaño admitió acceder a propiedades de Bárcenas para recuperar documentos</li>
+        <li><strong>Testigos clave:</strong> Bárcenas (acusación particular) y múltiples agentes policiales</li>
+        <li><strong>Magistrada ponente:</strong> Teresa Palacios tiene experiencia en casos de corrupción de alto nivel (Botín, Mario Conde)</li>
+      </ul>
+      <br>
+      <p>Sin embargo, la <strong>implicación directa de Rajoy y Cospedal</strong> como autores de la caja B es más incierta:</p>
+      <br>
+      <ul>
+        <li>El audio que Bárcenas dice grabar con Rajoy <strong>no se ha verificado</strong></li>
+        <li>Las notas de Villarejo con apodos («el barbas», «el asturiano») carecen de <strong>valor probatorio directo</strong></li>
+        <li>El juez Palacios ya consideró las notas de Villarejo <strong>insuficientes</strong> para imputar a Rajoy y Cospedal</li>
+        <li>Ambos mantuvieron declaraciones <strong>consistentes y negacionistas</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 4: CASO PSOE -->
+  <!-- ============================================ -->
+  <section class="section" id="psoe">
+    <h2 class="section-title"><span class="icon">🏛️</span> El Caso de la «Cocina» del PSOE</h2>
+    <p class="section-subtitle">La UCO investiga una trama de financiación ilegal que incluye 9 delitos y afecta a la cúpula del partido.</p>
+
+    <div class="comp-card psoe">
+      <h3>Los 9 Delitos Investigados</h3>
+      <br>
+      <ul>
+        <li><strong>Organización criminal</strong> — Red estructurada con jerarquía</li>
+        <li><strong>Cohecho</strong> — Sobornos de empresarios a cambio de contratos</li>
+        <li><strong>Revelación de secretos</strong> — Información clasificada usada en cloacas</li>
+        <li><strong>Inducimiento a falso testimonio</strong></li>
+        <li><strong>Falsa denuncia</strong></li>
+        <li><strong>Falsedad en documento mercantil</strong> — Facturas mendaces</li>
+        <li><strong>Prevaricación</strong> — Abuso de autoridad</li>
+        <li><strong>Tráfico de influencias</strong> — Uso de posición para favorecer</li>
+        <li><strong>Delito contra las instituciones del Estado</strong></li>
+      </ul>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Principales Implicados</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Persona</th>
+            <th>Rol</th>
+            <th>Situación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ana María Fuentes</td>
+            <td>Gerente actual del PSOE</td>
+            <td><span class="badge badge-psoe">Imputada</span> — Autora de facturas falsas</td>
+          </tr>
+          <tr>
+            <td>Santos Cerdán</td>
+            <td>Exsecretario de Organización</td>
+            <td><span class="badge badge-psoe">Imputado</span> — Amaño de obras públicas</td>
+          </tr>
+          <tr>
+            <td>José Luis Zapatero</td>
+            <td>Expresidente del Gobierno</td>
+            <td><span class="badge badge-psoe">Imputado</span> — Blanqueo capitales Plus Ultra</td>
+          </tr>
+          <tr>
+            <td>Miguel Ángel Ábalos</td>
+            <td>Exnúmero 2 del PSOE</td>
+            <td><span class="badge badge-judicial">Visto para sentencia</span></td>
+          </tr>
+          <tr>
+            <td>Leire Díez</td>
+            <td>«Fontanera» (operativa sombra)</td>
+            <td><span class="badge badge-psoe">Investigada</span> — Nexo con SEPI</td>
+          </tr>
+          <tr>
+            <td>Juanma Serrano</td>
+            <td>Exjefe de gabinete de Sánchez</td>
+            <td><span class="badge badge-active">Investigado</span> — Amigo de Sánchez</td>
+          </tr>
+          <tr>
+            <td>Gaspar Zarrías</td>
+            <td>Líder andaluz / exvicepresidente Junta</td>
+            <td><span class="badge badge-psoe">Domicilio registrado</span></td>
+          </tr>
+          <tr>
+            <td>Mariano Moreno</td>
+            <td>Exgerente del PSOE</td>
+            <td><span class="badge badge-active">Testigo clave</span> — Reveló prácticas de caja</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Mecanismos de Financiación Ilegal</h3>
+    <div class="comp-card psoe">
+      <ul>
+        <li><strong>Facturas mendaces:</strong> Pagos en «miles de euros» disfrazados con facturas falsas desde la Secretaría y Gerencia del PSOE</li>
+        <li><strong>Caja B con efectivo:</strong> Caja del partido financiada por acorazadas sin mecanismo de verificación</li>
+        <li><strong>Sobornos:</strong> El empresario Víctor de Aldama alega que contratistas pagaban sobornos a cambio de licitaciones públicas</li>
+        <li><strong>Fondos de Venezuela:</strong> Aldama afirma haber entregado un sobre vinculado a financiación extranjera irregular</li>
+        <li><strong>Entregas en efectivo:</strong> La empresaria Carmen Pano afirma haber entregado 90.000€ en efectivo a un hombre dentro de Ferraz</li>
+        <li><strong>Contabilidad paralela:</strong> Expertos de la UCO descubrieron un sistema de contabilidad B oculto</li>
+      </ul>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Registro de la UCO en Ferraz — 27 de mayo 2026</h3>
+    <div class="comp-card psoe">
+      <p>La UCO entró en la sede del PSOE en la calle Ferraz para requerir información, clonar material digital y preparar posibles registros. La operación incluye:</p>
+      <br>
+      <ul>
+        <li>Búsqueda de documentos sobre la presunta caja B</li>
+        <li>Clonación de material informático</li>
+        <li>Aprehensión de archivos internos de la Guardia Civil sobre agentes investigados por investigar al PSOE</li>
+        <li>Visita anterior el 20 de junio de 2025 limitada a bienes de Cerdán</li>
+        <li>Autorización judicial para proceder con registros completos si el partido no coopera</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 5: DECLARACIONES POLÍTICAS -->
+  <!-- ============================================ -->
+  <section class="section" id="declaraciones">
+    <h2 class="section-title"><span class="icon">🎤</span> Declaraciones de Dirigentes</h2>
+    <p class="section-subtitle">Cómo reaccionan los líderes políticos cuando la justicia toca a su puerta. Un estudio de paralelismos.</p>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Rajoy (Kitchen) vs Sánchez (Ferraz)</h3>
+
+    <div class="comparison">
+      <div class="comp-card pp">
+        <h3>Mariano Rajoy</h3>
+        <div class="label">Expresidente · Testigo en juicio Kitchen</div>
+        <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+          «En todo este tema no ha habido ninguna operación política. Luego conocimos que hubo una operación policial, porque su objetivo fundamental era: coger el dinero del señor Bárcenas y averiguar quiénes eran sus testaferros.»
+          <span class="attribution">— Rajoy, juicio Kitchen, abril 2026</span>
+        </div>
+        <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+          «Yo jamás supe de operaciones, de confidentes ni de fondos reservados y estuve un tiempo, muy difícil, al frente del Ministerio del Interior.»
+          <span class="attribution">— Rajoy, juicio Kitchen</span>
+        </div>
+        <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+          «Eso es absolutamente falso.»
+          <span class="attribution">— Rajoy, negando destruir un sobre de la caja B ante Bárcenas</span>
+        </div>
+      </div>
+      <div class="comp-card psoe">
+        <h3>Pedro Sánchez</h3>
+        <div class="label">Presidente del Gobierno · Reacción al registro Ferraz</div>
+        <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+          «No puedo convocar elecciones por interés partidista.»
+          <span class="attribution">— Sánchez, Roma, mayo 2026</span>
+        </div>
+        <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+          «En ningún auto, sumario o informe se habla de posible financiación ilegal. Pedro Sánchez está sufriendo ataques injustos.»
+          <span class="attribution">— Grande-Marlaska (en nombre del Gobierno)</span>
+        </div>
+        <p style="margin-top: 12px; font-size: 0.88em; color: var(--text-muted);">Sánchez minimiza el registro de la UCO en Ferraz calicándolo de mero «requerimiento» legal rutinario. Se niega a convocar elecciones y espera a que Zapatero declare ante el juez el 17 de junio.</p>
+      </div>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Paralelismos en las Reacciones</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Táctica</th>
+            <th>Rajoy / PP (Kitchen)</th>
+            <th>Sánchez / PSOE (Ferraz)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Táctica"><strong>Minimización</strong></td>
+            <td data-label="Rajoy">«No ha habido ninguna operación política, solo policial»</td>
+            <td data-label="Sánchez">«Es un requerimiento, no un registro»</td>
+          </tr>
+          <tr>
+            <td data-label="Táctica"><strong>Negación total</strong></td>
+            <td data-label="Rajoy">«Jamás supe de operaciones, confidentes ni fondos reservados»</td>
+            <td data-label="Sánchez">«En ningún auto se habla de financiación ilegal»</td>
+          </tr>
+          <tr>
+            <td data-label="Táctica"><strong>Víctima</strong></td>
+            <td data-label="Rajoy">Se presenta como blanco de una operación judicial política</td>
+            <td data-label="Sánchez">«Estoy sufriendo ataques injustos»</td>
+          </tr>
+          <tr>
+            <td data-label="Táctica"><strong>Distanciamiento</strong></td>
+            <td data-label="Rajoy">Culpabiliza a Fernández Díaz y Villarejo como ejecutores</td>
+            <td data-label="Sánchez">El equipo de Moncloa «cocina» todo internamente</td>
+          </tr>
+          <tr>
+            <td data-label="Táctica"><strong>Contrataque</strong></td>
+            <td data-label="Rajoy">«El PP de 2026 no es Kitchen»</td>
+            <td data-label="Sánchez">Apunta a la Kitchen y a la foto de Feijóo con Dorado</td>
+          </tr>
+          <tr>
+            <td data-label="Táctica"><strong>Silencio estratégico</strong></td>
+            <td data-label="Rajoy">Declaró como testigo pero se negó a responder sobre apodos</td>
+            <td data-label="Sánchez">Se ausentó en el Vaticano durante la sesión de control</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin: 24px 0 16px; font-size: 1.1em;">Feijóo — El Nuevo «Salvador» del PP</h3>
+    <div class="comp-card pp">
+      <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+        «Estamos en una situación agónica. No queda más remedio que darle la palabra a los españoles de forma inmediata.»
+        <span class="attribution">— Feijóo, líder del PP, mayo 2026</span>
+      </div>
+      <div class="quote-block" style="margin: 12px 0; padding: 12px 16px; font-size: 0.9em;">
+        «El PP de 2026 no es Kitchen.»
+        <span class="attribution">— PP oficial</span>
+      </div>
+      <p style="margin-top: 12px; font-size: 0.88em; color: var(--text-muted);">El PP se presenta como la alternativa anticorrupción al PSOE, mientras tiene su propio juicio en curso. Miguel Tellado, secretario general del PP, tuiteó: «Este Gobierno está de corrupción hasta la ceja», mientras su partido es juzgado por usar el aparato del Estado para tapar su propia corrupción.</p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 6: OPINIÓN -->
+  <!-- ============================================ -->
+  <section class="section" id="opinion">
+    <h2 class="section-title"><span class="icon">💭</span> Opinión</h2>
+    <p class="section-subtitle">Análisis personal sobre la comparación entre ambos casos y la situación política actual.</p>
+
+    <div class="opinion">
+      <h3>🔍 Sobre la Comparativa Kitchen vs Ferraz</h3>
+      <p>Ambos casos son <strong>gravísimos</strong> y demuestran que la corrupción estructural no es patrimonio de un solo partido. Pero tienen matices importantes:</p>
+      <p>La <strong>Operación Kitchen</strong> es más grave en términos de <strong>uso del aparato del Estado</strong>: 70 agentes policiales, el CNI, comisarios, fondos reservados, eliminación de pruebas en la nube, vigilancia de abogados. Fue una operación de <em>defensa</em> — proteger al partido de la justicia — pero eso no la hace menos criminal.</p>
+      <p>El <strong>caso del PSOE</strong> es más grave en términos de <strong>amplitud de delitos</strong>: 9 tipos delictivos, organización criminal, ataque a jueces y fiscales, fondos de Venezuela, sobornos de empresarios. Además, incluye una dimensión de <em>ataque</em> — usar la financiación ilegal no solo para protegerse sino para «acabar» con enemigos — que es cualitativamente más peligrosa para la democracia.</p>
+      <p>En resumen: <strong>Kitchen fue un escudo; Ferraz es un escudo y una espada.</strong></p>
+
+      <h3>🎭 Sobre las Declaraciones de los Dirigentes</h3>
+      <p>Los paralelismos entre Rajoy y Sánchez son <strong>estupefacentes</strong>. Ambos usan el mismo guion:</p>
+      <p><strong>1. Minimización:</strong> Rajoy convirtió una operación parapolicial en «operación policial». Sánchez convirtió un registro de la UCO en «requerimiento rutinario». Ambos juegan con la semántica para reducir el impacto político.</p>
+      <p><strong>2. Negación absoluta:</strong> «Jamás supe de…» (Rajoy) vs «En ningún auto se habla de…» (Sánchez). La fórmula es idéntica: negar todo conocimiento y trasladar la responsabilidad a subordinados.</p>
+      <p><strong>3. Víctima del sistema:</strong> Ambos se presentan como blanco de persecuciones políticas. Irónicamente, Rajoy <em>tenía razón</em> en parte — hubo una operación judicial sesgada — pero precisamente porque su partido fue el que la promovió.</p>
+      <p><strong>4. Contrataque:</strong> El PP dice «nosotros no somos Kitchen» y el PSOE dice «mirad la Kitchen». Es el clásico «whataboutism» — desviar la atención señalando al otro.</p>
+
+      <h3>⚡ Sobre la Gente que Vota a la Derecha «para Salvarse de la Corrupción»</h3>
+      <p>Aquí está la pregunta más incómoda. Y la respuesta, por desgracia, es clara:</p>
+      <p><strong>Votar al PP pensando que van a «limpiar» la corrupción del PSOE es como contratar a un ladrón para que te proteja de otro ladrón.</strong> El juicio Kitchen demuestra que el PP usó el Ministerio del Interior, la policía, el CNI y los fondos reservados para protegerse de la justicia. Eso no es un partido que lucha contra la corrupción — es un partido que <em>es</em> corrupción institucionalizada.</p>
+      <p>El PP se presenta como alternativa anticorrupción mientras tiene un juicio en curso por el que podrían condenarse a 19 años sus propios exdirigentes. Feijóo habla de «situación agónica» mientras su partido fue el beneficiario de una operación parapolicial que usó al Estado como arma.</p>
+      <p><strong>La realidad es que ambos partidos tienen estructuras de corrupción sistémica.</strong> La diferencia no es que uno sea corrupto y otro no — es que la corrupción tiene formas distintas en cada uno. El PP la encarnó en la caja B y el uso del Estado para protegerse. El PSOE la encarna en las cloacas, la financiación opaca y el ataque a instituciones.</p>
+      <p>El votante que elige al PP «por la corrupción» está cometiendo un error de lógica fundamental: <strong>no hay partido limpio en España</strong>. Lo que hay son diferentes modelos de corrupción, diferentes redes de favores, diferentes formas de lucrarse con el poder. Pero el resultado final es el mismo: el dinero público se convierte en dinero privado, y la justicia se convierte en arma política.</p>
+
+      <h3>🏁 Conclusión</h3>
+      <p>Lo que estamos viendo no es un partido corrupto y otro limpio. Es <strong>un sistema corrupto</strong> donde los dos grandes partidos comparten un modelo de funcionamiento: financiación opaca, redes de favores, uso de instituciones al servicio del partido, y una cultura de impunidad que solo se interrumpe cuando la presión mediática o judicial es insostenible.</p>
+      <p>La verdadera alternativa anticorrupción no está en elegir entre el PP y el PSOE — está en exigir un cambio estructural del sistema: financiación transparente de partidos, separación real entre partidos y aparato del Estado, y una justicia que no sea instrumentalizable por ningún bando.</p>
+      <p style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #3a2a4a; font-size: 0.85em; color: var(--text-muted);">
+        <em>Nota: Esta opinión se basa en la información pública disponible a mayo de 2026. Todos los implicados gozan de presunción de inocencia hasta que un tribunal diga lo contrario. El propósito de este análisis es comparar hechos documentados, no prejuzgar sentencias.</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- SECCIÓN 7: FUENTES -->
+  <!-- ============================================ -->
+  <section class="section" id="fuentes">
+    <h2 class="section-title"><span class="icon">📚</span> Fuentes</h2>
+    <p class="section-subtitle">Todos los artículos y fuentes consultados para esta comparativa.</p>
+
+    <div class="sources">
+      <h3>Caso Kitchen (PP)</h3>
+      <ul>
+        <li><span class="source-label">Cadena SER</span> — <a href="https://cadenaser.com/nacional/2026/04/03/juicio-a-la-operacion-kitchen-la-audiencia-sienta-en-el-banquillo-al-operativo-del-estado-para-destruir-pruebas-que-perjudicasen-al-pp-cadena-ser/" target="_blank">Juicio a la operación Kitchen: La Audiencia sienta en el banquillo al operativo del Estado</a></li>
+        <li><span class="source-label">RTVE</span> — <a href="https://www.rtve.es/noticias/20260406/juicio-del-caso-kitchen-villarejo-espera-saenz-santamaria-explique-hacia-cni/17010555.shtml" target="_blank">Los acusados de la Kitchen piden anular el juicio y el PSOE que se reabra la investigación</a></li>
+        <li><span class="source-label">El Periódico</span> — <a href="https://www.elperiodico.com/es/politica/20260423/claves-declaraciones-rajoy-cospedal-juicio-kitchen-barcenas-129442177" target="_blank">¿Qué han aclarado (y qué no) Rajoy y Cospedal en el juicio de la Kitchen?</a></li>
+        <li><span class="source-label">El Correo Gallego</span> — <a href="https://www.elcorreogallego.es/espana/2026/02/18/sentencia-kitchen-redactara-jueza-investigo-126986494.html" target="_blank">La sentencia de Kitchen la redactará la jueza que investigó a Botín y Mario Conde</a></li>
+      </ul>
+    </div>
+
+    <div class="sources">
+      <h3>Caso Ferraz (PSOE)</h3>
+      <ul>
+        <li><span class="source-label">El Confidencial</span> — <a href="https://www.elconfidencial.com/espana/2026-05-27/uco-lanza-operativo-financiacion-ilegal-psoe-registra-ferraz_4362167/" target="_blank">La UCO entra en Ferraz: operativo por una trama del PSOE que financiaba ilegalmente sus cloacas</a></li>
+        <li><span class="source-label">Vozpópuli</span> — <a href="https://www.vozpopuli.com/espana/politica/sanchez-minimiza-el-registro-de-la-uco-en-ferraz-y-la-imputacion-de-zapatero-y-se-niega-a-convocar-elecciones.html" target="_blank">Sánchez minimiza el registro de la UCO en Ferraz y la imputación de Zapatero</a></li>
+        <li><span class="source-label">ABC</span> — <a href="https://www.abc.es/espana/gobierno-calla-sobre-registro-ferraz-aferra-presuncion-20260527095522-nt.html" target="_blank">La oposición excomulga a Zapatero y al PSOE con Sánchez en el Vaticano</a></li>
+        <li><span class="source-label">El Diario de Madrid</span> — <a href="https://www.eldiariodemadrid.es/articulo/politica/uco-registro-ferraz-financiacion-ilegal-psoe/20260527090646131863.html" target="_blank">Registro de la UCO en Ferraz por financiación ilegal del PSOE y búsqueda de caja B</a></li>
+        <li><span class="source-label">The Objective</span> — <a href="https://theobjective.com/espana/politica/2026-05-27/uco-sede-psoe-financiacion-ilegal/" target="_blank">La UCO acude a la sede del PSOE por datos sobre la financiación irregular de sus cloacas</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="brand">🐱 cocobot · Análisis político · Mayo 2026</div>
+  <div class="disclaimer">Esta página tiene fines informativos y de análisis comparativo. Todos los implicados gozan de presunción de inocencia. Las opiniones expresadas son del autor y no representan posición institucional alguna.</div>
+  <span id="visit-counter">👁️ -- visitas</span>
+  <a href="https://raulgdmm.github.io/cocobot-pages/" class="back-btn">← Volver al inicio</a>
+</footer>
+
+<script>
+function toggleMenu() {
+  const nav = document.getElementById('navLinks');
+  nav.classList.toggle('open');
+  const btn = document.querySelector('.hamburger');
+  btn.textContent = nav.classList.contains('open') ? '✕' : '☰';
+}
+
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.querySelector('.hamburger').textContent = '☰';
+  });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Visit counter
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/comparativa-cocinas';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
+
+</body>
+</html>
