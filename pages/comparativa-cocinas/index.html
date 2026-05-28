@@ -38,22 +38,12 @@ body {
 }
 
 /* BANNER */
-.bb {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1002;
-  background: linear-gradient(90deg, #1a0000, #200020, #00001a);
-  color: var(--yellow);
-  text-align: center;
-  padding: 8px 20px;
-  font-size: 0.85em;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid #333;
-}
-.bb span { opacity: 0.7; }
+/* BANNER — hidden, nav starts at top */
+.bb { display: none; }
 
 /* NAV */
 nav {
-  position: fixed; top: 36px; left: 0; right: 0; z-index: 1000;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   background: #0d0d14ee;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -96,7 +86,7 @@ nav .nav-links a:hover { color: var(--yellow); }
 
 /* HERO */
 .hero {
-  padding: 130px 24px 60px;
+  padding: 100px 24px 60px;
   text-align: center;
   max-width: 900px;
   margin: 0 auto;
@@ -238,40 +228,42 @@ nav .nav-links a:hover { color: var(--yellow); }
 
 /* TABLE */
 .table-wrapper {
-  overflow-x: auto;
   margin: 24px 0;
   border-radius: 8px;
   border: 1px solid var(--border);
+  overflow: hidden;
 }
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.88em;
+  font-size: 0.9em;
 }
 thead {
   background: #1a1a28;
 }
 th {
-  padding: 12px 16px;
+  padding: 12px 14px;
   text-align: left;
   font-family: 'Courier New', monospace;
-  font-size: 0.8em;
+  font-size: 0.78em;
   color: var(--yellow);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 2px solid var(--border);
-  white-space: nowrap;
 }
-td {
-  padding: 10px 16px;
+tbody tr {
   border-bottom: 1px solid var(--border);
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:nth-child(even) { background: var(--bg-card-alt); }
+td {
+  padding: 12px 14px;
   vertical-align: top;
 }
-tr:last-child td { border-bottom: none; }
-tr:nth-child(even) { background: var(--bg-card-alt); }
 td:first-child {
   font-weight: bold;
   white-space: nowrap;
+  min-width: 100px;
 }
 .badge {
   display: inline-block;
@@ -517,20 +509,62 @@ td:first-child {
     padding: 16px 24px;
     border-bottom: 1px solid var(--border);
   }
-  .hero { padding: 120px 20px 40px; }
+  .hero { padding: 90px 20px 40px; }
   .hero h1 { font-size: 1.8em; }
-  th, td { padding: 8px 10px; font-size: 0.82em; }
-  td { padding-left: 55%; }
-  td::before {
+
+  /* TABLE → CARD STACK on mobile */
+  .table-wrapper {
+    border: none;
+    border-radius: 0;
+    margin: 16px 0;
+  }
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead { display: none; }
+  tbody tr {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    overflow: hidden;
+  }
+  tbody tr:last-child { margin-bottom: 0; }
+  td {
+    padding: 6px 0 !important;
+    text-align: right;
+    position: relative;
+    padding-left: 50% !important;
+    min-width: 0 !important;
+  }
+  td:first-child {
+    text-align: left;
+    padding-left: 0 !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82em;
+    color: var(--yellow);
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+  }
+  td:not(:first-child)::before {
     content: attr(data-label);
     position: absolute;
-    left: 10px;
-    width: 50%;
+    left: 0;
+    top: 6px;
+    width: 46%;
     font-weight: bold;
-    font-size: 0.82em;
+    font-size: 0.78em;
     color: var(--text-muted);
+    font-family: 'Courier New', monospace;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  td { position: relative; }
 }
 
 /* SIDEBAR */
@@ -545,10 +579,6 @@ td:first-child {
 </style>
 </head>
 <body>
-
-<div class="bb">
-  <span>📋</span> Análisis comparativo · Mayo 2026 · Información actualizada
-</div>
 
 <nav>
   <div class="nav-brand">🐱 cocobot</div>
@@ -625,14 +655,14 @@ td:first-child {
         </thead>
         <tbody>
           <tr>
-            <td data-label="Aspecto">Naturaleza</td>
-            <td data-label="Kitchen">Operación parapolicial para destruir pruebas de corrupción</td>
-            <td data-label="Ferraz">Red de financiación ilegal + cloacas para atacar enemigos</td>
+                        <td data-label="Aspecto">Naturaleza</td>
+            <td data-label="Naturaleza — Kitchen">Operación parapolicial para destruir pruebas de corrupción</td>
+            <td data-label="Naturaleza — Ferraz">Red de financiación ilegal + cloacas para atacar enemigos</td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Año de origen</td>
-            <td data-label="Kitchen">2013-2015</td>
-            <td data-label="Ferraz">En curso (detectada 2025)</td>
+                        <td data-label="Aspecto">Año de origen</td>
+            <td data-label="Año de origen — Kitchen">2013-2015</td>
+            <td data-label="Año de origen — Ferraz">En curso (detectada 2025)</td>
           </tr>
           <tr>
             <td data-label="Aspecto">Estado judicial</td>
@@ -640,34 +670,34 @@ td:first-child {
             <td data-label="Ferraz"><span class="badge badge-active">Investigación / Registros</span></td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Órgano judicial</td>
-            <td data-label="Kitchen">Audiencia Nacional (Teresa Palacios)</td>
-            <td data-label="Ferraz">Audiencia Nacional (Santiago Pedraz)</td>
+                        <td data-label="Aspecto">Órgano judicial</td>
+            <td data-label="Órgano judicial — Kitchen">Audiencia Nacional (Teresa Palacios)</td>
+            <td data-label="Órgano judicial — Ferraz">Audiencia Nacional (Santiago Pedraz)</td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Mecanismo</td>
-            <td data-label="Kitchen">Espionaje, sustracción de datos, eliminación de pruebas en la nube</td>
-            <td data-label="Ferraz">Facturas falsas, contabilidad paralela, efectivo sin control, sobornos</td>
+                        <td data-label="Aspecto">Mecanismo</td>
+            <td data-label="Mecanismo — Kitchen">Espionaje, sustracción de datos, eliminación de pruebas en la nube</td>
+            <td data-label="Mecanismo — Ferraz">Facturas falsas, contabilidad paralela, efectivo sin control, sobornos</td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Implicados de alto perfil</td>
-            <td data-label="Kitchen">Rajoy, Cospedal, Sáenz de Santamaría (como testigos)</td>
-            <td data-label="Ferraz">Zapatero (imputado), Cerdán, Ábalos, Fuentes</td>
+                        <td data-label="Aspecto">Implicados de alto perfil</td>
+            <td data-label="Implicados de alto perfil — Kitchen">Rajoy, Cospedal, Sáenz de Santamaría (como testigos)</td>
+            <td data-label="Implicados de alto perfil — Ferraz">Zapatero (imputado), Cerdán, Ábalos, Fuentes</td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Uso del Estado</td>
-            <td data-label="Kitchen">70 agentes policiales, CNI, comisarios, fondos reservados</td>
-            <td data-label="Ferraz">Red de cloacas, SEPI, Correos, Guardia Civil implicada</td>
+                        <td data-label="Aspecto">Uso del Estado</td>
+            <td data-label="Uso del Estado — Kitchen">70 agentes policiales, CNI, comisarios, fondos reservados</td>
+            <td data-label="Uso del Estado — Ferraz">Red de cloacas, SEPI, Correos, Guardia Civil implicada</td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Objetivo</td>
-            <td data-label="Kitchen">Proteger al PP de la investigación Gürtel</td>
-            <td data-label="Ferraz">Financiar el partido y «acabar» con enemigos</td>
+                        <td data-label="Aspecto">Objetivo</td>
+            <td data-label="Objetivo — Kitchen">Proteger al PP de la investigación Gürtel</td>
+            <td data-label="Objetivo — Ferraz">Financiar el partido y «acabar» con enemigos</td>
           </tr>
           <tr>
-            <td data-label="Aspecto">Acusaciones</td>
-            <td data-label="Kitchen">Encubrimiento, malversación, vulneración de intimidad</td>
-            <td data-label="Ferraz">9 delitos: organización criminal, cohecho, prevaricación, tráfico de influencias…</td>
+                        <td data-label="Aspecto">Acusaciones</td>
+            <td data-label="Acusaciones — Kitchen">Encubrimiento, malversación, vulneración de intimidad</td>
+            <td data-label="Acusaciones — Ferraz">9 delitos: organización criminal, cohecho, prevaricación, tráfico de influencias…</td>
           </tr>
         </tbody>
       </table>
@@ -794,19 +824,19 @@ td:first-child {
             <td><strong>19 años</strong> + soborno pasivo</td>
           </tr>
           <tr>
-            <td>Jorge Fernández Díaz</td>
-            <td>Exministro del Interior</td>
-            <td><strong>15 años</strong></td>
+                        <td data-label="Jorge Fernández Díaz">Jorge Fernández Díaz</td>
+            <td data-label="Jorge Fernández Díaz — Rol">Exministro del Interior</td>
+            <td data-label="Jorge Fernández Díaz — Pena">15 años</td>
           </tr>
           <tr>
-            <td>Francisco Martínez</td>
-            <td>ExSecretario de Estado de Seguridad</td>
-            <td><strong>15 años</strong></td>
+                        <td data-label="Francisco Martínez">Francisco Martínez</td>
+            <td data-label="Francisco Martínez — Rol">ExSecretario de Estado de Seguridad</td>
+            <td data-label="Francisco Martínez — Pena">15 años</td>
           </tr>
           <tr>
-            <td>Marcelino Martín Blas</td>
-            <td>Comisario</td>
-            <td><strong>2,5 años</strong></td>
+                        <td data-label="Marcelino Martín Blas">Marcelino Martín Blas</td>
+            <td data-label="Marcelino Martín Blas — Rol">Comisario</td>
+            <td data-label="Marcelino Martín Blas — Pena">2,5 años</td>
           </tr>
           <tr>
             <td>Sergio Ríos</td>
@@ -874,44 +904,44 @@ td:first-child {
         </thead>
         <tbody>
           <tr>
-            <td>Ana María Fuentes</td>
-            <td>Gerente actual del PSOE</td>
-            <td><span class="badge badge-psoe">Imputada</span> — Autora de facturas falsas</td>
+                        <td data-label="Ana María Fuentes">Ana María Fuentes</td>
+            <td data-label="Ana María Fuentes — Rol">Gerente actual del PSOE</td>
+            <td data-label="Ana María Fuentes — Situación"><span class="badge badge-psoe">Imputada</span> — Autora de facturas falsas</td></td>
           </tr>
           <tr>
-            <td>Santos Cerdán</td>
-            <td>Exsecretario de Organización</td>
-            <td><span class="badge badge-psoe">Imputado</span> — Amaño de obras públicas</td>
+                        <td data-label="Santos Cerdán">Santos Cerdán</td>
+            <td data-label="Santos Cerdán — Rol">Exsecretario de Organización</td>
+            <td data-label="Santos Cerdán — Situación"><span class="badge badge-psoe">Imputado</span> — Amaño de obras públicas</td></td>
           </tr>
           <tr>
-            <td>José Luis Zapatero</td>
-            <td>Expresidente del Gobierno</td>
-            <td><span class="badge badge-psoe">Imputado</span> — Blanqueo capitales Plus Ultra</td>
+                        <td data-label="José Luis Zapatero">José Luis Zapatero</td>
+            <td data-label="José Luis Zapatero — Rol">Expresidente del Gobierno</td>
+            <td data-label="José Luis Zapatero — Situación"><span class="badge badge-psoe">Imputado</span> — Blanqueo capitales Plus Ultra</td></td>
           </tr>
           <tr>
-            <td>Miguel Ángel Ábalos</td>
-            <td>Exnúmero 2 del PSOE</td>
-            <td><span class="badge badge-judicial">Visto para sentencia</span></td>
+                        <td data-label="Miguel Ángel Ábalos">Miguel Ángel Ábalos</td>
+            <td data-label="Miguel Ángel Ábalos — Rol">Exnúmero 2 del PSOE</td>
+            <td data-label="Miguel Ángel Ábalos — Situación"><span class="badge badge-judicial">Visto para sentencia</span></td></td>
           </tr>
           <tr>
-            <td>Leire Díez</td>
-            <td>«Fontanera» (operativa sombra)</td>
-            <td><span class="badge badge-psoe">Investigada</span> — Nexo con SEPI</td>
+                        <td data-label="Leire Díez">Leire Díez</td>
+            <td data-label="Leire Díez — Rol">«Fontanera» (operativa sombra)</td>
+            <td data-label="Leire Díez — Situación"><span class="badge badge-psoe">Investigada</span> — Nexo con SEPI</td></td>
           </tr>
           <tr>
-            <td>Juanma Serrano</td>
-            <td>Exjefe de gabinete de Sánchez</td>
-            <td><span class="badge badge-active">Investigado</span> — Amigo de Sánchez</td>
+                        <td data-label="Juanma Serrano">Juanma Serrano</td>
+            <td data-label="Juanma Serrano — Rol">Exjefe de gabinete de Sánchez</td>
+            <td data-label="Juanma Serrano — Situación"><span class="badge badge-active">Investigado</span> — Amigo de Sánchez</td></td>
           </tr>
           <tr>
-            <td>Gaspar Zarrías</td>
-            <td>Líder andaluz / exvicepresidente Junta</td>
-            <td><span class="badge badge-psoe">Domicilio registrado</span></td>
+                        <td data-label="Gaspar Zarrías">Gaspar Zarrías</td>
+            <td data-label="Gaspar Zarrías — Rol">Líder andaluz / exvicepresidente Junta</td>
+            <td data-label="Gaspar Zarrías — Situación"><span class="badge badge-psoe">Domicilio registrado</span></td></td>
           </tr>
           <tr>
-            <td>Mariano Moreno</td>
-            <td>Exgerente del PSOE</td>
-            <td><span class="badge badge-active">Testigo clave</span> — Reveló prácticas de caja</td>
+                        <td data-label="Mariano Moreno">Mariano Moreno</td>
+            <td data-label="Mariano Moreno — Rol">Exgerente del PSOE</td>
+            <td data-label="Mariano Moreno — Situación"><span class="badge badge-active">Testigo clave</span> — Reveló prácticas de caja</td></td>
           </tr>
         </tbody>
       </table>
@@ -997,34 +1027,34 @@ td:first-child {
         </thead>
         <tbody>
           <tr>
-            <td data-label="Táctica"><strong>Minimización</strong></td>
-            <td data-label="Rajoy">«No ha habido ninguna operación política, solo policial»</td>
-            <td data-label="Sánchez">«Es un requerimiento, no un registro»</td>
+                        <td data-label="Táctica"><strong>Minimizació</strong></td>
+            <td data-label="Minimizació — Rajoy">«No ha habido ninguna operación política, solo policial»</td>
+            <td data-label="Minimizació — Sánchez">«Es un requerimiento, no un registro»</td>
           </tr>
           <tr>
-            <td data-label="Táctica"><strong>Negación total</strong></td>
-            <td data-label="Rajoy">«Jamás supe de operaciones, confidentes ni fondos reservados»</td>
-            <td data-label="Sánchez">«En ningún auto se habla de financiación ilegal»</td>
+                        <td data-label="Táctica"><strong>Negación total</strong></td>
+            <td data-label="Negación total — Rajoy">«Jamás supe de operaciones, confidentes ni fondos reservados»</td>
+            <td data-label="Negación total — Sánchez">«En ningún auto se habla de financiación ilegal»</td>
           </tr>
           <tr>
-            <td data-label="Táctica"><strong>Víctima</strong></td>
-            <td data-label="Rajoy">Se presenta como blanco de una operación judicial política</td>
-            <td data-label="Sánchez">«Estoy sufriendo ataques injustos»</td>
+                        <td data-label="Táctica"><strong>Víctima</strong></td>
+            <td data-label="Víctima — Rajoy">Se presenta como blanco de una operación judicial política</td>
+            <td data-label="Víctima — Sánchez">«Estoy sufriendo ataques injustos»</td>
           </tr>
           <tr>
-            <td data-label="Táctica"><strong>Distanciamiento</strong></td>
-            <td data-label="Rajoy">Culpabiliza a Fernández Díaz y Villarejo como ejecutores</td>
-            <td data-label="Sánchez">El equipo de Moncloa «cocina» todo internamente</td>
+                        <td data-label="Táctica"><strong>Distanciamie</strong></td>
+            <td data-label="Distanciamie — Rajoy">Culpabiliza a Fernández Díaz y Villarejo como ejecutores</td>
+            <td data-label="Distanciamie — Sánchez">El equipo de Moncloa «cocina» todo internamente</td>
           </tr>
           <tr>
-            <td data-label="Táctica"><strong>Contrataque</strong></td>
-            <td data-label="Rajoy">«El PP de 2026 no es Kitchen»</td>
-            <td data-label="Sánchez">Apunta a la Kitchen y a la foto de Feijóo con Dorado</td>
+                        <td data-label="Táctica"><strong>Contrataque</strong></td>
+            <td data-label="Contrataque — Rajoy">«El PP de 2026 no es Kitchen»</td>
+            <td data-label="Contrataque — Sánchez">Apunta a la Kitchen y a la foto de Feijóo con Dorado</td>
           </tr>
           <tr>
-            <td data-label="Táctica"><strong>Silencio estratégico</strong></td>
-            <td data-label="Rajoy">Declaró como testigo pero se negó a responder sobre apodos</td>
-            <td data-label="Sánchez">Se ausentó en el Vaticano durante la sesión de control</td>
+                        <td data-label="Táctica"><strong>Silencio estratégic</strong></td>
+            <td data-label="Silencio estratégic — Rajoy">Declaró como testigo pero se negó a responder sobre apodos</td>
+            <td data-label="Silencio estratégic — Sánchez">Se ausentó en el Vaticano durante la sesión de control</td>
           </tr>
         </tbody>
       </table>
