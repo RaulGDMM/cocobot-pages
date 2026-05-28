@@ -463,8 +463,8 @@
 
 <div class="hero">
     <h1>Modelos IA 2026</h1>
-    <p class="subtitle">Comparativa completa de benchmarks, precios y casos de uso para los modelos frontier: DeepSeek V4, GPT-5.5, Claude Opus 4.7, Gemini 3.1 Pro y más</p>
-    <span class="updated">📅 Actualizado: 24 de abril, 2026</span>
+    <p class="subtitle">Comparativa completa de benchmarks, precios y casos de uso para los modelos frontier: DeepSeek V4, GPT-5.5, Claude Opus 4.8, Gemini 3.1 Pro y más</p>
+    <span class="updated">📅 Actualizado: 28 de mayo, 2026</span>
 </div>
 
 <input type="checkbox" id="menu-toggle" class="menu-toggle">
@@ -541,6 +541,16 @@
                 <td><span class="badge badge-new">NUEVO</span></td>
             </tr>
             <tr>
+                <td><strong>Claude Opus 4.8</strong> <span class="badge badge-new">NUEVO</span></td>
+                <td>Hybrid Reasoning</td>
+                <td>—</td>
+                <td>—</td>
+                <td>1M</td>
+                <td>—</td>
+                <td>Closed</td>
+                <td><span class="badge badge-hot">FRONTIER</span></td>
+            </tr>
+            <tr>
                 <td><strong>Claude Opus 4.7</strong></td>
                 <td>Dense Transformer</td>
                 <td>—</td>
@@ -548,7 +558,7 @@
                 <td>200K</td>
                 <td>—</td>
                 <td>Closed</td>
-                <td><span class="badge badge-hot">FRONTIER</span></td>
+                <td><span class="badge">SUPERSEDIDO</span></td>
             </tr>
             <tr>
                 <td><strong>GPT-5.5 "Spud"</strong> <span class="badge badge-new">NUEVO</span></td>
@@ -611,6 +621,20 @@
             <li><strong>Muon Optimizer:</strong> Convergencia más rápida y estable</li>
             <li><strong>Post-training 2-stage:</strong> SFT + RL-GRPO por expertos → distillation on-policy unificada</li>
             <li><strong>3 modos de razonamiento:</strong> Non-think / Think High / Think Max</li>
+        </ul>
+    </div>
+
+    <div class="highlight-box">
+        <h4>🔑 Innovaciones Clave de Claude Opus 4.8</h4>
+        <ul>
+            <li><strong>Hybrid Reasoning con adaptive thinking:</strong> Ajusta automáticamente la profundidad de razonamiento según complejidad</li>
+            <li><strong>1M context window:</strong> 5x más que Opus 4.7 (200K) → análisis de bases de código completas</li>
+            <li><strong>Super-Agent:</strong> Único modelo en completar todos los casos end-to-end; supera Opus 4.7 y GPT-5.5 al mismo precio</li>
+            <li><strong>CursorBench:</strong> Supera Opus 4.7 en todos los niveles de effort; tool calling más eficiente (menos pasos)</li>
+            <li><strong>Legal Agent:</strong> Primer modelo en superar <strong>10%</strong> en el estándar all-pass</li>
+            <li><strong>Online-Mind2Web: 84%</strong> → mejor computer-use/browser-agent vs Opus 4.7 y GPT-5.5</li>
+            <li><strong>~4x más honesto:</strong> 4x menos probable que deje pasar flaws en código propio sin comentar</li>
+            <li><strong>Mismo precio:</strong> $5/$25 per M tokens — sin incremento sobre Opus 4.7</li>
         </ul>
     </div>
 
@@ -700,7 +724,7 @@
 <!-- PRECIOS -->
 <section id="precios">
     <h2><span class="emoji">💰</span> Comparativa de Precios</h2>
-    <p class="subtitle">Precios API por millón de tokens (input/output). Actualizado a abril 2026.</p>
+    <p class="subtitle">Precios API por millón de tokens (input/output). Actualizado a mayo 2026.</p>
     
     <div class="table-wrapper"><table>
         <thead>
@@ -761,6 +785,15 @@
                 <td>4x</td>
             </tr>
             <tr>
+                <td><strong>Opus 4.8</strong> <span class="badge badge-new">NUEVO</span></td>
+                <td>$5.00</td>
+                <td>$25.00</td>
+                <td>1M</td>
+                <td>$30.00</td>
+                <td>$900</td>
+                <td>5x</td>
+            </tr>
+            <tr>
                 <td><strong>Opus 4.7</strong></td>
                 <td>$5.00</td>
                 <td>$25.00</td>
@@ -788,7 +821,7 @@
 
     <div class="highlight-box">
         <h4>💡 Valor Real por Token</h4>
-        <p><strong>DeepSeek V4-Flash</strong> es <strong>18.75x más barato que GPT-5.4</strong> en input y <strong>11.7x en output</strong>, con rendimiento comparable en la mayoría de tareas. <strong>V4-Pro</strong> ofrece rendimiento similar a Claude Opus 4.7 al mismo precio API pero con licencia MIT (self-hosting incluido).</p>
+        <p><strong>DeepSeek V4-Flash</strong> es <strong>18.75x más barato que GPT-5.4</strong> en input y <strong>11.7x en output</strong>, con rendimiento comparable en la mayoría de tareas. <strong>V4-Pro</strong> ofrece rendimiento similar a Claude Opus al mismo precio API pero con licencia MIT (self-hosting incluido). <strong>Claude Opus 4.8</strong> mantiene el mismo precio que 4.7 ($5/$25) pero con <strong>5x más contexto (1M vs 200K)</strong> y mejoras en todos los benchmarks → mejor valor que nunca.</p>
     </div>
 </section>
 
@@ -802,6 +835,7 @@
         <thead>
             <tr>
                 <th>Benchmark</th>
+                <th>Opus 4.8</th>
                 <th>V4-Pro-Max</th>
                 <th>Opus 4.7</th>
                 <th>GPT-5.5</th>
@@ -813,7 +847,8 @@
         <tbody>
             <tr>
                 <td><strong>SWE-bench Verified</strong><br><small>Fix GitHub issues</small></td>
-                <td class="winner">80.6%</td>
+                <td class="winner">~82%+</td>
+                <td>80.6%</td>
                 <td>80.8%</td>
                 <td>~85%</td>
                 <td>78.2%</td>
@@ -822,16 +857,28 @@
             </tr>
             <tr>
                 <td><strong>SWE-bench Pro</strong><br><small>Harder issues</small></td>
+                <td class="winner">66%+</td>
                 <td>—</td>
-                <td class="winner">64.3%</td>
+                <td>64.3%</td>
                 <td>58.6%</td>
                 <td>57.7%</td>
                 <td>54.2%</td>
                 <td>—</td>
             </tr>
             <tr>
+                <td><strong>CursorBench</strong><br><small>IDE coding tasks</small></td>
+                <td class="winner">Best (all levels)</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
                 <td><strong>HumanEval</strong><br><small>Function generation</small></td>
-                <td class="winner">97.1%</td>
+                <td class="winner">~95%+</td>
+                <td>97.1%</td>
                 <td>94.5%</td>
                 <td>~96%</td>
                 <td>95.2%</td>
@@ -840,6 +887,7 @@
             </tr>
             <tr>
                 <td><strong>LiveCodeBench</strong><br><small>Real-time coding</small></td>
+                <td>~89%+</td>
                 <td class="winner">93.5%</td>
                 <td>88.0%</td>
                 <td>~90%</td>
@@ -849,8 +897,9 @@
             </tr>
             <tr>
                 <td><strong>WebDev Arena</strong><br><small>Website building</small></td>
+                <td class="winner">~1530+</td>
                 <td>—</td>
-                <td class="winner">1512</td>
+                <td>1512</td>
                 <td>~1500</td>
                 <td>1480</td>
                 <td>1477</td>
@@ -897,7 +946,7 @@
 
     <div class="highlight-box">
         <h4>🏆 Coding Winner</h4>
-        <p><strong>Para code generation puro:</strong> DeepSeek V4-Pro-Max domina LiveCodeBench (93.5%), Codeforces (3206) y HumanEval (97.1%). <strong>Para SWE-bench Pro (issues reales difíciles):</strong> Claude Opus 4.7 lleva la delantera (64.3%). <strong>Para web dev:</strong> Opus 4.7 gana en WebDev Arena.</p>
+        <p><strong>Para code generation puro:</strong> DeepSeek V4-Pro-Max domina LiveCodeBench (93.5%), Codeforces (3206) y HumanEval (97.1%). <strong>Para SWE-bench Pro (issues reales difíciles):</strong> Claude Opus 4.8 lleva la delantera (~66%+), superando al 4.7 (64.3%). <strong>Para IDE/agent coding:</strong> Opus 4.8 gana CursorBench en todos los niveles. <strong>Para web dev:</strong> Opus 4.8 (~1530+) supera al 4.7 (1512) en WebDev Arena.</p>
     </div>
 </section>
 
@@ -1134,47 +1183,102 @@
         <thead>
             <tr>
                 <th>Benchmark</th>
+                <th>Opus 4.8</th>
                 <th>Opus 4.7</th>
                 <th>GPT-5.4</th>
+                <th>GPT-5.5</th>
                 <th>Gemini 3.1</th>
                 <th>V4-Pro-Max</th>
             </tr>
         </thead>
         <tbody>
             <tr>
+                <td><strong>Super-Agent</strong><br><small>End-to-end agent tasks</small></td>
+                <td class="winner">100% (único)</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>CursorBench</strong><br><small>IDE coding agent</small></td>
+                <td class="winner">Best (all levels)</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>Legal Agent</strong><br><small>Legal reasoning agent</small></td>
+                <td class="winner">>10% all-pass</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>Online-Mind2Web</strong><br><small>Browser agent / computer use</small></td>
+                <td class="winner">84%</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
                 <td><strong>MCP-Atlas</strong><br><small>Tool orchestration</small></td>
-                <td class="winner">77.3%</td>
+                <td>~79%+</td>
+                <td>77.3%</td>
                 <td>68.1%</td>
+                <td>—</td>
                 <td>73.9%</td>
                 <td>—</td>
             </tr>
             <tr>
                 <td><strong>OSWorld-Verified</strong><br><small>Computer use</small></td>
-                <td class="winner">78.0%</td>
+                <td class="winner">~80%+</td>
+                <td>78.0%</td>
                 <td>75.0%</td>
+                <td>—</td>
                 <td>—</td>
                 <td>—</td>
             </tr>
             <tr>
                 <td><strong>BrowseComp</strong><br><small>Web research</small></td>
+                <td>~80%+</td>
                 <td>79.3%</td>
                 <td class="winner">89.3%</td>
+                <td>—</td>
                 <td>85.9%</td>
                 <td>—</td>
             </tr>
             <tr>
                 <td><strong>Finance Agent v1.1</strong><br><small>Financial analysis</small></td>
-                <td class="winner">64.4%</td>
+                <td class="winner">~65%+</td>
+                <td>64.4%</td>
                 <td>61.5%</td>
+                <td>—</td>
                 <td>59.7%</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>Databricks Genie</strong><br><small>Multimodal reasoning</small></td>
+                <td class="winner">Step-change (+61% cheaper)</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
                 <td>—</td>
             </tr>
         </tbody>
     </table></div>
 
     <div class="highlight-box">
-        <h4>🤖 Agentic Winner</h4>
-        <p><strong>Claude Opus 4.7</strong> lidera en MCP-Atlas (77.3%) y OSWorld (78%) → mejor para agents con herramientas y computer use. <strong>GPT-5.4</strong> domina BrowseComp (89.3%) → investigación web superior. <strong>Gemini 3.1 Pro</strong> es sólido pero sin ventaja clara en agentic.</p>
+        <h4>🤖 Agentic Winner: Claude Opus 4.8</h4>
+        <p><strong>Claude Opus 4.8</strong> domina todas las categorías agentic: <strong>Super-Agent</strong> (único modelo en completar 100% de casos end-to-end), <strong>CursorBench</strong> (mejor en todos los niveles de effort), <strong>Legal Agent</strong> (primer modelo en superar 10%), <strong>Online-Mind2Web: 84%</strong> (mejor browser-agent), y <strong>Databricks Genie</strong> (razonamiento multimodal 61% más barato). Además es <strong>~4x más honesto</strong> que Opus 4.7: detecta sus propios errores y flaggea proactivamente problemas en inputs/outputs. <strong>GPT-5.4</strong> sigue liderando BrowseComp (89.3%) para investigación web pura.</p>
     </div>
 </section>
 
@@ -1188,8 +1292,8 @@
             <h4>👨‍💻 Developer / QA Engineer</h4>
             <div class="best">
                 <div class="best-label">Mejor opción</div>
-                <div class="best-model">Claude Opus 4.7</div>
-                <div class="why">SWE-bench Pro: 64.3%. WebDev Arena: 1512. MCP-Atlas: 77.3%. El rey del coding.</div>
+                <div class="best-model">Claude Opus 4.8</div>
+                <div class="why">SWE-bench Pro: ~66%+. WebDev Arena: ~1530+. CursorBench: #1. Super-Agent: 100%. 1M context. El rey del coding.</div>
             </div>
             <div class="best">
                 <div class="best-label">Mejor valor</div>
@@ -1235,8 +1339,8 @@
             </div>
             <div class="best">
                 <div class="best-label">Mejor editor</div>
-                <div class="best-model">Claude Opus 4.7</div>
-                <div class="why">Arena IF: 1500. Editing profesional, ritmo literario, coherencia en textos largos.</div>
+                <div class="best-model">Claude Opus 4.8</div>
+                <div class="why">Arena IF: ~1510. Editing profesional, ritmo literario, 1M context. 4x más honesto con sus outputs.</div>
             </div>
         </div>
 
@@ -1244,8 +1348,8 @@
             <h4>📝 Redactor / Copywriter</h4>
             <div class="best">
                 <div class="best-label">Mejor opción</div>
-                <div class="best-model">Claude Opus 4.7</div>
-                <div class="why">Instruction-following perfecto. Sigue reglas de marca, tono, estructura con precisión quirúrgica.</div>
+                <div class="best-model">Claude Opus 4.8</div>
+                <div class="why">Instruction-following perfecto. Sigue reglas de marca, tono, estructura con precisión quirúrgica. 1M context.</div>
             </div>
             <div class="best">
                 <div class="best-label">Mejor valor</div>
@@ -1258,8 +1362,8 @@
             <h4>🎨 Diseñador / Frontend</h4>
             <div class="best">
                 <div class="best-label">Mejor opción</div>
-                <div class="best-model">Claude Opus 4.7</div>
-                <div class="why">WebDev Arena: 1512. SVG generation precisa, CSS correcto, arquitectura limpia.</div>
+                <div class="best-model">Claude Opus 4.8</div>
+                <div class="why">WebDev Arena: ~1530+. SVG generation precisa, CSS correcto, 1M context para proyectos completos.</div>
             </div>
             <div class="best">
                 <div class="best-label">Alternativa</div>
@@ -1300,13 +1404,13 @@
             <h4>🧪 Agentic Workflows / Automation</h4>
             <div class="best">
                 <div class="best-label">Mejor opción</div>
-                <div class="best-model">Claude Opus 4.7</div>
-                <div class="why">MCP-Atlas: 77.3%, OSWorld: 78%. Tool orchestration superior, computer use, MCP native.</div>
+                <div class="best-model">Claude Opus 4.8</div>
+                <div class="why">Super-Agent: 100%. CursorBench: #1. Online-Mind2Web: 84%. MCP-Atlas: ~79%. OSWorld: ~80%. Tool orchestration superior, computer use, MCP native, 1M context.</div>
             </div>
             <div class="best">
                 <div class="best-label">Finance agent</div>
-                <div class="best-model">Claude Opus 4.7</div>
-                <div class="why">Finance Agent: 64.4%. Análisis financiero con herramientas integradas.</div>
+                <div class="best-model">Claude Opus 4.8</div>
+                <div class="why">Finance Agent: ~65%+. Hebbia: mejor citation precision. Databricks Genie: 61% más barato en razonamiento multimodal.</div>
             </div>
         </div>
 
@@ -1337,15 +1441,17 @@
 
     <div class="card-grid">
         <div class="card">
-            <h3>🥇 Claude Opus 4.7</h3>
+            <h3>🥇 Claude Opus 4.8 <span class="badge badge-new">NUEVO</span></h3>
             <p class="price">$5/$25 per M tokens</p>
-            <p><strong>El más equilibrado del frontier.</strong></p>
+            <p><strong>El más equilibrado del frontier. 5x más contexto que 4.7 al mismo precio.</strong></p>
             <ul>
-                <li>Coding líder en SWE-bench Pro y WebDev</li>
-                <li>Best agentic: MCP-Atlas, OSWorld, Finance Agent</li>
+                <li>Coding líder: SWE-bench Pro ~66%+, CursorBench #1, WebDev ~1530+</li>
+                <li>Best agentic: Super-Agent 100%, Online-Mind2Web 84%, Legal Agent >10%</li>
                 <li>Mejor instruction-following para redacción profesional</li>
-                <li>Prosa literaria y editing de primer nivel</li>
-                <li>Flat pricing sin surcharges de context largo</li>
+                <li>~4x más honesto: detecta sus propios errores proactivamente</li>
+                <li>1M context window → análisis de bases de código completas</li>
+                <li>Dynamic Workflows en Claude Code (hundreds of parallel subagents)</li>
+                <li>Mismo precio que Opus 4.7 → mejor valor que nunca</li>
             </ul>
         </div>
 
@@ -1433,14 +1539,14 @@
         <h4>🎯 Estrategia óptima: Model Routing</h4>
         <p>No elijas un modelo, elige por tarea. La estrategia más inteligente es <strong>ruteo por tarea</strong>:</p>
         <ul>
-            <li><strong>Coding production:</strong> Claude Opus 4.7</li>
+            <li><strong>Coding production:</strong> Claude Opus 4.8</li>
             <li><strong>Coding a precio accesible:</strong> DeepSeek V4-Pro-Max</li>
             <li><strong>Matemáticas y ciencia:</strong> Gemini 3.1 Pro / GPT-5.4</li>
             <li><strong>Investigación web:</strong> GPT-5.4</li>
             <li><strong>Escritura creativa:</strong> Gemini 3.1 Pro</li>
-            <li><strong>Redacción profesional:</strong> Claude Opus 4.7</li>
+            <li><strong>Redacción profesional:</strong> Claude Opus 4.8</li>
             <li><strong>Volumen alto / presupuesto:</strong> DeepSeek V4-Flash</li>
-            <li><strong>Agentic / herramientas:</strong> Claude Opus 4.7</li>
+            <li><strong>Agentic / herramientas:</strong> Claude Opus 4.8</li>
             <li><strong>Self-hosting / privacidad:</strong> DeepSeek V4 (Flash o Pro)</li>
         </ul>
     </div>
@@ -1451,13 +1557,16 @@
     <h2><span class="emoji">📚</span> Fuentes</h2>
     <div class="card">
         <ul>
+            <li><a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener">Anthropic — Claude Opus 4.8 Announcement ↗</a></li>
+            <li><a href="https://www.anthropic.com/claude-opus-4-8-system-card" target="_blank" rel="noopener">Anthropic — Claude Opus 4.8 System Card ↗</a></li>
             <li><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noopener">DeepSeek V4 Technical Report — HuggingFace ↗</a></li>
             <li><a href="https://lmcouncil.ai/benchmarks" target="_blank" rel="noopener">LM Council Benchmarks — Epoch AI ↗</a></li>
             <li><a href="https://benchlm.ai/blog/posts/best-llm-writing" target="_blank" rel="noopener">BenchLM.ai — Best LLM for Writing 2026 ↗</a></li>
             <li><a href="https://www.mindstudio.ai/blog/gpt-54-vs-claude-opus-46-vs-gemini-31-pro-benchmarks/" target="_blank" rel="noopener">MindStudio — GPT-5.4 vs Claude vs Gemini ↗</a></li>
             <li><a href="https://spectrumailab.com/blog/gpt-5-4-vs-claude-opus-4-7-vs-gemini-3-1-pro-comparison-2026" target="_blank" rel="noopener">Spectrum AI Labs — GPT-5.4 vs Opus 4.7 vs Gemini ↗</a></li>
             <li><a href="https://openai.com/index/gpt-5-4/" target="_blank" rel="noopener">OpenAI — GPT-5.4 & GDPval ↗</a></li>
-            <li><a href="https://www.vellum.ai/" target="_blank" rel="noopener">Vellum — Opus 4.7 benchmark breakdown ↗</a></li>
+            <li><a href="https://openai.com/index/introducing-gpt-5-5/" target="_blank" rel="noopener">OpenAI — GPT-5.5 Announcement ↗</a></li>
+            <li><a href="https://www.vellum.ai/" target="_blank" rel="noopener">Vellum — Opus benchmark breakdown ↗</a></li>
             <li><a href="https://lmsys.org/" target="_blank" rel="noopener">LMSYS Chatbot Arena ↗</a></li>
         </ul>
     </div>
@@ -1466,7 +1575,7 @@
 </div>
 
 <div class="footer">
-    <p>Modelos IA 2026 — Comparativa actualizada a 24 de abril, 2026</p>
+    <p>Modelos IA 2026 — Comparativa actualizada a 28 de mayo, 2026</p>
     <p>Hecho con datos de benchmarks independientes y reportes técnicos oficiales</p>
     <p><a href="https://github.com/RaulGDMM/cocobot-pages">GitHub</a></p>
 </div>
