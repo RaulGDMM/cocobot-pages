@@ -249,24 +249,24 @@ config → state → audio → scene → snake → apples → obstacles → part
 - [x] 6.6 **Gate**: `npx jest` pasa antes de continuar (386 tests, 58/59 funciones 98%)
 
 ### Fase 7: High Score por modo/dificultad/tamaño
-- [ ] 7.1 Modificar `state.js`: función `getHighScoreKey(mode, difficulty, gridSize)`
-- [ ] 7.2 Modificar `game.js`: `die()` guarda high score con key específica (incluye dificultad)
-- [ ] 7.3 Modificar `ui.js`: actualizar highscoreEl al cambiar modo/dificultad/tamaño
-- [ ] 7.4 **Tests**: Actualizar `tests/state.test.js` — tests de `getHighScoreKey()` (todas las combinaciones modo/dificultad/tamaño), lectura/escritura de scores
-- [ ] 7.5 **Gate**: `npx jest` pasa antes de continuar
-
+### Fase 7: High Score por modo/dificultad/tamaño
+- [x] 7.1 Modificar `state.js`: función `getHighScoreKey(mode, difficulty, gridSize)`
+- [x] 7.2 Modificar `game.js`: `die()` guarda high score con key específica (incluye dificultad)
+- [x] 7.3 Modificar `ui.js`: actualizar highscoreEl al cambiar modo/dificultad/tamaño
+- [x] 7.4 **Tests**: Actualizar `tests/state.test.js` — tests de `getHighScoreKey()` (todas las combinaciones modo/dificultad/tamaño), lectura/escritura de scores
+- [x] 7.5 **Gate**: `npx jest` pasa antes de continuar (391 tests, 100% cobertura)
 ### Fase 8: Pulido y testing
-- [ ] 8.1 **Tests finales**: `npx jest` — todos los tests pasan, revisar cobertura (`npx jest --coverage`)
+- [x] 8.1 **Tests finales**: `npx jest` — todos los tests pasan, revisar cobertura (`npx jest --coverage`) → 100%
 - [ ] 8.2 Verificar que modo "Solo" funciona igual que antes
 - [ ] 8.3 Verificar modos vs 2 (1 IA), vs 3 (2 IA), vs 4 (3 IA)
-- [ ] 8.4 Verificar dificultad Fácil (errores ~30%, sin táctica)
-- [ ] 8.5 Verificar dificultad Medio (errores ~10%, arrinconamiento 40%)
-- [ ] 8.6 Verificar dificultad Difícil (errores ~2%, arrinconamiento 70%, lookahead)
+- [ ] 8.4 Verificar dificultad Fácil (errores ~10%, sin táctica)
+- [ ] 8.5 Verificar dificultad Medio (errores ~2%, arrinconamiento 70%)
+- [ ] 8.6 Verificar dificultad Difícil (errores ~0.5%, arrinconamiento 95%)
 - [ ] 8.7 Verificar que en Difícil el jugador habilidoso puede ganar
 - [ ] 8.8 Verificar selector de tamaño en límites (16 y 50)
 - [ ] 8.9 Verificar high scores independientes por modo/dificultad/tamaño
-- [ ] 8.10 Verificar en móvil (responsive)
-- [ ] 8.11 Ajustar parámetros de dificultad si es necesario
+- [x] 8.10 Verificar en móvil (responsive) → CSS corregido
+- [x] 8.11 Ajustar parámetros de dificultad si es necesario → fácil 10%, medio 2%, difícil 0.5%
 - [ ] 8.12 **Tests**: Añadir tests para cualquier edge case descubierto durante el testing manual
 
 ---
