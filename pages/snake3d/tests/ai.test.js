@@ -348,21 +348,26 @@ describe('ai.js — aiDie()', () => {
   });
 
   test('sets alive to false', () => {
-    aiDie(0);
+    aiDie(0, 'wall');
     expect(aiSnakes[0].alive).toBe(false);
   });
 
   test('adds corpse segments to corpses array', () => {
-    aiDie(0);
+    aiDie(0, 'self');
     expect(corpses.length).toBeGreaterThan(0);
   });
 
   test('corpse segments match dead snake body', () => {
-    aiDie(0);
+    aiDie(0, 'wall');
     var corpsePositions = corpses.map(function(c) { return c.x + ',' + c.z; });
     expect(corpsePositions).toContain('5,0');
     expect(corpsePositions).toContain('4,0');
     expect(corpsePositions).toContain('3,0');
+  });
+
+  test('corpse segments have color from dead snake', () => {
+    aiDie(0, 'wall');
+    expect(corpses[0].color).toBe('red');
   });
 });
 

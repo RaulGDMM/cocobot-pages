@@ -28,23 +28,23 @@ describe('ui.js', () => {
       expect(config.gridSize).toBe(28);
     });
 
-    test('returns correct gridSize for vs3', () => {
+    test('returns correct gridSize for vs3 (even)', () => {
       uiState.selectedMode = 'vs3';
       var config = getGameConfig();
-      expect(config.gridSize).toBe(33);
+      expect(config.gridSize).toBe(34);
     });
 
-    test('returns correct gridSize for vs4', () => {
+    test('returns correct gridSize for vs4 (even)', () => {
       uiState.selectedMode = 'vs4';
       var config = getGameConfig();
-      expect(config.gridSize).toBe(39);
+      expect(config.gridSize).toBe(40);
     });
 
-    test('applies size modifier +50%', () => {
+    test('applies size modifier +50% (even)', () => {
       uiState.selectedMode = 'solo';
       uiState.selectedSizeMod = 50;
       var config = getGameConfig();
-      expect(config.gridSize).toBe(33);
+      expect(config.gridSize).toBe(34);
       expect(config.gridSizeModifier).toBe(50);
     });
 
@@ -102,18 +102,18 @@ describe('ui.js', () => {
   });
 
   describe('getGameConfig() edge cases', () => {
-    test('mode change updates gridSize automatically', () => {
+    test('mode change updates gridSize automatically (even)', () => {
       uiState.selectedMode = 'solo';
       expect(getGameConfig().gridSize).toBe(22);
 
       uiState.selectedMode = 'vs4';
-      expect(getGameConfig().gridSize).toBe(39);
+      expect(getGameConfig().gridSize).toBe(40);
     });
 
-    test('size modifier affects all modes', () => {
+    test('size modifier affects all modes (even)', () => {
       uiState.selectedSizeMod = 50;
       uiState.selectedMode = 'solo';
-      expect(getGameConfig().gridSize).toBe(33);
+      expect(getGameConfig().gridSize).toBe(34);
 
       uiState.selectedMode = 'vs2';
       expect(getGameConfig().gridSize).toBe(42);

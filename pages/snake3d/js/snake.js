@@ -7,45 +7,29 @@ var sGroup = new THREE.Group(); scene.add(sGroup);
 var hGeo = new THREE.BoxGeometry(.8, .5, .8);
 var bGeo = new THREE.BoxGeometry(.7, .45, .7);
 
-// Legacy globals (used by game.js in solo mode)
-var hMat = new THREE.MeshStandardMaterial({color:0x00ff88, emissive:0x00aa44, emissiveIntensity:.35});
-var bMat = new THREE.MeshStandardMaterial({color:0x00cc66, emissive:0x004422, emissiveIntensity:.15});
+// Legacy globals (used by game.js)
 var headM = null;
 var bodyMs = [];
 
-// Snake groups indexed by snake ID (multi-snake mode)
-var snakeGroups = {};  // { id: { group, headM, bodyMs } }
+// Player snake group data (persists across games)
+var playerGroupData = null;
 
 // ─── Build snake mesh ───
-// Usage: buildSnake()           → legacy mode, sets headM/bodyMs globals
-// Usage: buildSnake(color)      → returns { group, headM, bodyMs } for multi-snake
+// Usage: buildSnake(color)  → returns { group, headM, bodyMs } for any snake
+// Always uses multi-snake mode (wraps in a group)
 function buildSnake(color) {
-  var isMulti = (typeof color === 'string');
+  var snakeColor = SNAKE_COLORS[color] || SNAKE_COLORS.green;
 
-  // Materials
-  var headMat, bodyMat;
-  if (isMulti) {
-    var snakeColor = SNAKE_COLORS[color] || SNAKE_COLORS.green;
-    var emissive = new THREE.Color(snakeColor).multiplyScalar(0.6).getHex();
-    headMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(snakeColor),
-      emissive: emissive,
-      emissiveIntensity: .35
-    });
-    bodyMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(snakeColor).multiplyScalar(0.7),
-      emissive: new THREE.Color(snakeColor).multiplyScalar(0.2).getHex(),
-      emissiveIntensity: .15
-    });
-  } else {
-    // Legacy: clear existing and use global materials
-    while(sGroup.children.length) {
-      var c = sGroup.children[0]; sGroup.remove(c);
-      if (c.geometry) c.geometry.dispose();
-    }
-    headMat = hMat;
-    bodyMat = bMat;
-  }
+  var headMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(snakeColor),
+    emissive: new THREE.Color(snakeColor).multiplyScalar(0.6).getHex(),
+    emissiveIntensity: .35
+  });
+  var bodyMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(snakeColor).multiplyScalar(0.7),
+    emissive: new THREE.Color(snakeColor).multiplyScalar(0.2).getHex(),
+    emissiveIntensity: .15
+  });
 
   var head = new THREE.Mesh(hGeo, headMat);
   head.position.y = .25;
@@ -57,30 +41,28 @@ function buildSnake(color) {
     bodies.push(m);
   }
 
-  if (isMulti) {
-    // Multi-snake: wrap in a group
-    var group = new THREE.Group();
-    group.add(head);
-    bodies.forEach(function(b) { group.add(b); });
-    sGroup.add(group);
-    return { group: group, headM: head, bodyMs: bodies };
-  } else {
-    // Legacy: add directly to sGroup, set globals
-    sGroup.add(head);
-    bodies.forEach(function(b) { sGroup.add(b); });
-    headM = head;
-    bodyMs = bodies;
-    return;
-  }
+  var group = new THREE.Group();
+  group.add(head);
+  bodies.forEach(function(b) { group.add(b); });
+  sGroup.add(group);
+
+  // Also set legacy globals for backward compat with game.js / refreshSnake()
+  headM = head;
+  bodyMs = bodies;
+
+  return { group: group, headM: head, bodyMs: bodies };
 }
 
 // ─── Refresh snake mesh ───
-// Usage: refreshSnake()                       → legacy mode, uses snake/direction globals
+// Usage: refreshSnake()                       → uses playerGroupData
 // Usage: refreshSnake(snakeData, groupData)   → multi-snake mode
 function refreshSnake(snakeData, groupData) {
-  // Legacy mode: no arguments
   if (snakeData === undefined) {
-    if(!snake || !snake.length || !headM || !bodyMs || !bodyMs.length) return;
+    // Legacy / player mode: use playerGroupData
+    var gd = playerGroupData;
+    if(!gd || !gd.headM || !gd.bodyMs || !gd.bodyMs.length || !snake || !snake.length) return;
+    headM = gd.headM;
+    bodyMs = gd.bodyMs;
     headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
     headM.rotation.y = -direction;
     for(var i = 1; i < snake.length; i++) {

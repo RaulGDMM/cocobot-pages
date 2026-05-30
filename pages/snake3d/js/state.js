@@ -20,6 +20,8 @@ var gridSize = GRID_SIZE;
 var gridSizeModifier = 0;
 var aiSnakes = [];
 var corpses = [];
+var corpseGroup = null;
+var corpseMeshes = [];
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');

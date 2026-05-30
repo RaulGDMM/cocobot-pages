@@ -18,6 +18,27 @@ function sfxTurn(){tone(440,.03,'sine',.03);}
 function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
 function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
 
+// ─── Directional AI eat sound ───
+// Pan the sound based on AI position relative to player head
+// pan: -1 (left) to +1 (right), 0 = center
+function sfxAiEat(pan) {
+  if(!actx) return;
+  pan = Math.max(-1, Math.min(1, pan || 0));
+  try {
+    var o1=actx.createOscillator(), p1=actx.createStereoPanner(), g1=actx.createGain();
+    o1.type='triangle'; o1.frequency.value=440;
+    p1.pan.value=pan;
+    g1.gain.value=.06; g1.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.08);
+    o1.connect(p1); p1.connect(g1); g1.connect(actx.destination); o1.start(); o1.stop(actx.currentTime+.08);
+
+    var o2=actx.createOscillator(), p2=actx.createStereoPanner(), g2=actx.createGain();
+    o2.type='triangle'; o2.frequency.value=660;
+    p2.pan.value=pan;
+    g2.gain.value=.06; g2.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.15);
+    o2.connect(p2); p2.connect(g2); g2.connect(actx.destination); o2.start(actx.currentTime+.06); o2.stop(actx.currentTime+.15);
+  } catch(e){}
+}
+
 // ─── MUSIC PLAYER ───
 var playlist = [
   {name: '🐍 Super Serpiente', file: 'music/retro-1.mp3'},

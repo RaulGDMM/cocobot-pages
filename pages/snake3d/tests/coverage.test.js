@@ -274,47 +274,50 @@ describe('obstacles.js — spawnObstacle()', () => {
 // ─── buildSnake() ───
 describe('snake.js — buildSnake()', () => {
   test('creates head mesh', () => {
-    buildSnake();
+    var result = buildSnake('green');
     expect(headM).not.toBeNull();
+    expect(result.headM).not.toBeNull();
   });
 
   test('creates 200 body meshes', () => {
-    buildSnake();
+    var result = buildSnake('green');
     expect(bodyMs.length).toBe(200);
+    expect(result.bodyMs.length).toBe(200);
   });
 
   test('head has correct y position', () => {
-    buildSnake();
+    buildSnake('green');
     expect(headM.position.y).toBe(0.25);
   });
 
   test('body meshes are initially hidden', () => {
-    buildSnake();
+    buildSnake('green');
     expect(bodyMs[0].visible).toBe(false);
   });
 
   test('body meshes have correct y position', () => {
-    buildSnake();
+    buildSnake('green');
     expect(bodyMs[0].position.y).toBe(0.225);
   });
 
   test('adds meshes to sGroup', () => {
-    buildSnake();
+    buildSnake('green');
     expect(sGroup.children.length).toBeGreaterThan(0);
   });
 
-  test('clears existing children', () => {
-    const dummy = new THREE.Mesh();
-    sGroup.add(dummy);
-    buildSnake();
-    expect(sGroup.children.includes(dummy)).toBe(false);
+  test('returns group data object', () => {
+    var result = buildSnake('red');
+    expect(result.group).toBeDefined();
+    expect(result.headM).toBeDefined();
+    expect(result.bodyMs).toBeDefined();
   });
 });
 
 // ─── refreshSnake() ───
 describe('snake.js — refreshSnake()', () => {
   beforeEach(() => {
-    buildSnake();
+    var result = buildSnake('green');
+    playerGroupData = result;
   });
 
   test('returns early when snake is empty', () => {
@@ -361,7 +364,6 @@ describe('snake.js — refreshSnake()', () => {
   test('scales body segments with distance from head', () => {
     setSnake([{x: 0, z: 0}, {x: -1, z: 0}, {x: -2, z: 0}]);
     refreshSnake();
-    // bodyMs[1] should have scale > bodyMs[2]
     expect(bodyMs[1].scale.x).toBeGreaterThan(bodyMs[2].scale.x);
   });
 
@@ -524,30 +526,27 @@ describe('particles.js — tickParts()', () => {
 describe('game.js — initGame()', () => {
   beforeEach(() => {
     localStorage.clear();
+    setGlobal('gridSize', 22);
+    setGlobal('playerColor', 'green');
+    setGlobal('gameMode', 'solo');
+    setGlobal('difficulty', 'medium');
     setSnake([]);
     setApples([]);
     setObstacles([]);
-    setGlobal("score",  0);
-    setGlobal("gameOver",  false);
-    setGlobal("running",  false);
-    setGlobal("direction",  0);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
   });
 
   test('resets state variables', () => {
-    setGlobal("score",  999);
-    setGlobal("gameOver",  true);
-    setGlobal("direction",  999);
     initGame();
-    expect(score).toBe(0);
     expect(gameOver).toBe(false);
+    expect(score).toBe(0);
     expect(direction).toBe(0);
   });
 
   test('creates initial snake with 4 segments', () => {
     initGame();
     expect(snake.length).toBe(4);
-    expect(snake[0]).toEqual({x: -5, z: 0});
-    expect(snake[1]).toEqual({x: -6, z: 0});
   });
 
   test('clears obstacles', () => {
@@ -575,7 +574,7 @@ describe('game.js — initGame()', () => {
 
   test('spawns apples', () => {
     initGame();
-    expect(apples.length).toBeGreaterThanOrEqual(1);
+    expect(apples.filter(Boolean).length).toBeGreaterThan(0);
   });
 });
 

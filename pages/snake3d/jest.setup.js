@@ -26,7 +26,11 @@ global.THREE = {
     add(c) { this.children.push(c); }
     remove(c) { const i = this.children.indexOf(c); if (i >= 0) this.children.splice(i, 1); }
   },
-  Color: class Color { constructor() {} },
+  Color: class Color {
+    constructor(hex) { this._hex = hex; }
+    multiplyScalar(s) { this._hex = this._hex ? (this._hex * s) & 0xffffff : 0; return this; }
+    getHex() { return this._hex || 0; }
+  },
   Fog: class Fog { constructor() {} },
   Vector3: MockVector3,
   PerspectiveCamera: class PerspectiveCamera {
@@ -155,6 +159,7 @@ mockEl('mp-track');
 mockEl('mp-num');
 mockEl('tz-left');
 mockEl('tz-right');
+mockEl('ai-death-msg');
 
 // ─── Mock window properties ───
 Object.defineProperty(window, 'innerWidth', { value: 1280, writable: true, configurable: true });
@@ -173,9 +178,10 @@ global.AudioContext = class {
   constructor() { this.state = 'running'; }
   createOscillator() { return { type: 'square', frequency: {value:0}, start:()=>{}, stop:()=>{}, connect:()=>{} }; }
   createGain() { return { gain: {value:0, exponentialRampToValueAtTime:()=>{}}, connect:()=>{} }; }
+  createStereoPanner() { return { pan: {value:0}, connect:()=>{} }; }
   get currentTime() { return 0; }
   destination = {};
-  resume() {}
+  resume() {};
 };
 global.webkitAudioContext = global.AudioContext;
 

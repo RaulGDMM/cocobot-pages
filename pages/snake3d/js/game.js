@@ -6,14 +6,19 @@ function initGame() {
   half = gridSize / 2;
   rebuildBoard(gridSize);
 
+  // Clear old snake groups from sGroup
+   while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
+   // Clear old corpse meshes
+   if(corpseGroup) { while(corpseGroup.children.length) { var cc = corpseGroup.children[0]; corpseGroup.remove(cc); } }
+
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
   log('Snake data: ' + snake.length + ' segments');
-  buildSnake();
-  log('buildSnake done: headM=' + (headM ? 'OK' : 'NULL') + ', bodyMs=' + bodyMs.length);
+   playerGroupData = buildSnake(playerColor);
+   log('buildSnake done: headM=' + (headM ? 'OK' : 'NULL') + ', bodyMs=' + bodyMs.length);
   buildObstacles(); buildApples();
   refreshObstacles();
   initApples();

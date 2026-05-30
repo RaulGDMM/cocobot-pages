@@ -41,16 +41,16 @@ var DIFFICULTIES = ['easy', 'medium', 'hard'];
 
 // AI error rates per difficulty (probability of choosing random safe direction)
 var AI_ERROR_RATE = {
-  easy: 0.30,
-  medium: 0.10,
-  hard: 0.02
+  easy: 0.10,
+  medium: 0.02,
+  hard: 0.005
 };
 
 // AI cornering aggression per difficulty (probability per tick)
 var AI_CORNERING_RATE = {
   easy: 0.00,
-  medium: 0.40,
-  hard: 0.70
+  medium: 0.70,
+  hard: 0.95
 };
 
 // Grid size limits
@@ -68,12 +68,17 @@ var AI_COUNT = {
 // ─── AI MODE: resolveGridSize(mode, percentageModifier) ───
 // mode: 'solo'|'vs2'|'vs3'|'vs4'
 // percentageModifier: -50 to +50 (integer, step 5)
-// Returns clamped integer between GRID_MIN and GRID_MAX
+// Returns clamped EVEN integer between GRID_MIN and GRID_MAX
+// (even grids ensure half is integer → cells align with snake positions)
 function resolveGridSize(mode, percentageModifier) {
   var base = Math.round(22 * (MODE_GRID_MULTIPLIER[mode] || 1.0));
   var result = base + Math.round(base * (percentageModifier || 0) / 100);
+  // Force even: odd grids cause half-integer boundaries → visual misalignment
+  if (result % 2 !== 0) result += 1;
   if (result < GRID_MIN) result = GRID_MIN;
   if (result > GRID_MAX) result = GRID_MAX;
+  // Clamp to even after boundary check too
+  if (result % 2 !== 0) result -= 1;
   return result;
 }
 
@@ -125,6 +130,8 @@ var gridSize = GRID_SIZE;
 var gridSizeModifier = 0;
 var aiSnakes = [];
 var corpses = [];
+var corpseGroup = null;
+var corpseMeshes = [];
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -160,6 +167,27 @@ function sfxEat(){tone(587,.1,'square',.08);setTimeout(function(){tone(784,.12,'
 function sfxTurn(){tone(440,.03,'sine',.03);}
 function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
 function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
+
+// ─── Directional AI eat sound ───
+// Pan the sound based on AI position relative to player head
+// pan: -1 (left) to +1 (right), 0 = center
+function sfxAiEat(pan) {
+  if(!actx) return;
+  pan = Math.max(-1, Math.min(1, pan || 0));
+  try {
+    var o1=actx.createOscillator(), p1=actx.createStereoPanner(), g1=actx.createGain();
+    o1.type='triangle'; o1.frequency.value=440;
+    p1.pan.value=pan;
+    g1.gain.value=.06; g1.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.08);
+    o1.connect(p1); p1.connect(g1); g1.connect(actx.destination); o1.start(); o1.stop(actx.currentTime+.08);
+
+    var o2=actx.createOscillator(), p2=actx.createStereoPanner(), g2=actx.createGain();
+    o2.type='triangle'; o2.frequency.value=660;
+    p2.pan.value=pan;
+    g2.gain.value=.06; g2.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.15);
+    o2.connect(p2); p2.connect(g2); g2.connect(actx.destination); o2.start(actx.currentTime+.06); o2.stop(actx.currentTime+.15);
+  } catch(e){}
+}
 
 // ─── MUSIC PLAYER ───
 var playlist = [
@@ -394,45 +422,29 @@ var sGroup = new THREE.Group(); scene.add(sGroup);
 var hGeo = new THREE.BoxGeometry(.8, .5, .8);
 var bGeo = new THREE.BoxGeometry(.7, .45, .7);
 
-// Legacy globals (used by game.js in solo mode)
-var hMat = new THREE.MeshStandardMaterial({color:0x00ff88, emissive:0x00aa44, emissiveIntensity:.35});
-var bMat = new THREE.MeshStandardMaterial({color:0x00cc66, emissive:0x004422, emissiveIntensity:.15});
+// Legacy globals (used by game.js)
 var headM = null;
 var bodyMs = [];
 
-// Snake groups indexed by snake ID (multi-snake mode)
-var snakeGroups = {};  // { id: { group, headM, bodyMs } }
+// Player snake group data (persists across games)
+var playerGroupData = null;
 
 // ─── Build snake mesh ───
-// Usage: buildSnake()           → legacy mode, sets headM/bodyMs globals
-// Usage: buildSnake(color)      → returns { group, headM, bodyMs } for multi-snake
+// Usage: buildSnake(color)  → returns { group, headM, bodyMs } for any snake
+// Always uses multi-snake mode (wraps in a group)
 function buildSnake(color) {
-  var isMulti = (typeof color === 'string');
+  var snakeColor = SNAKE_COLORS[color] || SNAKE_COLORS.green;
 
-  // Materials
-  var headMat, bodyMat;
-  if (isMulti) {
-    var snakeColor = SNAKE_COLORS[color] || SNAKE_COLORS.green;
-    var emissive = new THREE.Color(snakeColor).multiplyScalar(0.6).getHex();
-    headMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(snakeColor),
-      emissive: emissive,
-      emissiveIntensity: .35
-    });
-    bodyMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(snakeColor).multiplyScalar(0.7),
-      emissive: new THREE.Color(snakeColor).multiplyScalar(0.2).getHex(),
-      emissiveIntensity: .15
-    });
-  } else {
-    // Legacy: clear existing and use global materials
-    while(sGroup.children.length) {
-      var c = sGroup.children[0]; sGroup.remove(c);
-      if (c.geometry) c.geometry.dispose();
-    }
-    headMat = hMat;
-    bodyMat = bMat;
-  }
+  var headMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(snakeColor),
+    emissive: new THREE.Color(snakeColor).multiplyScalar(0.6).getHex(),
+    emissiveIntensity: .35
+  });
+  var bodyMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(snakeColor).multiplyScalar(0.7),
+    emissive: new THREE.Color(snakeColor).multiplyScalar(0.2).getHex(),
+    emissiveIntensity: .15
+  });
 
   var head = new THREE.Mesh(hGeo, headMat);
   head.position.y = .25;
@@ -444,30 +456,28 @@ function buildSnake(color) {
     bodies.push(m);
   }
 
-  if (isMulti) {
-    // Multi-snake: wrap in a group
-    var group = new THREE.Group();
-    group.add(head);
-    bodies.forEach(function(b) { group.add(b); });
-    sGroup.add(group);
-    return { group: group, headM: head, bodyMs: bodies };
-  } else {
-    // Legacy: add directly to sGroup, set globals
-    sGroup.add(head);
-    bodies.forEach(function(b) { sGroup.add(b); });
-    headM = head;
-    bodyMs = bodies;
-    return;
-  }
+  var group = new THREE.Group();
+  group.add(head);
+  bodies.forEach(function(b) { group.add(b); });
+  sGroup.add(group);
+
+  // Also set legacy globals for backward compat with game.js / refreshSnake()
+  headM = head;
+  bodyMs = bodies;
+
+  return { group: group, headM: head, bodyMs: bodies };
 }
 
 // ─── Refresh snake mesh ───
-// Usage: refreshSnake()                       → legacy mode, uses snake/direction globals
+// Usage: refreshSnake()                       → uses playerGroupData
 // Usage: refreshSnake(snakeData, groupData)   → multi-snake mode
 function refreshSnake(snakeData, groupData) {
-  // Legacy mode: no arguments
   if (snakeData === undefined) {
-    if(!snake || !snake.length || !headM || !bodyMs || !bodyMs.length) return;
+    // Legacy / player mode: use playerGroupData
+    var gd = playerGroupData;
+    if(!gd || !gd.headM || !gd.bodyMs || !gd.bodyMs.length || !snake || !snake.length) return;
+    headM = gd.headM;
+    bodyMs = gd.bodyMs;
     headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
     headM.rotation.y = -direction;
     for(var i = 1; i < snake.length; i++) {
@@ -688,7 +698,6 @@ function snapToCardinal(angle) {
   var best = cardinal[0];
   var bestDiff = Infinity;
   for (var i = 0; i < cardinal.length; i++) {
-    // Normalize difference to [-π, π]
     var diff = angle - cardinal[i];
     while (diff > Math.PI) diff -= Math.PI * 2;
     while (diff < -Math.PI) diff += Math.PI * 2;
@@ -700,24 +709,75 @@ function snapToCardinal(angle) {
   return best;
 }
 
+// ─── Count reachable cells from (x,z) using BFS ───
+// Used to evaluate how much open space a direction offers
+function countReachable(x, z, snakeBody, maxSteps) {
+  maxSteps = maxSteps || 30;
+  var visited = {};
+  var queue = [{x: x, z: z}];
+  visited[x + ',' + z] = true;
+  var count = 0;
+  var dirs = [{x:1,z:0},{x:-1,z:0},{x:0,z:1},{x:0,z:-1}];
+
+  // Build obstacle/corpse lookup for fast access
+  var blocked = {};
+  for (var i = 0; i < snakeBody.length; i++) blocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+  for (var i = 0; i < obstacles.length; i++) blocked[obstacles[i].x + ',' + obstacles[i].z] = true;
+  if (corpses) for (var i = 0; i < corpses.length; i++) blocked[corpses[i].x + ',' + corpses[i].z] = true;
+  // Other snakes
+  if (snake.length) for (var i = 0; i < snake.length; i++) blocked[snake[i].x + ',' + snake[i].z] = true;
+  if (aiSnakes) {
+    for (var i = 0; i < aiSnakes.length; i++) {
+      if (!aiSnakes[i].alive) continue;
+      for (var j = 0; j < aiSnakes[i].snake.length; j++) {
+        blocked[aiSnakes[i].snake[j].x + ',' + aiSnakes[i].snake[j].z] = true;
+      }
+    }
+  }
+
+  while (queue.length > 0 && count < maxSteps) {
+    var curr = queue.shift();
+    count++;
+    for (var d = 0; d < dirs.length; d++) {
+      var nx = curr.x + dirs[d].x;
+      var nz = curr.z + dirs[d].z;
+      var key = nx + ',' + nz;
+      if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+      if (blocked[key] || visited[key]) continue;
+      visited[key] = true;
+      queue.push({x: nx, z: nz});
+    }
+  }
+  return count;
+}
+
 // ─── Initialize AI snakes ───
 function initAI() {
   log('=== initAI() mode=' + gameMode + ' diff=' + difficulty + ' ===');
   aiSnakes = [];
   corpses = [];
+  corpseMeshes = [];
+
+  // Clean up old corpse meshes
+  if (corpseGroup) {
+    while (corpseGroup.children.length) {
+      var c = corpseGroup.children[0]; corpseGroup.remove(c);
+      if (c.geometry) c.geometry.dispose();
+      if (c.material) c.material.dispose();
+    }
+  }
+  corpseGroup = new THREE.Group(); scene.add(corpseGroup);
 
   var count = AI_COUNT[gameMode] || 0;
   if (count === 0) return;
 
   // Get available colors (exclude player color)
   var availableColors = SNAKE_COLOR_NAMES.filter(function(c) { return c !== playerColor; });
-  // Shuffle
   for (var i = availableColors.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
     var tmp = availableColors[i]; availableColors[i] = availableColors[j]; availableColors[j] = tmp;
   }
 
-  // Spawn positions: distribute around the grid
   var spawnAngles = [];
   for (var i = 0; i < count; i++) {
     spawnAngles.push((Math.PI * 2 / count) * i + Math.PI / 4);
@@ -728,7 +788,6 @@ function initAI() {
     var dist = Math.floor(gridSize * 0.35);
     var sx = Math.round(Math.cos(angle) * dist);
     var sz = Math.round(Math.sin(angle) * dist);
-    // Clamp to grid
     sx = Math.max(-half + 2, Math.min(half - 2, sx));
     sz = Math.max(-half + 2, Math.min(half - 2, sz));
 
@@ -737,7 +796,6 @@ function initAI() {
       snakeData.push({x: sx - j, z: sz});
     }
 
-    // Snap initial direction to cardinal so AI moves in grid-aligned steps
     var initDir = snapToCardinal(Math.atan2(-sz, -sx));
 
     aiSnakes.push({
@@ -747,7 +805,7 @@ function initAI() {
       color: availableColors[i] || 'red',
       alive: true,
       score: 0,
-      groupData: null // will be set by buildSnake
+      groupData: null
     });
 
     log('AI ' + i + ': color=' + availableColors[i] + ' spawn=(' + sx + ',' + sz + ') dir=' + initDir);
@@ -755,7 +813,6 @@ function initAI() {
 }
 
 // ─── Evaluate safe directions for an AI snake ───
-// Returns array of safe direction values
 function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
   var possibleDirs = [
     aiDir,
@@ -770,22 +827,11 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
     var nx = head.x + Math.round(Math.cos(dir));
     var nz = head.z + Math.round(Math.sin(dir));
 
-    // Wall check
     if (nx < -half || nx >= half || nz < -half || nz >= half) return;
-
-    // Self collision
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-
-    // Obstacle check
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
-
-    // Corpse check
     if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
-
-    // Collision with player snake
     if (snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-
-    // Collision with other AI snakes
     if (aiSnakes) {
       for (var i = 0; i < aiSnakes.length; i++) {
         if (i === aiIndex) continue;
@@ -824,7 +870,8 @@ function aiDecideDirection(aiIndex, diff) {
   if (!ai || !ai.alive) return ai.direction;
 
   var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
-  if (safe.length === 0) return ai.direction; // no safe move, will die
+  if (safe.length === 0) return ai.direction;
+  if (safe.length === 1) return snapToCardinal(safe[0]);
 
   // Random error based on difficulty
   var errorRate = AI_ERROR_RATE[diff] || AI_ERROR_RATE.medium;
@@ -832,22 +879,26 @@ function aiDecideDirection(aiIndex, diff) {
     return snapToCardinal(safe[Math.floor(Math.random() * safe.length)]);
   }
 
-  // Find nearest apple
-  var apple = nearestApple(ai.snake[0].x, ai.snake[0].z);
-  if (!apple) {
-    // No apples — pick direction that keeps most space
-    return snapToCardinal(safe[0]);
-  }
-
-  // Score each safe direction by distance to apple
+  // Score each safe direction: prefer more open space + closer to apple
   var bestDir = safe[0];
-  var bestDist = Infinity;
+  var bestScore = -Infinity;
+  var apple = nearestApple(ai.snake[0].x, ai.snake[0].z);
+
   safe.forEach(function(dir) {
     var nx = ai.snake[0].x + Math.round(Math.cos(dir));
     var nz = ai.snake[0].z + Math.round(Math.sin(dir));
-    var dist = Math.abs(apple.x - nx) + Math.abs(apple.z - nz);
-    if (dist < bestDist) {
-      bestDist = dist;
+
+    // Flood-fill: count reachable open space from this position
+    var space = countReachable(nx, nz, ai.snake, 25);
+
+    // Apple attraction (smaller distance = better)
+    var appleDist = apple ? (Math.abs(apple.x - nx) + Math.abs(apple.z - nz)) : 999;
+
+    // Combined score: space is primary (avoids self-trapping), apple is secondary
+    var score = space * 3 - appleDist;
+
+    if (score > bestScore) {
+      bestScore = score;
       bestDir = dir;
     }
   });
@@ -863,43 +914,33 @@ function aiCorneringStrategy(aiIndex, diff) {
   var corneringRate = AI_CORNERING_RATE[diff] || 0;
   if (Math.random() > corneringRate) return false;
 
-  // Check if any other snake (player or AI) is nearby and shorter
   var targets = [];
-  if (snake.length > 0) {
-    targets.push({snake: snake, isPlayer: true});
-  }
+  if (snake.length > 0) targets.push({snake: snake, isPlayer: true});
   for (var i = 0; i < aiSnakes.length; i++) {
     if (i === aiIndex) continue;
     if (!aiSnakes[i].alive) continue;
     targets.push({snake: aiSnakes[i].snake, isPlayer: false});
   }
-
   if (targets.length === 0) return false;
 
-  // Find closest target that is shorter
   for (var t = 0; t < targets.length; t++) {
     var target = targets[t];
     if (target.snake.length >= ai.snake.length) continue;
-
-    // Check if target is near a wall
     var targetHead = target.snake[0];
     var nearWall = (
       targetHead.x <= -half + 3 || targetHead.x >= half - 3 ||
       targetHead.z <= -half + 3 || targetHead.z >= half - 3
     );
-
     if (nearWall) {
-      // Try to position between target and nearest exit
       var dx = targetHead.x - ai.snake[0].x;
       var dz = targetHead.z - ai.snake[0].z;
       var dist = Math.abs(dx) + Math.abs(dz);
       if (dist < 8) {
         log('AI cornering target at (' + targetHead.x + ',' + targetHead.z + ')');
-        return true; // activate cornering
+        return true;
       }
     }
   }
-
   return false;
 }
 
@@ -910,10 +951,8 @@ function stepAI() {
   aiSnakes.forEach(function(ai, index) {
     if (!ai.alive) return;
 
-    // Decide direction
     ai.direction = aiDecideDirection(index, difficulty);
 
-    // Calculate new head position
     var head = ai.snake[0];
     var nx = head.x + Math.round(Math.cos(ai.direction));
     var nz = head.z + Math.round(Math.sin(ai.direction));
@@ -921,35 +960,35 @@ function stepAI() {
     // Check wall collision
     if (nx < -half || nx >= half || nz < -half || nz >= half) {
       log('AI ' + index + ' hit wall at (' + nx + ',' + nz + ')');
-      aiDie(index);
+      aiDie(index, 'wall');
       return;
     }
 
     // Check self collision
     if (ai.snake.some(function(s) { return s.x === nx && s.z === nz; })) {
       log('AI ' + index + ' hit self at (' + nx + ',' + nz + ')');
-      aiDie(index);
+      aiDie(index, 'self');
       return;
     }
 
     // Check obstacle collision
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) {
       log('AI ' + index + ' hit obstacle at (' + nx + ',' + nz + ')');
-      aiDie(index);
+      aiDie(index, 'obstacle');
       return;
     }
 
     // Check corpse collision
     if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) {
       log('AI ' + index + ' hit corpse at (' + nx + ',' + nz + ')');
-      aiDie(index);
+      aiDie(index, 'corpse');
       return;
     }
 
     // Check collision with player snake
     if (snake.some(function(s) { return s.x === nx && s.z === nz; })) {
       log('AI ' + index + ' hit player at (' + nx + ',' + nz + ')');
-      aiDie(index);
+      aiDie(index, 'player');
       return;
     }
 
@@ -960,7 +999,7 @@ function stepAI() {
       if (!other.alive) continue;
       if (other.snake.some(function(s) { return s.x === nx && s.z === nz; })) {
         log('AI ' + index + ' hit AI ' + i + ' at (' + nx + ',' + nz + ')');
-        aiDie(index);
+        aiDie(index, 'ai');
         return;
       }
     }
@@ -974,10 +1013,15 @@ function stepAI() {
       if (apples[i] && nx === apples[i].x && nz === apples[i].z) {
         ai.score++;
         ate = true;
-        // Respawn apple
         var newA = spawnOneApple();
         apples[i] = newA;
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
+        // Directional eat sound based on AI position relative to player
+        if (snake.length > 0) {
+          var playerHead = snake[0];
+          var panX = (nx - playerHead.x) / Math.max(half, 1);
+          sfxAiEat(panX);
+        }
         break;
       }
     }
@@ -987,16 +1031,34 @@ function stepAI() {
 }
 
 // ─── AI snake dies ───
-function aiDie(aiIndex) {
+function aiDie(aiIndex, cause) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return;
 
   ai.alive = false;
 
-  // Convert body to corpse
+  // Convert body to corpse with color
   if (!corpses) corpses = [];
+  var corpseColor = ai.color;
   ai.snake.forEach(function(seg) {
-    corpses.push({x: seg.x, z: seg.z});
+    corpses.push({x: seg.x, z: seg.z, color: corpseColor});
+  });
+
+  // Create visual corpse meshes (darkened version of snake color)
+  var baseColor = SNAKE_COLORS[corpseColor] || SNAKE_COLORS.red;
+  var corpseMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(baseColor).multiplyScalar(0.35),
+    emissive: new THREE.Color(baseColor).multiplyScalar(0.1).getHex(),
+    emissiveIntensity: .1,
+    roughness: .8
+  });
+  var corpseGeo = new THREE.BoxGeometry(.6, .3, .6);
+
+  ai.snake.forEach(function(seg) {
+    var m = new THREE.Mesh(corpseGeo, corpseMat);
+    m.position.set(gw(seg.x), .15, gw(seg.z));
+    corpseGroup.add(m);
+    corpseMeshes.push(m);
   });
 
   // Particles
@@ -1004,7 +1066,37 @@ function aiDie(aiIndex) {
     burst(ai.snake[0].x, ai.snake[0].z, 0xff4444, 8);
   }
 
-  log('AI ' + aiIndex + ' died — ' + corpses.length + ' corpse segments');
+  // Show death message
+  showAiDeathMessage(ai, cause);
+
+  log('AI ' + aiIndex + ' died (' + cause + ') — ' + corpses.length + ' corpse segments');
+}
+
+// ─── Show AI death message on screen ───
+function showAiDeathMessage(ai, cause) {
+  var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla'};
+  var colorName = colorNames[ai.color] || 'desconocida';
+
+  var causeMsg = '';
+  if (cause === 'wall') causeMsg = 'contra la pared';
+  else if (cause === 'self') causeMsg = 'contra sí misma';
+  else if (cause === 'obstacle') causeMsg = 'contra un obstáculo';
+  else if (cause === 'corpse') causeMsg = 'contra un cadáver';
+  else if (cause === 'player') causeMsg = 'contra el jugador';
+  else if (cause === 'ai') causeMsg = 'contra otra serpiente';
+
+  var msg = '💀 Serpiente ' + colorName + ' ha muerto por chocarse ' + causeMsg;
+
+  var el = document.getElementById('ai-death-msg');
+  if (el) {
+    el.textContent = msg;
+    el.classList.add('visible');
+    // Auto-hide after 3 seconds
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(function() {
+      el.classList.remove('visible');
+    }, 3000);
+  }
 }
 
 // ─── Refresh AI snake meshes ───
@@ -1225,14 +1317,19 @@ function initGame() {
   half = gridSize / 2;
   rebuildBoard(gridSize);
 
+  // Clear old snake groups from sGroup
+   while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
+   // Clear old corpse meshes
+   if(corpseGroup) { while(corpseGroup.children.length) { var cc = corpseGroup.children[0]; corpseGroup.remove(cc); } }
+
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
   log('Snake data: ' + snake.length + ' segments');
-  buildSnake();
-  log('buildSnake done: headM=' + (headM ? 'OK' : 'NULL') + ', bodyMs=' + bodyMs.length);
+   playerGroupData = buildSnake(playerColor);
+   log('buildSnake done: headM=' + (headM ? 'OK' : 'NULL') + ', bodyMs=' + bodyMs.length);
   buildObstacles(); buildApples();
   refreshObstacles();
   initApples();

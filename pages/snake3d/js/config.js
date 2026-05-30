@@ -36,16 +36,16 @@ var DIFFICULTIES = ['easy', 'medium', 'hard'];
 
 // AI error rates per difficulty (probability of choosing random safe direction)
 var AI_ERROR_RATE = {
-  easy: 0.30,
-  medium: 0.10,
-  hard: 0.02
+  easy: 0.10,
+  medium: 0.02,
+  hard: 0.005
 };
 
 // AI cornering aggression per difficulty (probability per tick)
 var AI_CORNERING_RATE = {
   easy: 0.00,
-  medium: 0.40,
-  hard: 0.70
+  medium: 0.70,
+  hard: 0.95
 };
 
 // Grid size limits
@@ -63,12 +63,17 @@ var AI_COUNT = {
 // ─── AI MODE: resolveGridSize(mode, percentageModifier) ───
 // mode: 'solo'|'vs2'|'vs3'|'vs4'
 // percentageModifier: -50 to +50 (integer, step 5)
-// Returns clamped integer between GRID_MIN and GRID_MAX
+// Returns clamped EVEN integer between GRID_MIN and GRID_MAX
+// (even grids ensure half is integer → cells align with snake positions)
 function resolveGridSize(mode, percentageModifier) {
   var base = Math.round(22 * (MODE_GRID_MULTIPLIER[mode] || 1.0));
   var result = base + Math.round(base * (percentageModifier || 0) / 100);
+  // Force even: odd grids cause half-integer boundaries → visual misalignment
+  if (result % 2 !== 0) result += 1;
   if (result < GRID_MIN) result = GRID_MIN;
   if (result > GRID_MAX) result = GRID_MAX;
+  // Clamp to even after boundary check too
+  if (result % 2 !== 0) result -= 1;
   return result;
 }
 

@@ -162,14 +162,14 @@ describe('config.js', () => {
 
   // ─── AI MODE: AI_ERROR_RATE ───
   describe('AI_ERROR_RATE', () => {
-    test('easy has 30% error rate', () => {
-      expect(AI_ERROR_RATE.easy).toBe(0.30);
+    test('easy has 10% error rate', () => {
+      expect(AI_ERROR_RATE.easy).toBe(0.10);
     });
-    test('medium has 10% error rate', () => {
-      expect(AI_ERROR_RATE.medium).toBe(0.10);
+    test('medium has 2% error rate', () => {
+      expect(AI_ERROR_RATE.medium).toBe(0.02);
     });
-    test('hard has 2% error rate', () => {
-      expect(AI_ERROR_RATE.hard).toBe(0.02);
+    test('hard has 0.5% error rate', () => {
+      expect(AI_ERROR_RATE.hard).toBe(0.005);
     });
   });
 
@@ -178,11 +178,11 @@ describe('config.js', () => {
     test('easy has 0% cornering', () => {
       expect(AI_CORNERING_RATE.easy).toBe(0.00);
     });
-    test('medium has 40% cornering', () => {
-      expect(AI_CORNERING_RATE.medium).toBe(0.40);
+    test('medium has 70% cornering', () => {
+      expect(AI_CORNERING_RATE.medium).toBe(0.70);
     });
-    test('hard has 70% cornering', () => {
-      expect(AI_CORNERING_RATE.hard).toBe(0.70);
+    test('hard has 95% cornering', () => {
+      expect(AI_CORNERING_RATE.hard).toBe(0.95);
     });
   });
 
@@ -204,16 +204,16 @@ describe('config.js', () => {
     test('vs2 base (modifier 0) returns 28', () => {
       expect(resolveGridSize('vs2', 0)).toBe(28);
     });
-    test('vs3 base (modifier 0) returns 33', () => {
-      expect(resolveGridSize('vs3', 0)).toBe(33);
+    test('vs3 base (modifier 0) returns 34 (even)', () => {
+      expect(resolveGridSize('vs3', 0)).toBe(34);
     });
-    test('vs4 base (modifier 0) returns 39', () => {
-      expect(resolveGridSize('vs4', 0)).toBe(39);
+    test('vs4 base (modifier 0) returns 40 (even)', () => {
+      expect(resolveGridSize('vs4', 0)).toBe(40);
     });
 
     // Modifier +50%
-    test('solo +50% returns 33', () => {
-      expect(resolveGridSize('solo', 50)).toBe(33);
+    test('solo +50% returns 34 (even)', () => {
+      expect(resolveGridSize('solo', 50)).toBe(34);
     });
     test('vs2 +50% returns 42', () => {
       expect(resolveGridSize('vs2', 50)).toBe(42);
@@ -232,8 +232,8 @@ describe('config.js', () => {
     test('vs2 -50% clamps to 16', () => {
       expect(resolveGridSize('vs2', -50)).toBe(16);
     });
-    test('vs3 -50% returns 17', () => {
-      expect(resolveGridSize('vs3', -50)).toBe(17);
+    test('vs3 -50% returns 18 (even)', () => {
+      expect(resolveGridSize('vs3', -50)).toBe(18);
     });
     test('vs4 -50% returns 20', () => {
       expect(resolveGridSize('vs4', -50)).toBe(20);
@@ -243,11 +243,11 @@ describe('config.js', () => {
     test('solo +25% returns 28', () => {
       expect(resolveGridSize('solo', 25)).toBe(28);
     });
-    test('solo -25% returns 17', () => {
-      expect(resolveGridSize('solo', -25)).toBe(17);
+    test('solo -25% returns 18 (even)', () => {
+      expect(resolveGridSize('solo', -25)).toBe(18);
     });
-    test('vs2 +10% returns 31', () => {
-      expect(resolveGridSize('vs2', 10)).toBe(31);
+    test('vs2 +10% returns 32 (even)', () => {
+      expect(resolveGridSize('vs2', 10)).toBe(32);
     });
     test('vs3 -10% returns 30', () => {
       expect(resolveGridSize('vs3', -10)).toBe(30);
