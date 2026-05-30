@@ -33,7 +33,7 @@ function loop(now) {
     }
 
     // Apple animation
-    if(appleMeshes.length) {
+     if(appleMeshes && appleMeshes.length) {
       for(var i = 0; i < appleMeshes.length; i++) {
         if(appleMeshes[i].visible) {
           appleMeshes[i].position.y = .25 + Math.sin(now*.003 + i)*.1;

@@ -14,7 +14,7 @@ const TEST_DIR = path.join(ROOT, 'tests');
 const FILES = ['config.js','state.js','audio.js','scene.js','snake.js',
                'apples.js','obstacles.js','particles.js','ai.js','ui.js','game.js','controls.js'];
 const TEST_FILES = ['config.test.js','state.test.js','apples.test.js',
-                    'obstacles.test.js','coverage.test.js','ui.test.js','ai.test.js','ui-dom.test.js'];
+                    'obstacles.test.js','coverage.test.js','ui.test.js','ai.test.js','ui-dom.test.js','game.test.js'];
 
 // Read sources
 const sources = {};

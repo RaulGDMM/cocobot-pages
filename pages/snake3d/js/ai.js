@@ -329,10 +329,10 @@ function aiDie(aiIndex) {
 
 // ─── Refresh AI snake meshes ───
 function refreshAISnakes() {
-  if (!aiSnakes) return;
+  if (!aiSnakes || !aiSnakes.length) return;
 
   aiSnakes.forEach(function(ai, index) {
-    if (!ai.alive || !ai.groupData) return;
+    if (!ai.alive || !ai.groupData || !ai.groupData.bodyMs || !ai.groupData.bodyMs.length) return;
     refreshSnake(ai.snake, ai.groupData);
   });
 }

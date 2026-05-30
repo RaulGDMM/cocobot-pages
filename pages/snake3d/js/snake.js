@@ -80,7 +80,7 @@ function buildSnake(color) {
 function refreshSnake(snakeData, groupData) {
   // Legacy mode: no arguments
   if (snakeData === undefined) {
-    if(!snake.length || !headM) return;
+    if(!snake || !snake.length || !headM || !bodyMs || !bodyMs.length) return;
     headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
     headM.rotation.y = -direction;
     for(var i = 1; i < snake.length; i++) {
@@ -97,7 +97,7 @@ function refreshSnake(snakeData, groupData) {
   }
 
   // Multi-snake mode
-  if(!snakeData || !snakeData.length || !groupData) return;
+  if(!snakeData || !snakeData.length || !groupData || !groupData.bodyMs || !groupData.bodyMs.length) return;
   var head = groupData.headM;
   var bodies = groupData.bodyMs;
   var dir = groupData.direction || 0;

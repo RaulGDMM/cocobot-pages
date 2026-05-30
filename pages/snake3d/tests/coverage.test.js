@@ -768,7 +768,7 @@ describe('game.js — die()', () => {
   test('shows final score', () => {
     setGlobal("score",  15);
     die();
-    expect(finalScoreEl.textContent).toBe('Puntuación: 15 🍎');
+    expect(finalScoreEl.textContent).toContain('Puntuación: 15 🍎');
   });
 
   test('shows final score element', () => {

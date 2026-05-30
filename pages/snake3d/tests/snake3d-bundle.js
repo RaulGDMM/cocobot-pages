@@ -467,7 +467,7 @@ function buildSnake(color) {
 function refreshSnake(snakeData, groupData) {
   // Legacy mode: no arguments
   if (snakeData === undefined) {
-    if(!snake.length || !headM) return;
+    if(!snake || !snake.length || !headM || !bodyMs || !bodyMs.length) return;
     headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
     headM.rotation.y = -direction;
     for(var i = 1; i < snake.length; i++) {
@@ -484,7 +484,7 @@ function refreshSnake(snakeData, groupData) {
   }
 
   // Multi-snake mode
-  if(!snakeData || !snakeData.length || !groupData) return;
+  if(!snakeData || !snakeData.length || !groupData || !groupData.bodyMs || !groupData.bodyMs.length) return;
   var head = groupData.headM;
   var bodies = groupData.bodyMs;
   var dir = groupData.direction || 0;
@@ -553,7 +553,9 @@ function spawnOneApple() {
 }
 
 function refreshApples() {
+  if (!appleMeshes || !appleMeshes.length) return;
   for(var i = 0; i < NUM_APPLES; i++) {
+    if (i >= appleMeshes.length) break;
     if(i < apples.length && apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
@@ -1007,10 +1009,10 @@ function aiDie(aiIndex) {
 
 // ─── Refresh AI snake meshes ───
 function refreshAISnakes() {
-  if (!aiSnakes) return;
+  if (!aiSnakes || !aiSnakes.length) return;
 
   aiSnakes.forEach(function(ai, index) {
-    if (!ai.alive || !ai.groupData) return;
+    if (!ai.alive || !ai.groupData || !ai.groupData.bodyMs || !ai.groupData.bodyMs.length) return;
     refreshSnake(ai.snake, ai.groupData);
   });
 }
@@ -1254,9 +1256,9 @@ function step() {
   var h=snake[0];
   var nx=h.x+Math.round(Math.cos(direction));
   var nz=h.z+Math.round(Math.sin(direction));
-  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
-  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
-  if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
+  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die('wall');return;}
+   if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die('self');return;}
+   if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die('obstacle');return;}
   // ─── AI MODE: collision with AI snake bodies ───
   if(aiSnakes) {
     for(var k = 0; k < aiSnakes.length; k++) {
@@ -1272,18 +1274,15 @@ function step() {
     }
   }
   // ─── AI MODE: collision with corpses ───
-  if(corpses) {
-    for(var c = 0; c < corpses.length; c++) {
-      var corpse = corpses[c];
-      for(var ci = 0; ci < corpse.snake.length; ci++) {
-        if(corpse.snake[ci].x === nx && corpse.snake[ci].z === nz) {
-          log('Hit corpse at ('+nx+','+nz+')');
-          die();
-          return;
-        }
-      }
-    }
-  }
+   if(corpses) {
+     for(var c = 0; c < corpses.length; c++) {
+       if(corpses[c].x === nx && corpses[c].z === nz) {
+         log('Hit corpse at ('+nx+','+nz+')');
+         die('corpse');
+         return;
+       }
+     }
+   }
   snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
@@ -1301,15 +1300,22 @@ function step() {
   refreshApples();
 }
 
-function die() {
-  log('GAME OVER score='+score);
+function die(cause) {
+  log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; running=false; sfxDie();
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   if(score>highScore){highScore=score;localStorage.setItem('snake3d_hs',highScore);highscoreEl.textContent=highScore;}
   totalGames++;
   localStorage.setItem('snake3d_games', totalGames);
   gamesCountEl.textContent = totalGames;
-  finalScoreEl.textContent='Puntuación: '+score+' 🍎';
+  // Death cause message
+  var causeMsg = '';
+  if(cause === 'wall') causeMsg = 'Has chocado contra la pared';
+  else if(cause === 'self') causeMsg = 'Te has mordido a ti mismo';
+  else if(cause === 'obstacle') causeMsg = 'Has chocado contra un obstáculo';
+  else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
+  else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
+  finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
   finalScoreEl.style.display='block';
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');

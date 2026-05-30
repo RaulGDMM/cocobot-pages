@@ -45,7 +45,9 @@ function spawnOneApple() {
 }
 
 function refreshApples() {
+  if (!appleMeshes || !appleMeshes.length) return;
   for(var i = 0; i < NUM_APPLES; i++) {
+    if (i >= appleMeshes.length) break;
     if(i < apples.length && apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
