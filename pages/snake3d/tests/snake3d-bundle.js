@@ -114,7 +114,8 @@ var direction = 0;
 var apples = [];
 var obstacles = [];
 var score = 0;
-var highScore = parseInt(localStorage.getItem('snake3d_hs') || '0');
+// ─── AI MODE: highScore loaded dynamically per mode (initialized to 0) ───
+var highScore = 0;
 var totalGames = parseInt(localStorage.getItem('snake3d_games') || '0');
 var running = false;
 var lastMoveTime = 0;
@@ -1250,6 +1251,7 @@ function updateHighScoreDisplay() {
   var config = getGameConfig();
   var key = getHighScoreKey(config.mode, config.difficulty, config.gridSize);
   var hs = parseInt(localStorage.getItem(key) || '0');
+  highScore = hs;
   if (highscoreEl) {
     highscoreEl.textContent = hs;
   }
@@ -1401,7 +1403,9 @@ function die(cause) {
   log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; running=false; sfxDie();
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
-  if(score>highScore){highScore=score;localStorage.setItem('snake3d_hs',highScore);highscoreEl.textContent=highScore;}
+  // ─── AI MODE: save high score per mode/difficulty/gridSize ───
+  var hsKey = getHighScoreKey(gameMode, difficulty, gridSize);
+  if(score>highScore){highScore=score;localStorage.setItem(hsKey,highScore);highscoreEl.textContent=highScore;}
   totalGames++;
   localStorage.setItem('snake3d_games', totalGames);
   gamesCountEl.textContent = totalGames;

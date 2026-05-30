@@ -751,11 +751,15 @@ describe('game.js — die()', () => {
     expect(totalGames).toBe(6);
   });
 
-  test('saves highScore to localStorage', () => {
+  test('saves highScore to localStorage with mode-specific key', () => {
     setGlobal("score",  20);
     setGlobal("highScore",  10);
+    setGlobal("gameMode",  'solo');
+    setGlobal("difficulty",  'medium');
+    setGlobal("gridSize",  22);
     die();
-    expect(localStorage.getItem('snake3d_hs')).toBe('20');
+    var key = getHighScoreKey('solo', 'medium', 22);
+    expect(localStorage.getItem(key)).toBe('20');
   });
 
   test('saves totalGames to localStorage', () => {

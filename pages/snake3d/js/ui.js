@@ -137,6 +137,7 @@ function updateHighScoreDisplay() {
   var config = getGameConfig();
   var key = getHighScoreKey(config.mode, config.difficulty, config.gridSize);
   var hs = parseInt(localStorage.getItem(key) || '0');
+  highScore = hs;
   if (highscoreEl) {
     highscoreEl.textContent = hs;
   }

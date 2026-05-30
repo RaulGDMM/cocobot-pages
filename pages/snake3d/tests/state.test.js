@@ -68,18 +68,38 @@ describe('state.js', () => {
   });
 
   describe('localStorage integration', () => {
-    test('highScore reads from localStorage', () => {
-      localStorage.clear();
-      localStorage.setItem('snake3d_hs', '42');
-      // Re-read from localStorage (simulating fresh load)
-      const stored = parseInt(localStorage.getItem('snake3d_hs') || '0');
-      expect(stored).toBe(42);
+    test('highScore initializes to 0 (loaded dynamically by updateHighScoreDisplay)', () => {
+      expect(highScore).toBe(0);
     });
 
-    test('highScore defaults to 0 when not in localStorage', () => {
+    test('getHighScoreKey produces correct key for solo mode', () => {
+      expect(getHighScoreKey('solo', 'medium', 22)).toBe('snake3d_hs_solo_22_medium');
+    });
+
+    test('getHighScoreKey produces correct key for vs4 hard', () => {
+      expect(getHighScoreKey('vs4', 'hard', 40)).toBe('snake3d_hs_vs4_40_hard');
+    });
+
+    test('updateHighScoreDisplay loads score from correct key', () => {
       localStorage.clear();
-      const stored = parseInt(localStorage.getItem('snake3d_hs') || '0');
-      expect(stored).toBe(0);
+      var key = getHighScoreKey('solo', 'medium', 22);
+      localStorage.setItem(key, '42');
+      updateHighScoreDisplay();
+      expect(highScore).toBe(42);
+      expect(highscoreEl.textContent).toBe('42');
+    });
+
+    test('updateHighScoreDisplay updates when mode changes', () => {
+      localStorage.clear();
+      localStorage.setItem(getHighScoreKey('solo', 'medium', 22), '10');
+      localStorage.setItem(getHighScoreKey('vs2', 'hard', 28), '50');
+      uiState.selectedMode = 'solo';
+      updateHighScoreDisplay();
+      expect(highScore).toBe(10);
+      uiState.selectedMode = 'vs2';
+      uiState.selectedDifficulty = 'hard';
+      updateHighScoreDisplay();
+      expect(highScore).toBe(50);
     });
 
     test('totalGames reads from localStorage', () => {
@@ -107,7 +127,7 @@ describe('state.js', () => {
       expect(scoreEl.id).toBe('score');
     });
 
-    test('highscoreEl exists and shows highScore', () => {
+    test('highscoreEl exists and shows 0 initially (loaded dynamically)', () => {
       expect(highscoreEl).not.toBeNull();
       expect(highscoreEl.id).toBe('highscore');
     });

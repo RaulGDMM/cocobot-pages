@@ -132,6 +132,17 @@ describe('game.js — die(cause)', () => {
     die('self');
     expect(finalScoreEl.textContent).toContain('🍎');
   });
+
+  test('die() guarda high score en key específica del modo', () => {
+    setGlobal('score', 10);
+    setGlobal('highScore', 5);
+    setGlobal('gameMode', 'vs2');
+    setGlobal('difficulty', 'hard');
+    setGlobal('gridSize', 28);
+    die('wall');
+    var key = getHighScoreKey('vs2', 'hard', 28);
+    expect(localStorage.getItem(key)).toBe('10');
+  });
 });
 
 // ─── step() — colisiones con paredes ───

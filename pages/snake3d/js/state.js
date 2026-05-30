@@ -4,7 +4,8 @@ var direction = 0;
 var apples = [];
 var obstacles = [];
 var score = 0;
-var highScore = parseInt(localStorage.getItem('snake3d_hs') || '0');
+// ─── AI MODE: highScore loaded dynamically per mode (initialized to 0) ───
+var highScore = 0;
 var totalGames = parseInt(localStorage.getItem('snake3d_games') || '0');
 var running = false;
 var lastMoveTime = 0;
