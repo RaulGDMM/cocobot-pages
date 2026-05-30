@@ -57,3 +57,8 @@ function spawnObstacle() {
   }
   log('⚠️ Could not place obstacle');
 }
+
+// ─── Module exports (for testing — ignored in browser) ───
+if(typeof module !== 'undefined' && module.exports) {
+  module.exports = { isSafeForObstacle, spawnObstacle, refreshObstacles };
+}

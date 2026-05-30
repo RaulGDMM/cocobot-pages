@@ -28,3 +28,8 @@ window.onerror = function(msg) { showErr('ERROR: '+msg); log('❌ onerror: '+msg
 log('1. Script starting...');
 if(typeof THREE === 'undefined') { showErr('Three.js no cargó'); throw new Error('Three.js not loaded'); }
 log('2. Three.js v' + THREE.REVISION);
+
+// ─── Module exports (for testing — ignored in browser) ───
+if(typeof module !== 'undefined' && module.exports) {
+  module.exports = { log, showErr, get logs() { return logs; } };
+}

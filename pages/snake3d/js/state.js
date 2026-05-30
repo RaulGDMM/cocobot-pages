@@ -24,3 +24,23 @@ var hintR = document.getElementById('hint-r');
 var gamesCountEl = document.getElementById('games-count');
 highscoreEl.textContent = highScore;
 gamesCountEl.textContent = totalGames;
+
+// ─── Module exports (for testing — ignored in browser) ───
+if(typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    get snake() { return snake; }, set snake(v) { /* global, can't reassign */ },
+    get direction() { return direction; },
+    get apples() { return apples; },
+    get obstacles() { return obstacles; },
+    get score() { return score; }, set score(v) { global.score = v; },
+    get highScore() { return highScore; }, set highScore(v) { global.highScore = v; },
+    get totalGames() { return totalGames; }, set totalGames(v) { global.totalGames = v; },
+    get running() { return running; }, set running(v) { global.running = v; },
+    get gameOver() { return gameOver; }, set gameOver(v) { global.gameOver = v; },
+    get lastMoveTime() { return lastMoveTime; },
+    get camSmoothX() { return camSmoothX; },
+    get camSmoothZ() { return camSmoothZ; },
+    get lookSmoothX() { return lookSmoothX; },
+    get lookSmoothZ() { return lookSmoothZ; },
+  };
+}

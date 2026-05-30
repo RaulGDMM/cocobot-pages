@@ -1,0 +1,584 @@
+// ─── Snake3D Bundle for Jest ───
+// Auto-generated from js/*.js. DO NOT edit manually.
+// Loaded via vm.runInContext in jest.setup.js.
+
+// === config.js ===
+// ─── CONFIG ───
+var GRID_SIZE = 22;
+var MOVE_INTERVAL = 200;
+var TURN_ANGLE = Math.PI / 2;
+var half = GRID_SIZE / 2;
+var NUM_APPLES = 3;
+var OBSTACLE_SPAWN_EVERY = 3;
+var OBSTACLE_MIN_DIST_SNAKE = 6;
+var OBSTACLE_MIN_DIST_EACH = 3;
+var OBSTACLE_MIN_DIST_APPLE = 3;
+var MAX_OBSTACLES = 30;
+
+// ─── LOGGING (must be early — all modules use log/showErr) ───
+var dbg = document.getElementById('debug');
+var errBox = document.getElementById('err-box');
+var logs = [];
+function log(msg) {
+  var ts = new Date().toLocaleTimeString();
+  logs.push('[' + ts + '] ' + msg);
+  if(logs.length > 80) logs.shift();
+  dbg.textContent = logs.join('\n');
+  console.log('[Snake3D]', msg);
+}
+function showErr(msg) { errBox.textContent = msg; errBox.style.display = msg ? 'block' : 'none'; }
+
+window.onerror = function(msg) { showErr('ERROR: '+msg); log('❌ onerror: '+msg); return true; };
+
+log('1. Script starting...');
+if(typeof THREE === 'undefined') { showErr('Three.js no cargó'); throw new Error('Three.js not loaded'); }
+log('2. Three.js v' + THREE.REVISION);
+
+
+// === state.js ===
+// ─── STATE ───
+var snake = [];
+var direction = 0;
+var apples = [];
+var obstacles = [];
+var score = 0;
+var highScore = parseInt(localStorage.getItem('snake3d_hs') || '0');
+var totalGames = parseInt(localStorage.getItem('snake3d_games') || '0');
+var running = false;
+var lastMoveTime = 0;
+var gameOver = false;
+var camSmoothX = 0, camSmoothZ = 0;
+var lookSmoothX = 0, lookSmoothZ = 0;
+
+// ─── DOM ───
+var canvas = document.getElementById('game-canvas');
+var scoreEl = document.getElementById('score');
+var highscoreEl = document.getElementById('highscore');
+var overlay = document.getElementById('overlay');
+var startBtn = document.getElementById('start-btn');
+var finalScoreEl = document.getElementById('final-score');
+var hintL = document.getElementById('hint-l');
+var hintR = document.getElementById('hint-r');
+var gamesCountEl = document.getElementById('games-count');
+highscoreEl.textContent = highScore;
+gamesCountEl.textContent = totalGames;
+
+
+// === audio.js ===
+// ─── AUDIO (SFX) ───
+var actx = null;
+function initAudio() {
+  if(!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} }
+  if(actx && actx.state === 'suspended') actx.resume();
+}
+function tone(f,d,t,v) {
+  if(!actx) return;
+  try {
+    var o=actx.createOscillator(), g=actx.createGain();
+    o.type=t||'square'; o.frequency.value=f;
+    g.gain.value=v||.08; g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+d);
+    o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+d);
+  } catch(e){}
+}
+function sfxEat(){tone(587,.1,'square',.08);setTimeout(function(){tone(784,.12,'square',.08)},70);}
+function sfxTurn(){tone(440,.03,'sine',.03);}
+function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
+function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
+
+// ─── MUSIC PLAYER ───
+var playlist = [
+  {name: '🐍 Super Serpiente', file: 'music/retro-1.mp3'},
+  {name: '🐍 Cobra Turbo', file: 'music/retro-2.mp3'},
+  {name: '🐍 Pitón Retro', file: 'music/retro-3.mp3'},
+  {name: '🐍 Víbora Eléctrica', file: 'music/retro-4.mp3'},
+  {name: '🐍 Anaconda Arcade', file: 'music/retro-5.mp3'},
+  {name: '🐍 Serpiente Loca', file: 'music/retro-6.mp3'},
+  {name: '🐍 Boa Neon', file: 'music/retro-7.mp3'},
+  {name: '🐍 Mamba Digital', file: 'music/retro-8.mp3'},
+  {name: '🐍 Aspic Pixel', file: 'music/retro-9-v2.mp3'},
+  {name: '🐍 Natrix Chiptune', file: 'music/retro-10.mp3'}
+];
+var currentTrack = 0;
+var musicEl = null;
+var musicPlaying = false;
+var userPausedMusic = false;
+var musicPlayerEl = null;
+var mpPlayBtn = null;
+var mpTrackEl = null;
+var mpNumEl = null;
+
+function initMusic() {
+  musicEl = document.createElement('audio');
+  musicEl.preload = 'auto';
+  musicEl.volume = 0.4;
+  musicPlayerEl = document.getElementById('music-player');
+  mpPlayBtn = document.getElementById('mp-play');
+  mpTrackEl = document.getElementById('mp-track');
+  mpNumEl = document.getElementById('mp-num');
+
+  currentTrack = Math.floor(Math.random() * playlist.length);
+  musicEl.src = playlist[currentTrack].file;
+  updateTrackDisplay();
+  log('🎵 Ready: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ') — press ▶ to play');
+
+  document.getElementById('mp-prev').addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
+  mpPlayBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleMusic(); });
+  document.getElementById('mp-next').addEventListener('click', function(e) { e.stopPropagation(); nextTrack(); });
+
+  musicEl.addEventListener('ended', function() {
+    log('🎵 Track ended, playing next');
+    nextTrack();
+  });
+
+  musicEl.addEventListener('error', function(e) {
+    log('❌ Music error: ' + (musicEl.error ? musicEl.error.message : 'unknown'));
+  });
+
+  log('🎵 Music player initialized with ' + playlist.length + ' tracks');
+}
+
+function updateTrackDisplay() {
+  var track = playlist[currentTrack];
+  mpTrackEl.textContent = track.name;
+  mpNumEl.textContent = (currentTrack + 1) + '/' + playlist.length;
+}
+
+function shufflePlaylist() {
+  for(var i = playlist.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = playlist[i];
+    playlist[i] = playlist[j];
+    playlist[j] = temp;
+  }
+  currentTrack = 0;
+  log('🎵 Playlist shuffled, first track: ' + playlist[0].name);
+}
+
+function pickRandomTrack() {
+  currentTrack = Math.floor(Math.random() * playlist.length);
+  musicEl.src = playlist[currentTrack].file + '?t=' + Date.now();
+  log('🎵 Picked random track: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+}
+
+function playTrack(index) {
+  if(!musicEl) return;
+  currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
+  var track = playlist[currentTrack];
+  musicEl.src = track.file + '?t=' + Date.now();
+  musicEl.load();
+  var playPromise = musicEl.play();
+  if(playPromise) {
+    playPromise.then(function() {
+      musicPlaying = true;
+      mpPlayBtn.textContent = '⏸';
+      mpTrackEl.textContent = track.name;
+      mpNumEl.textContent = (currentTrack + 1) + '/' + playlist.length;
+      log('🎵 Playing: ' + track.name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+    }).catch(function(e) {
+      log('⚠️ Music play failed: ' + e.message);
+    });
+  }
+}
+
+function toggleMusic() {
+  if(!musicEl) return;
+  if(musicPlaying) {
+    musicEl.pause();
+    musicPlaying = false;
+    userPausedMusic = true;
+    mpPlayBtn.textContent = '▶';
+    log('🎵 Music paused by user');
+  } else {
+    userPausedMusic = false;
+    musicEl.play().then(function() {
+      musicPlaying = true;
+      mpPlayBtn.textContent = '⏸';
+      log('🎵 Music resumed');
+    }).catch(function(e) {
+      log('⚠️ Music resume failed: ' + e.message);
+    });
+  }
+}
+
+function nextTrack() {
+  playTrack(currentTrack + 1);
+}
+
+function prevTrack() {
+  if(musicEl && musicEl.currentTime > 3) {
+    musicEl.currentTime = 0;
+    log('🎵 Restarted: ' + playlist[currentTrack].name);
+  } else {
+    playTrack(currentTrack - 1);
+  }
+}
+
+function startMusic() {
+  // No-op: music only plays when user presses ▶
+}
+
+function stopMusic() {
+  if(musicEl && musicPlaying) {
+    musicEl.pause();
+    musicEl.currentTime = 0;
+    musicPlaying = false;
+    mpPlayBtn.textContent = '▶';
+    log('🎵 Music stopped');
+  }
+}
+
+
+// === scene.js ===
+// ─── THREE.JS SCENE SETUP ───
+var renderer;
+try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'default' }); }
+catch(e) { showErr('WebGL: '+e.message); log('❌ '+e.message); throw e; }
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+log('3. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight);
+
+var scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0a12);
+scene.fog = new THREE.Fog(0x0a0a12, 12, 28);
+
+var aspect = window.innerWidth / window.innerHeight;
+var FOV = 55;
+var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
+camera.position.set(-12, 10, 6);
+camera.lookAt(-7, 0, 0);
+
+scene.add(new THREE.AmbientLight(0x4466aa, .7));
+var sun = new THREE.DirectionalLight(0xffffff, 1.0);
+sun.position.set(10, 25, 10);
+sun.castShadow = false;
+scene.add(sun);
+var pLight = new THREE.PointLight(0x00ccff, .4, 25);
+scene.add(pLight);
+
+// Floor — checkerboard texture
+var floorCanvas = document.createElement('canvas');
+floorCanvas.width = 256; floorCanvas.height = 256;
+var fctx = floorCanvas.getContext('2d');
+var sq = 256 / GRID_SIZE;
+for(var fy = 0; fy < GRID_SIZE; fy++) {
+  for(var fx = 0; fx < GRID_SIZE; fx++) {
+    fctx.fillStyle = (fx + fy) % 2 === 0 ? '#111122' : '#0c0c18';
+    fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
+  }
+}
+var floorTex = new THREE.CanvasTexture(floorCanvas);
+floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
+var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
+flr.rotation.x = -Math.PI/2; flr.position.y = -.02; scene.add(flr);
+
+// Walls
+var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
+var hw = half;
+var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w1.position.set(0,.2,-hw); scene.add(w1);
+var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w2.position.set(0,.2,hw); scene.add(w2);
+var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w3.position.set(-hw,.2,0); scene.add(w3);
+var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w4.position.set(hw,.2,0); scene.add(w4);
+log('4. Floor+walls OK');
+
+// Cell centering
+var CELL_CENTER = 0.5;
+function gw(g) { return g + CELL_CENTER; }
+
+
+// === snake.js ===
+// ─── SNAKE 3D MESH ───
+var sGroup = new THREE.Group(); scene.add(sGroup);
+var hGeo = new THREE.BoxGeometry(.8, .5, .8);
+var hMat = new THREE.MeshStandardMaterial({color:0x00ff88, emissive:0x00aa44, emissiveIntensity:.35});
+var bGeo = new THREE.BoxGeometry(.7, .45, .7);
+var bMat = new THREE.MeshStandardMaterial({color:0x00cc66, emissive:0x004422, emissiveIntensity:.15});
+var headM = null;
+var bodyMs = [];
+
+function buildSnake() {
+  while(sGroup.children.length) { var c=sGroup.children[0]; sGroup.remove(c); c.geometry&&c.geometry.dispose(); }
+  bodyMs = [];
+  headM = new THREE.Mesh(hGeo, hMat); headM.position.y = .25; sGroup.add(headM);
+  for(var i = 0; i < 200; i++) {
+    var m = new THREE.Mesh(bGeo, bMat);
+    m.position.y = .225; m.visible = false; sGroup.add(m); bodyMs.push(m);
+  }
+}
+
+function refreshSnake() {
+  if(!snake.length) return;
+  headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
+  headM.rotation.y = -direction;
+  for(var i = 1; i < snake.length; i++) {
+    if(i < bodyMs.length) {
+      bodyMs[i].visible = true;
+      bodyMs[i].position.set(gw(snake[i].x), .225, gw(snake[i].z));
+      var frac = i / Math.max(snake.length, 1);
+      var s = 1 - frac * .4;
+      bodyMs[i].scale.set(s, 1, s);
+    }
+  }
+  for(var i = snake.length; i < bodyMs.length; i++) bodyMs[i].visible = false;
+}
+
+
+// === apples.js ===
+// ─── APPLES ───
+var appleGroup = new THREE.Group(); scene.add(appleGroup);
+var appleMeshes = [];
+var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
+var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
+
+function buildApples() {
+  while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
+  appleMeshes = [];
+  for(var i = 0; i < NUM_APPLES; i++) {
+    var g = new THREE.Group();
+    var m = new THREE.Mesh(appleGeo, appleMat);
+    g.add(m);
+    var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
+    appleGroup.add(g);
+    appleMeshes.push(g);
+    g.visible = false;
+  }
+}
+
+function isOccupied(x, z) {
+  if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
+  if(apples.some(function(a){return a&&a.x===x&&a.z===z;})) return true;
+  if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
+  return false;
+}
+
+function spawnOneApple() {
+  for(var tries = 0; tries < 200; tries++) {
+    var x = Math.floor(Math.random()*GRID_SIZE)-half;
+    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    if(!isOccupied(x,z)) return {x:x, z:z};
+  }
+  return null;
+}
+
+function refreshApples() {
+  for(var i = 0; i < NUM_APPLES; i++) {
+    if(i < apples.length && apples[i]) {
+      appleMeshes[i].visible = true;
+      appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
+    } else {
+      appleMeshes[i].visible = false;
+    }
+  }
+}
+
+function initApples() {
+  apples = [];
+  for(var i = 0; i < NUM_APPLES; i++) {
+    var a = spawnOneApple();
+    if(a) apples.push(a);
+  }
+  refreshApples();
+  log('Apples: ' + apples.length + ' spawned');
+}
+
+
+// === obstacles.js ===
+// ─── OBSTACLES ───
+var obsGroup = new THREE.Group(); scene.add(obsGroup);
+var obsMeshes = [];
+var obsGeo = new THREE.BoxGeometry(.8, .7, .8);
+var obsMat = new THREE.MeshStandardMaterial({color:0x664444, emissive:0x331111, emissiveIntensity:.2, roughness:.6});
+
+function buildObstacles() {
+  while(obsGroup.children.length) { var c=obsGroup.children[0]; obsGroup.remove(c); }
+  obsMeshes = [];
+  for(var i = 0; i < MAX_OBSTACLES; i++) {
+    var m = new THREE.Mesh(obsGeo, obsMat);
+    m.position.y = .35; m.visible = false; obsGroup.add(m); obsMeshes.push(m);
+  }
+}
+
+function refreshObstacles() {
+  for(var i = 0; i < MAX_OBSTACLES; i++) {
+    if(i < obstacles.length) {
+      obsMeshes[i].visible = true;
+      obsMeshes[i].position.set(gw(obstacles[i].x), .35, gw(obstacles[i].z));
+    } else {
+      obsMeshes[i].visible = false;
+    }
+  }
+}
+
+function isSafeForObstacle(x, z) {
+  for(var i = 0; i < snake.length; i++) {
+    var dx = snake[i].x - x, dz = snake[i].z - z;
+    if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_SNAKE) return false;
+  }
+  for(var i = 0; i < obstacles.length; i++) {
+    var dx = obstacles[i].x - x, dz = obstacles[i].z - z;
+    if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_EACH) return false;
+  }
+  for(var i = 0; i < apples.length; i++) {
+    if(!apples[i]) continue;
+    var dx = apples[i].x - x, dz = apples[i].z - z;
+    if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_APPLE) return false;
+  }
+  if(isOccupied(x, z)) return false;
+  return true;
+}
+
+function spawnObstacle() {
+  if(obstacles.length >= MAX_OBSTACLES) return;
+  for(var tries = 0; tries < 300; tries++) {
+    var x = Math.floor(Math.random()*GRID_SIZE)-half;
+    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    if(isSafeForObstacle(x, z)) {
+      obstacles.push({x:x, z:z});
+      refreshObstacles();
+      log('Obstacle spawned at ('+x+','+z+') — total: '+obstacles.length);
+      sfxObstacle();
+      return;
+    }
+  }
+  log('⚠️ Could not place obstacle');
+}
+
+
+// === particles.js ===
+// ─── PARTICLES ───
+var parts = [];
+var partMat = new THREE.MeshBasicMaterial({color:0xffaa00, transparent:true});
+var partGeo = new THREE.SphereGeometry(.05, 4, 4);
+function burst(x, z, col, n) {
+  for(var i = 0; i < (n||8); i++) {
+    var m = new THREE.Mesh(partGeo, partMat.clone());
+    m.position.set(gw(x), .3, gw(z));
+    m.material.color.setHex(col); m.material.opacity = 1;
+    m.userData = {vx:(Math.random()-.5)*.2, vy:Math.random()*.1+.05, vz:(Math.random()-.5)*.2, life:1};
+    scene.add(m); parts.push(m);
+  }
+}
+function tickParts(dt) {
+  for(var i=parts.length-1; i>=0; i--) {
+    var p=parts[i]; p.userData.life -= dt*2.5;
+    p.position.x+=p.userData.vx; p.position.y+=p.userData.vy; p.position.z+=p.userData.vz;
+    p.userData.vy -= dt*.3;
+    p.material.opacity = Math.max(0, p.userData.life);
+    p.scale.setScalar(Math.max(.01, p.userData.life));
+    if(p.userData.life<=0) { scene.remove(p); p.material.dispose(); parts.splice(i,1); }
+  }
+}
+
+log('5. Scene ready');
+
+
+// === game.js ===
+// ─── GAME LOGIC ───
+function initGame() {
+  log('=== initGame() ===');
+  snake=[]; direction=0; score=0; gameOver=false;
+  obstacles=[]; apples=[];
+  scoreEl.textContent='0';
+  snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
+  snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
+  buildSnake(); buildObstacles(); buildApples();
+  refreshObstacles();
+  initApples();
+  refreshSnake();
+  headSmoothX = gw(-5);
+  headSmoothZ = gw(0);
+  camSmoothX = gw(-5) - 5;
+  camSmoothZ = gw(0);
+  lookSmoothX = gw(-5) + 3;
+  lookSmoothZ = gw(0);
+  log('Snake: '+snake.length+' seg, dir=0');
+}
+
+function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
+function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
+
+function step() {
+  if(gameOver) return;
+  var h=snake[0];
+  var nx=h.x+Math.round(Math.cos(direction));
+  var nz=h.z+Math.round(Math.sin(direction));
+  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
+  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
+  if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
+  snake.unshift({x:nx,z:nz});
+  var ate = false;
+  for(var i = 0; i < apples.length; i++) {
+    if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+      score++; scoreEl.textContent=score; ate=true;
+      sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
+      log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+      var newA = spawnOneApple();
+      apples[i] = newA;
+      if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+      break;
+    }
+  }
+  if(!ate) snake.pop();
+  refreshApples();
+}
+
+function die() {
+  log('GAME OVER score='+score);
+  gameOver=true; running=false; sfxDie();
+  if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
+  if(score>highScore){highScore=score;localStorage.setItem('snake3d_hs',highScore);highscoreEl.textContent=highScore;}
+  totalGames++;
+  localStorage.setItem('snake3d_games', totalGames);
+  gamesCountEl.textContent = totalGames;
+  finalScoreEl.textContent='Puntuación: '+score+' 🍎';
+  finalScoreEl.style.display='block';
+  startBtn.textContent='REINTENTAR';
+  overlay.classList.remove('hidden');
+  hintL.style.opacity='1'; hintR.style.opacity='1';
+}
+
+// ─── CAMERA (framerate-independent, head-interpolated) ───
+var isMobile = window.innerWidth < 600;
+var CAM_SMOOTH_SPEED = 8; // smoothing factor (higher = faster follow)
+var HEAD_SMOOTH_SPEED = 12; // head position smoothing (higher = snappier)
+var headSmoothX = 0, headSmoothZ = 0; // interpolated head position for camera
+function updateCam(dt) {
+  if(!snake.length) return;
+  var camDist = isMobile ? 7 : 5;
+  var camHeight = isMobile ? 6 : 4.5;
+  var lookAhead = isMobile ? 4 : 3;
+  var dx = Math.cos(direction);
+  var dz = Math.sin(direction);
+  // Smooth head position (interpolate between grid cells)
+  var headTargetX = gw(snake[0].x);
+  var headTargetZ = gw(snake[0].z);
+  var headFactor = 1 - Math.exp(-HEAD_SMOOTH_SPEED * dt);
+  headSmoothX += (headTargetX - headSmoothX) * headFactor;
+  headSmoothZ += (headTargetZ - headSmoothZ) * headFactor;
+  // Camera follows smoothed head
+  var idealX = headSmoothX - dx * camDist;
+  var idealZ = headSmoothZ - dz * camDist;
+  var factor = 1 - Math.exp(-CAM_SMOOTH_SPEED * dt);
+  camSmoothX += (idealX - camSmoothX) * factor;
+  camSmoothZ += (idealZ - camSmoothZ) * factor;
+  camera.position.x = camSmoothX;
+  camera.position.y = camHeight;
+  camera.position.z = camSmoothZ;
+  var targetLookX = headSmoothX + dx * lookAhead;
+  var targetLookZ = headSmoothZ + dz * lookAhead;
+  lookSmoothX += (targetLookX - lookSmoothX) * factor;
+  lookSmoothZ += (targetLookZ - lookSmoothZ) * factor;
+  camera.lookAt(lookSmoothX, 0, lookSmoothZ);
+  pLight.position.set(headSmoothX, 5, headSmoothZ);
+}
+
+
+// === controls.js ===
+// ─── CONTROLS ───
+log('9. Controls ready');
+document.addEventListener('keydown', function(e) {
+  if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A'){e.preventDefault();turnL();}
+  if(e.key==='ArrowRight'||e.key==='d'||e.key==='D'){e.preventDefault();turnR();}
+});
+document.getElementById('tz-left').addEventListener('touchstart',function(e){e.preventDefault();turnL();},{passive:false});
+document.getElementById('tz-right').addEventListener('touchstart',function(e){e.preventDefault();turnR();},{passive:false});
+

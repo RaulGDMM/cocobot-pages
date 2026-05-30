@@ -54,3 +54,8 @@ function initApples() {
   refreshApples();
   log('Apples: ' + apples.length + ' spawned');
 }
+
+// ─── Module exports (for testing — ignored in browser) ───
+if(typeof module !== 'undefined' && module.exports) {
+  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples };
+}
