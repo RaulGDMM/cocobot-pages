@@ -237,16 +237,16 @@ config → state → audio → scene → snake → apples → obstacles → part
 
 ### Fase 6: Colisiones jugador ↔ IA
 - [x] 6.1 Modificar `game.js`: `step()` detecta colisión con cuerpo de IA → `die('ai')`
-- [x] 6.2 Modificar `game.js`: `step()` detecta colisión con cadáveres → `die()`
-- [ ] 6.3 Modificar `game.js`: `die(cause)` acepta causa, muestra mensaje apropiado
-- [ ] 6.4 Modificar `index.html`: overlay muestra causa de muerte
-- [ ] 6.5 **Tests**: Crear `tests/game.test.js` — tests de:
+- [x] 6.2 Modificar `game.js`: `step()` detecta colisión con cadáveres → `die('corpse')`
+- [x] 6.3 Modificar `game.js`: `die(cause)` acepta causa, muestra mensaje apropiado
+- [x] 6.4 Modificar `index.html`: overlay muestra causa de muerte
+- [x] 6.5 **Tests**: Crear `tests/game.test.js` — tests de:
   - Colisión cabeza contra cuerpo (solo muere la que choca)
   - Colisión cabeza contra cabeza (ambas mueren)
   - IA↔IA: cabeza contra cuerpo, cabeza contra cabeza
   - Jugador↔IA: cabeza contra cuerpo, cabeza contra cabeza
   - Causa de muerte: `'wall'`, `'self'`, `'obstacle'`, `'corpse'`, `'ai'`
-- [ ] 6.6 **Gate**: `npx jest` pasa antes de continuar
+- [x] 6.6 **Gate**: `npx jest` pasa antes de continuar (386 tests, 58/59 funciones 98%)
 
 ### Fase 7: High Score por modo/dificultad/tamaño
 - [ ] 7.1 Modificar `state.js`: función `getHighScoreKey(mode, difficulty, gridSize)`
