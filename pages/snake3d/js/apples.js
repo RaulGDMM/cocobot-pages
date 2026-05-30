@@ -22,6 +22,16 @@ function isOccupied(x, z) {
   if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
   if(apples.some(function(a){return a&&a.x===x&&a.z===z;})) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
+  // ─── AI MODE: include AI snakes and corpses ───
+  if(aiSnakes) {
+    for(var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      if(ai.alive && ai.snake.some(function(s){return s.x===x&&s.z===z;})) return true;
+    }
+  }
+  if(corpses) {
+    if(corpses.some(function(c){return c.x===x&&c.z===z;})) return true;
+  }
   return false;
 }
 

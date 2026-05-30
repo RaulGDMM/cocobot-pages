@@ -19,6 +19,7 @@ var playerColor = 'green';
 var gridSize = GRID_SIZE;
 var gridSizeModifier = 0;
 var aiSnakes = [];
+var corpses = [];
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');

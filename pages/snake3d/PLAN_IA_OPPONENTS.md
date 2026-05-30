@@ -166,13 +166,13 @@ config → state → audio → scene → snake → apples → obstacles → part
 ## 4. Plan de implementación (fases)
 
 ### Fase 0: Infraestructura de tests + baseline
-- [ ] 0.1 Crear `package.json` con Jest como dependencia de desarrollo
-- [ ] 0.2 Crear carpeta `tests/` y archivo `tests/config.test.js` con tests del código EXISTENTE de `config.js` (GRID_SIZE, MOVE_INTERVAL, TURN_ANGLE, NUM_APPLES, MAX_OBSTACLES, log/showErr)
-- [ ] 0.3 Crear `tests/state.test.js` con tests del código EXISTENTE de `state.js` (gameState, score, highScore, etc.)
-- [ ] 0.4 Crear `tests/apples.test.js` con tests de `isOccupied()` actual
-- [ ] 0.5 Crear `tests/obstacles.test.js` con tests de `isSafeForObstacle()` actual
-- [ ] 0.6 Verificar que todos los tests de baseline pasan (verde) antes de continuar
-- [ ] 0.7 Añadir script en `package.json`: `"test": "jest"` y `"test:watch": "jest --watch"`
+- [x] 0.1 Crear `package.json` con Jest como dependencia de desarrollo
+- [x] 0.2 Crear carpeta `tests/` y archivo `tests/config.test.js` con tests del código EXISTENTE de `config.js` (GRID_SIZE, MOVE_INTERVAL, TURN_ANGLE, NUM_APPLES, MAX_OBSTACLES, log/showErr)
+- [x] 0.3 Crear `tests/state.test.js` con tests del código EXISTENTE de `state.js` (gameState, score, highScore, etc.)
+- [x] 0.4 Crear `tests/apples.test.js` con tests de `isOccupied()` actual
+- [x] 0.5 Crear `tests/obstacles.test.js` con tests de `isSafeForObstacle()` actual
+- [x] 0.6 Verificar que todos los tests de baseline pasan (verde) antes de continuar
+- [x] 0.7 Añadir script en `package.json`: `"test": "jest"` y `"test:watch": "jest --watch"`
 
 ### Fase 1: Infraestructura de configuración
 - [x] 1.1 Modificar `config.js`: añadir constantes de colores (`SNAKE_COLORS` = Verde, Rojo, Azul, Amarillo), colores de IA, parámetros de dificultad, función `resolveGridSize()`
@@ -205,42 +205,48 @@ config → state → audio → scene → snake → apples → obstacles → part
 ### Fase 4: Múltiples serpientes (infraestructura)
 - [x] 4.1 Modificar `snake.js`: `buildSnake(color)` acepta color, soporta múltiples grupos
 - [x] 4.2 Modificar `snake.js`: `refreshSnake(snakeData, groupIndex)` soporta múltiples serpientes
-- [ ] 4.3 Modificar `apples.js`: `isOccupied()` incluye serpientes IA
-- [ ] 4.4 Modificar `obstacles.js`: `isSafeForObstacle()` incluye serpientes IA
-- [ ] 4.5 **Tests**: Actualizar `tests/apples.test.js` — `isOccupied()` con serpientes IA en la celda, sin IA en la celda
-- [ ] 4.6 **Tests**: Actualizar `tests/obstacles.test.js` — `isSafeForObstacle()` con serpientes IA cercanas
-- [ ] 4.7 **Gate**: `npx jest` pasa antes de continuar
+- [x] 4.3 Modificar `apples.js`: `isOccupied()` incluye serpientes IA
+- [x] 4.4 Modificar `obstacles.js`: `isSafeForObstacle()` incluye serpientes IA
+- [x] 4.5 **Tests**: Actualizar `tests/apples.test.js` — `isOccupied()` con serpientes IA en la celda, sin IA en la celda
+- [x] 4.6 **Tests**: Actualizar `tests/obstacles.test.js` — `isSafeForObstacle()` con serpientes IA cercanas
+- [x] 4.7 **Gate**: `npx jest` pasa antes de continuar (314 tests)
 
 ### Fase 5: Lógica de IA (1-3 oponentes, 3 niveles de dificultad)
-- [ ] 5.1 Crear `js/ai.js`: estructura de datos para IA (snake, direction, color, alive, corpse) — hasta 3 instancias
-- [ ] 5.2 Implementar `initAI()`: crear serpientes IA según modo (vs2=1, vs3=2, vs4=3) en posiciones seguras, asignar colores aleatorios de los 3 restantes (excluyendo el color del jugador, sin repetir entre IA)
-- [ ] 5.3 Implementar `aiEvaluateDirections(aiIndex)`: evaluar las 3 direcciones posibles, descartar las letales
-- [ ] 5.4 Implementar `aiDecideDirection(aiIndex, difficulty)`:
+- [x] 5.1 Crear `js/ai.js`: estructura de datos para IA (snake, direction, color, alive, corpse) — hasta 3 instancias
+- [x] 5.2 Implementar `initAI()`: crear serpientes IA según modo (vs2=1, vs3=2, vs4=3) en posiciones seguras, asignar colores aleatorios de los 3 restantes (excluyendo el color del jugador, sin repetir entre IA)
+- [x] 5.3 Implementar `aiEvaluateDirections(aiIndex)`: evaluar las 3 direcciones posibles, descartar las letales
+- [x] 5.4 Implementar `aiDecideDirection(aiIndex, difficulty)`:
   - Fácil: 70% óptimo, 30% aleatorio entre seguras
   - Medio: 90% óptimo, 10% aleatorio + táctica de arrinconamiento contra **cualquier otra serpiente** (40%)
   - Difícil: 98% óptimo, 2% aleatorio + táctica de arrinconamiento contra **cualquier otra serpiente** (70%) + lookahead 2-3 pasos
-- [ ] 5.5 Implementar `aiCorneringStrategy(aiIndex, targetIndex)`: detectar pasillos estrechos, posicionar para bloquear a **cualquier otra serpiente** (jugador u otra IA) — la IA evalúa agresividad contra todas las serpientes del tablero
-- [ ] 5.6 Implementar `stepAI()`: mover todas las IA, detectar colisiones, comer manzanas
-- [ ] 5.7 Implementar `aiDie(aiIndex)`: muerte + partículas + convertir cuerpo en cadáver permanente
-- [ ] 5.8 **Tests**: Crear `tests/ai.test.js` — tests de:
+- [x] 5.5 Implementar `aiCorneringStrategy(aiIndex, targetIndex)`: detectar pasillos estrechos, posicionar para bloquear a **cualquier otra serpiente** (jugador u otra IA) — la IA evalúa agresividad contra todas las serpientes del tablero
+- [x] 5.6 Implementar `stepAI()`: mover todas las IA, detectar colisiones, comer manzanas
+- [x] 5.7 Implementar `aiDie(aiIndex)`: muerte + partículas + convertir cuerpo en cadáver permanente
+- [x] 5.8 **Tests**: Crear `tests/ai.test.js` — tests de:
   - `aiEvaluateDirections()`: dirección segura vs letal (pared, cuerpo propio, cuerpo de otra serpiente, obstáculo, cadáver)
   - `aiDecideDirection()`: distribución de errores por dificultad (Fácil 30%, Medio 10%, Difícil 2%)
   - `initAI()`: número de IA por modo, asignación de colores (sin repetir, sin igualar al jugador)
   - `aiDie()`: conversión a cadáver, estado `alive=false`
-- [ ] 5.9 Modificar `main.js`: llamar `stepAI()` en el loop
-- [ ] 5.10 **Gate**: `npx jest` pasa antes de continuar
+  - `nearestApple()`: manzana más cercana por Manhattan distance
+  - `aiCorneringStrategy()`: arrinconamiento de serpientes más cortas
+  - `stepAI()`: movimiento, colisiones, comer manzanas
+  - `refreshAISnakes()`: renderizado de mallas IA
+- [x] 5.9 Modificar `main.js`: llamar `stepAI()` en el loop + `refreshAISnakes()`
+- [x] 5.10 **Tests**: Crear `tests/ui-dom.test.js` — tests de funciones DOM de UI (buildColorSelector, buildModeSelector, etc.)
+- [x] 5.11 **Gate**: `npx jest` pasa antes de continuar (344 tests, 57/58 funciones 98%)
 
 ### Fase 6: Colisiones jugador ↔ IA
-- [ ] 6.1 Modificar `game.js`: `step()` detecta colisión con cuerpo de IA → `die('ai')`
-- [ ] 6.2 Modificar `game.js`: `die(cause)` acepta causa, muestra mensaje apropiado
-- [ ] 6.3 Modificar `index.html`: overlay muestra causa de muerte
-- [ ] 6.4 **Tests**: Crear `tests/game.test.js` — tests de:
+- [x] 6.1 Modificar `game.js`: `step()` detecta colisión con cuerpo de IA → `die('ai')`
+- [x] 6.2 Modificar `game.js`: `step()` detecta colisión con cadáveres → `die()`
+- [ ] 6.3 Modificar `game.js`: `die(cause)` acepta causa, muestra mensaje apropiado
+- [ ] 6.4 Modificar `index.html`: overlay muestra causa de muerte
+- [ ] 6.5 **Tests**: Crear `tests/game.test.js` — tests de:
   - Colisión cabeza contra cuerpo (solo muere la que choca)
   - Colisión cabeza contra cabeza (ambas mueren)
   - IA↔IA: cabeza contra cuerpo, cabeza contra cabeza
   - Jugador↔IA: cabeza contra cuerpo, cabeza contra cabeza
   - Causa de muerte: `'wall'`, `'self'`, `'obstacle'`, `'corpse'`, `'ai'`
-- [ ] 6.5 **Gate**: `npx jest` pasa antes de continuar
+- [ ] 6.6 **Gate**: `npx jest` pasa antes de continuar
 
 ### Fase 7: High Score por modo/dificultad/tamaño
 - [ ] 7.1 Modificar `state.js`: función `getHighScoreKey(mode, difficulty, gridSize)`

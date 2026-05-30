@@ -40,6 +40,33 @@ function step() {
   if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
   if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
   if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
+  // ─── AI MODE: collision with AI snake bodies ───
+  if(aiSnakes) {
+    for(var k = 0; k < aiSnakes.length; k++) {
+      if(!aiSnakes[k].alive) continue;
+      var aiBody = aiSnakes[k].snake;
+      for(var j = 0; j < aiBody.length; j++) {
+        if(aiBody[j].x === nx && aiBody[j].z === nz) {
+          log('Hit AI#'+k+' body at ('+nx+','+nz+')');
+          die('ai');
+          return;
+        }
+      }
+    }
+  }
+  // ─── AI MODE: collision with corpses ───
+  if(corpses) {
+    for(var c = 0; c < corpses.length; c++) {
+      var corpse = corpses[c];
+      for(var ci = 0; ci < corpse.snake.length; ci++) {
+        if(corpse.snake[ci].x === nx && corpse.snake[ci].z === nz) {
+          log('Hit corpse at ('+nx+','+nz+')');
+          die();
+          return;
+        }
+      }
+    }
+  }
   snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {

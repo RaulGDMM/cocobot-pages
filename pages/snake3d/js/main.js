@@ -21,8 +21,15 @@ function loop(now) {
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
     if(running && !gameOver) {
-      if(now-lastMoveTime >= MOVE_INTERVAL) { step(); lastMoveTime=now; }
+      if(now-lastMoveTime >= MOVE_INTERVAL) {
+        // ─── AI MODE: step AI before player ───
+        if(aiSnakes && aiSnakes.length > 0) stepAI();
+        step();
+        lastMoveTime=now;
+      }
       refreshSnake();
+      // ─── AI MODE: refresh AI snake meshes ───
+      refreshAISnakes();
     }
 
     // Apple animation
@@ -66,6 +73,16 @@ startBtn.addEventListener('click', function() {
   overlay.classList.add('hidden');
   hintL.style.opacity='0'; hintR.style.opacity='0';
   initGame();
+
+  // ─── AI MODE: initialize AI snakes ───
+  initAI();
+  // Build AI snake meshes
+  if(aiSnakes) {
+    aiSnakes.forEach(function(ai, i) {
+      ai.groupData = buildSnake(ai.color);
+    });
+  }
+
   running=true;
   lastMoveTime = performance.now();
   log('RUNNING! MOVE_INTERVAL='+MOVE_INTERVAL+'ms');

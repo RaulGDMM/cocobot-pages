@@ -9,7 +9,7 @@ const path = require('path');
 const srcDir = path.join(__dirname, '..', 'js');
 const files = [
   'config.js', 'state.js', 'audio.js', 'scene.js', 'snake.js',
-  'apples.js', 'obstacles.js', 'particles.js', 'ui.js', 'game.js', 'controls.js'
+  'apples.js', 'obstacles.js', 'particles.js', 'ai.js', 'ui.js', 'game.js', 'controls.js'
 ];
 
 let bundled = '// ─── Snake3D Bundle for Jest ───\n';

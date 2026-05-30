@@ -38,6 +38,17 @@ function isSafeForObstacle(x, z) {
     var dx = apples[i].x - x, dz = apples[i].z - z;
     if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_APPLE) return false;
   }
+  // ─── AI MODE: keep distance from AI snakes too ───
+  if(aiSnakes) {
+    for(var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      if(!ai.alive) continue;
+      for(var j = 0; j < ai.snake.length; j++) {
+        var dx = ai.snake[j].x - x, dz = ai.snake[j].z - z;
+        if(Math.abs(dx) + Math.abs(dz) < OBSTACLE_MIN_DIST_SNAKE) return false;
+      }
+    }
+  }
   if(isOccupied(x, z)) return false;
   return true;
 }
