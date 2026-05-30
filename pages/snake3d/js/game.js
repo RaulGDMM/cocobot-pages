@@ -10,6 +10,8 @@ function initGame() {
   refreshObstacles();
   initApples();
   refreshSnake();
+  headSmoothX = gw(-5);
+  headSmoothZ = gw(0);
   camSmoothX = gw(-5) - 5;
   camSmoothZ = gw(0);
   lookSmoothX = gw(-5) + 3;
@@ -60,9 +62,11 @@ function die() {
   hintL.style.opacity='1'; hintR.style.opacity='1';
 }
 
-// ─── CAMERA (framerate-independent) ───
+// ─── CAMERA (framerate-independent, head-interpolated) ───
 var isMobile = window.innerWidth < 600;
 var CAM_SMOOTH_SPEED = 8; // smoothing factor (higher = faster follow)
+var HEAD_SMOOTH_SPEED = 12; // head position smoothing (higher = snappier)
+var headSmoothX = 0, headSmoothZ = 0; // interpolated head position for camera
 function updateCam(dt) {
   if(!snake.length) return;
   var camDist = isMobile ? 7 : 5;
@@ -70,21 +74,25 @@ function updateCam(dt) {
   var lookAhead = isMobile ? 4 : 3;
   var dx = Math.cos(direction);
   var dz = Math.sin(direction);
-  var headWX = gw(snake[0].x);
-  var headWZ = gw(snake[0].z);
-  var idealX = headWX - dx * camDist;
-  var idealZ = headWZ - dz * camDist;
-  // Framerate-independent lerp: factor = 1 - exp(-speed * dt)
+  // Smooth head position (interpolate between grid cells)
+  var headTargetX = gw(snake[0].x);
+  var headTargetZ = gw(snake[0].z);
+  var headFactor = 1 - Math.exp(-HEAD_SMOOTH_SPEED * dt);
+  headSmoothX += (headTargetX - headSmoothX) * headFactor;
+  headSmoothZ += (headTargetZ - headSmoothZ) * headFactor;
+  // Camera follows smoothed head
+  var idealX = headSmoothX - dx * camDist;
+  var idealZ = headSmoothZ - dz * camDist;
   var factor = 1 - Math.exp(-CAM_SMOOTH_SPEED * dt);
   camSmoothX += (idealX - camSmoothX) * factor;
   camSmoothZ += (idealZ - camSmoothZ) * factor;
   camera.position.x = camSmoothX;
   camera.position.y = camHeight;
   camera.position.z = camSmoothZ;
-  var targetLookX = headWX + dx * lookAhead;
-  var targetLookZ = headWZ + dz * lookAhead;
+  var targetLookX = headSmoothX + dx * lookAhead;
+  var targetLookZ = headSmoothZ + dz * lookAhead;
   lookSmoothX += (targetLookX - lookSmoothX) * factor;
   lookSmoothZ += (targetLookZ - lookSmoothZ) * factor;
   camera.lookAt(lookSmoothX, 0, lookSmoothZ);
-  pLight.position.set(headWX, 5, headWZ);
+  pLight.position.set(headSmoothX, 5, headSmoothZ);
 }
