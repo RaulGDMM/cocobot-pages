@@ -1,0 +1,68 @@
+// ─── WebGL context loss ───
+canvas.addEventListener('webglcontextlost', function(e) {
+  e.preventDefault(); log('⚠️ WebGL LOST'); showErr('WebGL perdido...'); running = false;
+});
+canvas.addEventListener('webglcontextrestored', function(e) {
+  log('✅ WebGL RESTORED'); showErr('');
+  if(!running && !gameOver) { try { buildSnake(); refreshSnake(); refreshApples(); refreshObstacles(); log('Scene rebuilt'); } catch(err) { log('❌ Rebuild: '+err.message); } }
+  else if(running) { lastMoveTime = performance.now(); log('Context restored — continuing'); }
+});
+
+// ─── ANIMATION LOOP ───
+var frameCount = 0;
+log('6. Starting loop...');
+function loop(now) {
+  requestAnimationFrame(loop);
+  frameCount++;
+  try {
+    var dt = Math.min((now-(loop._p||now))/1000, .05);
+    loop._p = now;
+    if(frameCount===1) log('7. First frame OK');
+    if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
+
+    if(running && !gameOver) {
+      if(now-lastMoveTime >= MOVE_INTERVAL) { step(); lastMoveTime=now; }
+      refreshSnake();
+    }
+
+    // Apple animation
+    if(appleMeshes.length) {
+      for(var i = 0; i < appleMeshes.length; i++) {
+        if(appleMeshes[i].visible) {
+          appleMeshes[i].position.y = .25 + Math.sin(now*.003 + i)*.1;
+          appleMeshes[i].rotation.y = now*.002 + i;
+        }
+      }
+    }
+
+    tickParts(dt);
+    updateCam();
+    renderer.render(scene, camera);
+  } catch(e) {
+    log('❌ Loop err f'+frameCount+': '+e.message); showErr(e.message);
+  }
+}
+
+// ─── RESIZE ───
+window.addEventListener('resize', function() {
+  var w=window.innerWidth,h=window.innerHeight,a=w/h;
+  camera.aspect = a; camera.updateProjectionMatrix(); renderer.setSize(w,h);
+});
+
+// ─── START ───
+startBtn.addEventListener('click', function() {
+  log('▶ CLICK ' + startBtn.textContent);
+  initAudio();
+  overlay.classList.add('hidden');
+  hintL.style.opacity='0'; hintR.style.opacity='0';
+  initGame();
+  running=true;
+  lastMoveTime = performance.now();
+  log('RUNNING! MOVE_INTERVAL='+MOVE_INTERVAL+'ms');
+});
+
+// ─── INIT ───
+buildSnake(); buildObstacles(); buildApples();
+initMusic();
+requestAnimationFrame(loop);
+log('✅ INIT COMPLETE');

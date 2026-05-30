@@ -1,0 +1,87 @@
+// ─── GAME LOGIC ───
+function initGame() {
+  log('=== initGame() ===');
+  snake=[]; direction=0; score=0; gameOver=false;
+  obstacles=[]; apples=[];
+  scoreEl.textContent='0';
+  snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
+  snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
+  buildSnake(); buildObstacles(); buildApples();
+  refreshObstacles();
+  initApples();
+  refreshSnake();
+  camSmoothX = gw(-5) - 5;
+  camSmoothZ = gw(0);
+  lookSmoothX = gw(-5) + 3;
+  lookSmoothZ = gw(0);
+  log('Snake: '+snake.length+' seg, dir=0');
+}
+
+function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
+function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
+
+function step() {
+  if(gameOver) return;
+  var h=snake[0];
+  var nx=h.x+Math.round(Math.cos(direction));
+  var nz=h.z+Math.round(Math.sin(direction));
+  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die();return;}
+  if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die();return;}
+  if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die();return;}
+  snake.unshift({x:nx,z:nz});
+  var ate = false;
+  for(var i = 0; i < apples.length; i++) {
+    if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+      score++; scoreEl.textContent=score; ate=true;
+      sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
+      log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+      var newA = spawnOneApple();
+      apples[i] = newA;
+      if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+      break;
+    }
+  }
+  if(!ate) snake.pop();
+  refreshApples();
+}
+
+function die() {
+  log('GAME OVER score='+score);
+  gameOver=true; running=false; sfxDie();
+  if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
+  if(score>highScore){highScore=score;localStorage.setItem('snake3d_hs',highScore);highscoreEl.textContent=highScore;}
+  totalGames++;
+  localStorage.setItem('snake3d_games', totalGames);
+  gamesCountEl.textContent = totalGames;
+  finalScoreEl.textContent='Puntuación: '+score+' 🍎';
+  finalScoreEl.style.display='block';
+  startBtn.textContent='REINTENTAR';
+  overlay.classList.remove('hidden');
+  hintL.style.opacity='1'; hintR.style.opacity='1';
+}
+
+// ─── CAMERA ───
+var isMobile = window.innerWidth < 600;
+function updateCam() {
+  if(!snake.length) return;
+  var camDist = isMobile ? 7 : 5;
+  var camHeight = isMobile ? 6 : 4.5;
+  var lookAhead = isMobile ? 4 : 3;
+  var dx = Math.cos(direction);
+  var dz = Math.sin(direction);
+  var headWX = gw(snake[0].x);
+  var headWZ = gw(snake[0].z);
+  var idealX = headWX - dx * camDist;
+  var idealZ = headWZ - dz * camDist;
+  camSmoothX += (idealX - camSmoothX) * 0.08;
+  camSmoothZ += (idealZ - camSmoothZ) * 0.08;
+  camera.position.x = camSmoothX;
+  camera.position.y = camHeight;
+  camera.position.z = camSmoothZ;
+  var targetLookX = headWX + dx * lookAhead;
+  var targetLookZ = headWZ + dz * lookAhead;
+  lookSmoothX += (targetLookX - lookSmoothX) * 0.08;
+  lookSmoothZ += (targetLookZ - lookSmoothZ) * 0.08;
+  camera.lookAt(lookSmoothX, 0, lookSmoothZ);
+  pLight.position.set(headWX, 5, headWZ);
+}
