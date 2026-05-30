@@ -6,6 +6,68 @@ const { setSnake, setApples, setObstacles } = require('./helpers');
 // Helper to set global variables
 const setGlobal = (name, value) => { global[name] = value; };
 
+// ─── snapToCardinal() ───
+describe('ai.js — snapToCardinal()', () => {
+  test('snaps 0 to 0', () => {
+    expect(snapToCardinal(0)).toBe(0);
+  });
+
+  test('snaps π/2 to π/2', () => {
+    expect(snapToCardinal(Math.PI / 2)).toBeCloseTo(Math.PI / 2);
+  });
+
+  test('snaps π to π', () => {
+    expect(snapToCardinal(Math.PI)).toBeCloseTo(Math.PI);
+  });
+
+  test('snaps -π/2 to -π/2', () => {
+    expect(snapToCardinal(-Math.PI / 2)).toBeCloseTo(-Math.PI / 2);
+  });
+
+  test('snaps diagonal angle (π/4) to nearest cardinal', () => {
+    // π/4 is equidistant from 0 and π/2 — should pick one
+    var result = snapToCardinal(Math.PI / 4);
+    var isCardinal = (Math.abs(result) < 0.01) || (Math.abs(result - Math.PI / 2) < 0.01);
+    expect(isCardinal).toBe(true);
+  });
+
+  test('snaps small deviation from cardinal to that cardinal', () => {
+    // 0.1 rad from 0 → should snap to 0
+    expect(snapToCardinal(0.1)).toBeCloseTo(0);
+    // 0.1 rad from π/2 → should snap to π/2
+    expect(snapToCardinal(Math.PI / 2 + 0.1)).toBeCloseTo(Math.PI / 2);
+  });
+
+  test('snaps angle past π to nearest cardinal', () => {
+    // 1.6 rad is closer to π/2 (1.57) than π (3.14)
+    expect(snapToCardinal(1.6)).toBeCloseTo(Math.PI / 2);
+  });
+
+  test('snaps atan2 result to cardinal', () => {
+    // atan2(-5, -3) ≈ 2.11 rad — closer to π (3.14) than π/2 (1.57)
+    var angle = Math.atan2(-5, -3);
+    var snapped = snapToCardinal(angle);
+    // Should be one of the 4 cardinals
+    var cardinals = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+    var isCardinal = cardinals.some(function(c) {
+      return Math.abs(snapped - c) < 0.01;
+    });
+    expect(isCardinal).toBe(true);
+  });
+
+  test('handles negative angles', () => {
+    // -2 rad is closer to -π/2 (-1.57) than -π (-3.14)
+    expect(snapToCardinal(-2)).toBeCloseTo(-Math.PI / 2);
+  });
+
+  test('handles full rotation angles', () => {
+    // 2π is equivalent to 0
+    expect(snapToCardinal(Math.PI * 2)).toBeCloseTo(0);
+    // -2π is equivalent to 0
+    expect(snapToCardinal(-Math.PI * 2)).toBeCloseTo(0);
+  });
+});
+
 // ─── isOccupied() with AI snakes ───
 describe('apples.js — isOccupied() with AI snakes', () => {
   beforeEach(() => {

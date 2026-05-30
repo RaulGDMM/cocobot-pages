@@ -679,6 +679,25 @@ log('5. Scene ready');
 // ─── AI OPPONENTS ───
 // AI snake logic: movement, collision, corpses, difficulty levels
 
+// ─── Snap angle to nearest cardinal direction ───
+// Cardinal directions: 0 (right/+X), π/2 (down/+Z), π (left/-X), -π/2 (up/-Z)
+function snapToCardinal(angle) {
+  var cardinal = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+  var best = cardinal[0];
+  var bestDiff = Infinity;
+  for (var i = 0; i < cardinal.length; i++) {
+    // Normalize difference to [-π, π]
+    var diff = angle - cardinal[i];
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    if (Math.abs(diff) < bestDiff) {
+      bestDiff = Math.abs(diff);
+      best = cardinal[i];
+    }
+  }
+  return best;
+}
+
 // ─── Initialize AI snakes ───
 function initAI() {
   log('=== initAI() mode=' + gameMode + ' diff=' + difficulty + ' ===');
@@ -716,17 +735,20 @@ function initAI() {
       snakeData.push({x: sx - j, z: sz});
     }
 
+    // Snap initial direction to cardinal so AI moves in grid-aligned steps
+    var initDir = snapToCardinal(Math.atan2(-sz, -sx));
+
     aiSnakes.push({
       id: 'ai_' + i,
       snake: snakeData,
-      direction: Math.atan2(-sz, -sx), // face toward center
+      direction: initDir,
       color: availableColors[i] || 'red',
       alive: true,
       score: 0,
       groupData: null // will be set by buildSnake
     });
 
-    log('AI ' + i + ': color=' + availableColors[i] + ' spawn=(' + sx + ',' + sz + ')');
+    log('AI ' + i + ': color=' + availableColors[i] + ' spawn=(' + sx + ',' + sz + ') dir=' + initDir);
   }
 }
 
@@ -805,14 +827,14 @@ function aiDecideDirection(aiIndex, diff) {
   // Random error based on difficulty
   var errorRate = AI_ERROR_RATE[diff] || AI_ERROR_RATE.medium;
   if (Math.random() < errorRate) {
-    return safe[Math.floor(Math.random() * safe.length)];
+    return snapToCardinal(safe[Math.floor(Math.random() * safe.length)]);
   }
 
   // Find nearest apple
   var apple = nearestApple(ai.snake[0].x, ai.snake[0].z);
   if (!apple) {
     // No apples — pick direction that keeps most space
-    return safe[0];
+    return snapToCardinal(safe[0]);
   }
 
   // Score each safe direction by distance to apple
@@ -828,7 +850,7 @@ function aiDecideDirection(aiIndex, diff) {
     }
   });
 
-  return bestDir;
+  return snapToCardinal(bestDir);
 }
 
 // ─── Cornering strategy (medium/hard difficulty) ───
