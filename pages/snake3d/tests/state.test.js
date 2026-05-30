@@ -150,4 +150,66 @@ describe('state.js', () => {
       expect(gameOver).toBe(false);
     });
   });
+
+  // ─── AI MODE: new state variables ───
+  describe('AI mode state variables', () => {
+    test('gameMode defaults to solo', () => {
+      expect(gameMode).toBe('solo');
+    });
+
+    test('difficulty defaults to medium', () => {
+      expect(difficulty).toBe('medium');
+    });
+
+    test('playerColor defaults to green', () => {
+      expect(playerColor).toBe('green');
+    });
+
+    test('gridSize defaults to GRID_SIZE', () => {
+      expect(gridSize).toBe(GRID_SIZE);
+    });
+
+    test('gridSizeModifier defaults to 0', () => {
+      expect(gridSizeModifier).toBe(0);
+    });
+
+    test('aiSnakes is an empty array', () => {
+      expect(Array.isArray(aiSnakes)).toBe(true);
+      expect(aiSnakes.length).toBe(0);
+    });
+
+    test('gameMode can be changed', () => {
+      var prev = gameMode;
+      gameMode = 'vs2';
+      expect(gameMode).toBe('vs2');
+      gameMode = prev;
+    });
+
+    test('difficulty can be changed', () => {
+      var prev = difficulty;
+      difficulty = 'hard';
+      expect(difficulty).toBe('hard');
+      difficulty = prev;
+    });
+
+    test('playerColor can be changed', () => {
+      var prev = playerColor;
+      playerColor = 'red';
+      expect(playerColor).toBe('red');
+      playerColor = prev;
+    });
+
+    test('gridSize can be changed', () => {
+      var prev = gridSize;
+      gridSize = 30;
+      expect(gridSize).toBe(30);
+      gridSize = prev;
+    });
+
+    test('aiSnakes can be populated', () => {
+      aiSnakes.push({ x: 0, z: 0, direction: 0 });
+      expect(aiSnakes.length).toBe(1);
+      aiSnakes = [];
+    });
+  });
 });

@@ -12,9 +12,9 @@ const SRC_DIR = path.join(ROOT, 'js');
 const TEST_DIR = path.join(ROOT, 'tests');
 
 const FILES = ['config.js','state.js','audio.js','scene.js','snake.js',
-               'apples.js','obstacles.js','particles.js','game.js','controls.js'];
+               'apples.js','obstacles.js','particles.js','ui.js','game.js','controls.js'];
 const TEST_FILES = ['config.test.js','state.test.js','apples.test.js',
-                    'obstacles.test.js','coverage.test.js'];
+                    'obstacles.test.js','coverage.test.js','ui.test.js'];
 
 // Read sources
 const sources = {};

@@ -15,6 +15,73 @@ var OBSTACLE_MIN_DIST_EACH = 3;
 var OBSTACLE_MIN_DIST_APPLE = 3;
 var MAX_OBSTACLES = 30;
 
+// ─── AI MODE ───
+// Snake colors: player picks one, AI get random from remaining
+var SNAKE_COLORS = {
+  green: '#00cc44',
+  red: '#cc2222',
+  blue: '#2266cc',
+  yellow: '#ccaa00'
+};
+var SNAKE_COLOR_NAMES = ['green', 'red', 'blue', 'yellow'];
+
+// Game modes: solo, vs2, vs3, vs4
+var GAME_MODES = ['solo', 'vs2', 'vs3', 'vs4'];
+
+// Mode → base grid size multiplier
+var MODE_GRID_MULTIPLIER = {
+  solo: 1.0,
+  vs2: 1.25,
+  vs3: 1.50,
+  vs4: 1.75
+};
+
+// Difficulty levels
+var DIFFICULTIES = ['easy', 'medium', 'hard'];
+
+// AI error rates per difficulty (probability of choosing random safe direction)
+var AI_ERROR_RATE = {
+  easy: 0.30,
+  medium: 0.10,
+  hard: 0.02
+};
+
+// AI cornering aggression per difficulty (probability per tick)
+var AI_CORNERING_RATE = {
+  easy: 0.00,
+  medium: 0.40,
+  hard: 0.70
+};
+
+// Grid size limits
+var GRID_MIN = 16;
+var GRID_MAX = 50;
+
+// Number of AI snakes per mode
+var AI_COUNT = {
+  solo: 0,
+  vs2: 1,
+  vs3: 2,
+  vs4: 3
+};
+
+// ─── AI MODE: resolveGridSize(mode, percentageModifier) ───
+// mode: 'solo'|'vs2'|'vs3'|'vs4'
+// percentageModifier: -50 to +50 (integer, step 5)
+// Returns clamped integer between GRID_MIN and GRID_MAX
+function resolveGridSize(mode, percentageModifier) {
+  var base = Math.round(22 * (MODE_GRID_MULTIPLIER[mode] || 1.0));
+  var result = base + Math.round(base * (percentageModifier || 0) / 100);
+  if (result < GRID_MIN) result = GRID_MIN;
+  if (result > GRID_MAX) result = GRID_MAX;
+  return result;
+}
+
+// ─── AI MODE: getHighScoreKey(mode, difficulty, gridSize) ───
+function getHighScoreKey(mode, difficulty, gridSize) {
+  return 'snake3d_hs_' + mode + '_' + gridSize + '_' + difficulty;
+}
+
 // ─── LOGGING (must be early — all modules use log/showErr) ───
 var dbg = document.getElementById('debug');
 var errBox = document.getElementById('err-box');
@@ -49,6 +116,14 @@ var lastMoveTime = 0;
 var gameOver = false;
 var camSmoothX = 0, camSmoothZ = 0;
 var lookSmoothX = 0, lookSmoothZ = 0;
+
+// ─── AI MODE ───
+var gameMode = 'solo';
+var difficulty = 'medium';
+var playerColor = 'green';
+var gridSize = GRID_SIZE;
+var gridSizeModifier = 0;
+var aiSnakes = [];
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -244,8 +319,6 @@ scene.fog = new THREE.Fog(0x0a0a12, 12, 28);
 var aspect = window.innerWidth / window.innerHeight;
 var FOV = 55;
 var camera = new THREE.PerspectiveCamera(FOV, aspect, 0.1, 200);
-camera.position.set(-12, 10, 6);
-camera.lookAt(-7, 0, 0);
 
 scene.add(new THREE.AmbientLight(0x4466aa, .7));
 var sun = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -255,30 +328,55 @@ scene.add(sun);
 var pLight = new THREE.PointLight(0x00ccff, .4, 25);
 scene.add(pLight);
 
-// Floor — checkerboard texture
-var floorCanvas = document.createElement('canvas');
-floorCanvas.width = 256; floorCanvas.height = 256;
-var fctx = floorCanvas.getContext('2d');
-var sq = 256 / GRID_SIZE;
-for(var fy = 0; fy < GRID_SIZE; fy++) {
-  for(var fx = 0; fx < GRID_SIZE; fx++) {
-    fctx.fillStyle = (fx + fy) % 2 === 0 ? '#111122' : '#0c0c18';
-    fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
-  }
-}
-var floorTex = new THREE.CanvasTexture(floorCanvas);
-floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
-var flr = new THREE.Mesh(new THREE.PlaneGeometry(GRID_SIZE, GRID_SIZE), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
-flr.rotation.x = -Math.PI/2; flr.position.y = -.02; scene.add(flr);
+// ─── AI MODE: dynamic board ───
+var _floorMesh = null;
+var _wallMeshes = [];
 
-// Walls
-var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
-var hw = half;
-var w1=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w1.position.set(0,.2,-hw); scene.add(w1);
-var w2=new THREE.Mesh(new THREE.BoxGeometry(GRID_SIZE+.3,.4,.15),wm); w2.position.set(0,.2,hw); scene.add(w2);
-var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w3.position.set(-hw,.2,0); scene.add(w3);
-var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,GRID_SIZE+.3),wm); w4.position.set(hw,.2,0); scene.add(w4);
-log('4. Floor+walls OK');
+function rebuildBoard(gs) {
+  // Remove old floor
+  if (_floorMesh) { scene.remove(_floorMesh); if(_floorMesh.geometry) _floorMesh.geometry.dispose(); if(_floorMesh.material.map) _floorMesh.material.map.dispose(); if(_floorMesh.material) _floorMesh.material.dispose(); }
+  // Remove old walls
+  _wallMeshes.forEach(function(w) { scene.remove(w); if(w.geometry) w.geometry.dispose(); });
+  _wallMeshes = [];
+
+  var h = gs / 2;
+
+  // Fog
+  scene.fog = new THREE.Fog(0x0a0a12, gs * 0.5, gs * 1.3);
+
+  // Floor — checkerboard texture
+  var floorCanvas = document.createElement('canvas');
+  floorCanvas.width = 256; floorCanvas.height = 256;
+  var fctx = floorCanvas.getContext('2d');
+  var sq = 256 / gs;
+  for(var fy = 0; fy < gs; fy++) {
+    for(var fx = 0; fx < gs; fx++) {
+      fctx.fillStyle = (fx + fy) % 2 === 0 ? '#111122' : '#0c0c18';
+      fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
+    }
+  }
+  var floorTex = new THREE.CanvasTexture(floorCanvas);
+  floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
+  _floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(gs, gs), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
+  _floorMesh.rotation.x = -Math.PI/2; _floorMesh.position.y = -.02; scene.add(_floorMesh);
+
+  // Walls
+  var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
+  var w1=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w1.position.set(0,.2,-h); scene.add(w1); _wallMeshes.push(w1);
+  var w2=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w2.position.set(0,.2,h); scene.add(w2); _wallMeshes.push(w2);
+  var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w3.position.set(-h,.2,0); scene.add(w3); _wallMeshes.push(w3);
+  var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w4.position.set(h,.2,0); scene.add(w4); _wallMeshes.push(w4);
+
+  // Camera position based on grid size
+  var camDist = gs * 0.6;
+  camera.position.set(-camDist, camDist * 0.7, camDist * 0.4);
+  camera.lookAt(0, 0, 0);
+
+  log('Board rebuilt: ' + gs + 'x' + gs);
+}
+
+// Initial board build
+rebuildBoard(GRID_SIZE);
 
 // Cell centering
 var CELL_CENTER = 0.5;
@@ -287,38 +385,122 @@ function gw(g) { return g + CELL_CENTER; }
 
 // === snake.js ===
 // ─── SNAKE 3D MESH ───
+// ─── AI MODE: multi-snake support ───
+
 var sGroup = new THREE.Group(); scene.add(sGroup);
+
+// Shared geometries (reused across snakes)
 var hGeo = new THREE.BoxGeometry(.8, .5, .8);
-var hMat = new THREE.MeshStandardMaterial({color:0x00ff88, emissive:0x00aa44, emissiveIntensity:.35});
 var bGeo = new THREE.BoxGeometry(.7, .45, .7);
+
+// Legacy globals (used by game.js in solo mode)
+var hMat = new THREE.MeshStandardMaterial({color:0x00ff88, emissive:0x00aa44, emissiveIntensity:.35});
 var bMat = new THREE.MeshStandardMaterial({color:0x00cc66, emissive:0x004422, emissiveIntensity:.15});
 var headM = null;
 var bodyMs = [];
 
-function buildSnake() {
-  while(sGroup.children.length) { var c=sGroup.children[0]; sGroup.remove(c); c.geometry&&c.geometry.dispose(); }
-  bodyMs = [];
-  headM = new THREE.Mesh(hGeo, hMat); headM.position.y = .25; sGroup.add(headM);
+// Snake groups indexed by snake ID (multi-snake mode)
+var snakeGroups = {};  // { id: { group, headM, bodyMs } }
+
+// ─── Build snake mesh ───
+// Usage: buildSnake()           → legacy mode, sets headM/bodyMs globals
+// Usage: buildSnake(color)      → returns { group, headM, bodyMs } for multi-snake
+function buildSnake(color) {
+  var isMulti = (typeof color === 'string');
+
+  // Materials
+  var headMat, bodyMat;
+  if (isMulti) {
+    var snakeColor = SNAKE_COLORS[color] || SNAKE_COLORS.green;
+    var emissive = new THREE.Color(snakeColor).multiplyScalar(0.6).getHex();
+    headMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(snakeColor),
+      emissive: emissive,
+      emissiveIntensity: .35
+    });
+    bodyMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(snakeColor).multiplyScalar(0.7),
+      emissive: new THREE.Color(snakeColor).multiplyScalar(0.2).getHex(),
+      emissiveIntensity: .15
+    });
+  } else {
+    // Legacy: clear existing and use global materials
+    while(sGroup.children.length) {
+      var c = sGroup.children[0]; sGroup.remove(c);
+      if (c.geometry) c.geometry.dispose();
+    }
+    headMat = hMat;
+    bodyMat = bMat;
+  }
+
+  var head = new THREE.Mesh(hGeo, headMat);
+  head.position.y = .25;
+
+  var bodies = [];
   for(var i = 0; i < 200; i++) {
-    var m = new THREE.Mesh(bGeo, bMat);
-    m.position.y = .225; m.visible = false; sGroup.add(m); bodyMs.push(m);
+    var m = new THREE.Mesh(bGeo, bodyMat);
+    m.position.y = .225; m.visible = false;
+    bodies.push(m);
+  }
+
+  if (isMulti) {
+    // Multi-snake: wrap in a group
+    var group = new THREE.Group();
+    group.add(head);
+    bodies.forEach(function(b) { group.add(b); });
+    sGroup.add(group);
+    return { group: group, headM: head, bodyMs: bodies };
+  } else {
+    // Legacy: add directly to sGroup, set globals
+    sGroup.add(head);
+    bodies.forEach(function(b) { sGroup.add(b); });
+    headM = head;
+    bodyMs = bodies;
+    return;
   }
 }
 
-function refreshSnake() {
-  if(!snake.length) return;
-  headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
-  headM.rotation.y = -direction;
-  for(var i = 1; i < snake.length; i++) {
-    if(i < bodyMs.length) {
-      bodyMs[i].visible = true;
-      bodyMs[i].position.set(gw(snake[i].x), .225, gw(snake[i].z));
-      var frac = i / Math.max(snake.length, 1);
+// ─── Refresh snake mesh ───
+// Usage: refreshSnake()                       → legacy mode, uses snake/direction globals
+// Usage: refreshSnake(snakeData, groupData)   → multi-snake mode
+function refreshSnake(snakeData, groupData) {
+  // Legacy mode: no arguments
+  if (snakeData === undefined) {
+    if(!snake.length || !headM) return;
+    headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
+    headM.rotation.y = -direction;
+    for(var i = 1; i < snake.length; i++) {
+      if(i < bodyMs.length) {
+        bodyMs[i].visible = true;
+        bodyMs[i].position.set(gw(snake[i].x), .225, gw(snake[i].z));
+        var frac = i / Math.max(snake.length, 1);
+        var s = 1 - frac * .4;
+        bodyMs[i].scale.set(s, 1, s);
+      }
+    }
+    for(var i = snake.length; i < bodyMs.length; i++) bodyMs[i].visible = false;
+    return;
+  }
+
+  // Multi-snake mode
+  if(!snakeData || !snakeData.length || !groupData) return;
+  var head = groupData.headM;
+  var bodies = groupData.bodyMs;
+  var dir = groupData.direction || 0;
+
+  head.position.set(gw(snakeData[0].x), .25, gw(snakeData[0].z));
+  head.rotation.y = -dir;
+
+  for(var i = 1; i < snakeData.length; i++) {
+    if(i < bodies.length) {
+      bodies[i].visible = true;
+      bodies[i].position.set(gw(snakeData[i].x), .225, gw(snakeData[i].z));
+      var frac = i / Math.max(snakeData.length, 1);
       var s = 1 - frac * .4;
-      bodyMs[i].scale.set(s, 1, s);
+      bodies[i].scale.set(s, 1, s);
     }
   }
-  for(var i = snake.length; i < bodyMs.length; i++) bodyMs[i].visible = false;
+  for(var i = snakeData.length; i < bodies.length; i++) bodies[i].visible = false;
 }
 
 
@@ -352,8 +534,8 @@ function isOccupied(x, z) {
 
 function spawnOneApple() {
   for(var tries = 0; tries < 200; tries++) {
-    var x = Math.floor(Math.random()*GRID_SIZE)-half;
-    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    var x = Math.floor(Math.random()*gridSize)-half;
+    var z = Math.floor(Math.random()*gridSize)-half;
     if(!isOccupied(x,z)) return {x:x, z:z};
   }
   return null;
@@ -429,8 +611,8 @@ function isSafeForObstacle(x, z) {
 function spawnObstacle() {
   if(obstacles.length >= MAX_OBSTACLES) return;
   for(var tries = 0; tries < 300; tries++) {
-    var x = Math.floor(Math.random()*GRID_SIZE)-half;
-    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    var x = Math.floor(Math.random()*gridSize)-half;
+    var z = Math.floor(Math.random()*gridSize)-half;
     if(isSafeForObstacle(x, z)) {
       obstacles.push({x:x, z:z});
       refreshObstacles();
@@ -471,26 +653,234 @@ function tickParts(dt) {
 log('5. Scene ready');
 
 
+// === ui.js ===
+// ─── UI: Game Configuration Selectors ───
+// ─── AI MODE ───
+
+var uiState = {
+  selectedColor: 'green',
+  selectedMode: 'solo',
+  selectedDifficulty: 'medium',
+  selectedSizeMod: 0
+};
+
+// ─── Build color selector chips ───
+function buildColorSelector(container) {
+  var wrapper = document.createElement('div');
+  wrapper.className = 'selector-row';
+  wrapper.innerHTML = '<span class="selector-label">Color:</span>';
+
+  SNAKE_COLOR_NAMES.forEach(function(colorName) {
+    var chip = document.createElement('button');
+    chip.className = 'color-chip' + (colorName === uiState.selectedColor ? ' selected' : '');
+    chip.dataset.color = colorName;
+    chip.innerHTML = '<span class="color-dot" style="background:' + SNAKE_COLORS[colorName] + '"></span>';
+    chip.addEventListener('click', function() {
+      wrapper.querySelectorAll('.color-chip').forEach(function(c) { c.classList.remove('selected'); });
+      chip.classList.add('selected');
+      uiState.selectedColor = colorName;
+      updateHighScoreDisplay();
+    });
+    wrapper.appendChild(chip);
+  });
+
+  container.appendChild(wrapper);
+}
+
+// ─── Build mode selector chips ───
+function buildModeSelector(container) {
+  var wrapper = document.createElement('div');
+  wrapper.className = 'selector-row';
+  wrapper.innerHTML = '<span class="selector-label">Modo:</span>';
+
+  var modeLabels = { solo: 'Solo', vs2: 'vs 2', vs3: 'vs 3', vs4: 'vs 4' };
+  GAME_MODES.forEach(function(mode) {
+    var chip = document.createElement('button');
+    chip.className = 'mode-chip' + (mode === uiState.selectedMode ? ' selected' : '');
+    chip.dataset.mode = mode;
+    chip.textContent = modeLabels[mode];
+    chip.addEventListener('click', function() {
+      wrapper.querySelectorAll('.mode-chip').forEach(function(c) { c.classList.remove('selected'); });
+      chip.classList.add('selected');
+      uiState.selectedMode = mode;
+      updateDifficultyVisibility();
+      updateSizeDisplay();
+      updateHighScoreDisplay();
+    });
+    wrapper.appendChild(chip);
+  });
+
+  container.appendChild(wrapper);
+}
+
+// ─── Build difficulty selector chips ───
+function buildDifficultySelector(container) {
+  var wrapper = document.createElement('div');
+  wrapper.className = 'selector-row difficulty-row';
+  wrapper.innerHTML = '<span class="selector-label">Dificultad:</span>';
+
+  var diffLabels = { easy: 'Fácil', medium: 'Medio', hard: 'Difícil' };
+  DIFFICULTIES.forEach(function(diff) {
+    var chip = document.createElement('button');
+    chip.className = 'diff-chip' + (diff === uiState.selectedDifficulty ? ' selected' : '');
+    chip.dataset.difficulty = diff;
+    chip.textContent = diffLabels[diff];
+    chip.addEventListener('click', function() {
+      wrapper.querySelectorAll('.diff-chip').forEach(function(c) { c.classList.remove('selected'); });
+      chip.classList.add('selected');
+      uiState.selectedDifficulty = diff;
+      updateHighScoreDisplay();
+    });
+    wrapper.appendChild(chip);
+  });
+
+  container.appendChild(wrapper);
+}
+
+// ─── Build size selector (slider) ───
+function buildSizeSelector(container) {
+  var wrapper = document.createElement('div');
+  wrapper.className = 'selector-row size-row';
+  wrapper.innerHTML = '<span class="selector-label">Tamaño:</span>';
+
+  var sliderContainer = document.createElement('div');
+  sliderContainer.className = 'size-slider-container';
+
+  var sizeLabel = document.createElement('span');
+  sizeLabel.className = 'size-label';
+  sliderContainer.appendChild(sizeLabel);
+
+  var slider = document.createElement('input');
+  slider.type = 'range';
+  slider.min = '-50';
+  slider.max = '50';
+  slider.step = '5';
+  slider.value = '0';
+  slider.className = 'size-slider';
+  slider.addEventListener('input', function() {
+    uiState.selectedSizeMod = parseInt(slider.value);
+    updateSizeDisplay();
+    updateHighScoreDisplay();
+  });
+  sliderContainer.appendChild(slider);
+
+  wrapper.appendChild(sliderContainer);
+  container.appendChild(wrapper);
+
+  updateSizeDisplay();
+}
+
+// ─── Update size display label ───
+function updateSizeDisplay() {
+  var sizeLabel = document.querySelector('.size-label');
+  if (!sizeLabel) return;
+
+  var actualSize = resolveGridSize(uiState.selectedMode, uiState.selectedSizeMod);
+  var modText = uiState.selectedSizeMod === 0 ? '' : (uiState.selectedSizeMod > 0 ? '+' + uiState.selectedSizeMod + '%' : uiState.selectedSizeMod + '%');
+
+  sizeLabel.textContent = actualSize + ' × ' + actualSize + (modText ? ' (' + modText + ')' : '');
+}
+
+// ─── Update difficulty visibility (only in vs modes) ───
+function updateDifficultyVisibility() {
+  var diffRow = document.querySelector('.difficulty-row');
+  if (!diffRow) return;
+  diffRow.style.display = (uiState.selectedMode === 'solo') ? 'none' : 'flex';
+}
+
+// ─── Update high score display ───
+function updateHighScoreDisplay() {
+  var config = getGameConfig();
+  var key = getHighScoreKey(config.mode, config.difficulty, config.gridSize);
+  var hs = parseInt(localStorage.getItem(key) || '0');
+  if (highscoreEl) {
+    highscoreEl.textContent = hs;
+  }
+}
+
+// ─── Get current game config from UI state ───
+function getGameConfig() {
+  return {
+    mode: uiState.selectedMode,
+    difficulty: uiState.selectedDifficulty,
+    color: uiState.selectedColor,
+    gridSize: resolveGridSize(uiState.selectedMode, uiState.selectedSizeMod),
+    gridSizeModifier: uiState.selectedSizeMod
+  };
+}
+
+// ─── Initialize UI selectors ───
+function initUISelectors() {
+  var overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  // Create selectors container
+  var selectorsDiv = document.createElement('div');
+  selectorsDiv.id = 'selectors';
+
+  buildColorSelector(selectorsDiv);
+  buildModeSelector(selectorsDiv);
+  buildDifficultySelector(selectorsDiv);
+  buildSizeSelector(selectorsDiv);
+
+  // Insert selectors before the start button
+  var startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    overlay.insertBefore(selectorsDiv, startBtn);
+  }
+
+  // Initial visibility state
+  updateDifficultyVisibility();
+  updateHighScoreDisplay();
+}
+
+// ─── Module exports (for testing — ignored in browser) ───
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    get uiState() { return uiState; },
+    getGameConfig: getGameConfig,
+    buildColorSelector: buildColorSelector,
+    buildModeSelector: buildModeSelector,
+    buildDifficultySelector: buildDifficultySelector,
+    buildSizeSelector: buildSizeSelector,
+    updateDifficultyVisibility: updateDifficultyVisibility,
+    updateSizeDisplay: updateSizeDisplay,
+    updateHighScoreDisplay: updateHighScoreDisplay,
+    initUISelectors: initUISelectors
+  };
+}
+
+
 // === game.js ===
 // ─── GAME LOGIC ───
 function initGame() {
   log('=== initGame() ===');
+
+  // ─── AI MODE: rebuild board with dynamic grid size ───
+  half = gridSize / 2;
+  rebuildBoard(gridSize);
+
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
-  buildSnake(); buildObstacles(); buildApples();
+  log('Snake data: ' + snake.length + ' segments');
+  buildSnake();
+  log('buildSnake done: headM=' + (headM ? 'OK' : 'NULL') + ', bodyMs=' + bodyMs.length);
+  buildObstacles(); buildApples();
   refreshObstacles();
   initApples();
+  log('Apples: ' + apples.filter(Boolean).length + '/' + apples.length);
   refreshSnake();
+  log('refreshSnake done: head at (' + (headM ? headM.position.x : 'NULL') + ',' + (headM ? headM.position.z : 'NULL') + ')');
   headSmoothX = gw(-5);
   headSmoothZ = gw(0);
   camSmoothX = gw(-5) - 5;
   camSmoothZ = gw(0);
   lookSmoothX = gw(-5) + 3;
   lookSmoothZ = gw(0);
-  log('Snake: '+snake.length+' seg, dir=0');
+  log('Snake: '+snake.length+' seg, dir=0, grid=' + gridSize + ', half=' + half);
 }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
@@ -581,4 +971,5 @@ document.addEventListener('keydown', function(e) {
 });
 document.getElementById('tz-left').addEventListener('touchstart',function(e){e.preventDefault();turnL();},{passive:false});
 document.getElementById('tz-right').addEventListener('touchstart',function(e){e.preventDefault();turnR();},{passive:false});
+
 

@@ -45,8 +45,8 @@ function isSafeForObstacle(x, z) {
 function spawnObstacle() {
   if(obstacles.length >= MAX_OBSTACLES) return;
   for(var tries = 0; tries < 300; tries++) {
-    var x = Math.floor(Math.random()*GRID_SIZE)-half;
-    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    var x = Math.floor(Math.random()*gridSize)-half;
+    var z = Math.floor(Math.random()*gridSize)-half;
     if(isSafeForObstacle(x, z)) {
       obstacles.push({x:x, z:z});
       refreshObstacles();

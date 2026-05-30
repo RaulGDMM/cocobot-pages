@@ -175,36 +175,36 @@ config → state → audio → scene → snake → apples → obstacles → part
 - [ ] 0.7 Añadir script en `package.json`: `"test": "jest"` y `"test:watch": "jest --watch"`
 
 ### Fase 1: Infraestructura de configuración
-- [ ] 1.1 Modificar `config.js`: añadir constantes de colores (`SNAKE_COLORS` = Verde, Rojo, Azul, Amarillo), colores de IA, parámetros de dificultad, función `resolveGridSize()`
-- [ ] 1.2 Modificar `state.js`: añadir variables de modo, dificultad, `playerColor`, tamaño, serpientes IA
-- [ ] 1.3 Modificar `config.js`: hacer GRID_SIZE dinámico (se establece desde UI)
-- [ ] 1.4 **Tests**: Actualizar `tests/config.test.js` — tests de `resolveGridSize()` (todos los modos, límites 16/50, valores intermedios), validación de `SNAKE_COLORS`
-- [ ] 1.5 **Tests**: Actualizar `tests/state.test.js` — tests de nuevas variables de estado (`gameMode`, `difficulty`, `playerColor`)
-- [ ] 1.6 **Gate**: `npx jest` pasa antes de continuar
+- [x] 1.1 Modificar `config.js`: añadir constantes de colores (`SNAKE_COLORS` = Verde, Rojo, Azul, Amarillo), colores de IA, parámetros de dificultad, función `resolveGridSize()`
+- [x] 1.2 Modificar `state.js`: añadir variables de modo, dificultad, `playerColor`, tamaño, serpientes IA
+- [x] 1.3 Modificar `config.js`: hacer GRID_SIZE dinámico (se establece desde UI)
+- [x] 1.4 **Tests**: Actualizar `tests/config.test.js` — tests de `resolveGridSize()` (todos los modos, límites 16/50, valores intermedios), validación de `SNAKE_COLORS`
+- [x] 1.5 **Tests**: Actualizar `tests/state.test.js` — tests de nuevas variables de estado (`gameMode`, `difficulty`, `playerColor`)
+- [x] 1.6 **Gate**: `npx jest` pasa antes de continuar (270 tests, 40/40 funciones 100%)
 
 ### Fase 2: UI de selección
 
 ### Fase 2: UI de selección
-- [ ] 2.1 Crear `js/ui.js`: funciones `buildColorSelector()`, `buildModeSelector()`, `buildDifficultySelector()`, `buildSizeSelector()`, `getGameConfig()`
-- [ ] 2.2 Modificar `index.html`: añadir contenedores para selectores (color, modo, dificultad, tamaño) en el overlay
-- [ ] 2.3 Modificar `css/style.css`: estilos para chips de color (con punto de color), chips de modo, chips de dificultad, y slider de tamaño
-- [ ] 2.4 Modificar `ui.js`: lógica de visibilidad (dificultad solo visible en modos vs)
-- [ ] 2.5 Modificar `ui.js`: actualizar highscoreEl al cambiar modo/dificultad/tamaño
-- [ ] 2.6 Modificar `main.js`: al pulsar JUGAR, leer config completa (color + modo + dificultad + tamaño) antes de `initGame()`
-- [ ] 2.7 **Tests**: Crear `tests/ui.test.js` — tests de `getGameConfig()` (combinaciones modo+dificultad+color+tamaño), validación de inputs
-- [ ] 2.8 **Gate**: `npx jest` pasa antes de continuar
+- [x] 2.1 Crear `js/ui.js`: funciones `buildColorSelector()`, `buildModeSelector()`, `buildDifficultySelector()`, `buildSizeSelector()`, `getGameConfig()`
+- [x] 2.2 Modificar `index.html`: añadir contenedores para selectores (color, modo, dificultad, tamaño) en el overlay
+- [x] 2.3 Modificar `css/style.css`: estilos para chips de color (con punto de color), chips de modo, chips de dificultad, y slider de tamaño
+- [x] 2.4 Modificar `ui.js`: lógica de visibilidad (dificultad solo visible en modos vs)
+- [x] 2.5 Modificar `ui.js`: actualizar highscoreEl al cambiar modo/dificultad/tamaño
+- [x] 2.6 Modificar `main.js`: al pulsar JUGAR, leer config completa (color + modo + dificultad + tamaño) antes de `initGame()`
+- [x] 2.7 **Tests**: Crear `tests/ui.test.js` — tests de `getGameConfig()` (combinaciones modo+dificultad+color+tamaño), validación de inputs
+- [x] 2.8 **Gate**: `npx jest` pasa antes de continuar (284 tests, 41/49 funciones 84%)
 
 ### Fase 3: Escalado dinámico del tablero
 
 ### Fase 3: Escalado dinámico del tablero
-- [ ] 3.1 Modificar `scene.js`: función `rebuildBoard(gridSize)` que reconstruye floor+walls+fog
-- [ ] 3.2 Modificar `scene.js`: llamar `rebuildBoard()` desde `initGame()`
-- [ ] 3.3 Ajustar cámara inicial según tamaño del tablero
-- [ ] 3.4 **Gate**: `npx jest` pasa (sin nuevos tests — `scene.js` depende de Three.js)
+- [x] 3.1 Modificar `scene.js`: función `rebuildBoard(gridSize)` que reconstruye floor+walls+fog
+- [x] 3.2 Modificar `scene.js`: llamar `rebuildBoard()` desde `initGame()`
+- [x] 3.3 Ajustar cámara inicial según tamaño del tablero
+- [x] 3.4 **Gate**: `npx jest` pasa (284 tests, 41/50 funciones 82%)
 
 ### Fase 4: Múltiples serpientes (infraestructura)
-- [ ] 4.1 Modificar `snake.js`: `buildSnake(color)` acepta color, soporta múltiples grupos
-- [ ] 4.2 Modificar `snake.js`: `refreshSnake(snakeData, groupIndex)` soporta múltiples serpientes
+- [x] 4.1 Modificar `snake.js`: `buildSnake(color)` acepta color, soporta múltiples grupos
+- [x] 4.2 Modificar `snake.js`: `refreshSnake(snakeData, groupIndex)` soporta múltiples serpientes
 - [ ] 4.3 Modificar `apples.js`: `isOccupied()` incluye serpientes IA
 - [ ] 4.4 Modificar `obstacles.js`: `isSafeForObstacle()` incluye serpientes IA
 - [ ] 4.5 **Tests**: Actualizar `tests/apples.test.js` — `isOccupied()` con serpientes IA en la celda, sin IA en la celda

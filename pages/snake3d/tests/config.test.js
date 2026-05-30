@@ -108,4 +108,188 @@ describe('config.js', () => {
       expect(typeof window.onerror).toBe('function');
     });
   });
+
+  // ─── AI MODE: SNAKE_COLORS ───
+  describe('SNAKE_COLORS', () => {
+    test('has 4 color definitions', () => {
+      expect(Object.keys(SNAKE_COLORS).length).toBe(4);
+    });
+
+    test('has green, red, blue, yellow', () => {
+      expect(SNAKE_COLORS.green).toBe('#00cc44');
+      expect(SNAKE_COLORS.red).toBe('#cc2222');
+      expect(SNAKE_COLORS.blue).toBe('#2266cc');
+      expect(SNAKE_COLORS.yellow).toBe('#ccaa00');
+    });
+
+    test('SNAKE_COLOR_NAMES has 4 entries', () => {
+      expect(SNAKE_COLOR_NAMES.length).toBe(4);
+      expect(SNAKE_COLOR_NAMES).toEqual(['green', 'red', 'blue', 'yellow']);
+    });
+  });
+
+  // ─── AI MODE: GAME_MODES ───
+  describe('GAME_MODES', () => {
+    test('has 4 modes', () => {
+      expect(GAME_MODES.length).toBe(4);
+      expect(GAME_MODES).toEqual(['solo', 'vs2', 'vs3', 'vs4']);
+    });
+  });
+
+  // ─── AI MODE: DIFFICULTIES ───
+  describe('DIFFICULTIES', () => {
+    test('has 3 difficulty levels', () => {
+      expect(DIFFICULTIES.length).toBe(3);
+      expect(DIFFICULTIES).toEqual(['easy', 'medium', 'hard']);
+    });
+  });
+
+  // ─── AI MODE: AI_COUNT ───
+  describe('AI_COUNT', () => {
+    test('solo has 0 AI', () => {
+      expect(AI_COUNT.solo).toBe(0);
+    });
+    test('vs2 has 1 AI', () => {
+      expect(AI_COUNT.vs2).toBe(1);
+    });
+    test('vs3 has 2 AI', () => {
+      expect(AI_COUNT.vs3).toBe(2);
+    });
+    test('vs4 has 3 AI', () => {
+      expect(AI_COUNT.vs4).toBe(3);
+    });
+  });
+
+  // ─── AI MODE: AI_ERROR_RATE ───
+  describe('AI_ERROR_RATE', () => {
+    test('easy has 30% error rate', () => {
+      expect(AI_ERROR_RATE.easy).toBe(0.30);
+    });
+    test('medium has 10% error rate', () => {
+      expect(AI_ERROR_RATE.medium).toBe(0.10);
+    });
+    test('hard has 2% error rate', () => {
+      expect(AI_ERROR_RATE.hard).toBe(0.02);
+    });
+  });
+
+  // ─── AI MODE: AI_CORNERING_RATE ───
+  describe('AI_CORNERING_RATE', () => {
+    test('easy has 0% cornering', () => {
+      expect(AI_CORNERING_RATE.easy).toBe(0.00);
+    });
+    test('medium has 40% cornering', () => {
+      expect(AI_CORNERING_RATE.medium).toBe(0.40);
+    });
+    test('hard has 70% cornering', () => {
+      expect(AI_CORNERING_RATE.hard).toBe(0.70);
+    });
+  });
+
+  // ─── AI MODE: GRID limits ───
+  describe('GRID_MIN and GRID_MAX', () => {
+    test('GRID_MIN is 16', () => {
+      expect(GRID_MIN).toBe(16);
+    });
+    test('GRID_MAX is 50', () => {
+      expect(GRID_MAX).toBe(50);
+    });
+  });
+
+  // ─── AI MODE: resolveGridSize() ───
+  describe('resolveGridSize(mode, percentageModifier)', () => {
+    test('solo base (modifier 0) returns 22', () => {
+      expect(resolveGridSize('solo', 0)).toBe(22);
+    });
+    test('vs2 base (modifier 0) returns 28', () => {
+      expect(resolveGridSize('vs2', 0)).toBe(28);
+    });
+    test('vs3 base (modifier 0) returns 33', () => {
+      expect(resolveGridSize('vs3', 0)).toBe(33);
+    });
+    test('vs4 base (modifier 0) returns 39', () => {
+      expect(resolveGridSize('vs4', 0)).toBe(39);
+    });
+
+    // Modifier +50%
+    test('solo +50% returns 33', () => {
+      expect(resolveGridSize('solo', 50)).toBe(33);
+    });
+    test('vs2 +50% returns 42', () => {
+      expect(resolveGridSize('vs2', 50)).toBe(42);
+    });
+    test('vs3 +50% clamps to 50', () => {
+      expect(resolveGridSize('vs3', 50)).toBe(50);
+    });
+    test('vs4 +50% clamps to 50', () => {
+      expect(resolveGridSize('vs4', 50)).toBe(50);
+    });
+
+    // Modifier -50%
+    test('solo -50% clamps to 16', () => {
+      expect(resolveGridSize('solo', -50)).toBe(16);
+    });
+    test('vs2 -50% clamps to 16', () => {
+      expect(resolveGridSize('vs2', -50)).toBe(16);
+    });
+    test('vs3 -50% returns 17', () => {
+      expect(resolveGridSize('vs3', -50)).toBe(17);
+    });
+    test('vs4 -50% returns 20', () => {
+      expect(resolveGridSize('vs4', -50)).toBe(20);
+    });
+
+    // Intermediate modifiers
+    test('solo +25% returns 28', () => {
+      expect(resolveGridSize('solo', 25)).toBe(28);
+    });
+    test('solo -25% returns 17', () => {
+      expect(resolveGridSize('solo', -25)).toBe(17);
+    });
+    test('vs2 +10% returns 31', () => {
+      expect(resolveGridSize('vs2', 10)).toBe(31);
+    });
+    test('vs3 -10% returns 30', () => {
+      expect(resolveGridSize('vs3', -10)).toBe(30);
+    });
+
+    // Edge cases
+    test('unknown mode defaults to solo multiplier', () => {
+      expect(resolveGridSize('unknown', 0)).toBe(22);
+    });
+    test('modifier beyond range clamps to 50', () => {
+      expect(resolveGridSize('vs2', 100)).toBe(50);
+    });
+    test('undefined modifier defaults to 0', () => {
+      expect(resolveGridSize('solo', undefined)).toBe(22);
+    });
+  });
+
+  // ─── AI MODE: getHighScoreKey() ───
+  describe('getHighScoreKey(mode, difficulty, gridSize)', () => {
+    test('solo easy 22', () => {
+      expect(getHighScoreKey('solo', 'easy', 22)).toBe('snake3d_hs_solo_22_easy');
+    });
+    test('vs4 hard 39', () => {
+      expect(getHighScoreKey('vs4', 'hard', 39)).toBe('snake3d_hs_vs4_39_hard');
+    });
+    test('vs2 medium 28', () => {
+      expect(getHighScoreKey('vs2', 'medium', 28)).toBe('snake3d_hs_vs2_28_medium');
+    });
+    test('different grid sizes produce different keys', () => {
+      expect(getHighScoreKey('solo', 'easy', 22)).not.toEqual(
+        getHighScoreKey('solo', 'easy', 28)
+      );
+    });
+    test('different difficulties produce different keys', () => {
+      expect(getHighScoreKey('solo', 'easy', 22)).not.toEqual(
+        getHighScoreKey('solo', 'hard', 22)
+      );
+    });
+    test('different modes produce different keys', () => {
+      expect(getHighScoreKey('solo', 'medium', 22)).not.toEqual(
+        getHighScoreKey('vs2', 'medium', 28)
+      );
+    });
+  });
 });

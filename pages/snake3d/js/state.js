@@ -12,6 +12,14 @@ var gameOver = false;
 var camSmoothX = 0, camSmoothZ = 0;
 var lookSmoothX = 0, lookSmoothZ = 0;
 
+// ─── AI MODE ───
+var gameMode = 'solo';
+var difficulty = 'medium';
+var playerColor = 'green';
+var gridSize = GRID_SIZE;
+var gridSizeModifier = 0;
+var aiSnakes = [];
+
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
 var scoreEl = document.getElementById('score');

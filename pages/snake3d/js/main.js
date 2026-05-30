@@ -53,6 +53,16 @@ window.addEventListener('resize', function() {
 startBtn.addEventListener('click', function() {
   log('▶ CLICK ' + startBtn.textContent);
   initAudio();
+
+  // ─── AI MODE: read config from UI ───
+  var config = getGameConfig();
+  gameMode = config.mode;
+  difficulty = config.difficulty;
+  playerColor = config.color;
+  gridSize = config.gridSize;
+  gridSizeModifier = config.gridSizeModifier;
+  log('Config: mode=' + gameMode + ' diff=' + difficulty + ' color=' + playerColor + ' grid=' + gridSize);
+
   overlay.classList.add('hidden');
   hintL.style.opacity='0'; hintR.style.opacity='0';
   initGame();
@@ -64,5 +74,6 @@ startBtn.addEventListener('click', function() {
 // ─── INIT ───
 buildSnake(); buildObstacles(); buildApples();
 initMusic();
+initUISelectors();
 requestAnimationFrame(loop);
 log('✅ INIT COMPLETE');

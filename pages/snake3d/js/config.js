@@ -10,6 +10,73 @@ var OBSTACLE_MIN_DIST_EACH = 3;
 var OBSTACLE_MIN_DIST_APPLE = 3;
 var MAX_OBSTACLES = 30;
 
+// ─── AI MODE ───
+// Snake colors: player picks one, AI get random from remaining
+var SNAKE_COLORS = {
+  green: '#00cc44',
+  red: '#cc2222',
+  blue: '#2266cc',
+  yellow: '#ccaa00'
+};
+var SNAKE_COLOR_NAMES = ['green', 'red', 'blue', 'yellow'];
+
+// Game modes: solo, vs2, vs3, vs4
+var GAME_MODES = ['solo', 'vs2', 'vs3', 'vs4'];
+
+// Mode → base grid size multiplier
+var MODE_GRID_MULTIPLIER = {
+  solo: 1.0,
+  vs2: 1.25,
+  vs3: 1.50,
+  vs4: 1.75
+};
+
+// Difficulty levels
+var DIFFICULTIES = ['easy', 'medium', 'hard'];
+
+// AI error rates per difficulty (probability of choosing random safe direction)
+var AI_ERROR_RATE = {
+  easy: 0.30,
+  medium: 0.10,
+  hard: 0.02
+};
+
+// AI cornering aggression per difficulty (probability per tick)
+var AI_CORNERING_RATE = {
+  easy: 0.00,
+  medium: 0.40,
+  hard: 0.70
+};
+
+// Grid size limits
+var GRID_MIN = 16;
+var GRID_MAX = 50;
+
+// Number of AI snakes per mode
+var AI_COUNT = {
+  solo: 0,
+  vs2: 1,
+  vs3: 2,
+  vs4: 3
+};
+
+// ─── AI MODE: resolveGridSize(mode, percentageModifier) ───
+// mode: 'solo'|'vs2'|'vs3'|'vs4'
+// percentageModifier: -50 to +50 (integer, step 5)
+// Returns clamped integer between GRID_MIN and GRID_MAX
+function resolveGridSize(mode, percentageModifier) {
+  var base = Math.round(22 * (MODE_GRID_MULTIPLIER[mode] || 1.0));
+  var result = base + Math.round(base * (percentageModifier || 0) / 100);
+  if (result < GRID_MIN) result = GRID_MIN;
+  if (result > GRID_MAX) result = GRID_MAX;
+  return result;
+}
+
+// ─── AI MODE: getHighScoreKey(mode, difficulty, gridSize) ───
+function getHighScoreKey(mode, difficulty, gridSize) {
+  return 'snake3d_hs_' + mode + '_' + gridSize + '_' + difficulty;
+}
+
 // ─── LOGGING (must be early — all modules use log/showErr) ───
 var dbg = document.getElementById('debug');
 var errBox = document.getElementById('err-box');

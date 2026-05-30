@@ -27,8 +27,8 @@ function isOccupied(x, z) {
 
 function spawnOneApple() {
   for(var tries = 0; tries < 200; tries++) {
-    var x = Math.floor(Math.random()*GRID_SIZE)-half;
-    var z = Math.floor(Math.random()*GRID_SIZE)-half;
+    var x = Math.floor(Math.random()*gridSize)-half;
+    var z = Math.floor(Math.random()*gridSize)-half;
     if(!isOccupied(x,z)) return {x:x, z:z};
   }
   return null;

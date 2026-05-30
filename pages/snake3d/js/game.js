@@ -1,22 +1,32 @@
 // ─── GAME LOGIC ───
 function initGame() {
   log('=== initGame() ===');
+
+  // ─── AI MODE: rebuild board with dynamic grid size ───
+  half = gridSize / 2;
+  rebuildBoard(gridSize);
+
   snake=[]; direction=0; score=0; gameOver=false;
   obstacles=[]; apples=[];
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
-  buildSnake(); buildObstacles(); buildApples();
+  log('Snake data: ' + snake.length + ' segments');
+  buildSnake();
+  log('buildSnake done: headM=' + (headM ? 'OK' : 'NULL') + ', bodyMs=' + bodyMs.length);
+  buildObstacles(); buildApples();
   refreshObstacles();
   initApples();
+  log('Apples: ' + apples.filter(Boolean).length + '/' + apples.length);
   refreshSnake();
+  log('refreshSnake done: head at (' + (headM ? headM.position.x : 'NULL') + ',' + (headM ? headM.position.z : 'NULL') + ')');
   headSmoothX = gw(-5);
   headSmoothZ = gw(0);
   camSmoothX = gw(-5) - 5;
   camSmoothZ = gw(0);
   lookSmoothX = gw(-5) + 3;
   lookSmoothZ = gw(0);
-  log('Snake: '+snake.length+' seg, dir=0');
+  log('Snake: '+snake.length+' seg, dir=0, grid=' + gridSize + ', half=' + half);
 }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
