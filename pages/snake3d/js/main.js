@@ -36,7 +36,7 @@ function loop(now) {
     }
 
     tickParts(dt);
-    updateCam();
+    updateCam(dt);
     renderer.render(scene, camera);
   } catch(e) {
     log('❌ Loop err f'+frameCount+': '+e.message); showErr(e.message);

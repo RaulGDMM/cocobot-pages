@@ -60,9 +60,10 @@ function die() {
   hintL.style.opacity='1'; hintR.style.opacity='1';
 }
 
-// ─── CAMERA ───
+// ─── CAMERA (framerate-independent) ───
 var isMobile = window.innerWidth < 600;
-function updateCam() {
+var CAM_SMOOTH_SPEED = 8; // smoothing factor (higher = faster follow)
+function updateCam(dt) {
   if(!snake.length) return;
   var camDist = isMobile ? 7 : 5;
   var camHeight = isMobile ? 6 : 4.5;
@@ -73,15 +74,17 @@ function updateCam() {
   var headWZ = gw(snake[0].z);
   var idealX = headWX - dx * camDist;
   var idealZ = headWZ - dz * camDist;
-  camSmoothX += (idealX - camSmoothX) * 0.08;
-  camSmoothZ += (idealZ - camSmoothZ) * 0.08;
+  // Framerate-independent lerp: factor = 1 - exp(-speed * dt)
+  var factor = 1 - Math.exp(-CAM_SMOOTH_SPEED * dt);
+  camSmoothX += (idealX - camSmoothX) * factor;
+  camSmoothZ += (idealZ - camSmoothZ) * factor;
   camera.position.x = camSmoothX;
   camera.position.y = camHeight;
   camera.position.z = camSmoothZ;
   var targetLookX = headWX + dx * lookAhead;
   var targetLookZ = headWZ + dz * lookAhead;
-  lookSmoothX += (targetLookX - lookSmoothX) * 0.08;
-  lookSmoothZ += (targetLookZ - lookSmoothZ) * 0.08;
+  lookSmoothX += (targetLookX - lookSmoothX) * factor;
+  lookSmoothZ += (targetLookZ - lookSmoothZ) * factor;
   camera.lookAt(lookSmoothX, 0, lookSmoothZ);
   pLight.position.set(headWX, 5, headWZ);
 }
