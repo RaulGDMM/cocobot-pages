@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Blood of Dawnwalker — The Dark Fantasy RPG</title>
-<meta name="description" content="Complete guide to The Blood of Dawnwalker by Rebel Wolves. Story, characters, gameplay mechanics, system requirements, and all official trailers and videos.">
+<meta name="description" content="Complete guide to The Blood of Dawnwalker by Rebel Wolves. Story, characters, gameplay mechanics, system requirements, editions, and all official trailers and videos.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -40,6 +40,17 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
 ::-webkit-scrollbar{width:7px}
 ::-webkit-scrollbar-track{background:var(--bg-deep)}
 ::-webkit-scrollbar-thumb{background:var(--red-blood);border-radius:4px}
+
+/* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═══════════════════════════════════════════ */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-delay-1{transition-delay:.1s}
+.fade-in-delay-2{transition-delay:.2s}
+.fade-in-delay-3{transition-delay:.3s}
+.fade-in-delay-4{transition-delay:.4s}
+.fade-in-delay-5{transition-delay:.5s}
 
 /* ═══════════════════════════════════════════
    NAVBAR
@@ -111,6 +122,38 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
   background:linear-gradient(transparent, var(--bg-body));
 }
 .hero-inner{position:relative;z-index:1;max-width:860px;padding:2rem}
+
+/* Star of David watermark */
+.hero-star{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:clamp(300px,50vw,600px);height:clamp(300px,50vw,600px);
+  opacity:0;animation:starFadeIn 2s ease-out 0.5s forwards;
+  pointer-events:none;z-index:0;
+}
+@keyframes starFadeIn{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.8) rotate(0deg)}
+  50%{opacity:0.35;transform:translate(-50%,-50%) scale(1.05) rotate(10deg)}
+  100%{opacity:0.25;transform:translate(-50%,-50%) scale(1) rotate(0deg)}
+}
+@keyframes starPulse{
+  0%,100%{opacity:0.25;filter:drop-shadow(0 0 20px rgba(220,50,50,.4)) drop-shadow(0 0 40px rgba(200,30,30,.2))}
+  50%{opacity:0.35;filter:drop-shadow(0 0 30px rgba(220,50,50,.9)) drop-shadow(0 0 60px rgba(200,30,30,.5))}
+}
+.hero-star svg{
+  width:100%;height:100%;
+  animation:starPulse 4s ease-in-out infinite;
+}
+.hero-star .star-tri{
+  fill:none;stroke:#c0392b;stroke-width:3;
+  stroke-linejoin:round;stroke-linecap:round;
+}
+.hero-star .star-inner{
+  fill:none;stroke:#c0392b;stroke-width:1;opacity:0.6;
+}
+.hero-star .star-circle{
+  fill:none;stroke:#c0392b;stroke-width:1;opacity:0.5;
+}
+
 .hero-badge{
   font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.3em;
   text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;
@@ -130,6 +173,20 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
   font-family:'Inter',sans-serif;font-size:.82rem;color:var(--txt-mid);
 }
 .hero-meta span{display:flex;align-items:center;gap:6px}
+
+/* Countdown */
+.countdown{
+  display:flex;gap:1.2rem;justify-content:center;margin-top:1.5rem;
+  font-family:'Inter',sans-serif;
+}
+.countdown-item{
+  display:flex;flex-direction:column;align-items:center;
+  background:rgba(155,17,17,.12);border:1px solid rgba(155,17,17,.25);
+  border-radius:var(--radius);padding:.6rem 1rem;min-width:64px;
+}
+.countdown-num{font-size:1.5rem;font-weight:700;color:var(--red-glow);line-height:1.2}
+.countdown-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;color:var(--txt-dim);margin-top:2px}
+
 .btn-primary{
   display:inline-flex;align-items:center;gap:8px;
   background:linear-gradient(135deg, var(--red-blood), #6b0a0a);
@@ -243,6 +300,30 @@ table.specs td:first-child{font-weight:600;color:var(--txt);white-space:nowrap}
 .feat-list li .fi{font-size:1.2rem;flex-shrink:0;margin-top:2px}
 
 /* ═══════════════════════════════════════════
+   EDITIONS
+   ═══════════════════════════════════════════ */
+.edition-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+.edition-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:2rem;position:relative;overflow:hidden;transition:all .3s;
+}
+.edition-card:hover{border-color:var(--border-red);transform:translateY(-2px)}
+.edition-card.featured{border-color:var(--gold-dim)}
+.edition-card.featured::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.edition-badge{
+  font-family:'Inter',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;
+}
+.edition-card h3{font-family:'Cinzel',serif;font-size:1.15rem;font-weight:700;color:var(--txt);margin-bottom:.5rem}
+.edition-price{font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:700;color:var(--red-glow);margin-bottom:1rem}
+.edition-card ul{list-style:none;padding:0}
+.edition-card li{padding:4px 0 4px 18px;position:relative;font-size:.88rem;color:var(--txt-mid)}
+.edition-card li::before{content:'✦';position:absolute;left:0;color:var(--red-dim);font-size:.7rem}
+
+/* ═══════════════════════════════════════════
    VIDEOS GRID
    ═══════════════════════════════════════════ */
 .videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(500px,1fr));gap:2rem;margin-top:2rem}
@@ -282,11 +363,15 @@ footer a:hover{text-decoration:underline}
   .videos-grid{grid-template-columns:1fr}
   .wrap{padding:3rem 1.2rem}
   .navbar{padding:0 1rem}
+  .countdown{gap:.8rem}
+  .countdown-item{min-width:54px;padding:.5rem .7rem}
+  .countdown-num{font-size:1.2rem}
 }
 @media(max-width:540px){
   .videos-grid{grid-template-columns:1fr}
   .video-card{min-width:0}
-  .card-grid,.char-grid{grid-template-columns:1fr}
+  .card-grid,.char-grid,.edition-grid{grid-template-columns:1fr}
+  .countdown{gap:.5rem;flex-wrap:wrap}
 }
 
     .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
@@ -314,6 +399,7 @@ footer a:hover{text-decoration:underline}
   <a href="#gameplay" data-close>Gameplay &amp; Mechanics</a>
   <a href="#combat" data-close>Combat System</a>
   <a href="#features" data-close>Key Features</a>
+  <a href="#editions" data-close>Editions &amp; Pre-Order</a>
   <a href="#specs" data-close>PC System Requirements</a>
   <a href="#videos" data-close>Videos &amp; Trailers</a>
   <a href="#developer" data-close>About the Developer</a>
@@ -321,6 +407,22 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── HERO ──────────── -->
 <header class="hero" id="hero">
+  <!-- Star of David watermark -->
+  <div class="hero-star">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer triangle (pointing up) -->
+      <polygon class="star-tri" points="100,20 180,160 20,160" />
+      <!-- Inner triangle (pointing down) -->
+      <polygon class="star-tri" points="100,180 20,40 180,40" />
+      <!-- Inner decorative lines -->
+      <line class="star-inner" x1="100" y1="20" x2="100" y2="180" />
+      <line class="star-inner" x1="20" y1="160" x2="180" y2="40" />
+      <line class="star-inner" x1="180" y1="160" x2="20" y2="40" />
+      <!-- Center circle -->
+      <circle class="star-circle" cx="100" cy="100" r="25" />
+    </svg>
+  </div>
+
   <div class="hero-inner">
     <p class="hero-badge">Rebel Wolves × Bandai Namco Entertainment</p>
     <h1>The Blood of<br><em>Dawnwalker</em></h1>
@@ -329,6 +431,12 @@ footer a:hover{text-decoration:underline}
       <span>📅 3 September 2026</span>
       <span>🖥 PC · PS5 · Xbox Series X|S</span>
       <span>⚙ Unreal Engine 5</span>
+    </div>
+    <div class="countdown" id="countdown">
+      <div class="countdown-item"><span class="countdown-num" id="cd-days">--</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-hours">--</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-mins">--</span><span class="countdown-label">Minutes</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-secs">--</span><span class="countdown-label">Seconds</span></div>
     </div>
     <a href="#story" class="btn-primary">⚔ Enter the Dark World</a>
   </div>
@@ -341,34 +449,38 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── STORY ──────────── -->
 <section class="wrap" id="story">
-  <p class="label">Narrative</p>
-  <h2>Story &amp; Setting</h2>
+  <div class="fade-in">
+    <p class="label">Narrative</p>
+    <h2>Story &amp; Setting</h2>
 
-  <p>Set in <strong>AD 1347</strong> in <strong>Vale Sangora</strong>, a fictional kingdom in the Carpathian Mountains ravaged by the Black Death. Vampires and creatures of the night have emerged from the shadows, exploiting humanity's weakness to claim centuries-denied power and freedom. The ancient vampire lord <strong>Brencis</strong> — born Roman noble Caeso Burrienus Laurentius in AD 131 — rules with an iron fist, enforcing servitude and "blood taxes" on the surviving population.</p>
+    <p>Set in <strong>AD 1347</strong> in <strong>Vale Sangora</strong>, a fictional kingdom in the Carpathian Mountains ravaged by the Black Death. Vampires and creatures of the night have emerged from the shadows, exploiting humanity's weakness to claim centuries-denied power and freedom. The ancient vampire lord <strong>Brencis</strong> — born Roman noble Caeso Burrienus Laurentius in AD 131 — rules with an iron fist, enforcing servitude and "blood taxes" on the surviving population.</p>
 
-  <p>You play as <strong>Coen</strong>, a young man caught between two worlds. A turning ritual went wrong, leaving him half-human, half-vampire — a <em>Dawnwalker</em>. Human by day, vampire by night. Coen must save his plague-stricken sister <strong>Lunka</strong>, avenge his family, and decide whether to cling to his humanity or embrace his cursed vampiric powers.</p>
+    <p>You play as <strong>Coen</strong>, a young man caught between two worlds. A turning ritual went wrong, leaving him half-human, half-vampire — a <em>Dawnwalker</em>. Human by day, vampire by night. Coen must save his plague-stricken sister <strong>Lunka</strong>, avenge his family, and decide whether to cling to his humanity or embrace his cursed vampiric powers.</p>
 
-  <p>He has <strong>30 in-game days and nights</strong> before the worst comes to pass. Exploring the world doesn't advance time — only completing quests does. Each quest carries a clear "time cost." There is no hard game-over timer, but wasting time means <em>"Coen's family might suffer the consequences."</em></p>
+    <p>The world also harbors <strong>were-wolves</strong> — cursed lycanthropes bound to the lunar cycle, hunted by both humans and vampires. These creatures add another layer of danger to the already treacherous landscape of Vale Sangora, and their fate may intersect with Coen's in unexpected ways.</p>
 
-  <div class="quote">
-    <blockquote>"So non-linear that you can align with the human rebellion or finish the game without ever meeting them. You will not have time for everyone."</blockquote>
-    <cite>— Mateusz Tomaszkiewicz, Creative Director, Rebel Wolves</cite>
+    <p>He has <strong>30 in-game days and nights</strong> before the worst comes to pass. Exploring the world doesn't advance time — only completing quests does. Each quest carries a clear "time cost." There is no hard game-over timer, but wasting time means <em>"Coen's family might suffer the consequences."</em></p>
+
+    <div class="quote">
+      <blockquote>"So non-linear that you can align with the human rebellion or finish the game without ever meeting them. You will not have time for everyone."</blockquote>
+      <cite>— Mateusz Tomaszkiewicz, Creative Director, Rebel Wolves</cite>
+    </div>
   </div>
 
   <div class="card-grid">
-    <div class="card">
+    <div class="card fade-in fade-in-delay-1">
       <h3>🌗 Day &amp; Night Duality</h3>
       <p>Two distinct gameplay loops with unique abilities, mysteries, and problem-solving approaches. The world dynamically reacts to your actions and chosen playstyle as day turns to night.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-2">
       <h3>🔀 Narrative Sandbox</h3>
       <p>Fully non-linear. Quests can be completed in any order, skipped, or left undiscovered. You can align with the human rebellion or finish the game without ever meeting them.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-3">
       <h3>💀 Permanent Consequences</h3>
       <p>Freedom to kill off many NPCs — including really important ones you encounter. Every action and inaction shapes the world. Multiple endings based on your choices.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-4">
       <h3>❤️ Romance</h3>
       <p>Confirmed by the creative director. Build relationships with characters throughout your journey. Romance options woven into the narrative fabric.</p>
     </div>
@@ -379,29 +491,31 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── CHARACTERS ──────────── -->
 <section class="wrap" id="characters">
-  <p class="label">Dramatis Personae</p>
-  <h2>Key Characters</h2>
+  <div class="fade-in">
+    <p class="label">Dramatis Personae</p>
+    <h2>Key Characters</h2>
+  </div>
 
   <div class="char-grid">
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-1">
       <div class="char-icon">🗡</div>
       <h3>Coen</h3>
       <p class="char-title">The Dawnwalker</p>
       <p>A young man caught between two worlds. A turning ritual gone wrong left him half-human, half-vampire — an anomaly with far-reaching implications for the entire world.</p>
     </div>
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-2">
       <div class="char-icon">👑</div>
       <h3>Brencis</h3>
       <p class="char-title">Vampire Lord — Main Antagonist</p>
       <p>Born Roman noble Caeso Burrienus Laurentius in AD 131. Takes the fallen king's crown and rules Vale Sangora. Gave Lunka his blood to save her, but is far from benevolent.</p>
     </div>
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-3">
       <div class="char-icon">🌙</div>
       <h3>Lunka</h3>
       <p class="char-title">Coen's Sister</p>
       <p>Victim of the plague. Saved by Brencis's blood at a terrible price. Her fate is the driving force behind Coen's desperate quest.</p>
     </div>
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-4">
       <div class="char-icon">⚡</div>
       <h3>Xanthe</h3>
       <p class="char-title">Ancient Vampire</p>
@@ -414,35 +528,37 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── GAMEPLAY ──────────── -->
 <section class="wrap" id="gameplay">
-  <p class="label">Core Systems</p>
-  <h2>Gameplay &amp; Mechanics</h2>
+  <div class="fade-in">
+    <p class="label">Core Systems</p>
+    <h2>Gameplay &amp; Mechanics</h2>
 
-  <p>The Blood of Dawnwalker is a single-player, story-focused open-world action RPG with a deliberately <strong>smaller-scale open world</strong> designed to foster deep immersion — lush forests, vast plains, treacherous swamps, steep mountaintops, and medieval settlements.</p>
+    <p>The Blood of Dawnwalker is a single-player, story-focused open-world action RPG with a deliberately <strong>smaller-scale open world</strong> designed to foster deep immersion — lush forests, vast plains, treacherous swamps, steep mountaintops, and medieval settlements.</p>
 
-  <p>Built on <strong>Unreal Engine 5</strong>, the game features advanced rendering, dynamic day/night transitions, and handcrafted environments inspired by Central and Southeastern European medieval folklore.</p>
+    <p>Built on <strong>Unreal Engine 5</strong>, the game features advanced rendering, dynamic day/night transitions, and handcrafted environments inspired by Central and Southeastern European medieval folklore.</p>
+  </div>
 
   <div class="card-grid">
-    <div class="card">
+    <div class="card fade-in fade-in-delay-1">
       <h3>⏳ Time Pressure</h3>
       <p>30 in-game days and nights to save your family. Every quest has a time cost. No hard game-over timer, but wasting time has real consequences for Coen's loved ones.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-2">
       <h3>🧛 Blood Craving</h3>
       <p>Using vampiric skills affects Coen's human side, tied to health and hunger. Losing health increases the risk of losing control — triggering bad consequences or permanently locking questlines.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-3">
       <h3>🌀 Planeshift</h3>
       <p>Breaks gravity to walk on walls and ceilings. A traversal power that lets you navigate the world in unexpected ways, access hidden areas, and gain tactical advantages in combat.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-4">
       <h3>👻 Shadowstep</h3>
       <p>Short-distance teleportation through shadows. Move instantly, escape dangerous situations, or close the gap with enemies in the blink of an eye.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-1">
       <h3>📖 Skill Trees</h3>
       <p>Separate trees for Human perks, Vampire perks, Shared perks, and Active abilities — customize Coen's growth depending on whether you lean into humanity or monstrosity.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-2">
       <h3>🔮 Ritual Magic</h3>
       <p>Raw, ritual-based magic tied to blood, heat, and air. Casting requires channeling occult carvings and runes — hexes like <em>Burning Blood</em> boil enemy blood for devastating damage over time.</p>
     </div>
@@ -453,12 +569,14 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── COMBAT ──────────── -->
 <section class="wrap" id="combat">
-  <p class="label">Dual Nature</p>
-  <h2>Combat System</h2>
-  <p>Two entirely distinct combat styles — each form has unique strengths and weaknesses, and your tactics must adapt as the sun sets or rises.</p>
+  <div class="fade-in">
+    <p class="label">Dual Nature</p>
+    <h2>Combat System</h2>
+    <p>Two entirely distinct combat styles — each form has unique strengths and weaknesses, and your tactics must adapt as the sun sets or rises.</p>
+  </div>
 
   <div class="combat-dual">
-    <div class="combat-panel day">
+    <div class="combat-panel day fade-in fade-in-delay-1">
       <h3>☀ Human Form (Day)</h3>
       <ul>
         <li>Sword combat based on authentic medieval fighting styles</li>
@@ -469,7 +587,7 @@ footer a:hover{text-decoration:underline}
         <li>Strategic positioning and tactical combat</li>
       </ul>
     </div>
-    <div class="combat-panel night">
+    <div class="combat-panel night fade-in fade-in-delay-2">
       <h3>🌙 Vampire Form (Night)</h3>
       <ul>
         <li>Claws and enhanced supernatural strength</li>
@@ -488,35 +606,85 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── FEATURES ──────────── -->
 <section class="wrap" id="features">
-  <p class="label">At a Glance</p>
-  <h2>Key Features</h2>
+  <div class="fade-in">
+    <p class="label">At a Glance</p>
+    <h2>Key Features</h2>
+  </div>
 
   <ul class="feat-list">
-    <li><span class="fi">⚔</span> Open-world dark fantasy action RPG set in 14th-century plague-ravaged Europe</li>
-    <li><span class="fi">🌗</span> Dual day/night gameplay with entirely different abilities and approaches</li>
-    <li><span class="fi">📖</span> Non-linear narrative sandbox with player agency and multiple endings</li>
-    <li><span class="fi">⏳</span> 30-day time pressure system with real, lasting consequences</li>
-    <li><span class="fi">🗺</span> Hand-crafted open world with diverse biomes and hidden secrets</li>
-    <li><span class="fi">🧛</span> Blood Craving system — vampiric powers come at a cost</li>
-    <li><span class="fi">💀</span> Kill off NPCs — even important ones — with lasting world impact</li>
-    <li><span class="fi">❤️</span> Romance system with meaningful relationship building</li>
-    <li><span class="fi">⚡</span> Unreal Engine 5 with next-gen visuals and performance</li>
-    <li><span class="fi">🔧</span> NVIDIA DLSS and AMD FSR support for enhanced performance</li>
-    <li><span class="fi">🏰</span> Authentic medieval sword combat with trained consultants</li>
-    <li><span class="fi">🔮</span> Deep skill trees for human, vampire, and shared abilities</li>
+    <li class="fade-in fade-in-delay-1"><span class="fi">⚔</span> Open-world dark fantasy action RPG set in 14th-century plague-ravaged Europe</li>
+    <li class="fade-in fade-in-delay-2"><span class="fi">🌗</span> Dual day/night gameplay with entirely different abilities and approaches</li>
+    <li class="fade-in fade-in-delay-3"><span class="fi">📖</span> Non-linear narrative sandbox with player agency and multiple endings</li>
+    <li class="fade-in fade-in-delay-1"><span class="fi">⏳</span> 30-day time pressure system with real, lasting consequences</li>
+    <li class="fade-in fade-in-delay-2"><span class="fi">🗺</span> Hand-crafted open world with diverse biomes and hidden secrets</li>
+    <li class="fade-in fade-in-delay-3"><span class="fi">🧛</span> Blood Craving system — vampiric powers come at a cost</li>
+    <li class="fade-in fade-in-delay-1"><span class="fi">💀</span> Kill off NPCs — even important ones — with lasting world impact</li>
+    <li class="fade-in fade-in-delay-2"><span class="fi">❤️</span> Romance system with meaningful relationship building</li>
+    <li class="fade-in fade-in-delay-3"><span class="fi">⚡</span> Unreal Engine 5 with next-gen visuals and performance</li>
+    <li class="fade-in fade-in-delay-1"><span class="fi">🔧</span> NVIDIA DLSS and AMD FSR support for enhanced performance</li>
+    <li class="fade-in fade-in-delay-2"><span class="fi">🏰</span> Authentic medieval sword combat with trained consultants</li>
+    <li class="fade-in fade-in-delay-3"><span class="fi">🔮</span> Deep skill trees for human, vampire, and shared abilities</li>
   </ul>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── EDITIONS ──────────── -->
+<section class="wrap" id="editions">
+  <div class="fade-in">
+    <p class="label">Pre-Order</p>
+    <h2>Editions &amp; Pre-Order</h2>
+    <p>Multiple editions are available with varying bonuses. Pre-order bonuses include exclusive in-game content and early access to story materials.</p>
+  </div>
+
+  <div class="edition-grid">
+    <div class="edition-card fade-in fade-in-delay-1">
+      <h3>Standard Edition</h3>
+      <p class="edition-price">TBA</p>
+      <ul>
+        <li>Full digital game</li>
+        <li>Available on PC, PS5, Xbox Series X|S</li>
+      </ul>
+    </div>
+    <div class="edition-card fade-in fade-in-delay-2">
+      <h3>Digital Deluxe Edition</h3>
+      <p class="edition-price">TBA</p>
+      <ul>
+        <li>Full digital game</li>
+        <li>Digital Artbook</li>
+        <li>Digital Soundtrack</li>
+        <li>Exclusive Cosmetics</li>
+        <li>Pre-Order Bonus Content</li>
+      </ul>
+    </div>
+    <div class="edition-card featured fade-in fade-in-delay-3">
+      <p class="edition-badge">★ Limited</p>
+      <h3>Collector's Edition</h3>
+      <p class="edition-price">TBA</p>
+      <ul>
+        <li>Everything in Digital Deluxe</li>
+        <li>Physical Artbook</li>
+        <li>Steelbook Case</li>
+        <li>Exclusive Statue or Figurine</li>
+        <li>Original Soundtrack Vinyl</li>
+        <li>Exclusive Physical Cosmetics</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <hr class="divider">
 
 <!-- ──────────── SPECS ──────────── -->
 <section class="wrap" id="specs">
-  <p class="label">Technical</p>
-  <h2>PC System Requirements</h2>
+  <div class="fade-in">
+    <p class="label">Technical</p>
+    <h2>PC System Requirements</h2>
 
-  <p>Official specs revealed by Rebel Wolves during the <strong>Road to Launch</strong> event (April 2026). <strong>These benchmarks were established without the use of upscaling or frame generation</strong> — meaning tools like NVIDIA DLSS or AMD FSR can significantly improve performance beyond these targets.</p>
+    <p>Official specs revealed by Rebel Wolves during the <strong>Road to Launch</strong> event (April 2026). <strong>These benchmarks were established without the use of upscaling or frame generation</strong> — meaning tools like NVIDIA DLSS or AMD FSR can significantly improve performance beyond these targets.</p>
+  </div>
 
-  <div class="specs-wrap">
+  <div class="specs-wrap fade-in">
     <table class="specs">
       <thead>
         <tr>
@@ -573,12 +741,12 @@ footer a:hover{text-decoration:underline}
     </table>
   </div>
 
-  <div class="quote">
+  <div class="quote fade-in">
     <blockquote>"These benchmarks were established without the use of upscaling or frame generation technologies, meaning tools like DLSS or FSR can help improve performance beyond these baseline targets."</blockquote>
     <cite>— Rebel Wolves, Official PC Requirements Statement</cite>
   </div>
 
-  <p style="margin-top:1.5rem;font-size:.95rem;color:var(--txt-dim);font-family:'Inter',sans-serif;">
+  <p class="fade-in" style="margin-top:1.5rem;font-size:.95rem;color:var(--txt-dim);font-family:'Inter',sans-serif;">
     <strong style="color:var(--txt-mid)">Note:</strong> Ray tracing / path tracing has not been officially confirmed by the developer as of the last update.
   </p>
 </section>
@@ -587,9 +755,11 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── VIDEOS ──────────── -->
 <section class="wrap" id="videos">
-  <p class="label">Media Library</p>
-  <h2>Videos &amp; Trailers</h2>
-  <p>All official trailers, gameplay deep dives, and developer overviews from The Blood of Dawnwalker's journey to launch.</p>
+  <div class="fade-in">
+    <p class="label">Media Library</p>
+    <h2>Videos &amp; Trailers</h2>
+    <p>All official trailers, gameplay deep dives, and developer overviews from The Blood of Dawnwalker's journey to launch.</p>
+  </div>
 
   <div class="videos-grid">
 
@@ -597,7 +767,7 @@ footer a:hover{text-decoration:underline}
     <h3 style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--gold);margin:2rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)">🎬 Official Trailers</h3>
 
     <!-- Cinematic & Gameplay Teaser (original reveal) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/te73UInH8H8" title="Cinematic Trailer & Gameplay Teaser" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -608,7 +778,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Official Gameplay Trailer (Xbox Showcase) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-2">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/GA4uyOGf4Xc" title="Official Gameplay Trailer" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -619,7 +789,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Official Story Trailer -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-3">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/lkC75FzExf0" title="Official Story Trailer" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -630,7 +800,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Story Trailer Bandai Namco -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/Fn7aYRVyRMM" title="Story Trailer" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -640,8 +810,19 @@ footer a:hover{text-decoration:underline}
       </div>
     </div>
 
+    <!-- 4K Story Trailer -->
+    <div class="video-card fade-in fade-in-delay-2">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/jVQiJ9ci0HI" title="Story Trailer 4K" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="video-meta">
+        <h4>Story Trailer — 4K</h4>
+        <p>4K Ultra HD · Subtitled</p>
+      </div>
+    </div>
+
     <!-- Developer Overview (Summer Showcase) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-3">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/_VHc6ajqEi4" title="Developer Overview Trailer" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -652,7 +833,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Collector's Edition -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/mBvC5CfuBwQ" title="Collector's Edition Overview" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -666,7 +847,7 @@ footer a:hover{text-decoration:underline}
     <h3 style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--red-glow);margin:2.5rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)">🔍 Gameplay Deep Dives</h3>
 
     <!-- Gameplay Overview Part I (first chronologically) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/BooGSMc3aMs" title="Gameplay Overview Part I" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -677,7 +858,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Gameplay Overview Part II (second chronologically) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-2">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/bHlsx20yl0o" title="Gameplay Overview Part II" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -688,7 +869,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Gameplay Deep Dive Part 3 (third chronologically) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-3">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/MRpCejAlh-E" title="Gameplay Deep Dive Overview Part 3" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -699,7 +880,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Vampire Lore Explained -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/ZZn-ldIrX04" title="Vampire Lore - Story Explained" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -716,18 +897,20 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── DEVELOPER ──────────── -->
 <section class="wrap" id="developer">
-  <p class="label">Behind the Game</p>
-  <h2>About Rebel Wolves</h2>
+  <div class="fade-in">
+    <p class="label">Behind the Game</p>
+    <h2>About Rebel Wolves</h2>
 
-  <p><strong>Rebel Wolves</strong> is a Warsaw, Poland-based studio founded by key veterans of <strong>CD Projekt Red</strong>, including former The Witcher 3 creative directors <strong>Konrad Tomaszkiewicz</strong> and <strong>Mateusz Tomaszkiewicz</strong>.</p>
+    <p><strong>Rebel Wolves</strong> is a Warsaw, Poland-based studio founded by key veterans of <strong>CD Projekt Red</strong>, including former The Witcher 3 creative directors <strong>Konrad Tomaszkiewicz</strong> and <strong>Mateusz Tomaszkiewicz</strong>.</p>
 
-  <p>The Blood of Dawnwalker is their debut title and is described as "the first chapter of a brand new dark fantasy role-playing saga." The studio has drawn inspiration from pen-and-paper RPGs, medieval folklore, and experimental narrative design to create what they envision as a deeply immersive and consequential RPG experience.</p>
+    <p>The Blood of Dawnwalker is their debut title and is described as "the first chapter of a brand new dark fantasy role-playing saga." The studio has drawn inspiration from pen-and-paper RPGs, medieval folklore, and experimental narrative design to create what they envision as a deeply immersive and consequential RPG experience.</p>
 
-  <p>The game is published by <strong>Bandai Namco Entertainment</strong> and will launch simultaneously on PC, PlayStation 5, and Xbox Series X|S on <strong>September 3, 2026</strong>.</p>
+    <p>The game is published by <strong>Bandai Namco Entertainment</strong> and will launch simultaneously on PC, PlayStation 5, and Xbox Series X|S on <strong>September 3, 2026</strong>.</p>
 
-  <div class="quote">
-    <blockquote>"Every action — and inaction — shapes the world around you. The world waits for no one. And neither does the villain."</blockquote>
-    <cite>— Rebel Wolves official tagline</cite>
+    <div class="quote">
+      <blockquote>"Every action — and inaction — shapes the world around you. The world waits for no one. And neither does the villain."</blockquote>
+      <cite>— Rebel Wolves official tagline</cite>
+    </div>
   </div>
 </section>
 
@@ -753,13 +936,47 @@ burger.addEventListener('click',()=>menu.classList.contains('open')?closeMenu():
 overlay.addEventListener('click',closeMenu);
 closeBtns.forEach(b=>b.addEventListener('click',closeMenu));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+
+/* ═══════════════════════════════════════════
+   COUNTDOWN
+   ═══════════════════════════════════════════ */
+(function(){
+  var launch=new Date('2026-09-03T00:00:00Z').getTime();
+  var d=document.getElementById('cd-days');
+  var h=document.getElementById('cd-hours');
+  var m=document.getElementById('cd-mins');
+  var s=document.getElementById('cd-secs');
+  function tick(){
+    var now=Date.now();var diff=launch-now;
+    if(diff<=0){d.textContent='00';h.textContent='00';m.textContent='00';s.textContent='00';return}
+    d.textContent=Math.floor(diff/864e5);
+    h.textContent=Math.floor((diff%864e5)/36e5);
+    m.textContent=Math.floor((diff%36e5)/6e4);
+    s.textContent=Math.floor((diff%6e4)/1e3);
+  }
+  tick();setInterval(tick,1000);
+})();
+
+/* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS (IntersectionObserver)
+   ═══════════════════════════════════════════ */
+(function(){
+  var items=document.querySelectorAll('.fade-in');
+  if(!items.length)return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  items.forEach(function(el){obs.observe(el)});
+})();
 </script>
 
 
 <footer class="page-footer">
   <div class="footer-inner">
     <span class="footer-brand">🐱 Cocobot</span>
-    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visits</span>
   </div>
 </footer>
 <script>
@@ -771,7 +988,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
   fetch(w+'/c?path='+encodeURIComponent(p))
     .then(function(r){return r.json();})
     .then(function(d){
-      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visits';}
     })
     .catch(function(){});
 })();
