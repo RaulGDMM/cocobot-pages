@@ -81,6 +81,32 @@ var AI_CORNERING_RATE = {
 var GRID_MIN = 16;
 var GRID_MAX = 50;
 
+// ─── GRID SHRINKING ───
+// Fixed step between mode sizes (22→28→34→40 = 6 cells each)
+var SHRINK_STEP = 6;
+// Duration of shrink warning countdown in seconds
+var SHRINK_WARNING_DURATION = 10;
+// Show on-screen message after this many seconds (halfway)
+var SHRINK_MESSAGE_DELAY = 5;
+
+// Calculate target grid size after N deaths from initial size
+// Clamped to GRID_MIN (16)
+function calcShrinkTarget(initialGridSize, deaths) {
+  var result = initialGridSize - (deaths * SHRINK_STEP);
+  return Math.max(GRID_MIN, result);
+}
+
+// Calculate next shrink target from current grid size
+function calcNextShrinkSize(currentGridSize) {
+  var result = currentGridSize - SHRINK_STEP;
+  return Math.max(GRID_MIN, result);
+}
+
+// Check if further shrinking is possible
+function canShrinkFurther(currentGridSize) {
+  return currentGridSize > GRID_MIN;
+}
+
 // Number of AI snakes per mode
 var AI_COUNT = {
   solo: 0,
@@ -132,5 +158,8 @@ log('2. Three.js v' + THREE.REVISION);
 
 // ─── Module exports (for testing — ignored in browser) ───
 if(typeof module !== 'undefined' && module.exports) {
-  module.exports = { log, showErr, get logs() { return logs; } };
+  module.exports = { log, showErr, get logs() { return logs; },
+    calcShrinkTarget, calcNextShrinkSize, canShrinkFurther,
+    SHRINK_STEP, SHRINK_WARNING_DURATION, SHRINK_MESSAGE_DELAY
+  };
 }

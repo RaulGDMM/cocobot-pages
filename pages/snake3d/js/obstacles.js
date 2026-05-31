@@ -7,14 +7,16 @@ var obsMat = new THREE.MeshStandardMaterial({color:0x664444, emissive:0x331111, 
 function buildObstacles() {
   while(obsGroup.children.length) { var c=obsGroup.children[0]; obsGroup.remove(c); }
   obsMeshes = [];
-  for(var i = 0; i < MAX_OBSTACLES; i++) {
+  var maxObs = calcMaxObstacles(GRID_SIZE);
+  for(var i = 0; i < maxObs; i++) {
     var m = new THREE.Mesh(obsGeo, obsMat);
     m.position.y = .35; m.visible = false; obsGroup.add(m); obsMeshes.push(m);
   }
 }
 
 function refreshObstacles() {
-  for(var i = 0; i < MAX_OBSTACLES; i++) {
+  var maxObs = calcMaxObstacles(GRID_SIZE);
+  for(var i = 0; i < maxObs; i++) {
     if(i < obstacles.length) {
       obsMeshes[i].visible = true;
       obsMeshes[i].position.set(gw(obstacles[i].x), .35, gw(obstacles[i].z));
@@ -54,10 +56,11 @@ function isSafeForObstacle(x, z) {
 }
 
 function spawnObstacle() {
-  if(obstacles.length >= MAX_OBSTACLES) return;
+  var maxObs = calcMaxObstacles(GRID_SIZE);
+  if(obstacles.length >= maxObs) return;
   for(var tries = 0; tries < 300; tries++) {
-    var x = Math.floor(Math.random()*gridSize)-half;
-    var z = Math.floor(Math.random()*gridSize)-half;
+    var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
+    var z = gridMinZ + Math.floor(Math.random() * (gridMaxZ - gridMinZ));
     if(isSafeForObstacle(x, z)) {
       obstacles.push({x:x, z:z});
       refreshObstacles();

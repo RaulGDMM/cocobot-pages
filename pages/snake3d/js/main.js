@@ -20,17 +20,20 @@ function loop(now) {
     if(frameCount===1) log('7. First frame OK');
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
-    if(running && !gameOver) {
-      if(now-lastMoveTime >= MOVE_INTERVAL) {
-        // ─── AI MODE: step AI before player ───
-        if(aiSnakes && aiSnakes.length > 0) stepAI();
-        step();
-        lastMoveTime=now;
-      }
-      refreshSnake();
-      // ─── AI MODE: refresh AI snake meshes ───
-      refreshAISnakes();
-    }
+    if(running && !gameOver && !paused) {
+       if(now-lastMoveTime >= MOVE_INTERVAL) {
+         // ─── AI MODE: step AI before player ───
+         if(aiSnakes && aiSnakes.length > 0) stepAI();
+         step();
+         lastMoveTime=now;
+       }
+       refreshSnake();
+       // ─── AI MODE: refresh AI snake meshes ───
+       refreshAISnakes();
+
+       // ─── GRID SHRINK: process countdowns ───
+       processShrinkCountdowns(now);
+     }
 
     // Apple animation
      if(appleMeshes && appleMeshes.length) {

@@ -8,6 +8,7 @@ var score = 0;
 var highScore = 0;
 var totalGames = parseInt(localStorage.getItem('snake3d_games') || '0');
 var running = false;
+var paused = false;
 var lastMoveTime = 0;
 var gameOver = false;
 var camSmoothX = 0, camSmoothZ = 0;
@@ -23,6 +24,23 @@ var aiSnakes = [];
 var corpses = [];
 var corpseGroup = null;
 var corpseMeshes = [];
+
+// ─── GRID BOUNDARIES (for dynamic shrinking) ───
+// Initially equal to -half / half. Updated when grid shrinks.
+var gridMinX = -half;
+var gridMaxX = half;   // exclusive
+var gridMinZ = -half;
+var gridMaxZ = half;   // exclusive
+
+// ─── SHRINK COUNTDOWNS ───
+// Array of independent countdowns. Each has:
+//   startTime, duration, oldMinX/MaxX/MinZ/MaxZ, newMinX/MaxX/MinZ/MaxZ
+//   newGridSize, messageShown (bool), flashPhase (number)
+var shrinkCountdowns = [];
+
+// ─── SHRINK FLASH STATE (global, not per-countdown) ───
+// Tracks whether the flash is currently ON for tick sound deduplication
+var _shrinkFlashOn = false;
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');

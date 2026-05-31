@@ -7,7 +7,8 @@ var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
   appleMeshes = [];
-  for(var i = 0; i < NUM_APPLES; i++) {
+  var numApples = calcNumApples(GRID_SIZE);
+  for(var i = 0; i < numApples; i++) {
     var g = new THREE.Group();
     var m = new THREE.Mesh(appleGeo, appleMat);
     g.add(m);
@@ -37,8 +38,8 @@ function isOccupied(x, z) {
 
 function spawnOneApple() {
   for(var tries = 0; tries < 200; tries++) {
-    var x = Math.floor(Math.random()*gridSize)-half;
-    var z = Math.floor(Math.random()*gridSize)-half;
+    var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
+    var z = gridMinZ + Math.floor(Math.random() * (gridMaxZ - gridMinZ));
     if(!isOccupied(x,z)) return {x:x, z:z};
   }
   return null;
@@ -46,7 +47,8 @@ function spawnOneApple() {
 
 function refreshApples() {
   if (!appleMeshes || !appleMeshes.length) return;
-  for(var i = 0; i < NUM_APPLES; i++) {
+  var numApples = calcNumApples(GRID_SIZE);
+  for(var i = 0; i < numApples; i++) {
     if (i >= appleMeshes.length) break;
     if(i < apples.length && apples[i]) {
       appleMeshes[i].visible = true;
@@ -59,12 +61,13 @@ function refreshApples() {
 
 function initApples() {
   apples = [];
-  for(var i = 0; i < NUM_APPLES; i++) {
+  var numApples = calcNumApples(GRID_SIZE);
+  for(var i = 0; i < numApples; i++) {
     var a = spawnOneApple();
     if(a) apples.push(a);
   }
   refreshApples();
-  log('Apples: ' + apples.length + ' spawned');
+  log('Apples: ' + apples.length + ' spawned (target: ' + numApples + ')');
 }
 
 // ─── Module exports (for testing — ignored in browser) ───

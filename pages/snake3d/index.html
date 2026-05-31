@@ -10,7 +10,13 @@
 <body>
 
 <canvas id="game-canvas"></canvas>
-<div id="hud"><div id="score-box">🍎 <span id="score">0</span></div><div id="highscore-box">🏆 <span id="highscore">0</span></div></div>
+<div id="hud">
+  <div id="hud-left"><div id="score-box">🍎 <span id="score">0</span></div><div id="highscore-box">🏆 <span id="highscore">0</span></div></div>
+  <div id="hud-right">
+    <button id="pause-btn" title="Pausar (P)">⏸</button>
+    <button id="fullscreen-btn" title="Pantalla completa (F)">⛶</button>
+  </div>
+</div>
 <div id="ai-death-msg"></div>
 <div id="touch-overlay"><div class="touch-zone" id="tz-left"></div><div class="touch-zone" id="tz-right"></div></div>
 <div class="touch-hint left" id="hint-l">◀</div><div class="touch-hint right" id="hint-r">▶</div>
@@ -38,6 +44,7 @@
 <div id="debug"></div>
 <div id="err-box"></div>
 <div id="games-counter">🎮 Partidas: <span id="games-count">0</span></div>
+<div id="shrink-warning"></div>
 
 <!-- ─── SCRIPTS (order matters — all share global scope) ─── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

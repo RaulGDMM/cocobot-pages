@@ -86,6 +86,32 @@ var AI_CORNERING_RATE = {
 var GRID_MIN = 16;
 var GRID_MAX = 50;
 
+// ─── GRID SHRINKING ───
+// Fixed step between mode sizes (22→28→34→40 = 6 cells each)
+var SHRINK_STEP = 6;
+// Duration of shrink warning countdown in seconds
+var SHRINK_WARNING_DURATION = 10;
+// Show on-screen message after this many seconds (halfway)
+var SHRINK_MESSAGE_DELAY = 5;
+
+// Calculate target grid size after N deaths from initial size
+// Clamped to GRID_MIN (16)
+function calcShrinkTarget(initialGridSize, deaths) {
+  var result = initialGridSize - (deaths * SHRINK_STEP);
+  return Math.max(GRID_MIN, result);
+}
+
+// Calculate next shrink target from current grid size
+function calcNextShrinkSize(currentGridSize) {
+  var result = currentGridSize - SHRINK_STEP;
+  return Math.max(GRID_MIN, result);
+}
+
+// Check if further shrinking is possible
+function canShrinkFurther(currentGridSize) {
+  return currentGridSize > GRID_MIN;
+}
+
 // Number of AI snakes per mode
 var AI_COUNT = {
   solo: 0,
@@ -147,6 +173,7 @@ var score = 0;
 var highScore = 0;
 var totalGames = parseInt(localStorage.getItem('snake3d_games') || '0');
 var running = false;
+var paused = false;
 var lastMoveTime = 0;
 var gameOver = false;
 var camSmoothX = 0, camSmoothZ = 0;
@@ -162,6 +189,23 @@ var aiSnakes = [];
 var corpses = [];
 var corpseGroup = null;
 var corpseMeshes = [];
+
+// ─── GRID BOUNDARIES (for dynamic shrinking) ───
+// Initially equal to -half / half. Updated when grid shrinks.
+var gridMinX = -half;
+var gridMaxX = half;   // exclusive
+var gridMinZ = -half;
+var gridMaxZ = half;   // exclusive
+
+// ─── SHRINK COUNTDOWNS ───
+// Array of independent countdowns. Each has:
+//   startTime, duration, oldMinX/MaxX/MinZ/MaxZ, newMinX/MaxX/MinZ/MaxZ
+//   newGridSize, messageShown (bool), flashPhase (number)
+var shrinkCountdowns = [];
+
+// ─── SHRINK FLASH STATE (global, not per-countdown) ───
+// Tracks whether the flash is currently ON for tick sound deduplication
+var _shrinkFlashOn = false;
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -197,6 +241,19 @@ function sfxEat(){tone(587,.1,'square',.08);setTimeout(function(){tone(784,.12,'
 function sfxTurn(){tone(440,.03,'sine',.03);}
 function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
 function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
+
+// ─── Shrink warning sounds ───
+// Tick sound for each red flash (short, high-pitched)
+function sfxShrinkTick() {
+  tone(660, .12, 'sine', .15);
+}
+
+// Shrink complete sound (deep boom + sweep)
+function sfxShrinkComplete() {
+  tone(80, .5, 'sawtooth', .1);
+  setTimeout(function(){tone(120, .3, 'square', .08)}, 100);
+  setTimeout(function(){tone(60, .6, 'sawtooth', .06)}, 200);
+}
 
 // ─── Directional AI eat sound ───
 // Pan the sound based on AI position relative to player head
@@ -260,9 +317,20 @@ function initMusic() {
   document.getElementById('mp-next').addEventListener('click', function(e) { e.stopPropagation(); nextTrack(); });
 
   musicEl.addEventListener('ended', function() {
-    log('🎵 Track ended, playing next');
-    nextTrack();
-  });
+     musicPlaying = false;
+     if(userPausedMusic) {
+       // User paused — just advance to next track without autoplay (browser blocks it)
+       currentTrack = (currentTrack + 1) % playlist.length;
+       musicEl.src = playlist[currentTrack].file;
+       musicEl.load();
+       updateTrackDisplay();
+       log('🎵 Track ended, queued next: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+     } else {
+       // Normal playback — loop to next track (wraps to 0 after last)
+       log('🎵 Track ended, playing next');
+       nextTrack();
+     }
+   });
 
   musicEl.addEventListener('error', function(e) {
     log('❌ Music error: ' + (musicEl.error ? musicEl.error.message : 'unknown'));
@@ -391,7 +459,12 @@ scene.add(pLight);
 var _floorMesh = null;
 var _wallMeshes = [];
 
-function rebuildBoard(gs) {
+function rebuildBoard(gs, opts) {
+  // opts: { offsetX, offsetZ } — center offset for the board
+  // When grid shrinks with offset, the board center shifts
+  var cx = (opts && opts.offsetX) || 0;
+  var cz = (opts && opts.offsetZ) || 0;
+
   // Remove old floor
   if (_floorMesh) { scene.remove(_floorMesh); if(_floorMesh.geometry) _floorMesh.geometry.dispose(); if(_floorMesh.material.map) _floorMesh.material.map.dispose(); if(_floorMesh.material) _floorMesh.material.dispose(); }
   // Remove old walls
@@ -417,21 +490,20 @@ function rebuildBoard(gs) {
   var floorTex = new THREE.CanvasTexture(floorCanvas);
   floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
   _floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(gs, gs), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
-  _floorMesh.rotation.x = -Math.PI/2; _floorMesh.position.y = -.02; scene.add(_floorMesh);
+  _floorMesh.rotation.x = -Math.PI/2; _floorMesh.position.set(cx, -.02, cz); scene.add(_floorMesh);
 
-  // Walls
+  // Walls — positioned at grid boundaries with offset
   var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
-  var w1=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w1.position.set(0,.2,-h); scene.add(w1); _wallMeshes.push(w1);
-  var w2=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w2.position.set(0,.2,h); scene.add(w2); _wallMeshes.push(w2);
-  var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w3.position.set(-h,.2,0); scene.add(w3); _wallMeshes.push(w3);
-  var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w4.position.set(h,.2,0); scene.add(w4); _wallMeshes.push(w4);
+  var w1=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w1.position.set(cx,.2,cz-h); scene.add(w1); _wallMeshes.push(w1);
+  var w2=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w2.position.set(cx,.2,cz+h); scene.add(w2); _wallMeshes.push(w2);
+  var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w3.position.set(cx-h,.2,cz); scene.add(w3); _wallMeshes.push(w3);
+  var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w4.position.set(cx+h,.2,cz); scene.add(w4); _wallMeshes.push(w4);
 
-  // Camera position based on grid size
+  // Camera position based on grid size (don't change during game — camera follows snake)
+  // Only set initial camera if not already tracking
   var camDist = gs * 0.6;
-  camera.position.set(-camDist, camDist * 0.7, camDist * 0.4);
-  camera.lookAt(0, 0, 0);
 
-  log('Board rebuilt: ' + gs + 'x' + gs);
+  log('Board rebuilt: ' + gs + 'x' + gs + ' offset=(' + cx + ',' + cz + ')');
 }
 
 // Initial board build
@@ -555,7 +627,8 @@ var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
   appleMeshes = [];
-  for(var i = 0; i < NUM_APPLES; i++) {
+  var numApples = calcNumApples(GRID_SIZE);
+  for(var i = 0; i < numApples; i++) {
     var g = new THREE.Group();
     var m = new THREE.Mesh(appleGeo, appleMat);
     g.add(m);
@@ -585,8 +658,8 @@ function isOccupied(x, z) {
 
 function spawnOneApple() {
   for(var tries = 0; tries < 200; tries++) {
-    var x = Math.floor(Math.random()*gridSize)-half;
-    var z = Math.floor(Math.random()*gridSize)-half;
+    var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
+    var z = gridMinZ + Math.floor(Math.random() * (gridMaxZ - gridMinZ));
     if(!isOccupied(x,z)) return {x:x, z:z};
   }
   return null;
@@ -594,7 +667,8 @@ function spawnOneApple() {
 
 function refreshApples() {
   if (!appleMeshes || !appleMeshes.length) return;
-  for(var i = 0; i < NUM_APPLES; i++) {
+  var numApples = calcNumApples(GRID_SIZE);
+  for(var i = 0; i < numApples; i++) {
     if (i >= appleMeshes.length) break;
     if(i < apples.length && apples[i]) {
       appleMeshes[i].visible = true;
@@ -607,12 +681,13 @@ function refreshApples() {
 
 function initApples() {
   apples = [];
-  for(var i = 0; i < NUM_APPLES; i++) {
+  var numApples = calcNumApples(GRID_SIZE);
+  for(var i = 0; i < numApples; i++) {
     var a = spawnOneApple();
     if(a) apples.push(a);
   }
   refreshApples();
-  log('Apples: ' + apples.length + ' spawned');
+  log('Apples: ' + apples.length + ' spawned (target: ' + numApples + ')');
 }
 
 
@@ -626,14 +701,16 @@ var obsMat = new THREE.MeshStandardMaterial({color:0x664444, emissive:0x331111, 
 function buildObstacles() {
   while(obsGroup.children.length) { var c=obsGroup.children[0]; obsGroup.remove(c); }
   obsMeshes = [];
-  for(var i = 0; i < MAX_OBSTACLES; i++) {
+  var maxObs = calcMaxObstacles(GRID_SIZE);
+  for(var i = 0; i < maxObs; i++) {
     var m = new THREE.Mesh(obsGeo, obsMat);
     m.position.y = .35; m.visible = false; obsGroup.add(m); obsMeshes.push(m);
   }
 }
 
 function refreshObstacles() {
-  for(var i = 0; i < MAX_OBSTACLES; i++) {
+  var maxObs = calcMaxObstacles(GRID_SIZE);
+  for(var i = 0; i < maxObs; i++) {
     if(i < obstacles.length) {
       obsMeshes[i].visible = true;
       obsMeshes[i].position.set(gw(obstacles[i].x), .35, gw(obstacles[i].z));
@@ -673,10 +750,11 @@ function isSafeForObstacle(x, z) {
 }
 
 function spawnObstacle() {
-  if(obstacles.length >= MAX_OBSTACLES) return;
+  var maxObs = calcMaxObstacles(GRID_SIZE);
+  if(obstacles.length >= maxObs) return;
   for(var tries = 0; tries < 300; tries++) {
-    var x = Math.floor(Math.random()*gridSize)-half;
-    var z = Math.floor(Math.random()*gridSize)-half;
+    var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
+    var z = gridMinZ + Math.floor(Math.random() * (gridMaxZ - gridMinZ));
     if(isSafeForObstacle(x, z)) {
       obstacles.push({x:x, z:z});
       refreshObstacles();
@@ -731,34 +809,37 @@ log('5. Scene ready');
 var AI_STRATEGY = {
   easy: {
     bfsPathfinding: false,
-    floodFillDepth: 20,
+    floodFillDepth: 30,
     tailChasing: false,
     lookahead: false,
     bestApple: false,
     hunting: false,
-    antiTrap: false,
-    errorRate: 0.30,
+    antiTrap: true,
+    minSpaceFactor: 2.5,
+    errorRate: 0.38,
     corneringRate: 0.00
   },
   medium: {
     bfsPathfinding: true,
-    floodFillDepth: 50,
+    floodFillDepth: 60,
     tailChasing: true,
     lookahead: false,
     bestApple: true,
     hunting: false,
     antiTrap: true,
+    minSpaceFactor: 1.7,
     errorRate: 0.10,
     corneringRate: 0.40
   },
   hard: {
     bfsPathfinding: true,
-    floodFillDepth: 100,
+    floodFillDepth: 120,
     tailChasing: true,
     lookahead: true,
     bestApple: true,
     hunting: true,
     antiTrap: true,
+    minSpaceFactor: 1.8,
     errorRate: 0.02,
     corneringRate: 0.85
   }
@@ -844,7 +925,7 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
       var nx = curr.x + DIRS[d].x;
       var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
-      if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+      if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
       if (blocked[key] || visited[key]) continue;
       // For snake body, allow moving to the tail (it will move away)
       if (snakeBody && snakeBody.length > 0) {
@@ -887,7 +968,7 @@ function countReachable(x, z, snakeBody, maxSteps) {
       var nx = curr.x + DIRS[d].x;
       var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
-      if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+      if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
       if (blocked[key] || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nx, z: nz});
@@ -903,7 +984,7 @@ function countEscapeRoutes(x, z, snakeBody, blocked) {
   for (var d = 0; d < DIRS.length; d++) {
     var nx = x + DIRS[d].x;
     var nz = z + DIRS[d].z;
-    if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
     var key = nx + ',' + nz;
     if (blocked[key]) continue;
     // Check snake body (allow tail)
@@ -982,9 +1063,11 @@ function bestApple(aiSnake, blocked, diff) {
       score += 1000; // Reachable is much better
       score -= manhattanDist; // Shorter path is better
 
-      // Check space around apple position
+      // Check space around apple position — scaled down so distance dominates.
+      // Without scaling, edge apples were unfairly penalized because walls
+      // naturally limit reachable cells, making the AI always avoid them.
       var spaceAfter = countReachable(apple.x, apple.z, aiSnake, 30);
-      score += spaceAfter;
+      score += spaceAfter * 0.3;
     } else {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
@@ -1014,7 +1097,7 @@ function lookaheadScore(aiSnake, dir, steps, blocked) {
     var nz = cz + Math.round(Math.sin(dir));
 
     // Wall check
-    if (nx < -half || nx >= half || nz < -half || nz >= half) return -1000;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return -1000;
 
     // Self check
     if (simSnake.some(function(seg) { return seg.x === nx && seg.z === nz; })) return -1000;
@@ -1035,6 +1118,20 @@ function lookaheadScore(aiSnake, dir, steps, blocked) {
   return space + escapes * 5;
 }
 
+// ─── Check if a cell is in a shrink danger zone ───
+// Returns true if the cell is OUTSIDE the future safe zone of any active countdown
+function cellInShrinkZone(x, z) {
+  if (!shrinkCountdowns || shrinkCountdowns.length === 0) return false;
+  for (var i = 0; i < shrinkCountdowns.length; i++) {
+    var cd = shrinkCountdowns[i];
+    var b = calcShrinkBoundsFromCurrent(cd);
+    if (x < b.newMinX || x >= b.newMaxX || z < b.newMinZ || z >= b.newMaxZ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // ─── Evaluate safe directions for an AI snake ───
 function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
   var possibleDirs = [
@@ -1050,7 +1147,7 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
     var nx = head.x + Math.round(Math.cos(dir));
     var nz = head.z + Math.round(Math.sin(dir));
 
-    if (nx < -half || nx >= half || nz < -half || nz >= half) return;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return;
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
     if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
@@ -1068,6 +1165,56 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
   });
 
   return safe;
+}
+
+// ─── Check if a position is near a board edge ───
+// Used to relax space requirements near walls where space is naturally constrained
+function isNearEdge(x, z, margin) {
+  margin = margin || 3;
+  return (x <= gridMinX + margin || x >= gridMaxX - margin ||
+          z <= gridMinZ + margin || z >= gridMaxZ - margin);
+}
+
+// ─── Minimum safe space check ───
+// Returns true if moving to (nx,nz) would leave enough reachable space
+// for the snake to survive. This is the KEY anti-coiling mechanism.
+// Near board edges, space requirements are relaxed since walls naturally
+// constrain movement — without this, the AI would loop endlessly near edges.
+function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
+  // Quick check: count reachable space from this position
+  var bodyBlocked = {};
+  for (var k in blocked) bodyBlocked[k] = true;
+  // Add own body (excluding tail)
+  if (snakeBody && snakeBody.length > 1) {
+    for (var i = 0; i < snakeBody.length - 1; i++) {
+      bodyBlocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+    }
+  }
+
+  var visited = {};
+  var queue = [{x: nx, z: nz}];
+  visited[nx + ',' + nz] = true;
+  var count = 0;
+
+  while (queue.length > 0 && count < minSpace + 10) {
+    var curr = queue.shift();
+    count++;
+    for (var d = 0; d < DIRS.length; d++) {
+      var nnx = curr.x + DIRS[d].x;
+      var nnz = curr.z + DIRS[d].z;
+      var key = nnx + ',' + nnz;
+      if (nnx < gridMinX || nnx >= gridMaxX || nnz < gridMinZ || nnz >= gridMaxZ) continue;
+      if (bodyBlocked[key] || visited[key]) continue;
+      visited[key] = true;
+      queue.push({x: nnx, z: nnz});
+    }
+  }
+
+  // Near edges, relax the requirement — walls naturally limit space
+  if (isNearEdge(nx, nz, 3)) {
+    return count >= Math.floor(minSpace * 0.5);
+  }
+  return count >= minSpace;
 }
 
 // ─── Cornering/hunting strategy ───
@@ -1099,8 +1246,8 @@ function aiCorneringStrategy(aiIndex, diff) {
 
     // Check if target is near a wall or obstacle — good hunting opportunity
     var nearWall = (
-      targetHead.x <= -half + 3 || targetHead.x >= half - 3 ||
-      targetHead.z <= -half + 3 || targetHead.z >= half - 3
+      targetHead.x <= gridMinX + 3 || targetHead.x >= gridMaxX - 3 ||
+      targetHead.z <= gridMinZ + 3 || targetHead.z >= gridMaxZ - 3
     );
 
     var nearObstacle = false;
@@ -1133,39 +1280,114 @@ function aiCorneringStrategy(aiIndex, diff) {
   return null;
 }
 
+// ─── Detect if AI is stuck in a loop ───
+// Returns true if the AI head has visited very few unique positions in recent ticks
+function aiIsStuck(ai) {
+  if (!ai.stuckHistory || ai.stuckHistory.length < 6) return false;
+  // Count unique positions in the history
+  var unique = {};
+  for (var i = 0; i < ai.stuckHistory.length; i++) {
+    var key = ai.stuckHistory[i].x + ',' + ai.stuckHistory[i].z;
+    unique[key] = true;
+  }
+  var uniqueCount = Object.keys(unique).length;
+  // If the AI has visited <= 2 unique positions in 6 ticks, it's stuck
+  return uniqueCount <= 2;
+}
+
 // ─── Decide direction for AI snake based on difficulty ───
 // Main decision function — integrates all strategies
 function aiDecideDirection(aiIndex, diff) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return ai.direction;
 
+  // ─── Track position history for stuck detection ───
+  // Only add to history if the head actually moved (avoids false positives in static scenarios)
+  if (!ai.stuckHistory) ai.stuckHistory = [];
+  var head = ai.snake[0];
+  var lastPos = ai.stuckHistory.length > 0 ? ai.stuckHistory[ai.stuckHistory.length - 1] : null;
+  if (!lastPos || lastPos.x !== head.x || lastPos.z !== head.z) {
+    ai.stuckHistory.push({x: head.x, z: head.z});
+    if (ai.stuckHistory.length > 6) ai.stuckHistory.shift();
+  }
+
+  // ─── If stuck, force a random safe direction to break the loop ───
+  if (aiIsStuck(ai)) {
+    var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
+    if (safe.length > 1) {
+      // Pick a random safe direction (not the current one)
+      var newDirs = safe.filter(function(d) { return d !== ai.direction; });
+      if (newDirs.length > 0) {
+        var chosen = newDirs[Math.floor(Math.random() * newDirs.length)];
+        log('AI ' + aiIndex + ' stuck — forcing random direction');
+        ai.stuckHistory = []; // Reset history
+        return chosen;
+      }
+    }
+    // If only one safe direction, reset history to avoid false positives
+    ai.stuckHistory = [];
+  }
+
   var strat = AI_STRATEGY[diff] || AI_STRATEGY.medium;
   var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
   if (safe.length === 0) return ai.direction;
-  if (safe.length === 1) return snapToCardinal(safe[0]);
 
-  // Random error based on difficulty
-  var errorRate = strat.errorRate;
-  if (Math.random() < errorRate) {
-    return snapToCardinal(safe[Math.floor(Math.random() * safe.length)]);
-  }
-
-  // Build blocked set for this AI
+  // ─── Build blocked set ───
   var blocked = buildBlockedSet();
-  // Add own body (excluding head which will move away)
   for (var i = 1; i < ai.snake.length; i++) {
     blocked[ai.snake[i].x + ',' + ai.snake[i].z] = true;
+  }
+
+  // ─── CRITICAL: Filter safe directions by minimum reachable space ───
+  // This is the main anti-coiling mechanism. The AI will NOT commit to a
+  // direction unless it has enough reachable space to survive.
+  var minSpace = Math.ceil(ai.snake.length * (strat.minSpaceFactor || 2.0));
+  var safeWithSpace = [];
+
+  for (var s = 0; s < safe.length; s++) {
+    var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+    var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+    if (minSafeSpace(nx, nz, ai.snake, blocked, minSpace)) {
+      safeWithSpace.push(safe[s]);
+    }
+  }
+
+  // If NO direction has enough space, fall back to safe directions
+  // and pick the one with the most reachable space (survival mode)
+  if (safeWithSpace.length === 0) {
+    var bestSpace = -1;
+    var bestDir = safe[0];
+    for (var s = 0; s < safe.length; s++) {
+      var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+      var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+      var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+      // Penalize shrink danger zone in survival mode
+      if (cellInShrinkZone(nx, nz)) space -= 20;
+      if (space > bestSpace) {
+        bestSpace = space;
+        bestDir = safe[s];
+      }
+    }
+    return snapToCardinal(bestDir);
+  }
+
+  // If only 1 direction has enough space, take it
+  if (safeWithSpace.length === 1) return snapToCardinal(safeWithSpace[0]);
+
+  // Random error based on difficulty (only among space-safe directions)
+  var errorRate = strat.errorRate;
+  if (Math.random() < errorRate) {
+    return snapToCardinal(safeWithSpace[Math.floor(Math.random() * safeWithSpace.length)]);
   }
 
   // ─── Strategy 1: Hunting (hard only) ───
   var huntTarget = aiCorneringStrategy(aiIndex, diff);
   if (huntTarget) {
-    // Check if hunt direction is safe
-    for (var s = 0; s < safe.length; s++) {
-      var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
-      var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+    for (var s = 0; s < safeWithSpace.length; s++) {
+      var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+      var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
       if (nx === huntTarget.x && nz === huntTarget.z) {
-        return snapToCardinal(safe[s]);
+        return snapToCardinal(safeWithSpace[s]);
       }
     }
   }
@@ -1181,22 +1403,24 @@ function aiDecideDirection(aiIndex, diff) {
       );
       if (path && path.length > 1) {
         var nextStep = path[1];
-        // Find the direction that leads to nextStep
-        for (var s = 0; s < safe.length; s++) {
-          var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
-          var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+        for (var s = 0; s < safeWithSpace.length; s++) {
+          var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+          var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
           if (nx === nextStep.x && nz === nextStep.z) {
-            // Anti-trap: verify this direction has escape routes
+            // Anti-trap: verify escape routes
             if (strat.antiTrap) {
               var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-              if (escapes < 2) continue; // Skip if too few escapes
+              // Near edges, 1 escape is acceptable (wall constrains movement naturally)
+              var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
+                              nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
+              if (escapes < (nearEdge ? 1 : 2)) continue;
             }
-            // Lookahead: verify future positions are good
+            // Lookahead: verify future positions
             if (strat.lookahead) {
-              var laScore = lookaheadScore(ai.snake, safe[s], 5, blocked);
-              if (laScore < -500) continue; // Skip if leads to trap
+              var laScore = lookaheadScore(ai.snake, safeWithSpace[s], 5, blocked);
+              if (laScore < -500) continue;
             }
-            return snapToCardinal(safe[s]);
+            return snapToCardinal(safeWithSpace[s]);
           }
         }
       }
@@ -1208,45 +1432,52 @@ function aiDecideDirection(aiIndex, diff) {
     var tailPath = bfsPathToTail(ai.snake);
     if (tailPath && tailPath.length > 1) {
       var tailNext = tailPath[1];
-      for (var s = 0; s < safe.length; s++) {
-        var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
-        var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+      for (var s = 0; s < safeWithSpace.length; s++) {
+        var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+        var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
         if (nx === tailNext.x && nz === tailNext.z) {
-          return snapToCardinal(safe[s]);
+          return snapToCardinal(safeWithSpace[s]);
         }
       }
     }
   }
 
-  // ─── Fallback: Score each safe direction ───
-  var bestDir = safe[0];
+  // ─── Fallback: score directions by space + apple distance ───
   var bestScore = -Infinity;
-  var apple = nearestApple(ai.snake[0].x, ai.snake[0].z);
+  var bestDir = safeWithSpace[0];
+  var target = nearestApple(ai.snake[0].x, ai.snake[0].z);
 
-  safe.forEach(function(dir) {
-    var nx = ai.snake[0].x + Math.round(Math.cos(dir));
-    var nz = ai.snake[0].z + Math.round(Math.sin(dir));
+  for (var s = 0; s < safeWithSpace.length; s++) {
+    var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+    var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
 
-    // Flood-fill: count reachable open space
-    var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth);
+    var score = 0;
+    // Space is important but not dominant — let apple distance matter.
+        // A high multiplier (like *10) made edge apples impossible to reach because
+        // center cells always had more space. *3 gives room to both factors.
+        var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+        score += space * 3;
 
-    // Apple attraction
-    var appleDist = apple ? (Math.abs(apple.x - nx) + Math.abs(apple.z - nz)) : 999;
+    // Distance to apple is secondary
+    if (target) {
+      var distToApple = Math.abs(target.x - nx) + Math.abs(target.z - nz);
+      score -= distToApple;
+    }
 
-    // Escape routes (anti-trap)
-    var escapes = strat.antiTrap ? countEscapeRoutes(nx, nz, ai.snake, blocked) : 4;
+    // Prefer directions with more escape routes
+    var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+    score += escapes * 3;
 
-    // Lookahead score
-    var laScore = strat.lookahead ? lookaheadScore(ai.snake, dir, 5, blocked) : 0;
-
-    // Combined score
-    var score = space * 3 - appleDist + escapes * 10 + laScore * 0.5;
+    // ─── Penalize shrink danger zone ───
+    if (cellInShrinkZone(nx, nz)) {
+      score -= 500; // Strong penalty to avoid cells that will disappear
+    }
 
     if (score > bestScore) {
       bestScore = score;
-      bestDir = dir;
+      bestDir = safeWithSpace[s];
     }
-  });
+  }
 
   return snapToCardinal(bestDir);
 }
@@ -1326,7 +1557,7 @@ function stepAI() {
     var nz = head.z + Math.round(Math.sin(ai.direction));
 
     // Check wall collision
-    if (nx < -half || nx >= half || nz < -half || nz >= half) {
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) {
       log('AI ' + index + ' hit wall at (' + nx + ',' + nz + ')');
       aiDie(index, 'wall');
       return;
@@ -1436,6 +1667,9 @@ function aiDie(aiIndex, cause) {
 
   // Show death message
   showAiDeathMessage(ai, cause);
+
+  // ─── Trigger grid shrink on AI death ───
+  maybeTriggerShrink();
 
   log('AI ' + aiIndex + ' died (' + cause + ') — ' + corpses.length + ' corpse segments');
 }
@@ -1686,11 +1920,30 @@ function initGame() {
   half = gridSize / 2;
   rebuildBoard(gridSize);
 
-  // ─── Proportional scaling: recalculate apples/obstacles for grid size ───
-  NUM_APPLES = calcNumApples(gridSize);
-  MAX_OBSTACLES = calcMaxObstacles(gridSize);
-  OBSTACLE_SPAWN_EVERY = calcObstacleSpawnEvery(gridSize);
-  log('Scaled: apples=' + NUM_APPLES + ', maxObs=' + MAX_OBSTACLES + ', spawnEvery=' + OBSTACLE_SPAWN_EVERY);
+  // ─── GRID BOUNDARIES: initialize ───
+  gridMinX = -half;
+  gridMaxX = half;
+  gridMinZ = -half;
+   gridMaxZ = half;
+   shrinkCountdowns = [];
+      _shrinkFlashOn = false;
+     // Clear shrink flash meshes from previous game
+     if (_shrinkFlashGroup) {
+       while (_shrinkFlashGroup.children.length) {
+         var fc = _shrinkFlashGroup.children[0];
+         _shrinkFlashGroup.remove(fc);
+         if (fc.material) fc.material.dispose();
+       }
+       _shrinkFlashGroup = null;
+     }
+     _shrinkFlashGeo = null;
+
+  // ─── Proportional scaling: update GRID_SIZE for dynamic grid ───
+   GRID_SIZE = gridSize;
+   NUM_APPLES = calcNumApples(GRID_SIZE);
+   MAX_OBSTACLES = calcMaxObstacles(GRID_SIZE);
+   OBSTACLE_SPAWN_EVERY = calcObstacleSpawnEvery(GRID_SIZE);
+   log('Scaled: apples=' + NUM_APPLES + ', maxObs=' + MAX_OBSTACLES + ', spawnEvery=' + OBSTACLE_SPAWN_EVERY);
 
   // Clear old snake groups from sGroup
    while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
@@ -1728,7 +1981,7 @@ function step() {
   var h=snake[0];
   var nx=h.x+Math.round(Math.cos(direction));
   var nz=h.z+Math.round(Math.sin(direction));
-  if(nx<-half||nx>=half||nz<-half||nz>=half){log('Wall hit ('+nx+','+nz+')');die('wall');return;}
+  if(nx<gridMinX||nx>=gridMaxX||nz<gridMinZ||nz>=gridMaxZ){log('Wall hit ('+nx+','+nz+')');die('wall');return;}
    if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die('self');return;}
    if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die('obstacle');return;}
   // ─── AI MODE: collision with AI snake bodies ───
@@ -1789,11 +2042,408 @@ function die(cause) {
   else if(cause === 'obstacle') causeMsg = 'Has chocado contra un obstáculo';
   else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
+  else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
   finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
   finalScoreEl.style.display='block';
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');
   hintL.style.opacity='1'; hintR.style.opacity='1';
+  }
+
+// ─── GRID SHRINKING ───
+
+// Check if a snake death should trigger a grid shrink
+// Called when AI snake dies (NOT player — player death ends the game)
+function maybeTriggerShrink() {
+  // Don't shrink if the player is dead — game is over
+  if (gameOver) return;
+
+  // Count alive AI snakes
+  var aliveCount = 0;
+  if (snake && snake.length > 0) aliveCount++;
+  if (aiSnakes) {
+    for (var i = 0; i < aiSnakes.length; i++) {
+      if (aiSnakes[i].alive) aliveCount++;
+    }
+  }
+
+  // If no snakes alive, don't shrink
+  if (aliveCount === 0) return;
+
+  // Calculate current grid size from boundaries
+  var currentGridSize = gridMaxX - gridMinX;
+
+  // Don't shrink if already at minimum
+  if (!canShrinkFurther(currentGridSize)) return;
+
+  // Check if there's already an active countdown — don't stack too many
+  if (shrinkCountdowns && shrinkCountdowns.length >= 2) return;
+
+  // Calculate next shrink step
+  var nextSize = calcNextShrinkSize(currentGridSize);
+  if (nextSize >= currentGridSize) return;
+
+  triggerShrinkCountdown(nextSize);
+}
+
+// Start a shrink countdown with random offset
+// IMPORTANT: boundaries are calculated at EXECUTION time, not creation time.
+// This ensures multiple simultaneous countdowns each shrink from the CURRENT grid.
+function triggerShrinkCountdown(targetGridSize) {
+  var currentSize = gridMaxX - gridMinX;
+  var shrinkAmount = currentSize - targetGridSize;
+
+  // Calculate random offset for the new grid within the old grid
+  var maxOffset = shrinkAmount;
+  var offsetX = Math.floor(Math.random() * (maxOffset + 1));
+  var offsetZ = Math.floor(Math.random() * (maxOffset + 1));
+
+  var countdown = {
+    startTime: performance.now(),
+    duration: SHRINK_WARNING_DURATION * 1000, // ms
+    shrinkAmount: shrinkAmount,
+    offsetX: offsetX,
+    offsetZ: offsetZ,
+    messageShown: false,
+    lastTickTime: 0
+  };
+
+  shrinkCountdowns.push(countdown);
+
+  log('⚠️ SHRINK: -' + shrinkAmount + ' cells, offset=(' + offsetX + ',' + offsetZ +
+      ') in ' + SHRINK_WARNING_DURATION + 's');
+}
+
+// Calculate the disappearing cells for a countdown from CURRENT grid state
+// Returns { minX, maxX, minZ, maxZ, newMinX, newMaxX, newMinZ, newMaxZ }
+function calcShrinkBoundsFromCurrent(cd) {
+  var curMinX = gridMinX;
+  var curMaxX = gridMaxX;
+  var curMinZ = gridMinZ;
+  var curMaxZ = gridMaxZ;
+  var amt = cd.shrinkAmount;
+  var newMinX = curMinX + cd.offsetX;
+  var newMaxX = newMinX + (curMaxX - curMinX - amt);
+  var newMinZ = curMinZ + cd.offsetZ;
+  var newMaxZ = newMinZ + (curMaxZ - curMinZ - amt);
+  return {
+    minX: curMinX, maxX: curMaxX, minZ: curMinZ, maxZ: curMaxZ,
+    newMinX: newMinX, newMaxX: newMaxX, newMinZ: newMinZ, newMaxZ: newMaxZ
+  };
+}
+
+// Build a lookup of all disappearing cells across all active countdowns
+function getAllDisappearingCells() {
+  var cells = {};
+  shrinkCountdowns.forEach(function(cd) {
+    var b = calcShrinkBoundsFromCurrent(cd);
+    for (var x = b.minX; x < b.maxX; x++) {
+      for (var z = b.minZ; z < b.maxZ; z++) {
+        if (x < b.newMinX || x >= b.newMaxX || z < b.newMinZ || z >= b.newMaxZ) {
+          cells[x + ',' + z] = true;
+        }
+      }
+    }
+  });
+  return cells;
+}
+
+// Shared flash geometry/material
+var _shrinkFlashGroup = null;
+var _shrinkFlashGeo = null;
+
+// Update flash meshes to match current disappearing cells
+function updateShrinkFlashMeshes(disappearing) {
+  if (!_shrinkFlashGroup) {
+    _shrinkFlashGroup = new THREE.Group();
+    scene.add(_shrinkFlashGroup);
+  }
+  if (!_shrinkFlashGeo) {
+    _shrinkFlashGeo = new THREE.BoxGeometry(0.9, 0.05, 0.9);
+  }
+
+  // Build current mesh lookup
+  var currentMeshes = {};
+  _shrinkFlashGroup.children.forEach(function(m) {
+    var key = Math.round(m.position.x - 0.5) + ',' + Math.round(m.position.z - 0.5);
+    currentMeshes[key] = m;
+  });
+
+  // Add meshes for new disappearing cells
+  for (var key in disappearing) {
+    if (!currentMeshes[key]) {
+      var mat = new THREE.MeshStandardMaterial({
+        color: 0xff0000, emissive: 0xff0000, emissiveIntensity: 0.5,
+        transparent: true, opacity: 0, depthWrite: false
+      });
+      var mesh = new THREE.Mesh(_shrinkFlashGeo, mat);
+      var parts = key.split(',');
+      mesh.position.set(gw(parseInt(parts[0])), 0.01, gw(parseInt(parts[1])));
+      _shrinkFlashGroup.add(mesh);
+      currentMeshes[key] = mesh;
+    }
+  }
+
+  // Remove meshes for cells that are no longer disappearing
+  for (var key in currentMeshes) {
+    if (!disappearing[key]) {
+      var m = currentMeshes[key];
+      _shrinkFlashGroup.remove(m);
+      if (m.material) m.material.dispose();
+    }
+  }
+}
+
+// Process shrink countdowns each frame
+function processShrinkCountdowns(now) {
+  // Update flash visuals
+  updateShrinkFlashes(now);
+
+  // Check for completed countdowns
+  var completed = [];
+  for (var i = shrinkCountdowns.length - 1; i >= 0; i--) {
+    var elapsed = now - shrinkCountdowns[i].startTime;
+    if (elapsed >= shrinkCountdowns[i].duration) {
+      completed.push(shrinkCountdowns[i]);
+      shrinkCountdowns.splice(i, 1);
+    }
+  }
+
+  // Apply completed countdowns
+  for (var i = 0; i < completed.length; i++) {
+    applyShrink(completed[i]);
+  }
+}
+
+// Update shrink flash visuals each frame
+function updateShrinkFlashes(now) {
+  if (!shrinkCountdowns || shrinkCountdowns.length === 0) {
+    // Clear all flash meshes
+    if (_shrinkFlashGroup) {
+      while (_shrinkFlashGroup.children.length) {
+        var c = _shrinkFlashGroup.children[0];
+        _shrinkFlashGroup.remove(c);
+        if (c.material) c.material.dispose();
+      }
+    }
+    return;
+  }
+
+  // Get all disappearing cells from current grid state
+  var disappearingCells = getAllDisappearingCells();
+
+  // Sync flash meshes with disappearing cells
+  updateShrinkFlashMeshes(disappearingCells);
+
+  // Calculate flash timing from the earliest finishing countdown
+    var earliestEnd = Infinity;
+    shrinkCountdowns.forEach(function(cd) {
+      var end = cd.startTime + cd.duration;
+      if (end < earliestEnd) earliestEnd = end;
+    });
+
+    var timeToEarliestEnd = Math.max(0, (earliestEnd - now) / 1000);
+    // Gentle easing: starts at ~0.8 Hz, accelerates slowly to ~3 Hz at the end
+    var progress = 1 - (timeToEarliestEnd / SHRINK_WARNING_DURATION);
+    var flashSpeed = 0.8 + 2.2 * progress * progress * progress;
+    var flashPhase = Math.sin(now * 0.001 * flashSpeed);
+    var flashOpacity = flashPhase > 0 ? Math.min(0.7, flashPhase * 0.7) : 0;
+
+  // Update flash mesh opacities
+  if (_shrinkFlashGroup) {
+    _shrinkFlashGroup.children.forEach(function(m) {
+      m.material.opacity = flashOpacity;
+      m.material.emissiveIntensity = flashOpacity * 1.5;
+    });
+  }
+
+  // Play tick sound on each flash ON transition (global, not per-countdown)
+    var anyFlashOn = flashOpacity > 0.3;
+    if (anyFlashOn && !_shrinkFlashOn) {
+      sfxShrinkTick();
+    }
+    _shrinkFlashOn = anyFlashOn;
+
+  // Show warning message in last 5 seconds
+  shrinkCountdowns.forEach(function(cd) {
+    var elapsed = (now - cd.startTime) / 1000;
+    var remaining = (cd.duration / 1000) - elapsed;
+    if (remaining <= SHRINK_MESSAGE_DELAY && remaining > 0 && !cd.messageShown) {
+      cd.messageShown = true;
+      showShrinkWarning(Math.ceil(remaining));
+    }
+  });
+}
+
+// Show on-screen shrink warning message
+var _shrinkMsgEl = null;
+function showShrinkWarning(seconds) {
+  if (!_shrinkMsgEl) {
+    _shrinkMsgEl = document.getElementById('shrink-warning');
+  }
+  if (_shrinkMsgEl) {
+    _shrinkMsgEl.textContent = '⚠️ ¡El tablero se reduce en ' + seconds + 's!';
+    _shrinkMsgEl.classList.add('visible');
+    clearTimeout(_shrinkMsgEl._hideTimer);
+    _shrinkMsgEl._hideTimer = setTimeout(function() {
+      if (_shrinkMsgEl) _shrinkMsgEl.classList.remove('visible');
+    }, 3000);
+  }
+}
+
+// Apply a completed shrink countdown
+// IMPORTANT: calculates boundaries from CURRENT grid state at execution time
+function applyShrink(countdown) {
+  // Calculate new boundaries from current grid
+  var bounds = calcShrinkBoundsFromCurrent(countdown);
+
+  log('🔻 APPLYING SHRINK: ' + (bounds.maxX - bounds.minX) +
+      ' → ' + (bounds.newMaxX - bounds.newMinX) + ' offset=(' +
+      (bounds.newMinX - bounds.minX) + ',' +
+      (bounds.newMinZ - bounds.minZ) + ')');
+
+  // Truncate snake bodies BEFORE updating boundaries
+  truncateSnakesToBounds(bounds);
+
+  // Update grid boundaries
+  gridMinX = bounds.newMinX;
+  gridMaxX = bounds.newMaxX;
+  gridMinZ = bounds.newMinZ;
+  gridMaxZ = bounds.newMaxZ;
+
+  // Update GRID_SIZE for proportional scaling (apples, obstacles)
+  var newGridSize = bounds.newMaxX - bounds.newMinX;
+  var oldGridSize = GRID_SIZE;
+  GRID_SIZE = newGridSize;
+  half = GRID_SIZE / 2;
+  // Recalculate proportional values
+  NUM_APPLES = calcNumApples(GRID_SIZE);
+  MAX_OBSTACLES = calcMaxObstacles(GRID_SIZE);
+  OBSTACLE_SPAWN_EVERY = calcObstacleSpawnEvery(GRID_SIZE);
+  log('  Scaled: apples=' + NUM_APPLES + ', maxObs=' + MAX_OBSTACLES + ', spawnEvery=' + OBSTACLE_SPAWN_EVERY);
+
+  // Rebuild board visuals with offset
+   var boardOffsetX = (bounds.newMinX + bounds.newMaxX) / 2;
+   var boardOffsetZ = (bounds.newMinZ + bounds.newMaxZ) / 2;
+   rebuildBoard(newGridSize, { offsetX: boardOffsetX, offsetZ: boardOffsetZ });
+
+  // Remove elements outside new grid
+  removeOutOfBounds();
+
+  // Check if any snake heads are outside (they die)
+  checkHeadsOutOfBounds();
+
+  // Play shrink complete sound
+  sfxShrinkComplete();
+
+  log('✅ Grid shrunk to ' + newGridSize + 'x' + newGridSize +
+      ' bounds=(' + gridMinX + ',' + gridMaxX + ',' + gridMinZ + ',' + gridMaxZ + ')');
+}
+
+// Remove apples, obstacles, corpses outside new grid; adjust counts to new grid size
+function removeOutOfBounds() {
+  // ── Apples ──
+  var before = apples.length;
+  apples = apples.filter(function(a) {
+    return a && a.x >= gridMinX && a.x < gridMaxX && a.z >= gridMinZ && a.z < gridMaxZ;
+  });
+  // Trim excess apples if NUM_APPLES decreased after shrink
+  while (apples.length > NUM_APPLES) apples.pop();
+  // Pad to NUM_APPLES
+  while (apples.length < NUM_APPLES) apples.push(null);
+  // Spawn missing apples
+  for (var i = 0; i < apples.length; i++) {
+    if (!apples[i]) {
+      apples[i] = spawnOneApple();
+    }
+  }
+  log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+
+  // ── Obstacles ──
+  var beforeObs = obstacles.length;
+  obstacles = obstacles.filter(function(o) {
+    return o.x >= gridMinX && o.x < gridMaxX && o.z >= gridMinZ && o.z < gridMaxZ;
+  });
+  // Trim excess obstacles if MAX_OBSTACLES decreased after shrink
+  while (obstacles.length > MAX_OBSTACLES) obstacles.pop();
+  log('  Obstacles: ' + beforeObs + ' → ' + obstacles.length + ' (max: ' + MAX_OBSTACLES + ')');
+
+  // ── Corpses ──
+  if (corpses) {
+    var beforeCorpse = corpses.length;
+    corpses = corpses.filter(function(c) {
+      return c.x >= gridMinX && c.x < gridMaxX && c.z >= gridMinZ && c.z < gridMaxZ;
+    });
+    log('  Corpses: ' + beforeCorpse + ' → ' + corpses.length);
+  }
+
+  // ── Refresh visuals so meshes update (guard: may not exist in tests) ──
+   if (typeof refreshApples === 'function' && appleMeshes && appleMeshes.length) refreshApples();
+   if (typeof refreshObstacles === 'function' && obsMeshes && obsMeshes.length) refreshObstacles();
+  }
+
+// Check if snake heads are outside new grid bounds
+function checkHeadsOutOfBounds() {
+  // Player snake
+  if (snake && snake.length > 0) {
+    var head = snake[0];
+    if (head.x < gridMinX || head.x >= gridMaxX || head.z < gridMinZ || head.z >= gridMaxZ) {
+      log('💀 Player head out of bounds at (' + head.x + ',' + head.z + ')');
+      die('shrink');
+      return;
+    }
+  }
+
+  // AI snakes
+  if (aiSnakes) {
+    for (var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      if (!ai.alive) continue;
+      var aiHead = ai.snake[0];
+      if (aiHead.x < gridMinX || aiHead.x >= gridMaxX || aiHead.z < gridMinZ || aiHead.z >= gridMaxZ) {
+        log('💀 AI ' + i + ' head out of bounds at (' + aiHead.x + ',' + aiHead.z + ')');
+        aiDie(i, 'shrink');
+      }
+    }
+  }
+}
+
+// Truncate snake bodies that extend outside new grid
+// bounds: { newMinX, newMaxX, newMinZ, newMaxZ }
+function truncateSnakesToBounds(bounds) {
+  // Player snake
+  if (snake && snake.length > 0) {
+    var before = snake.length;
+    while (snake.length > 1) {
+      var tail = snake[snake.length - 1];
+      if (tail.x >= bounds.newMinX && tail.x < bounds.newMaxX &&
+          tail.z >= bounds.newMinZ && tail.z < bounds.newMaxZ) break;
+      snake.pop();
+      score = Math.max(0, score - 1);
+    }
+    if (snake.length < before) {
+      scoreEl.textContent = score;
+      log('  Player snake truncated: ' + before + ' → ' + snake.length + ' (score: ' + score + ')');
+    }
+  }
+
+  // AI snakes
+  if (aiSnakes) {
+    for (var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      if (!ai.alive) continue;
+      var before = ai.snake.length;
+      while (ai.snake.length > 1) {
+        var tail = ai.snake[ai.snake.length - 1];
+        if (tail.x >= bounds.newMinX && tail.x < bounds.newMaxX &&
+            tail.z >= bounds.newMinZ && tail.z < bounds.newMaxZ) break;
+        ai.snake.pop();
+      }
+      if (ai.snake.length < before) {
+        log('  AI ' + i + ' truncated: ' + before + ' → ' + ai.snake.length);
+      }
+    }
+  }
 }
 
 // ─── CAMERA (framerate-independent, head-interpolated) ───
@@ -1838,8 +2488,65 @@ log('9. Controls ready');
 document.addEventListener('keydown', function(e) {
   if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A'){e.preventDefault();turnL();}
   if(e.key==='ArrowRight'||e.key==='d'||e.key==='D'){e.preventDefault();turnR();}
+  // ─── Pause toggle (P or Escape) ───
+  if(e.key==='p'||e.key==='P'||e.key==='Escape'){e.preventDefault();togglePause();}
+  // ─── Fullscreen toggle (F) ───
+  if(e.key==='f'||e.key==='F'){e.preventDefault();toggleFullscreen();}
 });
 document.getElementById('tz-left').addEventListener('touchstart',function(e){e.preventDefault();turnL();},{passive:false});
 document.getElementById('tz-right').addEventListener('touchstart',function(e){e.preventDefault();turnR();},{passive:false});
+
+// ─── PAUSE ───
+var _pauseOverlay = null;
+var _pauseText = null;
+function togglePause() {
+  if (!running || gameOver) return;
+  paused = !paused;
+  var btn = document.getElementById('pause-btn');
+  if (btn) btn.textContent = paused ? '▶' : '⏸';
+  if (paused) {
+    if (!_pauseOverlay) {
+      _pauseOverlay = document.createElement('div');
+      _pauseOverlay.id = 'pause-overlay';
+      _pauseText = document.createElement('div');
+      _pauseText.className = 'pause-text';
+      _pauseText.textContent = '⏸ PAUSA';
+      _pauseOverlay.appendChild(_pauseText);
+      document.body.appendChild(_pauseOverlay);
+    }
+    _pauseOverlay.classList.add('visible');
+    log('⏸ PAUSED');
+  } else {
+    if (_pauseOverlay) _pauseOverlay.classList.remove('visible');
+    lastMoveTime = performance.now();
+    log('▶ RESUMED');
+  }
+}
+
+// ─── FULLSCREEN ───
+function toggleFullscreen() {
+  var btn = document.getElementById('fullscreen-btn');
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().then(function() {
+      if (btn) btn.textContent = '⛶';
+      log('⛶ Fullscreen ON');
+    }).catch(function() {
+      log('⚠️ Fullscreen not available');
+    });
+  } else {
+    document.exitFullscreen().then(function() {
+      if (btn) btn.textContent = '⛶';
+      log('⛶ Fullscreen OFF');
+    });
+  }
+}
+document.addEventListener('fullscreenchange', function() {
+  var btn = document.getElementById('fullscreen-btn');
+  if (btn) btn.textContent = document.fullscreenElement ? '⛶' : '⛶';
+});
+
+// ─── Button event listeners ───
+document.getElementById('pause-btn').addEventListener('click', togglePause);
+document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
 
 

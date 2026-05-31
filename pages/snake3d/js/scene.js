@@ -26,7 +26,12 @@ scene.add(pLight);
 var _floorMesh = null;
 var _wallMeshes = [];
 
-function rebuildBoard(gs) {
+function rebuildBoard(gs, opts) {
+  // opts: { offsetX, offsetZ } — center offset for the board
+  // When grid shrinks with offset, the board center shifts
+  var cx = (opts && opts.offsetX) || 0;
+  var cz = (opts && opts.offsetZ) || 0;
+
   // Remove old floor
   if (_floorMesh) { scene.remove(_floorMesh); if(_floorMesh.geometry) _floorMesh.geometry.dispose(); if(_floorMesh.material.map) _floorMesh.material.map.dispose(); if(_floorMesh.material) _floorMesh.material.dispose(); }
   // Remove old walls
@@ -52,21 +57,20 @@ function rebuildBoard(gs) {
   var floorTex = new THREE.CanvasTexture(floorCanvas);
   floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
   _floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(gs, gs), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
-  _floorMesh.rotation.x = -Math.PI/2; _floorMesh.position.y = -.02; scene.add(_floorMesh);
+  _floorMesh.rotation.x = -Math.PI/2; _floorMesh.position.set(cx, -.02, cz); scene.add(_floorMesh);
 
-  // Walls
+  // Walls — positioned at grid boundaries with offset
   var wm = new THREE.MeshStandardMaterial({color:0x1a2a4a, transparent:true, opacity:.35});
-  var w1=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w1.position.set(0,.2,-h); scene.add(w1); _wallMeshes.push(w1);
-  var w2=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w2.position.set(0,.2,h); scene.add(w2); _wallMeshes.push(w2);
-  var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w3.position.set(-h,.2,0); scene.add(w3); _wallMeshes.push(w3);
-  var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w4.position.set(h,.2,0); scene.add(w4); _wallMeshes.push(w4);
+  var w1=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w1.position.set(cx,.2,cz-h); scene.add(w1); _wallMeshes.push(w1);
+  var w2=new THREE.Mesh(new THREE.BoxGeometry(gs+.3,.4,.15),wm); w2.position.set(cx,.2,cz+h); scene.add(w2); _wallMeshes.push(w2);
+  var w3=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w3.position.set(cx-h,.2,cz); scene.add(w3); _wallMeshes.push(w3);
+  var w4=new THREE.Mesh(new THREE.BoxGeometry(.15,.4,gs+.3),wm); w4.position.set(cx+h,.2,cz); scene.add(w4); _wallMeshes.push(w4);
 
-  // Camera position based on grid size
+  // Camera position based on grid size (don't change during game — camera follows snake)
+  // Only set initial camera if not already tracking
   var camDist = gs * 0.6;
-  camera.position.set(-camDist, camDist * 0.7, camDist * 0.4);
-  camera.lookAt(0, 0, 0);
 
-  log('Board rebuilt: ' + gs + 'x' + gs);
+  log('Board rebuilt: ' + gs + 'x' + gs + ' offset=(' + cx + ',' + cz + ')');
 }
 
 // Initial board build

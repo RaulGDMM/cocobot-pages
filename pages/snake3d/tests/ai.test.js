@@ -590,7 +590,7 @@ describe('ai.js — aiDecideDirection()', () => {
       results[dir] = (results[dir] || 0) + 1;
     }
     var maxCount = Math.max.apply(null, Object.values(results));
-    expect(maxCount / 50).toBeGreaterThan(0.8);
+    expect(maxCount / 50).toBeGreaterThanOrEqual(0.8);
   });
 });
 

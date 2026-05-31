@@ -18,7 +18,7 @@ var AI_STRATEGY = {
     hunting: false,
     antiTrap: true,
     minSpaceFactor: 2.5,
-    errorRate: 0.30,
+    errorRate: 0.38,
     corneringRate: 0.00
   },
   medium: {
@@ -29,7 +29,7 @@ var AI_STRATEGY = {
     bestApple: true,
     hunting: false,
     antiTrap: true,
-    minSpaceFactor: 2.0,
+    minSpaceFactor: 1.7,
     errorRate: 0.10,
     corneringRate: 0.40
   },
@@ -127,7 +127,7 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
       var nx = curr.x + DIRS[d].x;
       var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
-      if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+      if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
       if (blocked[key] || visited[key]) continue;
       // For snake body, allow moving to the tail (it will move away)
       if (snakeBody && snakeBody.length > 0) {
@@ -170,7 +170,7 @@ function countReachable(x, z, snakeBody, maxSteps) {
       var nx = curr.x + DIRS[d].x;
       var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
-      if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+      if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
       if (blocked[key] || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nx, z: nz});
@@ -186,7 +186,7 @@ function countEscapeRoutes(x, z, snakeBody, blocked) {
   for (var d = 0; d < DIRS.length; d++) {
     var nx = x + DIRS[d].x;
     var nz = z + DIRS[d].z;
-    if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
     var key = nx + ',' + nz;
     if (blocked[key]) continue;
     // Check snake body (allow tail)
@@ -265,9 +265,11 @@ function bestApple(aiSnake, blocked, diff) {
       score += 1000; // Reachable is much better
       score -= manhattanDist; // Shorter path is better
 
-      // Check space around apple position
+      // Check space around apple position — scaled down so distance dominates.
+      // Without scaling, edge apples were unfairly penalized because walls
+      // naturally limit reachable cells, making the AI always avoid them.
       var spaceAfter = countReachable(apple.x, apple.z, aiSnake, 30);
-      score += spaceAfter;
+      score += spaceAfter * 0.3;
     } else {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
@@ -297,7 +299,7 @@ function lookaheadScore(aiSnake, dir, steps, blocked) {
     var nz = cz + Math.round(Math.sin(dir));
 
     // Wall check
-    if (nx < -half || nx >= half || nz < -half || nz >= half) return -1000;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return -1000;
 
     // Self check
     if (simSnake.some(function(seg) { return seg.x === nx && seg.z === nz; })) return -1000;
@@ -318,6 +320,20 @@ function lookaheadScore(aiSnake, dir, steps, blocked) {
   return space + escapes * 5;
 }
 
+// ─── Check if a cell is in a shrink danger zone ───
+// Returns true if the cell is OUTSIDE the future safe zone of any active countdown
+function cellInShrinkZone(x, z) {
+  if (!shrinkCountdowns || shrinkCountdowns.length === 0) return false;
+  for (var i = 0; i < shrinkCountdowns.length; i++) {
+    var cd = shrinkCountdowns[i];
+    var b = calcShrinkBoundsFromCurrent(cd);
+    if (x < b.newMinX || x >= b.newMaxX || z < b.newMinZ || z >= b.newMaxZ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // ─── Evaluate safe directions for an AI snake ───
 function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
   var possibleDirs = [
@@ -333,7 +349,7 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
     var nx = head.x + Math.round(Math.cos(dir));
     var nz = head.z + Math.round(Math.sin(dir));
 
-    if (nx < -half || nx >= half || nz < -half || nz >= half) return;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return;
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
     if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
@@ -353,9 +369,19 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
   return safe;
 }
 
+// ─── Check if a position is near a board edge ───
+// Used to relax space requirements near walls where space is naturally constrained
+function isNearEdge(x, z, margin) {
+  margin = margin || 3;
+  return (x <= gridMinX + margin || x >= gridMaxX - margin ||
+          z <= gridMinZ + margin || z >= gridMaxZ - margin);
+}
+
 // ─── Minimum safe space check ───
 // Returns true if moving to (nx,nz) would leave enough reachable space
 // for the snake to survive. This is the KEY anti-coiling mechanism.
+// Near board edges, space requirements are relaxed since walls naturally
+// constrain movement — without this, the AI would loop endlessly near edges.
 function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
   // Quick check: count reachable space from this position
   var bodyBlocked = {};
@@ -379,13 +405,17 @@ function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
       var nnx = curr.x + DIRS[d].x;
       var nnz = curr.z + DIRS[d].z;
       var key = nnx + ',' + nnz;
-      if (nnx < -half || nnx >= half || nnz < -half || nnz >= half) continue;
+      if (nnx < gridMinX || nnx >= gridMaxX || nnz < gridMinZ || nnz >= gridMaxZ) continue;
       if (bodyBlocked[key] || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nnx, z: nnz});
     }
   }
 
+  // Near edges, relax the requirement — walls naturally limit space
+  if (isNearEdge(nx, nz, 3)) {
+    return count >= Math.floor(minSpace * 0.5);
+  }
   return count >= minSpace;
 }
 
@@ -418,8 +448,8 @@ function aiCorneringStrategy(aiIndex, diff) {
 
     // Check if target is near a wall or obstacle — good hunting opportunity
     var nearWall = (
-      targetHead.x <= -half + 3 || targetHead.x >= half - 3 ||
-      targetHead.z <= -half + 3 || targetHead.z >= half - 3
+      targetHead.x <= gridMinX + 3 || targetHead.x >= gridMaxX - 3 ||
+      targetHead.z <= gridMinZ + 3 || targetHead.z >= gridMaxZ - 3
     );
 
     var nearObstacle = false;
@@ -452,11 +482,53 @@ function aiCorneringStrategy(aiIndex, diff) {
   return null;
 }
 
+// ─── Detect if AI is stuck in a loop ───
+// Returns true if the AI head has visited very few unique positions in recent ticks
+function aiIsStuck(ai) {
+  if (!ai.stuckHistory || ai.stuckHistory.length < 6) return false;
+  // Count unique positions in the history
+  var unique = {};
+  for (var i = 0; i < ai.stuckHistory.length; i++) {
+    var key = ai.stuckHistory[i].x + ',' + ai.stuckHistory[i].z;
+    unique[key] = true;
+  }
+  var uniqueCount = Object.keys(unique).length;
+  // If the AI has visited <= 2 unique positions in 6 ticks, it's stuck
+  return uniqueCount <= 2;
+}
+
 // ─── Decide direction for AI snake based on difficulty ───
 // Main decision function — integrates all strategies
 function aiDecideDirection(aiIndex, diff) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return ai.direction;
+
+  // ─── Track position history for stuck detection ───
+  // Only add to history if the head actually moved (avoids false positives in static scenarios)
+  if (!ai.stuckHistory) ai.stuckHistory = [];
+  var head = ai.snake[0];
+  var lastPos = ai.stuckHistory.length > 0 ? ai.stuckHistory[ai.stuckHistory.length - 1] : null;
+  if (!lastPos || lastPos.x !== head.x || lastPos.z !== head.z) {
+    ai.stuckHistory.push({x: head.x, z: head.z});
+    if (ai.stuckHistory.length > 6) ai.stuckHistory.shift();
+  }
+
+  // ─── If stuck, force a random safe direction to break the loop ───
+  if (aiIsStuck(ai)) {
+    var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
+    if (safe.length > 1) {
+      // Pick a random safe direction (not the current one)
+      var newDirs = safe.filter(function(d) { return d !== ai.direction; });
+      if (newDirs.length > 0) {
+        var chosen = newDirs[Math.floor(Math.random() * newDirs.length)];
+        log('AI ' + aiIndex + ' stuck — forcing random direction');
+        ai.stuckHistory = []; // Reset history
+        return chosen;
+      }
+    }
+    // If only one safe direction, reset history to avoid false positives
+    ai.stuckHistory = [];
+  }
 
   var strat = AI_STRATEGY[diff] || AI_STRATEGY.medium;
   var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
@@ -491,6 +563,8 @@ function aiDecideDirection(aiIndex, diff) {
       var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
       var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
       var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+      // Penalize shrink danger zone in survival mode
+      if (cellInShrinkZone(nx, nz)) space -= 20;
       if (space > bestSpace) {
         bestSpace = space;
         bestDir = safe[s];
@@ -538,7 +612,10 @@ function aiDecideDirection(aiIndex, diff) {
             // Anti-trap: verify escape routes
             if (strat.antiTrap) {
               var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-              if (escapes < 2) continue;
+              // Near edges, 1 escape is acceptable (wall constrains movement naturally)
+              var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
+                              nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
+              if (escapes < (nearEdge ? 1 : 2)) continue;
             }
             // Lookahead: verify future positions
             if (strat.lookahead) {
@@ -577,9 +654,11 @@ function aiDecideDirection(aiIndex, diff) {
     var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
 
     var score = 0;
-    // Space is the PRIMARY factor — prevents coiling
-    var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
-    score += space * 10;
+    // Space is important but not dominant — let apple distance matter.
+        // A high multiplier (like *10) made edge apples impossible to reach because
+        // center cells always had more space. *3 gives room to both factors.
+        var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+        score += space * 3;
 
     // Distance to apple is secondary
     if (target) {
@@ -590,6 +669,11 @@ function aiDecideDirection(aiIndex, diff) {
     // Prefer directions with more escape routes
     var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
     score += escapes * 3;
+
+    // ─── Penalize shrink danger zone ───
+    if (cellInShrinkZone(nx, nz)) {
+      score -= 500; // Strong penalty to avoid cells that will disappear
+    }
 
     if (score > bestScore) {
       bestScore = score;
@@ -675,7 +759,7 @@ function stepAI() {
     var nz = head.z + Math.round(Math.sin(ai.direction));
 
     // Check wall collision
-    if (nx < -half || nx >= half || nz < -half || nz >= half) {
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) {
       log('AI ' + index + ' hit wall at (' + nx + ',' + nz + ')');
       aiDie(index, 'wall');
       return;
@@ -786,6 +870,9 @@ function aiDie(aiIndex, cause) {
   // Show death message
   showAiDeathMessage(ai, cause);
 
+  // ─── Trigger grid shrink on AI death ───
+  maybeTriggerShrink();
+
   log('AI ' + aiIndex + ' died (' + cause + ') — ' + corpses.length + ' corpse segments');
 }
 
@@ -842,6 +929,9 @@ if(typeof module !== 'undefined' && module.exports) {
     aiDecideDirection,
     aiCorneringStrategy,
     minSafeSpace,
+    cellInShrinkZone,
+    aiIsStuck,
+  isNearEdge,
     AI_STRATEGY,
     DIRS
   };

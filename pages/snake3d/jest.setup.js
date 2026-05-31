@@ -160,6 +160,9 @@ mockEl('mp-num');
 mockEl('tz-left');
 mockEl('tz-right');
 mockEl('ai-death-msg');
+mockEl('shrink-warning');
+mockEl('pause-btn', 'button');
+mockEl('fullscreen-btn', 'button');
 
 // ─── Mock window properties ───
 Object.defineProperty(window, 'innerWidth', { value: 1280, writable: true, configurable: true });

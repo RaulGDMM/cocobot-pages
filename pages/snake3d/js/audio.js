@@ -18,6 +18,19 @@ function sfxTurn(){tone(440,.03,'sine',.03);}
 function sfxDie(){tone(180,.3,'sawtooth',.08);setTimeout(function(){tone(120,.4,'sawtooth',.06)},150);}
 function sfxObstacle(){tone(220,.15,'square',.1);setTimeout(function(){tone(330,.2,'square',.08)},100);}
 
+// ─── Shrink warning sounds ───
+// Tick sound for each red flash (short, high-pitched)
+function sfxShrinkTick() {
+  tone(660, .12, 'sine', .15);
+}
+
+// Shrink complete sound (deep boom + sweep)
+function sfxShrinkComplete() {
+  tone(80, .5, 'sawtooth', .1);
+  setTimeout(function(){tone(120, .3, 'square', .08)}, 100);
+  setTimeout(function(){tone(60, .6, 'sawtooth', .06)}, 200);
+}
+
 // ─── Directional AI eat sound ───
 // Pan the sound based on AI position relative to player head
 // pan: -1 (left) to +1 (right), 0 = center
@@ -80,9 +93,20 @@ function initMusic() {
   document.getElementById('mp-next').addEventListener('click', function(e) { e.stopPropagation(); nextTrack(); });
 
   musicEl.addEventListener('ended', function() {
-    log('🎵 Track ended, playing next');
-    nextTrack();
-  });
+     musicPlaying = false;
+     if(userPausedMusic) {
+       // User paused — just advance to next track without autoplay (browser blocks it)
+       currentTrack = (currentTrack + 1) % playlist.length;
+       musicEl.src = playlist[currentTrack].file;
+       musicEl.load();
+       updateTrackDisplay();
+       log('🎵 Track ended, queued next: ' + playlist[currentTrack].name + ' (' + (currentTrack + 1) + '/' + playlist.length + ')');
+     } else {
+       // Normal playback — loop to next track (wraps to 0 after last)
+       log('🎵 Track ended, playing next');
+       nextTrack();
+     }
+   });
 
   musicEl.addEventListener('error', function(e) {
     log('❌ Music error: ' + (musicEl.error ? musicEl.error.message : 'unknown'));
