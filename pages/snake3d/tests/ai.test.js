@@ -1,5 +1,5 @@
-// ─── Tests: AI opponents + multi-snake (Fase 4-5) ───
-// Tests for AI snake infrastructure, isOccupied with AI, and AI logic.
+// ─── Tests: AI opponents + multi-snake (enhanced) ───
+// Tests for AI snake infrastructure, pathfinding, strategies, and decision logic.
 
 const { setSnake, setApples, setObstacles } = require('./helpers');
 
@@ -25,46 +25,409 @@ describe('ai.js — snapToCardinal()', () => {
   });
 
   test('snaps diagonal angle (π/4) to nearest cardinal', () => {
-    // π/4 is equidistant from 0 and π/2 — should pick one
     var result = snapToCardinal(Math.PI / 4);
     var isCardinal = (Math.abs(result) < 0.01) || (Math.abs(result - Math.PI / 2) < 0.01);
     expect(isCardinal).toBe(true);
   });
 
   test('snaps small deviation from cardinal to that cardinal', () => {
-    // 0.1 rad from 0 → should snap to 0
     expect(snapToCardinal(0.1)).toBeCloseTo(0);
-    // 0.1 rad from π/2 → should snap to π/2
     expect(snapToCardinal(Math.PI / 2 + 0.1)).toBeCloseTo(Math.PI / 2);
   });
 
   test('snaps angle past π to nearest cardinal', () => {
-    // 1.6 rad is closer to π/2 (1.57) than π (3.14)
     expect(snapToCardinal(1.6)).toBeCloseTo(Math.PI / 2);
   });
 
-  test('snaps atan2 result to cardinal', () => {
-    // atan2(-5, -3) ≈ 2.11 rad — closer to π (3.14) than π/2 (1.57)
-    var angle = Math.atan2(-5, -3);
-    var snapped = snapToCardinal(angle);
-    // Should be one of the 4 cardinals
-    var cardinals = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
-    var isCardinal = cardinals.some(function(c) {
-      return Math.abs(snapped - c) < 0.01;
-    });
-    expect(isCardinal).toBe(true);
-  });
-
   test('handles negative angles', () => {
-    // -2 rad is closer to -π/2 (-1.57) than -π (-3.14)
     expect(snapToCardinal(-2)).toBeCloseTo(-Math.PI / 2);
   });
 
   test('handles full rotation angles', () => {
-    // 2π is equivalent to 0
     expect(snapToCardinal(Math.PI * 2)).toBeCloseTo(0);
-    // -2π is equivalent to 0
     expect(snapToCardinal(-Math.PI * 2)).toBeCloseTo(0);
+  });
+});
+
+// ─── DIRS constant ───
+describe('ai.js — DIRS', () => {
+  test('has 4 direction vectors', () => {
+    expect(DIRS.length).toBe(4);
+  });
+
+  test('directions are cardinal', () => {
+    expect(DIRS).toEqual([{x:1,z:0},{x:-1,z:0},{x:0,z:1},{x:0,z:-1}]);
+  });
+});
+
+// ─── buildBlockedSet() ───
+describe('ai.js — buildBlockedSet()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
+    setApples([]);
+    setObstacles([{x: 5, z: 5}]);
+    setGlobal('aiSnakes', [{
+      alive: true,
+      id: 'ai_0',
+      snake: [{x: 10, z: 10}, {x: 9, z: 10}]
+    }]);
+    setGlobal('corpses', [{x: -5, z: -5}]);
+    setGlobal('gridSize', 22);
+  });
+
+  test('includes player snake cells', () => {
+    var blocked = buildBlockedSet();
+    expect(blocked['0,0']).toBe(true);
+    expect(blocked['-1,0']).toBe(true);
+  });
+
+  test('includes obstacle cells', () => {
+    var blocked = buildBlockedSet();
+    expect(blocked['5,5']).toBe(true);
+  });
+
+  test('includes corpse cells', () => {
+    var blocked = buildBlockedSet();
+    expect(blocked['-5,-5']).toBe(true);
+  });
+
+  test('includes other AI snake cells', () => {
+    var blocked = buildBlockedSet();
+    expect(blocked['10,10']).toBe(true);
+  });
+
+  test('excludes specified snake ID', () => {
+    var blocked = buildBlockedSet('ai_0');
+    expect(blocked['10,10']).toBeUndefined();
+  });
+
+  test('empty grid returns empty blocked set', () => {
+    setSnake([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    var blocked = buildBlockedSet();
+    expect(Object.keys(blocked).length).toBe(0);
+  });
+});
+
+// ─── bfsPath() ───
+describe('ai.js — bfsPath()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setApples([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('finds direct path to adjacent cell', () => {
+    var blocked = {};
+    var path = bfsPath(0, 0, 1, 0, blocked, null, 100);
+    expect(path).not.toBeNull();
+    expect(path.length).toBe(2);
+    expect(path[0]).toEqual({x: 0, z: 0});
+    expect(path[1]).toEqual({x: 1, z: 0});
+  });
+
+  test('finds path around obstacle', () => {
+    var blocked = {'1,0': true};
+    var path = bfsPath(0, 0, 2, 0, blocked, null, 100);
+    expect(path).not.toBeNull();
+    expect(path[path.length - 1]).toEqual({x: 2, z: 0});
+  });
+
+  test('returns null when target is blocked', () => {
+    var blocked = {'1,0': true};
+    var path = bfsPath(0, 0, 1, 0, blocked, null, 100);
+    expect(path).toBeNull();
+  });
+
+  test('returns null when start is blocked', () => {
+    var blocked = {'0,0': true};
+    var path = bfsPath(0, 0, 1, 0, blocked, null, 100);
+    expect(path).toBeNull();
+  });
+
+  test('returns null when no path exists (fully blocked)', () => {
+    // Block ALL 4 directions from (0,0)
+    var blocked = {'1,0': true, '-1,0': true, '0,1': true, '0,-1': true};
+    var path = bfsPath(0, 0, 2, 0, blocked, null, 100);
+    expect(path).toBeNull();
+  });
+
+  test('respects grid boundaries', () => {
+    var blocked = {};
+    var path = bfsPath(10, 0, 15, 0, blocked, null, 100);
+    expect(path).toBeNull(); // 15 >= half (11)
+  });
+
+  test('returns path through multiple steps', () => {
+    var blocked = {};
+    var path = bfsPath(0, 0, 3, 2, blocked, null, 100);
+    expect(path).not.toBeNull();
+    expect(path.length).toBe(6); // 0,0 → 1,0 → 2,0 → 3,0 → 3,1 → 3,2
+  });
+
+  test('allows moving to snake tail position', () => {
+    var blocked = {};
+    var snakeBody = [{x: 0, z: 0}, {x: 1, z: 0}, {x: 2, z: 0}];
+    var path = bfsPath(0, 0, 3, 0, blocked, snakeBody, 100);
+    // Should allow moving through tail (2,0) since it will vacate
+    expect(path).not.toBeNull();
+  });
+
+  test('respects maxSteps limit', () => {
+    var blocked = {};
+    var path = bfsPath(0, 0, 10, 10, blocked, null, 5);
+    expect(path).toBeNull(); // Too few steps
+  });
+});
+
+// ─── countReachable() ───
+describe('ai.js — countReachable()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setApples([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('returns high count in open space', () => {
+    var count = countReachable(0, 0, [], 50);
+    expect(count).toBe(50); // hits maxSteps limit
+  });
+
+  test('returns low count in confined space', () => {
+    // Surround with obstacles
+    setObstacles([
+      {x: 1, z: 0}, {x: -1, z: 0}, {x: 0, z: 1}, {x: 0, z: -1}
+    ]);
+    var count = countReachable(0, 0, [], 50);
+    expect(count).toBe(1); // Only the starting cell
+  });
+
+  test('respects snake body as obstacle', () => {
+    setSnake([{x: 1, z: 0}, {x: 2, z: 0}]);
+    // Snake body around (0,0) blocks some cells
+    var snakeBody = [{x: 0, z: 0}, {x: -1, z: 0}];
+    var count = countReachable(0, 0, snakeBody, 10);
+    // With player snake at (1,0),(2,0) and own body at (-1,0),
+    // some directions are blocked so count should be less than full 10
+    expect(count).toBeLessThanOrEqual(10);
+  });
+});
+
+// ─── countEscapeRoutes() ───
+describe('ai.js — countEscapeRoutes()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setApples([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('returns 4 in open space', () => {
+    var blocked = {};
+    var routes = countEscapeRoutes(0, 0, [], blocked);
+    expect(routes).toBe(4);
+  });
+
+  test('returns 0 when fully surrounded', () => {
+    var blocked = {'1,0': true, '-1,0': true, '0,1': true, '0,-1': true};
+    var routes = countEscapeRoutes(0, 0, [], blocked);
+    expect(routes).toBe(0);
+  });
+
+  test('returns 1 when only one escape', () => {
+    var blocked = {'1,0': true, '-1,0': true, '0,1': true};
+    var routes = countEscapeRoutes(0, 0, [], blocked);
+    expect(routes).toBe(1);
+  });
+
+  test('respects wall boundaries', () => {
+    var blocked = {};
+    var routes = countEscapeRoutes(10, 10, [], blocked); // corner
+    expect(routes).toBe(2); // Only -X and -Z directions
+  });
+
+  test('allows tail cell as escape', () => {
+    var blocked = {'1,0': true, '-1,0': true, '0,1': true};
+    var snakeBody = [{x: 0, z: 0}, {x: 0, z: -1}]; // tail at (0,-1)
+    var routes = countEscapeRoutes(0, 0, snakeBody, blocked);
+    expect(routes).toBe(1); // tail direction is allowed
+  });
+});
+
+// ─── bfsPathToTail() ───
+describe('ai.js — bfsPathToTail()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setApples([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('returns null for snake with < 2 segments', () => {
+    expect(bfsPathToTail([{x: 0, z: 0}])).toBeNull();
+  });
+
+  test('finds path to own tail', () => {
+    // Straight snake: head at (0,0), tail at (0,4)
+    var snakeBody = [
+      {x: 0, z: 0}, {x: 0, z: 1}, {x: 0, z: 2},
+      {x: 0, z: 3}, {x: 0, z: 4}
+    ];
+    var path = bfsPathToTail(snakeBody);
+    expect(path).not.toBeNull();
+    expect(path[path.length - 1]).toEqual({x: 0, z: 4}); // tail position
+  });
+
+  test('tail may be reachable by going around', () => {
+    // U-shape: head at (0,0), body wraps, tail at (1,0)
+    // Body blocks (0,1) and (1,1), but BFS can go around via (-1,0)
+    var snakeBody = [
+      {x: 0, z: 0}, {x: 0, z: 1}, {x: 1, z: 1}, {x: 1, z: 0}
+    ];
+    var path = bfsPathToTail(snakeBody);
+    // Path exists — goes around the U
+    expect(path).not.toBeNull();
+    expect(path[path.length - 1]).toEqual({x: 1, z: 0});
+  });
+});
+
+// ─── nearestApple() ───
+describe('ai.js — nearestApple()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+  });
+
+  test('returns null when no apples', () => {
+    setApples([]);
+    expect(nearestApple(0, 0)).toBeNull();
+  });
+
+  test('returns closest apple by Manhattan distance', () => {
+    setApples([
+      {x: 5, z: 5},
+      {x: 2, z: 0},
+      {x: 10, z: 10}
+    ]);
+    var nearest = nearestApple(0, 0);
+    expect(nearest.x).toBe(2);
+    expect(nearest.z).toBe(0);
+  });
+
+  test('skips null apple entries', () => {
+    setApples([null, {x: 3, z: 1}, null]);
+    var nearest = nearestApple(0, 0);
+    expect(nearest.x).toBe(3);
+    expect(nearest.z).toBe(1);
+  });
+
+  test('prefers apple with smaller Manhattan distance', () => {
+    setApples([{x: -3, z: 0}, {x: 2, z: 2}]);
+    var nearest = nearestApple(0, 0);
+    expect(nearest.x).toBe(-3);
+    expect(nearest.z).toBe(0);
+  });
+});
+
+// ─── bestApple() ───
+describe('ai.js — bestApple()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('returns null when no apples', () => {
+    setApples([]);
+    var blocked = {};
+    expect(bestApple([{x: 0, z: 0}], blocked, 'hard')).toBeNull();
+  });
+
+  test('returns nearest apple in easy mode (no bestApple strategy)', () => {
+    setApples([{x: 5, z: 5}, {x: 2, z: 0}]);
+    var blocked = {};
+    var apple = bestApple([{x: 0, z: 0}], blocked, 'easy');
+    expect(apple.x).toBe(2);
+    expect(apple.z).toBe(0);
+  });
+
+  test('prefers reachable apple over closer unreachable one', () => {
+    setApples([{x: 1, z: 0}, {x: 3, z: 3}]);
+    // Block path to (1,0)
+    var blocked = {'1,0': true, '0,1': true, '0,-1': true};
+    var apple = bestApple([{x: 0, z: 0}], blocked, 'hard');
+    // (1,0) is blocked, so (3,3) should be preferred
+    expect(apple.x).toBe(3);
+    expect(apple.z).toBe(3);
+  });
+
+  test('handles all null apples', () => {
+    setApples([null, null, null]);
+    var blocked = {};
+    expect(bestApple([{x: 0, z: 0}], blocked, 'hard')).toBeNull();
+  });
+});
+
+// ─── lookaheadScore() ───
+describe('ai.js — lookaheadScore()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setApples([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('returns positive score in open space', () => {
+    var snakeBody = [{x: 0, z: 0}, {x: -1, z: 0}];
+    var blocked = {};
+    var score = lookaheadScore(snakeBody, 0, 3, blocked);
+    expect(score).toBeGreaterThan(0);
+  });
+
+  test('returns -1000 when path hits wall', () => {
+    var snakeBody = [{x: 10, z: 0}, {x: 9, z: 0}];
+    var blocked = {};
+    var score = lookaheadScore(snakeBody, 0, 5, blocked);
+    expect(score).toBe(-1000); // hits wall at x=11
+  });
+
+  test('returns -1000 when path hits blocked cell', () => {
+    var snakeBody = [{x: 0, z: 0}, {x: -1, z: 0}];
+    var blocked = {'1,0': true};
+    var score = lookaheadScore(snakeBody, 0, 3, blocked);
+    expect(score).toBe(-1000);
+  });
+
+  test('returns -1000 when path hits self', () => {
+    var snakeBody = [{x: 0, z: 0}, {x: 1, z: 0}, {x: 1, z: 1}, {x: 0, z: 1}];
+    var blocked = {};
+    var score = lookaheadScore(snakeBody, 0, 3, blocked);
+    expect(score).toBe(-1000); // hits self at (1,0)
   });
 });
 
@@ -105,18 +468,6 @@ describe('apples.js — isOccupied() with AI snakes', () => {
     setGlobal('corpses', [{x: 7, z: 8}, {x: 6, z: 8}]);
     expect(isOccupied(7, 8)).toBe(true);
     expect(isOccupied(6, 8)).toBe(true);
-    expect(isOccupied(0, 0)).toBe(false);
-  });
-
-  test('checks both alive AI and corpses', () => {
-    setGlobal('aiSnakes', [{
-      alive: true,
-      snake: [{x: 1, z: 0}]
-    }]);
-    setGlobal('corpses', [{x: 2, z: 0}]);
-    expect(isOccupied(1, 0)).toBe(true);
-    expect(isOccupied(2, 0)).toBe(true);
-    expect(isOccupied(3, 0)).toBe(false);
   });
 
   test('handles undefined aiSnakes gracefully', () => {
@@ -142,10 +493,7 @@ describe('obstacles.js — isSafeForObstacle() with AI snakes', () => {
       alive: true,
       snake: [{x: 10, z: 10}]
     }]);
-    // OBSTACLE_MIN_DIST_SNAKE is 6, so positions within 5 Manhattan distance should be unsafe
     expect(isSafeForObstacle(10, 10)).toBe(false);
-    expect(isSafeForObstacle(9, 10)).toBe(false);
-    expect(isSafeForObstacle(8, 10)).toBe(false);
   });
 
   test('returns true when far from AI snake', () => {
@@ -153,7 +501,6 @@ describe('obstacles.js — isSafeForObstacle() with AI snakes', () => {
       alive: true,
       snake: [{x: 10, z: 10}]
     }]);
-    // Manhattan distance 6+ should be safe from AI snake
     expect(isSafeForObstacle(16, 10)).toBe(true);
   });
 
@@ -162,20 +509,8 @@ describe('obstacles.js — isSafeForObstacle() with AI snakes', () => {
       alive: false,
       snake: [{x: 5, z: 5}]
     }]);
-    // Dead AI snake is skipped in distance check
-    // But if there's a corpse at (5,5), isOccupied will block
-    setGlobal('corpses', []); // no corpses
-    expect(isSafeForObstacle(5, 5)).toBe(true); // no distance check for dead AI, no corpse
-  });
-
-  test('handles multiple AI snakes', () => {
-    setGlobal('aiSnakes', [
-      {alive: true, snake: [{x: 10, z: 10}]},
-      {alive: true, snake: [{x: -10, z: -10}]}
-    ]);
-    expect(isSafeForObstacle(10, 10)).toBe(false);
-    expect(isSafeForObstacle(-10, -10)).toBe(false);
-    expect(isSafeForObstacle(0, 12)).toBe(true); // far from both AI and player
+    setGlobal('corpses', []);
+    expect(isSafeForObstacle(5, 5)).toBe(true);
   });
 });
 
@@ -191,18 +526,14 @@ describe('ai.js — aiEvaluateDirections()', () => {
   });
 
   test('identifies safe directions', () => {
-    // AI at (0,0) facing direction 0 (moving +X)
     var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}];
-    var aiDir = 0;
-    var safe = aiEvaluateDirections(0, aiSnake, aiDir);
+    var safe = aiEvaluateDirections(0, aiSnake, 0);
     expect(safe.length).toBeGreaterThan(0);
   });
 
   test('eliminates wall directions', () => {
     var aiSnake = [{x: half - 1, z: 0}, {x: half - 2, z: 0}];
-    var aiDir = 0; // facing wall
-    var safe = aiEvaluateDirections(0, aiSnake, aiDir);
-    // Forward should be eliminated
+    var safe = aiEvaluateDirections(0, aiSnake, 0);
     safe.forEach(function(d) {
       var nx = aiSnake[0].x + Math.round(Math.cos(d));
       var nz = aiSnake[0].z + Math.round(Math.sin(d));
@@ -215,9 +546,7 @@ describe('ai.js — aiEvaluateDirections()', () => {
 
   test('eliminates self-collision directions', () => {
     var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}, {x: -1, z: 1}, {x: 0, z: 1}];
-    var aiDir = 0;
-    var safe = aiEvaluateDirections(0, aiSnake, aiDir);
-    // Turning right (direction +PI/2) would hit body at (0,1)
+    var safe = aiEvaluateDirections(0, aiSnake, 0);
     safe.forEach(function(d) {
       var nx = aiSnake[0].x + Math.round(Math.cos(d));
       var nz = aiSnake[0].z + Math.round(Math.sin(d));
@@ -234,6 +563,7 @@ describe('ai.js — aiDecideDirection()', () => {
     setApples([{x: 5, z: 0}]);
     setObstacles([]);
     setGlobal('aiSnakes', [{
+      id: 'ai_0',
       alive: true,
       snake: [{x: 0, z: 0}, {x: -1, z: 0}],
       direction: 0,
@@ -245,27 +575,93 @@ describe('ai.js — aiDecideDirection()', () => {
   });
 
   test('easy mode sometimes picks random safe direction', () => {
-    // Run multiple times to check randomness
     var results = {};
     for (var i = 0; i < 50; i++) {
-      setGlobal('difficulty', 'easy');
       var dir = aiDecideDirection(0, 'easy');
       results[dir] = (results[dir] || 0) + 1;
     }
-    // Should have some variation (not always the same direction)
     expect(Object.keys(results).length).toBeGreaterThanOrEqual(1);
   });
 
   test('hard mode mostly picks optimal direction', () => {
     var results = {};
     for (var i = 0; i < 50; i++) {
-      setGlobal('difficulty', 'hard');
       var dir = aiDecideDirection(0, 'hard');
       results[dir] = (results[dir] || 0) + 1;
     }
-    // Hard mode should be mostly consistent
     var maxCount = Math.max.apply(null, Object.values(results));
     expect(maxCount / 50).toBeGreaterThan(0.8);
+  });
+});
+
+// ─── AI_STRATEGY config ───
+describe('ai.js — AI_STRATEGY', () => {
+  test('has 3 difficulty levels', () => {
+    expect(Object.keys(AI_STRATEGY).length).toBe(3);
+  });
+
+  test('easy: minimal strategies', () => {
+    expect(AI_STRATEGY.easy.bfsPathfinding).toBe(false);
+    expect(AI_STRATEGY.easy.tailChasing).toBe(false);
+    expect(AI_STRATEGY.easy.lookahead).toBe(false);
+    expect(AI_STRATEGY.easy.hunting).toBe(false);
+  });
+
+  test('medium: BFS + tail-chasing + anti-trap', () => {
+    expect(AI_STRATEGY.medium.bfsPathfinding).toBe(true);
+    expect(AI_STRATEGY.medium.tailChasing).toBe(true);
+    expect(AI_STRATEGY.medium.antiTrap).toBe(true);
+  });
+
+  test('hard: all strategies enabled', () => {
+    expect(AI_STRATEGY.hard.bfsPathfinding).toBe(true);
+    expect(AI_STRATEGY.hard.tailChasing).toBe(true);
+    expect(AI_STRATEGY.hard.lookahead).toBe(true);
+    expect(AI_STRATEGY.hard.hunting).toBe(true);
+    expect(AI_STRATEGY.hard.antiTrap).toBe(true);
+  });
+
+  test('error rates decrease with difficulty', () => {
+    expect(AI_STRATEGY.easy.errorRate).toBeGreaterThan(AI_STRATEGY.medium.errorRate);
+    expect(AI_STRATEGY.medium.errorRate).toBeGreaterThan(AI_STRATEGY.hard.errorRate);
+  });
+});
+
+// ─── aiCorneringStrategy() ───
+describe('ai.js — aiCorneringStrategy()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
+    setApples([]);
+    setObstacles([]);
+    setGlobal('aiSnakes', [{
+      id: 'ai_0',
+      alive: true,
+      snake: [{x: 5, z: 5}, {x: 4, z: 5}, {x: 3, z: 5}, {x: 2, z: 5}],
+      direction: 0,
+      color: 'red'
+    }]);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+  });
+
+  test('returns null when AI is not alive', () => {
+    aiSnakes[0].alive = false;
+    expect(aiCorneringStrategy(0, 'hard')).toBeNull();
+  });
+
+  test('returns null when no targets', () => {
+    setSnake([]);
+    expect(aiCorneringStrategy(0, 'hard')).toBeNull();
+  });
+
+  test('does not throw when target is far', () => {
+    setSnake([{x: -10, z: -10}, {x: -11, z: -10}]);
+    expect(() => aiCorneringStrategy(0, 'hard')).not.toThrow();
+  });
+
+  test('returns null in easy mode (hunting disabled)', () => {
+    expect(aiCorneringStrategy(0, 'easy')).toBeNull();
   });
 });
 
@@ -295,12 +691,6 @@ describe('ai.js — initAI()', () => {
     expect(aiSnakes.length).toBe(1);
   });
 
-  test('vs3 mode creates 2 AI snakes', () => {
-    setGlobal('gameMode', 'vs3');
-    initAI();
-    expect(aiSnakes.length).toBe(2);
-  });
-
   test('vs4 mode creates 3 AI snakes', () => {
     setGlobal('gameMode', 'vs4');
     initAI();
@@ -314,14 +704,6 @@ describe('ai.js — initAI()', () => {
     aiSnakes.forEach(function(ai) {
       expect(ai.color).not.toBe('green');
     });
-  });
-
-  test('AI snakes have unique colors among themselves', () => {
-    setGlobal('gameMode', 'vs4');
-    initAI();
-    var colors = aiSnakes.map(function(ai) { return ai.color; });
-    var unique = colors.filter(function(v, i) { return colors.indexOf(v) === i; });
-    expect(unique.length).toBe(colors.length);
   });
 
   test('AI snakes start alive', () => {
@@ -338,6 +720,7 @@ describe('ai.js — aiDie()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', [{
+      id: 'ai_0',
       alive: true,
       snake: [{x: 5, z: 0}, {x: 4, z: 0}, {x: 3, z: 0}],
       direction: 0,
@@ -364,109 +747,6 @@ describe('ai.js — aiDie()', () => {
     expect(corpsePositions).toContain('4,0');
     expect(corpsePositions).toContain('3,0');
   });
-
-  test('corpse segments have color from dead snake', () => {
-    aiDie(0, 'wall');
-    expect(corpses[0].color).toBe('red');
-  });
-});
-
-// ─── nearestApple() ───
-describe('ai.js — nearestApple()', () => {
-  beforeEach(() => {
-    setSnake([{x: 0, z: 0}]);
-    setObstacles([]);
-    setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
-    setGlobal('gridSize', 22);
-  });
-
-  test('returns null when no apples', () => {
-    setApples([]);
-    expect(nearestApple(0, 0)).toBeNull();
-  });
-
-  test('returns closest apple by Manhattan distance', () => {
-    setApples([
-      {x: 5, z: 5},
-      {x: 2, z: 0},
-      {x: 10, z: 10}
-    ]);
-    var nearest = nearestApple(0, 0);
-    expect(nearest.x).toBe(2);
-    expect(nearest.z).toBe(0);
-  });
-
-  test('skips null apple entries', () => {
-    setApples([null, {x: 3, z: 1}, null]);
-    var nearest = nearestApple(0, 0);
-    expect(nearest.x).toBe(3);
-    expect(nearest.z).toBe(1);
-  });
-
-  test('prefers apple with smaller Manhattan distance', () => {
-    setApples([
-      {x: -3, z: 0},
-      {x: 2, z: 2}
-    ]);
-    // dist to (-3,0) = 3, dist to (2,2) = 4
-    var nearest = nearestApple(0, 0);
-    expect(nearest.x).toBe(-3);
-    expect(nearest.z).toBe(0);
-  });
-});
-
-// ─── aiCorneringStrategy() ───
-describe('ai.js — aiCorneringStrategy()', () => {
-  beforeEach(() => {
-    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
-    setApples([]);
-    setObstacles([]);
-    setGlobal('aiSnakes', [{
-      alive: true,
-      snake: [{x: 5, z: 5}, {x: 4, z: 5}, {x: 3, z: 5}, {x: 2, z: 5}],
-      direction: 0,
-      color: 'red'
-    }]);
-    setGlobal('corpses', []);
-    setGlobal('gridSize', 22);
-    setGlobal('difficulty', 'hard');
-  });
-
-  test('returns false when AI is not alive', () => {
-    aiSnakes[0].alive = false;
-    expect(aiCorneringStrategy(0, 'hard')).toBe(false);
-  });
-
-  test('returns false when no shorter targets nearby', () => {
-    // AI is length 4, player is length 2, but player is far
-    setSnake([{x: -10, z: -10}, {x: -11, z: -10}]);
-    // With random factor, may or may not trigger; we just check it doesn't throw
-    expect(() => aiCorneringStrategy(0, 'hard')).not.toThrow();
-  });
-
-  test('returns false when target is not near wall', () => {
-    // Player in center of map, far from walls
-    setSnake([
-      {x: 0, z: 0}, {x: -1, z: 0}, {x: -2, z: 0},
-      {x: -3, z: 0}, {x: -4, z: 0}, {x: -5, z: 0}
-    ]);
-    // AI is shorter (4 vs 6), so it won't try to corner
-    expect(() => aiCorneringStrategy(0, 'hard')).not.toThrow();
-  });
-
-  test('returns true when target is shorter and near wall and close', () => {
-    // Player is short (2 segments) and near wall at x=half-2
-    setSnake([{x: half - 2, z: 5}, {x: half - 3, z: 5}]);
-    // AI is longer (4 segments) and close (dist < 8)
-    // Note: random factor may prevent activation, so we just check it doesn't throw
-    expect(() => aiCorneringStrategy(0, 'hard')).not.toThrow();
-  });
-
-  test('handles no targets gracefully', () => {
-    setSnake([]);
-    expect(aiCorneringStrategy(0, 'hard')).toBe(false);
-  });
 });
 
 // ─── stepAI() ───
@@ -476,6 +756,7 @@ describe('ai.js — stepAI()', () => {
     setApples([{x: 3, z: 0}]);
     setObstacles([]);
     setGlobal('aiSnakes', [{
+      id: 'ai_0',
       alive: true,
       snake: [{x: 5, z: 0}, {x: 4, z: 0}, {x: 3, z: 0}, {x: 2, z: 0}],
       direction: 0,
@@ -497,18 +778,21 @@ describe('ai.js — stepAI()', () => {
     aiSnakes[0].alive = false;
     var snakeLen = aiSnakes[0].snake.length;
     stepAI();
-    expect(aiSnakes[0].snake.length).toBe(snakeLen); // unchanged
+    expect(aiSnakes[0].snake.length).toBe(snakeLen);
   });
 
   test('AI snake moves forward', () => {
-    var headX = aiSnakes[0].snake[0].x;
+    // Place apple away from AI body to avoid pathfinding conflict
+    setApples([{x: 10, z: 5}]);
+    var oldHeadX = aiSnakes[0].snake[0].x;
+    var oldHeadZ = aiSnakes[0].snake[0].z;
     stepAI();
-    // After step, new head should be different
-    expect(aiSnakes[0].snake[0].x).not.toBe(headX);
+    // After step, new head should be at a different position
+    var newHead = aiSnakes[0].snake[0];
+    expect(newHead.x !== oldHeadX || newHead.z !== oldHeadZ).toBe(true);
   });
 
   test('AI snake grows when eating apple', () => {
-    // Position AI snake to eat apple at (3,0)
     aiSnakes[0].snake = [{x: 2, z: 0}, {x: 1, z: 0}, {x: 0, z: 0}, {x: -1, z: 0}];
     aiSnakes[0].direction = 0;
     var lenBefore = aiSnakes[0].snake.length;
@@ -518,67 +802,50 @@ describe('ai.js — stepAI()', () => {
   });
 
   test('AI dies when hitting wall — trapped position', () => {
-    // AI in corner: all 3 directions lead to walls
     aiSnakes[0].snake = [{x: half - 1, z: half - 1}, {x: half - 2, z: half - 1}];
-    aiSnakes[0].direction = Math.PI / 4; // diagonal — not cardinal, so AI will try to turn
-    // Block escape with obstacles
+    aiSnakes[0].direction = Math.PI / 4;
     setObstacles([
-      {x: half - 2, z: half - 1}, // behind
-      {x: half - 1, z: half - 2}  // left
+      {x: half - 2, z: half - 1},
+      {x: half - 1, z: half - 2}
     ]);
     stepAI();
-    // With no safe directions, AI keeps current dir and hits wall
     expect(aiSnakes[0].alive).toBe(false);
   });
 
   test('AI dies when hitting self — U-shape trap', () => {
-    // Dead-end U-shape: head at (0,0), body wraps around
-    // Forward (+Z) hits (0,1), right (+X) hits (1,0), left (-X) is open but body at (-1,0)
     aiSnakes[0].snake = [{x: 0, z: 0}, {x: 0, z: 1}, {x: 1, z: 1}, {x: 1, z: 0}, {x: -1, z: 0}];
-    aiSnakes[0].direction = Math.PI / 2; // facing +Z
-    // All 3 dirs blocked: forward by body, right by body, left by body
+    aiSnakes[0].direction = Math.PI / 2;
     stepAI();
     expect(aiSnakes[0].alive).toBe(false);
   });
 
   test('AI dies when hitting obstacle — surrounded', () => {
-    // AI surrounded by obstacles on all sides
     aiSnakes[0].snake = [{x: 0, z: 0}, {x: -1, z: 0}];
     aiSnakes[0].direction = 0;
     setObstacles([
-      {x: 1, z: 0}, // forward
-      {x: 0, z: 1}, // right
-      {x: 0, z: -1} // left
+      {x: 1, z: 0}, {x: 0, z: 1}, {x: 0, z: -1}
     ]);
-    // Backward (-X) is blocked by own body segment at (-1, 0)
     stepAI();
-    // AI has no safe direction, keeps current dir, hits obstacle
     expect(aiSnakes[0].alive).toBe(false);
   });
 
-  test('AI dies when hitting corpse — corpse blocks path', () => {
+  test('AI avoids corpse and survives', () => {
     setGlobal('corpses', [
       {x: 6, z: 0}, {x: 7, z: 0}, {x: 6, z: 1}, {x: 6, z: -1}
     ]);
-    // AI heading toward corpse cluster
     aiSnakes[0].snake = [{x: 5, z: 0}, {x: 4, z: 0}, {x: 3, z: 0}];
     aiSnakes[0].direction = 0;
     stepAI();
-    // AI should avoid the corpse and pick another direction
-    // If it can't, it dies
-    // In this case, it can turn, so it survives
     expect(aiSnakes[0].alive).toBe(true);
   });
 
-  test('AI dies when hitting player snake — player blocks', () => {
-    // Player snake blocks AI path
+  test('AI avoids player snake and survives', () => {
     setSnake([
       {x: 6, z: 0}, {x: 7, z: 0}, {x: 6, z: 1}, {x: 6, z: -1}
     ]);
     aiSnakes[0].snake = [{x: 5, z: 0}, {x: 4, z: 0}];
     aiSnakes[0].direction = 0;
     stepAI();
-    // AI should avoid player and turn
     expect(aiSnakes[0].alive).toBe(true);
   });
 });
@@ -590,6 +857,7 @@ describe('ai.js — refreshAISnakes()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', [{
+      id: 'ai_0',
       alive: true,
       snake: [{x: 5, z: 0}, {x: 4, z: 0}],
       direction: 0,

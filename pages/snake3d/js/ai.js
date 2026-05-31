@@ -1,5 +1,51 @@
 // ─── AI OPPONENTS ───
 // AI snake logic: movement, collision, corpses, difficulty levels
+//
+// Strategies (activated per difficulty):
+//   Easy:   flood fill (shallow) + apple attraction
+//   Medium: BFS pathfinding + flood fill + tail-chasing
+//   Hard:   BFS + flood fill + tail-chasing + lookahead + hunting + anti-trap
+
+// ─── Difficulty strategy config ───
+// Controls which strategies each difficulty level uses
+var AI_STRATEGY = {
+  easy: {
+    bfsPathfinding: false,
+    floodFillDepth: 30,
+    tailChasing: false,
+    lookahead: false,
+    bestApple: false,
+    hunting: false,
+    antiTrap: true,
+    minSpaceFactor: 2.5,
+    errorRate: 0.30,
+    corneringRate: 0.00
+  },
+  medium: {
+    bfsPathfinding: true,
+    floodFillDepth: 60,
+    tailChasing: true,
+    lookahead: false,
+    bestApple: true,
+    hunting: false,
+    antiTrap: true,
+    minSpaceFactor: 2.0,
+    errorRate: 0.10,
+    corneringRate: 0.40
+  },
+  hard: {
+    bfsPathfinding: true,
+    floodFillDepth: 120,
+    tailChasing: true,
+    lookahead: true,
+    bestApple: true,
+    hunting: true,
+    antiTrap: true,
+    minSpaceFactor: 1.8,
+    errorRate: 0.02,
+    corneringRate: 0.85
+  }
+};
 
 // ─── Snap angle to nearest cardinal direction ───
 // Cardinal directions: 0 (right/+X), π/2 (down/+Z), π (left/-X), -π/2 (up/-Z)
@@ -19,38 +65,110 @@ function snapToCardinal(angle) {
   return best;
 }
 
-// ─── Count reachable cells from (x,z) using BFS ───
-// Used to evaluate how much open space a direction offers
-function countReachable(x, z, snakeBody, maxSteps) {
-  maxSteps = maxSteps || 30;
-  var visited = {};
-  var queue = [{x: x, z: z}];
-  visited[x + ',' + z] = true;
-  var count = 0;
-  var dirs = [{x:1,z:0},{x:-1,z:0},{x:0,z:1},{x:0,z:-1}];
+// ─── Direction vectors ───
+var DIRS = [{x:1,z:0},{x:-1,z:0},{x:0,z:1},{x:0,z:-1}];
 
-  // Build obstacle/corpse lookup for fast access
+// ─── Build blocked cells lookup ───
+// Returns an object with "x,z" keys for all occupied cells
+// Used by BFS, flood fill, etc. — build once per tick
+function buildBlockedSet(excludeSnake) {
   var blocked = {};
-  for (var i = 0; i < snakeBody.length; i++) blocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+  // Player snake
+  if (snake.length) {
+    for (var i = 0; i < snake.length; i++) blocked[snake[i].x + ',' + snake[i].z] = true;
+  }
+  // Obstacles
   for (var i = 0; i < obstacles.length; i++) blocked[obstacles[i].x + ',' + obstacles[i].z] = true;
+  // Corpses
   if (corpses) for (var i = 0; i < corpses.length; i++) blocked[corpses[i].x + ',' + corpses[i].z] = true;
-  // Other snakes
-  if (snake.length) for (var i = 0; i < snake.length; i++) blocked[snake[i].x + ',' + snake[i].z] = true;
+  // Other AI snakes
   if (aiSnakes) {
     for (var i = 0; i < aiSnakes.length; i++) {
       if (!aiSnakes[i].alive) continue;
+      if (aiSnakes[i].id === excludeSnake) continue;
       for (var j = 0; j < aiSnakes[i].snake.length; j++) {
         blocked[aiSnakes[i].snake[j].x + ',' + aiSnakes[i].snake[j].z] = true;
       }
     }
   }
+  return blocked;
+}
+
+// ─── BFS pathfinding ───
+// Find shortest path from (sx,sz) to (tx,tz) avoiding blocked cells
+// Returns array of {x,z} positions (including start and target), or null
+function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
+  maxSteps = maxSteps || (gridSize * gridSize);
+  var startKey = sx + ',' + sz;
+  if (blocked[startKey]) return null;
+
+  var queue = [{x: sx, z: sz}];
+  var visited = {};
+  var parent = {};
+  visited[startKey] = true;
+  var steps = 0;
+
+  while (queue.length > 0 && steps < maxSteps) {
+    var curr = queue.shift();
+    steps++;
+    if (curr.x === tx && curr.z === tz) {
+      // Reconstruct path
+      var path = [];
+      var key = tx + ',' + tz;
+      while (key) {
+        var pos = key.split(',');
+        path.unshift({x: parseInt(pos[0]), z: parseInt(pos[1])});
+        key = parent[key];
+      }
+      return path;
+    }
+
+    for (var d = 0; d < DIRS.length; d++) {
+      var nx = curr.x + DIRS[d].x;
+      var nz = curr.z + DIRS[d].z;
+      var key = nx + ',' + nz;
+      if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+      if (blocked[key] || visited[key]) continue;
+      // For snake body, allow moving to the tail (it will move away)
+      if (snakeBody && snakeBody.length > 0) {
+        var tail = snakeBody[snakeBody.length - 1];
+        if (nx === tail.x && nz === tail.z) {
+          // Allow moving to tail position — it will vacate
+        } else if (snakeBody.some(function(s) { return s.x === nx && s.z === nz; })) {
+          continue;
+        }
+      }
+      visited[key] = true;
+      parent[key] = curr.x + ',' + curr.z;
+      queue.push({x: nx, z: nz});
+    }
+  }
+  return null;
+}
+
+// ─── Count reachable cells using BFS (flood fill) ───
+// Returns number of reachable cells from (x,z)
+function countReachable(x, z, snakeBody, maxSteps) {
+  maxSteps = maxSteps || 50;
+  var blocked = buildBlockedSet();
+  // Add own snake body (excluding tail which will move)
+  if (snakeBody && snakeBody.length > 1) {
+    for (var i = 0; i < snakeBody.length - 1; i++) {
+      blocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+    }
+  }
+
+  var visited = {};
+  var queue = [{x: x, z: z}];
+  visited[x + ',' + z] = true;
+  var count = 0;
 
   while (queue.length > 0 && count < maxSteps) {
     var curr = queue.shift();
     count++;
-    for (var d = 0; d < dirs.length; d++) {
-      var nx = curr.x + dirs[d].x;
-      var nz = curr.z + dirs[d].z;
+    for (var d = 0; d < DIRS.length; d++) {
+      var nx = curr.x + DIRS[d].x;
+      var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
       if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
       if (blocked[key] || visited[key]) continue;
@@ -59,6 +177,427 @@ function countReachable(x, z, snakeBody, maxSteps) {
     }
   }
   return count;
+}
+
+// ─── Count escape routes from a position ───
+// Returns number of safe adjacent cells (for anti-trapping)
+function countEscapeRoutes(x, z, snakeBody, blocked) {
+  var count = 0;
+  for (var d = 0; d < DIRS.length; d++) {
+    var nx = x + DIRS[d].x;
+    var nz = z + DIRS[d].z;
+    if (nx < -half || nx >= half || nz < -half || nz >= half) continue;
+    var key = nx + ',' + nz;
+    if (blocked[key]) continue;
+    // Check snake body (allow tail)
+    if (snakeBody && snakeBody.length > 0) {
+      var isBody = false;
+      for (var i = 0; i < snakeBody.length - 1; i++) {
+        if (snakeBody[i].x === nx && snakeBody[i].z === nz) { isBody = true; break; }
+      }
+      if (isBody) continue;
+    }
+    count++;
+  }
+  return count;
+}
+
+// ─── BFS path to own tail (tail-chasing) ───
+// When no path to apple, chase own tail to survive
+function bfsPathToTail(aiSnake) {
+  if (!aiSnake || aiSnake.length < 2) return null;
+  var tail = aiSnake[aiSnake.length - 1];
+  var blocked = buildBlockedSet();
+  // Block own body except head (start) and tail (target)
+  for (var i = 1; i < aiSnake.length - 1; i++) {
+    blocked[aiSnake[i].x + ',' + aiSnake[i].z] = true;
+  }
+  return bfsPath(aiSnake[0].x, aiSnake[0].z, tail.x, tail.z, blocked, null, gridSize * gridSize);
+}
+
+// ─── Find nearest apple to a position ───
+function nearestApple(x, z) {
+  var best = null;
+  var bestDist = Infinity;
+  for (var i = 0; i < apples.length; i++) {
+    if (!apples[i]) continue;
+    var dx = apples[i].x - x;
+    var dz = apples[i].z - z;
+    var dist = Math.abs(dx) + Math.abs(dz);
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = apples[i];
+    }
+  }
+  return best;
+}
+
+// ─── Strategic apple selection ───
+// Choose the best apple considering reachability and space after reaching it
+function bestApple(aiSnake, blocked, diff) {
+  if (!apples || apples.length === 0) return null;
+
+  var candidates = [];
+  for (var i = 0; i < apples.length; i++) {
+    if (!apples[i]) continue;
+    candidates.push(apples[i]);
+  }
+  if (candidates.length === 0) return null;
+
+  // Easy mode: just pick nearest
+  if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
+
+  var best = null;
+  var bestScore = -Infinity;
+  var head = aiSnake[0];
+
+  for (var i = 0; i < candidates.length; i++) {
+    var apple = candidates[i];
+    var manhattanDist = Math.abs(apple.x - head.x) + Math.abs(apple.z - head.z);
+
+    // Check if reachable via BFS
+    var path = bfsPath(head.x, head.z, apple.x, apple.z, blocked, aiSnake, gridSize * gridSize);
+    var reachable = path !== null;
+
+    // Score: prioritize reachable apples, then space after reaching
+    var score = 0;
+    if (reachable) {
+      score += 1000; // Reachable is much better
+      score -= manhattanDist; // Shorter path is better
+
+      // Check space around apple position
+      var spaceAfter = countReachable(apple.x, apple.z, aiSnake, 30);
+      score += spaceAfter;
+    } else {
+      score -= manhattanDist * 2; // Penalize unreachable but still consider distance
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = apple;
+    }
+  }
+
+  return best;
+}
+
+// ─── Multi-tick lookahead ───
+// Simulate N moves in a direction, check if result is good
+// Returns score: higher = better
+function lookaheadScore(aiSnake, dir, steps, blocked) {
+  steps = steps || 5;
+  var simSnake = [];
+  for (var i = 0; i < aiSnake.length; i++) simSnake.push(aiSnake[i]);
+
+  var cx = simSnake[0].x;
+  var cz = simSnake[0].z;
+
+  for (var s = 0; s < steps; s++) {
+    var nx = cx + Math.round(Math.cos(dir));
+    var nz = cz + Math.round(Math.sin(dir));
+
+    // Wall check
+    if (nx < -half || nx >= half || nz < -half || nz >= half) return -1000;
+
+    // Self check
+    if (simSnake.some(function(seg) { return seg.x === nx && seg.z === nz; })) return -1000;
+
+    // Blocked check
+    var key = nx + ',' + nz;
+    if (blocked[key]) return -1000;
+
+    simSnake.unshift({x: nx, z: nz});
+    simSnake.pop();
+    cx = nx;
+    cz = nz;
+  }
+
+  // Score based on final position
+  var space = countReachable(cx, cz, simSnake, 30);
+  var escapes = countEscapeRoutes(cx, cz, simSnake, blocked);
+  return space + escapes * 5;
+}
+
+// ─── Evaluate safe directions for an AI snake ───
+function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
+  var possibleDirs = [
+    aiDir,
+    aiDir - TURN_ANGLE,
+    aiDir + TURN_ANGLE
+  ];
+
+  var safe = [];
+  var head = aiSnake[0];
+
+  possibleDirs.forEach(function(dir) {
+    var nx = head.x + Math.round(Math.cos(dir));
+    var nz = head.z + Math.round(Math.sin(dir));
+
+    if (nx < -half || nx >= half || nz < -half || nz >= half) return;
+    if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
+    if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
+    if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
+    if (snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
+    if (aiSnakes) {
+      for (var i = 0; i < aiSnakes.length; i++) {
+        if (i === aiIndex) continue;
+        var other = aiSnakes[i];
+        if (!other.alive) continue;
+        if (other.snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
+      }
+    }
+
+    safe.push(dir);
+  });
+
+  return safe;
+}
+
+// ─── Minimum safe space check ───
+// Returns true if moving to (nx,nz) would leave enough reachable space
+// for the snake to survive. This is the KEY anti-coiling mechanism.
+function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
+  // Quick check: count reachable space from this position
+  var bodyBlocked = {};
+  for (var k in blocked) bodyBlocked[k] = true;
+  // Add own body (excluding tail)
+  if (snakeBody && snakeBody.length > 1) {
+    for (var i = 0; i < snakeBody.length - 1; i++) {
+      bodyBlocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+    }
+  }
+
+  var visited = {};
+  var queue = [{x: nx, z: nz}];
+  visited[nx + ',' + nz] = true;
+  var count = 0;
+
+  while (queue.length > 0 && count < minSpace + 10) {
+    var curr = queue.shift();
+    count++;
+    for (var d = 0; d < DIRS.length; d++) {
+      var nnx = curr.x + DIRS[d].x;
+      var nnz = curr.z + DIRS[d].z;
+      var key = nnx + ',' + nnz;
+      if (nnx < -half || nnx >= half || nnz < -half || nnz >= half) continue;
+      if (bodyBlocked[key] || visited[key]) continue;
+      visited[key] = true;
+      queue.push({x: nnx, z: nnz});
+    }
+  }
+
+  return count >= minSpace;
+}
+
+// ─── Cornering/hunting strategy ───
+// Actively try to block and corner smaller snakes
+function aiCorneringStrategy(aiIndex, diff) {
+  var ai = aiSnakes[aiIndex];
+  if (!ai || !ai.alive) return null;
+
+  var corneringRate = AI_STRATEGY[diff].corneringRate || 0;
+  if (Math.random() > corneringRate) return null;
+  if (!AI_STRATEGY[diff].hunting) return null;
+
+  var targets = [];
+  if (snake.length > 0) targets.push({snake: snake, isPlayer: true});
+  for (var i = 0; i < aiSnakes.length; i++) {
+    if (i === aiIndex) continue;
+    if (!aiSnakes[i].alive) continue;
+    targets.push({snake: aiSnakes[i].snake, isPlayer: false});
+  }
+  if (targets.length === 0) return null;
+
+  for (var t = 0; t < targets.length; t++) {
+    var target = targets[t];
+    // Only hunt snakes that are equal or smaller
+    if (target.snake.length > ai.snake.length + 2) continue;
+
+    var targetHead = target.snake[0];
+    var targetTail = target.snake[target.snake.length - 1];
+
+    // Check if target is near a wall or obstacle — good hunting opportunity
+    var nearWall = (
+      targetHead.x <= -half + 3 || targetHead.x >= half - 3 ||
+      targetHead.z <= -half + 3 || targetHead.z >= half - 3
+    );
+
+    var nearObstacle = false;
+    for (var o = 0; o < obstacles.length; o++) {
+      var odx = Math.abs(obstacles[o].x - targetHead.x);
+      var odz = Math.abs(obstacles[o].z - targetHead.z);
+      if (odx + odz < 4) { nearObstacle = true; break; }
+    }
+
+    if (nearWall || nearObstacle) {
+      var dx = targetHead.x - ai.snake[0].x;
+      var dz = targetHead.z - ai.snake[0].z;
+      var dist = Math.abs(dx) + Math.abs(dz);
+      // Only hunt if close enough
+      if (dist < 10) {
+        // Try to position behind the target (near its tail)
+        var blocked = buildBlockedSet();
+        var pathToTail = bfsPath(
+          ai.snake[0].x, ai.snake[0].z,
+          targetTail.x, targetTail.z,
+          blocked, ai.snake, gridSize * gridSize
+        );
+        if (pathToTail && pathToTail.length > 1) {
+          log('AI ' + aiIndex + ' hunting target at (' + targetHead.x + ',' + targetHead.z + ')');
+          return pathToTail[1]; // Next step toward tail
+        }
+      }
+    }
+  }
+  return null;
+}
+
+// ─── Decide direction for AI snake based on difficulty ───
+// Main decision function — integrates all strategies
+function aiDecideDirection(aiIndex, diff) {
+  var ai = aiSnakes[aiIndex];
+  if (!ai || !ai.alive) return ai.direction;
+
+  var strat = AI_STRATEGY[diff] || AI_STRATEGY.medium;
+  var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
+  if (safe.length === 0) return ai.direction;
+
+  // ─── Build blocked set ───
+  var blocked = buildBlockedSet();
+  for (var i = 1; i < ai.snake.length; i++) {
+    blocked[ai.snake[i].x + ',' + ai.snake[i].z] = true;
+  }
+
+  // ─── CRITICAL: Filter safe directions by minimum reachable space ───
+  // This is the main anti-coiling mechanism. The AI will NOT commit to a
+  // direction unless it has enough reachable space to survive.
+  var minSpace = Math.ceil(ai.snake.length * (strat.minSpaceFactor || 2.0));
+  var safeWithSpace = [];
+
+  for (var s = 0; s < safe.length; s++) {
+    var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+    var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+    if (minSafeSpace(nx, nz, ai.snake, blocked, minSpace)) {
+      safeWithSpace.push(safe[s]);
+    }
+  }
+
+  // If NO direction has enough space, fall back to safe directions
+  // and pick the one with the most reachable space (survival mode)
+  if (safeWithSpace.length === 0) {
+    var bestSpace = -1;
+    var bestDir = safe[0];
+    for (var s = 0; s < safe.length; s++) {
+      var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+      var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+      var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+      if (space > bestSpace) {
+        bestSpace = space;
+        bestDir = safe[s];
+      }
+    }
+    return snapToCardinal(bestDir);
+  }
+
+  // If only 1 direction has enough space, take it
+  if (safeWithSpace.length === 1) return snapToCardinal(safeWithSpace[0]);
+
+  // Random error based on difficulty (only among space-safe directions)
+  var errorRate = strat.errorRate;
+  if (Math.random() < errorRate) {
+    return snapToCardinal(safeWithSpace[Math.floor(Math.random() * safeWithSpace.length)]);
+  }
+
+  // ─── Strategy 1: Hunting (hard only) ───
+  var huntTarget = aiCorneringStrategy(aiIndex, diff);
+  if (huntTarget) {
+    for (var s = 0; s < safeWithSpace.length; s++) {
+      var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+      var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
+      if (nx === huntTarget.x && nz === huntTarget.z) {
+        return snapToCardinal(safeWithSpace[s]);
+      }
+    }
+  }
+
+  // ─── Strategy 2: BFS pathfinding to best apple ───
+  if (strat.bfsPathfinding) {
+    var targetApple = bestApple(ai.snake, blocked, diff);
+    if (targetApple) {
+      var path = bfsPath(
+        ai.snake[0].x, ai.snake[0].z,
+        targetApple.x, targetApple.z,
+        blocked, ai.snake, gridSize * gridSize
+      );
+      if (path && path.length > 1) {
+        var nextStep = path[1];
+        for (var s = 0; s < safeWithSpace.length; s++) {
+          var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+          var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
+          if (nx === nextStep.x && nz === nextStep.z) {
+            // Anti-trap: verify escape routes
+            if (strat.antiTrap) {
+              var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+              if (escapes < 2) continue;
+            }
+            // Lookahead: verify future positions
+            if (strat.lookahead) {
+              var laScore = lookaheadScore(ai.snake, safeWithSpace[s], 5, blocked);
+              if (laScore < -500) continue;
+            }
+            return snapToCardinal(safeWithSpace[s]);
+          }
+        }
+      }
+    }
+  }
+
+  // ─── Strategy 3: Tail-chasing (survival mode) ───
+  if (strat.tailChasing) {
+    var tailPath = bfsPathToTail(ai.snake);
+    if (tailPath && tailPath.length > 1) {
+      var tailNext = tailPath[1];
+      for (var s = 0; s < safeWithSpace.length; s++) {
+        var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+        var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
+        if (nx === tailNext.x && nz === tailNext.z) {
+          return snapToCardinal(safeWithSpace[s]);
+        }
+      }
+    }
+  }
+
+  // ─── Fallback: score directions by space + apple distance ───
+  var bestScore = -Infinity;
+  var bestDir = safeWithSpace[0];
+  var target = nearestApple(ai.snake[0].x, ai.snake[0].z);
+
+  for (var s = 0; s < safeWithSpace.length; s++) {
+    var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+    var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
+
+    var score = 0;
+    // Space is the PRIMARY factor — prevents coiling
+    var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+    score += space * 10;
+
+    // Distance to apple is secondary
+    if (target) {
+      var distToApple = Math.abs(target.x - nx) + Math.abs(target.z - nz);
+      score -= distToApple;
+    }
+
+    // Prefer directions with more escape routes
+    var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+    score += escapes * 3;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestDir = safeWithSpace[s];
+    }
+  }
+
+  return snapToCardinal(bestDir);
 }
 
 // ─── Initialize AI snakes ───
@@ -120,138 +659,6 @@ function initAI() {
 
     log('AI ' + i + ': color=' + availableColors[i] + ' spawn=(' + sx + ',' + sz + ') dir=' + initDir);
   }
-}
-
-// ─── Evaluate safe directions for an AI snake ───
-function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
-  var possibleDirs = [
-    aiDir,
-    aiDir - TURN_ANGLE,
-    aiDir + TURN_ANGLE
-  ];
-
-  var safe = [];
-  var head = aiSnake[0];
-
-  possibleDirs.forEach(function(dir) {
-    var nx = head.x + Math.round(Math.cos(dir));
-    var nz = head.z + Math.round(Math.sin(dir));
-
-    if (nx < -half || nx >= half || nz < -half || nz >= half) return;
-    if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-    if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
-    if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
-    if (snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-    if (aiSnakes) {
-      for (var i = 0; i < aiSnakes.length; i++) {
-        if (i === aiIndex) continue;
-        var other = aiSnakes[i];
-        if (!other.alive) continue;
-        if (other.snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-      }
-    }
-
-    safe.push(dir);
-  });
-
-  return safe;
-}
-
-// ─── Find nearest apple to a position ───
-function nearestApple(x, z) {
-  var best = null;
-  var bestDist = Infinity;
-  for (var i = 0; i < apples.length; i++) {
-    if (!apples[i]) continue;
-    var dx = apples[i].x - x;
-    var dz = apples[i].z - z;
-    var dist = Math.abs(dx) + Math.abs(dz);
-    if (dist < bestDist) {
-      bestDist = dist;
-      best = apples[i];
-    }
-  }
-  return best;
-}
-
-// ─── Decide direction for AI snake based on difficulty ───
-function aiDecideDirection(aiIndex, diff) {
-  var ai = aiSnakes[aiIndex];
-  if (!ai || !ai.alive) return ai.direction;
-
-  var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
-  if (safe.length === 0) return ai.direction;
-  if (safe.length === 1) return snapToCardinal(safe[0]);
-
-  // Random error based on difficulty
-  var errorRate = AI_ERROR_RATE[diff] || AI_ERROR_RATE.medium;
-  if (Math.random() < errorRate) {
-    return snapToCardinal(safe[Math.floor(Math.random() * safe.length)]);
-  }
-
-  // Score each safe direction: prefer more open space + closer to apple
-  var bestDir = safe[0];
-  var bestScore = -Infinity;
-  var apple = nearestApple(ai.snake[0].x, ai.snake[0].z);
-
-  safe.forEach(function(dir) {
-    var nx = ai.snake[0].x + Math.round(Math.cos(dir));
-    var nz = ai.snake[0].z + Math.round(Math.sin(dir));
-
-    // Flood-fill: count reachable open space from this position
-    var space = countReachable(nx, nz, ai.snake, 25);
-
-    // Apple attraction (smaller distance = better)
-    var appleDist = apple ? (Math.abs(apple.x - nx) + Math.abs(apple.z - nz)) : 999;
-
-    // Combined score: space is primary (avoids self-trapping), apple is secondary
-    var score = space * 3 - appleDist;
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestDir = dir;
-    }
-  });
-
-  return snapToCardinal(bestDir);
-}
-
-// ─── Cornering strategy (medium/hard difficulty) ───
-function aiCorneringStrategy(aiIndex, diff) {
-  var ai = aiSnakes[aiIndex];
-  if (!ai || !ai.alive) return false;
-
-  var corneringRate = AI_CORNERING_RATE[diff] || 0;
-  if (Math.random() > corneringRate) return false;
-
-  var targets = [];
-  if (snake.length > 0) targets.push({snake: snake, isPlayer: true});
-  for (var i = 0; i < aiSnakes.length; i++) {
-    if (i === aiIndex) continue;
-    if (!aiSnakes[i].alive) continue;
-    targets.push({snake: aiSnakes[i].snake, isPlayer: false});
-  }
-  if (targets.length === 0) return false;
-
-  for (var t = 0; t < targets.length; t++) {
-    var target = targets[t];
-    if (target.snake.length >= ai.snake.length) continue;
-    var targetHead = target.snake[0];
-    var nearWall = (
-      targetHead.x <= -half + 3 || targetHead.x >= half - 3 ||
-      targetHead.z <= -half + 3 || targetHead.z >= half - 3
-    );
-    if (nearWall) {
-      var dx = targetHead.x - ai.snake[0].x;
-      var dz = targetHead.z - ai.snake[0].z;
-      var dist = Math.abs(dx) + Math.abs(dz);
-      if (dist < 8) {
-        log('AI cornering target at (' + targetHead.x + ',' + targetHead.z + ')');
-        return true;
-      }
-    }
-  }
-  return false;
 }
 
 // ─── Step all AI snakes ───
@@ -417,4 +824,25 @@ function refreshAISnakes() {
     if (!ai.alive || !ai.groupData || !ai.groupData.bodyMs || !ai.groupData.bodyMs.length) return;
     refreshSnake(ai.snake, ai.groupData);
   });
+}
+
+// ─── Module exports (for testing — ignored in browser) ───
+if(typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    snapToCardinal,
+    buildBlockedSet,
+    bfsPath,
+    countReachable,
+    countEscapeRoutes,
+    bfsPathToTail,
+    nearestApple,
+    bestApple,
+    lookaheadScore,
+    aiEvaluateDirections,
+    aiDecideDirection,
+    aiCorneringStrategy,
+    minSafeSpace,
+    AI_STRATEGY,
+    DIRS
+  };
 }

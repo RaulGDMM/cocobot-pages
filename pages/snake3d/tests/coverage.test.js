@@ -79,8 +79,10 @@ describe('apples.js — spawnOneApple()', () => {
     setObstacles([{x: -1, z: -1}]);
     const a = spawnOneApple();
     expect(a).not.toBeNull();
-    expect(a.x).not.toBe(0);
-    expect(a.z).not.toBe(0);
+    // Apple must not be on any occupied cell
+    var occupied = ['0,0', '1,1', '-1,-1'];
+    var pos = a.x + ',' + a.z;
+    expect(occupied.indexOf(pos)).toBe(-1);
   });
 });
 

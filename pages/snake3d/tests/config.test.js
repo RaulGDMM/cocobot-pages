@@ -160,29 +160,47 @@ describe('config.js', () => {
     });
   });
 
-  // ─── AI MODE: AI_ERROR_RATE ───
-  describe('AI_ERROR_RATE', () => {
-    test('easy has 10% error rate', () => {
-      expect(AI_ERROR_RATE.easy).toBe(0.10);
+  // ─── AI MODE: AI_STRATEGY (replaces AI_ERROR_RATE / AI_CORNERING_RATE) ───
+  describe('AI_STRATEGY', () => {
+    test('has 3 difficulty levels', () => {
+      expect(Object.keys(AI_STRATEGY).length).toBe(3);
+      expect(AI_STRATEGY.easy).toBeDefined();
+      expect(AI_STRATEGY.medium).toBeDefined();
+      expect(AI_STRATEGY.hard).toBeDefined();
     });
-    test('medium has 2% error rate', () => {
-      expect(AI_ERROR_RATE.medium).toBe(0.02);
-    });
-    test('hard has 0.5% error rate', () => {
-      expect(AI_ERROR_RATE.hard).toBe(0.005);
-    });
-  });
 
-  // ─── AI MODE: AI_CORNERING_RATE ───
-  describe('AI_CORNERING_RATE', () => {
-    test('easy has 0% cornering', () => {
-      expect(AI_CORNERING_RATE.easy).toBe(0.00);
+    test('easy: no BFS, no tail-chasing, no lookahead, no hunting', () => {
+      expect(AI_STRATEGY.easy.bfsPathfinding).toBe(false);
+      expect(AI_STRATEGY.easy.tailChasing).toBe(false);
+      expect(AI_STRATEGY.easy.lookahead).toBe(false);
+      expect(AI_STRATEGY.easy.hunting).toBe(false);
     });
-    test('medium has 70% cornering', () => {
-      expect(AI_CORNERING_RATE.medium).toBe(0.70);
+
+    test('medium: BFS + tail-chasing + anti-trap', () => {
+      expect(AI_STRATEGY.medium.bfsPathfinding).toBe(true);
+      expect(AI_STRATEGY.medium.tailChasing).toBe(true);
+      expect(AI_STRATEGY.medium.antiTrap).toBe(true);
+      expect(AI_STRATEGY.medium.lookahead).toBe(false);
+      expect(AI_STRATEGY.medium.hunting).toBe(false);
     });
-    test('hard has 95% cornering', () => {
-      expect(AI_CORNERING_RATE.hard).toBe(0.95);
+
+    test('hard: all strategies enabled', () => {
+      expect(AI_STRATEGY.hard.bfsPathfinding).toBe(true);
+      expect(AI_STRATEGY.hard.tailChasing).toBe(true);
+      expect(AI_STRATEGY.hard.lookahead).toBe(true);
+      expect(AI_STRATEGY.hard.hunting).toBe(true);
+      expect(AI_STRATEGY.hard.antiTrap).toBe(true);
+      expect(AI_STRATEGY.hard.bestApple).toBe(true);
+    });
+
+    test('error rates: easy > medium > hard', () => {
+      expect(AI_STRATEGY.easy.errorRate).toBeGreaterThan(AI_STRATEGY.medium.errorRate);
+      expect(AI_STRATEGY.medium.errorRate).toBeGreaterThan(AI_STRATEGY.hard.errorRate);
+    });
+
+    test('flood fill depth: easy < medium < hard', () => {
+      expect(AI_STRATEGY.easy.floodFillDepth).toBeLessThan(AI_STRATEGY.medium.floodFillDepth);
+      expect(AI_STRATEGY.medium.floodFillDepth).toBeLessThan(AI_STRATEGY.hard.floodFillDepth);
     });
   });
 
