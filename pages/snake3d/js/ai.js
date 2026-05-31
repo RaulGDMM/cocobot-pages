@@ -816,6 +816,8 @@ function stepAI() {
         ate = true;
         var newA = spawnOneApple();
         apples[i] = newA;
+        // Deduplicate in case a duplicate was spawned at the same position
+        if (typeof deduplicateApples === 'function') deduplicateApples();
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
         // Directional eat sound based on AI position relative to player
         if (snake.length > 0) {

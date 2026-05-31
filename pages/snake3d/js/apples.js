@@ -57,6 +57,40 @@ function refreshApples() {
       appleMeshes[i].visible = false;
     }
   }
+  // Hide any meshes beyond numApples (e.g., after shrink reduced the count)
+  for(var i = numApples; i < appleMeshes.length; i++) {
+    appleMeshes[i].visible = false;
+  }
+}
+
+// Remove duplicate apples at the same position, keeping the first occurrence
+// Returns the number of duplicates removed
+function deduplicateApples() {
+  var seen = {};
+  var unique = [];
+  for(var i = 0; i < apples.length; i++) {
+    if(!apples[i]) {
+      unique.push(null);
+      continue;
+    }
+    var key = apples[i].x + ',' + apples[i].z;
+    if(seen[key]) {
+      // Duplicate — skip it
+    } else {
+      seen[key] = true;
+      unique.push(apples[i]);
+    }
+  }
+  var removed = apples.length - unique.length;
+  // Replace global array contents
+  apples.length = 0;
+  for(var i = 0; i < unique.length; i++) {
+    apples.push(unique[i]);
+  }
+  if(removed > 0) {
+    log('Deduplicated apples: removed ' + removed + ' ghosts');
+  }
+  return removed;
 }
 
 function initApples() {
@@ -72,5 +106,5 @@ function initApples() {
 
 // ─── Module exports (for testing — ignored in browser) ───
 if(typeof module !== 'undefined' && module.exports) {
-  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples };
+  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples };
 }

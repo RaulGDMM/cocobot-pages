@@ -172,3 +172,110 @@ describe('apples.js — isOccupied()', () => {
     });
   });
 });
+
+// ─── Tests: apples.js — deduplicateApples() ───
+describe('apples.js — deduplicateApples()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setApples([]);
+    setObstacles([]);
+  });
+
+  test('returns 0 when there are no duplicates', () => {
+    setApples([{x: 1, z: 2}, {x: 3, z: 4}, {x: -1, z: 0}]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(0);
+    expect(apples.length).toBe(3);
+  });
+
+  test('removes one duplicate pair, keeping the first', () => {
+    setApples([{x: 1, z: 2}, {x: 3, z: 4}, {x: 1, z: 2}]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(1);
+    expect(apples.length).toBe(2);
+    expect(apples[0]).toEqual({x: 1, z: 2});
+    expect(apples[1]).toEqual({x: 3, z: 4});
+  });
+
+  test('removes multiple duplicates at different positions', () => {
+    setApples([
+      {x: 1, z: 2},
+      {x: 3, z: 4},
+      {x: 1, z: 2},
+      {x: 5, z: 6},
+      {x: 3, z: 4},
+    ]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(2);
+    expect(apples.length).toBe(3);
+    expect(apples[0]).toEqual({x: 1, z: 2});
+    expect(apples[1]).toEqual({x: 3, z: 4});
+    expect(apples[2]).toEqual({x: 5, z: 6});
+  });
+
+  test('removes all but one when all apples are at the same position', () => {
+    setApples([
+      {x: 5, z: 5},
+      {x: 5, z: 5},
+      {x: 5, z: 5},
+      {x: 5, z: 5},
+    ]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(3);
+    expect(apples.length).toBe(1);
+    expect(apples[0]).toEqual({x: 5, z: 5});
+  });
+
+  test('handles null entries in the array', () => {
+    setApples([{x: 1, z: 2}]);
+    apples.push(null);
+    apples.push({x: 1, z: 2});
+    apples.push(null);
+    apples.push({x: 3, z: 4});
+    var removed = deduplicateApples();
+    expect(removed).toBe(1);
+    expect(apples.filter(Boolean).length).toBe(2);
+  });
+
+  test('handles empty array', () => {
+    setApples([]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(0);
+    expect(apples.length).toBe(0);
+  });
+
+  test('handles array with only nulls', () => {
+    setApples([]);
+    apples.push(null);
+    apples.push(null);
+    apples.push(null);
+    var removed = deduplicateApples();
+    expect(removed).toBe(0);
+    expect(apples.length).toBe(3);
+  });
+
+  test('keeps first occurrence and removes later ones', () => {
+    setApples([
+      {x: 0, z: 0},
+      {x: 1, z: 1},
+      {x: 0, z: 0},
+      {x: 0, z: 0},
+    ]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(2);
+    expect(apples.length).toBe(2);
+    expect(apples[0]).toEqual({x: 0, z: 0});
+    expect(apples[1]).toEqual({x: 1, z: 1});
+  });
+
+  test('works with negative coordinates', () => {
+    setApples([
+      {x: -5, z: -3},
+      {x: 2, z: 1},
+      {x: -5, z: -3},
+    ]);
+    var removed = deduplicateApples();
+    expect(removed).toBe(1);
+    expect(apples.length).toBe(2);
+  });
+});

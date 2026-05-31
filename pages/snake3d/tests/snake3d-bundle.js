@@ -677,6 +677,40 @@ function refreshApples() {
       appleMeshes[i].visible = false;
     }
   }
+  // Hide any meshes beyond numApples (e.g., after shrink reduced the count)
+  for(var i = numApples; i < appleMeshes.length; i++) {
+    appleMeshes[i].visible = false;
+  }
+}
+
+// Remove duplicate apples at the same position, keeping the first occurrence
+// Returns the number of duplicates removed
+function deduplicateApples() {
+  var seen = {};
+  var unique = [];
+  for(var i = 0; i < apples.length; i++) {
+    if(!apples[i]) {
+      unique.push(null);
+      continue;
+    }
+    var key = apples[i].x + ',' + apples[i].z;
+    if(seen[key]) {
+      // Duplicate — skip it
+    } else {
+      seen[key] = true;
+      unique.push(apples[i]);
+    }
+  }
+  var removed = apples.length - unique.length;
+  // Replace global array contents
+  apples.length = 0;
+  for(var i = 0; i < unique.length; i++) {
+    apples.push(unique[i]);
+  }
+  if(removed > 0) {
+    log('Deduplicated apples: removed ' + removed + ' ghosts');
+  }
+  return removed;
 }
 
 function initApples() {
@@ -1614,6 +1648,8 @@ function stepAI() {
         ate = true;
         var newA = spawnOneApple();
         apples[i] = newA;
+        // Deduplicate in case a duplicate was spawned at the same position
+        if (typeof deduplicateApples === 'function') deduplicateApples();
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
         // Directional eat sound based on AI position relative to player
         if (snake.length > 0) {
@@ -2011,16 +2047,18 @@ function step() {
   snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
-    if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
-      score++; scoreEl.textContent=score; ate=true;
-      sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
-      log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-      var newA = spawnOneApple();
-      apples[i] = newA;
-      if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
-      break;
-    }
-  }
+     if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+       score++; scoreEl.textContent=score; ate=true;
+       sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
+       log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+       var newA = spawnOneApple();
+       apples[i] = newA;
+       // Deduplicate in case a duplicate was spawned at the same position
+       if(typeof deduplicateApples === 'function') deduplicateApples();
+       if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+       break;
+     }
+   }
   if(!ate) snake.pop();
   refreshApples();
 }
@@ -2352,12 +2390,14 @@ function removeOutOfBounds() {
   // Pad to NUM_APPLES
   while (apples.length < NUM_APPLES) apples.push(null);
   // Spawn missing apples
-  for (var i = 0; i < apples.length; i++) {
-    if (!apples[i]) {
-      apples[i] = spawnOneApple();
-    }
-  }
-  log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+   for (var i = 0; i < apples.length; i++) {
+     if (!apples[i]) {
+       apples[i] = spawnOneApple();
+     }
+   }
+   // Remove any duplicates that may have been created during spawn
+   if (typeof deduplicateApples === 'function') deduplicateApples();
+   log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;

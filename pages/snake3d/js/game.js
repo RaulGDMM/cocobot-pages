@@ -97,16 +97,18 @@ function step() {
   snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
-    if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
-      score++; scoreEl.textContent=score; ate=true;
-      sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
-      log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-      var newA = spawnOneApple();
-      apples[i] = newA;
-      if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
-      break;
-    }
-  }
+     if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+       score++; scoreEl.textContent=score; ate=true;
+       sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
+       log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+       var newA = spawnOneApple();
+       apples[i] = newA;
+       // Deduplicate in case a duplicate was spawned at the same position
+       if(typeof deduplicateApples === 'function') deduplicateApples();
+       if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+       break;
+     }
+   }
   if(!ate) snake.pop();
   refreshApples();
 }
@@ -438,12 +440,14 @@ function removeOutOfBounds() {
   // Pad to NUM_APPLES
   while (apples.length < NUM_APPLES) apples.push(null);
   // Spawn missing apples
-  for (var i = 0; i < apples.length; i++) {
-    if (!apples[i]) {
-      apples[i] = spawnOneApple();
-    }
-  }
-  log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+   for (var i = 0; i < apples.length; i++) {
+     if (!apples[i]) {
+       apples[i] = spawnOneApple();
+     }
+   }
+   // Remove any duplicates that may have been created during spawn
+   if (typeof deduplicateApples === 'function') deduplicateApples();
+   log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;
