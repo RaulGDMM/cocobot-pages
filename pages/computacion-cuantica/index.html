@@ -10,13 +10,14 @@
 <style>
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; max-width: 100vw; overflow-x: hidden; }
 body {
   font-family: 'Inter', sans-serif;
   background: #0a0a1a;
   color: #e0e0e0;
   line-height: 1.7;
   overflow-x: hidden;
+  max-width: 100vw;
 }
 a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
 a:hover { color: #00ffc8; }
@@ -260,9 +261,16 @@ a:hover { color: #00ffc8; }
 .timeline-desc { font-size: 0.9rem; color: #a0a0b8; }
 
 /* ===== TABLE ===== */
+.table-wrapper {
+  width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  margin: 2rem 0; border-radius: 8px;
+}
+.table-wrapper::-webkit-scrollbar { height: 4px; }
+.table-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 2px; }
+.table-wrapper::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 2px; }
 .qtable {
-  width: 100%; border-collapse: collapse; margin: 2rem 0;
-  font-size: 0.9rem;
+  width: 100%; border-collapse: collapse;
+  font-size: 0.9rem; min-width: 500px;
 }
 .qtable th {
   background: rgba(0, 212, 255, 0.1);
@@ -444,6 +452,7 @@ a:hover { color: #00ffc8; }
     border-bottom: 1px solid rgba(0, 212, 255, 0.1);
     max-height: 0; overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
   }
   .nav-hamburger { display: flex; }
   .nav-links.open {
@@ -469,6 +478,14 @@ a:hover { color: #00ffc8; }
   .section { padding: 3rem 1.5rem; }
   .hype-row { grid-template-columns: 1fr; }
   .entangle-demo { gap: 2rem; }
+  .table-wrapper::after {
+    content: '← Desliza →';
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(0, 212, 255, 0.5);
+    padding: 0.3rem 0;
+  }
   .entangle-line { width: 60px; }
   .power-grid { grid-template-columns: 1fr; }
   .timeline { padding-left: 2rem; }
@@ -680,6 +697,7 @@ a:hover { color: #00ffc8; }
   </p>
 
   <!-- Companies Table -->
+  <div class="table-wrapper">
   <table class="qtable">
     <thead>
       <tr>
@@ -716,6 +734,7 @@ a:hover { color: #00ffc8; }
       </tr>
     </tbody>
   </table>
+  </div>
 
   <h3 style="color:#fff; margin: 2.5rem 0 1rem; font-size:1.3rem;">Aplicaciones reales en uso hoy</h3>
   <div class="power-grid">
@@ -796,6 +815,7 @@ a:hover { color: #00ffc8; }
   </ul>
 
   <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">Datos clave</h3>
+  <div class="table-wrapper">
   <table class="qtable">
     <tbody>
       <tr>
@@ -816,6 +836,7 @@ a:hover { color: #00ffc8; }
       </tr>
     </tbody>
   </table>
+  </div>
 
   <div class="analogy-box" style="margin-top:2rem;">
     <div class="label">⚠️ Reality check</div>
@@ -1071,6 +1092,7 @@ a:hover { color: #00ffc8; }
     China no está jugando. Ha invertido miles de millones en construir la infraestructura cuántica más ambiciosa del mundo:
   </p>
 
+  <div class="table-wrapper">
   <table class="qtable">
     <thead>
       <tr>
@@ -1109,6 +1131,7 @@ a:hover { color: #00ffc8; }
       </tr>
     </tbody>
   </table>
+  </div>
 
   <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Por qué es tan difícil hacer esto?</h3>
   <p class="section-text">
