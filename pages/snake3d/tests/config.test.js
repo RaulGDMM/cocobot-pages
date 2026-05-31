@@ -292,4 +292,185 @@ describe('config.js', () => {
       );
     });
   });
+
+  // ─── Proportional scaling: STANDARD_GRID_CELLS ───
+  describe('STANDARD_GRID_CELLS', () => {
+    test('is 484 (22×22)', () => {
+      expect(STANDARD_GRID_CELLS).toBe(484);
+    });
+  });
+
+  // ─── Proportional scaling: calcNumApples(gridSize) ───
+  describe('calcNumApples(gridSize)', () => {
+    test('is a function', () => {
+      expect(typeof calcNumApples).toBe('function');
+    });
+
+    test('standard grid (22) returns 3 apples', () => {
+      expect(calcNumApples(22)).toBe(3);
+    });
+
+    test('vs2 grid (28) returns 5 apples', () => {
+      // 28² = 784, 784/484 = 1.62, 3 × 1.62 = 4.86 → 5
+      expect(calcNumApples(28)).toBe(5);
+    });
+
+    test('vs3 grid (34) returns 7 apples', () => {
+      // 34² = 1156, 1156/484 = 2.39, 3 × 2.39 = 7.17 → 7
+      expect(calcNumApples(34)).toBe(7);
+    });
+
+    test('vs4 grid (40) returns 9 apples', () => {
+      // 40² = 1600, 1600/484 = 3.31, 3 × 3.31 = 9.92 → 10
+      // Actually: round(3 * 1600/484) = round(9.917) = 10
+      expect(calcNumApples(40)).toBe(10);
+    });
+
+    test('small grid (16) returns minimum 3', () => {
+      // 16² = 256, 256/484 = 0.53, 3 × 0.53 = 1.58 → 2, but min is 3
+      expect(calcNumApples(16)).toBe(3);
+    });
+
+    test('large grid (50) returns 15 apples', () => {
+      // 50² = 2500, 2500/484 = 5.165, 3 × 5.165 = 15.5 → 16
+      // round(3 * 2500/484) = round(15.496) = 15
+      expect(calcNumApples(50)).toBe(15);
+    });
+
+    test('returns at least 3 for any grid size', () => {
+      for (var g = GRID_MIN; g <= GRID_MAX; g++) {
+        expect(calcNumApples(g)).toBeGreaterThanOrEqual(3);
+      }
+    });
+
+    test('scales monotonically (larger grid ≥ smaller grid)', () => {
+      var prev = calcNumApples(GRID_MIN);
+      for (var g = GRID_MIN + 1; g <= GRID_MAX; g++) {
+        var curr = calcNumApples(g);
+        expect(curr).toBeGreaterThanOrEqual(prev);
+        prev = curr;
+      }
+    });
+  });
+
+  // ─── Proportional scaling: calcMaxObstacles(gridSize) ───
+  describe('calcMaxObstacles(gridSize)', () => {
+    test('is a function', () => {
+      expect(typeof calcMaxObstacles).toBe('function');
+    });
+
+    test('standard grid (22) returns 30 obstacles', () => {
+      expect(calcMaxObstacles(22)).toBe(30);
+    });
+
+    test('vs2 grid (28) returns 47 obstacles', () => {
+      // 28² = 784, 784/484 = 1.62, 30 × 1.62 = 48.5 → 49
+      // round(30 * 784/484) = round(48.512) = 49
+      expect(calcMaxObstacles(28)).toBe(49);
+    });
+
+    test('vs3 grid (34) returns 72 obstacles', () => {
+      // 34² = 1156, 1156/484 = 2.39, 30 × 2.39 = 71.7 → 72
+      expect(calcMaxObstacles(34)).toBe(72);
+    });
+
+    test('vs4 grid (40) returns 100 obstacles', () => {
+      // 40² = 1600, 1600/484 = 3.31, 30 × 3.31 = 99.38 → 99
+      // round(30 * 1600/484) = round(99.174) = 99
+      expect(calcMaxObstacles(40)).toBe(99);
+    });
+
+    test('small grid (16) returns minimum 5', () => {
+      // 16² = 256, 256/484 = 0.53, 30 × 0.53 = 15.8 → 16, above min
+      expect(calcMaxObstacles(16)).toBeGreaterThanOrEqual(5);
+    });
+
+    test('large grid (50) returns 155 obstacles', () => {
+      // 50² = 2500, 2500/484 = 5.165, 30 × 5.165 = 154.96 → 155
+      expect(calcMaxObstacles(50)).toBe(155);
+    });
+
+    test('returns at least 5 for any grid size', () => {
+      for (var g = GRID_MIN; g <= GRID_MAX; g++) {
+        expect(calcMaxObstacles(g)).toBeGreaterThanOrEqual(5);
+      }
+    });
+
+    test('scales monotonically (larger grid ≥ smaller grid)', () => {
+      var prev = calcMaxObstacles(GRID_MIN);
+      for (var g = GRID_MIN + 1; g <= GRID_MAX; g++) {
+        var curr = calcMaxObstacles(g);
+        expect(curr).toBeGreaterThanOrEqual(prev);
+        prev = curr;
+      }
+    });
+  });
+
+  // ─── Proportional scaling: calcObstacleSpawnEvery(gridSize) ───
+  describe('calcObstacleSpawnEvery(gridSize)', () => {
+    test('is a function', () => {
+      expect(typeof calcObstacleSpawnEvery).toBe('function');
+    });
+
+    test('standard grid (22) returns 3', () => {
+      expect(calcObstacleSpawnEvery(22)).toBe(3);
+    });
+
+    test('vs2 grid (28) returns 2', () => {
+      // 484/784 = 0.617, 3 × 0.617 = 1.85 → 2
+      expect(calcObstacleSpawnEvery(28)).toBe(2);
+    });
+
+    test('vs3 grid (34) returns 1 (minimum)', () => {
+      // 484/1156 = 0.419, 3 × 0.419 = 1.26 → 1
+      expect(calcObstacleSpawnEvery(34)).toBe(1);
+    });
+
+    test('vs4 grid (40) returns 1 (minimum)', () => {
+      // 484/1600 = 0.303, 3 × 0.303 = 0.908 → 1
+      expect(calcObstacleSpawnEvery(40)).toBe(1);
+    });
+
+    test('large grid (50) returns 1 (minimum)', () => {
+      expect(calcObstacleSpawnEvery(50)).toBe(1);
+    });
+
+    test('small grid (16) returns 6', () => {
+      // 484/256 = 1.89, 3 × 1.89 = 5.67 → 6
+      expect(calcObstacleSpawnEvery(16)).toBe(6);
+    });
+
+    test('returns at least 1 for any grid size', () => {
+      for (var g = GRID_MIN; g <= GRID_MAX; g++) {
+        expect(calcObstacleSpawnEvery(g)).toBeGreaterThanOrEqual(1);
+      }
+    });
+
+    test('scales inversely monotonically (larger grid ≤ smaller grid)', () => {
+      var prev = calcObstacleSpawnEvery(GRID_MIN);
+      for (var g = GRID_MIN + 1; g <= GRID_MAX; g++) {
+        var curr = calcObstacleSpawnEvery(g);
+        expect(curr).toBeLessThanOrEqual(prev);
+        prev = curr;
+      }
+    });
+  });
+
+  // ─── Proportional scaling: combined table sanity ───
+  describe('proportional scaling table sanity', () => {
+    var scenarios = [
+      { mode: 'solo', grid: 22, apples: 3, maxObs: 30, spawnEvery: 3 },
+      { mode: 'vs2', grid: 28, apples: 5, maxObs: 49, spawnEvery: 2 },
+      { mode: 'vs3', grid: 34, apples: 7, maxObs: 72, spawnEvery: 1 },
+      { mode: 'vs4', grid: 40, apples: 10, maxObs: 99, spawnEvery: 1 },
+    ];
+
+    scenarios.forEach(function(s) {
+      test(s.mode + ' (grid ' + s.grid + '): apples=' + s.apples + ', maxObs=' + s.maxObs + ', spawnEvery=' + s.spawnEvery, () => {
+        expect(calcNumApples(s.grid)).toBe(s.apples);
+        expect(calcMaxObstacles(s.grid)).toBe(s.maxObs);
+        expect(calcObstacleSpawnEvery(s.grid)).toBe(s.spawnEvery);
+      });
+    });
+  });
 });

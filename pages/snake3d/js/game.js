@@ -6,6 +6,12 @@ function initGame() {
   half = gridSize / 2;
   rebuildBoard(gridSize);
 
+  // ─── Proportional scaling: recalculate apples/obstacles for grid size ───
+  NUM_APPLES = calcNumApples(gridSize);
+  MAX_OBSTACLES = calcMaxObstacles(gridSize);
+  OBSTACLE_SPAWN_EVERY = calcObstacleSpawnEvery(gridSize);
+  log('Scaled: apples=' + NUM_APPLES + ', maxObs=' + MAX_OBSTACLES + ', spawnEvery=' + OBSTACLE_SPAWN_EVERY);
+
   // Clear old snake groups from sGroup
    while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
    // Clear old corpse meshes

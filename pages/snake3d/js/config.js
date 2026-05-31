@@ -3,12 +3,41 @@ var GRID_SIZE = 22;
 var MOVE_INTERVAL = 200;
 var TURN_ANGLE = Math.PI / 2;
 var half = GRID_SIZE / 2;
+// Base values for standard grid (22×22 = 484 cells)
 var NUM_APPLES = 3;
 var OBSTACLE_SPAWN_EVERY = 3;
 var OBSTACLE_MIN_DIST_SNAKE = 6;
 var OBSTACLE_MIN_DIST_EACH = 3;
 var OBSTACLE_MIN_DIST_APPLE = 3;
 var MAX_OBSTACLES = 30;
+
+// ─── Proportional scaling based on grid size ───
+// Reference: standard solo grid (22×22 = 484 cells)
+var STANDARD_GRID_CELLS = 484;
+
+// Calculate number of apples proportional to grid area
+// Base: 3 apples for 484 cells, minimum 3
+function calcNumApples(gridSize) {
+  var cells = gridSize * gridSize;
+  var result = Math.round(3 * (cells / STANDARD_GRID_CELLS));
+  return Math.max(3, result);
+}
+
+// Calculate max obstacles proportional to grid area
+// Base: 30 obstacles for 484 cells, minimum 5
+function calcMaxObstacles(gridSize) {
+  var cells = gridSize * gridSize;
+  var result = Math.round(30 * (cells / STANDARD_GRID_CELLS));
+  return Math.max(5, result);
+}
+
+// Calculate obstacle spawn frequency (score interval)
+// Base: every 3 points for 484 cells, minimum 1
+function calcObstacleSpawnEvery(gridSize) {
+  var cells = gridSize * gridSize;
+  var result = Math.round(3 * (STANDARD_GRID_CELLS / cells));
+  return Math.max(1, result);
+}
 
 // ─── AI MODE ───
 // Snake colors: player picks one, AI get random from remaining
