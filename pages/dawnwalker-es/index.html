@@ -42,6 +42,24 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
 ::-webkit-scrollbar-thumb{background:var(--red-blood);border-radius:4px}
 
 /* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═══════════════════════════════════════════ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-in-delay-1 { transition-delay: 0.1s; }
+.fade-in-delay-2 { transition-delay: 0.2s; }
+.fade-in-delay-3 { transition-delay: 0.3s; }
+.fade-in-delay-4 { transition-delay: 0.4s; }
+.fade-in-delay-5 { transition-delay: 0.5s; }
+
+/* ═══════════════════════════════════════════
    NAVBAR
    ═══════════════════════════════════════════ */
 .navbar{
@@ -110,7 +128,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
   content:'';position:absolute;bottom:0;left:0;right:0;height:200px;
   background:linear-gradient(transparent, var(--bg-body));
 }
-.hero-inner{position:relative;z-index:1;max-width:860px;padding:2rem}
+.hero-inner{position:relative;z-index:2;max-width:860px;padding:2rem}
 .hero-badge{
   font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.3em;
   text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;
@@ -147,6 +165,52 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
 }
 .scroll-hint svg{width:22px;height:22px;stroke:var(--txt-dim)}
 @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);opacity:.4}50%{transform:translateX(-50%) translateY(10px);opacity:1}}
+
+/* ═══════════════════════════════════════════
+   STAR OF DAVID — HERO ANIMATION
+   ═══════════════════════════════════════════ */
+.star-of-david-container{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);
+  width:500px;height:500px;z-index:1;pointer-events:none;
+  opacity:0;animation:starFadeIn 2s ease-out 0.5s forwards;
+}
+@keyframes starFadeIn{to{opacity:0.12}}
+.star-of-david{
+  width:100%;height:100%;
+  animation:starPulse 6s ease-in-out infinite,starRotate 120s linear infinite;
+}
+@keyframes starPulse{
+  0%,100%{filter:drop-shadow(0 0 20px rgba(155,17,17,.4)) drop-shadow(0 0 60px rgba(155,17,17,.15));transform:scale(1)}
+  50%{filter:drop-shadow(0 0 35px rgba(155,17,17,.7)) drop-shadow(0 0 100px rgba(155,17,17,.3));transform:scale(1.03)}
+}
+@keyframes starRotate{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+/* ═══════════════════════════════════════════
+   COUNTDOWN
+   ═══════════════════════════════════════════ */
+.countdown{
+  display:flex;gap:1.5rem;justify-content:center;margin-top:1.5rem;
+  font-family:'Inter',sans-serif;
+}
+.countdown-item{
+  text-align:center;
+  background:rgba(155,17,17,.1);
+  border:1px solid rgba(155,17,17,.3);
+  border-radius:var(--radius);
+  padding:.8rem 1.2rem;min-width:70px;
+}
+.countdown-value{
+  display:block;font-size:1.8rem;font-weight:700;color:var(--red-glow);
+  font-family:'Cinzel',serif;
+  text-shadow:0 0 20px rgba(155,17,17,.5);
+}
+.countdown-label{
+  display:block;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--txt-dim);margin-top:.2rem;
+}
 
 /* ═══════════════════════════════════════════
    SECTIONS
@@ -243,6 +307,24 @@ table.specs td:first-child{font-weight:600;color:var(--txt);white-space:nowrap}
 .feat-list li .fi{font-size:1.2rem;flex-shrink:0;margin-top:2px}
 
 /* ═══════════════════════════════════════════
+   EDITIONS GRID
+   ═══════════════════════════════════════════ */
+.editions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
+.edition-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.8rem;position:relative;overflow:hidden;transition:all .3s;
+}
+.edition-card:hover{border-color:var(--border-red);transform:translateY(-3px)}
+.edition-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red-glow),var(--gold),transparent)}
+.edition-card h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:600;color:var(--gold);margin-bottom:.6rem}
+.edition-card p{font-size:.9rem;color:var(--txt-mid);margin:0;line-height:1.6}
+.edition-tag{
+  display:inline-block;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--red-glow);
+  background:rgba(155,17,17,.15);padding:3px 8px;border-radius:3px;margin-bottom:.8rem;
+}
+
+/* ═══════════════════════════════════════════
    VIDEOS GRID
    ═══════════════════════════════════════════ */
 .videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(500px,1fr));gap:2rem;margin-top:2rem}
@@ -282,11 +364,16 @@ footer a:hover{text-decoration:underline}
   .videos-grid{grid-template-columns:1fr}
   .wrap{padding:3rem 1.2rem}
   .navbar{padding:0 1rem}
+  .star-of-david-container{width:300px;height:300px}
+  .countdown{gap:.8rem}
+  .countdown-item{padding:.6rem .8rem;min-width:55px}
+  .countdown-value{font-size:1.3rem}
 }
 @media(max-width:540px){
   .videos-grid{grid-template-columns:1fr}
   .video-card{min-width:0}
-  .card-grid,.char-grid{grid-template-columns:1fr}
+  .card-grid,.char-grid,.editions-grid{grid-template-columns:1fr}
+  .star-of-david-container{width:220px;height:220px}
 }
 
     .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
@@ -314,6 +401,7 @@ footer a:hover{text-decoration:underline}
   <a href="#juego" data-close>Jugabilidad y Mecánicas</a>
   <a href="#combate" data-close>Sistema de Combate</a>
   <a href="#caracteristicas" data-close>Características Clave</a>
+  <a href="#ediciones" data-close>Ediciones y Pre-Order</a>
   <a href="#requisitos" data-close>Requisitos del PC</a>
   <a href="#videos" data-close>Vídeos y Tráilers</a>
   <a href="#desarrollador" data-close>Sobre el Desarrollador</a>
@@ -321,6 +409,22 @@ footer a:hover{text-decoration:underline}
 
 <!-- ──────────── HERO ──────────── -->
 <header class="hero" id="hero">
+  <!-- Star of David background -->
+  <div class="star-of-david-container">
+    <svg class="star-of-david" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Two interlocking triangles forming Star of David -->
+      <polygon points="100,10 180,160 20,160" fill="none" stroke="#9b1111" stroke-width="2" opacity="0.8"/>
+      <polygon points="100,190 180,40 20,40" fill="none" stroke="#9b1111" stroke-width="2" opacity="0.8"/>
+      <!-- Inner hexagram lines -->
+      <line x1="100" y1="10" x2="100" y2="190" stroke="#9b1111" stroke-width="0.5" opacity="0.3"/>
+      <line x1="20" y1="40" x2="180" y2="160" stroke="#9b1111" stroke-width="0.5" opacity="0.3"/>
+      <line x1="20" y1="160" x2="180" y2="40" stroke="#9b1111" stroke-width="0.5" opacity="0.3"/>
+      <!-- Center circle -->
+      <circle cx="100" cy="100" r="15" fill="none" stroke="#9b1111" stroke-width="1" opacity="0.4"/>
+      <circle cx="100" cy="100" r="3" fill="#9b1111" opacity="0.6"/>
+    </svg>
+  </div>
+
   <div class="hero-inner">
     <p class="hero-badge">Rebel Wolves × Bandai Namco Entertainment</p>
     <h1>The Blood of<br><em>Dawnwalker</em></h1>
@@ -331,6 +435,25 @@ footer a:hover{text-decoration:underline}
       <span>⚙ Unreal Engine 5</span>
     </div>
     <a href="#historia" class="btn-primary">⚔ Entra al Mundo Oscuro</a>
+    <!-- Countdown -->
+    <div class="countdown" id="countdown">
+      <div class="countdown-item">
+        <span class="countdown-value" id="cd-days">--</span>
+        <span class="countdown-label">Días</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-value" id="cd-hours">--</span>
+        <span class="countdown-label">Horas</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-value" id="cd-mins">--</span>
+        <span class="countdown-label">Min</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-value" id="cd-secs">--</span>
+        <span class="countdown-label">Seg</span>
+      </div>
+    </div>
   </div>
   <div class="scroll-hint">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
@@ -340,15 +463,17 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── HISTORIA ──────────── -->
-<section class="wrap" id="historia">
+<section class="wrap fade-in" id="historia">
   <p class="label">Narrativa</p>
   <h2>Historia y Ambientación</h2>
 
   <p>Ambientado en el <strong>año 1347</strong> en <strong>Vale Sangora</strong>, un reino ficticio en los Montes Cárpatos devastado por la Peste Negra. Vampiros y criaturas de la noche han surgido desde las sombras, aprovechando la debilidad de la humanidad para reclamar el poder y la libertad que les negaron durante siglos. El antiguo señor vampiro <strong>Brencis</strong> — nacido como el noble romano Caeso Burrienus Laurentius en el año 131 d.C. — gobierna con mano de hierro, imponiendo servidumbre e "impuestos de sangre" sobre la población superviviente.</p>
 
-  <p>Tu personave es <strong>Coen</strong>, un joven atrapado entre dos mundos. Un ritual de transformación salió mal, dejándolo mitad humano, mitad vampiro: un <em>Dawnwalker</em> (Caminalba). Humano de día, vampiro de noche. Coen debe salvar a su hermana <strong>Lunka</strong>, consumida por la peste, vengar a su familia y decidir si aferrarse a su humanidad o abrazar sus malditas poderes vampíricos.</p>
+  <p>Tu personaje es <strong>Coen</strong>, un joven atrapado entre dos mundos. Un ritual de transformación salió mal, dejándolo mitad humano, mitad vampiro: un <em>Dawnwalker</em> (Caminalba). Humano de día, vampiro de noche. Coen debe salvar a su hermana <strong>Lunka</strong>, consumida por la peste, vengar a su familia y decidir si aferrarse a su humanidad o abrazar sus malditos poderes vampíricos.</p>
 
   <p>Tiene <strong>30 días y 30 noches</strong> (en tiempo del juego) antes de que lo peor se haga realidad. Explorar el mundo <strong>no</strong> avanza el tiempo — solo completar misiones lo hace. Cada misión tiene un "coste temporal" claro. No hay un temporizador que te mate, pero desperdiciar tiempo significa que <em>"la familia de Coen podría sufrir las consecuencias."</em></p>
+
+  <p>Además, las actualizaciones recientes del equipo de desarrollo sugieren fuertemente la existencia de <strong>licantropía</strong> — lobos hombre — junto a los vampiros, ampliando aún más el bestiario y el lore del mundo de Vale Sangora.</p>
 
   <div class="quote">
     <blockquote>"Tan no lineal que puedes alinear con la rebelión humana o terminar el juego sin siquiera conocerlos. No tendrás tiempo para todos."</blockquote>
@@ -356,19 +481,19 @@ footer a:hover{text-decoration:underline}
   </div>
 
   <div class="card-grid">
-    <div class="card">
+    <div class="card fade-in fade-in-delay-1">
       <h3>🌗 Dualidad Día y Noche</h3>
       <p>Dos bucles de juego completamente distintos con habilidades únicas, misterios y formas de resolver problemas. El mundo reacciona dinámicamente a tus acciones y estilo de juego al pasar del día a la noche.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-2">
       <h3>🔀 Sándwich Narrativo</h3>
       <p>Totalmente no lineal. Las misiones se pueden completar en cualquier orden, saltarse o dejar sin descubrir. Puedes aliarte con la rebelión humana o terminar el juego sin siquiera encontrarte con ellos.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-3">
       <h3>💀 Consecuencias Permanentes</h3>
       <p>Libertad para matar a muchos PNJs — incluso a los realmente importantes. Cada acción e inacción moldea el mundo. Múltiples finales según tus decisiones.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-4">
       <h3>❤️ Romance</h3>
       <p>Confirmado por el director creativo. Construye relaciones con los personajes a lo largo de tu viaje. Las opciones de romance están integradas en la trama.</p>
     </div>
@@ -378,30 +503,30 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── PERSONAJES ──────────── -->
-<section class="wrap" id="personajes">
+<section class="wrap fade-in" id="personajes">
   <p class="label">Dramatis Personae</p>
   <h2>Personajes Clave</h2>
 
   <div class="char-grid">
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-1">
       <div class="char-icon">🗡</div>
       <h3>Coen</h3>
       <p class="char-title">El Dawnwalker</p>
       <p>Un joven atrapado entre dos mundos. Un ritual de transformación fallido lo dejó mitad humano, mitad vampiro — una anomalía con implicaciones de gran alcance para todo el mundo.</p>
     </div>
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-2">
       <div class="char-icon">👑</div>
       <h3>Brencis</h3>
       <p class="char-title">Señor Vampiro — Antagonista Principal</p>
       <p>Nacido como el noble romano Caeso Burrienus Laurentius en el 131 d.C. Toma la corona del rey caído y gobierna Vale Sangora. Dio su sangre a Lunka para salvarla, pero está lejos de ser benevolente.</p>
     </div>
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-3">
       <div class="char-icon">🌙</div>
       <h3>Lunka</h3>
       <p class="char-title">Hermana de Coen</p>
       <p>Víctima de la peste. Salvada por la sangre de Brencis a un precio terrible. Su destino es la fuerza impulsora detrás de la desesperada búsqueda de Coen.</p>
     </div>
-    <div class="char-card">
+    <div class="char-card fade-in fade-in-delay-4">
       <div class="char-icon">⚡</div>
       <h3>Xanthe</h3>
       <p class="char-title">Vampira Antigua</p>
@@ -413,7 +538,7 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── JUGABILIDAD ──────────── -->
-<section class="wrap" id="juego">
+<section class="wrap fade-in" id="juego">
   <p class="label">Sistemas Centrales</p>
   <h2>Jugabilidad y Mecánicas</h2>
 
@@ -422,27 +547,27 @@ footer a:hover{text-decoration:underline}
   <p>Construido sobre <strong>Unreal Engine 5</strong>, el juego presenta renderizado avanzado, transiciones dinámicas de día y noche, y entornos artesanales inspirados en el folclore medieval de Europa Central y del Sudeste.</p>
 
   <div class="card-grid">
-    <div class="card">
+    <div class="card fade-in fade-in-delay-1">
       <h3>⏳ Presión Temporal</h3>
       <p>30 días y noches en el juego para salvar a tu familia. Cada misión tiene un coste temporal. No hay un temporizador que te mate, pero desperdiciar tiempo tiene consecuencias reales para los seres queridos de Coen.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-2">
       <h3>🧛 Sistema de Ansia de Sangre</h3>
       <p>Usar habilidades vampíricas afecta el lado humano de Coen, vinculado a salud y hambre. Perder salud aumenta el riesgo de perder el control — desencadenando malas consecuencias o bloqueando misiones permanentemente.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-3">
       <h3>🌀 Planeshift</h3>
       <p>Rompe la gravedad para caminar por paredes y techos. Un poder de desplazamiento que te permite navegar el mundo de formas inesperadas, acceder a áreas ocultas y obtener ventajas tácticas en combate.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-4">
       <h3>👻 Shadowstep</h3>
       <p>Teletransportación a corta distancia a través de las sombras. Muévete instantáneamente, escapa de situaciones peligrosas o cierra la brecha con enemigos en un abrir y cerrar de ojos.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-5">
       <h3>📖 Árboles de Habilidad</h3>
       <p>Árboles separados para mejoras Humanas, Vampíricas, Compartidas y Habilidades Activas — personaliza el crecimiento de Coen dependiendo de si prefieres la humanidad o la monstruosidad.</p>
     </div>
-    <div class="card">
+    <div class="card fade-in fade-in-delay-5">
       <h3>🔮 Magia Ritual</h3>
       <p>Magia cruda y ritualística vinculada a sangre, calor y aire. Lanzar requiere canalizar grabados ocultos y runas — hechizos como <em>Sangre Ardiente</em> hierven la sangre enemiga causando devastadores daños en el tiempo.</p>
     </div>
@@ -452,7 +577,7 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── COMBATE ──────────── -->
-<section class="wrap" id="combate">
+<section class="wrap fade-in" id="combate">
   <p class="label">Doble Naturaleza</p>
   <h2>Sistema de Combate</h2>
   <p>Dos estilos de combate completamente distintos — cada forma tiene fortalezas y debilidades únicas, y tus tácticas deben adaptarse al atardecer o amanecer.</p>
@@ -487,7 +612,7 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── CARACTERÍSTICAS ──────────── -->
-<section class="wrap" id="caracteristicas">
+<section class="wrap fade-in" id="caracteristicas">
   <p class="label">De Un Vistazo</p>
   <h2>Características Clave</h2>
 
@@ -509,8 +634,41 @@ footer a:hover{text-decoration:underline}
 
 <hr class="divider">
 
+<!-- ──────────── EDICIONES ──────────── -->
+<section class="wrap fade-in" id="ediciones">
+  <p class="label">Coleccionismo</p>
+  <h2>Ediciones y Pre-Order</h2>
+
+  <p>Múltiples ediciones disponibles para satisfacer a todos los fans, desde la versión digital estándar hasta la edición coleccionista con figurina de 23 cm de Coen.</p>
+
+  <div class="editions-grid">
+    <div class="edition-card fade-in fade-in-delay-1">
+      <span class="edition-tag">Bonus Pre-Order</span>
+      <h3>Armadura Temprana</h3>
+      <p>Set de armadura de juego temprano disponible gratis con cualquier pre-order. Ventaja inicial en tu viaje por Vale Sangora.</p>
+    </div>
+    <div class="edition-card fade-in fade-in-delay-2">
+      <span class="edition-tag">Digital</span>
+      <h3>Eclipse Edition</h3>
+      <p>Incluye compendio digital del mundo, cómic de fondo de historia y banda sonora completa del juego.</p>
+    </div>
+    <div class="edition-card fade-in fade-in-delay-3">
+      <span class="edition-tag">Física</span>
+      <h3>Day One Edition</h3>
+      <p>Edición física con steelbook exclusivo y mapa del mundo de Vale Sangora en formato impreso.</p>
+    </div>
+    <div class="edition-card fade-in fade-in-delay-4">
+      <span class="edition-tag">Coleccionista</span>
+      <h3>Collector's Edition</h3>
+      <p>Incluye todo lo de Day One + compendio del mundo físico y una <strong>figurina de Coen de 23 cm</strong>. La experiencia definitiva para fans.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- ──────────── REQUISITOS ──────────── -->
-<section class="wrap" id="requisitos">
+<section class="wrap fade-in" id="requisitos">
   <p class="label">Técnico</p>
   <h2>Requisitos del PC</h2>
 
@@ -586,18 +744,18 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── VIDEOS ──────────── -->
-<section class="wrap" id="videos">
+<section class="wrap fade-in" id="videos">
   <p class="label">Medios</p>
   <h2>Vídeos y Tráilers</h2>
   <p>Todos los tráilers oficiales, análisis de jugabilidad y presentaciones del equipo de desarrollo desde el viaje de The Blood of Dawnwalker hacia su lanzamiento.</p>
 
   <div class="videos-grid">
 
-    <!-- ══════════ TRÁILERES ══════════ -->
+    <!-- ══════════ TRÁILERES OFICIALES ══════════ -->
     <h3 style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--gold);margin:2rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)">🎬 Tráilers Oficiales</h3>
 
     <!-- Cinematic & Gameplay Teaser (reveal original) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/te73UInH8H8" title="Tráiler Cinemático y Gameplay" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -608,7 +766,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Official Gameplay Trailer (Xbox Showcase) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-2">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/GA4uyOGf4Xc" title="Tráiler Oficial de Jugabilidad" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -619,7 +777,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Official Story Trailer -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-3">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/lkC75FzExf0" title="Tráiler Oficial de Historia" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -629,19 +787,30 @@ footer a:hover{text-decoration:underline}
       </div>
     </div>
 
-    <!-- Story Trailer Bandai Namco -->
-    <div class="video-card">
+    <!-- Story Trailer Bandai Namco (April 2026) -->
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/Fn7aYRVyRMM" title="Tráiler de Historia" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        <iframe src="https://www.youtube.com/embed/Fn7aYRVyRMM" title="Tráiler de Historia — 3 Sept 2026" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
       <div class="video-meta">
-        <h4>Tráiler de Historia</h4>
-        <p>Bandai Namco Entertainment America</p>
+        <h4>Tráiler de Historia — Fecha de Lanzamiento</h4>
+        <p>Abril 2026 · Bandai Namco Entertainment America</p>
+      </div>
+    </div>
+
+    <!-- Story Trailer 4K (NEW) -->
+    <div class="video-card fade-in fade-in-delay-2">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/jVQiJ9ci0HI" title="Tráiler de Historia [4K]" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+      <div class="video-meta">
+        <h4>Tráiler de Historia [4K] — Con Subtítulos</h4>
+        <p>Calidad 4K · Subtítulos disponibles · Rebel Wolves</p>
       </div>
     </div>
 
     <!-- Developer Overview (Summer Showcase) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-3">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/_VHc6ajqEi4" title="Tráiler de Presentación del Desarrollador" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -652,7 +821,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Collector's Edition -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-4">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/mBvC5CfuBwQ" title="Edición Coleccionista" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -666,7 +835,7 @@ footer a:hover{text-decoration:underline}
     <h3 style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;color:var(--red-glow);margin:2.5rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)">🔍 Análisis de Jugabilidad (Deep Dives)</h3>
 
     <!-- Gameplay Overview Part I (primero cronológicamente) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-1">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/BooGSMc3aMs" title="Análisis de Jugabilidad Parte I" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -677,7 +846,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Gameplay Overview Part II (segundo cronológicamente) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-2">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/bHlsx20yl0o" title="Análisis de Jugabilidad Parte II" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -688,7 +857,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Gameplay Deep Dive Part 3 (tercero cronológicamente) -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-3">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/MRpCejAlh-E" title="Análisis Profundo de Jugabilidad Parte 3" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -699,7 +868,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- Vampire Lore Explained -->
-    <div class="video-card">
+    <div class="video-card fade-in fade-in-delay-4">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/ZZn-ldIrX04" title="Lore de Vampiros - Historia Explicada" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -715,7 +884,7 @@ footer a:hover{text-decoration:underline}
 <hr class="divider">
 
 <!-- ──────────── DESARROLLADOR ──────────── -->
-<section class="wrap" id="desarrollador">
+<section class="wrap fade-in" id="desarrollador">
   <p class="label">Detrás del Juego</p>
   <h2>Sobre Rebel Wolves</h2>
 
@@ -753,8 +922,51 @@ burger.addEventListener('click',()=>menu.classList.contains('open')?closeMenu():
 overlay.addEventListener('click',closeMenu);
 closeBtns.forEach(b=>b.addEventListener('click',closeMenu));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
-</script>
 
+// ═══════════════════════════════════════════
+// SCROLL ANIMATIONS (IntersectionObserver)
+// ═══════════════════════════════════════════
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+    }
+  });
+},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// ═══════════════════════════════════════════
+// COUNTDOWN TO LAUNCH (Sept 3, 2026)
+// ═══════════════════════════════════════════
+(function(){
+  const launch=new Date('2026-09-03T00:00:00+02:00').getTime();
+  const daysEl=document.getElementById('cd-days');
+  const hoursEl=document.getElementById('cd-hours');
+  const minsEl=document.getElementById('cd-mins');
+  const secsEl=document.getElementById('cd-secs');
+
+  function update(){
+    const now=Date.now();
+    const diff=launch-now;
+    if(diff<=0){
+      daysEl.textContent='00';hoursEl.textContent='00';
+      minsEl.textContent='00';secsEl.textContent='00';
+      return;
+    }
+    const d=Math.floor(diff/864e5);
+    const h=Math.floor((diff%864e5)/36e5);
+    const m=Math.floor((diff%36e5)/6e4);
+    const s=Math.floor((diff%6e4)/1e3);
+    daysEl.textContent=String(d).padStart(2,'0');
+    hoursEl.textContent=String(h).padStart(2,'0');
+    minsEl.textContent=String(m).padStart(2,'0');
+    secsEl.textContent=String(s).padStart(2,'0');
+  }
+  update();
+  setInterval(update,1000);
+})();
+</script>
 
 <footer class="page-footer">
   <div class="footer-inner">
