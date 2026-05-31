@@ -174,14 +174,14 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg-body);color:var
   width:500px;height:500px;z-index:1;pointer-events:none;
   opacity:0;animation:starFadeIn 2s ease-out 0.5s forwards;
 }
-@keyframes starFadeIn{to{opacity:0.12}}
+@keyframes starFadeIn{to{opacity:0.35}}
 .star-of-david{
   width:100%;height:100%;
   animation:starPulse 6s ease-in-out infinite,starRotate 120s linear infinite;
 }
 @keyframes starPulse{
-  0%,100%{filter:drop-shadow(0 0 20px rgba(155,17,17,.4)) drop-shadow(0 0 60px rgba(155,17,17,.15));transform:scale(1)}
-  50%{filter:drop-shadow(0 0 35px rgba(155,17,17,.7)) drop-shadow(0 0 100px rgba(155,17,17,.3));transform:scale(1.03)}
+  0%,100%{filter:drop-shadow(0 0 25px rgba(220,50,50,.6)) drop-shadow(0 0 80px rgba(200,30,30,.3));transform:scale(1)}
+  50%{filter:drop-shadow(0 0 50px rgba(220,50,50,.9)) drop-shadow(0 0 130px rgba(200,30,30,.5));transform:scale(1.03)}
 }
 @keyframes starRotate{
   from{transform:rotate(0deg)}
@@ -413,15 +413,15 @@ footer a:hover{text-decoration:underline}
   <div class="star-of-david-container">
     <svg class="star-of-david" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <!-- Two interlocking triangles forming Star of David -->
-      <polygon points="100,10 180,160 20,160" fill="none" stroke="#9b1111" stroke-width="2" opacity="0.8"/>
-      <polygon points="100,190 180,40 20,40" fill="none" stroke="#9b1111" stroke-width="2" opacity="0.8"/>
+      <polygon points="100,10 180,160 20,160" fill="none" stroke="#c0392b" stroke-width="3" opacity="0.9"/>
+      <polygon points="100,190 180,40 20,40" fill="none" stroke="#c0392b" stroke-width="3" opacity="0.9"/>
       <!-- Inner hexagram lines -->
-      <line x1="100" y1="10" x2="100" y2="190" stroke="#9b1111" stroke-width="0.5" opacity="0.3"/>
-      <line x1="20" y1="40" x2="180" y2="160" stroke="#9b1111" stroke-width="0.5" opacity="0.3"/>
-      <line x1="20" y1="160" x2="180" y2="40" stroke="#9b1111" stroke-width="0.5" opacity="0.3"/>
+      <line x1="100" y1="10" x2="100" y2="190" stroke="#c0392b" stroke-width="1" opacity="0.5"/>
+      <line x1="20" y1="40" x2="180" y2="160" stroke="#c0392b" stroke-width="1" opacity="0.5"/>
+      <line x1="20" y1="160" x2="180" y2="40" stroke="#c0392b" stroke-width="1" opacity="0.5"/>
       <!-- Center circle -->
-      <circle cx="100" cy="100" r="15" fill="none" stroke="#9b1111" stroke-width="1" opacity="0.4"/>
-      <circle cx="100" cy="100" r="3" fill="#9b1111" opacity="0.6"/>
+      <circle cx="100" cy="100" r="15" fill="none" stroke="#c0392b" stroke-width="1.5" opacity="0.6"/>
+      <circle cx="100" cy="100" r="3" fill="#c0392b" opacity="0.9"/>
     </svg>
   </div>
 
