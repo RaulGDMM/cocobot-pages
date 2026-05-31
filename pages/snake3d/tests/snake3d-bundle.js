@@ -1241,8 +1241,13 @@ function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
     }
   }
 
-  // Near edges, relax the requirement — walls naturally limit space
-  if (isNearEdge(nx, nz, 3)) {
+  // Near edges, relax the requirement — walls naturally limit space.
+  // Margin: ~5 for grid 22, ~8 for grid 40. Must leave a center zone
+  // so the full check still applies in the middle of the board.
+  var half = Math.floor((gridMaxX - gridMinX) / 2);
+  var edgeMargin = Math.min(Math.ceil(half / 2.5), half - 2);
+  edgeMargin = Math.max(edgeMargin, 4);
+  if (isNearEdge(nx, nz, edgeMargin)) {
     return count >= Math.floor(minSpace * 0.5);
   }
   return count >= minSpace;
@@ -1477,7 +1482,9 @@ function aiDecideDirection(aiIndex, diff) {
     }
   }
 
-  // ─── Fallback: score directions by space + apple distance ───
+  // ─── Fallback: score directions — APPLE DISTANCE first, space second ───
+  // CRITICAL: apple distance MUST dominate. If space dominates (like *3 or *10),
+  // the AI will always prefer center directions and never take edge apples.
   var bestScore = -Infinity;
   var bestDir = safeWithSpace[0];
   var target = nearestApple(ai.snake[0].x, ai.snake[0].z);
@@ -1487,21 +1494,22 @@ function aiDecideDirection(aiIndex, diff) {
     var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
 
     var score = 0;
-    // Space is important but not dominant — let apple distance matter.
-        // A high multiplier (like *10) made edge apples impossible to reach because
-        // center cells always had more space. *3 gives room to both factors.
-        var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
-        score += space * 3;
 
-    // Distance to apple is secondary
+    // PRIMARY: distance to nearest apple (lower = better)
+    // This is the main driver — the AI should move toward the apple.
     if (target) {
       var distToApple = Math.abs(target.x - nx) + Math.abs(target.z - nz);
-      score -= distToApple;
+      score -= distToApple * 5; // Strong apple attraction
     }
 
-    // Prefer directions with more escape routes
+    // SECONDARY: space is a tiebreaker, NOT the main driver
+    // A small multiplier ensures space matters but doesn't override apple distance.
+    var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+    score += space;
+
+    // Prefer directions with more escape routes (small bonus)
     var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-    score += escapes * 3;
+    score += escapes;
 
     // ─── Penalize shrink danger zone ───
     if (cellInShrinkZone(nx, nz)) {
