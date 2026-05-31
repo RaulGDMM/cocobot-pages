@@ -223,22 +223,13 @@
             height: 48px;
         }
 
-        /* Desktop: horizontal scrollable nav with drag */
+        /* Desktop: nav with wrap */
         .nav-scroll {
             display: flex;
-            gap: 2px;
-            overflow-x: auto;
-            scrollbar-width: none;
+            flex-wrap: wrap;
+            gap: 2px 4px;
             padding: 8px 0 10px;
-            cursor: grab;
-            -webkit-user-select: none;
-            user-select: none;
-            max-width: 900px;
-            margin: 0 auto;
         }
-
-        .nav-scroll:active { cursor: grabbing; }
-        .nav-scroll::-webkit-scrollbar { display: none; }
 
         .nav-scroll a {
             color: var(--text-muted);
@@ -249,7 +240,6 @@
             border-radius: 6px;
             white-space: nowrap;
             transition: all 0.2s;
-            flex-shrink: 0;
         }
 
         .nav-scroll a:hover {
@@ -261,35 +251,6 @@
             color: var(--red-accent);
             background: rgba(230, 57, 70, 0.1);
         }
-
-        /* Scroll hint arrows */
-        .nav-scroll-wrapper {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .nav-scroll-fade {
-            position: absolute;
-            top: 0;
-            bottom: 10px;
-            width: 30px;
-            pointer-events: none;
-            z-index: 2;
-            display: none;
-        }
-
-        .nav-scroll-fade.left {
-            left: 0;
-            background: linear-gradient(to right, var(--bg-primary), transparent);
-        }
-
-        .nav-scroll-fade.right {
-            right: 0;
-            background: linear-gradient(to left, var(--bg-primary), transparent);
-        }
-
-        .nav-scroll-fade.visible { display: block; }
 
         /* Hamburger button */
         .hamburger {
@@ -703,7 +664,6 @@
             /* Mobile nav: hamburger */
             .hamburger { display: flex; }
             .nav-scroll { display: none !important; }
-            .nav-scroll-wrapper { display: none !important; }
             .nav-dropdown { display: block; }
             .nav { padding: 0 16px; }
         }
@@ -748,22 +708,18 @@
     <!-- NAV -->
     <nav class="nav">
         <div class="nav-top">
-            <div class="nav-scroll-wrapper">
-                <div class="nav-scroll" id="navScroll">
-                    <a href="#contexto">Contexto</a>
-                    <a href="#jugadores">Jugadores</a>
-                    <a href="#huawei">Huawei</a>
-                    <a href="#moore-threads">Moore Threads</a>
-                    <a href="#cambricon">Cambricon</a>
-                    <a href="#mercado">Mercado</a>
-                    <a href="#invertir">Cómo Invertir</a>
-                    <a href="#plataformas">Plataformas</a>
-                    <a href="#riesgos">Riesgos</a>
-                    <a href="#opinion">Opinión</a>
-                    <a href="#fuentes">Fuentes</a>
-                </div>
-                <div class="nav-scroll-fade left" id="navFadeLeft"></div>
-                <div class="nav-scroll-fade right" id="navFadeRight"></div>
+            <div class="nav-scroll" id="navScroll">
+                <a href="#contexto">Contexto</a>
+                <a href="#jugadores">Jugadores</a>
+                <a href="#huawei">Huawei</a>
+                <a href="#moore-threads">Moore Threads</a>
+                <a href="#cambricon">Cambricon</a>
+                <a href="#mercado">Mercado</a>
+                <a href="#invertir">Cómo Invertir</a>
+                <a href="#plataformas">Plataformas</a>
+                <a href="#riesgos">Riesgos</a>
+                <a href="#opinion">Opinión</a>
+                <a href="#fuentes">Fuentes</a>
             </div>
             <button class="hamburger" id="hamburger" aria-label="Menú">
                 <span></span><span></span><span></span>
@@ -1574,45 +1530,6 @@
             }
          });
 
-        // ===== NAV: Drag-to-scroll (desktop) =====
-        (function() {
-            const navScroll = document.getElementById('navScroll');
-            const fadeLeft = document.getElementById('navFadeLeft');
-            const fadeRight = document.getElementById('navFadeRight');
-            if (!navScroll) return;
-
-            let isDown = false, startX, scrollLeft;
-
-            navScroll.addEventListener('mousedown', function(e) {
-                // Only grab if clicking on the container, not a link
-                if (e.target.tagName === 'A') return;
-                isDown = true;
-                startX = e.pageX - navScroll.offsetLeft;
-                scrollLeft = navScroll.scrollLeft;
-            });
-
-            navScroll.addEventListener('mouseleave', () => isDown = false);
-            navScroll.addEventListener('mouseup', () => isDown = false);
-
-            navScroll.addEventListener('mousemove', function(e) {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - navScroll.offsetLeft;
-                const walk = (x - startX) * 1.5;
-                navScroll.scrollLeft = scrollLeft - walk;
-            });
-
-            // Show/hide fade indicators
-            function updateFades() {
-                if (fadeLeft) fadeLeft.classList.toggle('visible', navScroll.scrollLeft > 5);
-                if (fadeRight) fadeRight.classList.toggle('visible',
-                    navScroll.scrollLeft < navScroll.scrollWidth - navScroll.clientWidth - 5);
-            }
-            navScroll.addEventListener('scroll', updateFades);
-            window.addEventListener('resize', updateFades);
-            updateFades();
-        })();
-
         // ===== NAV: Hamburger menu (mobile) =====
         (function() {
             const hamburger = document.getElementById('hamburger');
@@ -1624,7 +1541,6 @@
                 dropdown.classList.toggle('open');
             });
 
-            // Close dropdown on link click
             dropdown.querySelectorAll('a').forEach(function(a) {
                 a.addEventListener('click', function() {
                     hamburger.classList.remove('open');
