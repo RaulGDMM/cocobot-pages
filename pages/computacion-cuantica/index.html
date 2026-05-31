@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computación Cuántica — El Futuro es Ahora</title>
+<meta name="description" content="¿Qué es la computación cuántica? Guía completa y accesible: cómo funciona, qué puede hacer hoy, la fusión con IA, y por qué importa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a1a;
+  color: #e0e0e0;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
+a:hover { color: #00ffc8; }
+
+/* ===== PARTICLES BACKGROUND ===== */
+#particles-bg {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10, 10, 26, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+  padding: 0.8rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: transform 0.3s;
+}
+.navbar.hidden { transform: translateY(-100%); }
+.nav-logo {
+  font-weight: 800; font-size: 1.1rem;
+  background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  color: #a0a0b8; font-size: 0.85rem; font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: #00d4ff; }
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px;
+}
+.nav-hamburger span {
+  display: block; width: 24px; height: 2px; background: #e0e0e0;
+  transition: 0.3s;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+}
+.hero-content {
+  position: relative; z-index: 2; text-align: center;
+  padding: 2rem;
+}
+.hero-title {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #00d4ff 0%, #7b2ff7 50%, #00ffc8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  animation: fadeInUp 1s ease-out;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: #a0a0b8; font-weight: 300;
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+.scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  z-index: 2; animation: bounce 2s infinite;
+}
+.scroll-indicator svg { width: 30px; height: 30px; stroke: #00d4ff; }
+
+/* ===== SECTIONS ===== */
+.section {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.section-label {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: #7b2ff7; margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff, #a0a0b8);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.section-text {
+  font-size: 1.05rem; color: #b0b0c8; max-width: 800px;
+  margin-bottom: 1.5rem;
+}
+.section-text strong { color: #e0e0e0; }
+
+/* ===== CARDS ===== */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px; padding: 2rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s, border-color 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 212, 255, 0.2);
+}
+.card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem; color: #fff; }
+.card-text { font-size: 0.95rem; color: #a0a0b8; }
+
+/* ===== POWER GRID ===== */
+.power-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem; margin-top: 2rem;
+}
+
+/* ===== INTERACTIVE: QUANTUM COIN ===== */
+.coin-container {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 3rem 0;
+}
+.coin {
+  width: 150px; height: 150px; border-radius: 50%;
+  position: relative; cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.1s;
+}
+.coin.spinning {
+  animation: coinSpin 0.15s linear infinite;
+}
+.coin .face {
+  position: absolute; width: 100%; height: 100%; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 800;
+  backface-visibility: hidden;
+}
+.coin .heads {
+  background: linear-gradient(135deg, #00d4ff, #0088cc);
+  color: #fff;
+}
+.coin .tails {
+  background: linear-gradient(135deg, #7b2ff7, #5a1db8);
+  color: #fff;
+  transform: rotateY(180deg);
+}
+.coin .heads::before, .coin .tails::before {
+  content: ''; position: absolute; inset: 6px;
+  border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+}
+.coin .heads::after { content: '0'; }
+.coin .tails::after { content: '1'; }
+.coin-label {
+  margin-top: 1rem; font-size: 0.9rem; color: #a0a0b8;
+  text-align: center;
+}
+.coin-stats {
+  margin-top: 0.5rem; font-size: 0.85rem; color: #7b2ff7;
+  font-weight: 600;
+}
+
+/* ===== INTERACTIVE: ENTANGLEMENT ===== */
+.entangle-demo {
+  display: flex; align-items: center; justify-content: center;
+  gap: 3rem; margin: 3rem 0; flex-wrap: wrap;
+}
+.entangle-particle {
+  width: 80px; height: 80px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 800; cursor: pointer;
+  transition: all 0.4s;
+  position: relative;
+}
+.entangle-particle::after {
+  content: 'Click';
+  position: absolute; bottom: -24px;
+  font-size: 0.7rem; color: #a0a0b8; font-weight: 400;
+}
+.particle-a {
+  background: radial-gradient(circle, #00d4ff, #0066aa);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+}
+.particle-b {
+  background: radial-gradient(circle, #7b2ff7, #4a1d96);
+  box-shadow: 0 0 30px rgba(123, 47, 247, 0.4);
+}
+.particle-a.flipped {
+  background: radial-gradient(circle, #ff4466, #aa1133);
+  box-shadow: 0 0 30px rgba(255, 68, 102, 0.4);
+}
+.particle-b.flipped {
+  background: radial-gradient(circle, #00ffc8, #00aa88);
+  box-shadow: 0 0 30px rgba(0, 255, 200, 0.4);
+}
+.entangle-line {
+  width: 120px; height: 2px;
+  background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+  position: relative;
+}
+.entangle-line::before {
+  content: ''; position: absolute;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fff; top: -3px;
+  animation: entanglePulse 2s ease-in-out infinite;
+}
+.entangle-result {
+  text-align: center; margin-top: 1rem;
+  font-size: 0.9rem; color: #a0a0b8;
+}
+
+/* ===== INTERACTIVE: TIMELINE ===== */
+.timeline {
+  position: relative; margin: 3rem 0;
+  padding-left: 3rem;
+}
+.timeline::before {
+  content: ''; position: absolute;
+  left: 12px; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, #00d4ff, #7b2ff7, #00ffc8);
+}
+.timeline-item {
+  position: relative; margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+.timeline-item::before {
+  content: ''; position: absolute;
+  left: -2.55rem; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+.timeline-item.futuristic::before { background: #7b2ff7; box-shadow: 0 0 10px rgba(123, 47, 247, 0.5); }
+.timeline-year {
+  font-size: 0.8rem; font-weight: 700; color: #00d4ff;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.timeline-item.futuristic .timeline-year { color: #7b2ff7; }
+.timeline-title { font-size: 1.1rem; font-weight: 600; color: #fff; margin: 0.2rem 0; }
+.timeline-desc { font-size: 0.9rem; color: #a0a0b8; }
+
+/* ===== TABLE ===== */
+.qtable {
+  width: 100%; border-collapse: collapse; margin: 2rem 0;
+  font-size: 0.9rem;
+}
+.qtable th {
+  background: rgba(0, 212, 255, 0.1);
+  color: #00d4ff; font-weight: 700; text-align: left;
+  padding: 1rem; border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+}
+.qtable td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #b0b0c8;
+}
+.qtable tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+/* ===== HYPE TABLE ===== */
+.hype-table { margin: 2rem 0; }
+.hype-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin-bottom: 1rem;
+}
+.hype-false, .hype-true {
+  padding: 1.2rem; border-radius: 12px;
+  font-size: 0.95rem;
+}
+.hype-false {
+  background: rgba(255, 68, 102, 0.08);
+  border: 1px solid rgba(255, 68, 102, 0.2);
+}
+.hype-true {
+  background: rgba(0, 255, 200, 0.05);
+  border: 1px solid rgba(0, 255, 200, 0.15);
+}
+.hype-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; margin-bottom: 0.5rem;
+}
+.hype-false .hype-label { color: #ff4466; }
+.hype-true .hype-label { color: #00ffc8; }
+
+/* ===== ACCORDION ===== */
+.accordion { margin: 2rem 0; }
+.accordion-item {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px; margin-bottom: 0.8rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+.accordion-header {
+  width: 100%; padding: 1.2rem 1.5rem;
+  background: none; border: none; color: #e0e0e0;
+  font-size: 1rem; font-weight: 600; text-align: left;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: space-between;
+  transition: background 0.3s;
+}
+.accordion-header:hover { background: rgba(255, 255, 255, 0.03); }
+.accordion-icon {
+  font-size: 1.2rem; transition: transform 0.3s; color: #00d4ff;
+}
+.accordion-item.open .accordion-icon { transform: rotate(45deg); }
+.accordion-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s;
+  padding: 0 1.5rem;
+}
+.accordion-item.open .accordion-body {
+  max-height: 3000px; padding: 0 1.5rem 1.5rem;
+}
+.accordion-body p { margin-bottom: 0.8rem; font-size: 0.95rem; color: #b0b0c8; }
+.accordion-body ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+.accordion-body li { margin-bottom: 0.4rem; font-size: 0.9rem; color: #b0b0c8; }
+
+/* ===== OPINION ===== */
+.opinion-box {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(123, 47, 247, 0.05));
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 16px; padding: 2.5rem;
+  margin: 2rem 0;
+}
+.opinion-box .section-title {
+  font-size: 1.5rem; margin-bottom: 1rem;
+}
+
+/* ===== SOURCES ===== */
+.sources-list { list-style: none; margin: 1.5rem 0; }
+.sources-list li {
+  padding: 0.6rem 0; font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+.sources-list li a { word-break: break-all; }
+
+/* ===== FOOTER ===== */
+.footer {
+  position: relative; z-index: 2;
+  text-align: center; padding: 3rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #606078; font-size: 0.85rem;
+}
+
+/* ===== COUNTER + BACK ===== */
+.top-bar {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.back-btn {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  color: #00d4ff; padding: 0.5rem 1rem;
+  border-radius: 8px; cursor: pointer;
+  font-size: 0.85rem; font-weight: 500;
+  transition: all 0.3s;
+}
+.back-btn:hover {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: rgba(0, 212, 255, 0.4);
+}
+.visit-counter {
+  font-size: 0.8rem; color: #606078;
+}
+
+/* ===== ANALOGY BOX ===== */
+.analogy-box {
+  background: rgba(123, 47, 247, 0.08);
+  border-left: 3px solid #7b2ff7;
+  border-radius: 0 12px 12px 0;
+  padding: 1.5rem 2rem; margin: 2rem 0;
+}
+.analogy-box .label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: #7b2ff7; margin-bottom: 0.5rem;
+}
+
+/* ===== DIVIDER ===== */
+.section-divider {
+  width: 60px; height: 3px; margin: 0 auto 3rem;
+  background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+  border-radius: 2px;
+}
+
+/* ===== FADE IN ===== */
+.fade-in {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+@keyframes coinSpin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+@keyframes entanglePulse {
+  0%, 100% { left: 0; }
+  50% { left: calc(100% - 8px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: rgba(10, 10, 26, 0.95);
+    padding: 1.5rem 2rem; gap: 1rem;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+  }
+  .section { padding: 3rem 1.5rem; }
+  .hype-row { grid-template-columns: 1fr; }
+  .entangle-demo { gap: 2rem; }
+  .entangle-line { width: 60px; }
+  .power-grid { grid-template-columns: 1fr; }
+  .timeline { padding-left: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES BACKGROUND -->
+<canvas id="particles-bg"></canvas>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">⚛ Quantum</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#que-es">¿Qué es?</a></li>
+    <li><a href="#poderes">Poderes</a></li>
+    <li><a href="#error-correction">Errores</a></li>
+    <li><a href="#hoy">Hoy</a></li>
+    <li><a href="#ia">IA + Cuántica</a></li>
+    <li><a href="#seguridad">Seguridad</a></li>
+    <li><a href="#hype">Hype</a></li>
+    <li><a href="#opinion">Opinión</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <h1 class="hero-title">Computación Cuántica</h1>
+    <p class="hero-subtitle">El futuro no se calcula. Se superpone.</p>
+  </div>
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+      <path d="M7 13l5 5 5-5M7 7l5 5 5-5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- TOP BAR: Back + Counter -->
+<div class="top-bar">
+  <button class="back-btn" onclick="history.back()">← Volver</button>
+  <div class="visit-counter" id="visitCounter"></div>
+</div>
+
+<!-- ===== SECTION: ¿QUÉ ES? ===== -->
+<section class="section fade-in" id="que-es">
+  <div class="section-label">Fundamentos</div>
+  <h2 class="section-title">¿Qué es la computación cuántica?</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    Los ordenadores que usas ahora funcionan con <strong>bits</strong>: pequeños interruptores que están encendidos (1) o apagados (0). Todo lo que hace tu ordenador — desde ver un vídeo hasta editar un documento — son billones de estos interruptores cambiando de estado.
+  </p>
+  <p class="section-text">
+    La computación cuántica usa <strong>qubits</strong> (bits cuánticos). Y aquí es donde las cosas se ponen extrañas.
+  </p>
+
+  <div class="analogy-box">
+    <div class="label">💡 Analogía de la moneda</div>
+    <p>
+      Imagina una moneda sobre la mesa. Está en <strong>cara</strong> o <strong>cruz</strong>. Eso es un bit clásico: un estado definido. Ahora lanza la moneda al aire mientras gira. <strong>Mientras gira, es cara Y cruz al mismo tiempo</strong>. Eso es un qubit en <em>superposición</em>. Solo cuando la atrapas y la miras (la "mides") colapsa a un estado concreto.
+    </p>
+  </div>
+
+  <div class="analogy-box">
+    <div class="label">🏁 Analogía del laberinto</div>
+    <p>
+      Un ordenador clásico resolviendo un laberinto prueba un camino, llega a un callejón sin salida, vuelve atrás y prueba otro. Un ordenador cuántico, gracias a la superposición, <strong>puede explorar todos los caminos del laberinto simultáneamente</strong>. No es magia: es física.
+    </p>
+  </div>
+
+  <!-- INTERACTIVE COIN -->
+  <div class="coin-container">
+    <div class="coin" id="quantumCoin">
+      <div class="face heads"></div>
+      <div class="face tails"></div>
+    </div>
+    <div class="coin-label" id="coinLabel">👆 Haz clic para "medir" el qubit</div>
+    <div class="coin-stats" id="coinStats"></div>
+  </div>
+
+  <p class="section-text" style="text-align:center; margin-top:1rem; font-size:0.9rem; color:#7b2ff7;">
+    Cada clic es una "medición". El resultado es aleatorio porque el qubit estaba en superposición.
+  </p>
+</section>
+
+<!-- ===== SECTION: TRES SUPERPODERES ===== -->
+<section class="section fade-in" id="poderes">
+  <div class="section-label">Mecánica cuántica</div>
+  <h2 class="section-title">Los tres superpoderes cuánticos</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    La computación cuántica aprovecha tres fenómenos de la mecánica cuántica que no tienen equivalente en nuestro mundo cotidiano. Son contraintuitivos, pero están demostrados experimentalmente una y otra vez.
+  </p>
+
+  <div class="power-grid">
+    <div class="card">
+      <div class="card-icon">🌀</div>
+      <div class="card-title">Superposición</div>
+      <div class="card-text">
+        Un qubit puede existir en un estado que es una combinación de 0 y 1 simultáneamente. No es "a veces 0, a veces 1" — es <strong>ambos a la vez</strong>, como una onda que ocupa múltiples puntos al mismo tiempo. Al medirlo, colapsa a un solo valor.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <div class="card-title">Entrelazamiento</div>
+      <div class="card-text">
+        Dos qubits pueden quedar "entrelazados": el estado de uno está instantáneamente correlacionado con el del otro, sin importar la distancia. Einstein lo llamó "acción fantasmal a distancia". Medir uno <strong>determina instantáneamente</strong> el resultado del otro.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌊</div>
+      <div class="card-title">Interferencia</div>
+      <div class="card-text">
+        Como las ondas del agua, los estados cuánticos pueden interferir entre sí. Las posibilidades "correctas" se refuerzan (interferencia constructiva) y las incorrectas se cancelan (interferencia destructiva). Así el ordenador cuántico <strong>"encontrar" la respuesta correcta</strong> entre millones de posibilidades.
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE ENTANGLEMENT -->
+  <div style="margin-top:3rem; text-align:center;">
+    <h3 style="font-size:1.2rem; color:#fff; margin-bottom:0.5rem;">Demo de entrelazamiento</h3>
+    <p style="font-size:0.9rem; color:#a0a0b8; margin-bottom:2rem;">Haz clic en una partícula. La otra reacciona instantáneamente, sin importar la distancia.</p>
+    <div class="entangle-demo">
+      <div class="entangle-particle particle-a" id="particleA">↑</div>
+      <div class="entangle-line"></div>
+      <div class="entangle-particle particle-b" id="particleB">↓</div>
+    </div>
+    <div class="entangle-result" id="entangleResult">Las partículas están entrelazadas. Sus estados son opuestos.</div>
+  </div>
+</section>
+
+<!-- ===== SECTION: CORRECCIÓN DE ERRORES ===== -->
+<section class="section fade-in" id="error-correction">
+  <div class="section-label">El gran desafío</div>
+  <h2 class="section-title">¿Por qué es tan difícil? — Corrección de errores cuánticos</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    Aquí está el gran problema que frena toda la computación cuántica: <strong>los qubits son increíblemente frágiles</strong>.
+  </p>
+
+  <p class="section-text">
+    En un ordenador clásico, los bits son robustos. Un transistor encendido o apagado no cambia por sí solo. Pero un qubit es perturbado por <strong>cualquier cosa</strong>: una fluctuación de temperatura, radiación cósmica, vibraciones mecánicas, campos magnéticos ambientales... Cualquier interacción con el entorno destruye su estado cuántico. Esto se llama <strong>decoherencia</strong>.
+  </p>
+
+  <div class="analogy-box">
+    <div class="label">💡 Analogía</div>
+    <p>
+      Imagina que intentas construir un castillo de arena en la playa mientras sopla el viento, llueve y la marea sube. Cada segundo, algo amenaza con destruirlo. Eso es mantener un qubit en estado cuántico: una carrera contra el ruido del universo entero.
+    </p>
+  </div>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Y por qué no simplemente copiar el qubit como respaldo?</h3>
+  <p class="section-text">
+    Porque la mecánica cuántica prohíbe copiar un estado cuántico desconocido. Se llama <strong>teorema de no-clonación</strong>. Tampoco puedes "mirar" el qubit para ver si tiene errores, porque al mirarlo (medirlo) lo destruyes. Es como intentar comprobar si un huevo está roto... rompiéndolo.
+  </p>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">La solución: Corrección de Errores Cuánticos (QEC)</h3>
+  <p class="section-text">
+    La ingeniosa solución es <strong>codificar un solo "qubit lógico" distribuido en muchos "qubits físicos"</strong>. En lugar de medir los qubits individuales (lo que los destruiría), se miden las <em>correlaciones</em> entre ellos. Así se puede detectar y corregir errores sin nunca revelar el estado cuántico protegido.
+  </p>
+
+  <div class="analogy-box">
+    <div class="label">💡 Analogía</div>
+    <p>
+      Imagina que quieres enviar un mensaje frágil por un camino lleno de baches. En vez de enviarlo una vez, lo escribes en 100 cartas diferentes usando un código especial. Si algunas cartas llegan dañadas, el código te permite reconstruir el mensaje original sin necesidad de que ninguna carta individual esté perfecta. Eso es, en esencia, la corrección de errores cuánticos.
+    </p>
+  </div>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">El coste: el "overhead"</h3>
+  <p class="section-text">
+    El problema es el coste. El enfoque más popular, el <strong>surface code</strong>, necesita aproximadamente <strong>1.000 qubits físicos para crear un solo qubit lógico fiable</strong>. Para hacer algo verdaderamente útil — como romper RSA-2048 — se estiman entre 20 y 4.000 qubits lógicos. Eso significa <strong>millones de qubits físicos</strong>.
+  </p>
+  <p class="section-text">
+    Hoy las mejores máquinas tienen miles de qubits físicos, pero ninguno es "lógico" (fiable). Estamos en la fase de construir los cimientos.
+  </p>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">Hitos recientes</h3>
+  <ul style="list-style:none; margin:1rem 0;">
+    <li style="padding:0.5rem 0; color:#b0b0c8;">✅ <strong>Google (2024)</strong>: Primera demostración de QEC por debajo del "umbral" — un distance-7 code con 101 qubits, error de solo 0,143% por ciclo. Por primera vez, añadir más qubits <em>reduce</em> los errores.</li>
+    <li style="padding:0.5rem 0; color:#b0b0c8;">✅ <strong>Quantinuum (2025)</strong>: Puerta fault-tolerant no-Clifford con solo 8 qubits físicos usando iones atrapados.</li>
+    <li style="padding:0.5rem 0; color:#b0b0c8;">✅ <strong>Microsoft Majorana</strong>: Protección topológica en hardware → <strong>~10x menos overhead</strong> que los enfoques anteriores. Si funciona a escala, podría cambiar todo.</li>
+  </ul>
+
+  <div class="analogy-box" style="margin-top:2rem;">
+    <div class="label">⚡ En resumen</div>
+    <p>
+      Sin corrección de errores, las computadoras cuánticas son curiosidades de laboratorio que cometen demasiados errores para ser útiles. <strong>Con corrección de errores, se convierten en herramientas reales</strong>. Es el gran cuello de botella que todo el mundo está intentando resolver.
+    </p>
+  </div>
+</section>
+
+<!-- ===== SECTION: QUÉ PUEDE HACER HOY ===== -->
+<section class="section fade-in" id="hoy">
+  <div class="section-label">Estado actual</div>
+  <h2 class="section-title">¿Qué puede hacer la computación cuántica HOY?</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    Contrario a lo que muchos creen, <strong>ya existen computadoras cuánticas comerciales</strong>. No son los superordenadores del futuro, pero ya se usan para resolver problemas reales. Veamos el panorama actual.
+  </p>
+
+  <!-- Companies Table -->
+  <table class="qtable">
+    <thead>
+      <tr>
+        <th>Empresa</th>
+        <th>Tecnología</th>
+        <th>Hito clave</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>D-Wave</strong></td>
+        <td>Quantum Annealing</td>
+        <td><strong>Advantage2</strong>: 4.400+ qubits, comercial desde mayo 2025. Ingresos Q3: $3,7M (x2 vs 2024). Adquirió Quantum Circuits Inc. para añadir gate-model. Dual-platform: annealing + gate-model.</td>
+      </tr>
+      <tr>
+        <td><strong>Google</strong></td>
+        <td>Gate-model (superconducting)</td>
+        <td><strong>13.000× de aceleración</strong> sobre el superordenador Frontier usando solo 65 qubits para simulaciones físicas (octubre 2025). Trabajando en corrección de errores.</td>
+      </tr>
+      <tr>
+        <td><strong>IBM</strong></td>
+        <td>Gate-model (superconducting)</td>
+        <td>Roadmap: <strong>"quantum advantage" fin 2026</strong>. "Starling" fault-tolerant (200 qubits lógicos) en 2029. "Blue Jay" (2.000 qubits, 1.000M de puertas) en 2033+.</td>
+      </tr>
+      <tr>
+        <td><strong>Microsoft</strong> ⭐</td>
+        <td>Topológico (Majorana)</td>
+        <td><strong>Majorana 1</strong>: primer chip topológico del mundo (feb 2025). Protección contra errores en hardware. Objetivo: <strong>1 millón de qubits en un chip</strong>. DARPA US2QC program. 10x menos overhead de QEC.</td>
+      </tr>
+      <tr>
+        <td><strong>IonQ / Quantinuum</strong></td>
+        <td>Iones atrapados</td>
+        <td>Competidores gate-model con ruta alternativa. Quantinuum: puerta fault-tolerant con solo 8 qubits (2025).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:#fff; margin: 2.5rem 0 1rem; font-size:1.3rem;">Aplicaciones reales en uso hoy</h3>
+  <div class="power-grid">
+    <div class="card">
+      <div class="card-icon">💊</div>
+      <div class="card-title">Descubrimiento de fármacos</div>
+      <div class="card-text">Simular interacciones moleculares a nivel cuántico para acelerar el descubrimiento de nuevos medicamentos. Las moléculas son cuánticas por naturaleza — solo un ordenador cuántico puede simularlas correctamente.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚚</div>
+      <div class="card-title">Optimización logística</div>
+      <div class="card-text">Optimizar rutas de transporte, cadenas de suministro y scheduling. D-Wave ya tiene clientes en logística que usan su annealing para problemas de optimización combinatoria.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <div class="card-title">Ciencia de materiales</div>
+      <div class="card-text">Diseñar nuevos materiales a nivel atómico: superconductores a temperatura ambiente, baterías más eficientes, aleaciones más resistentes.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-title">Finanzas</div>
+      <div class="card-text">Optimización de carteras, análisis de riesgo, simulaciones Monte Carlo. Los bancos ya están experimentando con solvers cuánticos-híbridos.</div>
+    </div>
+  </div>
+
+  <h3 style="color:#fff; margin: 2.5rem 0 1rem; font-size:1.3rem;">¿Qué es el chip Majorana de Microsoft?</h3>
+  <p class="section-text">
+    En febrero de 2025, Microsoft anunció <strong>Majorana 1</strong>, el primer procesador cuántico del mundo basado en <strong>qubits topológicos</strong>. Es un enfoque radicalmente diferente al de IBM o Google.
+  </p>
+  <p class="section-text">
+    En lugar de usar superconductores convencionales, Microsoft combinó <strong>arseniuro de indio</strong> (semiconductor) con <strong>aluminio</strong> (superconductor) para crear un nuevo estado de la materia: el <strong>topoconductor</strong>. En los extremos de estos nanoconductores aparecen las llamadas <strong>Modos Cero de Majorana (MZMs)</strong>: quasipartículas que almacenan información cuántica de forma "no local".
+  </p>
+  <p class="section-text">
+    ¿Por qué importa? Porque la información queda <strong>protegida topológicamente</strong> del ruido ambiental. Es como si el propio material "envolviera" la información en una burbuja que el ruido no puede perforar. El resultado: <strong>~10 veces menos qubits físicos necesarios</strong> para corrección de errores que los enfoques anteriores.
+  </p>
+  <p class="section-text">
+    El roadmap: empezar con arrays de 8 qubits, escalar a 27×13, y finalmente llegar a <strong>1 millón de qubits en un solo chip</strong>. Microsoft trabaja con DARPA en el programa US2QC para construir un prototipo fault-tolerant en "años, no décadas".
+  </p>
+</section>
+
+<!-- ===== SECTION: IA + CUÁNTICA ===== -->
+<section class="section fade-in" id="ia">
+  <div class="section-label">La convergencia</div>
+  <h2 class="section-title">IA + Cuántica: La fusión del futuro</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    Dos de las tecnologías más transformadoras de nuestro tiempo están convergiendo. La computación cuántica y la inteligencia artificial no solo se benefician mutuamente — <strong>juntas podrían abrir capacidades que hoy parecen ciencia ficción</strong>.
+  </p>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Por qué la IA necesita la cuántica?</h3>
+  <div class="power-grid">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Entrenamiento exponencialmente más rápido</div>
+      <div class="card-text">Los modelos de IA actuales requieren semanas o meses de entrenamiento en miles de GPUs. Los algoritmos cuánticos podrían acelerar operaciones clave como la optimización de gradientes y el procesamiento de espacios de búsqueda masivos.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <div class="card-title">Espacios de búsqueda imposibles</div>
+      <div class="card-text">La superposición cuántica permite explorar simultáneamente regiones enormes del espacio de soluciones. Para problemas como el diseño de proteínas o el descubrimiento de moléculas, esto es una diferencia entre "imposible" y "minutos".</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔋</div>
+      <div class="card-title">Eficiencia energética</div>
+      <div class="card-text">El entrenamiento de grandes modelos de IA consume cantidades masivas de energía. D-Wave destaca cómo la computación cuántica podría abordar el creciente consumo energético de la IA — los annealers cuánticos son notablemente eficientes energéticamente.</div>
+    </div>
+  </div>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">Quantum Machine Learning (QML)</h3>
+  <p class="section-text">
+    El QML combina redes neuronales con circuitos cuánticos. Los algoritmos más prometedores incluyen:
+  </p>
+  <ul style="margin: 1rem 0 1rem 1.5rem;">
+    <li style="color:#b0b0c8; margin-bottom:0.5rem;"><strong>VQE (Variational Quantum Eigensolver)</strong>: Simula moléculas y materiales — ya se usa para descubrir nuevos catalizadores y fármacos.</li>
+    <li style="color:#b0b0c8; margin-bottom:0.5rem;"><strong>QAOA (Quantum Approximate Optimization Algorithm)</strong>: Optimización combinatoria — clustering, feature selection, optimización de portfolios.</li>
+    <li style="color:#b0b0c8; margin-bottom:0.5rem;"><strong>Quantum Neural Networks</strong>: Redes neuronales donde las "capas" son circuitos cuánticos paramétricos.</li>
+  </ul>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">Datos clave</h3>
+  <table class="qtable">
+    <tbody>
+      <tr>
+        <td><strong>Google (oct 2025)</strong></td>
+        <td>13.000× de aceleración sobre el superordenador Frontier en simulaciones físicas usando solo 65 qubits</td>
+      </tr>
+      <tr>
+        <td><strong>D-Wave</strong></td>
+        <td>Solvers híbridos cuántico-IA en producción: optimización ML, feature selection, clustering para clientes reales</td>
+      </tr>
+      <tr>
+        <td><strong>Microsoft</strong></td>
+        <td>Azure Quantum integra QML en su plataforma cloud, con roadmap hacia fault-tolerant para simulación química a escala</td>
+      </tr>
+      <tr>
+        <td><strong>Industria (2026)</strong></td>
+        <td>La convergencia cuántico-IA se considera "la nueva era del computing" — más inversiones que nunca</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="analogy-box" style="margin-top:2rem;">
+    <div class="label">⚠️ Reality check</div>
+    <p>
+      Aunque el potencial es enorme, <strong>hoy la mayoría de aplicaciones son híbridas</strong>: parte del trabajo lo hace un ordenador clásico, otra parte un cuántico. El "quantum advantage" real para IA — donde un ordenador cuántico supere claramente a cualquier GPU clásica — está probablemente a <strong>5-10 años</strong>. Pero la tendencia es clara y la inversión es masiva.
+    </p>
+  </div>
+</section>
+
+<!-- ===== SECTION: SEGURIDAD ===== -->
+<section class="section fade-in" id="seguridad">
+  <div class="section-label">Ciberseguridad</div>
+  <h2 class="section-title">¿El fin de la seguridad digital?</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    Uno de los temas que más preocupa (y más se exagera) es el impacto de la computación cuántica en la criptografía. Vamos a ponerlo en perspectiva.
+  </p>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">El algoritmo de Shor</h3>
+  <p class="section-text">
+    En 1994, el matemático Peter Shor demostró que un ordenador cuántico suficientemente potente podría <strong>factorizar números grandes exponencialmente más rápido</strong> que cualquier ordenador clásico. ¿Por qué importa? Porque <strong>RSA, ECC y Diffie-Hellman</strong> — los protocolos que protegen internet, banca online, comunicaciones militares y todo lo cifrado — se basan en que factorizar números grandes es "imposible" para los ordenadores actuales.
+  </p>
+  <p class="section-text">
+    Con un ordenador cuántico fault-tolerant con suficientes qubits, <strong>Shor's algorithm rompería estos cifrados en horas o minutos</strong>. Matemáticamente está demostrado. No es especulación.
+  </p>
+
+  <h3 style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Cuándo ocurrirá? — Timeline realista</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">2024</div>
+      <div class="timeline-title">NIST estandariza criptografía post-cuántica</div>
+      <div class="timeline-desc">Se publican los estándares: CRYSTALS-Kyber (cifrado), CRYSTALS-Dilithium (firmas), SPHINCS+. La migración ya ha comenzado.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2025–2028</div>
+      <div class="timeline-title">Mejora de qubits y corrección de errores</div>
+      <div class="timeline-desc">Google, IBM, Microsoft y otros avanzan en QEC. Los qubits se vuelven más estables. Aún lejos de romper RSA.</div>
+    </div>
+    <div class="timeline-item futuristic">
+      <div class="timeline-year">2029</div>
+      <div class="timeline-title">IBM "Starling" — primer fault-tolerant</div>
+      <div class="timeline-desc">200 qubits lógicos, 100M de puertas. Potente, pero insuficiente para Shor a escala RSA-2048.</div>
+    </div>
+    <div class="timeline-item futuristic">
+      <div class="timeline-year">Mediados 2030s</div>
+      <div class="timeline-title">Estimación creíble: RSA-2048 rompible</div>
+      <div class="timeline-desc">Según el Global Risk Institute y expertos independientes, se necesitarían miles de qubits lógicos. La estimación más creíble apunta a mediados de esta década.</div>
+    </div>
+    <div class="timeline-item futuristic">
+      <div class="timeline-year">2033+</div>
+      <div class="timeline-title">IBM "Blue Jay" — 2.000 qubits lógicos</div>
+      <div class="timeline-desc">1.000M de puertas. En este punto, romper cifrado actual sería factible. De ahí la urgencia de migrar a PQC.</div>
+    </div>
+  </div>
+
+  <div class="analogy-box" style="margin-top:2rem;">
+    <div class="label">🛡️ Veredicto</div>
+    <p>
+      <strong>No es "mañana hackean todo". Es una carrera con plazo, y ya se está corriendo.</strong> La amenaza es real y matemáticamente demostrada, pero está a años — probablemente una década. La buena noticia: la criptografía post-cuántica ya está estandarizada y la migración ha comenzado. Los que migren temprano estarán protegidos. Los que esperen al último momento, no.
+    </p>
+  </div>
+</section>
+
+<!-- ===== SECTION: HYPE VS REALIDAD ===== -->
+<section class="section fade-in" id="hype">
+  <div class="section-label">Perspectiva</div>
+  <h2 class="section-title">Hype vs Realidad</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    La computación cuántica genera más titulares sensacionalistas que casi ninguna otra tecnología. Separemos el grano de la paja.
+  </p>
+
+  <div class="hype-table">
+    <div class="hype-row">
+      <div class="hype-false">
+        <div class="hype-label">❌ Lo que dicen</div>
+        <p>"La computación cuántica va a hackear todo en los próximos 2 años."</p>
+      </div>
+      <div class="hype-true">
+        <div class="hype-label">✅ Lo que es real</div>
+        <p>La estimación más creíble para romper RSA-2048 es mediados de los 2030s. Además, la migración a criptografía post-cuántica ya está en marcha.</p>
+      </div>
+    </div>
+    <div class="hype-row">
+      <div class="hype-false">
+        <div class="hype-label">❌ Lo que dicen</div>
+        <p>"Los ordenadores cuánticos van a reemplazar a nuestros ordenadores actuales."</p>
+      </div>
+      <div class="hype-true">
+        <div class="hype-label">✅ Lo que es real</div>
+        <p>La cuántica solo acelera tipos específicos de problemas (optimización, simulación cuántica, factorización). Para navegar, ver vídeos o escribir documentos, tu ordenador clásico es mejor.</p>
+      </div>
+    </div>
+    <div class="hype-row">
+      <div class="hype-false">
+        <div class="hype-label">❌ Lo que dicen</div>
+        <p>"Ya tenemos computadoras cuánticas que lo resuelven todo."</p>
+      </div>
+      <div class="hype-true">
+        <div class="hype-label">✅ Lo que es real</div>
+        <p>Sí existen computadoras cuánticas comerciales (D-Wave, IBM, etc.), pero son especializadas, ruidosas y aún no han alcanzado "quantum advantage" para la mayoría de problemas.</p>
+      </div>
+    </div>
+    <div class="hype-row">
+      <div class="hype-false">
+        <div class="hype-label">❌ Lo que dicen</div>
+        <p>"La IA cuántica lo resolverá todo mañana."</p>
+      </div>
+      <div class="hype-true">
+        <div class="hype-label">✅ Lo que es real</div>
+        <p>La mayoría de aplicaciones actuales son híbridas (clásico + cuántico). El quantum advantage real para IA está probablemente a 5-10 años. El potencial es enorme, pero los plazos son realistas.</p>
+      </div>
+    </div>
+    <div class="hype-row">
+      <div class="hype-false">
+        <div class="hype-label">❌ Lo que dicen</div>
+        <p>"Estamos a la vuelta de la esquina de la computación cuántica útil."</p>
+      </div>
+      <div class="hype-true">
+        <div class="hype-label">✅ Lo que es real</div>
+        <p>Hay progreso genuino y acelerado, pero los expertos estiman 5-10 años para fault-tolerant a escala industrial. Es una maratón, no un sprint.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: ACORDEONES TÉCNICOS ===== -->
+<section class="section fade-in" id="tecnico">
+  <div class="section-label">Profundiza</div>
+  <h2 class="section-title">¿Quieres más detalles técnicos?</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">
+    Si te ha picado la curiosidad y quieres entender el "cómo" detrás del "qué", haz clic en cualquiera de estas secciones para profundizar.
+  </p>
+
+  <div class="accordion">
+    <!-- Accordion 1 -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        🔬 ¿Cómo funciona técnicamente un ordenador cuántico?
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <p>Un ordenador cuántico de gate-model (como los de IBM o Google) funciona con <strong>circuitos cuánticos</strong>: secuencias de operaciones (puertas) aplicadas a qubits.</p>
+        <p><strong>Puertas cuánticas fundamentales:</strong></p>
+        <ul>
+          <li><strong>Hadamard (H)</strong>: Crea superposición. Aplica H a un qubit |0⟩ y obtienes (|0⟩ + |1⟩)/√2 — una combinación de ambos estados.</li>
+          <li><strong>CNOT</strong>: Entrelaza dos qubits. Si el qubit control es |1⟩, aplica NOT al qubit objetivo. Es la puerta que crea correlaciones cuánticas.</li>
+          <li><strong>Pauli-X/Y/Z</strong>: Rotaciones del qubit en la esfera de Bloch (el modelo geométrico de un qubit).</li>
+          <li><strong>Phase (S, T)</strong>: Introducen desfases que permiten la interferencia constructiva/destructiva.</li>
+        </ul>
+        <p><strong>La esfera de Bloch</strong> es la representación geométrica de un qubit: un punto en la superficie de una esfera. El polo norte es |0⟩, el polo sur es |1⟩, y cualquier punto intermedio es una superposición. Las puertas cuánticas rotan este punto.</p>
+        <p><strong>El algoritmo de Shor</strong> (el que rompe RSA) combina:</p>
+        <ul>
+          <li>Una transformada cuántica de Fourier (QFT) para encontrar periodicidades</li>
+          <li>Superposición para evaluar todas las posibilidades simultáneamente</li>
+          <li>Interferencia para amplificar la respuesta correcta</li>
+        </ul>
+        <p>El truco: encontrar el período de una función es equivalente a factorizar un número. Un ordenador clásico tarda tiempo exponencial. Shor lo hace en tiempo polinomial.</p>
+      </div>
+    </div>
+
+    <!-- Accordion 2 -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        🏗️ Tipos de hardware cuántico
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <p>No todos los ordenadores cuánticos son iguales. Cada enfoque tiene ventajas y desventajas:</p>
+        <ul>
+          <li><strong>Superconductores</strong> (IBM, Google, Rigetti): Qubits hechos de circuitos eléctricos superconductores enfriados a ~15 mK (cero absoluto). Ventajas: fabricables con tecnología semiconductor. Desventajas: muy sensibles al ruido, necesidad de criogenia extrema.</li>
+          <li><strong>Quantum Annealing</strong> (D-Wave): No usa puertas, sino un proceso de "recocido" cuántico para encontrar el mínimo de energía de un problema de optimización. Ventajas: ya comercial, miles de qubits. Desventajas: solo sirve para optimización, no es universal.</li>
+          <li><strong>Iones atrapados</strong> (IonQ, Quantinuum): Qubits formados por iones individuales suspendidos en campos electromagnéticos. Ventajas: alta fidelidad, largo tiempo de coherencia. Desventajas: difícil de escalar, lento.</li>
+          <li><strong>Fotones</strong> (Xanadu, PsiQuantum): Qubits de luz. Ventajas: operan a temperatura ambiente, compatibles con fibra óptica. Desventajas: difícil crear puertas deterministas.</li>
+          <li><strong>Espines de silicio</strong> (Intel): Qubits basados en el espín de electrones individuales en chips de silicio. Ventajas: compatible con fabricación CMOS. Desventajas: muy temprano.</li>
+          <li><strong>Topológico</strong> (Microsoft Majorana): Qubits protegidos topológicamente por Modos Cero de Majorana. Ventajas: protección inherente contra errores (~10x menos overhead). Desventajas: extremadamente difícil de fabricar, aún en fase de demostración.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Accordion 3 -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        🤖 Quantum Machine Learning en detalle
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <p>El QML busca aprovechar la ventaja cuántica para tareas de machine learning:</p>
+        <ul>
+          <li><strong>VQE (Variational Quantum Eigensolver)</strong>: Combina un circuito cuántico (que prepara estados cuánticos) con un optimizador clásico. Se usa para encontrar la energía fundamental de moléculas — clave en descubrimiento de fármacos y materiales.</li>
+          <li><strong>QAOA (Quantum Approximate Optimization Algorithm)</strong>: Diseñado para problemas de optimización combinatoria. Alterna entre un "Hamiltoniano del problema" y un "Hamiltoniano de mezcla" para converger hacia la solución óptima.</li>
+          <li><strong>Quantum Neural Networks (QNN)</strong>: Redes donde las "capas" son circuitos cuánticos paramétricos. Los parámetros se ajustan con un optimizador clásico (similar al backpropagation).</li>
+          <li><strong>HQS (Hybrid Quantum-Classical)</strong>: El modelo actual dominante. Parte del pipeline es clásico, parte cuántico. Ejemplo: un ordenador clásico prepara datos, un cuántico hace una operación específica (como un kernel cuántico), y el clásico procesa el resultado.</li>
+        </ul>
+        <p><strong>Estado actual (2026)</strong>: La mayoría de demostraciones son "proof of concept" en NISQ (Noisy Intermediate-Scale Quantum) devices. El verdadero advantage se espera con fault-tolerant.</p>
+      </div>
+    </div>
+
+    <!-- Accordion 4 -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        🔐 Criptografía post-cuántica
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <p>La criptografía post-cuántica (PQC) son algoritmos de cifrado diseñados para ser resistentes tanto a ordenadores clásicos como cuánticos:</p>
+        <ul>
+          <li><strong>CRYSTALS-Kyber</strong>: Estándar NIST para cifrado de clave pública (Key Encapsulation Mechanism). Basado en retículos (lattices). Rápido y eficiente.</li>
+          <li><strong>CRYSTALS-Dilithium</strong>: Estándar NIST para firmas digitales. También basado en retículos.</li>
+          <li><strong>SPHINCS+</strong>: Firma digital basada en hashes. Más lento pero con seguridad basada en primitivas hash (muy estudiadas).</li>
+          <li><strong>FALCON</strong>: Firma digital con firmas más compactas. Basado en retículos con estructura especial.</li>
+        </ul>
+        <p><strong>¿Por qué retículos?</strong> El "Learning With Errors" (LWE) y problemas relacionados en retículos se consideran resistentes a Shor's algorithm porque no se basan en factorización ni logaritmos discretos.</p>
+        <p><strong>La migración</strong> ya está en marcha: TLS 1.3 con PQC, actualizaciones de OpenSSL, y los principales navegadores y sistemas operativos están integrando estos algoritmos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: OPINIÓN ===== -->
+<section class="section fade-in" id="opinion">
+  <div class="section-label">Análisis</div>
+  <div class="opinion-box">
+    <h2 class="section-title">Mi opinión</h2>
+    <div class="section-divider"></div>
+
+    <p class="section-text">
+      La computación cuántica es una de esas tecnologías que generan más ruido que señal. Cada semana hay un titular que dice "la cuántica ha logrado X" y al día siguiente otro que dice "la cuántica es un fraude". La realidad, como casi siempre, está en el medio.
+    </p>
+
+    <p class="section-text">
+      <strong>Lo que sí es real:</strong> hay progreso genuino y acelerado. D-Wave vende computadoras cuánticas que resuelven problemas de optimización reales. Google demostró aceleraciones de 13.000× en simulaciones físicas. Microsoft, tras 20 años de investigación, presentó el primer chip topológico del mundo. Los qubits son más estables que nunca, y la corrección de errores — el gran cuello de botella — por fin muestra resultados prometedores.
+    </p>
+
+    <p class="section-text">
+      <strong>Lo que es hype:</strong> la idea de que "dentro de dos años no habrá seguridad en internet" es alarmismo. La estimación más creíble apunta a mediados de los 2030s, y la migración a criptografía post-cuántica ya está en marcha. La gente que diga que "la cuántica reemplazará tu ordenador portátil" no entiende de qué va.
+    </p>
+
+    <p class="section-text">
+      <strong>Lo que me emociona más:</strong> la fusión IA + cuántica. No porque vaya a pasar mañana, sino porque el potencial a medio plazo es transformador. Imagina un sistema de IA que pueda simular millones de moléculas simultáneamente para descubrir nuevos fármacos, materiales o catalizadores. O un modelo de lenguaje entrenado con aceleración cuántica que pueda procesar espacios de conocimiento imposibles para las GPUs actuales. Es el tipo de salto que va más allá de "más rápido" — es "algo que antes era imposible".
+    </p>
+
+    <p class="section-text">
+      <strong>Y el chip Majorana de Microsoft</strong> merece una mención especial. Si la protección topológica escala como prometen, podría resolver el problema de corrección de errores de raíz, no con parches de software sino con física fundamental. Sería como pasar de construir un muro ladrillo a ladrillo a verter un bloque de hormigón monolítico. Si funciona, cambia las reglas del juego. Si no, nos enseña mucho sobre la física de la materia condensada de todos modos.
+    </p>
+
+    <p class="section-text">
+      <strong>En resumen:</strong> no es el santo grial que lo resolverá todo mañana. Pero tampoco es humo. Es una tecnología en construcción, con plazos de 5-10 años para impacto real, que merece atención sin fanatismo. El momento de "apuesta temprana" ya ha empezado.
+    </p>
+  </div>
+</section>
+
+<!-- ===== SECTION: FUENTES ===== -->
+<section class="section fade-in" id="fuentes">
+  <div class="section-label">Transparencia</div>
+  <h2 class="section-title">Fuentes</h2>
+  <div class="section-divider"></div>
+
+  <p class="section-text">Toda la información de esta web está basada en fuentes verificadas. Aquí las tienes:</p>
+
+  <ul class="sources-list">
+    <li><strong>Microsoft Majorana 1:</strong> <a href="https://azure.microsoft.com/en-us/blog/quantum/2025/02/19/microsoft-unveils-majorana-1-the-worlds-first-quantum-processor-powered-by-topological-qubits/" target="_blank" rel="noopener">Microsoft Azure Quantum Blog (feb 2025)</a></li>
+    <li><strong>Microsoft Nature paper:</strong> <a href="https://www.nature.com/" target="_blank" rel="noopener">Publicación en Nature sobre topological qubits</a></li>
+    <li><strong>Microsoft Quantum Roadmap:</strong> <a href="https://quantum.microsoft.com/en-us/vision/quantum-roadmap" target="_blank" rel="noopener">Microsoft Quantum — Roadmap oficial</a></li>
+    <li><strong>Microsoft Topological Qubits:</strong> <a href="https://quantum.microsoft.com/en-us/insights/education/concepts/topological-qubits" target="_blank" rel="noopener">Conceptos de qubits topológicos</a></li>
+    <li><strong>D-Wave Advantage2:</strong> <a href="https://www.dwavequantum.com/company/newsroom/press-release/d-wave-announces-general-availability-of-advantage2-quantum-computer-its-most-advanced-and-performant-system/" target="_blank" rel="noopener">General Availability Advantage2 (mayo 2025)</a></li>
+    <li><strong>D-Wave CES 2026:</strong> <a href="https://www.businesswire.com/news/home/20251222713181/en/D-Wave-to-Bring-Commercial-Quantum-Computing-to-CES-2026-Showcasing-its-Award-Winning-Technology-and-Real-World-Customer-Success-Stories" target="_blank" rel="noopener">Business Wire — D-Wave en CES 2026</a></li>
+    <li><strong>D-Wave Quantum Circuits acquisition:</strong> <a href="https://www.dwavequantum.com/company/newsroom/press-release/d-wave-to-acquire-quantum-circuits/" target="_blank" rel="noopener">D-Wave adquiere Quantum Circuits Inc.</a></li>
+    <li><strong>D-Wave revenue Q3 2025:</strong> <a href="https://www.nextplatform.com/2026/01/07/d-wave-makes-gate-model-power-move-with-quantum-circuits-buy/" target="_blank" rel="noopener">NextPlatform — D-Wave revenue analysis</a></li>
+    <li><strong>IBM Quantum Roadmap:</strong> <a href="https://www.ibm.com/roadmaps/quantum/2025/" target="_blank" rel="noopener">IBM Quantum Roadmap 2025</a></li>
+    <li><strong>IBM Quantum Hardware:</strong> <a href="https://www.ibm.com/quantum/hardware" target="_blank" rel="noopener">IBM Quantum — Hardware y roadmap</a></li>
+    <li><strong>Google Quantum Supremacy 2025:</strong> <a href="https://www.bqpsim.com/blogs/quantum-computing-artificial-intelligence" target="_blank" rel="noopener">13.000× speedup simulation (oct 2025)</a></li>
+    <li><strong>Quantum Error Correction:</strong> <a href="https://www.nature.com/articles/s41586-024-08449-y" target="_blank" rel="noopener">Nature — QEC below surface code threshold</a></li>
+    <li><strong>Quantinuum QEC 2025:</strong> <a href="https://postquantum.com/quantum-computing/qec-below-threshold-experiments/" target="_blank" rel="noopener">Fault-tolerant non-Clifford gate with 8 qubits</a></li>
+    <li><strong>NIST Post-Quantum Cryptography:</strong> <a href="https://csrc.nist.gov/pqc" target="_blank" rel="noopener">NIST PQC Standardization</a></li>
+    <li><strong>Cryptographic Threat Timeline:</strong> <a href="https://cyberresilience.com/threatonomics/when-will-quantum-decryption-become-practical/" target="_blank" rel="noopener">CyberResilience — When will quantum decryption be practical?</a></li>
+    <li><strong>Q-Day Timeline:</strong> <a href="https://www.tcg.com/blog/q-day-when-will-quantum-computers-break-encryption/" target="_blank" rel="noopener">TCG — Q-Day: When will quantum computers break encryption?</a></li>
+    <li><strong>The Quantum Insider:</strong> <a href="https://thequantuminsider.com/2026/04/06/how-quantum-computing-affects-cryptography/" target="_blank" rel="noopener">How Quantum Computing Affects Cryptography (2026)</a></li>
+    <li><strong>BlueQubit — Majorana Analysis:</strong> <a href="https://www.bluequbit.io/blog/microsoft-quantum-chip" target="_blank" rel="noopener">Microsoft Quantum Chip: Majorana-1 and the Case for Topological Qubits</a></li>
+    <li><strong>Physics World:</strong> <a href="https://physicsworld.com/a/experts-weigh-in-on-microsofts-topological-qubit-claim/" target="_blank" rel="noopener">Experts weigh in on Microsoft's topological qubit claim</a></li>
+    <li><strong>Quantum Use Cases 2026:</strong> <a href="https://www.scquantum.org/about/quantum-computing-applications-8-real-world-use-cases-2026" target="_blank" rel="noopener">8 Real-World Use Cases in 2026</a></li>
+    <li><strong>Quantum + AI 2026:</strong> <a href="https://aiworldjournal.com/report-ai-2026-quantum-computing-and-artificial-intelligence-usher-a-new-era-of-computing/" target="_blank" rel="noopener">Quantum Computing and AI usher a new era (2026)</a></li>
+    <li><strong>Station Q / UCSB:</strong> <a href="https://news.ucsb.edu/2025/021760/topological-quantum-processor-marks-breakthrough-computing" target="_blank" rel="noopener">Topological quantum processor marks breakthrough</a></li>
+  </ul>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>Hecho con ⚛ y curiosidad por Cocobot · Mayo 2026</p>
+  <p style="margin-top:0.5rem; font-size:0.75rem;">Las opiniones expresadas son del autor y están basadas en las fuentes citadas.</p>
+</footer>
+
+<!-- ===== THREE.JS (Hero) ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// ===== VISIT COUNTER =====
+(function() {
+  let visits = parseInt(localStorage.getItem('qc_visits') || '0') + 1;
+  localStorage.setItem('qc_visits', visits);
+  document.getElementById('visitCounter').textContent = 'Visitas: ' + visits;
+})();
+
+// ===== NAVBAR =====
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+let lastScroll = 0;
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  const st = window.scrollY;
+  if (st > lastScroll && st > 100) navbar.classList.add('hidden');
+  else navbar.classList.remove('hidden');
+  lastScroll = st;
+});
+
+// ===== FADE IN ON SCROLL =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ===== QUANTUM COIN =====
+const coin = document.getElementById('quantumCoin');
+const coinLabel = document.getElementById('coinLabel');
+const coinStats = document.getElementById('coinStats');
+let coinSpinning = false;
+let headsCount = 0, tailsCount = 0;
+
+coin.addEventListener('click', () => {
+  if (coinSpinning) return;
+  coinSpinning = true;
+  coin.classList.add('spinning');
+  coinLabel.textContent = '🌀 El qubit está en superposición...';
+
+  setTimeout(() => {
+    coin.classList.remove('spinning');
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    if (result === 'heads') {
+      coin.style.transform = 'rotateY(0deg)';
+      headsCount++;
+      coinLabel.textContent = '¡Colapsó a |0⟩! (Cara)';
+    } else {
+      coin.style.transform = 'rotateY(180deg)';
+      tailsCount++;
+      coinLabel.textContent = '¡Colapsó a |1⟩! (Cruz)';
+    }
+    coinStats.textContent = `Resultados: |0⟩ = ${headsCount} | |1⟩ = ${tailsCount} (Total: ${headsCount + tailsCount})`;
+    coinSpinning = false;
+  }, 1500);
+});
+
+// ===== ENTANGLEMENT DEMO =====
+const particleA = document.getElementById('particleA');
+const particleB = document.getElementById('particleB');
+const entangleResult = document.getElementById('entangleResult');
+let entangleClicks = 0;
+
+function entangleClick() {
+  entangleClicks++;
+  const state = Math.random() < 0.5;
+
+  if (state) {
+    particleA.textContent = '↑';
+    particleA.classList.add('flipped');
+    particleB.textContent = '↓';
+    particleB.classList.add('flipped');
+    entangleResult.textContent = `Medición #${entangleClicks}: A=↑ (rojo) → B=↓ (verde). ¡Correlación instantánea!`;
+  } else {
+    particleA.textContent = '↓';
+    particleA.classList.remove('flipped');
+    particleB.textContent = '↑';
+    particleB.classList.remove('flipped');
+    entangleResult.textContent = `Medición #${entangleClicks}: A=↓ (azul) → B=↑ (púrpura). ¡Siempre opuestos!`;
+  }
+}
+
+particleA.addEventListener('click', entangleClick);
+particleB.addEventListener('click', entangleClick);
+
+// ===== ACCORDION =====
+document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// ===== PARTICLES BACKGROUND (Canvas 2D) =====
+(function() {
+  const canvas = document.getElementById('particles-bg');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const PARTICLE_COUNT = 60;
+  const CONNECTION_DIST = 150;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.r = Math.random() * 1.5 + 0.5;
+      this.alpha = Math.random() * 0.4 + 0.1;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 212, 255, ${this.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECTION_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(123, 47, 247, ${0.08 * (1 - dist / CONNECTION_DIST)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== THREE.JS HERO =====
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 5;
+
+  // Particles
+  const particleCount = window.innerWidth < 768 ? 300 : 800;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  const sizes = new Float32Array(particleCount);
+
+  const colorPalette = [
+    new THREE.Color(0x00d4ff),
+    new THREE.Color(0x7b2ff7),
+    new THREE.Color(0x00ffc8),
+  ];
+
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+
+    const c = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    colors[i * 3] = c.r;
+    colors[i * 3 + 1] = c.g;
+    colors[i * 3 + 2] = c.b;
+
+    sizes[i] = Math.random() * 3 + 1;
+  }
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+  const material = new THREE.PointsMaterial({
+    size: 0.03,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+    blending: THREE.AdditiveBlending,
+    sizeAttenuation: true,
+  });
+
+  const particles = new THREE.Points(geometry, material);
+  scene.add(particles);
+
+  // Connection lines
+  const lineGeo = new THREE.BufferGeometry();
+  const linePositions = new Float32Array(200 * 6);
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x7b2ff7,
+    transparent: true,
+    opacity: 0.15,
+    blending: THREE.AdditiveBlending,
+  });
+  const lines = new THREE.LineSegments(lineGeo, lineMat);
+  scene.add(lines);
+
+  // Central sphere (Bloch sphere representation)
+  const sphereGeo = new THREE.IcosahedronGeometry(0.8, 2);
+  const sphereMat = new THREE.MeshBasicMaterial({
+    color: 0x00d4ff,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.15,
+  });
+  const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+  scene.add(sphere);
+
+  // Inner glow sphere
+  const innerGeo = new THREE.SphereGeometry(0.4, 32, 32);
+  const innerMat = new THREE.MeshBasicMaterial({
+    color: 0x7b2ff7,
+    transparent: true,
+    opacity: 0.08,
+  });
+  const innerSphere = new THREE.Mesh(innerGeo, innerMat);
+  scene.add(innerSphere);
+
+  // Orbiting rings
+  const ringGeo = new THREE.TorusGeometry(1.5, 0.005, 16, 100);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: 0x00ffc8,
+    transparent: true,
+    opacity: 0.2,
+  });
+  const ring1 = new THREE.Mesh(ringGeo, ringMat);
+  ring1.rotation.x = Math.PI / 3;
+  scene.add(ring1);
+
+  const ring2 = new THREE.Mesh(ringGeo.clone(), ringMat.clone());
+  ring2.rotation.x = -Math.PI / 4;
+  ring2.rotation.y = Math.PI / 4;
+  ring2.material.opacity = 0.15;
+  ring2.material.color.set(0x7b2ff7);
+  scene.add(ring2);
+
+  let time = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    time += 0.003;
+
+    // Rotate particles
+    particles.rotation.y = time * 0.3;
+    particles.rotation.x = Math.sin(time * 0.2) * 0.1;
+
+    // Update positions for floating effect
+    const pos = geometry.attributes.position.array;
+    for (let i = 0; i < particleCount; i++) {
+      pos[i * 3 + 1] += Math.sin(time + i) * 0.0003;
+    }
+    geometry.attributes.position.needsUpdate = true;
+
+    // Update connection lines
+    const linePos = lineGeo.attributes.position.array;
+    let lineIdx = 0;
+    const maxLines = 200;
+    for (let i = 0; i < Math.min(particleCount, 100); i++) {
+      for (let j = i + 1; j < Math.min(particleCount, 100); j++) {
+        if (lineIdx >= maxLines) break;
+        const dx = pos[i*3] - pos[j*3];
+        const dy = pos[i*3+1] - pos[j*3+1];
+        const dz = pos[i*3+2] - pos[j*3+2];
+        const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        if (dist < 1.5) {
+          linePos[lineIdx * 6] = pos[i*3];
+          linePos[lineIdx * 6 + 1] = pos[i*3+1];
+          linePos[lineIdx * 6 + 2] = pos[i*3+2];
+          linePos[lineIdx * 6 + 3] = pos[j*3];
+          linePos[lineIdx * 6 + 4] = pos[j*3+1];
+          linePos[lineIdx * 6 + 5] = pos[j*3+2];
+          lineIdx++;
+        }
+      }
+      if (lineIdx >= maxLines) break;
+    }
+    // Clear remaining
+    for (let i = lineIdx; i < maxLines; i++) {
+      linePos[i*6] = linePos[i*6+1] = linePos[i*6+2] = 0;
+      linePos[i*6+3] = linePos[i*6+4] = linePos[i*6+5] = 0;
+    }
+    lineGeo.attributes.position.needsUpdate = true;
+
+    // Rotate sphere
+    sphere.rotation.y = time * 0.5;
+    sphere.rotation.x = time * 0.3;
+    innerSphere.rotation.y = -time * 0.2;
+
+    // Pulse sphere
+    const pulse = 1 + Math.sin(time * 2) * 0.05;
+    sphere.scale.set(pulse, pulse, pulse);
+    innerSphere.scale.set(pulse * 0.9, pulse * 0.9, pulse * 0.9);
+
+    // Rotate rings
+    ring1.rotation.z = time * 0.4;
+    ring2.rotation.z = -time * 0.3;
+    ring2.rotation.x = -Math.PI / 4 + Math.sin(time) * 0.1;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+</script>
+
+</body>
+</html>
