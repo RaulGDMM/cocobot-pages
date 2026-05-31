@@ -873,7 +873,7 @@ var AI_STRATEGY = {
     bestApple: true,
     hunting: true,
     antiTrap: true,
-    minSpaceFactor: 1.8,
+    minSpaceFactor: 1.3,
     errorRate: 0.02,
     corneringRate: 0.85
   }
@@ -1091,17 +1091,14 @@ function bestApple(aiSnake, blocked, diff) {
     var path = bfsPath(head.x, head.z, apple.x, apple.z, blocked, aiSnake, gridSize * gridSize);
     var reachable = path !== null;
 
-    // Score: prioritize reachable apples, then space after reaching
+    // Score: prioritize reachable apples, then distance only.
+    // Space after reaching is NOT factored in — it caused the AI to
+    // systematically avoid edge apples because walls naturally limit
+    // reachable cells. The AI should take the nearest reachable apple.
     var score = 0;
     if (reachable) {
       score += 1000; // Reachable is much better
       score -= manhattanDist; // Shorter path is better
-
-      // Check space around apple position — scaled down so distance dominates.
-      // Without scaling, edge apples were unfairly penalized because walls
-      // naturally limit reachable cells, making the AI always avoid them.
-      var spaceAfter = countReachable(apple.x, apple.z, aiSnake, 30);
-      score += spaceAfter * 0.3;
     } else {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
@@ -1441,13 +1438,17 @@ function aiDecideDirection(aiIndex, diff) {
           var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
           var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
           if (nx === nextStep.x && nz === nextStep.z) {
-            // Anti-trap: verify escape routes
+            // Anti-trap: verify escape routes — but SKIP when apple is very close (≤2 steps)
+            // This prevents the AI from refusing to take the last step to an edge apple
             if (strat.antiTrap) {
-              var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-              // Near edges, 1 escape is acceptable (wall constrains movement naturally)
-              var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
-                              nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
-              if (escapes < (nearEdge ? 1 : 2)) continue;
+              var manhattanToApple = Math.abs(nextStep.x - targetApple.x) + Math.abs(nextStep.z - targetApple.z);
+              if (manhattanToApple > 2) {
+                var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+                // Near edges, 1 escape is acceptable (wall constrains movement naturally)
+                var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
+                                nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
+                if (escapes < (nearEdge ? 1 : 2)) continue;
+              }
             }
             // Lookahead: verify future positions
             if (strat.lookahead) {
