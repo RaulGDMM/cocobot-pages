@@ -17,7 +17,7 @@ var AI_STRATEGY = {
     bestApple: false,
     hunting: false,
     antiTrap: true,
-    minSpaceFactor: 2.5,
+    minSpaceFactor: 1.5,
     errorRate: 0.38,
     corneringRate: 0.00
   },
