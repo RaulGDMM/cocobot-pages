@@ -90,6 +90,7 @@ describe('apples.js — spawnOneApple()', () => {
 describe('apples.js — refreshApples()', () => {
   beforeEach(() => {
     buildApples();
+    appleDirty = true;
   });
 
   test('shows apples that exist', () => {
@@ -143,6 +144,7 @@ describe('apples.js — initApples()', () => {
     setSnake([]);
     setObstacles([]);
     buildApples();
+    appleDirty = true;
     initApples();
     expect(appleMeshes.some(m => m.visible)).toBe(true);
   });

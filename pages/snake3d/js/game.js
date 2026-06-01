@@ -91,7 +91,9 @@ function step() {
        log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
        var newA = spawnOneApple();
        apples[i] = newA;
-       // Deduplicate in case a duplicate was spawned at the same position
+         appleDirty = true;
+         if(typeof rebuildAppleSet === 'function') rebuildAppleSet();
+         // Deduplicate in case a duplicate was spawned at the same position
        if(typeof deduplicateApples === 'function') deduplicateApples();
        if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
        break;
@@ -435,7 +437,9 @@ function removeOutOfBounds() {
    }
    // Remove any duplicates that may have been created during spawn
    if (typeof deduplicateApples === 'function') deduplicateApples();
-   log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+     log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+     appleDirty = true;
+     if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;
@@ -480,38 +484,78 @@ function checkHeadsOutOfBounds() {
 // Truncate snake bodies that extend outside new grid
 // bounds: { newMinX, newMaxX, newMinZ, newMaxZ }
 function truncateSnakesToBounds(bounds) {
-  // Player snake
+  var playerLost = 0;
+  var aiLostTotal = 0;
+
+  // Player snake — filter ALL segments outside new bounds
   if (snake && snake.length > 0) {
     var before = snake.length;
-    while (snake.length > 1) {
-      var tail = snake[snake.length - 1];
-      if (tail.x >= bounds.newMinX && tail.x < bounds.newMaxX &&
-          tail.z >= bounds.newMinZ && tail.z < bounds.newMaxZ) break;
-      snake.pop();
-      score = Math.max(0, score - 1);
+    var newSnake = [];
+    for (var i = 0; i < snake.length; i++) {
+      if (snake[i].x >= bounds.newMinX && snake[i].x < bounds.newMaxX &&
+          snake[i].z >= bounds.newMinZ && snake[i].z < bounds.newMaxZ) {
+        newSnake.push(snake[i]);
+      }
     }
-    if (snake.length < before) {
+    // Keep at least the head (index 0) even if somehow outside — die() handles that
+    if (newSnake.length < 1) newSnake = [snake[0]];
+    playerLost = before - newSnake.length;
+    snake.length = 0;
+    for (var i = 0; i < newSnake.length; i++) snake.push(newSnake[i]);
+    if (playerLost > 0) {
+      score = Math.max(0, score - playerLost);
       scoreEl.textContent = score;
-      log('  Player snake truncated: ' + before + ' → ' + snake.length + ' (score: ' + score + ')');
+      log('  Player snake truncated: ' + before + ' → ' + snake.length + ' (lost ' + playerLost + ', score: ' + score + ')');
     }
   }
 
-  // AI snakes
+  // AI snakes — filter ALL segments outside new bounds
   if (aiSnakes) {
     for (var i = 0; i < aiSnakes.length; i++) {
       var ai = aiSnakes[i];
       if (!ai.alive) continue;
       var before = ai.snake.length;
-      while (ai.snake.length > 1) {
-        var tail = ai.snake[ai.snake.length - 1];
-        if (tail.x >= bounds.newMinX && tail.x < bounds.newMaxX &&
-            tail.z >= bounds.newMinZ && tail.z < bounds.newMaxZ) break;
-        ai.snake.pop();
+      var newSnake = [];
+      for (var j = 0; j < ai.snake.length; j++) {
+        if (ai.snake[j].x >= bounds.newMinX && ai.snake[j].x < bounds.newMaxX &&
+            ai.snake[j].z >= bounds.newMinZ && ai.snake[j].z < bounds.newMaxZ) {
+          newSnake.push(ai.snake[j]);
+        }
       }
-      if (ai.snake.length < before) {
-        log('  AI ' + i + ' truncated: ' + before + ' → ' + ai.snake.length);
+      if (newSnake.length < 1) newSnake = [ai.snake[0]];
+      var lost = before - newSnake.length;
+      aiLostTotal += lost;
+      ai.snake.length = 0;
+      for (var j = 0; j < newSnake.length; j++) ai.snake.push(newSnake[j]);
+      if (lost > 0) {
+        log('  AI ' + i + ' truncated: ' + before + ' → ' + ai.snake.length + ' (lost ' + lost + ')');
       }
     }
+  }
+
+  // Show info message if anything was lost
+  if (playerLost > 0 || aiLostTotal > 0) {
+    var parts = [];
+    if (playerLost > 0) {
+      parts.push('⚠️ Has perdido ' + playerLost + (playerLost === 1 ? ' segmento del cuerpo' : ' segmentos del cuerpo') + ' por la reducción del tablero (-' + playerLost + ' puntos)');
+    }
+    if (aiLostTotal > 0) {
+      parts.push(aiLostTotal + (aiLostTotal === 1 ? ' segmento de serpiente enemiga' : ' segmentos de serpientes enemigas') + ' eliminados por la reducción');
+    }
+    showInfoMessage(parts.join('<br>'));
+  }
+}
+
+// ─── Show info message on screen ───
+function showInfoMessage(msg) {
+  var el = document.getElementById('info-msg');
+  if (el) {
+    el.innerHTML = msg;
+    el.classList.add('visible');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(function() {
+      el.classList.remove('visible');
+    }, 3000);
   }
 }
 

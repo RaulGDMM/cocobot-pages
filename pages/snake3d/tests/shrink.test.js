@@ -339,6 +339,64 @@ describe('game.js — truncateSnakesToBounds()', () => {
     truncateSnakesToBounds(countdown);
     expect(score).toBe(0);
   });
+
+  test('removes segments outside bounds anywhere in the body (not just tail)', () => {
+    // Snake that winds in and out: inside → outside → inside → outside
+    snake = [
+      {x: 0, z: 0},     // head — inside
+      {x: 7, z: 0},     // outside (middle of body!)
+      {x: -2, z: 0},    // inside
+      {x: 8, z: 0},     // outside (tail)
+    ];
+    var countdown = {newMinX: -5, newMaxX: 5, newMinZ: -5, newMaxZ: 5};
+    truncateSnakesToBounds(countdown);
+    // Only segments at (0,0) and (-2,0) should survive
+    expect(snake.length).toBe(2);
+    expect(snake[0].x).toBe(0);
+    expect(snake[1].x).toBe(-2);
+    expect(score).toBe(8); // lost 2 segments = 2 points
+  });
+
+  test('truncates AI snake bodies with segments outside in the middle', () => {
+    snake = [{x: 0, z: 0}];
+    aiSnakes = [
+      {alive: true, snake: [
+        {x: 0, z: 0},     // head — inside
+        {x: 7, z: 0},     // outside (middle)
+        {x: -1, z: 0},    // inside
+        {x: 8, z: 0},     // outside (tail)
+      ]},
+    ];
+    var countdown = {newMinX: -5, newMaxX: 5, newMinZ: -5, newMaxZ: 5};
+    truncateSnakesToBounds(countdown);
+    expect(aiSnakes[0].snake.length).toBe(2);
+    expect(aiSnakes[0].snake[0].x).toBe(0);
+    expect(aiSnakes[0].snake[1].x).toBe(-1);
+  });
+
+  test('shows info message when player loses segments', () => {
+    snake = [
+      {x: 0, z: 0},
+      {x: 7, z: 0},
+    ];
+    score = 10;
+    var countdown = {newMinX: -5, newMaxX: 5, newMinZ: -5, newMaxZ: 5};
+    truncateSnakesToBounds(countdown);
+    expect(snake.length).toBe(1);
+    expect(score).toBe(9);
+  });
+
+  test('keeps head even if all segments are outside', () => {
+    snake = [
+      {x: 7, z: 0},    // head — outside
+      {x: 8, z: 0},    // outside
+    ];
+    var countdown = {newMinX: -5, newMaxX: 5, newMinZ: -5, newMaxZ: 5};
+    truncateSnakesToBounds(countdown);
+    // Should keep at least the head
+    expect(snake.length).toBe(1);
+    expect(snake[0].x).toBe(7);
+  });
 });
 
 // ─── Game: processShrinkCountdowns ───

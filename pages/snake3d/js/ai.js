@@ -251,6 +251,20 @@ function bestApple(aiSnake, blocked, diff) {
   // Easy mode: just pick nearest
   if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
 
+  // ─── PERFORMANCE: limit to 5 closest candidates ───
+  // Running a full BFS per apple is expensive. With 50+ death apples,
+  // doing 50+ BFS calls per AI snake per tick kills the framerate.
+  // Sort by distance, take the 5 closest, and only run BFS on those.
+  var MAX_CANDIDATES = 5;
+  if (candidates.length > MAX_CANDIDATES) {
+    candidates.sort(function(a, b) {
+      var da = Math.abs(a.x - aiSnake[0].x) + Math.abs(a.z - aiSnake[0].z);
+      var db = Math.abs(b.x - aiSnake[0].x) + Math.abs(b.z - aiSnake[0].z);
+      return da - db;
+    });
+    candidates.length = MAX_CANDIDATES;
+  }
+
   var best = null;
   var bestScore = -Infinity;
   var head = aiSnake[0];
@@ -829,6 +843,8 @@ function stepAI() {
         ate = true;
         var newA = spawnOneApple();
         apples[i] = newA;
+        appleDirty = true;
+        if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
         // Deduplicate in case a duplicate was spawned at the same position
         if (typeof deduplicateApples === 'function') deduplicateApples();
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
@@ -859,19 +875,22 @@ function aiDie(aiIndex, cause) {
   }
 
   // ─── Convert body to apples (collectible by anyone) ───
+  // Every segment becomes an apple. Use addToAppleSet() for O(1)
+  // per-apple hash update. Do NOT call refreshApples() here — the
+  // game loop will call it on the next tick when appleDirty is true.
   var appleCount = 0;
   for (var i = ai.snake.length - 1; i >= 0; i--) {
     var seg = ai.snake[i];
-    // Only spawn apples within current grid bounds
     if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
-      apples.push({x: seg.x, z: seg.z, fromDeath: true});
+      var newApple = {x: seg.x, z: seg.z, fromDeath: true};
+      apples.push(newApple);
+      if (typeof addToAppleSet === 'function') addToAppleSet(newApple);
       appleCount++;
     }
   }
   if (appleCount > 0) {
     log('AI ' + aiIndex + ' body → ' + appleCount + ' apples');
-    // Refresh apple visuals to show new apples
-    if (typeof refreshApples === 'function') refreshApples();
+    appleDirty = true;
   }
 
   // Particles

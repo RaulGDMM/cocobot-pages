@@ -10,6 +10,10 @@ function setSnake(segments) {
 function setApples(items) {
   apples.length = 0;
   items.forEach(a => apples.push(a));
+  if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
+  appleDirty = true;
+  // Reset deferred flag so tests can call refreshApples directly
+  _refreshScheduled = false;
 }
 
 function setObstacles(items) {

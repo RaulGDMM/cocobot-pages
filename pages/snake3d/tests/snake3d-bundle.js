@@ -632,8 +632,22 @@ var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
 var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
 
 // Extra margin for death apples (snake bodies converted to apples).
-// A large snake can be 50-100 segments; with 3 AI, ~200 is safe.
-var APPLE_POOL_MARGIN = 200;
+// Reduced from 200 to 100 — we only spawn every 2nd segment on death.
+var APPLE_POOL_MARGIN = 100;
+
+// ─── Apple position hash set for O(1) lookup ───
+// Maintained as "x,z" → true. Rebuilt whenever apples change.
+var appleSet = {};
+function rebuildAppleSet() {
+  appleSet = {};
+  for (var i = 0; i < apples.length; i++) {
+    if (apples[i]) appleSet[apples[i].x + ',' + apples[i].z] = true;
+  }
+}
+// Incremental add — avoids iterating the entire array on death spikes.
+function addToAppleSet(a) {
+  if (a) appleSet[a.x + ',' + a.z] = true;
+}
 
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
@@ -652,7 +666,8 @@ function buildApples() {
 
 function isOccupied(x, z) {
   if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
-  if(apples.some(function(a){return a&&a.x===x&&a.z===z;})) return true;
+  // O(1) apple lookup via hash set instead of O(n) array scan
+  if(appleSet[x + ',' + z]) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
   // ─── AI MODE: include AI snakes ───
   if(aiSnakes) {
@@ -673,8 +688,13 @@ function spawnOneApple() {
   return null;
 }
 
+// Dirty flag — set whenever apples change (eat, death, shrink).
+// refreshApples() only iterates meshes when this is true.
+var appleDirty = false;
+
 function refreshApples() {
-  if (!appleMeshes || !appleMeshes.length) return;
+  if (!appleDirty || !appleMeshes || !appleMeshes.length) return;
+  appleDirty = false;
   var totalApples = apples.length;
   for(var i = 0; i < totalApples; i++) {
     if(apples[i]) {
@@ -714,6 +734,7 @@ function deduplicateApples() {
   for(var i = 0; i < unique.length; i++) {
     apples.push(unique[i]);
   }
+  rebuildAppleSet();
   if(removed > 0) {
     log('Deduplicated apples: removed ' + removed + ' ghosts');
   }
@@ -727,6 +748,8 @@ function initApples() {
     var a = spawnOneApple();
     if(a) apples.push(a);
   }
+  rebuildAppleSet();
+  appleDirty = true;
   refreshApples();
   log('Apples: ' + apples.length + ' spawned (target: ' + numApples + ')');
 }
@@ -1089,6 +1112,20 @@ function bestApple(aiSnake, blocked, diff) {
 
   // Easy mode: just pick nearest
   if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
+
+  // ─── PERFORMANCE: limit to 5 closest candidates ───
+  // Running a full BFS per apple is expensive. With 50+ death apples,
+  // doing 50+ BFS calls per AI snake per tick kills the framerate.
+  // Sort by distance, take the 5 closest, and only run BFS on those.
+  var MAX_CANDIDATES = 5;
+  if (candidates.length > MAX_CANDIDATES) {
+    candidates.sort(function(a, b) {
+      var da = Math.abs(a.x - aiSnake[0].x) + Math.abs(a.z - aiSnake[0].z);
+      var db = Math.abs(b.x - aiSnake[0].x) + Math.abs(b.z - aiSnake[0].z);
+      return da - db;
+    });
+    candidates.length = MAX_CANDIDATES;
+  }
 
   var best = null;
   var bestScore = -Infinity;
@@ -1668,6 +1705,8 @@ function stepAI() {
         ate = true;
         var newA = spawnOneApple();
         apples[i] = newA;
+        appleDirty = true;
+        if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
         // Deduplicate in case a duplicate was spawned at the same position
         if (typeof deduplicateApples === 'function') deduplicateApples();
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
@@ -1698,19 +1737,22 @@ function aiDie(aiIndex, cause) {
   }
 
   // ─── Convert body to apples (collectible by anyone) ───
+  // Every segment becomes an apple. Use addToAppleSet() for O(1)
+  // per-apple hash update. Do NOT call refreshApples() here — the
+  // game loop will call it on the next tick when appleDirty is true.
   var appleCount = 0;
   for (var i = ai.snake.length - 1; i >= 0; i--) {
     var seg = ai.snake[i];
-    // Only spawn apples within current grid bounds
     if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
-      apples.push({x: seg.x, z: seg.z, fromDeath: true});
+      var newApple = {x: seg.x, z: seg.z, fromDeath: true};
+      apples.push(newApple);
+      if (typeof addToAppleSet === 'function') addToAppleSet(newApple);
       appleCount++;
     }
   }
   if (appleCount > 0) {
     log('AI ' + aiIndex + ' body → ' + appleCount + ' apples');
-    // Refresh apple visuals to show new apples
-    if (typeof refreshApples === 'function') refreshApples();
+    appleDirty = true;
   }
 
   // Particles
@@ -2058,7 +2100,9 @@ function step() {
        log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
        var newA = spawnOneApple();
        apples[i] = newA;
-       // Deduplicate in case a duplicate was spawned at the same position
+         appleDirty = true;
+         if(typeof rebuildAppleSet === 'function') rebuildAppleSet();
+         // Deduplicate in case a duplicate was spawned at the same position
        if(typeof deduplicateApples === 'function') deduplicateApples();
        if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
        break;
@@ -2402,7 +2446,9 @@ function removeOutOfBounds() {
    }
    // Remove any duplicates that may have been created during spawn
    if (typeof deduplicateApples === 'function') deduplicateApples();
-   log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+     log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
+     appleDirty = true;
+     if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;
@@ -2447,38 +2493,78 @@ function checkHeadsOutOfBounds() {
 // Truncate snake bodies that extend outside new grid
 // bounds: { newMinX, newMaxX, newMinZ, newMaxZ }
 function truncateSnakesToBounds(bounds) {
-  // Player snake
+  var playerLost = 0;
+  var aiLostTotal = 0;
+
+  // Player snake — filter ALL segments outside new bounds
   if (snake && snake.length > 0) {
     var before = snake.length;
-    while (snake.length > 1) {
-      var tail = snake[snake.length - 1];
-      if (tail.x >= bounds.newMinX && tail.x < bounds.newMaxX &&
-          tail.z >= bounds.newMinZ && tail.z < bounds.newMaxZ) break;
-      snake.pop();
-      score = Math.max(0, score - 1);
+    var newSnake = [];
+    for (var i = 0; i < snake.length; i++) {
+      if (snake[i].x >= bounds.newMinX && snake[i].x < bounds.newMaxX &&
+          snake[i].z >= bounds.newMinZ && snake[i].z < bounds.newMaxZ) {
+        newSnake.push(snake[i]);
+      }
     }
-    if (snake.length < before) {
+    // Keep at least the head (index 0) even if somehow outside — die() handles that
+    if (newSnake.length < 1) newSnake = [snake[0]];
+    playerLost = before - newSnake.length;
+    snake.length = 0;
+    for (var i = 0; i < newSnake.length; i++) snake.push(newSnake[i]);
+    if (playerLost > 0) {
+      score = Math.max(0, score - playerLost);
       scoreEl.textContent = score;
-      log('  Player snake truncated: ' + before + ' → ' + snake.length + ' (score: ' + score + ')');
+      log('  Player snake truncated: ' + before + ' → ' + snake.length + ' (lost ' + playerLost + ', score: ' + score + ')');
     }
   }
 
-  // AI snakes
+  // AI snakes — filter ALL segments outside new bounds
   if (aiSnakes) {
     for (var i = 0; i < aiSnakes.length; i++) {
       var ai = aiSnakes[i];
       if (!ai.alive) continue;
       var before = ai.snake.length;
-      while (ai.snake.length > 1) {
-        var tail = ai.snake[ai.snake.length - 1];
-        if (tail.x >= bounds.newMinX && tail.x < bounds.newMaxX &&
-            tail.z >= bounds.newMinZ && tail.z < bounds.newMaxZ) break;
-        ai.snake.pop();
+      var newSnake = [];
+      for (var j = 0; j < ai.snake.length; j++) {
+        if (ai.snake[j].x >= bounds.newMinX && ai.snake[j].x < bounds.newMaxX &&
+            ai.snake[j].z >= bounds.newMinZ && ai.snake[j].z < bounds.newMaxZ) {
+          newSnake.push(ai.snake[j]);
+        }
       }
-      if (ai.snake.length < before) {
-        log('  AI ' + i + ' truncated: ' + before + ' → ' + ai.snake.length);
+      if (newSnake.length < 1) newSnake = [ai.snake[0]];
+      var lost = before - newSnake.length;
+      aiLostTotal += lost;
+      ai.snake.length = 0;
+      for (var j = 0; j < newSnake.length; j++) ai.snake.push(newSnake[j]);
+      if (lost > 0) {
+        log('  AI ' + i + ' truncated: ' + before + ' → ' + ai.snake.length + ' (lost ' + lost + ')');
       }
     }
+  }
+
+  // Show info message if anything was lost
+  if (playerLost > 0 || aiLostTotal > 0) {
+    var parts = [];
+    if (playerLost > 0) {
+      parts.push('⚠️ Has perdido ' + playerLost + (playerLost === 1 ? ' segmento del cuerpo' : ' segmentos del cuerpo') + ' por la reducción del tablero (-' + playerLost + ' puntos)');
+    }
+    if (aiLostTotal > 0) {
+      parts.push(aiLostTotal + (aiLostTotal === 1 ? ' segmento de serpiente enemiga' : ' segmentos de serpientes enemigas') + ' eliminados por la reducción');
+    }
+    showInfoMessage(parts.join('<br>'));
+  }
+}
+
+// ─── Show info message on screen ───
+function showInfoMessage(msg) {
+  var el = document.getElementById('info-msg');
+  if (el) {
+    el.innerHTML = msg;
+    el.classList.add('visible');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(function() {
+      el.classList.remove('visible');
+    }, 3000);
   }
 }
 
