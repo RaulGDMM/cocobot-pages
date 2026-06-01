@@ -46,9 +46,9 @@ global.THREE = {
     constructor() { this.position = new MockVector3(); this.visible = true; }
   },
   WebGLRenderer: class WebGLRenderer {
-    constructor(opts) { this.domElement = opts && opts.canvas || document.createElement('canvas'); }
-    setPixelRatio() {}
-    setSize() {}
+    constructor(opts) { this.opts = opts || {}; this.domElement = this.opts.canvas || document.createElement('canvas'); this.pixelRatio = 1; this.size = {width: 0, height: 0}; }
+    setPixelRatio(ratio) { this.pixelRatio = ratio; }
+    setSize(width, height) { this.size = {width, height}; }
     render() {}
   },
   CanvasTexture: class CanvasTexture {

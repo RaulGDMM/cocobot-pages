@@ -8,7 +8,7 @@ Juego clásico de la serpiente renderizado en 3D con **Three.js**. Recoge manzan
 
 ## Características
 
-- **Gráficos 3D** — Three.js con iluminación dinámica, cámara suave que sigue a la serpiente, y partículas al comer o morir.
+- **Gráficos 3D** — Three.js con iluminación dinámica, cámara suave que sigue a la serpiente, partículas al comer o morir, y calidad de render adaptada para móvil.
 - **Modo Solo** — El clásico Snake en 3D.
 - **Modo Multijugador vs IA** — Compite contra hasta 7 serpientes controladas por inteligencia artificial (modos vs2 a vs8).
 - **3 niveles de dificultad** — Fácil, Medio y Difícil (afectan la tasa de error y agresividad de la IA).
@@ -45,7 +45,7 @@ snake3d/
 │   ├── config.js           # Configuración global, colores, modos, dificultades, logging
 │   ├── state.js            # Estado global del juego (snake, score, grid, corpses, DOM refs)
 │   ├── audio.js            # SFX (Web Audio API) + reproductor de música MP3
-│   ├── scene.js            # Escena Three.js (renderer, cámara, luces, tablero dinámico nítido)
+│   ├── scene.js            # Escena Three.js (renderer adaptativo, cámara, luces, tablero dinámico nítido)
 │   ├── snake.js            # Mesh de la serpiente (build + refresh, multi-snake)
 │   ├── apples.js           # Generación, colisión, índice y render de manzanas + corpseSet hash
 │   ├── obstacles.js        # Generación, validación y render de obstáculos
@@ -263,7 +263,7 @@ Variables compartidas por todos los módulos:
 
 Configura el entorno 3D:
 
-- **Renderer**: WebGL con antialiasing, pixel ratio limitado a 2x.
+- **Renderer**: WebGL con `powerPreference: high-performance`. En escritorio usa antialiasing y DPR limitado a 2x; en móvil desactiva antialiasing y limita DPR a 1.25x para reducir fill-rate sin perder demasiada nitidez.
 - **Escena**: fondo `#0a0a12`, niebla `Fog` que se ajusta dinámicamente al tamaño del grid.
 - **Cámara**: perspectiva 55° FOV, posición adaptativa al tamaño del tablero.
 - **Iluminación**: luz ambiental azulada (`0x4466aa`), direccional blanca (sol), y `PointLight` cian que sigue a la cabeza de la serpiente.
@@ -272,6 +272,7 @@ Configura el entorno 3D:
   - **Paredes**: 4 `BoxGeometry` semitransparentes (`opacity: 0.35`) en los bordes del grid.
   - **Niebla**: se recalcula como `fog.near = gs * 0.5`, `fog.far = gs * 1.3`.
 - **`gw(gridCoord)`**: convierte coordenadas de grid a mundo 3D añadiendo `0.5` para centrar en la celda.
+- **Calidad móvil adaptativa**: `tuneMobileRenderQuality()` monitoriza la media de FPS en móvil y baja gradualmente el pixel ratio hasta 1x si se mantiene por debajo de 45fps; si vuelve a ir sobrado, lo recupera hasta el cap móvil.
 
 ### `snake.js` — Mesh de la serpiente
 
@@ -516,6 +517,13 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 
 El juego incluye varias optimizaciones para mantener 60fps estables incluso con 8 serpientes en grids de hasta 66×66:
 
+### Render móvil adaptativo (scene.js + main.js)
+
+- En móviles/táctiles se desactiva antialiasing y se limita el pixel ratio inicial a 1.25x. Esto reduce mucho el número de píxeles que WebGL debe sombrear frente a DPR 2x/3x.
+- El renderer pide `powerPreference: high-performance` para favorecer la GPU más capaz cuando el navegador lo soporta.
+- El resize recalcula el cap de DPR para cambios de orientación.
+- `tuneMobileRenderQuality(dt)` toma muestras de FPS: si la media cae por debajo de 45fps, baja el pixel ratio en pasos pequeños hasta 1x; si supera 58fps de forma sostenida, recupera calidad hasta el cap.
+
 ### Hash sets para colisiones O(1)
 
 | Hash set | Módulo | Uso |
@@ -645,7 +653,7 @@ npm run coverage     # Reporte HTML de cobertura
 
 Los tests usan un **bundle concatenado** (`tests/snake3d-bundle.js`) generado por `scripts/gen-bundle.js` que une todos los módulos en orden. `jest.setup.js` mockuea el DOM y Three.js para que el código del juego funcione en Node.js.
 
-**Suites de tests** (13 suites, 646 tests):
+**Suites de tests** (13 suites, 650 tests):
 
 | Suite | Qué cubre |
 |---|---|
@@ -658,7 +666,7 @@ Los tests usan un **bundle concatenado** (`tests/snake3d-bundle.js`) generado po
 | `game.test.js` | step, die, colisiones (wall, self, obstacle, AI), turnL/R |
 | `obstacles.test.js` | isSafeForObstacle, spawn, distancias, edge cases |
 | `optimization.test.js` | appleSet, corpseSet, appleDirty, bestApple limiting, death apple throttling, particle pool, updateAppleSet, appleIndex, getAppleIndexAt, replaceAppleAt |
-| `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset/textura nítida, shrink proporcional vs2/vs3/vs4/vs8 |
+| `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset/textura nítida, calidad móvil adaptativa, shrink proporcional vs2/vs3/vs4/vs8 |
 | `state.test.js` | variables de estado, cámara, localStorage, DOM refs, IA mode state |
 | `ui.test.js` | getGameConfig, uiState, edge cases, modos vs5-v8 |
 | `ui-dom.test.js` | updateSizeDisplay, updateDifficultyVisibility, buildColorSelector, buildModeSelector, etc. |

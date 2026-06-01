@@ -53,6 +53,7 @@ function loop(now) {
 
     tickParts(dt);
     updateCam(dt);
+    tuneMobileRenderQuality(dt);
     renderer.render(scene, camera);
   } catch(e) {
     log('❌ Loop err f'+frameCount+': '+e.message); showErr(e.message);
@@ -62,7 +63,11 @@ function loop(now) {
 // ─── RESIZE ───
 window.addEventListener('resize', function() {
   var w=window.innerWidth,h=window.innerHeight,a=w/h;
-  camera.aspect = a; camera.updateProjectionMatrix(); renderer.setSize(w,h);
+  camera.aspect = a; camera.updateProjectionMatrix();
+  renderPixelRatioFloor = isMobileRenderTarget() ? 1 : getRenderPixelRatio();
+  renderFpsSamples = [];
+  applyRenderPixelRatio(getRenderPixelRatio());
+  renderer.setSize(w,h);
 });
 
 // ─── START ───

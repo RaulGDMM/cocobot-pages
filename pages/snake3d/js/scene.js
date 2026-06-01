@@ -1,10 +1,51 @@
 // ─── THREE.JS SCENE SETUP ───
+function isMobileRenderTarget() {
+  var w = window.innerWidth || 0;
+  var h = window.innerHeight || 0;
+  var touch = typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0;
+  return w < 700 || h < 700 || (touch && Math.max(w, h) < 950);
+}
+
+function getRenderPixelRatioCap() {
+  return isMobileRenderTarget() ? 1.25 : 2;
+}
+
+function getRenderPixelRatio() {
+  return Math.min(window.devicePixelRatio || 1, getRenderPixelRatioCap());
+}
+
+var renderPixelRatio = getRenderPixelRatio();
+var renderPixelRatioFloor = isMobileRenderTarget() ? 1 : renderPixelRatio;
+var renderFpsSamples = [];
+
+function applyRenderPixelRatio(nextRatio) {
+  var clamped = Math.max(renderPixelRatioFloor, Math.min(nextRatio, getRenderPixelRatio()));
+  if (Math.abs(clamped - renderPixelRatio) < 0.01) return;
+  renderPixelRatio = clamped;
+  renderer.setPixelRatio(renderPixelRatio);
+}
+
+function tuneMobileRenderQuality(dt) {
+  if (!isMobileRenderTarget() || !renderer || !dt) return;
+  renderFpsSamples.push(1 / dt);
+  if (renderFpsSamples.length < 90) return;
+  var total = 0;
+  for (var i = 0; i < renderFpsSamples.length; i++) total += renderFpsSamples[i];
+  var avgFps = total / renderFpsSamples.length;
+  renderFpsSamples = [];
+  if (avgFps < 45 && renderPixelRatio > renderPixelRatioFloor) {
+    applyRenderPixelRatio(renderPixelRatio - 0.15);
+  } else if (avgFps > 58 && renderPixelRatio < getRenderPixelRatio()) {
+    applyRenderPixelRatio(renderPixelRatio + 0.1);
+  }
+}
+
 var renderer;
-try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'default' }); }
+try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: !isMobileRenderTarget(), powerPreference: 'high-performance' }); }
 catch(e) { showErr('WebGL: '+e.message); log('❌ '+e.message); throw e; }
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(renderPixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-log('3. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight);
+log('3. Renderer OK ' + window.innerWidth + 'x' + window.innerHeight + ' DPR=' + renderPixelRatio);
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a12);

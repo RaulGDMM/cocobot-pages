@@ -645,6 +645,65 @@ describe('scene.js — rebuildBoard() with offset', () => {
   });
 });
 
+// ─── Scene: mobile renderer quality ───
+describe('scene.js — mobile render quality', () => {
+  var originalWidth;
+  var originalHeight;
+  var originalDpr;
+
+  beforeEach(() => {
+    originalWidth = window.innerWidth;
+    originalHeight = window.innerHeight;
+    originalDpr = window.devicePixelRatio;
+  });
+
+  afterEach(() => {
+    window.innerWidth = originalWidth;
+    window.innerHeight = originalHeight;
+    window.devicePixelRatio = originalDpr;
+    renderFpsSamples = [];
+    renderPixelRatioFloor = getRenderPixelRatio();
+    renderPixelRatio = getRenderPixelRatio();
+    renderer.setPixelRatio(renderPixelRatio);
+  });
+
+  test('desktop renderer starts with antialias and high-performance preference', () => {
+    expect(renderer.opts.antialias).toBe(true);
+    expect(renderer.opts.powerPreference).toBe('high-performance');
+  });
+
+  test('mobile render target caps high DPR to 1.25', () => {
+    window.innerWidth = 390;
+    window.innerHeight = 844;
+    window.devicePixelRatio = 3;
+    expect(isMobileRenderTarget()).toBe(true);
+    expect(getRenderPixelRatio()).toBe(1.25);
+  });
+
+  test('desktop render target keeps DPR capped at 2', () => {
+    window.innerWidth = 1280;
+    window.innerHeight = 720;
+    window.devicePixelRatio = 3;
+    expect(isMobileRenderTarget()).toBe(false);
+    expect(getRenderPixelRatio()).toBe(2);
+  });
+
+  test('mobile quality tuner lowers pixel ratio on sustained low FPS', () => {
+    window.innerWidth = 390;
+    window.innerHeight = 844;
+    window.devicePixelRatio = 3;
+    renderPixelRatioFloor = 1;
+    renderPixelRatio = 1.25;
+    renderer.setPixelRatio(renderPixelRatio);
+    renderFpsSamples = [];
+
+    for (var i = 0; i < 90; i++) tuneMobileRenderQuality(1 / 30);
+
+    expect(renderer.pixelRatio).toBeCloseTo(1.1, 5);
+    expect(renderPixelRatio).toBeCloseTo(1.1, 5);
+  });
+});
+
 // ─── AI: cellInShrinkZone ───
 // cellInShrinkZone uses calcShrinkBoundsFromCurrent(cd) which reads:
 //   cd.shrinkAmount, cd.offsetX, cd.offsetZ
