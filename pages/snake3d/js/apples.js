@@ -68,7 +68,7 @@ var appleDirty = false;
 function refreshApples() {
   if (!appleDirty || !appleMeshes || !appleMeshes.length) return;
   appleDirty = false;
-  var totalApples = apples.length;
+  var totalApples = Math.min(apples.length, appleMeshes.length);
   for(var i = 0; i < totalApples; i++) {
     if(apples[i]) {
       appleMeshes[i].visible = true;

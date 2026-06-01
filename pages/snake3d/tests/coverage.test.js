@@ -253,6 +253,7 @@ describe('obstacles.js — spawnObstacle()', () => {
   });
 
   test('does not spawn on occupied cell', () => {
+    buildObstacles();
     setSnake([{x: 0, z: 0}]);
     setApples([]);
     setObstacles([]);

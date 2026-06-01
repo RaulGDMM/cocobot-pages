@@ -126,6 +126,12 @@ function die(cause) {
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');
   hintL.style.opacity='1'; hintR.style.opacity='1';
+
+  // ─── Ensure apples are rendered before game over overlay ───
+  // If an AI died in stepAI() this tick, appleDirty is true but refreshApples()
+  // was skipped because die() returned early from step(). Render now so the
+  // death apples are visible on the game over screen.
+  if (typeof refreshApples === 'function') refreshApples();
   }
 
 // ─── GRID SHRINKING ───
@@ -425,21 +431,38 @@ function removeOutOfBounds() {
   apples = apples.filter(function(a) {
     return a && a.x >= gridMinX && a.x < gridMaxX && a.z >= gridMinZ && a.z < gridMaxZ;
   });
-  // Trim excess apples if NUM_APPLES decreased after shrink
-  while (apples.length > NUM_APPLES) apples.pop();
-  // Pad to NUM_APPLES
-  while (apples.length < NUM_APPLES) apples.push(null);
-  // Spawn missing apples
-   for (var i = 0; i < apples.length; i++) {
-     if (!apples[i]) {
-       apples[i] = spawnOneApple();
-     }
-   }
-   // Remove any duplicates that may have been created during spawn
-   if (typeof deduplicateApples === 'function') deduplicateApples();
-     log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ')');
-     appleDirty = true;
-     if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
+
+  // Separate death apples from regular ones — death apples are NOT trimmed
+  var deathApples = [];
+  var regularApples = [];
+  for (var i = 0; i < apples.length; i++) {
+    if (apples[i] && apples[i].fromDeath) {
+      deathApples.push(apples[i]);
+    } else {
+      regularApples.push(apples[i]);
+    }
+  }
+
+  // Trim only regular apples to NUM_APPLES
+  while (regularApples.length > NUM_APPLES) regularApples.pop();
+
+  // Rebuild apples array: regular apples + death apples
+  apples = regularApples.concat(deathApples);
+
+  // Pad regular portion to NUM_APPLES
+  while (apples.length < NUM_APPLES + deathApples.length) apples.push(null);
+
+  // Spawn missing apples (only in null slots of the regular portion)
+  for (var i = 0; i < apples.length; i++) {
+    if (!apples[i]) {
+      apples[i] = spawnOneApple();
+    }
+  }
+  // Remove any duplicates that may have been created during spawn
+  if (typeof deduplicateApples === 'function') deduplicateApples();
+    log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ' regular + ' + deathApples.length + ' death)');
+    appleDirty = true;
+    if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;

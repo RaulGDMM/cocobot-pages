@@ -170,6 +170,37 @@ describe('game.js — removeOutOfBounds()', () => {
     });
   });
 
+  test('preserves death apples (fromDeath) during shrink — not trimmed by NUM_APPLES', () => {
+    apples = [
+      {x: 0, z: 0},              // regular — inside
+      {x: 1, z: 0},              // regular — inside
+      {x: 2, z: 0},              // regular — inside
+      {x: 3, z: 0, fromDeath: true},  // death apple — inside
+      {x: 4, z: 0, fromDeath: true},  // death apple — inside
+      {x: 7, z: 0, fromDeath: true},  // death apple — outside (removed by filter)
+    ];
+    NUM_APPLES = 3;
+    removeOutOfBounds();
+    // Regular apples: 3 (trimmed to NUM_APPLES)
+    // Death apples: 2 (preserved, not trimmed)
+    var deathApples = apples.filter(function(a) { return a && a.fromDeath; });
+    expect(deathApples.length).toBe(2);
+    // Total should be NUM_APPLES + death apples
+    var activeApples = apples.filter(Boolean);
+    expect(activeApples.length).toBeGreaterThanOrEqual(5); // 3 regular + 2 death
+  });
+
+  test('death apples outside bounds are still removed by filter', () => {
+    apples = [
+      {x: 0, z: 0},              // regular — inside
+      {x: 7, z: 0, fromDeath: true},  // death apple — outside
+    ];
+    NUM_APPLES = 3;
+    removeOutOfBounds();
+    var deathApples = apples.filter(function(a) { return a && a.fromDeath; });
+    expect(deathApples.length).toBe(0); // outside death apples ARE removed
+  });
+
   test('removes obstacles outside new grid', () => {
     obstacles = [
       {x: 0, z: 0},    // inside
