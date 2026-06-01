@@ -1036,7 +1036,7 @@ td:first-child {
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow">Predicción · Actualizado 27 Mayo 2026</div>
+  <div class="hero-eyebrow">Predicción · Actualizado 1 Junio 2026</div>
   <h1>Qwen3.7<br>Open Weights</h1>
   <h2>Predicciones para 27B y 35B-A3B</h2>
   <p class="hero-sub">
@@ -1048,6 +1048,7 @@ td:first-child {
     <span class="badge live">Benchmarks confirmados</span>
     <span class="badge orange">Predicción</span>
     <span class="badge cyan">Metodología abierta</span>
+    <span class="badge blue">Arena AI #14 (1,489 Elo)</span>
   </div>
 </div>
 
@@ -1061,7 +1062,7 @@ td:first-child {
   <div class="methodology-steps stagger-children">
     <div class="methodology-step">
       <h4>Señal principal: salto Max → Max</h4>
-      <p>Qwen3.6 Max Preview (51.8) → Qwen3.7 Max (56.6) = <strong>+4.8 pts</strong> en Intelligence Index v4.0. Este es nuestro dato de referencia más fiable.</p>
+      <p>Qwen3.6 Max Preview (51.8) → Qwen3.7 Max (57) = <strong>+5.2 pts</strong> en Intelligence Index v4.0. Este es nuestro dato de referencia más fiable.</p>
     </div>
     <div class="methodology-step">
       <h4>Ajuste por tamaño: los modelos pequeños saltan más</h4>
@@ -1103,12 +1104,12 @@ td:first-child {
     </div>
     <div class="result-card green">
       <div class="label">Qwen3.7 Max</div>
-      <div class="value">56.6</div>
+      <div class="value">57</div>
       <div class="sub">#5 Global</div>
     </div>
     <div class="result-card cyan">
       <div class="label">Salto absoluto</div>
-      <div class="value">+4.8</div>
+      <div class="value">+5.2</div>
       <div class="sub">puntos</div>
     </div>
     <div class="result-card orange">
@@ -1327,7 +1328,7 @@ td:first-child {
 
   <h3>Qwen3.7-27B (Dense)</h3>
   <p>
-    El 27B dense activó todas sus 27B de parámetros por token y mostró el mayor salto en la transición 3.5→3.6 (+~8 pts). En 3.6→3.7, el salto del Max fue de +4.8, pero el 27B históricamente amplía los saltos en agentic tasks.
+    El 27B dense activó todas sus 27B de parámetros por token y mostró el mayor salto en la transición 3.5→3.6 (+~8 pts). En 3.6→3.7, el salto del Max fue de +5.2, pero el 27B históricamente amplía los saltos en agentic tasks.
   </p>
 
   <div class="result-grid">
@@ -1363,11 +1364,17 @@ td:first-child {
 
   <h4>Razonamiento de la predicción 27B:</h4>
   <ul>
-    <li><strong>Base:</strong> +4.8 pts del salto Max como mínimo (conservador: +4-5)</li>
+    <li><strong>Base:</strong> +5.2 pts del salto Max como mínimo (conservador: +4-5)</li>
     <li><strong>Factor de amplificación:</strong> En 3.5→3.6, el 27B saltó ~8 pts (casi 3x el salto del 35B-A3B). El patrón sugiere que el 27B amplía los saltos un 1.5-2x vs Max</li>
     <li><strong>Agentic boost:</strong> El salto de 3.7 Max es especialmente fuerte en agentic (+6.9 Terminal-Bench). El 27B de 3.6 ya saltó +17.7 pts en Terminal-Bench en 3.5→3.6, sugiriendo que el 27B es el modelo que más se beneficia de mejoras en agentic data+RL</li>
     <li><strong>Ceiling:</strong> Claude Opus 4.6 Max está en 53. Superarlo significaría que un modelo open de 27B supera al flagship de Anthropic — posible pero ambicioso</li>
+    <li><strong>Corroboración externa:</strong> InsiderLLM predice ~51 AAI para el 27B, alineado con nuestra predicción central de 52</li>
   </ul>
+
+  <div class="highlight blue">
+    <strong>🔧 Infraestructura: llama.cpp MTP mainline</strong>
+    <p>El PR #22673 de MTP ha sido merged a mainline en llama.cpp. Esto significa que cuando salgan los open weights de Qwen3.7 con MTP, el soporte llegará rápidamente — sin necesidad de forks ni parches manuales. DFlash + MTP puede dar 1.5x–2.5x de speedup.</p>
+  </div>
 
   <h3>Qwen3.7-35B-A3B (MoE)</h3>
   <p>
@@ -1407,7 +1414,7 @@ td:first-child {
 
   <h4>Razonamiento de la predicción 35B-A3B:</h4>
   <ul>
-    <li><strong>Base:</strong> El 35B-A3B saltó ~3 pts en 3.5→3.6. Con el salto Max de +4.8, proyectamos +3 como central</li>
+    <li><strong>Base:</strong> El 35B-A3B saltó ~3 pts en 3.5→3.6. Con el salto Max de +5.2, proyectamos +3 como central</li>
     <li><strong>Límite MoE:</strong> Con solo 3B activos, el modelo está estructuralmente limitado. Las mejoras en data+RL ayudan, pero el bottleneck es el ancho de razonamiento por token</li>
     <li><strong>Posible cambio arquitectónico:</strong> Si Qwen3.7 cambia el MoE (más expertos activos, mejor routing), el salto podría ser mayor. Pero sin confirmación, asumimos arquitectura similar</li>
     <li><strong>Eficiencia:</strong> El 35B-A3B de 3.6 ya genera a 190 t/s — es el rey de la eficiencia. La ventaja 3.7 probablemente mantenga este perfil</li>
@@ -1503,7 +1510,7 @@ td:first-child {
     <div class="bar-row">
       <div class="bar-label">Qwen3.7 Max</div>
       <div class="bar-track">
-        <div class="bar-fill purple" style="width: 56.6%;">56.6</div>
+        <div class="bar-fill purple" style="width: 57%;">57</div>
       </div>
     </div>
     <div class="bar-row">
@@ -1563,7 +1570,7 @@ td:first-child {
 
   <h3>Contexto: la brecha China vs EE.UU.</h3>
   <p>
-    Incluso con Qwen3.7 Max en #5 (56.6), los modelos de EE.UU. mantienen una ventaja de 3-4 puntos. DeepSeek ha reconocido públicamente estar 3-6 meses detrás de los labs estadounidenses. El salto de 4.8 puntos en Qwen3.7 es significativo pero no suficiente para cerrar la brecha completa.
+    Incluso con Qwen3.7 Max en #5 (57), los modelos de EE.UU. mantienen una ventaja de 3-4 puntos. DeepSeek ha reconocido públicamente estar 3-6 meses detrás de los labs estadounidenses. El salto de 5.2 puntos en Qwen3.7 es significativo pero no suficiente para cerrar la brecha completa.
   </p>
 
   <div class="table-wrapper">
@@ -1601,7 +1608,7 @@ td:first-child {
         </tr>
         <tr style="background: rgba(124, 58, 237, 0.08);">
           <td><strong>Qwen3.7 Max</strong></td>
-          <td><strong>56.6</strong></td>
+          <td><strong>57</strong></td>
           <td>🇨🇳 Alibaba</td>
           <td>Propietario</td>
           <td>—</td>
@@ -1674,7 +1681,7 @@ td:first-child {
     <div class="timeline-item">
       <div class="timeline-date">20 May 2026</div>
       <div class="timeline-title">Qwen3.7 Max (oficial)</div>
-      <div class="timeline-desc">Anunciado en Alibaba Cloud Summit. Intelligence Index: 56.6 (#5 global). Context 1M tokens. Pricing: $2.50/$7.50 por M tokens.</div>
+      <div class="timeline-desc">Anunciado en Alibaba Cloud Summit. Intelligence Index: 57 (#5 global). Context 1M tokens. Pricing: $2.50/$7.50 por M tokens.</div>
     </div>
     <div class="timeline-item future">
       <div class="timeline-date">~5-15 Jun 2026 (predicción)</div>
@@ -1785,7 +1792,7 @@ td:first-child {
       <tbody>
         <tr>
           <td class="model-name">Qwen3.7 Max</td>
-          <td class="score val">56.6</td>
+          <td class="score val">57</td>
           <td class="jump positive">+4.8</td>
           <td><span class="status confirmed">Confirmado</span></td>
         </tr>
@@ -1836,8 +1843,8 @@ td:first-child {
       <tbody>
         <tr>
           <td>Overall Text</td>
-          <td>#13</td>
-          <td>1,475</td>
+          <td>#14</td>
+          <td>1,489</td>
         </tr>
         <tr>
           <td>Math</td>
@@ -1900,7 +1907,7 @@ td:first-child {
         </tr>
         <tr>
           <td>Qwen3.7 Max</td>
-          <td><strong>56.6</strong></td>
+          <td><strong>57</strong></td>
           <td>Alibaba</td>
           <td>Propietario</td>
         </tr>
@@ -1939,7 +1946,7 @@ td:first-child {
 
   <div class="highlight warning">
     <strong>2. El salto Max no es lineal</strong>
-    <p>Un salto de +4.8 en Max no garantiza un salto proporcional en 27B/35B-A3B. Los modelos densos y MoE responden diferente a las mejoras en data y RL. Nuestra extrapolación asume patrones históricos consistentes.</p>
+    <p>Un salto de +5.2 en Max no garantiza un salto proporcional en 27B/35B-A3B. Los modelos densos y MoE responden diferente a las mejoras en data y RL. Nuestra extrapolación asume patrones históricos consistentes.</p>
   </div>
 
   <div class="highlight">
@@ -1976,6 +1983,10 @@ td:first-child {
 
   <div class="update-log">
     <h4>Log de Actualizaciones</h4>
+    <div class="update-entry">
+      <span class="date">01 Jun 2026</span>
+      <span class="desc">📊 Corrección AAI: Qwen3.7 Max pasa de 56.6 a 57 (+5.2 vs 3.6 Max, no +4.8). Arena AI actualizado: #14 (1,489 Elo) con datos del 20 May. Añadida corroboración externa: InsiderLLM predice ~51 AAI para 27B, alineado con nuestra predicción de 52. Nuevo: llama.cpp PR #22673 (MTP) merged a mainline — soporte day-zero cuando salgan los open weights.</span>
+    </div>
     <div class="update-entry">
       <span class="date">27 May 2026</span>
       <span class="desc">📊 Refinamiento: Open weights siguen sin salir. Ventana más probable ajustada a 5-15 junio (vs 1-30 anterior) basándonos en confirmación de 2-4 semanas post-anuncio Max. Añadidos requisitos VRAM estimados (27B Q4: ~15-16 GiB, 35B-A3B Q4: ~18-22 GiB). GGUF típicamente 24-72h post-release. Especulación Qwen 4 (Nov/Dic) gana tracción en Reddit r/LocalLLM.</span>
