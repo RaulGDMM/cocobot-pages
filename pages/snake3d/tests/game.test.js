@@ -41,6 +41,23 @@ describe('game.js — step()', () => {
     expect(score).toBe(1);
   });
 
+  test('manzana de cadáver se consume sin reaparecer aleatoriamente', () => {
+    setSnake([{x: 2, z: 0}, {x: 1, z: 0}, {x: 0, z: 0}, {x: -1, z: 0}]);
+    setApples([{x: 3, z: 0, fromDeath: true}]);
+    setGlobal('direction', 0);
+    var originalRandom = Math.random;
+    Math.random = function() { return 0.95; };
+    try {
+      step();
+    } finally {
+      Math.random = originalRandom;
+    }
+    expect(score).toBe(1);
+    expect(apples.length).toBe(0);
+    expect(appleSet['3,0']).toBe(undefined);
+    expect(Object.keys(appleSet).length).toBe(0);
+  });
+
   test('no hace nada si gameOver=true', () => {
     setGlobal('gameOver', true);
     var len = snake.length;

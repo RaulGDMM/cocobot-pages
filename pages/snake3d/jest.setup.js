@@ -52,7 +52,8 @@ global.THREE = {
     render() {}
   },
   CanvasTexture: class CanvasTexture {
-    constructor() { this.wrapS = 1000; this.wrapT = 1000; }
+    constructor(image) { this.image = image; this.wrapS = 1000; this.wrapT = 1000; this.generateMipmaps = true; }
+    dispose() {}
   },
   Mesh: class Mesh {
     constructor(geometry, material) {
@@ -67,14 +68,14 @@ global.THREE = {
     dispose() {}
   },
   MeshStandardMaterial: class MeshStandardMaterial {
-    constructor() {
+    constructor(opts = {}) {
       this.color = {setHex:()=>{}};
       this.emissive = {setHex:()=>{}};
       this.emissiveIntensity = 0;
       this.opacity = 1;
       this.transparent = false;
-      this.map = null;
-      this.roughness = 1;
+      this.map = opts.map || null;
+      this.roughness = opts.roughness !== undefined ? opts.roughness : 1;
     }
     clone() {
       const m = new MeshStandardMaterial();
@@ -106,6 +107,7 @@ global.THREE = {
   BoxGeometry: class BoxGeometry { constructor() {} dispose() {} },
   PlaneGeometry: class PlaneGeometry { constructor() {} dispose() {} },
   ClampToEdgeWrapping: 1000,
+  NearestFilter: 1003,
 };
 
 // ─── Mock Canvas 2D context ───

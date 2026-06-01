@@ -100,7 +100,7 @@ function step() {
        var eatenApple = apples[appleIndexAtHead];
        sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
          log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
-         var newA = spawnOneApple();
+         var newA = (typeof replacementForEatenApple === 'function') ? replacementForEatenApple(eatenApple) : spawnOneApple();
          if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
          else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
           if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();

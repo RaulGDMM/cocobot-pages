@@ -39,27 +39,38 @@ function rebuildBoard(gs, opts) {
   _wallMeshes = [];
 
   var h = gs / 2;
+  var boardMinX = cx - h;
+  var boardMinZ = cz - h;
 
   // Fog
   scene.fog = new THREE.Fog(0x0a0a12, gs * 0.5, gs * 1.3);
 
-  // Floor — checkerboard texture
+  // Floor — checkerboard texture. Keep one integer pixel block per cell so
+  // large boards do not smear from sub-pixel canvas scaling/filtering.
    var floorCanvas = document.createElement('canvas');
-   floorCanvas.width = 256; floorCanvas.height = 256;
+   var cellPx = Math.max(8, Math.floor(1024 / gs));
+   var texSize = gs * cellPx;
+   floorCanvas.width = texSize; floorCanvas.height = texSize;
    var fctx = floorCanvas.getContext('2d');
-   var sq = 256 / gs;
+   if (fctx) fctx.imageSmoothingEnabled = false;
+   var sq = cellPx;
    for(var fy = 0; fy < gs; fy++) {
      for(var fx = 0; fx < gs; fx++) {
        // Use REAL grid coordinates for checkerboard parity, not canvas indices.
        // This ensures the pattern stays consistent when the board shrinks with offset.
-       var gx = gridMinX + fx;
-       var gz = gridMinZ + fy;
+      var gx = boardMinX + fx;
+      var gz = boardMinZ + fy;
        fctx.fillStyle = ((gx + gz) & 1) === 0 ? '#111122' : '#0c0c18';
-       fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
+       fctx.fillRect(fx * sq, fy * sq, sq, sq);
      }
    }
   var floorTex = new THREE.CanvasTexture(floorCanvas);
   floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
+  if (THREE.NearestFilter !== undefined) {
+    floorTex.magFilter = THREE.NearestFilter;
+    floorTex.minFilter = THREE.NearestFilter;
+  }
+  floorTex.generateMipmaps = false;
   _floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(gs, gs), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
   _floorMesh.rotation.x = -Math.PI/2; _floorMesh.position.set(cx, -.02, cz); scene.add(_floorMesh);
 

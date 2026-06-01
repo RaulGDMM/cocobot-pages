@@ -158,13 +158,57 @@ function getAppleIndexAt(x, z) {
   return -1;
 }
 
+function removeAppleAt(index) {
+  if (index < 0 || index >= apples.length) return null;
+  var oldApple = apples[index];
+  var oldKey = oldApple ? appleKey(oldApple.x, oldApple.z) : null;
+  var lastIndex = apples.length - 1;
+  var movedApple = apples[lastIndex];
+
+  if (oldKey) {
+    delete appleSet[oldKey];
+    delete appleIndex[oldKey];
+  }
+
+  if (index !== lastIndex) {
+    apples[index] = movedApple;
+  }
+  apples.pop();
+
+  if (movedApple && index !== lastIndex) {
+    var movedKey = appleKey(movedApple.x, movedApple.z);
+    appleSet[movedKey] = true;
+    appleIndex[movedKey] = index;
+  }
+
+  if (oldKey && !appleSet[oldKey]) {
+    var fallback = findAppleIndexForKey(oldKey);
+    if (fallback >= 0) {
+      appleSet[oldKey] = true;
+      appleIndex[oldKey] = fallback;
+    }
+  }
+
+  appleDirty = true;
+  return oldApple;
+}
+
 function replaceAppleAt(index, newApple) {
   if (index < 0 || index >= apples.length) return null;
+  if (!newApple) return removeAppleAt(index);
   var oldApple = apples[index];
   apples[index] = newApple;
   updateAppleSet(oldApple, newApple, index);
   appleDirty = true;
   return oldApple;
+}
+
+function replacementForEatenApple(eatenApple) {
+  // Corpse apples are bonus food created at body segment positions. When eaten
+  // they should disappear; respawning them elsewhere makes apples appear in
+  // places where no snake body ever was.
+  if (eatenApple && eatenApple.fromDeath) return null;
+  return spawnOneApple();
 }
 
 function buildSpawnOccupiedSet() {
@@ -275,5 +319,5 @@ function initApples() {
 
 // ─── Module exports (for testing — ignored in browser) ───
 if(typeof module !== 'undefined' && module.exports) {
-  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, getAppleIndexAt, replaceAppleAt, appleSet, appleIndex, animatedAppleMeshIndices, APPLE_POOL_MARGIN, corpseSet, rebuildCorpseSet, removeFromCorpseSet, addToCorpseSet };
+  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, getAppleIndexAt, removeAppleAt, replaceAppleAt, replacementForEatenApple, appleSet, appleIndex, animatedAppleMeshIndices, APPLE_POOL_MARGIN, corpseSet, rebuildCorpseSet, removeFromCorpseSet, addToCorpseSet };
 }

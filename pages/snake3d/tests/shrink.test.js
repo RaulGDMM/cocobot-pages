@@ -632,6 +632,17 @@ describe('scene.js — rebuildBoard() with offset', () => {
     expect(_floorMesh.position.x).toBe(-4);
     expect(_floorMesh.position.z).toBe(6);
   });
+
+  test('rebuildBoard uses crisp cell-aligned texture for large boards', () => {
+    rebuildBoard(66);
+    var tex = _floorMesh.material.map;
+    expect(tex.image.width % 66).toBe(0);
+    expect(tex.image.height % 66).toBe(0);
+    expect(tex.image.width).toBeGreaterThan(256);
+    expect(tex.magFilter).toBe(THREE.NearestFilter);
+    expect(tex.minFilter).toBe(THREE.NearestFilter);
+    expect(tex.generateMipmaps).toBe(false);
+  });
 });
 
 // ─── AI: cellInShrinkZone ───

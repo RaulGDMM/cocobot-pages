@@ -98,9 +98,19 @@ describe('apples.js — appleSet hash set', () => {
   test('replaceAppleAt handles null replacement as removal', () => {
     setApples([{x: 1, z: 1}, {x: 2, z: 2}]);
     replaceAppleAt(0, null);
+    expect(apples.length).toBe(1);
     expect(appleSet['1,1']).toBe(undefined);
     expect(getAppleIndexAt(1, 1)).toBe(-1);
-    expect(getAppleIndexAt(2, 2)).toBe(1);
+    expect(getAppleIndexAt(2, 2)).toBe(0);
+  });
+
+  test('removeAppleAt keeps moved apple indexed after compaction', () => {
+    setApples([{x: 1, z: 1}, {x: 5, z: 5}, {x: 9, z: 9}]);
+    var removed = removeAppleAt(1);
+    expect(removed).toEqual({x: 5, z: 5});
+    expect(apples.length).toBe(2);
+    expect(getAppleIndexAt(5, 5)).toBe(-1);
+    expect(getAppleIndexAt(9, 9)).toBe(1);
   });
 
   test('spawnOneApple respects apples added incrementally before rebuild', () => {

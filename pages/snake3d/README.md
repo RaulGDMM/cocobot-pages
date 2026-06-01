@@ -13,11 +13,11 @@ Juego clásico de la serpiente renderizado en 3D con **Three.js**. Recoge manzan
 - **Modo Multijugador vs IA** — Compite contra hasta 7 serpientes controladas por inteligencia artificial (modos vs2 a vs8).
 - **3 niveles de dificultad** — Fácil, Medio y Difícil (afectan la tasa de error y agresividad de la IA).
 - **8 colores de serpiente** — Verde, rojo, azul, amarillo, cyan, purple, naranja, salmón.
-- **Tablero configurable** — Ajusta el tamaño del grid con un slider (-50% a +50%). Hasta 66×66 en vs8.
+- **Tablero configurable** — Ajusta el tamaño del grid con un slider (-50% a +50%). Hasta 66×66 en vs8, con textura de casillas nítida incluso en tableros grandes.
 - **Obstáculos progresivos** — Aparecen cada N manzanas recogidas (proporcional al tamaño del tablero).
 - **Escalado proporcional** — El número de manzanas y obstáculos se ajusta automáticamente al tamaño del tablero (`calcNumApples()`, `calcMaxObstacles()`).
 - **Reducción dinámica del tablero (shrink proporcional)** — Al morir una IA, el tablero se reduce progresivamente basado en serpientes vivas vs iniciales. Cuando todas las IA mueren, vuelve al tamaño solo de 22×22. Countdown de 10s, parpadeo rojo acelerado (curva cúbica), tick de advertencia y mensaje visible en los últimos 5 segundos.
-- **Cadáveres progresivos** — Al morir una IA, su cuerpo queda visible atenuado y se convierte en manzanas segmento a segmento (cabeza → cola), una por tick. Los cadáveres actúan como obstáculos sólidos hasta que se consumen completamente.
+- **Cadáveres progresivos** — Al morir una IA, su cuerpo queda visible atenuado y se convierte en manzanas segmento a segmento (cabeza → cola), una por tick. Los cadáveres actúan como obstáculos sólidos hasta que se consumen completamente. Las manzanas de cadáver son bonus: al comerse desaparecen y no reaparecen en una posición aleatoria.
 - **Música retro** — 20 pistas chiptune con reproductor integrado (play/pause, anterior, siguiente, loop automático).
 - **Efectos de sonido** — Comer, girar, morir, sonidos direccionales cuando la IA come, y efectos de shrink (tick + boom).
 - **Récords por configuración** — High scores guardados en `localStorage` por modo, dificultad y tamaño de tablero.
@@ -45,9 +45,9 @@ snake3d/
 │   ├── config.js           # Configuración global, colores, modos, dificultades, logging
 │   ├── state.js            # Estado global del juego (snake, score, grid, corpses, DOM refs)
 │   ├── audio.js            # SFX (Web Audio API) + reproductor de música MP3
-│   ├── scene.js            # Escena Three.js (renderer, cámara, luces, tablero dinámico)
+│   ├── scene.js            # Escena Three.js (renderer, cámara, luces, tablero dinámico nítido)
 │   ├── snake.js            # Mesh de la serpiente (build + refresh, multi-snake)
-│   ├── apples.js           # Generación, colisión y render de manzanas + corpseSet hash
+│   ├── apples.js           # Generación, colisión, índice y render de manzanas + corpseSet hash
 │   ├── obstacles.js        # Generación, validación y render de obstáculos
 │   ├── particles.js        # Sistema de partículas con object pool (burst al comer/morir)
 │   ├── ai.js               # IA oponentes (BFS, evaluación, cornering, corpses, processCorpses)
@@ -268,7 +268,7 @@ Configura el entorno 3D:
 - **Cámara**: perspectiva 55° FOV, posición adaptativa al tamaño del tablero.
 - **Iluminación**: luz ambiental azulada (`0x4466aa`), direccional blanca (sol), y `PointLight` cian que sigue a la cabeza de la serpiente.
 - **`rebuildBoard(gridSize)`**: reconstruye el tablero completo dinámicamente:
-  - **Suelo**: textura `CanvasTexture` generada proceduralmente con patrón ajedrezado (`#111122` / `#0c0c18`). Usa coordenadas reales del grid (`gx + gz`) para la paridad, no índices de canvas, de modo que el patrón se mantiene consistente cuando el tablero se reduce con offset.
+  - **Suelo**: textura `CanvasTexture` generada proceduralmente con patrón ajedrezado (`#111122` / `#0c0c18`). Usa coordenadas reales del grid (`gx + gz`) para la paridad, no índices de canvas, de modo que el patrón se mantiene consistente cuando el tablero se reduce con offset. La textura se genera con resolución proporcional al grid (`gs * cellPx`) y filtros `NearestFilter`, evitando casillas difuminadas en tableros grandes.
   - **Paredes**: 4 `BoxGeometry` semitransparentes (`opacity: 0.35`) en los bordes del grid.
   - **Niebla**: se recalcula como `fog.near = gs * 0.5`, `fog.far = gs * 1.3`.
 - **`gw(gridCoord)`**: convierte coordenadas de grid a mundo 3D añadiendo `0.5` para centrar en la celda.
@@ -288,6 +288,8 @@ Crea y actualiza la representación 3D de la serpiente:
 - **Mesh**: cada manzana es un `THREE.Group` con `SphereGeometry(0.25)` roja (`#ff2233`) + `PointLight` rojo (`#ff3344`) para efecto de brillo. La referencia al `PointLight` se guarda en `userData.light` para togglearlo sin escanizar hijos.
 - **`isOccupied(x, z)`**: comprueba si una celda está ocupada por snake, otra manzana, obstáculo, IA viva o cadáver. Usa **hash sets** (`appleSet`, `corpseSet`) para lookups O(1).
 - **`spawnOneApple()`**: posición aleatoria con hasta 200 intentos, saltando celdas ocupadas.
+- **`replacementForEatenApple()`**: las manzanas normales respawnean; las manzanas de cadáver (`fromDeath`) se consumen y desaparecen, para que no se creen manzanas en zonas donde no había cuerpo.
+- **`removeAppleAt()` / `replaceAppleAt()`**: eliminan o sustituyen manzanas manteniendo `appleSet` y `appleIndex` sincronizados. Las eliminaciones compactan `apples[]` en O(1) para evitar arrays largos llenos de huecos.
 - **`refreshApples()`**: actualiza posiciones 3D de los meshes según el array de manzanas. Usa bandera `appleDirty` para evitar renders innecesarios. Las manzanas de muerte (`fromDeath`) desactivan su `PointLight` para evitar docenas de luces simultáneas.
 - **Animación**: en el game loop (`main.js`), **solo las manzanas "normales"** (no death apples) se animan con flotación + rotación. Las death apples son estáticas → evita cálculos `Math.sin()` y updates de transformación innecesarios cuando hay decenas de manzanas de muerte.
 - **`animatedAppleMeshIndices`**: array que solo contiene índices de manzanas que deben animarse, mantenido en `refreshApples()` para O(1) en el loop.
@@ -296,14 +298,15 @@ Crea y actualiza la representación 3D de la serpiente:
 
 | Optimización | Antes | Después | Impacto |
 |---|---|---|---|
-|| `appleSet` hash | Iterar `apples[]` en cada `isOccupied()` | Hash `"x,z" → true` | O(n) → O(1) |
-|| `corpseSet` hash | Iterar todos los cadáveres en `isOccupied()` + `buildBlockedSet()` | Hash `"x,z" → true` | O(n) → O(1) |
-|| `appleIndex` hash | Escanear `apples[]` para encontrar índice al comer | Hash `"x,z" → index` | O(n) → O(1) |
-|| `appleDirty` flag | `refreshApples()` cada frame | Solo cuando cambia el array | ~60fps → ~1 call/tick |
-|| `APPLE_POOL_MARGIN` | Pool fijo de `NUM_APPLES` meshes | Pool de `NUM_APPLES + 100` | Sin realloc en picos |
-|| `updateAppleSet()` | Rebuild completo de `appleSet` | Add/remove incremental | O(n) → O(1) por manzana |
-|| `animatedAppleMeshIndices` | Animar TODAS las manzanas cada frame | Solo manzanas "normales" (no death apples) | Sin cálculos Math.sin() en death apples |
-|| Death apple lights | Cada manzana de muerte activa PointLight | `light.visible = !fromDeath` | Sin overhead de GPU en shading |
+| `appleSet` hash | Iterar `apples[]` en cada `isOccupied()` | Hash `"x,z" → true` | O(n) → O(1) |
+| `corpseSet` hash | Iterar todos los cadáveres en `isOccupied()` + `buildBlockedSet()` | Hash `"x,z" → true` | O(n) → O(1) |
+| `appleIndex` hash | Escanear `apples[]` para encontrar índice al comer | Hash `"x,z" → index` | O(n) → O(1) |
+| `removeAppleAt()` compacto | Dejar huecos `null` al consumir bonus | Swap con último elemento + `pop()` | Evita arrays grandes con huecos |
+| `appleDirty` flag | `refreshApples()` cada frame | Solo cuando cambia el array | ~60fps → ~1 call/tick |
+| `APPLE_POOL_MARGIN` | Pool fijo de `NUM_APPLES` meshes | Pool de `NUM_APPLES + 100` | Sin realloc en picos |
+| `updateAppleSet()` | Rebuild completo de `appleSet` | Add/remove incremental | O(n) → O(1) por manzana |
+| `animatedAppleMeshIndices` | Animar TODAS las manzanas cada frame | Solo manzanas "normales" (no death apples) | Sin cálculos Math.sin() en death apples |
+| Death apple lights | Cada manzana de muerte activa PointLight | `light.visible = !fromDeath` | Sin overhead de GPU en shading |
 
 ### `obstacles.js` — Obstáculos
 
@@ -374,8 +377,8 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 
 **Selección de manzana (`bestApple`)**:
 - Modo fácil: simplemente la manzana más cercana.
-- Modo medio/difícil: BFS a cada manzana, score = `1000 (si reachable) - manhattanDist + spaceAfter * 0.3`. El factor de espacio está escalado para no penalizar manzanas del borde.
-- **Optimización**: limita candidatos a las más cercanas para evitar BFS innecesarios.
+- Modo medio/difícil: selecciona las 5 manzanas más cercanas en una sola pasada y ejecuta BFS solo contra esas candidatas. Score = `1000 (si reachable) - manhattanDist`.
+- **Optimización**: no construye un array completo de candidatas cuando hay muchas manzanas de cadáver; mantiene una lista top-5 ordenada.
 
 **Cornering (`aiCorneringStrategy`)**:
 - Activa en modo medio (40%) y difícil (85%).
@@ -392,6 +395,7 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 **Conversión progresiva (`processCorpses`)**:
 - Se ejecuta cada tick (cada 200ms) en el game loop.
 - Para cada cadáver, convierte **1 segmento** (empezando por la cabeza) en manzana coleccionable.
+- No crea duplicados si otra manzana ya ocupa la misma celda.
 - El segmento convertido se oculta del mesh, revelando la manzana debajo.
 - Se actualiza `corpseSet` eliminando el segmento convertido.
 - Cuando todos los segmentos se han convertido, el cadáver se elimina y su grupo 3D se oculta.
@@ -445,6 +449,8 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 3. Si colisión → `die(cause)`.
 4. Si no: `unshift` nueva cabeza.
 5. **Comer manzana O(1)**: usa `getAppleIndexAt(nx, nz)` para encontrar el índice en `apples[]` directamente sin escanear el array. Luego `replaceAppleAt()` actualiza `appleSet` y `appleIndex` incrementalmente.
+  - Si era manzana de cadáver (`fromDeath`), se elimina con `removeAppleAt()` y no respawnea.
+  - Si era manzana normal, se reemplaza con `spawnOneApple()`.
 6. Cada N manzanas → `spawnObstacle()`.
 7. Si no comió → `pop` cola.
 
@@ -518,7 +524,13 @@ El juego incluye varias optimizaciones para mantener 60fps estables incluso con 
 | `corpseSet` | `apples.js` | `isOccupied()` + `buildBlockedSet()` — lookup de cadáveres |
 | `appleIndex` | `apples.js` | `getAppleIndexAt()` — índice en `apples[]` por posición |
 
-Ambos usan keys `"x,z"` → `true`, se actualizan incrementalmente (`addToAppleSet`, `addToCorpseSet`, `removeFromCorpseSet`, `updateAppleSet`) y se reconstruyen cuando es necesario (`rebuildAppleSet`, `rebuildCorpseSet`).
+Estos índices usan keys `"x,z"`, se actualizan incrementalmente (`addToAppleSet`, `removeAppleAt`, `replaceAppleAt`, `addToCorpseSet`, `removeFromCorpseSet`, `updateAppleSet`) y se reconstruyen cuando es necesario (`rebuildAppleSet`, `rebuildCorpseSet`).
+
+### Textura de tablero nítida (scene.js)
+
+- `rebuildBoard()` genera el canvas del suelo con resolución proporcional al grid (`gs * cellPx`) en vez de 256×256 fijo.
+- Cada casilla ocupa un número entero de píxeles en la textura.
+- `CanvasTexture` usa `NearestFilter` y `generateMipmaps = false`, evitando que las casillas se difuminen en tableros grandes.
 
 ### Cache de blockedSet (ai.js)
 
@@ -568,8 +580,14 @@ Ambos usan keys `"x,z"` → `true`, se actualizan incrementalmente (`addToAppleS
 
 ### bestApple() candidate limiting
 
-- En modos medio/difícil, `bestApple()` solo evalúa las manzanas más cercanas como candidatos viables.
-- Evita ejecutar BFS innecesarios contra manzanas lejanas.
+- En modos medio/difícil, `bestApple()` mantiene una lista top-5 de manzanas cercanas en una sola pasada.
+- Evita crear arrays grandes y ejecutar BFS innecesarios contra manzanas lejanas.
+
+### Death apples sin respawn aleatorio
+
+- Las manzanas de cadáver son bonus ligados a una celda de cuerpo.
+- Al comerse se eliminan y compactan `apples[]`; no llaman a `spawnOneApple()`.
+- Esto evita que, tras varias muertes, aparezcan manzanas en celdas donde nunca hubo cuerpo.
 
 ### Sin burst() en conversión de cadáveres
 
@@ -609,7 +627,7 @@ Game loop (60fps):
     → step() (jugador: nueva cabeza → colisiones → comer → pop cola)
     → processCorpses() (convertir 1 segmento/cadáver → manzana)
   → refreshSnake() + refreshAISnakes() (actualizar meshes 3D)
-  → animar manzanas (flotar + rotar)
+  → animar manzanas normales (flotar + rotar; death apples estáticas)
   → tickParts() (partículas)
   → updateCam() (cámara suave)
   → render()
@@ -627,19 +645,20 @@ npm run coverage     # Reporte HTML de cobertura
 
 Los tests usan un **bundle concatenado** (`tests/snake3d-bundle.js`) generado por `scripts/gen-bundle.js` que une todos los módulos en orden. `jest.setup.js` mockuea el DOM y Three.js para que el código del juego funcione en Node.js.
 
-**Suites de tests** (13 suites, 642 tests):
+**Suites de tests** (13 suites, 646 tests):
 
 | Suite | Qué cubre |
 |---|---|
 | `ai.test.js` | snapToCardinal, DIRS, buildBlockedSet, BFS, countReachable, bestApple, cornering, initAI, aiDie, stepAI, perception, blockedSet cache, BFS bodySet |
 | `apples.test.js` | isOccupied, deduplicateApples, spawn, colisiones combinadas |
+| `blocked_cache.test.js` | caché de buildBlockedSet, cloneBlocked, ciclo de vida de cache durante stepAI |
 | `config.test.js` | constantes, resolveGridSize, high score keys, escalado proporcional, AI_STRATEGY, modos vs5-v8, GRID_MAX=66, shrink proporcional |
 | `coverage.test.js` | gw, buildApples, refreshApples, buildObstacles, buildSnake, burst, tickParts, initGame, step, die, audio, music |
 | `corpse_optimization.test.js` | CORPSE_CONVERSION_BATCH, corpseSet hash, processCorpses, no burst on conversion |
 | `game.test.js` | step, die, colisiones (wall, self, obstacle, AI), turnL/R |
 | `obstacles.test.js` | isSafeForObstacle, spawn, distancias, edge cases |
 | `optimization.test.js` | appleSet, corpseSet, appleDirty, bestApple limiting, death apple throttling, particle pool, updateAppleSet, appleIndex, getAppleIndexAt, replaceAppleAt |
-| `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset, shrink proporcional vs2/vs3/vs4/vs8 |
+| `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset/textura nítida, shrink proporcional vs2/vs3/vs4/vs8 |
 | `state.test.js` | variables de estado, cámara, localStorage, DOM refs, IA mode state |
 | `ui.test.js` | getGameConfig, uiState, edge cases, modos vs5-v8 |
 | `ui-dom.test.js` | updateSizeDisplay, updateDifficultyVisibility, buildColorSelector, buildModeSelector, etc. |

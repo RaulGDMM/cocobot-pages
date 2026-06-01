@@ -303,54 +303,43 @@ function nearestApple(x, z) {
 function bestApple(aiSnake, blocked, diff) {
   if (!apples || apples.length === 0) return null;
 
-  var candidates = [];
-  for (var i = 0; i < apples.length; i++) {
-    if (!apples[i]) continue;
-    candidates.push(apples[i]);
-  }
-  if (candidates.length === 0) return null;
-
   // Easy mode: just pick nearest
   if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
 
   // ─── PERFORMANCE: select 5 closest candidates (O(n) partial selection) ───
   // Running a full BFS per apple is expensive. With 50+ death apples,
   // doing 50+ BFS calls per AI snake per tick kills the framerate.
-  // Use partial selection to find the 5 closest without sorting all.
+  // Use partial selection to find the 5 closest without storing/sorting all.
   var MAX_CANDIDATES = 5;
-  if (candidates.length > MAX_CANDIDATES) {
-    var hx = aiSnake[0].x, hz = aiSnake[0].z;
-    // Partial selection: maintain a small sorted list of top-5 closest
-    var top = [];
-    for (var c = 0; c < candidates.length; c++) {
-      var cand = candidates[c];
-      var dist = Math.abs(cand.x - hx) + Math.abs(cand.z - hz);
-      // Insert into top list maintaining order (ascending by distance)
-      var inserted = false;
-      for (var t = 0; t < top.length; t++) {
-        if (dist < top[t].dist) {
-          top.splice(t, 0, {apple: cand, dist: dist});
-          inserted = true;
-          break;
-        }
-      }
-      if (!inserted && top.length < MAX_CANDIDATES) {
-        top.push({apple: cand, dist: dist});
+  var hx = aiSnake[0].x, hz = aiSnake[0].z;
+  var top = [];
+  for (var c = 0; c < apples.length; c++) {
+    var cand = apples[c];
+    if (!cand) continue;
+    var dist = Math.abs(cand.x - hx) + Math.abs(cand.z - hz);
+    var inserted = false;
+    for (var t = 0; t < top.length; t++) {
+      if (dist < top[t].dist) {
+        top.splice(t, 0, {apple: cand, dist: dist});
+        inserted = true;
+        break;
       }
     }
-    // Extract just the apples from top
-    candidates.length = 0;
-    for (var t = 0; t < top.length; t++) {
-      candidates.push(top[t].apple);
+    if (!inserted && top.length < MAX_CANDIDATES) {
+      top.push({apple: cand, dist: dist});
+    }
+    if (top.length > MAX_CANDIDATES) {
+      top.length = MAX_CANDIDATES;
     }
   }
+  if (top.length === 0) return null;
 
   var best = null;
   var bestScore = -Infinity;
   var head = aiSnake[0];
 
-  for (var i = 0; i < candidates.length; i++) {
-    var apple = candidates[i];
+  for (var i = 0; i < top.length; i++) {
+    var apple = top[i].apple;
     var manhattanDist = Math.abs(apple.x - head.x) + Math.abs(apple.z - head.z);
 
     // Check if reachable via BFS
@@ -944,7 +933,7 @@ function stepAI() {
         ai.score++;
         ate = true;
         var eatenApple = apples[appleIndexAtHead];
-        var newA = spawnOneApple();
+        var newA = (typeof replacementForEatenApple === 'function') ? replacementForEatenApple(eatenApple) : spawnOneApple();
         if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
         else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
@@ -1045,10 +1034,15 @@ function processCorpses() {
 
       var seg = corpse.segments[corpse.convertIndex];
       if (seg && seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
-        var newApple = {x: seg.x, z: seg.z, fromDeath: true};
-        apples.push(newApple);
-        if (typeof addToAppleSet === 'function') addToAppleSet(newApple, apples.length - 1);
-        appleDirty = true;
+        var segKey = seg.x + ',' + seg.z;
+        // One apple per cell is enough. If another corpse/apple already owns
+        // this position, avoid piling duplicate apple entries on the same tile.
+        if (!appleSet || !appleSet[segKey]) {
+          var newApple = {x: seg.x, z: seg.z, fromDeath: true};
+          apples.push(newApple);
+          if (typeof addToAppleSet === 'function') addToAppleSet(newApple, apples.length - 1);
+          appleDirty = true;
+        }
 
         // Hide the converted segment mesh
         if (corpse.groupData) {

@@ -79,6 +79,28 @@ describe('ai.js — CORPSE_CONVERSION_BATCH', () => {
     expect(corpses[0].convertIndex).toBe(1);
     expect(apples.filter(Boolean).length).toBe(0);
   });
+
+  test('processCorpses does not duplicate apples on an occupied corpse cell', () => {
+    corpses = [];
+    setApples([{x: 5, z: 0, fromDeath: true}]);
+    setSnake([{x: 0, z: 0}]);
+    setObstacles([]);
+
+    corpses.push({
+      segments: [{x: 5, z: 0}],
+      convertIndex: 0,
+      groupData: {
+        headM: { visible: true },
+        bodyMs: Array(200).fill({ visible: true })
+      },
+      color: 'red'
+    });
+
+    processCorpses();
+    expect(corpses[0].convertIndex).toBe(1);
+    expect(apples.filter(Boolean).length).toBe(1);
+    expect(appleSet['5,0']).toBe(true);
+  });
 });
 
 // ─── corpseSet hash ───
