@@ -59,11 +59,21 @@ var playlist = [
   {name: '🐍 Pitón Retro', file: 'music/retro-3.mp3'},
   {name: '🐍 Víbora Eléctrica', file: 'music/retro-4.mp3'},
   {name: '🐍 Anaconda Arcade', file: 'music/retro-5.mp3'},
-  {name: '🐍 Serpiente Loca', file: 'music/retro-6.mp3'},
+  {name: '🐍 Serpiente Loca v2', file: 'music/retro-6.mp3'},
   {name: '🐍 Boa Neon', file: 'music/retro-7.mp3'},
   {name: '🐍 Mamba Digital', file: 'music/retro-8.mp3'},
   {name: '🐍 Aspic Pixel', file: 'music/retro-9-v2.mp3'},
-  {name: '🐍 Natrix Chiptune', file: 'music/retro-10.mp3'}
+  {name: '🐍 Natrix Chiptune', file: 'music/retro-10.mp3'},
+  {name: '🐍 Cobra Pixel', file: 'music/retro-11.mp3'},
+  {name: '🐍 Serpiente Galáctica', file: 'music/retro-12.mp3'},
+  {name: '🐍 Pitón Eléctrico', file: 'music/retro-13.mp3'},
+  {name: '🐍 Víbora Espacial', file: 'music/retro-14.mp3'},
+  {name: '🐍 Anaconda Neon', file: 'music/retro-15.mp3'},
+  {name: '🐍 Mamba Retro', file: 'music/retro-16.mp3'},
+  {name: '🐍 Cobra Digital', file: 'music/retro-17.mp3'},
+  {name: '🐍 Serpiente Arcade', file: 'music/retro-18.mp3'},
+  {name: '🐍 Pitón Turbo', file: 'music/retro-19.mp3'},
+  {name: '🐍 Víbora Pixel', file: 'music/retro-20.mp3'}
 ];
 var currentTrack = 0;
 var musicEl = null;
