@@ -37,12 +37,16 @@ function loop(now) {
        processShrinkCountdowns(now);
      }
 
-    // Apple animation
-     if(appleMeshes && appleMeshes.length) {
-      for(var i = 0; i < appleMeshes.length; i++) {
-        if(appleMeshes[i].visible) {
-          appleMeshes[i].position.y = .25 + Math.sin(now*.003 + i)*.1;
-          appleMeshes[i].rotation.y = now*.002 + i;
+    // Apple animation. Death apples are intentionally static: after several
+    // enemy deaths they dominate apple count, and animating all of them every
+    // frame burns CPU without changing gameplay.
+     if(animatedAppleMeshIndices && animatedAppleMeshIndices.length) {
+      for(var ai = 0; ai < animatedAppleMeshIndices.length; ai++) {
+        var i = animatedAppleMeshIndices[ai];
+        var mesh = appleMeshes[i];
+        if(mesh && mesh.visible && mesh.userData.animate) {
+          mesh.position.y = .25 + Math.sin(now*.003 + i)*.1;
+          mesh.rotation.y = now*.002 + i;
         }
       }
     }

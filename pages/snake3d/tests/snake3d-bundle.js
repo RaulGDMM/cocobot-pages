@@ -50,19 +50,29 @@ var SNAKE_COLORS = {
   green: '#00cc44',
   red: '#cc2222',
   blue: '#2266cc',
-  yellow: '#ccaa00'
-};
-var SNAKE_COLOR_NAMES = ['green', 'red', 'blue', 'yellow'];
+  yellow: '#ccaa00',
+  cyan: '#00cccc',
+  purple: '#aa22cc',
+  orange: '#cc6600',
+  salmon: '#ff6666'
+  };
+  var SNAKE_COLOR_NAMES = ['green', 'red', 'blue', 'yellow', 'cyan', 'purple', 'orange', 'salmon'];
 
-// Game modes: solo, vs2, vs3, vs4
-var GAME_MODES = ['solo', 'vs2', 'vs3', 'vs4'];
+// Game modes: solo, vs2, vs3, vs4, vs5, vs6, vs7, vs8
+var GAME_MODES = ['solo', 'vs2', 'vs3', 'vs4', 'vs5', 'vs6', 'vs7', 'vs8'];
 
 // Mode → base grid size multiplier
+// Linear +0.25 per mode. Base grid 22:
+//   solo=22, vs2=28, vs3=34, vs4=38, vs5=44, vs6=50, vs7=56, vs8=60
 var MODE_GRID_MULTIPLIER = {
   solo: 1.0,
   vs2: 1.25,
   vs3: 1.50,
-  vs4: 1.75
+  vs4: 1.75,
+  vs5: 2.00,
+  vs6: 2.25,
+  vs7: 2.50,
+  vs8: 2.75
 };
 
 // Difficulty levels
@@ -84,27 +94,57 @@ var AI_CORNERING_RATE = {
 
 // Grid size limits
 var GRID_MIN = 16;
-var GRID_MAX = 50;
+var GRID_MAX = 66;
 
 // ─── GRID SHRINKING ───
-// Fixed step between mode sizes (22→28→34→40 = 6 cells each)
+// Proportional shrinking: when all AI snakes die, grid returns to solo size (22).
+// Each AI death shrinks the grid by (initialGridSize - 22) / initialAICount.
+// The step is computed dynamically based on the mode and number of AI snakes.
+// Legacy SHRINK_STEP kept for backward compat with tests using solo/vs2/vs3.
 var SHRINK_STEP = 6;
 // Duration of shrink warning countdown in seconds
 var SHRINK_WARNING_DURATION = 10;
 // Show on-screen message after this many seconds (halfway)
 var SHRINK_MESSAGE_DELAY = 5;
 
-// Calculate target grid size after N deaths from initial size
-// Clamped to GRID_MIN (16)
-function calcShrinkTarget(initialGridSize, deaths) {
-  var result = initialGridSize - (deaths * SHRINK_STEP);
-  return Math.max(GRID_MIN, result);
+// Calculate target grid size after N deaths from initial size.
+// Uses proportional formula: target = 22 + (initialGridSize - 22) * aliveAI / initialAICount.
+// When all AI die (deaths >= initialAICount), returns solo size (22).
+// Forces even result for cell alignment.
+// Clamped to [GRID_MIN, initialGridSize].
+function calcShrinkTarget(initialGridSize, deaths, initialAICount) {
+  if (initialAICount <= 0) {
+    // Legacy: no AI, use fixed step
+    var result = initialGridSize - (deaths * SHRINK_STEP);
+    return Math.max(GRID_MIN, result);
+  }
+  var soloSize = 22;
+  var aliveAI = initialAICount - deaths;
+  if (aliveAI <= 0) return Math.max(GRID_MIN, soloSize);
+  var result = Math.round(soloSize + (initialGridSize - soloSize) * aliveAI / initialAICount);
+  // Force even
+  if (result % 2 !== 0) result += 1;
+  return Math.max(GRID_MIN, Math.min(result, initialGridSize));
 }
 
-// Calculate next shrink target from current grid size
-function calcNextShrinkSize(currentGridSize) {
-  var result = currentGridSize - SHRINK_STEP;
-  return Math.max(GRID_MIN, result);
+// Calculate next shrink target from current state.
+// initialGridSize: the grid size at game start
+// initialAICount: number of AI snakes at game start
+// deaths: how many AI snakes have died so far
+// Returns the target grid size after this death, or GRID_MIN if all AI dead.
+function calcNextShrinkSize(currentGridSize, initialGridSize, initialAICount, deaths) {
+  if (initialAICount <= 0) {
+    // Legacy: no AI, use fixed step
+    var result = currentGridSize - SHRINK_STEP;
+    return Math.max(GRID_MIN, result);
+  }
+  var soloSize = 22;
+  var aliveAI = initialAICount - deaths;
+  if (aliveAI <= 0) return Math.max(GRID_MIN, soloSize);
+  var result = Math.round(soloSize + (initialGridSize - soloSize) * aliveAI / initialAICount);
+  // Force even
+  if (result % 2 !== 0) result += 1;
+  return Math.max(GRID_MIN, Math.min(result, currentGridSize));
 }
 
 // Check if further shrinking is possible
@@ -117,11 +157,15 @@ var AI_COUNT = {
   solo: 0,
   vs2: 1,
   vs3: 2,
-  vs4: 3
+  vs4: 3,
+  vs5: 4,
+  vs6: 5,
+  vs7: 6,
+  vs8: 7
 };
 
 // ─── AI MODE: resolveGridSize(mode, percentageModifier) ───
-// mode: 'solo'|'vs2'|'vs3'|'vs4'
+// mode: 'solo'|'vs2'|'vs3'|'vs4'|'vs5'|'vs6'|'vs7'|'vs8'
 // percentageModifier: -50 to +50 (integer, step 5)
 // Returns clamped EVEN integer between GRID_MIN and GRID_MAX
 // (even grids ensure half is integer → cells align with snake positions)
@@ -204,6 +248,9 @@ var shrinkCountdowns = [];
 // ─── SHRINK FLASH STATE (global, not per-countdown) ───
 // Tracks whether the flash is currently ON for tick sound deduplication
 var _shrinkFlashOn = false;
+
+// ─── Proportional shrinking: initial grid size at game start ───
+var _initialGridSize = GRID_SIZE;
 
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
@@ -579,7 +626,15 @@ function buildSnake(color) {
   headM = head;
   bodyMs = bodies;
 
-  return { group: group, headM: head, bodyMs: bodies };
+  return { group: group, headM: head, bodyMs: bodies, _meshSig: null };
+}
+
+function snakeMeshSignature(snakeData, dir) {
+  if (!snakeData || !snakeData.length) return 'empty';
+  var head = snakeData[0];
+  var neck = snakeData.length > 1 ? snakeData[1] : head;
+  var tail = snakeData[snakeData.length - 1];
+  return snakeData.length + '|' + head.x + ',' + head.z + '|' + neck.x + ',' + neck.z + '|' + tail.x + ',' + tail.z + '|' + dir;
 }
 
 // ─── Refresh snake mesh ───
@@ -592,6 +647,9 @@ function refreshSnake(snakeData, groupData) {
     if(!gd || !gd.headM || !gd.bodyMs || !gd.bodyMs.length || !snake || !snake.length) return;
     headM = gd.headM;
     bodyMs = gd.bodyMs;
+    var playerSig = snakeMeshSignature(snake, direction);
+    if (gd._meshSig === playerSig) return;
+    gd._meshSig = playerSig;
     headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
     headM.rotation.y = -direction;
     for(var i = 1; i < snake.length; i++) {
@@ -613,6 +671,10 @@ function refreshSnake(snakeData, groupData) {
   var bodies = groupData.bodyMs;
   var dir = groupData.direction || 0;
 
+  var sig = snakeMeshSignature(snakeData, dir);
+  if (groupData._meshSig === sig) return;
+  groupData._meshSig = sig;
+
   head.position.set(gw(snakeData[0].x), .25, gw(snakeData[0].z));
   head.rotation.y = -dir;
 
@@ -633,6 +695,7 @@ function refreshSnake(snakeData, groupData) {
 // ─── APPLES ───
 var appleGroup = new THREE.Group(); scene.add(appleGroup);
 var appleMeshes = [];
+var animatedAppleMeshIndices = [];
 var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
 var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
 
@@ -643,15 +706,50 @@ var APPLE_POOL_MARGIN = 100;
 // ─── Apple position hash set for O(1) lookup ───
 // Maintained as "x,z" → true. Rebuilt whenever apples change.
 var appleSet = {};
+// Maintained as "x,z" → first index in apples[]. Used when a snake eats.
+// This avoids scanning all death apples every time any snake moves onto food.
+var appleIndex = {};
+function appleKey(x, z) { return x + ',' + z; }
 function rebuildAppleSet() {
   appleSet = {};
+  appleIndex = {};
   for (var i = 0; i < apples.length; i++) {
-    if (apples[i]) appleSet[apples[i].x + ',' + apples[i].z] = true;
+    if (apples[i]) {
+      var key = appleKey(apples[i].x, apples[i].z);
+      appleSet[key] = true;
+      if (appleIndex[key] === undefined) appleIndex[key] = i;
+    }
   }
 }
 // Incremental add — avoids iterating the entire array on death spikes.
-function addToAppleSet(a) {
-  if (a) appleSet[a.x + ',' + a.z] = true;
+function addToAppleSet(a, index) {
+  if (!a) return;
+  var key = appleKey(a.x, a.z);
+  appleSet[key] = true;
+  if (index === undefined) index = apples.length - 1;
+  if (index >= 0 && appleIndex[key] === undefined) appleIndex[key] = index;
+}
+
+function findAppleIndexForKey(key) {
+  for (var i = 0; i < apples.length; i++) {
+    if (!apples[i]) continue;
+    if (appleKey(apples[i].x, apples[i].z) === key) return i;
+  }
+  return -1;
+}
+
+function removeFromAppleSet(a, index) {
+  if (!a) return;
+  var key = appleKey(a.x, a.z);
+  if (index === undefined || appleIndex[key] === index) {
+    delete appleIndex[key];
+    var fallback = findAppleIndexForKey(key);
+    if (fallback >= 0) {
+      appleIndex[key] = fallback;
+    } else {
+      delete appleSet[key];
+    }
+  }
 }
 
 // ─── Corpse position hash set for O(1) lookup ───
@@ -705,7 +803,7 @@ function buildApples() {
 function isOccupied(x, z) {
   if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
   // O(1) apple lookup via hash set instead of O(n) array scan
-  if(appleSet[x + ',' + z]) return true;
+  if(appleSet[appleKey(x, z)]) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
   // ─── AI MODE: include AI snakes ───
    if(aiSnakes) {
@@ -715,22 +813,76 @@ function isOccupied(x, z) {
      }
    }
    // ─── CORPSES: O(1) lookup via corpseSet hash ───
-   if(corpseSet[x + ',' + z]) return true;
+   if(corpseSet[appleKey(x, z)]) return true;
    return false;
 }
 
 // Incremental appleSet update — replace old apple with new one in the hash.
 // This avoids the expensive rebuildAppleSet() call on every eat.
-function updateAppleSet(oldApple, newApple) {
-  if (oldApple) delete appleSet[oldApple.x + ',' + oldApple.z];
-  if (newApple) appleSet[newApple.x + ',' + newApple.z] = true;
+function updateAppleSet(oldApple, newApple, index) {
+  if (index === undefined) {
+    if (oldApple) {
+      delete appleSet[appleKey(oldApple.x, oldApple.z)];
+      delete appleIndex[appleKey(oldApple.x, oldApple.z)];
+    }
+    if (newApple) {
+      var newKey = appleKey(newApple.x, newApple.z);
+      appleSet[newKey] = true;
+      var found = findAppleIndexForKey(newKey);
+      if (found >= 0) appleIndex[newKey] = found;
+    }
+    return;
+  }
+  removeFromAppleSet(oldApple, index);
+  if (newApple) addToAppleSet(newApple, index);
+}
+
+function getAppleIndexAt(x, z) {
+  var key = appleKey(x, z);
+  var index = appleIndex[key];
+  if (index !== undefined && apples[index] && apples[index].x === x && apples[index].z === z) return index;
+  index = findAppleIndexForKey(key);
+  if (index >= 0) {
+    appleIndex[key] = index;
+    appleSet[key] = true;
+    return index;
+  }
+  delete appleIndex[key];
+  delete appleSet[key];
+  return -1;
+}
+
+function replaceAppleAt(index, newApple) {
+  if (index < 0 || index >= apples.length) return null;
+  var oldApple = apples[index];
+  apples[index] = newApple;
+  updateAppleSet(oldApple, newApple, index);
+  appleDirty = true;
+  return oldApple;
+}
+
+function buildSpawnOccupiedSet() {
+  var occupied = {};
+  for (var i = 0; i < snake.length; i++) occupied[appleKey(snake[i].x, snake[i].z)] = true;
+  for (var o = 0; o < obstacles.length; o++) occupied[appleKey(obstacles[o].x, obstacles[o].z)] = true;
+  if (aiSnakes) {
+    for (var a = 0; a < aiSnakes.length; a++) {
+      var ai = aiSnakes[a];
+      if (!ai.alive) continue;
+      for (var s = 0; s < ai.snake.length; s++) occupied[appleKey(ai.snake[s].x, ai.snake[s].z)] = true;
+    }
+  }
+  for (var ck in corpseSet) occupied[ck] = true;
+  for (var ak in appleSet) occupied[ak] = true;
+  return occupied;
 }
 
 function spawnOneApple() {
+  var occupied = buildSpawnOccupiedSet();
   for(var tries = 0; tries < 200; tries++) {
     var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
     var z = gridMinZ + Math.floor(Math.random() * (gridMaxZ - gridMinZ));
-    if(!isOccupied(x,z)) return {x:x, z:z};
+    if(!occupied[appleKey(x, z)]) return {x:x, z:z};
   }
   return null;
 }
@@ -742,6 +894,7 @@ var appleDirty = false;
 function refreshApples() {
   if (!appleDirty || !appleMeshes || !appleMeshes.length) return;
   appleDirty = false;
+  animatedAppleMeshIndices = [];
   var totalApples = Math.min(apples.length, appleMeshes.length);
   for(var i = 0; i < totalApples; i++) {
     if(apples[i]) {
@@ -752,13 +905,17 @@ function refreshApples() {
       // once, forcing THREE.js to re-shade every object against every light.
       var light = appleMeshes[i].userData && appleMeshes[i].userData.light;
       if (light) light.visible = !apples[i].fromDeath;
+      appleMeshes[i].userData.animate = !apples[i].fromDeath;
+      if (!apples[i].fromDeath) animatedAppleMeshIndices.push(i);
     } else {
       appleMeshes[i].visible = false;
+      appleMeshes[i].userData.animate = false;
     }
   }
   // Hide any unused meshes
   for(var i = totalApples; i < appleMeshes.length; i++) {
     appleMeshes[i].visible = false;
+    appleMeshes[i].userData.animate = false;
   }
 }
 
@@ -795,10 +952,14 @@ function deduplicateApples() {
 
 function initApples() {
   apples = [];
+  rebuildAppleSet();
   var numApples = calcNumApples(GRID_SIZE);
   for(var i = 0; i < numApples; i++) {
     var a = spawnOneApple();
-    if(a) apples.push(a);
+    if(a) {
+      apples.push(a);
+      addToAppleSet(a, apples.length - 1);
+    }
   }
   rebuildAppleSet();
   appleDirty = true;
@@ -1016,8 +1177,25 @@ var DIRS = [{x:1,z:0},{x:-1,z:0},{x:0,z:1},{x:0,z:-1}];
 
 // ─── Build blocked cells lookup ───
 // Returns an object with "x,z" keys for all occupied cells
-// Used by BFS, flood fill, etc. — build once per tick
-function buildBlockedSet(excludeSnake) {
+// Used by BFS, flood fill, etc.
+//
+// PERFORMANCE: building this set involves string concatenation over every
+// snake segment, obstacle and corpse cell. With 8 snakes + a 50-segment
+// corpse, a single AI decision rebuilds it ~5 times (countReachable per
+// direction, bfsPathToTail, etc.), and there are 8 decisions per tick.
+// To avoid that O(n) recompute storm we cache the result during stepAI:
+//   • _blockedCacheEnabled is turned on only inside stepAI.
+//   • The cache is marked dirty at the start of each snake's turn (the only
+//     moment the board changes — a snake moved/died), so every decision still
+//     sees an up-to-date set with identical contents to a fresh build.
+//   • Callers that MUTATE the set (add their own body) must clone it first
+//     via cloneBlocked(), since the cached object is shared and read-only.
+// Outside stepAI (tests, ad-hoc calls) caching stays off → always fresh.
+var _blockedCache = null;
+var _blockedCacheEnabled = false;
+var _blockedCacheDirty = true;
+
+function _computeBlockedSet(excludeSnake) {
   var blocked = {};
   // Player snake
   if (snake.length) {
@@ -1044,6 +1222,34 @@ function buildBlockedSet(excludeSnake) {
   return blocked;
 }
 
+function buildBlockedSet(excludeSnake) {
+  // The excludeSnake variant is rare and not cacheable — always fresh.
+  if (excludeSnake !== undefined && excludeSnake !== null) {
+    return _computeBlockedSet(excludeSnake);
+  }
+  if (_blockedCacheEnabled) {
+    if (_blockedCacheDirty || !_blockedCache) {
+      _blockedCache = _computeBlockedSet();
+      _blockedCacheDirty = false;
+    }
+    return _blockedCache;
+  }
+  return _computeBlockedSet();
+}
+
+// Shallow clone of a blocked set. Used by callers that need to add their own
+// body cells without polluting the shared per-tick cache.
+function cloneBlocked(b) {
+  var o = {};
+  for (var k in b) o[k] = true;
+  return o;
+}
+
+// Cache lifecycle helpers — used by stepAI to bound the cache to a single tick.
+function enableBlockedCache() { _blockedCacheEnabled = true; _blockedCacheDirty = true; }
+function disableBlockedCache() { _blockedCacheEnabled = false; _blockedCache = null; _blockedCacheDirty = true; }
+function invalidateBlockedCache() { _blockedCacheDirty = true; }
+
 // ─── BFS pathfinding ───
 // Find shortest path from (sx,sz) to (tx,tz) avoiding blocked cells
 // Returns array of {x,z} positions (including start and target), or null
@@ -1052,14 +1258,26 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
   var startKey = sx + ',' + sz;
   if (blocked[startKey]) return null;
 
+  // Precompute snake-body occupancy once (excluding the tail, which vacates).
+  // Replaces the O(body) snakeBody.some() scan that ran on every cell
+  // expansion — a major cost once snakes grow long after several deaths.
+  var bodySet = null;
+  if (snakeBody && snakeBody.length > 1) {
+    bodySet = {};
+    for (var b = 0; b < snakeBody.length - 1; b++) {
+      bodySet[snakeBody[b].x + ',' + snakeBody[b].z] = true;
+    }
+  }
+
   var queue = [{x: sx, z: sz}];
+  var qHead = 0; // index pointer — O(1) dequeue instead of Array.shift() (O(n))
   var visited = {};
   var parent = {};
   visited[startKey] = true;
   var steps = 0;
 
-  while (queue.length > 0 && steps < maxSteps) {
-    var curr = queue.shift();
+  while (qHead < queue.length && steps < maxSteps) {
+    var curr = queue[qHead++];
     steps++;
     if (curr.x === tx && curr.z === tz) {
       // Reconstruct path
@@ -1079,15 +1297,8 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
       var key = nx + ',' + nz;
       if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
       if (blocked[key] || visited[key]) continue;
-      // For snake body, allow moving to the tail (it will move away)
-      if (snakeBody && snakeBody.length > 0) {
-        var tail = snakeBody[snakeBody.length - 1];
-        if (nx === tail.x && nz === tail.z) {
-          // Allow moving to tail position — it will vacate
-        } else if (snakeBody.some(function(s) { return s.x === nx && s.z === nz; })) {
-          continue;
-        }
-      }
+      // Snake body blocks movement except the tail cell (it will vacate).
+      if (bodySet && bodySet[key]) continue;
       visited[key] = true;
       parent[key] = curr.x + ',' + curr.z;
       queue.push({x: nx, z: nz});
@@ -1100,28 +1311,33 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
 // Returns number of reachable cells from (x,z)
 function countReachable(x, z, snakeBody, maxSteps) {
   maxSteps = maxSteps || 50;
+  // Use the shared cached blocked set directly and track this snake's body in
+  // a small separate set. This avoids cloning the (potentially large) blocked
+  // map on every call — countReachable runs several times per snake per tick.
   var blocked = buildBlockedSet();
-  // Add own snake body (excluding tail which will move)
+  var bodySet = null;
   if (snakeBody && snakeBody.length > 1) {
+    bodySet = {};
     for (var i = 0; i < snakeBody.length - 1; i++) {
-      blocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+      bodySet[snakeBody[i].x + ',' + snakeBody[i].z] = true;
     }
   }
 
   var visited = {};
   var queue = [{x: x, z: z}];
+  var qHead = 0; // O(1) dequeue instead of Array.shift()
   visited[x + ',' + z] = true;
   var count = 0;
 
-  while (queue.length > 0 && count < maxSteps) {
-    var curr = queue.shift();
+  while (qHead < queue.length && count < maxSteps) {
+    var curr = queue[qHead++];
     count++;
     for (var d = 0; d < DIRS.length; d++) {
       var nx = curr.x + DIRS[d].x;
       var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
       if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
-      if (blocked[key] || visited[key]) continue;
+      if (blocked[key] || (bodySet && bodySet[key]) || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nx, z: nz});
     }
@@ -1157,7 +1373,8 @@ function countEscapeRoutes(x, z, snakeBody, blocked) {
 function bfsPathToTail(aiSnake) {
   if (!aiSnake || aiSnake.length < 2) return null;
   var tail = aiSnake[aiSnake.length - 1];
-  var blocked = buildBlockedSet();
+  // Clone the cached blocked set — we add own body cells below.
+  var blocked = cloneBlocked(buildBlockedSet());
   // Block own body except head (start) and tail (target)
   for (var i = 1; i < aiSnake.length - 1; i++) {
     blocked[aiSnake[i].x + ',' + aiSnake[i].z] = true;
@@ -1375,30 +1592,32 @@ function isNearEdge(x, z, margin) {
 // Near board edges, space requirements are relaxed since walls naturally
 // constrain movement — without this, the AI would loop endlessly near edges.
 function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
-  // Quick check: count reachable space from this position
-  var bodyBlocked = {};
-  for (var k in blocked) bodyBlocked[k] = true;
-  // Add own body (excluding tail)
+  // Track own body (excluding tail) in a small set instead of copying the
+  // entire blocked map on every call. minSafeSpace runs once per candidate
+  // direction per snake, so the per-call copy was pure overhead.
+  var bodySet = null;
   if (snakeBody && snakeBody.length > 1) {
+    bodySet = {};
     for (var i = 0; i < snakeBody.length - 1; i++) {
-      bodyBlocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+      bodySet[snakeBody[i].x + ',' + snakeBody[i].z] = true;
     }
   }
 
   var visited = {};
   var queue = [{x: nx, z: nz}];
+  var qHead = 0; // O(1) dequeue instead of Array.shift()
   visited[nx + ',' + nz] = true;
   var count = 0;
 
-  while (queue.length > 0 && count < minSpace + 10) {
-    var curr = queue.shift();
+  while (qHead < queue.length && count < minSpace + 10) {
+    var curr = queue[qHead++];
     count++;
     for (var d = 0; d < DIRS.length; d++) {
       var nnx = curr.x + DIRS[d].x;
       var nnz = curr.z + DIRS[d].z;
       var key = nnx + ',' + nnz;
       if (nnx < gridMinX || nnx >= gridMaxX || nnz < gridMinZ || nnz >= gridMaxZ) continue;
-      if (bodyBlocked[key] || visited[key]) continue;
+      if (blocked[key] || (bodySet && bodySet[key]) || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nnx, z: nnz});
     }
@@ -1533,7 +1752,8 @@ function aiDecideDirection(aiIndex, diff) {
   if (safe.length === 0) return ai.direction;
 
   // ─── Build blocked set ───
-  var blocked = buildBlockedSet();
+  // Clone the cached set so adding this snake's body doesn't pollute the cache.
+  var blocked = cloneBlocked(buildBlockedSet());
   for (var i = 1; i < ai.snake.length; i++) {
     blocked[ai.snake[i].x + ',' + ai.snake[i].z] = true;
   }
@@ -1750,8 +1970,16 @@ function initAI() {
 function stepAI() {
   if (!aiSnakes || aiSnakes.length === 0) return;
 
+  // Enable the per-tick blocked-set cache for the whole AI phase. Each snake's
+  // turn marks it dirty so decisions still see fresh positions, but the
+  // expensive recompute happens at most once per snake instead of ~5 times.
+  enableBlockedCache();
+
   aiSnakes.forEach(function(ai, index) {
     if (!ai.alive) return;
+
+    // Board changed since the previous snake moved — refresh the cache.
+    invalidateBlockedCache();
 
     ai.direction = aiDecideDirection(index, difficulty);
 
@@ -1809,18 +2037,17 @@ function stepAI() {
     // Move forward
     ai.snake.unshift({x: nx, z: nz});
 
-    // Check apple eating
+    // Check apple eating via O(1) position → index lookup. This matters after
+    // multiple deaths, when the board can contain 100+ death apples.
     var ate = false;
-    for (var i = 0; i < apples.length; i++) {
-      if (apples[i] && nx === apples[i].x && nz === apples[i].z) {
+    var appleIndexAtHead = (typeof getAppleIndexAt === 'function') ? getAppleIndexAt(nx, nz) : -1;
+    if (appleIndexAtHead >= 0) {
         ai.score++;
         ate = true;
-        var eatenApple = apples[i];
+        var eatenApple = apples[appleIndexAtHead];
         var newA = spawnOneApple();
-        apples[i] = newA;
-        // Incremental hash update instead of full rebuild + dedup
-        if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
-        appleDirty = true;
+        if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
+        else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
         // Directional eat sound based on AI position relative to player
         if (snake.length > 0) {
@@ -1828,12 +2055,14 @@ function stepAI() {
           var panX = (nx - playerHead.x) / Math.max(half, 1);
           sfxAiEat(panX);
         }
-        break;
-      }
     }
 
     if (!ate) ai.snake.pop();
   });
+
+  // Disable the cache outside the AI phase so other callers always see fresh
+  // data (corpse conversion, player step, tests, etc.).
+  disableBlockedCache();
 }
 
 // ─── AI snake dies ───
@@ -1919,7 +2148,7 @@ function processCorpses() {
       if (seg && seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
         var newApple = {x: seg.x, z: seg.z, fromDeath: true};
         apples.push(newApple);
-        if (typeof addToAppleSet === 'function') addToAppleSet(newApple);
+        if (typeof addToAppleSet === 'function') addToAppleSet(newApple, apples.length - 1);
         appleDirty = true;
 
         // Hide the converted segment mesh
@@ -1976,6 +2205,7 @@ function refreshAISnakes() {
 
   aiSnakes.forEach(function(ai, index) {
     if (!ai.alive || !ai.groupData || !ai.groupData.bodyMs || !ai.groupData.bodyMs.length) return;
+    ai.groupData.direction = ai.direction;
     refreshSnake(ai.snake, ai.groupData);
   });
 }
@@ -1998,6 +2228,9 @@ function buildColorSelector(container) {
   wrapper.className = 'selector-row';
   wrapper.innerHTML = '<span class="selector-label">Color:</span>';
 
+  var group = document.createElement('div');
+  group.className = 'chip-group';
+
   SNAKE_COLOR_NAMES.forEach(function(colorName) {
     var chip = document.createElement('button');
     chip.className = 'color-chip' + (colorName === uiState.selectedColor ? ' selected' : '');
@@ -2009,9 +2242,10 @@ function buildColorSelector(container) {
       uiState.selectedColor = colorName;
       updateHighScoreDisplay();
     });
-    wrapper.appendChild(chip);
+    group.appendChild(chip);
   });
 
+  wrapper.appendChild(group);
   container.appendChild(wrapper);
 }
 
@@ -2021,7 +2255,9 @@ function buildModeSelector(container) {
   wrapper.className = 'selector-row';
   wrapper.innerHTML = '<span class="selector-label">Modo:</span>';
 
-  var modeLabels = { solo: 'Solo', vs2: 'vs 2', vs3: 'vs 3', vs4: 'vs 4' };
+  var modeLabels = { solo: 'Solo', vs2: 'vs 2', vs3: 'vs 3', vs4: 'vs 4', vs5: 'vs 5', vs6: 'vs 6', vs7: 'vs 7', vs8: 'vs 8' };
+  var group = document.createElement('div');
+  group.className = 'chip-group';
   GAME_MODES.forEach(function(mode) {
     var chip = document.createElement('button');
     chip.className = 'mode-chip' + (mode === uiState.selectedMode ? ' selected' : '');
@@ -2035,9 +2271,10 @@ function buildModeSelector(container) {
       updateSizeDisplay();
       updateHighScoreDisplay();
     });
-    wrapper.appendChild(chip);
+    group.appendChild(chip);
   });
 
+  wrapper.appendChild(group);
   container.appendChild(wrapper);
 }
 
@@ -2048,6 +2285,8 @@ function buildDifficultySelector(container) {
   wrapper.innerHTML = '<span class="selector-label">Dificultad:</span>';
 
   var diffLabels = { easy: 'Fácil', medium: 'Medio', hard: 'Difícil' };
+  var group = document.createElement('div');
+  group.className = 'chip-group';
   DIFFICULTIES.forEach(function(diff) {
     var chip = document.createElement('button');
     chip.className = 'diff-chip' + (diff === uiState.selectedDifficulty ? ' selected' : '');
@@ -2059,9 +2298,10 @@ function buildDifficultySelector(container) {
       uiState.selectedDifficulty = diff;
       updateHighScoreDisplay();
     });
-    wrapper.appendChild(chip);
+    group.appendChild(chip);
   });
 
+  wrapper.appendChild(group);
   container.appendChild(wrapper);
 }
 
@@ -2113,7 +2353,7 @@ function updateSizeDisplay() {
 function updateDifficultyVisibility() {
   var diffRow = document.querySelector('.difficulty-row');
   if (!diffRow) return;
-  diffRow.style.display = (uiState.selectedMode === 'solo') ? 'none' : 'flex';
+  diffRow.style.display = (uiState.selectedMode === 'solo') ? 'none' : 'grid';
 }
 
 // ─── Update high score display ───
@@ -2239,7 +2479,10 @@ function initGame() {
   lookSmoothX = gw(-5) + 3;
   lookSmoothZ = gw(0);
   log('Snake: '+snake.length+' seg, dir=0, grid=' + gridSize + ', half=' + half);
-}
+
+   // ─── Store initial grid size for proportional shrinking ───
+   _initialGridSize = gridSize;
+  }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
 function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
@@ -2274,20 +2517,16 @@ function step() {
      }
    snake.unshift({x:nx,z:nz});
   var ate = false;
-  for(var i = 0; i < apples.length; i++) {
-     if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+  var appleIndexAtHead = (typeof getAppleIndexAt === 'function') ? getAppleIndexAt(nx, nz) : -1;
+  if(appleIndexAtHead >= 0) {
        score++; scoreEl.textContent=score; ate=true;
-       sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
-         log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-         var eatenApple = apples[i];
+       var eatenApple = apples[appleIndexAtHead];
+       sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
+         log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
          var newA = spawnOneApple();
-         apples[i] = newA;
-         // Incremental hash update instead of full rebuild + dedup
-         if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
-         appleDirty = true;
+         if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
+         else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
           if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
-       break;
-     }
    }
   if(!ate) snake.pop();
   refreshApples();
@@ -2354,8 +2593,17 @@ function maybeTriggerShrink() {
   // Check if there's already an active countdown — don't stack too many
   if (shrinkCountdowns && shrinkCountdowns.length >= 2) return;
 
-  // Calculate next shrink step
-  var nextSize = calcNextShrinkSize(currentGridSize);
+  // Count deaths for proportional shrink
+  var deaths = 0;
+  var initialAICount = aiSnakes ? aiSnakes.length : 0;
+  if (aiSnakes) {
+    for (var i = 0; i < aiSnakes.length; i++) {
+      if (!aiSnakes[i].alive) deaths++;
+    }
+  }
+
+  // Calculate next shrink step (proportional)
+  var nextSize = calcNextShrinkSize(currentGridSize, _initialGridSize || gridSize, initialAICount, deaths);
   if (nextSize >= currentGridSize) return;
 
   triggerShrinkCountdown(nextSize);
@@ -2643,10 +2891,15 @@ function removeOutOfBounds() {
   // Pad regular portion to NUM_APPLES
   while (apples.length < NUM_APPLES + deathApples.length) apples.push(null);
 
+  // Keep spawnOneApple() aware of the compacted apple list before refilling
+  // null slots; otherwise multiple refills in one shrink can reuse a cell.
+  if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
+
   // Spawn missing apples (only in null slots of the regular portion)
   for (var i = 0; i < apples.length; i++) {
     if (!apples[i]) {
       apples[i] = spawnOneApple();
+      if (typeof addToAppleSet === 'function') addToAppleSet(apples[i], i);
     }
   }
   // Remove any duplicates that may have been created during spawn

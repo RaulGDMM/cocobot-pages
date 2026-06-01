@@ -56,7 +56,10 @@ function initGame() {
   lookSmoothX = gw(-5) + 3;
   lookSmoothZ = gw(0);
   log('Snake: '+snake.length+' seg, dir=0, grid=' + gridSize + ', half=' + half);
-}
+
+   // ─── Store initial grid size for proportional shrinking ───
+   _initialGridSize = gridSize;
+  }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
 function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
@@ -91,20 +94,16 @@ function step() {
      }
    snake.unshift({x:nx,z:nz});
   var ate = false;
-  for(var i = 0; i < apples.length; i++) {
-     if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
+  var appleIndexAtHead = (typeof getAppleIndexAt === 'function') ? getAppleIndexAt(nx, nz) : -1;
+  if(appleIndexAtHead >= 0) {
        score++; scoreEl.textContent=score; ate=true;
-       sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
-         log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-         var eatenApple = apples[i];
+       var eatenApple = apples[appleIndexAtHead];
+       sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
+         log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
          var newA = spawnOneApple();
-         apples[i] = newA;
-         // Incremental hash update instead of full rebuild + dedup
-         if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
-         appleDirty = true;
+         if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
+         else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
           if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
-       break;
-     }
    }
   if(!ate) snake.pop();
   refreshApples();
@@ -171,8 +170,17 @@ function maybeTriggerShrink() {
   // Check if there's already an active countdown — don't stack too many
   if (shrinkCountdowns && shrinkCountdowns.length >= 2) return;
 
-  // Calculate next shrink step
-  var nextSize = calcNextShrinkSize(currentGridSize);
+  // Count deaths for proportional shrink
+  var deaths = 0;
+  var initialAICount = aiSnakes ? aiSnakes.length : 0;
+  if (aiSnakes) {
+    for (var i = 0; i < aiSnakes.length; i++) {
+      if (!aiSnakes[i].alive) deaths++;
+    }
+  }
+
+  // Calculate next shrink step (proportional)
+  var nextSize = calcNextShrinkSize(currentGridSize, _initialGridSize || gridSize, initialAICount, deaths);
   if (nextSize >= currentGridSize) return;
 
   triggerShrinkCountdown(nextSize);
@@ -460,10 +468,15 @@ function removeOutOfBounds() {
   // Pad regular portion to NUM_APPLES
   while (apples.length < NUM_APPLES + deathApples.length) apples.push(null);
 
+  // Keep spawnOneApple() aware of the compacted apple list before refilling
+  // null slots; otherwise multiple refills in one shrink can reuse a cell.
+  if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
+
   // Spawn missing apples (only in null slots of the regular portion)
   for (var i = 0; i < apples.length; i++) {
     if (!apples[i]) {
       apples[i] = spawnOneApple();
+      if (typeof addToAppleSet === 'function') addToAppleSet(apples[i], i);
     }
   }
   // Remove any duplicates that may have been created during spawn

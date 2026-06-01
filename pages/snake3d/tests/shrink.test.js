@@ -18,38 +18,81 @@ describe('config.js — SHRINK constants', () => {
 
 describe('config.js — calcShrinkTarget()', () => {
   test('returns initial size when 0 deaths', () => {
-    expect(calcShrinkTarget(40, 0)).toBe(40);
-    expect(calcShrinkTarget(22, 0)).toBe(22);
+    // With initialAICount=3, 0 deaths → aliveAI=3 → full grid
+    expect(calcShrinkTarget(40, 0, 3)).toBe(40);
+    // With initialAICount=0 (legacy), 0 deaths → full grid
+    expect(calcShrinkTarget(22, 0, 0)).toBe(22);
   });
 
-  test('reduces by SHRINK_STEP per death', () => {
-    expect(calcShrinkTarget(40, 1)).toBe(34);
-    expect(calcShrinkTarget(40, 2)).toBe(28);
-    expect(calcShrinkTarget(40, 3)).toBe(22);
+  test('proportional shrink: vs4 (3 AI, grid 40) → solo size (22) when all die', () => {
+    // vs4: initialGridSize=40, initialAICount=3
+    // After 1 death: 22 + (40-22) * 2/3 = 22 + 12 = 34
+    expect(calcShrinkTarget(40, 1, 3)).toBe(34);
+    // After 2 deaths: 22 + (40-22) * 1/3 = 22 + 6 = 28
+    expect(calcShrinkTarget(40, 2, 3)).toBe(28);
+    // After 3 deaths: all AI dead → solo size 22
+    expect(calcShrinkTarget(40, 3, 3)).toBe(22);
+  });
+
+  test('proportional shrink: vs8 (7 AI, grid 62) → solo size (22) when all die', () => {
+    // vs8: initialGridSize=62, initialAICount=7
+    // After 1 death: 22 + (62-22) * 6/7 = 22 + 34.29 = 56
+    expect(calcShrinkTarget(62, 1, 7)).toBe(56);
+    // After 7 deaths: all AI dead → solo size 22
+    expect(calcShrinkTarget(62, 7, 7)).toBe(22);
+  });
+
+  test('proportional shrink: vs2 (1 AI, grid 28) → solo size (22) when AI dies', () => {
+    expect(calcShrinkTarget(28, 0, 1)).toBe(28);
+    expect(calcShrinkTarget(28, 1, 1)).toBe(22);
+  });
+
+  test('proportional shrink: vs3 (2 AI, grid 34) → solo size (22) when all die', () => {
+    // After 1 death: 22 + (34-22) * 1/2 = 22 + 6 = 28
+    expect(calcShrinkTarget(34, 1, 2)).toBe(28);
+    // After 2 deaths: all AI dead → 22
+    expect(calcShrinkTarget(34, 2, 2)).toBe(22);
+  });
+
+  test('legacy mode (initialAICount=0) uses fixed SHRINK_STEP', () => {
+    expect(calcShrinkTarget(40, 1, 0)).toBe(34);
+    expect(calcShrinkTarget(40, 2, 0)).toBe(28);
+    expect(calcShrinkTarget(40, 3, 0)).toBe(22);
   });
 
   test('clamps to GRID_MIN (16)', () => {
-    expect(calcShrinkTarget(20, 10)).toBe(16);
-    expect(calcShrinkTarget(22, 10)).toBe(16);
-  });
-
-  test('handles fractional deaths', () => {
-    // 40 - 1.5 * 6 = 31
-    expect(calcShrinkTarget(40, 1.5)).toBe(31);
+    // Even with proportional, if soloSize was below GRID_MIN, it would clamp
+    // But since soloSize=22 > GRID_MIN=16, this only matters for extreme cases
+    expect(calcShrinkTarget(20, 10, 0)).toBe(16);
   });
 });
 
 describe('config.js — calcNextShrinkSize()', () => {
-  test('reduces current size by SHRINK_STEP', () => {
-    expect(calcNextShrinkSize(40)).toBe(34);
-    expect(calcNextShrinkSize(34)).toBe(28);
-    expect(calcNextShrinkSize(28)).toBe(22);
+  test('proportional shrink: vs4 (3 AI, grid 40)', () => {
+    // After 1 death (2 alive): target = 22 + 18 * 2/3 = 34
+    expect(calcNextShrinkSize(40, 40, 3, 1)).toBe(34);
+    // After 2 deaths (1 alive): target = 22 + 18 * 1/3 = 28
+    expect(calcNextShrinkSize(34, 40, 3, 2)).toBe(28);
+    // After 3 deaths (0 alive): target = 22
+    expect(calcNextShrinkSize(28, 40, 3, 3)).toBe(22);
+  });
+
+  test('proportional shrink: vs8 (7 AI, grid 62)', () => {
+    // After 1 death (6 alive): target = 22 + 40 * 6/7 = 56
+    expect(calcNextShrinkSize(62, 62, 7, 1)).toBe(56);
+    // After 7 deaths (0 alive): target = 22
+    expect(calcNextShrinkSize(28, 62, 7, 7)).toBe(22);
+  });
+
+  test('legacy mode (initialAICount=0) uses fixed SHRINK_STEP', () => {
+    expect(calcNextShrinkSize(40, 40, 0, 0)).toBe(34);
+    expect(calcNextShrinkSize(34, 34, 0, 0)).toBe(28);
+    expect(calcNextShrinkSize(28, 28, 0, 0)).toBe(22);
   });
 
   test('clamps to GRID_MIN', () => {
-    expect(calcNextShrinkSize(18)).toBe(16);
-    expect(calcNextShrinkSize(16)).toBe(16);
-    expect(calcNextShrinkSize(20)).toBe(16);
+    expect(calcNextShrinkSize(18, 18, 0, 0)).toBe(16);
+    expect(calcNextShrinkSize(16, 16, 0, 0)).toBe(16);
   });
 });
 

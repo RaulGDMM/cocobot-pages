@@ -79,6 +79,49 @@ describe('apples.js — appleSet hash set', () => {
     addToAppleSet(null);
     expect(Object.keys(appleSet).length).toBe(0);
   });
+
+  test('getAppleIndexAt returns index without scanning callers manually', () => {
+    setApples([{x: 1, z: 1}, {x: 8, z: -2}, {x: 3, z: 3}]);
+    expect(getAppleIndexAt(8, -2)).toBe(1);
+    expect(getAppleIndexAt(9, 9)).toBe(-1);
+  });
+
+  test('replaceAppleAt updates appleSet and appleIndex incrementally', () => {
+    setApples([{x: 1, z: 1}, {x: 2, z: 2}, {x: 3, z: 3}]);
+    var old = replaceAppleAt(1, {x: 9, z: 9});
+    expect(old).toEqual({x: 2, z: 2});
+    expect(appleSet['2,2']).toBe(undefined);
+    expect(appleSet['9,9']).toBe(true);
+    expect(getAppleIndexAt(9, 9)).toBe(1);
+  });
+
+  test('replaceAppleAt handles null replacement as removal', () => {
+    setApples([{x: 1, z: 1}, {x: 2, z: 2}]);
+    replaceAppleAt(0, null);
+    expect(appleSet['1,1']).toBe(undefined);
+    expect(getAppleIndexAt(1, 1)).toBe(-1);
+    expect(getAppleIndexAt(2, 2)).toBe(1);
+  });
+
+  test('spawnOneApple respects apples added incrementally before rebuild', () => {
+    setApples([]);
+    apples.push({x: 0, z: 0});
+    addToAppleSet(apples[0], 0);
+    var originalRandom = Math.random;
+    var calls = 0;
+    Math.random = function() {
+      calls++;
+      // First attempt: (0,0), already occupied by the incrementally added apple.
+      // Second attempt: (1,1), available.
+      return calls <= 2 ? 0.5 : 0.55;
+    };
+    try {
+      var spawned = spawnOneApple();
+      expect(spawned).toEqual({x: 1, z: 1});
+    } finally {
+      Math.random = originalRandom;
+    }
+  });
 });
 
 // ─── APPLE_POOL_MARGIN ───
@@ -118,6 +161,52 @@ describe('apples.js — appleDirty flag', () => {
     expect(appleMeshes[0].visible).toBe(true);
     expect(appleMeshes[1].visible).toBe(true);
     expect(appleMeshes[2].visible).toBe(false);
+  });
+
+  test('refreshApples only marks normal apples for per-frame animation', () => {
+    setApples([{x: 1, z: 1}, {x: 2, z: 2, fromDeath: true}, {x: 3, z: 3}]);
+    appleDirty = true;
+    refreshApples();
+    expect(animatedAppleMeshIndices).toEqual([0, 2]);
+    expect(appleMeshes[0].userData.animate).toBe(true);
+    expect(appleMeshes[1].userData.animate).toBe(false);
+    expect(appleMeshes[2].userData.animate).toBe(true);
+  });
+});
+
+// ─── Snake mesh refresh cache ───
+describe('snake.js — refreshSnake mesh signature cache', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setObstacles([]);
+    setApples([]);
+  });
+
+  test('player refresh skips body work when snake signature is unchanged', () => {
+    playerGroupData = buildSnake('green');
+    setSnake([{x: 0, z: 0}, {x: -1, z: 0}, {x: -2, z: 0}]);
+    direction = 0;
+    var bodySetCalls = 0;
+    playerGroupData.bodyMs[1].position.set = function(x, y, z) { bodySetCalls++; this.x = x; this.y = y; this.z = z; return this; };
+
+    refreshSnake();
+    refreshSnake();
+
+    expect(bodySetCalls).toBe(1);
+  });
+
+  test('player refresh updates again after movement changes signature', () => {
+    playerGroupData = buildSnake('green');
+    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
+    direction = 0;
+    var bodySetCalls = 0;
+    playerGroupData.bodyMs[1].position.set = function(x, y, z) { bodySetCalls++; this.x = x; this.y = y; this.z = z; return this; };
+
+    refreshSnake();
+    setSnake([{x: 1, z: 0}, {x: 0, z: 0}]);
+    refreshSnake();
+
+    expect(bodySetCalls).toBe(2);
   });
 });
 

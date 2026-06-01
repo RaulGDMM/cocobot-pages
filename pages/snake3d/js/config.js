@@ -45,19 +45,29 @@ var SNAKE_COLORS = {
   green: '#00cc44',
   red: '#cc2222',
   blue: '#2266cc',
-  yellow: '#ccaa00'
-};
-var SNAKE_COLOR_NAMES = ['green', 'red', 'blue', 'yellow'];
+  yellow: '#ccaa00',
+  cyan: '#00cccc',
+  purple: '#aa22cc',
+  orange: '#cc6600',
+  salmon: '#ff6666'
+  };
+  var SNAKE_COLOR_NAMES = ['green', 'red', 'blue', 'yellow', 'cyan', 'purple', 'orange', 'salmon'];
 
-// Game modes: solo, vs2, vs3, vs4
-var GAME_MODES = ['solo', 'vs2', 'vs3', 'vs4'];
+// Game modes: solo, vs2, vs3, vs4, vs5, vs6, vs7, vs8
+var GAME_MODES = ['solo', 'vs2', 'vs3', 'vs4', 'vs5', 'vs6', 'vs7', 'vs8'];
 
 // Mode → base grid size multiplier
+// Linear +0.25 per mode. Base grid 22:
+//   solo=22, vs2=28, vs3=34, vs4=38, vs5=44, vs6=50, vs7=56, vs8=60
 var MODE_GRID_MULTIPLIER = {
   solo: 1.0,
   vs2: 1.25,
   vs3: 1.50,
-  vs4: 1.75
+  vs4: 1.75,
+  vs5: 2.00,
+  vs6: 2.25,
+  vs7: 2.50,
+  vs8: 2.75
 };
 
 // Difficulty levels
@@ -79,27 +89,57 @@ var AI_CORNERING_RATE = {
 
 // Grid size limits
 var GRID_MIN = 16;
-var GRID_MAX = 50;
+var GRID_MAX = 66;
 
 // ─── GRID SHRINKING ───
-// Fixed step between mode sizes (22→28→34→40 = 6 cells each)
+// Proportional shrinking: when all AI snakes die, grid returns to solo size (22).
+// Each AI death shrinks the grid by (initialGridSize - 22) / initialAICount.
+// The step is computed dynamically based on the mode and number of AI snakes.
+// Legacy SHRINK_STEP kept for backward compat with tests using solo/vs2/vs3.
 var SHRINK_STEP = 6;
 // Duration of shrink warning countdown in seconds
 var SHRINK_WARNING_DURATION = 10;
 // Show on-screen message after this many seconds (halfway)
 var SHRINK_MESSAGE_DELAY = 5;
 
-// Calculate target grid size after N deaths from initial size
-// Clamped to GRID_MIN (16)
-function calcShrinkTarget(initialGridSize, deaths) {
-  var result = initialGridSize - (deaths * SHRINK_STEP);
-  return Math.max(GRID_MIN, result);
+// Calculate target grid size after N deaths from initial size.
+// Uses proportional formula: target = 22 + (initialGridSize - 22) * aliveAI / initialAICount.
+// When all AI die (deaths >= initialAICount), returns solo size (22).
+// Forces even result for cell alignment.
+// Clamped to [GRID_MIN, initialGridSize].
+function calcShrinkTarget(initialGridSize, deaths, initialAICount) {
+  if (initialAICount <= 0) {
+    // Legacy: no AI, use fixed step
+    var result = initialGridSize - (deaths * SHRINK_STEP);
+    return Math.max(GRID_MIN, result);
+  }
+  var soloSize = 22;
+  var aliveAI = initialAICount - deaths;
+  if (aliveAI <= 0) return Math.max(GRID_MIN, soloSize);
+  var result = Math.round(soloSize + (initialGridSize - soloSize) * aliveAI / initialAICount);
+  // Force even
+  if (result % 2 !== 0) result += 1;
+  return Math.max(GRID_MIN, Math.min(result, initialGridSize));
 }
 
-// Calculate next shrink target from current grid size
-function calcNextShrinkSize(currentGridSize) {
-  var result = currentGridSize - SHRINK_STEP;
-  return Math.max(GRID_MIN, result);
+// Calculate next shrink target from current state.
+// initialGridSize: the grid size at game start
+// initialAICount: number of AI snakes at game start
+// deaths: how many AI snakes have died so far
+// Returns the target grid size after this death, or GRID_MIN if all AI dead.
+function calcNextShrinkSize(currentGridSize, initialGridSize, initialAICount, deaths) {
+  if (initialAICount <= 0) {
+    // Legacy: no AI, use fixed step
+    var result = currentGridSize - SHRINK_STEP;
+    return Math.max(GRID_MIN, result);
+  }
+  var soloSize = 22;
+  var aliveAI = initialAICount - deaths;
+  if (aliveAI <= 0) return Math.max(GRID_MIN, soloSize);
+  var result = Math.round(soloSize + (initialGridSize - soloSize) * aliveAI / initialAICount);
+  // Force even
+  if (result % 2 !== 0) result += 1;
+  return Math.max(GRID_MIN, Math.min(result, currentGridSize));
 }
 
 // Check if further shrinking is possible
@@ -112,11 +152,15 @@ var AI_COUNT = {
   solo: 0,
   vs2: 1,
   vs3: 2,
-  vs4: 3
+  vs4: 3,
+  vs5: 4,
+  vs6: 5,
+  vs7: 6,
+  vs8: 7
 };
 
 // ─── AI MODE: resolveGridSize(mode, percentageModifier) ───
-// mode: 'solo'|'vs2'|'vs3'|'vs4'
+// mode: 'solo'|'vs2'|'vs3'|'vs4'|'vs5'|'vs6'|'vs7'|'vs8'
 // percentageModifier: -50 to +50 (integer, step 5)
 // Returns clamped EVEN integer between GRID_MIN and GRID_MAX
 // (even grids ensure half is integer → cells align with snake positions)

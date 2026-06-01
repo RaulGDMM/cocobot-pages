@@ -50,7 +50,15 @@ function buildSnake(color) {
   headM = head;
   bodyMs = bodies;
 
-  return { group: group, headM: head, bodyMs: bodies };
+  return { group: group, headM: head, bodyMs: bodies, _meshSig: null };
+}
+
+function snakeMeshSignature(snakeData, dir) {
+  if (!snakeData || !snakeData.length) return 'empty';
+  var head = snakeData[0];
+  var neck = snakeData.length > 1 ? snakeData[1] : head;
+  var tail = snakeData[snakeData.length - 1];
+  return snakeData.length + '|' + head.x + ',' + head.z + '|' + neck.x + ',' + neck.z + '|' + tail.x + ',' + tail.z + '|' + dir;
 }
 
 // ─── Refresh snake mesh ───
@@ -63,6 +71,9 @@ function refreshSnake(snakeData, groupData) {
     if(!gd || !gd.headM || !gd.bodyMs || !gd.bodyMs.length || !snake || !snake.length) return;
     headM = gd.headM;
     bodyMs = gd.bodyMs;
+    var playerSig = snakeMeshSignature(snake, direction);
+    if (gd._meshSig === playerSig) return;
+    gd._meshSig = playerSig;
     headM.position.set(gw(snake[0].x), .25, gw(snake[0].z));
     headM.rotation.y = -direction;
     for(var i = 1; i < snake.length; i++) {
@@ -83,6 +94,10 @@ function refreshSnake(snakeData, groupData) {
   var head = groupData.headM;
   var bodies = groupData.bodyMs;
   var dir = groupData.direction || 0;
+
+  var sig = snakeMeshSignature(snakeData, dir);
+  if (groupData._meshSig === sig) return;
+  groupData._meshSig = sig;
 
   head.position.set(gw(snakeData[0].x), .25, gw(snakeData[0].z));
   head.rotation.y = -dir;

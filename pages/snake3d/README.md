@@ -10,13 +10,13 @@ Juego clásico de la serpiente renderizado en 3D con **Three.js**. Recoge manzan
 
 - **Gráficos 3D** — Three.js con iluminación dinámica, cámara suave que sigue a la serpiente, y partículas al comer o morir.
 - **Modo Solo** — El clásico Snake en 3D.
-- **Modo Multijugador vs IA** — Compite contra 1, 2 o 3 serpientes controladas por inteligencia artificial.
+- **Modo Multijugador vs IA** — Compite contra hasta 7 serpientes controladas por inteligencia artificial (modos vs2 a vs8).
 - **3 niveles de dificultad** — Fácil, Medio y Difícil (afectan la tasa de error y agresividad de la IA).
-- **4 colores de serpiente** — Verde, rojo, azul y amarillo.
-- **Tablero configurable** — Ajusta el tamaño del grid con un slider (-50% a +50%).
+- **8 colores de serpiente** — Verde, rojo, azul, amarillo, cyan, purple, naranja, salmón.
+- **Tablero configurable** — Ajusta el tamaño del grid con un slider (-50% a +50%). Hasta 66×66 en vs8.
 - **Obstáculos progresivos** — Aparecen cada N manzanas recogidas (proporcional al tamaño del tablero).
 - **Escalado proporcional** — El número de manzanas y obstáculos se ajusta automáticamente al tamaño del tablero (`calcNumApples()`, `calcMaxObstacles()`).
-- **Reducción dinámica del tablero (shrink)** — Cada vez que muere una IA, el tablero se reduce progresivamente con countdown independiente, parpadeo rojo acelerado (curva cúbica), tick de advertencia y mensaje visible en los últimos 5 segundos. Las serpientes que quedan fuera pierden cola (-1 punto por segmento).
+- **Reducción dinámica del tablero (shrink proporcional)** — Al morir una IA, el tablero se reduce progresivamente basado en serpientes vivas vs iniciales. Cuando todas las IA mueren, vuelve al tamaño solo de 22×22. Countdown de 10s, parpadeo rojo acelerado (curva cúbica), tick de advertencia y mensaje visible en los últimos 5 segundos.
 - **Cadáveres progresivos** — Al morir una IA, su cuerpo queda visible atenuado y se convierte en manzanas segmento a segmento (cabeza → cola), una por tick. Los cadáveres actúan como obstáculos sólidos hasta que se consumen completamente.
 - **Música retro** — 20 pistas chiptune con reproductor integrado (play/pause, anterior, siguiente, loop automático).
 - **Efectos de sonido** — Comer, girar, morir, sonidos direccionales cuando la IA come, y efectos de shrink (tick + boom).
@@ -239,8 +239,9 @@ Define todas las constantes del juego:
 - **Grid**: tamaño base `22×22`, intervalo de movimiento `200ms`, ángulo de giro `π/2`.
 - **Manzanas**: escalado proporcional con `calcNumApples(gridSize)` — más manzanas en tableros grandes.
 - **Obstáculos**: spawn cada N manzanas (proporcional con `calcObstacleSpawnEvery()`), máximo proporcional con `calcMaxObstacles()`.
-- **Shrink**: paso fijo `SHRINK_STEP=6` celdas por muerte de IA, countdown `SHRINK_COUNTDOWN=10s`, advertencia a los 5s, flash cúbico (0.8→3 Hz).
-- **Modos**: `solo`, `vs2`, `vs3`, `vs4` con multiplicadores de grid (`1.0x`, `1.25x`, `1.50x`, `1.75x`).
+- **Shrink proporcional**: `calcShrinkTarget()` y `calcNextShrinkSize()` calculan la reducción basada en `aliveAI / initialAICount` → cuando todas las IA mueren, el grid vuelve a 22×22 (tamaño solo). Fallback a `SHRINK_STEP=6` en modo legacy. Countdown `SHRINK_COUNTDOWN=10s`, advertencia a los 5s, flash cúbico (0.8→3 Hz).
+- **Modos**: `solo`, `vs2`, `vs3`, `vs4`, `vs5`, `vs6`, `vs7`, `vs8` con multiplicadores de grid (`1.0x` a `2.75x`). `GRID_MAX = 66`.
+- **Colores**: verde, rojo, azul, amarillo, cyan, purple, naranja, salmón.
 - **Dificultades**: `easy`, `medium`, `hard` con tasas de error IA (`38%`, `10%`, `2%`) y agresividad de cornering (`0%`, `40%`, `85%`).
 - **`resolveGridSize(mode, modifier)`**: calcula el tamaño del grid aplicando el multiplicador del modo + el modifier porcentual del slider (-50 a +50), forzando siempre un número par para que `half` sea entero y las celdas se alineen correctamente.
 - **`getHighScoreKey(mode, difficulty, gridSize)`**: genera la clave de `localStorage` para guardar récords independientes por configuración.
@@ -280,6 +281,7 @@ Crea y actualiza la representación 3D de la serpiente:
 - **`buildSnake(color)`**: crea un `THREE.Group` con cabeza + 200 segmentos de cuerpo (inicialmente ocultos). La cabeza tiene material con `emissive` brillante; el cuerpo usa una versión atenuada (`color * 0.7`).
 - **`refreshSnake()`**: actualiza posiciones del mesh según los datos del snake array. Los segmentos se escalan progresivamente (`1 - frac * 0.4`) para efecto de decrecimiento hacia la cola. Los segmentos sobrantes se ocultan.
 - **Multi-snake**: soporta múltiples serpientes simultáneas. Cada una tiene su propio `groupData` con `{group, headM, bodyMs}`.
+- **`snakeMeshSignature()`**: genera una firma hash a partir de la longitud, posición de cabeza/cuello/cola y dirección. Si la firma no cambia entre frames, `refreshSnake()` se salta completamente → **sin updates de mesh innecesarios**.
 
 ### `apples.js` — Manzanas + optimizaciones
 
@@ -287,18 +289,21 @@ Crea y actualiza la representación 3D de la serpiente:
 - **`isOccupied(x, z)`**: comprueba si una celda está ocupada por snake, otra manzana, obstáculo, IA viva o cadáver. Usa **hash sets** (`appleSet`, `corpseSet`) para lookups O(1).
 - **`spawnOneApple()`**: posición aleatoria con hasta 200 intentos, saltando celdas ocupadas.
 - **`refreshApples()`**: actualiza posiciones 3D de los meshes según el array de manzanas. Usa bandera `appleDirty` para evitar renders innecesarios. Las manzanas de muerte (`fromDeath`) desactivan su `PointLight` para evitar docenas de luces simultáneas.
-- **Animación**: en el game loop (`main.js`), las manzanas flotan (`sin(now * 0.003)`) y rotan (`now * 0.002`).
+- **Animación**: en el game loop (`main.js`), **solo las manzanas "normales"** (no death apples) se animan con flotación + rotación. Las death apples son estáticas → evita cálculos `Math.sin()` y updates de transformación innecesarios cuando hay decenas de manzanas de muerte.
+- **`animatedAppleMeshIndices`**: array que solo contiene índices de manzanas que deben animarse, mantenido en `refreshApples()` para O(1) en el loop.
 
 #### Optimizaciones en `apples.js`
 
 | Optimización | Antes | Después | Impacto |
 |---|---|---|---|
-| `appleSet` hash | Iterar `apples[]` en cada `isOccupied()` | Hash `"x,z" → true` | O(n) → O(1) |
-| `corpseSet` hash | Iterar todos los cadáveres en `isOccupied()` + `buildBlockedSet()` | Hash `"x,z" → true` | O(n) → O(1) |
-| `appleDirty` flag | `refreshApples()` cada frame | Solo cuando cambia el array | ~60fps → ~1 call/tick |
-| `APPLE_POOL_MARGIN` | Pool fijo de `NUM_APPLES` meshes | Pool de `NUM_APPLES + 100` | Sin realloc en picos |
-| `updateAppleSet()` | Rebuild completo de `appleSet` | Add/remove incremental | O(n) → O(1) por manzana |
-| Death apple lights | Cada manzana de muerte activa PointLight | `light.visible = !fromDeath` | Sin overhead de GPU en shading |
+|| `appleSet` hash | Iterar `apples[]` en cada `isOccupied()` | Hash `"x,z" → true` | O(n) → O(1) |
+|| `corpseSet` hash | Iterar todos los cadáveres en `isOccupied()` + `buildBlockedSet()` | Hash `"x,z" → true` | O(n) → O(1) |
+|| `appleIndex` hash | Escanear `apples[]` para encontrar índice al comer | Hash `"x,z" → index` | O(n) → O(1) |
+|| `appleDirty` flag | `refreshApples()` cada frame | Solo cuando cambia el array | ~60fps → ~1 call/tick |
+|| `APPLE_POOL_MARGIN` | Pool fijo de `NUM_APPLES` meshes | Pool de `NUM_APPLES + 100` | Sin realloc en picos |
+|| `updateAppleSet()` | Rebuild completo de `appleSet` | Add/remove incremental | O(n) → O(1) por manzana |
+|| `animatedAppleMeshIndices` | Animar TODAS las manzanas cada frame | Solo manzanas "normales" (no death apples) | Sin cálculos Math.sin() en death apples |
+|| Death apple lights | Cada manzana de muerte activa PointLight | `light.visible = !fromDeath` | Sin overhead de GPU en shading |
 
 ### `obstacles.js` — Obstáculos
 
@@ -398,6 +403,16 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 - Si choca contra un cadáver → `aiDie(index, 'corpse')`.
 - Si come, reproduce SFX direccional (pan basado en posición relativa al jugador).
 
+#### Optimizaciones de rendimiento en `ai.js`
+
+| Optimización | Antes | Después | Impacto |
+|---|---|---|---|
+| **blockedSet cache** | Cada decisión de IA reconstruía `buildBlockedSet()` desde cero (~5 calls/snake/tick × 8 snakes = 40 rebuilds) | Cache por tick con `enableBlockedCache()`/`disableBlockedCache()`, invalidado solo entre serpientes | 40 rebuilds → ~8 rebuilds (1 por snake) |
+| **BFS bodySet** | `snakeBody.some()` en cada celda del BFS → O(body × cells) por búsqueda | `bodySet` hash precomputado → O(1) por celda | Crítico con serpientes largas (50+ segmentos) |
+| **BFS dequeue O(1)** | `Array.shift()` → O(n) por dequeue en queue de hasta 100+ celdas | `qHead` index pointer → O(1) dequeue | Eliminada re-allocation de array en cada paso BFS |
+| **countReachable sin clone** | Clonaba `blockedSet` completo + añadía propio cuerpo | Usa cached blocked directamente, bodySet separado | Sin copias de objetos grandes en cada call |
+| **minSafeSpace sin clone** | Copiaba `blockedSet` entero en cada call | bodySet separado, sin copiar blocked | Igual que arriba, evita overhead en evaluación de direcciones |
+
 ### `ui.js` — Interfaz de configuración
 
 - **Selectores**: chips clicables para color, modo, dificultad + slider para tamaño del grid.
@@ -429,7 +444,7 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
    - Cadáveres: `corpseSet[nx+','+nz]` → O(1) lookup.
 3. Si colisión → `die(cause)`.
 4. Si no: `unshift` nueva cabeza.
-5. **Comer manzana**: si la cabeza está en una manzana → `score++`, SFX, partículas, respawn manzana.
+5. **Comer manzana O(1)**: usa `getAppleIndexAt(nx, nz)` para encontrar el índice en `apples[]` directamente sin escanear el array. Luego `replaceAppleAt()` actualiza `appleSet` y `appleIndex` incrementalmente.
 6. Cada N manzanas → `spawnObstacle()`.
 7. Si no comió → `pop` cola.
 
@@ -473,7 +488,7 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 2. Si `running && !gameOver`:
    - Cada `MOVE_INTERVAL` (200ms): ejecuta `stepAI()` (si hay IA), luego `step()` del jugador, luego `processCorpses()` (convertir cadáveres).
    - `refreshSnake()` + `refreshAISnakes()` → actualizan meshes.
-3. **Animación manzanas**: flotación + rotación (seno + tiempo).
+3. **Animación manzanas selectiva**: solo las manzanas "normales" se animan (flotación + rotación). Las death apples son estáticas → sin cálculos `Math.sin()` ni updates de transformación cuando hay decenas de manzanas de muerte.
 4. `tickParts(dt)` → actualiza partículas.
 5. `updateCam(dt)` → cámara suave.
 6. `renderer.render(scene, camera)`.
@@ -493,7 +508,7 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 
 ## Optimizaciones de rendimiento
 
-El juego incluye varias optimizaciones para mantener 60fps estables incluso con muchas entidades:
+El juego incluye varias optimizaciones para mantener 60fps estables incluso con 8 serpientes en grids de hasta 66×66:
 
 ### Hash sets para colisiones O(1)
 
@@ -501,8 +516,23 @@ El juego incluye varias optimizaciones para mantener 60fps estables incluso con 
 |---|---|---|
 | `appleSet` | `apples.js` | `isOccupied()` — lookup de manzanas |
 | `corpseSet` | `apples.js` | `isOccupied()` + `buildBlockedSet()` — lookup de cadáveres |
+| `appleIndex` | `apples.js` | `getAppleIndexAt()` — índice en `apples[]` por posición |
 
 Ambos usan keys `"x,z"` → `true`, se actualizan incrementalmente (`addToAppleSet`, `addToCorpseSet`, `removeFromCorpseSet`, `updateAppleSet`) y se reconstruyen cuando es necesario (`rebuildAppleSet`, `rebuildCorpseSet`).
+
+### Cache de blockedSet (ai.js)
+
+- `buildBlockedSet()` se cachea durante `stepAI()` — un solo rebuild por serpiente por tick en lugar de ~5 (countReachable × 3 direcciones + bfsPathToTail + minSafeSpace).
+- Con 8 IA, reduce de ~40 rebuilds a ~8 por tick.
+- Cache se desactiva tras `stepAI()` para que tests y código externo siempre vean datos frescos.
+- `cloneBlocked()` para callers que necesitan mutar el set sin tocar el cache.
+
+### BFS optimizado (ai.js)
+
+- **bodySet precomputado**: en lugar de `snakeBody.some()` en cada celda del BFS (O(body × cells)), se construye un hash set una vez.
+- **Dequeue O(1)**: `Array.shift()` reemplazado por `qHead` index pointer — elimina re-allocation de array en cada paso.
+- **countReachable sin clone**: usa el cached blocked directamente, bodySet separado → sin copias de objetos grandes.
+- **minSafeSpace sin clone**: mismo patrón — bodySet separado, sin copiar blocked.
 
 ### Dirty flag para renders diferidos
 
@@ -525,6 +555,17 @@ Ambos usan keys `"x,z"` → `true`, se actualizan incrementalmente (`addToAppleS
 - Las manzanas de muerte (`fromDeath: true`) desactivan su `PointLight`.
 - Sin esto, un cadáver de 50 segmentos encendería ~50 point lights simultáneas, forzando a Three.js a re-shade cada objeto contra cada luz.
 
+### Animación selectiva de manzanas
+
+- `animatedAppleMeshIndices`: solo las manzanas "normales" se animan (flotar + rotar).
+- Las death apples son estáticas → sin cálculos `Math.sin()` ni updates de transformación cuando hay decenas de manzanas de muerte.
+
+### Snake mesh signature (snake.js)
+
+- `snakeMeshSignature()`: genera una firma hash (longitud + head/neck/tail + direction).
+- Si la firma no cambia entre frames, `refreshSnake()` se salta → sin updates de mesh innecesarios.
+- Crítico cuando la serpiente está quieta o se mueve en línea recta (la mayoría de frames).
+
 ### bestApple() candidate limiting
 
 - En modos medio/difícil, `bestApple()` solo evalúa las manzanas más cercanas como candidatos viables.
@@ -541,10 +582,16 @@ Ambos usan keys `"x,z"` → `true`, se actualizan incrementalmente (`addToAppleS
 |---|---|---|---|
 | **Solo** | 0 | 22×22 | — |
 | **vs 2** | 1 | 28×28 | Sí |
-| **vs 3** | 2 | 33×33 | Sí |
-| **vs 4** | 3 | 39×39 | Sí |
+| **vs 3** | 2 | 34×34 | Sí |
+| **vs 4** | 3 | 40×40 | Sí |
+| **vs 5** | 4 | 44×44 | Sí |
+| **vs 6** | 5 | 50×50 | Sí |
+| **vs 7** | 6 | 56×56 | Sí |
+| **vs 8** | 7 | 62×62 | Sí |
 
-El tamaño del tablero se ajusta con el slider: `-50%` a `+50%` sobre el base del modo.
+El tamaño del tablero se ajusta con el slider: `-50%` a `+50%` sobre el base del modo. `GRID_MAX = 66`.
+
+**Colores disponibles**: verde, rojo, azul, amarillo, cyan, purple, naranja, salmón.
 
 ## Flujo de datos
 
@@ -580,21 +627,21 @@ npm run coverage     # Reporte HTML de cobertura
 
 Los tests usan un **bundle concatenado** (`tests/snake3d-bundle.js`) generado por `scripts/gen-bundle.js` que une todos los módulos en orden. `jest.setup.js` mockuea el DOM y Three.js para que el código del juego funcione en Node.js.
 
-**Suites de tests** (12 suites, 594+ tests):
+**Suites de tests** (13 suites, 642 tests):
 
 | Suite | Qué cubre |
 |---|---|
-| `ai.test.js` | snapToCardinal, DIRS, buildBlockedSet, BFS, countReachable, bestApple, cornering, initAI, aiDie, stepAI, perception |
+| `ai.test.js` | snapToCardinal, DIRS, buildBlockedSet, BFS, countReachable, bestApple, cornering, initAI, aiDie, stepAI, perception, blockedSet cache, BFS bodySet |
 | `apples.test.js` | isOccupied, deduplicateApples, spawn, colisiones combinadas |
-| `config.test.js` | constantes, resolveGridSize, high score keys, escalado proporcional, AI_STRATEGY |
+| `config.test.js` | constantes, resolveGridSize, high score keys, escalado proporcional, AI_STRATEGY, modos vs5-v8, GRID_MAX=66, shrink proporcional |
 | `coverage.test.js` | gw, buildApples, refreshApples, buildObstacles, buildSnake, burst, tickParts, initGame, step, die, audio, music |
 | `corpse_optimization.test.js` | CORPSE_CONVERSION_BATCH, corpseSet hash, processCorpses, no burst on conversion |
 | `game.test.js` | step, die, colisiones (wall, self, obstacle, AI), turnL/R |
 | `obstacles.test.js` | isSafeForObstacle, spawn, distancias, edge cases |
-| `optimization.test.js` | appleSet, corpseSet, appleDirty, bestApple limiting, death apple throttling, particle pool, updateAppleSet |
-| `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset |
+| `optimization.test.js` | appleSet, corpseSet, appleDirty, bestApple limiting, death apple throttling, particle pool, updateAppleSet, appleIndex, getAppleIndexAt, replaceAppleAt |
+| `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset, shrink proporcional vs2/vs3/vs4/vs8 |
 | `state.test.js` | variables de estado, cámara, localStorage, DOM refs, IA mode state |
-| `ui.test.js` | getGameConfig, uiState, edge cases |
+| `ui.test.js` | getGameConfig, uiState, edge cases, modos vs5-v8 |
 | `ui-dom.test.js` | updateSizeDisplay, updateDifficultyVisibility, buildColorSelector, buildModeSelector, etc. |
 
 ## Tecnologías

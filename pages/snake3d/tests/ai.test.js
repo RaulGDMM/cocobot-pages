@@ -176,6 +176,28 @@ describe('ai.js — bfsPath()', () => {
     var path = bfsPath(0, 0, 10, 10, blocked, null, 5);
     expect(path).toBeNull(); // Too few steps
   });
+
+  test('routes around non-tail body segments', () => {
+    // Body occupies (1,0) and (2,0) (tail). The straight path is blocked by
+    // the non-tail segment (1,0), so BFS must detour but still reach (3,0).
+    var blocked = {};
+    var snakeBody = [{x: 0, z: 0}, {x: 1, z: 0}, {x: 2, z: 0}];
+    var path = bfsPath(0, 0, 3, 0, blocked, snakeBody, 100);
+    expect(path).not.toBeNull();
+    // The detour must not step through the non-tail body cell (1,0)
+    var stepsThroughBody = path.some(function(p) { return p.x === 1 && p.z === 0; });
+    expect(stepsThroughBody).toBe(false);
+    expect(path[path.length - 1]).toEqual({x: 3, z: 0});
+  });
+
+  test('non-tail body fully blocking returns null', () => {
+    // Surround the start with walls of non-tail body so no route exists.
+    var blocked = {'0,1': true, '0,-1': true, '-1,0': true};
+    // Body segment directly ahead (1,0) is NOT the tail (tail is far away)
+    var snakeBody = [{x: 0, z: 0}, {x: 1, z: 0}, {x: 1, z: 1}, {x: 5, z: 5}];
+    var path = bfsPath(0, 0, 3, 0, blocked, snakeBody, 100);
+    expect(path).toBeNull();
+  });
 });
 
 // ─── countReachable() ───
@@ -211,6 +233,23 @@ describe('ai.js — countReachable()', () => {
     // With player snake at (1,0),(2,0) and own body at (-1,0),
     // some directions are blocked so count should be less than full 10
     expect(count).toBeLessThanOrEqual(10);
+  });
+
+  test('own body cells reduce reachable count vs no body', () => {
+    // Confine the start to a small 2-wide corridor with obstacles so the
+    // reachable region is small enough that the body makes a measurable dent.
+    setSnake([]);
+    setGlobal('aiSnakes', []);
+    setObstacles([
+      {x: 0, z: -1}, {x: 1, z: -1}, {x: 2, z: -1}, {x: 3, z: -1},
+      {x: 0, z: 2}, {x: 1, z: 2}, {x: 2, z: 2}, {x: 3, z: 2},
+      {x: -1, z: 0}, {x: -1, z: 1}, {x: 4, z: 0}, {x: 4, z: 1}
+    ]);
+    var open = countReachable(0, 0, [], 30); // corridor cells only (~8)
+    // Body blocks part of the corridor (tail excluded), shrinking reachability.
+    var body = [{x: 0, z: 0}, {x: 1, z: 0}, {x: 2, z: 0}, {x: 3, z: 0}];
+    var walled = countReachable(0, 0, body, 30);
+    expect(walled).toBeLessThan(open);
   });
 });
 

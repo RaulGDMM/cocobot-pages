@@ -40,6 +40,18 @@ describe('ui.js', () => {
       expect(config.gridSize).toBe(40);
     });
 
+    test('returns correct gridSize for vs5', () => {
+      uiState.selectedMode = 'vs5';
+      var config = getGameConfig();
+      expect(config.gridSize).toBe(44);
+    });
+
+    test('returns correct gridSize for vs8', () => {
+      uiState.selectedMode = 'vs8';
+      var config = getGameConfig();
+      expect(config.gridSize).toBe(62);
+    });
+
     test('applies size modifier +50% (even)', () => {
       uiState.selectedMode = 'solo';
       uiState.selectedSizeMod = 50;
@@ -69,11 +81,18 @@ describe('ui.js', () => {
       expect(config.difficulty).toBe('hard');
     });
 
-    test('vs4 +50% clamps to 50', () => {
+    test('vs4 +50% returns 60 (even)', () => {
       uiState.selectedMode = 'vs4';
       uiState.selectedSizeMod = 50;
       var config = getGameConfig();
-      expect(config.gridSize).toBe(50);
+      expect(config.gridSize).toBe(60);
+    });
+
+    test('vs8 +50% clamps to 66', () => {
+      uiState.selectedMode = 'vs8';
+      uiState.selectedSizeMod = 50;
+      var config = getGameConfig();
+      expect(config.gridSize).toBe(66);
     });
 
     test('all modes with -50% respect GRID_MIN', () => {

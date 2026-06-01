@@ -111,28 +111,32 @@ describe('config.js', () => {
 
   // ─── AI MODE: SNAKE_COLORS ───
   describe('SNAKE_COLORS', () => {
-    test('has 4 color definitions', () => {
-      expect(Object.keys(SNAKE_COLORS).length).toBe(4);
+    test('has 8 color definitions', () => {
+      expect(Object.keys(SNAKE_COLORS).length).toBe(8);
     });
 
-    test('has green, red, blue, yellow', () => {
+    test('has green, red, blue, yellow, cyan, purple, orange, salmon', () => {
       expect(SNAKE_COLORS.green).toBe('#00cc44');
       expect(SNAKE_COLORS.red).toBe('#cc2222');
       expect(SNAKE_COLORS.blue).toBe('#2266cc');
       expect(SNAKE_COLORS.yellow).toBe('#ccaa00');
+      expect(SNAKE_COLORS.cyan).toBe('#00cccc');
+      expect(SNAKE_COLORS.purple).toBe('#aa22cc');
+      expect(SNAKE_COLORS.orange).toBe('#cc6600');
+      expect(SNAKE_COLORS.salmon).toBe('#ff6666');
     });
 
-    test('SNAKE_COLOR_NAMES has 4 entries', () => {
-      expect(SNAKE_COLOR_NAMES.length).toBe(4);
-      expect(SNAKE_COLOR_NAMES).toEqual(['green', 'red', 'blue', 'yellow']);
+    test('SNAKE_COLOR_NAMES has 8 entries', () => {
+      expect(SNAKE_COLOR_NAMES.length).toBe(8);
+      expect(SNAKE_COLOR_NAMES).toEqual(['green', 'red', 'blue', 'yellow', 'cyan', 'purple', 'orange', 'salmon']);
     });
   });
 
   // ─── AI MODE: GAME_MODES ───
   describe('GAME_MODES', () => {
-    test('has 4 modes', () => {
-      expect(GAME_MODES.length).toBe(4);
-      expect(GAME_MODES).toEqual(['solo', 'vs2', 'vs3', 'vs4']);
+    test('has 8 modes', () => {
+      expect(GAME_MODES.length).toBe(8);
+      expect(GAME_MODES).toEqual(['solo', 'vs2', 'vs3', 'vs4', 'vs5', 'vs6', 'vs7', 'vs8']);
     });
   });
 
@@ -157,6 +161,18 @@ describe('config.js', () => {
     });
     test('vs4 has 3 AI', () => {
       expect(AI_COUNT.vs4).toBe(3);
+    });
+    test('vs5 has 4 AI', () => {
+      expect(AI_COUNT.vs5).toBe(4);
+    });
+    test('vs6 has 5 AI', () => {
+      expect(AI_COUNT.vs6).toBe(5);
+    });
+    test('vs7 has 6 AI', () => {
+      expect(AI_COUNT.vs7).toBe(6);
+    });
+    test('vs8 has 7 AI', () => {
+      expect(AI_COUNT.vs8).toBe(7);
     });
   });
 
@@ -209,8 +225,8 @@ describe('config.js', () => {
     test('GRID_MIN is 16', () => {
       expect(GRID_MIN).toBe(16);
     });
-    test('GRID_MAX is 50', () => {
-      expect(GRID_MAX).toBe(50);
+    test('GRID_MAX is 66', () => {
+      expect(GRID_MAX).toBe(66);
     });
   });
 
@@ -228,6 +244,18 @@ describe('config.js', () => {
     test('vs4 base (modifier 0) returns 40 (even)', () => {
       expect(resolveGridSize('vs4', 0)).toBe(40);
     });
+    test('vs5 base (modifier 0) returns 44', () => {
+      expect(resolveGridSize('vs5', 0)).toBe(44);
+    });
+    test('vs6 base (modifier 0) returns 50', () => {
+      expect(resolveGridSize('vs6', 0)).toBe(50);
+    });
+    test('vs7 base (modifier 0) returns 56 (even)', () => {
+      expect(resolveGridSize('vs7', 0)).toBe(56);
+    });
+    test('vs8 base (modifier 0) returns 62 (even)', () => {
+      expect(resolveGridSize('vs8', 0)).toBe(62);
+    });
 
     // Modifier +50%
     test('solo +50% returns 34 (even)', () => {
@@ -239,8 +267,20 @@ describe('config.js', () => {
     test('vs3 +50% clamps to 50', () => {
       expect(resolveGridSize('vs3', 50)).toBe(50);
     });
-    test('vs4 +50% clamps to 50', () => {
-      expect(resolveGridSize('vs4', 50)).toBe(50);
+    test('vs4 +50% returns 60 (even)', () => {
+      expect(resolveGridSize('vs4', 50)).toBe(60);
+    });
+    test('vs5 +50% clamps to 66', () => {
+      expect(resolveGridSize('vs5', 50)).toBe(66);
+    });
+    test('vs6 +50% clamps to 66', () => {
+      expect(resolveGridSize('vs6', 50)).toBe(66);
+    });
+    test('vs7 +50% clamps to 66', () => {
+      expect(resolveGridSize('vs7', 50)).toBe(66);
+    });
+    test('vs8 +50% clamps to 66', () => {
+      expect(resolveGridSize('vs8', 50)).toBe(66);
     });
 
     // Modifier -50%
@@ -255,6 +295,18 @@ describe('config.js', () => {
     });
     test('vs4 -50% returns 20', () => {
       expect(resolveGridSize('vs4', -50)).toBe(20);
+    });
+    test('vs5 -50% returns 22', () => {
+      expect(resolveGridSize('vs5', -50)).toBe(22);
+    });
+    test('vs6 -50% returns 26 (even)', () => {
+      expect(resolveGridSize('vs6', -50)).toBe(26);
+    });
+    test('vs7 -50% returns 28', () => {
+      expect(resolveGridSize('vs7', -50)).toBe(28);
+    });
+    test('vs8 -50% returns 32', () => {
+      expect(resolveGridSize('vs8', -50)).toBe(32);
     });
 
     // Intermediate modifiers
@@ -275,8 +327,8 @@ describe('config.js', () => {
     test('unknown mode defaults to solo multiplier', () => {
       expect(resolveGridSize('unknown', 0)).toBe(22);
     });
-    test('modifier beyond range clamps to 50', () => {
-      expect(resolveGridSize('vs2', 100)).toBe(50);
+    test('modifier beyond range clamps to GRID_MAX (66)', () => {
+      expect(resolveGridSize('vs8', 100)).toBe(66);
     });
     test('undefined modifier defaults to 0', () => {
       expect(resolveGridSize('solo', undefined)).toBe(22);
@@ -338,9 +390,8 @@ describe('config.js', () => {
       expect(calcNumApples(34)).toBe(7);
     });
 
-    test('vs4 grid (40) returns 9 apples', () => {
+    test('vs4 grid (40) returns 10 apples', () => {
       // 40² = 1600, 1600/484 = 3.31, 3 × 3.31 = 9.92 → 10
-      // Actually: round(3 * 1600/484) = round(9.917) = 10
       expect(calcNumApples(40)).toBe(10);
     });
 
@@ -349,10 +400,10 @@ describe('config.js', () => {
       expect(calcNumApples(16)).toBe(3);
     });
 
-    test('large grid (50) returns 15 apples', () => {
-      // 50² = 2500, 2500/484 = 5.165, 3 × 5.165 = 15.5 → 16
-      // round(3 * 2500/484) = round(15.496) = 15
-      expect(calcNumApples(50)).toBe(15);
+    test('large grid (66) returns 26 apples', () => {
+      // 66² = 4356, 4356/484 = 9.0, 3 × 9.0 = 27
+      // round(3 * 4356/484) = round(27.0) = 27
+      expect(calcNumApples(66)).toBe(27);
     });
 
     test('returns at least 3 for any grid size', () => {
@@ -392,9 +443,8 @@ describe('config.js', () => {
       expect(calcMaxObstacles(34)).toBe(72);
     });
 
-    test('vs4 grid (40) returns 100 obstacles', () => {
+    test('vs4 grid (40) returns 99 obstacles', () => {
       // 40² = 1600, 1600/484 = 3.31, 30 × 3.31 = 99.38 → 99
-      // round(30 * 1600/484) = round(99.174) = 99
       expect(calcMaxObstacles(40)).toBe(99);
     });
 
@@ -403,9 +453,9 @@ describe('config.js', () => {
       expect(calcMaxObstacles(16)).toBeGreaterThanOrEqual(5);
     });
 
-    test('large grid (50) returns 155 obstacles', () => {
-      // 50² = 2500, 2500/484 = 5.165, 30 × 5.165 = 154.96 → 155
-      expect(calcMaxObstacles(50)).toBe(155);
+    test('large grid (66) returns 270 obstacles', () => {
+      // 66² = 4356, 4356/484 = 9.0, 30 × 9.0 = 270
+      expect(calcMaxObstacles(66)).toBe(270);
     });
 
     test('returns at least 5 for any grid size', () => {
@@ -449,8 +499,8 @@ describe('config.js', () => {
       expect(calcObstacleSpawnEvery(40)).toBe(1);
     });
 
-    test('large grid (50) returns 1 (minimum)', () => {
-      expect(calcObstacleSpawnEvery(50)).toBe(1);
+    test('large grid (66) returns 1 (minimum)', () => {
+      expect(calcObstacleSpawnEvery(66)).toBe(1);
     });
 
     test('small grid (16) returns 6', () => {
@@ -481,6 +531,10 @@ describe('config.js', () => {
       { mode: 'vs2', grid: 28, apples: 5, maxObs: 49, spawnEvery: 2 },
       { mode: 'vs3', grid: 34, apples: 7, maxObs: 72, spawnEvery: 1 },
       { mode: 'vs4', grid: 40, apples: 10, maxObs: 99, spawnEvery: 1 },
+      { mode: 'vs5', grid: 44, apples: 12, maxObs: 120, spawnEvery: 1 },
+      { mode: 'vs6', grid: 50, apples: 15, maxObs: 155, spawnEvery: 1 },
+      { mode: 'vs7', grid: 56, apples: 19, maxObs: 194, spawnEvery: 1 },
+      { mode: 'vs8', grid: 62, apples: 24, maxObs: 238, spawnEvery: 1 },
     ];
 
     scenarios.forEach(function(s) {

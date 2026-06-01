@@ -14,6 +14,9 @@ function buildColorSelector(container) {
   wrapper.className = 'selector-row';
   wrapper.innerHTML = '<span class="selector-label">Color:</span>';
 
+  var group = document.createElement('div');
+  group.className = 'chip-group';
+
   SNAKE_COLOR_NAMES.forEach(function(colorName) {
     var chip = document.createElement('button');
     chip.className = 'color-chip' + (colorName === uiState.selectedColor ? ' selected' : '');
@@ -25,9 +28,10 @@ function buildColorSelector(container) {
       uiState.selectedColor = colorName;
       updateHighScoreDisplay();
     });
-    wrapper.appendChild(chip);
+    group.appendChild(chip);
   });
 
+  wrapper.appendChild(group);
   container.appendChild(wrapper);
 }
 
@@ -37,7 +41,9 @@ function buildModeSelector(container) {
   wrapper.className = 'selector-row';
   wrapper.innerHTML = '<span class="selector-label">Modo:</span>';
 
-  var modeLabels = { solo: 'Solo', vs2: 'vs 2', vs3: 'vs 3', vs4: 'vs 4' };
+  var modeLabels = { solo: 'Solo', vs2: 'vs 2', vs3: 'vs 3', vs4: 'vs 4', vs5: 'vs 5', vs6: 'vs 6', vs7: 'vs 7', vs8: 'vs 8' };
+  var group = document.createElement('div');
+  group.className = 'chip-group';
   GAME_MODES.forEach(function(mode) {
     var chip = document.createElement('button');
     chip.className = 'mode-chip' + (mode === uiState.selectedMode ? ' selected' : '');
@@ -51,9 +57,10 @@ function buildModeSelector(container) {
       updateSizeDisplay();
       updateHighScoreDisplay();
     });
-    wrapper.appendChild(chip);
+    group.appendChild(chip);
   });
 
+  wrapper.appendChild(group);
   container.appendChild(wrapper);
 }
 
@@ -64,6 +71,8 @@ function buildDifficultySelector(container) {
   wrapper.innerHTML = '<span class="selector-label">Dificultad:</span>';
 
   var diffLabels = { easy: 'Fácil', medium: 'Medio', hard: 'Difícil' };
+  var group = document.createElement('div');
+  group.className = 'chip-group';
   DIFFICULTIES.forEach(function(diff) {
     var chip = document.createElement('button');
     chip.className = 'diff-chip' + (diff === uiState.selectedDifficulty ? ' selected' : '');
@@ -75,9 +84,10 @@ function buildDifficultySelector(container) {
       uiState.selectedDifficulty = diff;
       updateHighScoreDisplay();
     });
-    wrapper.appendChild(chip);
+    group.appendChild(chip);
   });
 
+  wrapper.appendChild(group);
   container.appendChild(wrapper);
 }
 
@@ -129,7 +139,7 @@ function updateSizeDisplay() {
 function updateDifficultyVisibility() {
   var diffRow = document.querySelector('.difficulty-row');
   if (!diffRow) return;
-  diffRow.style.display = (uiState.selectedMode === 'solo') ? 'none' : 'flex';
+  diffRow.style.display = (uiState.selectedMode === 'solo') ? 'none' : 'grid';
 }
 
 // ─── Update high score display ───

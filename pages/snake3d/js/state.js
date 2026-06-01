@@ -40,6 +40,9 @@ var shrinkCountdowns = [];
 // Tracks whether the flash is currently ON for tick sound deduplication
 var _shrinkFlashOn = false;
 
+// ─── Proportional shrinking: initial grid size at game start ───
+var _initialGridSize = GRID_SIZE;
+
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
 var scoreEl = document.getElementById('score');

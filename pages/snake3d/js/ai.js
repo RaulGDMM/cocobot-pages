@@ -76,8 +76,25 @@ var DIRS = [{x:1,z:0},{x:-1,z:0},{x:0,z:1},{x:0,z:-1}];
 
 // ─── Build blocked cells lookup ───
 // Returns an object with "x,z" keys for all occupied cells
-// Used by BFS, flood fill, etc. — build once per tick
-function buildBlockedSet(excludeSnake) {
+// Used by BFS, flood fill, etc.
+//
+// PERFORMANCE: building this set involves string concatenation over every
+// snake segment, obstacle and corpse cell. With 8 snakes + a 50-segment
+// corpse, a single AI decision rebuilds it ~5 times (countReachable per
+// direction, bfsPathToTail, etc.), and there are 8 decisions per tick.
+// To avoid that O(n) recompute storm we cache the result during stepAI:
+//   • _blockedCacheEnabled is turned on only inside stepAI.
+//   • The cache is marked dirty at the start of each snake's turn (the only
+//     moment the board changes — a snake moved/died), so every decision still
+//     sees an up-to-date set with identical contents to a fresh build.
+//   • Callers that MUTATE the set (add their own body) must clone it first
+//     via cloneBlocked(), since the cached object is shared and read-only.
+// Outside stepAI (tests, ad-hoc calls) caching stays off → always fresh.
+var _blockedCache = null;
+var _blockedCacheEnabled = false;
+var _blockedCacheDirty = true;
+
+function _computeBlockedSet(excludeSnake) {
   var blocked = {};
   // Player snake
   if (snake.length) {
@@ -104,6 +121,34 @@ function buildBlockedSet(excludeSnake) {
   return blocked;
 }
 
+function buildBlockedSet(excludeSnake) {
+  // The excludeSnake variant is rare and not cacheable — always fresh.
+  if (excludeSnake !== undefined && excludeSnake !== null) {
+    return _computeBlockedSet(excludeSnake);
+  }
+  if (_blockedCacheEnabled) {
+    if (_blockedCacheDirty || !_blockedCache) {
+      _blockedCache = _computeBlockedSet();
+      _blockedCacheDirty = false;
+    }
+    return _blockedCache;
+  }
+  return _computeBlockedSet();
+}
+
+// Shallow clone of a blocked set. Used by callers that need to add their own
+// body cells without polluting the shared per-tick cache.
+function cloneBlocked(b) {
+  var o = {};
+  for (var k in b) o[k] = true;
+  return o;
+}
+
+// Cache lifecycle helpers — used by stepAI to bound the cache to a single tick.
+function enableBlockedCache() { _blockedCacheEnabled = true; _blockedCacheDirty = true; }
+function disableBlockedCache() { _blockedCacheEnabled = false; _blockedCache = null; _blockedCacheDirty = true; }
+function invalidateBlockedCache() { _blockedCacheDirty = true; }
+
 // ─── BFS pathfinding ───
 // Find shortest path from (sx,sz) to (tx,tz) avoiding blocked cells
 // Returns array of {x,z} positions (including start and target), or null
@@ -112,14 +157,26 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
   var startKey = sx + ',' + sz;
   if (blocked[startKey]) return null;
 
+  // Precompute snake-body occupancy once (excluding the tail, which vacates).
+  // Replaces the O(body) snakeBody.some() scan that ran on every cell
+  // expansion — a major cost once snakes grow long after several deaths.
+  var bodySet = null;
+  if (snakeBody && snakeBody.length > 1) {
+    bodySet = {};
+    for (var b = 0; b < snakeBody.length - 1; b++) {
+      bodySet[snakeBody[b].x + ',' + snakeBody[b].z] = true;
+    }
+  }
+
   var queue = [{x: sx, z: sz}];
+  var qHead = 0; // index pointer — O(1) dequeue instead of Array.shift() (O(n))
   var visited = {};
   var parent = {};
   visited[startKey] = true;
   var steps = 0;
 
-  while (queue.length > 0 && steps < maxSteps) {
-    var curr = queue.shift();
+  while (qHead < queue.length && steps < maxSteps) {
+    var curr = queue[qHead++];
     steps++;
     if (curr.x === tx && curr.z === tz) {
       // Reconstruct path
@@ -139,15 +196,8 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
       var key = nx + ',' + nz;
       if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
       if (blocked[key] || visited[key]) continue;
-      // For snake body, allow moving to the tail (it will move away)
-      if (snakeBody && snakeBody.length > 0) {
-        var tail = snakeBody[snakeBody.length - 1];
-        if (nx === tail.x && nz === tail.z) {
-          // Allow moving to tail position — it will vacate
-        } else if (snakeBody.some(function(s) { return s.x === nx && s.z === nz; })) {
-          continue;
-        }
-      }
+      // Snake body blocks movement except the tail cell (it will vacate).
+      if (bodySet && bodySet[key]) continue;
       visited[key] = true;
       parent[key] = curr.x + ',' + curr.z;
       queue.push({x: nx, z: nz});
@@ -160,28 +210,33 @@ function bfsPath(sx, sz, tx, tz, blocked, snakeBody, maxSteps) {
 // Returns number of reachable cells from (x,z)
 function countReachable(x, z, snakeBody, maxSteps) {
   maxSteps = maxSteps || 50;
+  // Use the shared cached blocked set directly and track this snake's body in
+  // a small separate set. This avoids cloning the (potentially large) blocked
+  // map on every call — countReachable runs several times per snake per tick.
   var blocked = buildBlockedSet();
-  // Add own snake body (excluding tail which will move)
+  var bodySet = null;
   if (snakeBody && snakeBody.length > 1) {
+    bodySet = {};
     for (var i = 0; i < snakeBody.length - 1; i++) {
-      blocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+      bodySet[snakeBody[i].x + ',' + snakeBody[i].z] = true;
     }
   }
 
   var visited = {};
   var queue = [{x: x, z: z}];
+  var qHead = 0; // O(1) dequeue instead of Array.shift()
   visited[x + ',' + z] = true;
   var count = 0;
 
-  while (queue.length > 0 && count < maxSteps) {
-    var curr = queue.shift();
+  while (qHead < queue.length && count < maxSteps) {
+    var curr = queue[qHead++];
     count++;
     for (var d = 0; d < DIRS.length; d++) {
       var nx = curr.x + DIRS[d].x;
       var nz = curr.z + DIRS[d].z;
       var key = nx + ',' + nz;
       if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
-      if (blocked[key] || visited[key]) continue;
+      if (blocked[key] || (bodySet && bodySet[key]) || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nx, z: nz});
     }
@@ -217,7 +272,8 @@ function countEscapeRoutes(x, z, snakeBody, blocked) {
 function bfsPathToTail(aiSnake) {
   if (!aiSnake || aiSnake.length < 2) return null;
   var tail = aiSnake[aiSnake.length - 1];
-  var blocked = buildBlockedSet();
+  // Clone the cached blocked set — we add own body cells below.
+  var blocked = cloneBlocked(buildBlockedSet());
   // Block own body except head (start) and tail (target)
   for (var i = 1; i < aiSnake.length - 1; i++) {
     blocked[aiSnake[i].x + ',' + aiSnake[i].z] = true;
@@ -435,30 +491,32 @@ function isNearEdge(x, z, margin) {
 // Near board edges, space requirements are relaxed since walls naturally
 // constrain movement — without this, the AI would loop endlessly near edges.
 function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
-  // Quick check: count reachable space from this position
-  var bodyBlocked = {};
-  for (var k in blocked) bodyBlocked[k] = true;
-  // Add own body (excluding tail)
+  // Track own body (excluding tail) in a small set instead of copying the
+  // entire blocked map on every call. minSafeSpace runs once per candidate
+  // direction per snake, so the per-call copy was pure overhead.
+  var bodySet = null;
   if (snakeBody && snakeBody.length > 1) {
+    bodySet = {};
     for (var i = 0; i < snakeBody.length - 1; i++) {
-      bodyBlocked[snakeBody[i].x + ',' + snakeBody[i].z] = true;
+      bodySet[snakeBody[i].x + ',' + snakeBody[i].z] = true;
     }
   }
 
   var visited = {};
   var queue = [{x: nx, z: nz}];
+  var qHead = 0; // O(1) dequeue instead of Array.shift()
   visited[nx + ',' + nz] = true;
   var count = 0;
 
-  while (queue.length > 0 && count < minSpace + 10) {
-    var curr = queue.shift();
+  while (qHead < queue.length && count < minSpace + 10) {
+    var curr = queue[qHead++];
     count++;
     for (var d = 0; d < DIRS.length; d++) {
       var nnx = curr.x + DIRS[d].x;
       var nnz = curr.z + DIRS[d].z;
       var key = nnx + ',' + nnz;
       if (nnx < gridMinX || nnx >= gridMaxX || nnz < gridMinZ || nnz >= gridMaxZ) continue;
-      if (bodyBlocked[key] || visited[key]) continue;
+      if (blocked[key] || (bodySet && bodySet[key]) || visited[key]) continue;
       visited[key] = true;
       queue.push({x: nnx, z: nnz});
     }
@@ -593,7 +651,8 @@ function aiDecideDirection(aiIndex, diff) {
   if (safe.length === 0) return ai.direction;
 
   // ─── Build blocked set ───
-  var blocked = buildBlockedSet();
+  // Clone the cached set so adding this snake's body doesn't pollute the cache.
+  var blocked = cloneBlocked(buildBlockedSet());
   for (var i = 1; i < ai.snake.length; i++) {
     blocked[ai.snake[i].x + ',' + ai.snake[i].z] = true;
   }
@@ -810,8 +869,16 @@ function initAI() {
 function stepAI() {
   if (!aiSnakes || aiSnakes.length === 0) return;
 
+  // Enable the per-tick blocked-set cache for the whole AI phase. Each snake's
+  // turn marks it dirty so decisions still see fresh positions, but the
+  // expensive recompute happens at most once per snake instead of ~5 times.
+  enableBlockedCache();
+
   aiSnakes.forEach(function(ai, index) {
     if (!ai.alive) return;
+
+    // Board changed since the previous snake moved — refresh the cache.
+    invalidateBlockedCache();
 
     ai.direction = aiDecideDirection(index, difficulty);
 
@@ -869,18 +936,17 @@ function stepAI() {
     // Move forward
     ai.snake.unshift({x: nx, z: nz});
 
-    // Check apple eating
+    // Check apple eating via O(1) position → index lookup. This matters after
+    // multiple deaths, when the board can contain 100+ death apples.
     var ate = false;
-    for (var i = 0; i < apples.length; i++) {
-      if (apples[i] && nx === apples[i].x && nz === apples[i].z) {
+    var appleIndexAtHead = (typeof getAppleIndexAt === 'function') ? getAppleIndexAt(nx, nz) : -1;
+    if (appleIndexAtHead >= 0) {
         ai.score++;
         ate = true;
-        var eatenApple = apples[i];
+        var eatenApple = apples[appleIndexAtHead];
         var newA = spawnOneApple();
-        apples[i] = newA;
-        // Incremental hash update instead of full rebuild + dedup
-        if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
-        appleDirty = true;
+        if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
+        else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
         // Directional eat sound based on AI position relative to player
         if (snake.length > 0) {
@@ -888,12 +954,14 @@ function stepAI() {
           var panX = (nx - playerHead.x) / Math.max(half, 1);
           sfxAiEat(panX);
         }
-        break;
-      }
     }
 
     if (!ate) ai.snake.pop();
   });
+
+  // Disable the cache outside the AI phase so other callers always see fresh
+  // data (corpse conversion, player step, tests, etc.).
+  disableBlockedCache();
 }
 
 // ─── AI snake dies ───
@@ -979,7 +1047,7 @@ function processCorpses() {
       if (seg && seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
         var newApple = {x: seg.x, z: seg.z, fromDeath: true};
         apples.push(newApple);
-        if (typeof addToAppleSet === 'function') addToAppleSet(newApple);
+        if (typeof addToAppleSet === 'function') addToAppleSet(newApple, apples.length - 1);
         appleDirty = true;
 
         // Hide the converted segment mesh
@@ -1036,6 +1104,7 @@ function refreshAISnakes() {
 
   aiSnakes.forEach(function(ai, index) {
     if (!ai.alive || !ai.groupData || !ai.groupData.bodyMs || !ai.groupData.bodyMs.length) return;
+    ai.groupData.direction = ai.direction;
     refreshSnake(ai.snake, ai.groupData);
   });
 }
@@ -1045,6 +1114,10 @@ if(typeof module !== 'undefined' && module.exports) {
   module.exports = {
     snapToCardinal,
     buildBlockedSet,
+    cloneBlocked,
+    enableBlockedCache,
+    disableBlockedCache,
+    invalidateBlockedCache,
     bfsPath,
     countReachable,
     countEscapeRoutes,

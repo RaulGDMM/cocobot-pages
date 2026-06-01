@@ -1,6 +1,7 @@
 // ─── APPLES ───
 var appleGroup = new THREE.Group(); scene.add(appleGroup);
 var appleMeshes = [];
+var animatedAppleMeshIndices = [];
 var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
 var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
 
@@ -11,15 +12,50 @@ var APPLE_POOL_MARGIN = 100;
 // ─── Apple position hash set for O(1) lookup ───
 // Maintained as "x,z" → true. Rebuilt whenever apples change.
 var appleSet = {};
+// Maintained as "x,z" → first index in apples[]. Used when a snake eats.
+// This avoids scanning all death apples every time any snake moves onto food.
+var appleIndex = {};
+function appleKey(x, z) { return x + ',' + z; }
 function rebuildAppleSet() {
   appleSet = {};
+  appleIndex = {};
   for (var i = 0; i < apples.length; i++) {
-    if (apples[i]) appleSet[apples[i].x + ',' + apples[i].z] = true;
+    if (apples[i]) {
+      var key = appleKey(apples[i].x, apples[i].z);
+      appleSet[key] = true;
+      if (appleIndex[key] === undefined) appleIndex[key] = i;
+    }
   }
 }
 // Incremental add — avoids iterating the entire array on death spikes.
-function addToAppleSet(a) {
-  if (a) appleSet[a.x + ',' + a.z] = true;
+function addToAppleSet(a, index) {
+  if (!a) return;
+  var key = appleKey(a.x, a.z);
+  appleSet[key] = true;
+  if (index === undefined) index = apples.length - 1;
+  if (index >= 0 && appleIndex[key] === undefined) appleIndex[key] = index;
+}
+
+function findAppleIndexForKey(key) {
+  for (var i = 0; i < apples.length; i++) {
+    if (!apples[i]) continue;
+    if (appleKey(apples[i].x, apples[i].z) === key) return i;
+  }
+  return -1;
+}
+
+function removeFromAppleSet(a, index) {
+  if (!a) return;
+  var key = appleKey(a.x, a.z);
+  if (index === undefined || appleIndex[key] === index) {
+    delete appleIndex[key];
+    var fallback = findAppleIndexForKey(key);
+    if (fallback >= 0) {
+      appleIndex[key] = fallback;
+    } else {
+      delete appleSet[key];
+    }
+  }
 }
 
 // ─── Corpse position hash set for O(1) lookup ───
@@ -73,7 +109,7 @@ function buildApples() {
 function isOccupied(x, z) {
   if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
   // O(1) apple lookup via hash set instead of O(n) array scan
-  if(appleSet[x + ',' + z]) return true;
+  if(appleSet[appleKey(x, z)]) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
   // ─── AI MODE: include AI snakes ───
    if(aiSnakes) {
@@ -83,22 +119,76 @@ function isOccupied(x, z) {
      }
    }
    // ─── CORPSES: O(1) lookup via corpseSet hash ───
-   if(corpseSet[x + ',' + z]) return true;
+   if(corpseSet[appleKey(x, z)]) return true;
    return false;
 }
 
 // Incremental appleSet update — replace old apple with new one in the hash.
 // This avoids the expensive rebuildAppleSet() call on every eat.
-function updateAppleSet(oldApple, newApple) {
-  if (oldApple) delete appleSet[oldApple.x + ',' + oldApple.z];
-  if (newApple) appleSet[newApple.x + ',' + newApple.z] = true;
+function updateAppleSet(oldApple, newApple, index) {
+  if (index === undefined) {
+    if (oldApple) {
+      delete appleSet[appleKey(oldApple.x, oldApple.z)];
+      delete appleIndex[appleKey(oldApple.x, oldApple.z)];
+    }
+    if (newApple) {
+      var newKey = appleKey(newApple.x, newApple.z);
+      appleSet[newKey] = true;
+      var found = findAppleIndexForKey(newKey);
+      if (found >= 0) appleIndex[newKey] = found;
+    }
+    return;
+  }
+  removeFromAppleSet(oldApple, index);
+  if (newApple) addToAppleSet(newApple, index);
+}
+
+function getAppleIndexAt(x, z) {
+  var key = appleKey(x, z);
+  var index = appleIndex[key];
+  if (index !== undefined && apples[index] && apples[index].x === x && apples[index].z === z) return index;
+  index = findAppleIndexForKey(key);
+  if (index >= 0) {
+    appleIndex[key] = index;
+    appleSet[key] = true;
+    return index;
+  }
+  delete appleIndex[key];
+  delete appleSet[key];
+  return -1;
+}
+
+function replaceAppleAt(index, newApple) {
+  if (index < 0 || index >= apples.length) return null;
+  var oldApple = apples[index];
+  apples[index] = newApple;
+  updateAppleSet(oldApple, newApple, index);
+  appleDirty = true;
+  return oldApple;
+}
+
+function buildSpawnOccupiedSet() {
+  var occupied = {};
+  for (var i = 0; i < snake.length; i++) occupied[appleKey(snake[i].x, snake[i].z)] = true;
+  for (var o = 0; o < obstacles.length; o++) occupied[appleKey(obstacles[o].x, obstacles[o].z)] = true;
+  if (aiSnakes) {
+    for (var a = 0; a < aiSnakes.length; a++) {
+      var ai = aiSnakes[a];
+      if (!ai.alive) continue;
+      for (var s = 0; s < ai.snake.length; s++) occupied[appleKey(ai.snake[s].x, ai.snake[s].z)] = true;
+    }
+  }
+  for (var ck in corpseSet) occupied[ck] = true;
+  for (var ak in appleSet) occupied[ak] = true;
+  return occupied;
 }
 
 function spawnOneApple() {
+  var occupied = buildSpawnOccupiedSet();
   for(var tries = 0; tries < 200; tries++) {
     var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
     var z = gridMinZ + Math.floor(Math.random() * (gridMaxZ - gridMinZ));
-    if(!isOccupied(x,z)) return {x:x, z:z};
+    if(!occupied[appleKey(x, z)]) return {x:x, z:z};
   }
   return null;
 }
@@ -110,6 +200,7 @@ var appleDirty = false;
 function refreshApples() {
   if (!appleDirty || !appleMeshes || !appleMeshes.length) return;
   appleDirty = false;
+  animatedAppleMeshIndices = [];
   var totalApples = Math.min(apples.length, appleMeshes.length);
   for(var i = 0; i < totalApples; i++) {
     if(apples[i]) {
@@ -120,13 +211,17 @@ function refreshApples() {
       // once, forcing THREE.js to re-shade every object against every light.
       var light = appleMeshes[i].userData && appleMeshes[i].userData.light;
       if (light) light.visible = !apples[i].fromDeath;
+      appleMeshes[i].userData.animate = !apples[i].fromDeath;
+      if (!apples[i].fromDeath) animatedAppleMeshIndices.push(i);
     } else {
       appleMeshes[i].visible = false;
+      appleMeshes[i].userData.animate = false;
     }
   }
   // Hide any unused meshes
   for(var i = totalApples; i < appleMeshes.length; i++) {
     appleMeshes[i].visible = false;
+    appleMeshes[i].userData.animate = false;
   }
 }
 
@@ -163,10 +258,14 @@ function deduplicateApples() {
 
 function initApples() {
   apples = [];
+  rebuildAppleSet();
   var numApples = calcNumApples(GRID_SIZE);
   for(var i = 0; i < numApples; i++) {
     var a = spawnOneApple();
-    if(a) apples.push(a);
+    if(a) {
+      apples.push(a);
+      addToAppleSet(a, apples.length - 1);
+    }
   }
   rebuildAppleSet();
   appleDirty = true;
@@ -176,5 +275,5 @@ function initApples() {
 
 // ─── Module exports (for testing — ignored in browser) ───
 if(typeof module !== 'undefined' && module.exports) {
-  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, appleSet, APPLE_POOL_MARGIN, corpseSet, rebuildCorpseSet, removeFromCorpseSet, addToCorpseSet };
+  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, getAppleIndexAt, replaceAppleAt, appleSet, appleIndex, animatedAppleMeshIndices, APPLE_POOL_MARGIN, corpseSet, rebuildCorpseSet, removeFromCorpseSet, addToCorpseSet };
 }
