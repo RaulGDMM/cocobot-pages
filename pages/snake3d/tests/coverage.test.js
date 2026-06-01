@@ -904,8 +904,8 @@ describe('audio.js — Music Player', () => {
     expect(mpTrackEl.textContent).toContain('🐍');
   });
 
-  test('playlist has 10 tracks', () => {
-    expect(playlist.length).toBe(10);
+  test('playlist has 20 tracks', () => {
+    expect(playlist.length).toBe(20);
   });
 
   test('shufflePlaylist shuffles', () => {
@@ -930,7 +930,7 @@ describe('audio.js — Music Player', () => {
   test('playTrack handles negative index', () => {
     initMusic();
     playTrack(-1);
-    expect(currentTrack).toBe(9);
+    expect(currentTrack).toBe(19);
   });
 
   test('nextTrack calls playTrack with next index', () => {
@@ -963,7 +963,7 @@ describe('audio.js — Music Player', () => {
     setGlobal("currentTrack",  3);
     updateTrackDisplay();
     expect(mpTrackEl.textContent).toBe(playlist[3].name);
-    expect(mpNumEl.textContent).toBe('4/10');
+    expect(mpNumEl.textContent).toBe('4/20');
   });
 
   test('toggleMusic pauses when playing', () => {

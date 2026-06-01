@@ -902,6 +902,7 @@ describe('ai.js — AI_STRATEGY human-like params', () => {
   test('medium mode has lower spaceCheckRelaxation than easy', () => {
     expect(AI_STRATEGY.medium.spaceCheckRelaxation).toBeGreaterThan(0);
     expect(AI_STRATEGY.medium.spaceCheckRelaxation).toBeLessThan(AI_STRATEGY.easy.spaceCheckRelaxation);
+    expect(AI_STRATEGY.medium.spaceCheckRelaxation).toBe(0.07);
   });
 
   test('hard mode has zero spaceCheckRelaxation', () => {
@@ -915,7 +916,7 @@ describe('ai.js — AI_STRATEGY human-like params', () => {
 
   test('medium mode has wider playerPerceptionRadius than easy', () => {
     expect(AI_STRATEGY.medium.playerPerceptionRadius).toBeGreaterThan(AI_STRATEGY.easy.playerPerceptionRadius);
-    expect(AI_STRATEGY.medium.playerPerceptionRadius).toBe(9);
+    expect(AI_STRATEGY.medium.playerPerceptionRadius).toBe(14);
   });
 
   test('hard mode has infinite playerPerceptionRadius (-1)', () => {

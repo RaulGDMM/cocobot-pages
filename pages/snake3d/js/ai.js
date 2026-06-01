@@ -34,8 +34,8 @@ var AI_STRATEGY = {
     minSpaceFactor: 1.7,
     errorRate: 0.10,
     corneringRate: 0.40,
-    spaceCheckRelaxation: 0.10,
-    playerPerceptionRadius: 9
+    spaceCheckRelaxation: 0.07,
+    playerPerceptionRadius: 14
   },
   hard: {
     bfsPathfinding: true,
