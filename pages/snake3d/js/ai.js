@@ -930,7 +930,7 @@ function showAiDeathMessage(ai, cause) {
     clearTimeout(el._hideTimer);
     el._hideTimer = setTimeout(function() {
       el.classList.remove('visible');
-    }, 3000);
+    }, 5000);
   }
 }
 

@@ -384,6 +384,24 @@ describe('game.js — truncateSnakesToBounds()', () => {
     truncateSnakesToBounds(countdown);
     expect(snake.length).toBe(1);
     expect(score).toBe(9);
+    // Info message should be shown for player loss
+    expect(typeof showInfoMessage).toBe('function');
+  });
+
+  test('does NOT show info message when only AI snakes lose segments', () => {
+    snake = [{x: 0, z: 0}];
+    aiSnakes = [
+      {alive: true, snake: [
+        {x: 0, z: 0},
+        {x: 7, z: 0},    // outside
+      ]},
+    ];
+    var countdown = {newMinX: -5, newMaxX: 5, newMinZ: -5, newMaxZ: 5};
+    truncateSnakesToBounds(countdown);
+    // AI should lose the segment but no info message for player
+    expect(aiSnakes[0].snake.length).toBe(1);
+    // Player should not have lost anything
+    expect(snake.length).toBe(1);
   });
 
   test('keeps head even if all segments are outside', () => {

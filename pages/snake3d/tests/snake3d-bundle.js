@@ -1792,7 +1792,7 @@ function showAiDeathMessage(ai, cause) {
     clearTimeout(el._hideTimer);
     el._hideTimer = setTimeout(function() {
       el.classList.remove('visible');
-    }, 3000);
+    }, 5000);
   }
 }
 
@@ -2494,7 +2494,6 @@ function checkHeadsOutOfBounds() {
 // bounds: { newMinX, newMaxX, newMinZ, newMaxZ }
 function truncateSnakesToBounds(bounds) {
   var playerLost = 0;
-  var aiLostTotal = 0;
 
   // Player snake — filter ALL segments outside new bounds
   if (snake && snake.length > 0) {
@@ -2533,7 +2532,6 @@ function truncateSnakesToBounds(bounds) {
       }
       if (newSnake.length < 1) newSnake = [ai.snake[0]];
       var lost = before - newSnake.length;
-      aiLostTotal += lost;
       ai.snake.length = 0;
       for (var j = 0; j < newSnake.length; j++) ai.snake.push(newSnake[j]);
       if (lost > 0) {
@@ -2542,16 +2540,9 @@ function truncateSnakesToBounds(bounds) {
     }
   }
 
-  // Show info message if anything was lost
-  if (playerLost > 0 || aiLostTotal > 0) {
-    var parts = [];
-    if (playerLost > 0) {
-      parts.push('⚠️ Has perdido ' + playerLost + (playerLost === 1 ? ' segmento del cuerpo' : ' segmentos del cuerpo') + ' por la reducción del tablero (-' + playerLost + ' puntos)');
-    }
-    if (aiLostTotal > 0) {
-      parts.push(aiLostTotal + (aiLostTotal === 1 ? ' segmento de serpiente enemiga' : ' segmentos de serpientes enemigas') + ' eliminados por la reducción');
-    }
-    showInfoMessage(parts.join('<br>'));
+  // Show info message ONLY if the player lost segments
+  if (playerLost > 0) {
+    showInfoMessage('⚠️ Has perdido ' + playerLost + (playerLost === 1 ? ' segmento del cuerpo' : ' segmentos del cuerpo') + ' por la reducción del tablero (-' + playerLost + ' puntos)');
   }
 }
 
@@ -2564,7 +2555,7 @@ function showInfoMessage(msg) {
     clearTimeout(el._hideTimer);
     el._hideTimer = setTimeout(function() {
       el.classList.remove('visible');
-    }, 3000);
+    }, 5000);
   }
 }
 
