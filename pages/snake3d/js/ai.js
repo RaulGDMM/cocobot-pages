@@ -1,5 +1,5 @@
 // ─── AI OPPONENTS ───
-// AI snake logic: movement, collision, corpses, difficulty levels
+// AI snake logic: movement, collision, death → apples, difficulty levels
 //
 // Strategies (activated per difficulty):
 //   Easy:   flood fill (shallow) + apple attraction
@@ -85,8 +85,6 @@ function buildBlockedSet(excludeSnake) {
   }
   // Obstacles
   for (var i = 0; i < obstacles.length; i++) blocked[obstacles[i].x + ',' + obstacles[i].z] = true;
-  // Corpses
-  if (corpses) for (var i = 0; i < corpses.length; i++) blocked[corpses[i].x + ',' + corpses[i].z] = true;
   // Other AI snakes
   if (aiSnakes) {
     for (var i = 0; i < aiSnakes.length; i++) {
@@ -365,7 +363,6 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
     if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return;
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
-    if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
     // Player snake: only treated as obstacle if AI can "see" it
     if (canSeePlayer && snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (aiSnakes) {
@@ -723,18 +720,6 @@ function aiDecideDirection(aiIndex, diff) {
 function initAI() {
   log('=== initAI() mode=' + gameMode + ' diff=' + difficulty + ' ===');
   aiSnakes = [];
-  corpses = [];
-  corpseMeshes = [];
-
-  // Clean up old corpse meshes
-  if (corpseGroup) {
-    while (corpseGroup.children.length) {
-      var c = corpseGroup.children[0]; corpseGroup.remove(c);
-      if (c.geometry) c.geometry.dispose();
-      if (c.material) c.material.dispose();
-    }
-  }
-  corpseGroup = new THREE.Group(); scene.add(corpseGroup);
 
   var count = AI_COUNT[gameMode] || 0;
   if (count === 0) return;
@@ -814,13 +799,6 @@ function stepAI() {
       return;
     }
 
-    // Check corpse collision
-    if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) {
-      log('AI ' + index + ' hit corpse at (' + nx + ',' + nz + ')');
-      aiDie(index, 'corpse');
-      return;
-    }
-
     // Check collision with player snake
     if (snake.some(function(s) { return s.x === nx && s.z === nz; })) {
       log('AI ' + index + ' hit player at (' + nx + ',' + nz + ')');
@@ -875,29 +853,26 @@ function aiDie(aiIndex, cause) {
 
   ai.alive = false;
 
-  // Convert body to corpse with color
-  if (!corpses) corpses = [];
-  var corpseColor = ai.color;
-  ai.snake.forEach(function(seg) {
-    corpses.push({x: seg.x, z: seg.z, color: corpseColor});
-  });
+  // ─── Hide AI snake mesh group so the dead body disappears ───
+  if (ai.groupData && ai.groupData.group) {
+    ai.groupData.group.visible = false;
+  }
 
-  // Create visual corpse meshes (darkened version of snake color)
-  var baseColor = SNAKE_COLORS[corpseColor] || SNAKE_COLORS.red;
-  var corpseMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(baseColor).multiplyScalar(0.35),
-    emissive: new THREE.Color(baseColor).multiplyScalar(0.1).getHex(),
-    emissiveIntensity: .1,
-    roughness: .8
-  });
-  var corpseGeo = new THREE.BoxGeometry(.6, .3, .6);
-
-  ai.snake.forEach(function(seg) {
-    var m = new THREE.Mesh(corpseGeo, corpseMat);
-    m.position.set(gw(seg.x), .15, gw(seg.z));
-    corpseGroup.add(m);
-    corpseMeshes.push(m);
-  });
+  // ─── Convert body to apples (collectible by anyone) ───
+  var appleCount = 0;
+  for (var i = ai.snake.length - 1; i >= 0; i--) {
+    var seg = ai.snake[i];
+    // Only spawn apples within current grid bounds
+    if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
+      apples.push({x: seg.x, z: seg.z, fromDeath: true});
+      appleCount++;
+    }
+  }
+  if (appleCount > 0) {
+    log('AI ' + aiIndex + ' body → ' + appleCount + ' apples');
+    // Refresh apple visuals to show new apples
+    if (typeof refreshApples === 'function') refreshApples();
+  }
 
   // Particles
   if (ai.snake.length) {
@@ -910,7 +885,7 @@ function aiDie(aiIndex, cause) {
   // ─── Trigger grid shrink on AI death ───
   maybeTriggerShrink();
 
-  log('AI ' + aiIndex + ' died (' + cause + ') — ' + corpses.length + ' corpse segments');
+  log('AI ' + aiIndex + ' died (' + cause + ')');
 }
 
 // ─── Show AI death message on screen ───

@@ -21,9 +21,6 @@ var playerColor = 'green';
 var gridSize = GRID_SIZE;
 var gridSizeModifier = 0;
 var aiSnakes = [];
-var corpses = [];
-var corpseGroup = null;
-var corpseMeshes = [];
 
 // ─── GRID BOUNDARIES (for dynamic shrinking) ───
 // Initially equal to -half / half. Updated when grid shrinks.

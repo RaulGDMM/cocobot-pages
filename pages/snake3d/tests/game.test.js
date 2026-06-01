@@ -16,7 +16,6 @@ describe('game.js — step()', () => {
     setGlobal('gameOver', false);
     setGlobal('score', 0);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('appleMeshes', []);
   });
 
@@ -62,7 +61,6 @@ describe('game.js — die(cause)', () => {
     setGlobal('gameOver', false);
     setGlobal('running', true);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
   });
 
   test('die("wall") muestra mensaje de pared', () => {
@@ -83,11 +81,6 @@ describe('game.js — die(cause)', () => {
     expect(finalScoreEl.textContent).toContain('obstáculo');
   });
 
-  test('die("corpse") muestra mensaje de cadáver', () => {
-    die('corpse');
-    expect(gameOver).toBe(true);
-    expect(finalScoreEl.textContent).toContain('cadáver');
-  });
 
   test('die("ai") muestra mensaje de serpiente enemiga', () => {
     die('ai');
@@ -157,7 +150,6 @@ describe('game.js — step() wall collision', () => {
     setGlobal('gameOver', false);
     setGlobal('score', 0);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('appleMeshes', []);
   });
 
@@ -201,7 +193,6 @@ describe('game.js — step() self collision', () => {
     setGlobal('gameOver', false);
     setGlobal('score', 0);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('appleMeshes', []);
   });
 
@@ -230,7 +221,6 @@ describe('game.js — step() obstacle collision', () => {
     setGlobal('gameOver', false);
     setGlobal('score', 0);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('appleMeshes', []);
   });
 
@@ -259,7 +249,6 @@ describe('game.js — step() AI body collision', () => {
     setGlobal('half', 11);
     setGlobal('gameOver', false);
     setGlobal('score', 0);
-    setGlobal('corpses', []);
     setGlobal('appleMeshes', []);
   });
 
@@ -292,38 +281,7 @@ describe('game.js — step() AI body collision', () => {
   });
 });
 
-// ─── step() — colisión con cadáveres ───
-describe('game.js — step() corpse collision', () => {
-  beforeEach(() => {
-    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
-    setApples([]);
-    setObstacles([]);
-    setGlobal('direction', 0);
-    setGlobal('gridSize', 22);
-    setGlobal('half', 11);
-    setGlobal('gameOver', false);
-    setGlobal('score', 0);
-    setGlobal('aiSnakes', []);
-    setGlobal('appleMeshes', []);
-  });
 
-  test('chocar contra cadáver mata', () => {
-    setGlobal('corpses', [{x: 1, z: 0}, {x: 2, z: 0}]);
-    step();
-    expect(gameOver).toBe(true);
-  });
-
-  test('no choca con cadáver lejano', () => {
-    setGlobal('corpses', [{x: 10, z: 10}]);
-    step();
-    expect(gameOver).toBe(false);
-  });
-
-  test('funciona con corpses undefined', () => {
-    setGlobal('corpses', undefined);
-    expect(() => step()).not.toThrow();
-  });
-});
 
 // ─── turnL() / turnR() ───
 describe('game.js — turnL() / turnR()', () => {

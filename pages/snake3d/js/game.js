@@ -32,12 +32,10 @@ function initGame() {
    log('Scaled: apples=' + NUM_APPLES + ', maxObs=' + MAX_OBSTACLES + ', spawnEvery=' + OBSTACLE_SPAWN_EVERY);
 
   // Clear old snake groups from sGroup
-   while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
-   // Clear old corpse meshes
-   if(corpseGroup) { while(corpseGroup.children.length) { var cc = corpseGroup.children[0]; corpseGroup.remove(cc); } }
+    while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
 
-  snake=[]; direction=0; score=0; gameOver=false;
-  obstacles=[]; apples=[];
+   snake=[]; direction=0; score=0; gameOver=false;
+   obstacles=[]; apples=[];
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
@@ -71,30 +69,20 @@ function step() {
    if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die('self');return;}
    if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die('obstacle');return;}
   // ─── AI MODE: collision with AI snake bodies ───
-  if(aiSnakes) {
-    for(var k = 0; k < aiSnakes.length; k++) {
-      if(!aiSnakes[k].alive) continue;
-      var aiBody = aiSnakes[k].snake;
-      for(var j = 0; j < aiBody.length; j++) {
-        if(aiBody[j].x === nx && aiBody[j].z === nz) {
-          log('Hit AI#'+k+' body at ('+nx+','+nz+')');
-          die('ai');
-          return;
-        }
-      }
-    }
-  }
-  // ─── AI MODE: collision with corpses ───
-   if(corpses) {
-     for(var c = 0; c < corpses.length; c++) {
-       if(corpses[c].x === nx && corpses[c].z === nz) {
-         log('Hit corpse at ('+nx+','+nz+')');
-         die('corpse');
-         return;
+   if(aiSnakes) {
+     for(var k = 0; k < aiSnakes.length; k++) {
+       if(!aiSnakes[k].alive) continue;
+       var aiBody = aiSnakes[k].snake;
+       for(var j = 0; j < aiBody.length; j++) {
+         if(aiBody[j].x === nx && aiBody[j].z === nz) {
+           log('Hit AI#'+k+' body at ('+nx+','+nz+')');
+           die('ai');
+           return;
+         }
        }
      }
    }
-  snake.unshift({x:nx,z:nz});
+   snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
      if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
@@ -116,6 +104,7 @@ function step() {
 function die(cause) {
   log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; running=false; sfxDie();
+
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   // ─── AI MODE: save high score per mode/difficulty/gridSize ───
   var hsKey = getHighScoreKey(gameMode, difficulty, gridSize);
@@ -128,7 +117,6 @@ function die(cause) {
   if(cause === 'wall') causeMsg = 'Has chocado contra la pared';
   else if(cause === 'self') causeMsg = 'Te has mordido a ti mismo';
   else if(cause === 'obstacle') causeMsg = 'Has chocado contra un obstáculo';
-  else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
   else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
   finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
@@ -428,7 +416,7 @@ function applyShrink(countdown) {
       ' bounds=(' + gridMinX + ',' + gridMaxX + ',' + gridMinZ + ',' + gridMaxZ + ')');
 }
 
-// Remove apples, obstacles, corpses outside new grid; adjust counts to new grid size
+// Remove apples, obstacles outside new grid; adjust counts to new grid size
 function removeOutOfBounds() {
   // ── Apples ──
   var before = apples.length;
@@ -458,16 +446,7 @@ function removeOutOfBounds() {
   while (obstacles.length > MAX_OBSTACLES) obstacles.pop();
   log('  Obstacles: ' + beforeObs + ' → ' + obstacles.length + ' (max: ' + MAX_OBSTACLES + ')');
 
-  // ── Corpses ──
-  if (corpses) {
-    var beforeCorpse = corpses.length;
-    corpses = corpses.filter(function(c) {
-      return c.x >= gridMinX && c.x < gridMaxX && c.z >= gridMinZ && c.z < gridMaxZ;
-    });
-    log('  Corpses: ' + beforeCorpse + ' → ' + corpses.length);
-  }
-
-  // ── Refresh visuals so meshes update (guard: may not exist in tests) ──
+    // ── Refresh visuals so meshes update (guard: may not exist in tests) ──
    if (typeof refreshApples === 'function' && appleMeshes && appleMeshes.length) refreshApples();
    if (typeof refreshObstacles === 'function' && obsMeshes && obsMeshes.length) refreshObstacles();
   }

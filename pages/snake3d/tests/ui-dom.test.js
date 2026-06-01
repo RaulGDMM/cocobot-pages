@@ -51,7 +51,6 @@ describe('ui.js — updateSizeDisplay()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     mockDOM();
   });
@@ -67,7 +66,6 @@ describe('ui.js — updateDifficultyVisibility()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     mockDOM();
   });
@@ -83,7 +81,6 @@ describe('ui.js — updateHighScoreDisplay()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('highscoreEl', null);
     mockDOM();
@@ -100,7 +97,6 @@ describe('ui.js — buildColorSelector()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('highscoreEl', { textContent: '' });
     mockDOM();
@@ -118,7 +114,6 @@ describe('ui.js — buildModeSelector()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('highscoreEl', { textContent: '' });
     mockDOM();
@@ -136,7 +131,6 @@ describe('ui.js — buildDifficultySelector()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('highscoreEl', { textContent: '' });
     mockDOM();
@@ -154,7 +148,6 @@ describe('ui.js — buildSizeSelector()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('highscoreEl', { textContent: '' });
     mockDOM();
@@ -172,7 +165,6 @@ describe('ui.js — initUISelectors()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('highscoreEl', { textContent: '' });
   });

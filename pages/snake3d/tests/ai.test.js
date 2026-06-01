@@ -71,7 +71,6 @@ describe('ai.js — buildBlockedSet()', () => {
       id: 'ai_0',
       snake: [{x: 10, z: 10}, {x: 9, z: 10}]
     }]);
-    setGlobal('corpses', [{x: -5, z: -5}]);
     setGlobal('gridSize', 22);
   });
 
@@ -84,11 +83,6 @@ describe('ai.js — buildBlockedSet()', () => {
   test('includes obstacle cells', () => {
     var blocked = buildBlockedSet();
     expect(blocked['5,5']).toBe(true);
-  });
-
-  test('includes corpse cells', () => {
-    var blocked = buildBlockedSet();
-    expect(blocked['-5,-5']).toBe(true);
   });
 
   test('includes other AI snake cells', () => {
@@ -105,7 +99,6 @@ describe('ai.js — buildBlockedSet()', () => {
     setSnake([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     var blocked = buildBlockedSet();
     expect(Object.keys(blocked).length).toBe(0);
   });
@@ -118,7 +111,6 @@ describe('ai.js — bfsPath()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -193,7 +185,6 @@ describe('ai.js — countReachable()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -230,7 +221,6 @@ describe('ai.js — countEscapeRoutes()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -274,7 +264,6 @@ describe('ai.js — bfsPathToTail()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -313,7 +302,6 @@ describe('ai.js — nearestApple()', () => {
     setSnake([{x: 0, z: 0}]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
   });
 
@@ -354,7 +342,6 @@ describe('ai.js — bestApple()', () => {
     setSnake([{x: 0, z: 0}]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -397,7 +384,6 @@ describe('ai.js — lookaheadScore()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -438,7 +424,6 @@ describe('apples.js — isOccupied() with AI snakes', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
   });
 
   test('returns false when grid is empty', () => {
@@ -464,15 +449,8 @@ describe('apples.js — isOccupied() with AI snakes', () => {
     expect(isOccupied(5, 5)).toBe(false);
   });
 
-  test('returns true when corpse occupies cell', () => {
-    setGlobal('corpses', [{x: 7, z: 8}, {x: 6, z: 8}]);
-    expect(isOccupied(7, 8)).toBe(true);
-    expect(isOccupied(6, 8)).toBe(true);
-  });
-
   test('handles undefined aiSnakes gracefully', () => {
     setGlobal('aiSnakes', undefined);
-    setGlobal('corpses', undefined);
     expect(() => isOccupied(0, 0)).not.toThrow();
     expect(isOccupied(0, 0)).toBe(false);
   });
@@ -485,7 +463,6 @@ describe('obstacles.js — isSafeForObstacle() with AI snakes', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
   });
 
   test('returns false when near AI snake', () => {
@@ -509,7 +486,6 @@ describe('obstacles.js — isSafeForObstacle() with AI snakes', () => {
       alive: false,
       snake: [{x: 5, z: 5}]
     }]);
-    setGlobal('corpses', []);
     expect(isSafeForObstacle(5, 5)).toBe(true);
   });
 });
@@ -521,7 +497,6 @@ describe('ai.js — aiEvaluateDirections()', () => {
     setApples([{x: 3, z: 0}]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
   });
 
@@ -569,7 +544,6 @@ describe('ai.js — aiDecideDirection()', () => {
       direction: 0,
       color: 'red'
     }]);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('difficulty', 'medium');
   });
@@ -640,7 +614,6 @@ describe('ai.js — aiCorneringStrategy()', () => {
       direction: 0,
       color: 'red'
     }]);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
   });
@@ -672,7 +645,6 @@ describe('ai.js — initAI()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gameMode', 'solo');
     setGlobal('difficulty', 'medium');
     setGlobal('playerColor', 'green');
@@ -726,8 +698,11 @@ describe('ai.js — aiDie()', () => {
       direction: 0,
       color: 'red'
     }]);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
+    setGlobal('gridMinX', -11);
+    setGlobal('gridMaxX', 11);
+    setGlobal('gridMinZ', -11);
+    setGlobal('gridMaxZ', 11);
   });
 
   test('sets alive to false', () => {
@@ -735,17 +710,19 @@ describe('ai.js — aiDie()', () => {
     expect(aiSnakes[0].alive).toBe(false);
   });
 
-  test('adds corpse segments to corpses array', () => {
+  test('converts body to apples on death', () => {
+    var applesBefore = apples.length;
     aiDie(0, 'self');
-    expect(corpses.length).toBeGreaterThan(0);
+    // At least some segments should become apples
+    expect(apples.length).toBeGreaterThan(applesBefore);
   });
 
-  test('corpse segments match dead snake body', () => {
+  test('death apples match dead snake body positions', () => {
     aiDie(0, 'wall');
-    var corpsePositions = corpses.map(function(c) { return c.x + ',' + c.z; });
-    expect(corpsePositions).toContain('5,0');
-    expect(corpsePositions).toContain('4,0');
-    expect(corpsePositions).toContain('3,0');
+    var applePositions = apples.map(function(a) { return a.x + ',' + a.z; });
+    expect(applePositions).toContain('5,0');
+    expect(applePositions).toContain('4,0');
+    expect(applePositions).toContain('3,0');
   });
 });
 
@@ -764,8 +741,11 @@ describe('ai.js — stepAI()', () => {
       score: 0,
       groupData: null
     }]);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
+    setGlobal('gridMinX', -11);
+    setGlobal('gridMaxX', 11);
+    setGlobal('gridMinZ', -11);
+    setGlobal('gridMaxZ', 11);
     setGlobal('difficulty', 'hard');
   });
 
@@ -829,17 +809,7 @@ describe('ai.js — stepAI()', () => {
     expect(aiSnakes[0].alive).toBe(false);
   });
 
-  test('AI avoids corpse and survives', () => {
-    setGlobal('corpses', [
-      {x: 6, z: 0}, {x: 7, z: 0}, {x: 6, z: 1}, {x: 6, z: -1}
-    ]);
-    aiSnakes[0].snake = [{x: 5, z: 0}, {x: 4, z: 0}, {x: 3, z: 0}];
-    aiSnakes[0].direction = 0;
-    stepAI();
-    expect(aiSnakes[0].alive).toBe(true);
-  });
-
-  test('AI avoids player snake and survives', () => {
+ test('AI avoids player snake and survives', () => {
     setSnake([
       {x: 6, z: 0}, {x: 7, z: 0}, {x: 6, z: 1}, {x: 6, z: -1}
     ]);
@@ -868,7 +838,6 @@ describe('ai.js — refreshAISnakes()', () => {
         bodyMs: [{ position: { x: 0, y: 0, z: 0, set: function(){} }, scale: { set: function(){} }, visible: true }]
       }
     }]);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
   });
 
@@ -943,9 +912,12 @@ describe('ai.js — aiEvaluateDirections() player perception', () => {
   beforeEach(() => {
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
+    setGlobal('gridMinX', -11);
+    setGlobal('gridMaxX', 11);
+    setGlobal('gridMinZ', -11);
+    setGlobal('gridMaxZ', 11);
     setGlobal('TURN_ANGLE', Math.PI / 2);
   });
 
@@ -1027,7 +999,6 @@ describe('ai.js — aiEvaluateDirections() perception integration', () => {
   beforeEach(() => {
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
     setGlobal('gridSize', 22);
     setGlobal('half', 11);
     setGlobal('TURN_ANGLE', Math.PI / 2);

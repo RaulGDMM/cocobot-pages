@@ -23,15 +23,12 @@ function isOccupied(x, z) {
   if(snake.some(function(s){return s.x===x&&s.z===z;})) return true;
   if(apples.some(function(a){return a&&a.x===x&&a.z===z;})) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
-  // ─── AI MODE: include AI snakes and corpses ───
+  // ─── AI MODE: include AI snakes ───
   if(aiSnakes) {
     for(var i = 0; i < aiSnakes.length; i++) {
       var ai = aiSnakes[i];
       if(ai.alive && ai.snake.some(function(s){return s.x===x&&s.z===z;})) return true;
     }
-  }
-  if(corpses) {
-    if(corpses.some(function(c){return c.x===x&&c.z===z;})) return true;
   }
   return false;
 }
@@ -47,18 +44,28 @@ function spawnOneApple() {
 
 function refreshApples() {
   if (!appleMeshes || !appleMeshes.length) return;
-  var numApples = calcNumApples(GRID_SIZE);
-  for(var i = 0; i < numApples; i++) {
-    if (i >= appleMeshes.length) break;
-    if(i < apples.length && apples[i]) {
+  var totalApples = apples.length;
+  var rendered = 0;
+  for(var i = 0; i < totalApples; i++) {
+    if(i >= appleMeshes.length) {
+      // Create extra mesh for death apples beyond the initial pool
+      var g = new THREE.Group();
+      var m = new THREE.Mesh(appleGeo, appleMat);
+      g.add(m);
+      var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
+      appleGroup.add(g);
+      appleMeshes.push(g);
+    }
+    if(apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
+      rendered++;
     } else {
       appleMeshes[i].visible = false;
     }
   }
-  // Hide any meshes beyond numApples (e.g., after shrink reduced the count)
-  for(var i = numApples; i < appleMeshes.length; i++) {
+  // Hide any unused meshes
+  for(var i = totalApples; i < appleMeshes.length; i++) {
     appleMeshes[i].visible = false;
   }
 }

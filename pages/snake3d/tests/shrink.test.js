@@ -149,7 +149,6 @@ describe('game.js — removeOutOfBounds()', () => {
     gridMinZ = -5;
     gridMaxZ = 5;
     obstacles = [];
-    corpses = [];
     NUM_APPLES = 3;
   });
 
@@ -188,23 +187,7 @@ describe('game.js — removeOutOfBounds()', () => {
     });
   });
 
-  test('removes corpses outside new grid', () => {
-    corpses = [
-      {x: 0, z: 0},    // inside
-      {x: 7, z: 0},    // outside
-      {x: -3, z: -3},  // inside
-    ];
-    removeOutOfBounds();
-    expect(corpses.length).toBe(2);
-  });
 
-  test('handles undefined corpses gracefully', () => {
-    corpses = undefined;
-    apples = [];
-    obstacles = [{x: 0, z: 0}];
-    removeOutOfBounds();
-    expect(corpses).toBeUndefined();
-  });
 });
 
 // ─── Game: checkHeadsOutOfBounds ───
@@ -260,7 +243,6 @@ describe('game.js — checkHeadsOutOfBounds()', () => {
       {alive: true, snake: [{x: 0, z: 0}]},
       {alive: false, snake: [{x: 99, z: 99}]}
     ];
-    corpses = [];
     // Mock corpseGroup so aiDie doesn't crash
     corpseGroup = {children: [], add: function() {}};
     checkHeadsOutOfBounds();
@@ -584,7 +566,6 @@ describe('ai.js — aiDie() calls maybeTriggerShrink()', () => {
     shrinkCountdowns = [];
     gameOver = false;
     snake = [{x: 0, z: 0}];
-    corpses = [];
     corpseGroup = {children: [], add: function() {}};
     aiSnakes = [
       {id: 'ai_0', alive: true, snake: [{x: 5, z: 5}, {x: 4, z: 5}], color: 'red', groupData: null},
@@ -602,6 +583,5 @@ describe('ai.js — aiDie() calls maybeTriggerShrink()', () => {
   test('AI death adds corpse segments', () => {
     aiDie(0, 'self');
     expect(aiSnakes[0].alive).toBe(false);
-    expect(corpses.length).toBe(2);
   });
 });

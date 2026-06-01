@@ -536,7 +536,6 @@ describe('game.js — initGame()', () => {
     setApples([]);
     setObstacles([]);
     setGlobal('aiSnakes', []);
-    setGlobal('corpses', []);
   });
 
   test('resets state variables', () => {
