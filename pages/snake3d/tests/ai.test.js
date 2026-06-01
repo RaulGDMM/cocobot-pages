@@ -703,6 +703,7 @@ describe('ai.js — aiDie()', () => {
     setGlobal('gridMaxX', 11);
     setGlobal('gridMinZ', -11);
     setGlobal('gridMaxZ', 11);
+    setGlobal('corpses', []);
   });
 
   test('sets alive to false', () => {
@@ -710,21 +711,21 @@ describe('ai.js — aiDie()', () => {
     expect(aiSnakes[0].alive).toBe(false);
   });
 
-  test('converts body to apples on death', () => {
-    var applesBefore = apples.length;
+  test('creates corpse on death', () => {
+    var corpsesBefore = corpses.length;
     aiDie(0, 'self');
-    // At least some segments should become apples
-    expect(apples.length).toBeGreaterThan(applesBefore);
+    // Death creates a corpse entry, not instant apples
+    expect(corpses.length).toBe(corpsesBefore + 1);
+    expect(corpses[corpses.length - 1].segments.length).toBe(3);
   });
 
-  test('death apples match dead snake body positions (every 2nd segment)', () => {
+  test('corpse segments match dead snake body positions', () => {
     aiDie(0, 'wall');
-    var applePositions = apples.map(function(a) { return a.x + ',' + a.z; });
-    // 3 segments → indices 2,0 → positions (3,0), (5,0)
-    expect(applePositions).toContain('5,0');
-    expect(applePositions).toContain('3,0');
-    // Index 1 (4,0) is skipped
-    expect(applePositions).not.toContain('4,0');
+    var corpseSegs = corpses[corpses.length - 1].segments;
+    // 3 segments → all 3 stored in corpse
+    expect(corpseSegs.some(function(s) { return s.x === 5 && s.z === 0; })).toBe(true);
+    expect(corpseSegs.some(function(s) { return s.x === 4 && s.z === 0; })).toBe(true);
+    expect(corpseSegs.some(function(s) { return s.x === 3 && s.z === 0; })).toBe(true);
   });
 });
 
@@ -749,6 +750,7 @@ describe('ai.js — stepAI()', () => {
     setGlobal('gridMinZ', -11);
     setGlobal('gridMaxZ', 11);
     setGlobal('difficulty', 'hard');
+    setGlobal('corpses', []);
   });
 
   test('does nothing when no AI snakes', () => {
@@ -921,6 +923,7 @@ describe('ai.js — aiEvaluateDirections() player perception', () => {
     setGlobal('gridMinZ', -11);
     setGlobal('gridMaxZ', 11);
     setGlobal('TURN_ANGLE', Math.PI / 2);
+    setGlobal('corpses', []);
   });
 
   test('AI sees player when within perception radius', () => {

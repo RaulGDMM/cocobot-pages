@@ -22,6 +22,35 @@ function addToAppleSet(a) {
   if (a) appleSet[a.x + ',' + a.z] = true;
 }
 
+// ─── Corpse position hash set for O(1) lookup ───
+// Maintained as "x,z" → true. Covers unconverted corpse segments.
+// Updated incrementally when corpses are created and segments convert.
+// This replaces the O(n) linear scan in isOccupied() and buildBlockedSet().
+var corpseSet = {};
+function rebuildCorpseSet() {
+  corpseSet = {};
+  if (corpses) {
+    for (var i = 0; i < corpses.length; i++) {
+      for (var j = corpses[i].convertIndex; j < corpses[i].segments.length; j++) {
+        var seg = corpses[i].segments[j];
+        corpseSet[seg.x + ',' + seg.z] = true;
+      }
+    }
+  }
+}
+// Remove segments that were just converted (called from processCorpses)
+function removeFromCorpseSet(segments, fromIndex, toIndex) {
+  for (var j = fromIndex; j < toIndex && j < segments.length; j++) {
+    delete corpseSet[segments[j].x + ',' + segments[j].z];
+  }
+}
+// Add a new corpse's segments (called from aiDie)
+function addToCorpseSet(segments) {
+  for (var j = 0; j < segments.length; j++) {
+    corpseSet[segments[j].x + ',' + segments[j].z] = true;
+  }
+}
+
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
   appleMeshes = [];
@@ -31,6 +60,10 @@ function buildApples() {
     var m = new THREE.Mesh(appleGeo, appleMat);
     g.add(m);
     var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
+    // Keep a direct reference to the point light so refreshApples() can toggle
+    // it without scanning children. Death apples disable their light to avoid
+    // dozens of simultaneous point lights when a snake corpse converts.
+    g.userData.light = gl;
     appleGroup.add(g);
     appleMeshes.push(g);
     g.visible = false;
@@ -43,13 +76,15 @@ function isOccupied(x, z) {
   if(appleSet[x + ',' + z]) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
   // ─── AI MODE: include AI snakes ───
-  if(aiSnakes) {
-    for(var i = 0; i < aiSnakes.length; i++) {
-      var ai = aiSnakes[i];
-      if(ai.alive && ai.snake.some(function(s){return s.x===x&&s.z===z;})) return true;
-    }
-  }
-  return false;
+   if(aiSnakes) {
+     for(var i = 0; i < aiSnakes.length; i++) {
+       var ai = aiSnakes[i];
+       if(ai.alive && ai.snake.some(function(s){return s.x===x&&s.z===z;})) return true;
+     }
+   }
+   // ─── CORPSES: O(1) lookup via corpseSet hash ───
+   if(corpseSet[x + ',' + z]) return true;
+   return false;
 }
 
 // Incremental appleSet update — replace old apple with new one in the hash.
@@ -80,6 +115,11 @@ function refreshApples() {
     if(apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
+      // Death apples render the sphere but disable their point light. Without
+      // this, a converting corpse would switch on dozens of point lights at
+      // once, forcing THREE.js to re-shade every object against every light.
+      var light = appleMeshes[i].userData && appleMeshes[i].userData.light;
+      if (light) light.visible = !apples[i].fromDeath;
     } else {
       appleMeshes[i].visible = false;
     }
@@ -136,5 +176,5 @@ function initApples() {
 
 // ─── Module exports (for testing — ignored in browser) ───
 if(typeof module !== 'undefined' && module.exports) {
-  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, appleSet, APPLE_POOL_MARGIN };
+  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, appleSet, APPLE_POOL_MARGIN, corpseSet, rebuildCorpseSet, removeFromCorpseSet, addToCorpseSet };
 }

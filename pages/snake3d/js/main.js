@@ -22,11 +22,13 @@ function loop(now) {
 
     if(running && !gameOver && !paused) {
        if(now-lastMoveTime >= MOVE_INTERVAL) {
-         // ─── AI MODE: step AI before player ───
-         if(aiSnakes && aiSnakes.length > 0) stepAI();
-         step();
-         lastMoveTime=now;
-       }
+          // ─── AI MODE: step AI before player ───
+          if(aiSnakes && aiSnakes.length > 0) stepAI();
+          step();
+          // ─── CORPSES: convert one segment per corpse per tick ───
+          if(typeof processCorpses === 'function') processCorpses();
+          lastMoveTime=now;
+        }
        refreshSnake();
        // ─── AI MODE: refresh AI snake meshes ───
        refreshAISnakes();

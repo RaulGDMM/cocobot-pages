@@ -5,6 +5,8 @@
 function setSnake(segments) {
   snake.length = 0;
   segments.forEach(s => snake.push(s));
+  // Reset corpseSet to avoid stale corpse entries from other tests
+  if (typeof corpseSet !== 'undefined') corpseSet = {};
 }
 
 function setApples(items) {
@@ -14,6 +16,8 @@ function setApples(items) {
   appleDirty = true;
   // Reset deferred flag so tests can call refreshApples directly
   _refreshScheduled = false;
+  // Reset corpseSet to avoid stale corpse entries from other tests
+  if (typeof corpseSet !== 'undefined') corpseSet = {};
 }
 
 function setObstacles(items) {

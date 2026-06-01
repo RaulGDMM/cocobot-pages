@@ -186,6 +186,7 @@ var playerColor = 'green';
 var gridSize = GRID_SIZE;
 var gridSizeModifier = 0;
 var aiSnakes = [];
+var corpses = [];
 
 // ─── GRID BOUNDARIES (for dynamic shrinking) ───
 // Initially equal to -half / half. Updated when grid shrinks.
@@ -484,16 +485,20 @@ function rebuildBoard(gs, opts) {
   scene.fog = new THREE.Fog(0x0a0a12, gs * 0.5, gs * 1.3);
 
   // Floor — checkerboard texture
-  var floorCanvas = document.createElement('canvas');
-  floorCanvas.width = 256; floorCanvas.height = 256;
-  var fctx = floorCanvas.getContext('2d');
-  var sq = 256 / gs;
-  for(var fy = 0; fy < gs; fy++) {
-    for(var fx = 0; fx < gs; fx++) {
-      fctx.fillStyle = (fx + fy) % 2 === 0 ? '#111122' : '#0c0c18';
-      fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
-    }
-  }
+   var floorCanvas = document.createElement('canvas');
+   floorCanvas.width = 256; floorCanvas.height = 256;
+   var fctx = floorCanvas.getContext('2d');
+   var sq = 256 / gs;
+   for(var fy = 0; fy < gs; fy++) {
+     for(var fx = 0; fx < gs; fx++) {
+       // Use REAL grid coordinates for checkerboard parity, not canvas indices.
+       // This ensures the pattern stays consistent when the board shrinks with offset.
+       var gx = gridMinX + fx;
+       var gz = gridMinZ + fy;
+       fctx.fillStyle = ((gx + gz) & 1) === 0 ? '#111122' : '#0c0c18';
+       fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
+     }
+   }
   var floorTex = new THREE.CanvasTexture(floorCanvas);
   floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
   _floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(gs, gs), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));
@@ -649,6 +654,35 @@ function addToAppleSet(a) {
   if (a) appleSet[a.x + ',' + a.z] = true;
 }
 
+// ─── Corpse position hash set for O(1) lookup ───
+// Maintained as "x,z" → true. Covers unconverted corpse segments.
+// Updated incrementally when corpses are created and segments convert.
+// This replaces the O(n) linear scan in isOccupied() and buildBlockedSet().
+var corpseSet = {};
+function rebuildCorpseSet() {
+  corpseSet = {};
+  if (corpses) {
+    for (var i = 0; i < corpses.length; i++) {
+      for (var j = corpses[i].convertIndex; j < corpses[i].segments.length; j++) {
+        var seg = corpses[i].segments[j];
+        corpseSet[seg.x + ',' + seg.z] = true;
+      }
+    }
+  }
+}
+// Remove segments that were just converted (called from processCorpses)
+function removeFromCorpseSet(segments, fromIndex, toIndex) {
+  for (var j = fromIndex; j < toIndex && j < segments.length; j++) {
+    delete corpseSet[segments[j].x + ',' + segments[j].z];
+  }
+}
+// Add a new corpse's segments (called from aiDie)
+function addToCorpseSet(segments) {
+  for (var j = 0; j < segments.length; j++) {
+    corpseSet[segments[j].x + ',' + segments[j].z] = true;
+  }
+}
+
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
   appleMeshes = [];
@@ -658,6 +692,10 @@ function buildApples() {
     var m = new THREE.Mesh(appleGeo, appleMat);
     g.add(m);
     var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
+    // Keep a direct reference to the point light so refreshApples() can toggle
+    // it without scanning children. Death apples disable their light to avoid
+    // dozens of simultaneous point lights when a snake corpse converts.
+    g.userData.light = gl;
     appleGroup.add(g);
     appleMeshes.push(g);
     g.visible = false;
@@ -670,13 +708,15 @@ function isOccupied(x, z) {
   if(appleSet[x + ',' + z]) return true;
   if(obstacles.some(function(o){return o.x===x&&o.z===z;})) return true;
   // ─── AI MODE: include AI snakes ───
-  if(aiSnakes) {
-    for(var i = 0; i < aiSnakes.length; i++) {
-      var ai = aiSnakes[i];
-      if(ai.alive && ai.snake.some(function(s){return s.x===x&&s.z===z;})) return true;
-    }
-  }
-  return false;
+   if(aiSnakes) {
+     for(var i = 0; i < aiSnakes.length; i++) {
+       var ai = aiSnakes[i];
+       if(ai.alive && ai.snake.some(function(s){return s.x===x&&s.z===z;})) return true;
+     }
+   }
+   // ─── CORPSES: O(1) lookup via corpseSet hash ───
+   if(corpseSet[x + ',' + z]) return true;
+   return false;
 }
 
 // Incremental appleSet update — replace old apple with new one in the hash.
@@ -707,6 +747,11 @@ function refreshApples() {
     if(apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
+      // Death apples render the sphere but disable their point light. Without
+      // this, a converting corpse would switch on dozens of point lights at
+      // once, forcing THREE.js to re-shade every object against every light.
+      var light = appleMeshes[i].userData && appleMeshes[i].userData.light;
+      if (light) light.visible = !apples[i].fromDeath;
     } else {
       appleMeshes[i].visible = false;
     }
@@ -988,6 +1033,12 @@ function buildBlockedSet(excludeSnake) {
       for (var j = 0; j < aiSnakes[i].snake.length; j++) {
         blocked[aiSnakes[i].snake[j].x + ',' + aiSnakes[i].snake[j].z] = true;
       }
+    }
+  }
+  // Corpses (unconverted segments are solid obstacles) — O(1) via corpseSet
+  if (corpseSet) {
+    for (var key in corpseSet) {
+      blocked[key] = true;
     }
   }
   return blocked;
@@ -1300,6 +1351,9 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
         if (other.snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
       }
     }
+
+    // Corpses (unconverted segments are solid) — O(1) via corpseSet
+    if (corpseSet && corpseSet[nx + ',' + nz]) return;
 
     safe.push(dir);
   });
@@ -1745,6 +1799,13 @@ function stepAI() {
       }
     }
 
+    // Check collision with corpses (unconverted segments) — O(1) via corpseSet
+    if (corpseSet && corpseSet[nx+','+nz]) {
+      log('AI ' + index + ' hit corpse at (' + nx + ',' + nz + ')');
+      aiDie(index, 'corpse');
+      return;
+    }
+
     // Move forward
     ai.snake.unshift({x: nx, z: nz});
 
@@ -1776,37 +1837,45 @@ function stepAI() {
 }
 
 // ─── AI snake dies ───
+// The dead body stays visible on the board and converts to apples
+// segment by segment, starting from the head, one per tick.
 function aiDie(aiIndex, cause) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return;
 
   ai.alive = false;
 
-  // ─── Hide AI snake mesh group so the dead body disappears ───
-  if (ai.groupData && ai.groupData.group) {
-    ai.groupData.group.visible = false;
-  }
-
-  // ─── Convert body to apples (collectible by anyone) ───
-  // Convert every 2nd segment to keep death apple count manageable.
-  // With long snakes (30+ segments), converting all segments floods the
-  // board and slows down refreshApples(), bestApple(), and isOccupied().
-  // Use addToAppleSet() for O(1) per-apple hash update. Do NOT call
-  // refreshApples() here — the game loop will call it on the next tick.
-  var appleCount = 0;
-  for (var i = ai.snake.length - 1; i >= 0; i -= 2) {
-    var seg = ai.snake[i];
-    if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
-      var newApple = {x: seg.x, z: seg.z, fromDeath: true};
-      apples.push(newApple);
-      if (typeof addToAppleSet === 'function') addToAppleSet(newApple);
-      appleCount++;
+  // ─── Keep body visible as corpse, darken materials ───
+  if (ai.groupData) {
+    var gd = ai.groupData;
+    // Darken head and body to look like a corpse
+    if (gd.headM && gd.headM.material) {
+      gd.headM.material.emissiveIntensity = 0;
+      gd.headM.material.opacity = 0.4;
+      gd.headM.material.transparent = true;
+    }
+    if (gd.bodyMs) {
+      for (var b = 0; b < gd.bodyMs.length; b++) {
+        if (gd.bodyMs[b].material) {
+          gd.bodyMs[b].material.emissiveIntensity = 0;
+          gd.bodyMs[b].material.opacity = 0.4;
+          gd.bodyMs[b].material.transparent = true;
+        }
+      }
     }
   }
-  if (appleCount > 0) {
-    log('AI ' + aiIndex + ' body → ' + appleCount + ' apples');
-    appleDirty = true;
-  }
+
+  // ─── Register corpse for gradual conversion ───
+  // Each tick, one segment (head-first) converts to an apple.
+  corpses.push({
+    segments: ai.snake.slice(),  // copy of body segments
+    convertIndex: 0,             // next segment to convert (0 = head)
+    groupData: ai.groupData,     // mesh group for hiding segments
+    color: ai.color
+  });
+
+  // ─── Populate corpseSet for O(1) collision lookups ───
+  if (typeof addToCorpseSet === 'function') addToCorpseSet(ai.snake);
 
   // Particles
   if (ai.snake.length) {
@@ -1819,7 +1888,59 @@ function aiDie(aiIndex, cause) {
   // ─── Trigger grid shrink on AI death ───
   maybeTriggerShrink();
 
-  log('AI ' + aiIndex + ' died (' + cause + ')');
+  log('AI ' + aiIndex + ' died (' + cause + ') — body: ' + ai.snake.length + ' segments converting');
+}
+
+// ─── Process corpses: convert segments to apples ───
+// Each tick, CORPSE_CONVERSION_BATCH segments (head → tail) turn into apples.
+// The segment mesh is hidden, revealing the apple underneath.
+// Batch conversion reduces the number of ticks with appleDirty=true,
+// cutting down on refreshApples() calls and associated frame stalls.
+var CORPSE_CONVERSION_BATCH = 1; // one segment per tick — progressive head→tail conversion
+
+function processCorpses() {
+  for (var c = corpses.length - 1; c >= 0; c--) {
+    var corpse = corpses[c];
+    if (corpse.convertIndex >= corpse.segments.length) {
+      // All segments converted — remove corpse
+      if (corpse.groupData && corpse.groupData.group) {
+        corpse.groupData.group.visible = false;
+      }
+      corpses.splice(c, 1);
+      continue;
+    }
+
+    // Convert up to CORPSE_CONVERSION_BATCH segments this tick
+    var batchStart = corpse.convertIndex;
+    for (var b = 0; b < CORPSE_CONVERSION_BATCH; b++) {
+      if (corpse.convertIndex >= corpse.segments.length) break;
+
+      var seg = corpse.segments[corpse.convertIndex];
+      if (seg && seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
+        var newApple = {x: seg.x, z: seg.z, fromDeath: true};
+        apples.push(newApple);
+        if (typeof addToAppleSet === 'function') addToAppleSet(newApple);
+        appleDirty = true;
+
+        // Hide the converted segment mesh
+        if (corpse.groupData) {
+          if (corpse.convertIndex === 0 && corpse.groupData.headM) {
+            corpse.groupData.headM.visible = false;
+          } else if (corpse.convertIndex < corpse.groupData.bodyMs.length) {
+            corpse.groupData.bodyMs[corpse.convertIndex].visible = false;
+          }
+        }
+        // NOTE: burst() removed — particle effects per segment caused GC spikes
+        // during mass death events (50+ segments × 3 particles = 150 allocations)
+      }
+
+      corpse.convertIndex++;
+    }
+    // Update corpseSet: remove converted segments (batchStart → convertIndex)
+    if (corpse.convertIndex > batchStart && typeof removeFromCorpseSet === 'function') {
+      removeFromCorpseSet(corpse.segments, batchStart, corpse.convertIndex);
+    }
+  }
 }
 
 // ─── Show AI death message on screen ───
@@ -2097,7 +2218,8 @@ function initGame() {
     while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
 
    snake=[]; direction=0; score=0; gameOver=false;
-   obstacles=[]; apples=[];
+        obstacles=[]; apples=[]; corpses=[];
+        if(typeof corpseSet !== 'undefined') corpseSet = {};
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
@@ -2131,19 +2253,25 @@ function step() {
    if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die('self');return;}
    if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die('obstacle');return;}
   // ─── AI MODE: collision with AI snake bodies ───
-   if(aiSnakes) {
-     for(var k = 0; k < aiSnakes.length; k++) {
-       if(!aiSnakes[k].alive) continue;
-       var aiBody = aiSnakes[k].snake;
-       for(var j = 0; j < aiBody.length; j++) {
-         if(aiBody[j].x === nx && aiBody[j].z === nz) {
-           log('Hit AI#'+k+' body at ('+nx+','+nz+')');
-           die('ai');
-           return;
-         }
-       }
+    if(aiSnakes) {
+      for(var k = 0; k < aiSnakes.length; k++) {
+        if(!aiSnakes[k].alive) continue;
+        var aiBody = aiSnakes[k].snake;
+        for(var j = 0; j < aiBody.length; j++) {
+          if(aiBody[j].x === nx && aiBody[j].z === nz) {
+            log('Hit AI#'+k+' body at ('+nx+','+nz+')');
+            die('ai');
+            return;
+          }
+        }
+      }
+    }
+   // ─── CORPSE: collision with dead snake bodies — O(1) via corpseSet ───
+     if(corpseSet && corpseSet[nx+','+nz]) {
+       log('Hit corpse at ('+nx+','+nz+')');
+       die('corpse');
+       return;
      }
-   }
    snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
@@ -2182,6 +2310,7 @@ function die(cause) {
   else if(cause === 'self') causeMsg = 'Te has mordido a ti mismo';
   else if(cause === 'obstacle') causeMsg = 'Has chocado contra un obstáculo';
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
+  else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
   finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
   finalScoreEl.style.display='block';
@@ -2615,6 +2744,34 @@ function truncateSnakesToBounds(bounds) {
       }
     }
   }
+
+  // Corpses — remove segments outside new bounds
+   if (corpses) {
+     for (var c = 0; c < corpses.length; c++) {
+       var before = corpses[c].segments.length;
+       // Adjust convertIndex if segments before it were removed
+       var newSegments = [];
+       var convertedCount = 0;
+       for (var j = 0; j < corpses[c].segments.length; j++) {
+         var seg = corpses[c].segments[j];
+         if (j < corpses[c].convertIndex) {
+           convertedCount++;
+           continue; // already converted, skip
+         }
+         if (seg.x >= bounds.newMinX && seg.x < bounds.newMaxX &&
+             seg.z >= bounds.newMinZ && seg.z < bounds.newMaxZ) {
+           newSegments.push(seg);
+         }
+       }
+       corpses[c].segments = newSegments;
+       corpses[c].convertIndex = 0; // reset since we rebuilt the array
+       if (before - convertedCount - newSegments.length > 0) {
+         log('  Corpse ' + c + ' truncated: ' + (before - convertedCount) + ' → ' + newSegments.length);
+       }
+     }
+     // Rebuild corpseSet after truncation (segments removed, indices reset)
+     if (typeof rebuildCorpseSet === 'function') rebuildCorpseSet();
+   }
 
   // Show info message ONLY if the player lost segments
   if (playerLost > 0) {

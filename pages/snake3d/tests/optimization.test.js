@@ -151,6 +151,7 @@ describe('ai.js — bestApple() candidate limiting', () => {
 // ─── Death apple throttling (every 2nd segment) ───
 describe('ai.js — death apple throttling', () => {
   beforeEach(() => {
+    corpses = [];
     aiSnakes = [{
       id: 0,
       alive: true,
@@ -168,22 +169,21 @@ describe('ai.js — death apple throttling', () => {
     setObstacles([]);
   });
 
-  test('aiDie converts body to apples (every 2nd segment)', () => {
-    var applesBefore = apples.length;
+  test('aiDie creates corpse for gradual conversion', () => {
+    var corpsesBefore = corpses.length;
     aiDie(0, 'wall');
-    var newApples = apples.length - applesBefore;
-    // 10 segments → 5 apples (every 2nd segment)
-    expect(newApples).toBe(5);
+    // Death creates a corpse entry
+    expect(corpses.length).toBe(corpsesBefore + 1);
+    // Corpse has all segments
+    expect(corpses[corpses.length - 1].segments.length).toBe(10);
+    expect(corpses[corpses.length - 1].convertIndex).toBe(0);
   });
 
   test('death apples update appleSet incrementally', () => {
     rebuildAppleSet();
     aiDie(0, 'wall');
-    // After death, appleSet should have the new apples
-    var applePositions = apples.map(function(a) { return a.x + ',' + a.z; });
-    for (var i = 0; i < applePositions.length; i++) {
-      expect(appleSet[applePositions[i]]).toBe(true);
-    }
+    // No apples added on death (corpse mode) — appleSet unchanged
+    expect(apples.length).toBe(0);
   });
 
   test('death apples are within grid bounds', () => {
@@ -197,18 +197,20 @@ describe('ai.js — death apple throttling', () => {
     }
   });
 
-  test('dead AI group is hidden', () => {
+  test('dead AI group stays visible as corpse', () => {
     aiDie(0, 'wall');
-    expect(aiSnakes[0].groupData.group.visible).toBe(false);
+    // Body stays visible (darkened) as corpse
+    expect(aiSnakes[0].groupData.group.visible).toBe(true);
   });
 
-  test('appleDirty is set to true after death', () => {
+  test('appleDirty is NOT set on death (set on conversion)', () => {
     appleDirty = false;
     aiDie(0, 'wall');
-    expect(appleDirty).toBe(true);
+    // No apples created on death, so appleDirty stays false
+    expect(appleDirty).toBe(false);
   });
 
-  test('multiple AI deaths preserve all death apples', () => {
+  test('multiple AI deaths create multiple corpses', () => {
     // Add a second AI snake
     aiSnakes.push({
       id: 1,
@@ -224,31 +226,18 @@ describe('ai.js — death apple throttling', () => {
 
     // Kill first AI
     aiDie(0, 'wall');
-    var applesAfterFirst = apples.length;
+    var corpsesAfterFirst = corpses.length;
 
     // Kill second AI
     aiDie(1, 'wall');
-    var applesAfterSecond = apples.length;
+    var corpsesAfterSecond = corpses.length;
 
-    // Both deaths should have added apples
-    expect(applesAfterSecond).toBeGreaterThan(applesAfterFirst);
-    // All death apples should still be present
-    expect(appleDirty).toBe(true);
+    // Both deaths should have created corpses
+    expect(corpsesAfterSecond).toBeGreaterThan(corpsesAfterFirst);
+    expect(corpsesAfterSecond).toBe(2);
   });
 
-  test('odd-length snake converts ceil(n/2) segments', () => {
-    // Replace with a 7-segment snake
-    aiSnakes[0].snake = [
-      {x: 5, z: 0}, {x: 4, z: 0}, {x: 3, z: 0},
-      {x: 2, z: 0}, {x: 1, z: 0}, {x: 0, z: 0}, {x: -1, z: 0}
-    ];
-    var applesBefore = apples.length;
-    aiDie(0, 'wall');
-    var newApples = apples.length - applesBefore;
-    // 7 segments → 4 apples (indices 6,4,2,0)
-    expect(newApples).toBe(4);
-  });
-});
+ });
 
 // ─── Particle object pool ───
 describe('particles.js — object pool', () => {

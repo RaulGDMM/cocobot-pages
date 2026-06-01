@@ -44,16 +44,20 @@ function rebuildBoard(gs, opts) {
   scene.fog = new THREE.Fog(0x0a0a12, gs * 0.5, gs * 1.3);
 
   // Floor — checkerboard texture
-  var floorCanvas = document.createElement('canvas');
-  floorCanvas.width = 256; floorCanvas.height = 256;
-  var fctx = floorCanvas.getContext('2d');
-  var sq = 256 / gs;
-  for(var fy = 0; fy < gs; fy++) {
-    for(var fx = 0; fx < gs; fx++) {
-      fctx.fillStyle = (fx + fy) % 2 === 0 ? '#111122' : '#0c0c18';
-      fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
-    }
-  }
+   var floorCanvas = document.createElement('canvas');
+   floorCanvas.width = 256; floorCanvas.height = 256;
+   var fctx = floorCanvas.getContext('2d');
+   var sq = 256 / gs;
+   for(var fy = 0; fy < gs; fy++) {
+     for(var fx = 0; fx < gs; fx++) {
+       // Use REAL grid coordinates for checkerboard parity, not canvas indices.
+       // This ensures the pattern stays consistent when the board shrinks with offset.
+       var gx = gridMinX + fx;
+       var gz = gridMinZ + fy;
+       fctx.fillStyle = ((gx + gz) & 1) === 0 ? '#111122' : '#0c0c18';
+       fctx.fillRect(fx * sq, fy * sq, sq + .5, sq + .5);
+     }
+   }
   var floorTex = new THREE.CanvasTexture(floorCanvas);
   floorTex.wrapS = floorTex.wrapT = THREE.ClampToEdgeWrapping;
   _floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(gs, gs), new THREE.MeshStandardMaterial({map:floorTex, roughness:.9}));

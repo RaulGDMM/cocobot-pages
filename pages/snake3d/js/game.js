@@ -35,7 +35,8 @@ function initGame() {
     while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
 
    snake=[]; direction=0; score=0; gameOver=false;
-   obstacles=[]; apples=[];
+        obstacles=[]; apples=[]; corpses=[];
+        if(typeof corpseSet !== 'undefined') corpseSet = {};
   scoreEl.textContent='0';
   snake.push({x:-5,z:0}); snake.push({x:-6,z:0});
   snake.push({x:-7,z:0}); snake.push({x:-8,z:0});
@@ -69,19 +70,25 @@ function step() {
    if(snake.some(function(s){return s.x===nx&&s.z===nz;})){log('Self hit ('+nx+','+nz+')');die('self');return;}
    if(obstacles.some(function(o){return o.x===nx&&o.z===nz;})){log('Obstacle hit ('+nx+','+nz+')');die('obstacle');return;}
   // ─── AI MODE: collision with AI snake bodies ───
-   if(aiSnakes) {
-     for(var k = 0; k < aiSnakes.length; k++) {
-       if(!aiSnakes[k].alive) continue;
-       var aiBody = aiSnakes[k].snake;
-       for(var j = 0; j < aiBody.length; j++) {
-         if(aiBody[j].x === nx && aiBody[j].z === nz) {
-           log('Hit AI#'+k+' body at ('+nx+','+nz+')');
-           die('ai');
-           return;
-         }
-       }
+    if(aiSnakes) {
+      for(var k = 0; k < aiSnakes.length; k++) {
+        if(!aiSnakes[k].alive) continue;
+        var aiBody = aiSnakes[k].snake;
+        for(var j = 0; j < aiBody.length; j++) {
+          if(aiBody[j].x === nx && aiBody[j].z === nz) {
+            log('Hit AI#'+k+' body at ('+nx+','+nz+')');
+            die('ai');
+            return;
+          }
+        }
+      }
+    }
+   // ─── CORPSE: collision with dead snake bodies — O(1) via corpseSet ───
+     if(corpseSet && corpseSet[nx+','+nz]) {
+       log('Hit corpse at ('+nx+','+nz+')');
+       die('corpse');
+       return;
      }
-   }
    snake.unshift({x:nx,z:nz});
   var ate = false;
   for(var i = 0; i < apples.length; i++) {
@@ -120,6 +127,7 @@ function die(cause) {
   else if(cause === 'self') causeMsg = 'Te has mordido a ti mismo';
   else if(cause === 'obstacle') causeMsg = 'Has chocado contra un obstáculo';
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
+  else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
   finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
   finalScoreEl.style.display='block';
@@ -553,6 +561,34 @@ function truncateSnakesToBounds(bounds) {
       }
     }
   }
+
+  // Corpses — remove segments outside new bounds
+   if (corpses) {
+     for (var c = 0; c < corpses.length; c++) {
+       var before = corpses[c].segments.length;
+       // Adjust convertIndex if segments before it were removed
+       var newSegments = [];
+       var convertedCount = 0;
+       for (var j = 0; j < corpses[c].segments.length; j++) {
+         var seg = corpses[c].segments[j];
+         if (j < corpses[c].convertIndex) {
+           convertedCount++;
+           continue; // already converted, skip
+         }
+         if (seg.x >= bounds.newMinX && seg.x < bounds.newMaxX &&
+             seg.z >= bounds.newMinZ && seg.z < bounds.newMaxZ) {
+           newSegments.push(seg);
+         }
+       }
+       corpses[c].segments = newSegments;
+       corpses[c].convertIndex = 0; // reset since we rebuilt the array
+       if (before - convertedCount - newSegments.length > 0) {
+         log('  Corpse ' + c + ' truncated: ' + (before - convertedCount) + ' → ' + newSegments.length);
+       }
+     }
+     // Rebuild corpseSet after truncation (segments removed, indices reset)
+     if (typeof rebuildCorpseSet === 'function') rebuildCorpseSet();
+   }
 
   // Show info message ONLY if the player lost segments
   if (playerLost > 0) {

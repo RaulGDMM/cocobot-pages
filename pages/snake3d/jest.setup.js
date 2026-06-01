@@ -17,7 +17,7 @@ class MockVector3 {
 global.THREE = {
   REVISION: '128',
   Group: class Group {
-    constructor() { this.children = []; this.position = new MockVector3(); }
+    constructor() { this.children = []; this.position = new MockVector3(); this.visible = true; this.userData = {}; }
     add(c) { this.children.push(c); }
     remove(c) { const i = this.children.indexOf(c); if (i >= 0) this.children.splice(i, 1); }
   },
@@ -43,7 +43,7 @@ global.THREE = {
     constructor() { this.position = new MockVector3(); this.castShadow = false; }
   },
   PointLight: class PointLight {
-    constructor() { this.position = new MockVector3(); }
+    constructor() { this.position = new MockVector3(); this.visible = true; }
   },
   WebGLRenderer: class WebGLRenderer {
     constructor(opts) { this.domElement = opts && opts.canvas || document.createElement('canvas'); }
