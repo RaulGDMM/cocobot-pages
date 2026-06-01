@@ -717,12 +717,14 @@ describe('ai.js — aiDie()', () => {
     expect(apples.length).toBeGreaterThan(applesBefore);
   });
 
-  test('death apples match dead snake body positions', () => {
+  test('death apples match dead snake body positions (every 2nd segment)', () => {
     aiDie(0, 'wall');
     var applePositions = apples.map(function(a) { return a.x + ',' + a.z; });
+    // 3 segments → indices 2,0 → positions (3,0), (5,0)
     expect(applePositions).toContain('5,0');
-    expect(applePositions).toContain('4,0');
     expect(applePositions).toContain('3,0');
+    // Index 1 (4,0) is skipped
+    expect(applePositions).not.toContain('4,0');
   });
 });
 

@@ -251,18 +251,36 @@ function bestApple(aiSnake, blocked, diff) {
   // Easy mode: just pick nearest
   if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
 
-  // ─── PERFORMANCE: limit to 5 closest candidates ───
+  // ─── PERFORMANCE: select 5 closest candidates (O(n) partial selection) ───
   // Running a full BFS per apple is expensive. With 50+ death apples,
   // doing 50+ BFS calls per AI snake per tick kills the framerate.
-  // Sort by distance, take the 5 closest, and only run BFS on those.
+  // Use partial selection to find the 5 closest without sorting all.
   var MAX_CANDIDATES = 5;
   if (candidates.length > MAX_CANDIDATES) {
-    candidates.sort(function(a, b) {
-      var da = Math.abs(a.x - aiSnake[0].x) + Math.abs(a.z - aiSnake[0].z);
-      var db = Math.abs(b.x - aiSnake[0].x) + Math.abs(b.z - aiSnake[0].z);
-      return da - db;
-    });
-    candidates.length = MAX_CANDIDATES;
+    var hx = aiSnake[0].x, hz = aiSnake[0].z;
+    // Partial selection: maintain a small sorted list of top-5 closest
+    var top = [];
+    for (var c = 0; c < candidates.length; c++) {
+      var cand = candidates[c];
+      var dist = Math.abs(cand.x - hx) + Math.abs(cand.z - hz);
+      // Insert into top list maintaining order (ascending by distance)
+      var inserted = false;
+      for (var t = 0; t < top.length; t++) {
+        if (dist < top[t].dist) {
+          top.splice(t, 0, {apple: cand, dist: dist});
+          inserted = true;
+          break;
+        }
+      }
+      if (!inserted && top.length < MAX_CANDIDATES) {
+        top.push({apple: cand, dist: dist});
+      }
+    }
+    // Extract just the apples from top
+    candidates.length = 0;
+    for (var t = 0; t < top.length; t++) {
+      candidates.push(top[t].apple);
+    }
   }
 
   var best = null;
@@ -841,12 +859,12 @@ function stepAI() {
       if (apples[i] && nx === apples[i].x && nz === apples[i].z) {
         ai.score++;
         ate = true;
+        var eatenApple = apples[i];
         var newA = spawnOneApple();
         apples[i] = newA;
+        // Incremental hash update instead of full rebuild + dedup
+        if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
         appleDirty = true;
-        if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
-        // Deduplicate in case a duplicate was spawned at the same position
-        if (typeof deduplicateApples === 'function') deduplicateApples();
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
         // Directional eat sound based on AI position relative to player
         if (snake.length > 0) {
@@ -875,11 +893,13 @@ function aiDie(aiIndex, cause) {
   }
 
   // ─── Convert body to apples (collectible by anyone) ───
-  // Every segment becomes an apple. Use addToAppleSet() for O(1)
-  // per-apple hash update. Do NOT call refreshApples() here — the
-  // game loop will call it on the next tick when appleDirty is true.
+  // Convert every 2nd segment to keep death apple count manageable.
+  // With long snakes (30+ segments), converting all segments floods the
+  // board and slows down refreshApples(), bestApple(), and isOccupied().
+  // Use addToAppleSet() for O(1) per-apple hash update. Do NOT call
+  // refreshApples() here — the game loop will call it on the next tick.
   var appleCount = 0;
-  for (var i = ai.snake.length - 1; i >= 0; i--) {
+  for (var i = ai.snake.length - 1; i >= 0; i -= 2) {
     var seg = ai.snake[i];
     if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
       var newApple = {x: seg.x, z: seg.z, fromDeath: true};

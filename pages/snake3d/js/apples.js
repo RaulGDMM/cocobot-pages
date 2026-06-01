@@ -52,6 +52,13 @@ function isOccupied(x, z) {
   return false;
 }
 
+// Incremental appleSet update — replace old apple with new one in the hash.
+// This avoids the expensive rebuildAppleSet() call on every eat.
+function updateAppleSet(oldApple, newApple) {
+  if (oldApple) delete appleSet[oldApple.x + ',' + oldApple.z];
+  if (newApple) appleSet[newApple.x + ',' + newApple.z] = true;
+}
+
 function spawnOneApple() {
   for(var tries = 0; tries < 200; tries++) {
     var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
@@ -129,5 +136,5 @@ function initApples() {
 
 // ─── Module exports (for testing — ignored in browser) ───
 if(typeof module !== 'undefined' && module.exports) {
-  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, appleSet, APPLE_POOL_MARGIN };
+  module.exports = { isOccupied, spawnOneApple, refreshApples, initApples, deduplicateApples, rebuildAppleSet, addToAppleSet, updateAppleSet, appleSet, APPLE_POOL_MARGIN };
 }

@@ -679,6 +679,13 @@ function isOccupied(x, z) {
   return false;
 }
 
+// Incremental appleSet update — replace old apple with new one in the hash.
+// This avoids the expensive rebuildAppleSet() call on every eat.
+function updateAppleSet(oldApple, newApple) {
+  if (oldApple) delete appleSet[oldApple.x + ',' + oldApple.z];
+  if (newApple) appleSet[newApple.x + ',' + newApple.z] = true;
+}
+
 function spawnOneApple() {
   for(var tries = 0; tries < 200; tries++) {
     var x = gridMinX + Math.floor(Math.random() * (gridMaxX - gridMinX));
@@ -832,17 +839,38 @@ function spawnObstacle() {
 
 
 // === particles.js ===
-// ─── PARTICLES ───
+// ─── PARTICLES (object pool) ───
+// Pre-allocated pool to avoid GC spikes from create/destroy cycles.
+// Each burst reuses idle meshes instead of allocating new ones.
 var parts = [];
 var partMat = new THREE.MeshBasicMaterial({color:0xffaa00, transparent:true});
 var partGeo = new THREE.SphereGeometry(.05, 4, 4);
-function burst(x, z, col, n) {
-  for(var i = 0; i < (n||8); i++) {
+var _partPool = []; // idle meshes ready for reuse
+var MAX_PARTICLES = 200; // pool size cap
+
+// Pre-allocate pool on init
+function initParticles() {
+  for(var i = 0; i < MAX_PARTICLES; i++) {
     var m = new THREE.Mesh(partGeo, partMat.clone());
+    m.visible = false;
+    scene.add(m);
+    _partPool.push(m);
+  }
+}
+initParticles();
+
+function burst(x, z, col, n) {
+  n = n || 8;
+  for(var i = 0; i < n; i++) {
+    // Reuse from pool, or skip if exhausted
+    var m = _partPool.pop();
+    if(!m) break;
+    m.visible = true;
     m.position.set(gw(x), .3, gw(z));
     m.material.color.setHex(col); m.material.opacity = 1;
+    m.scale.setScalar(1);
     m.userData = {vx:(Math.random()-.5)*.2, vy:Math.random()*.1+.05, vz:(Math.random()-.5)*.2, life:1};
-    scene.add(m); parts.push(m);
+    parts.push(m);
   }
 }
 function tickParts(dt) {
@@ -852,7 +880,12 @@ function tickParts(dt) {
     p.userData.vy -= dt*.3;
     p.material.opacity = Math.max(0, p.userData.life);
     p.scale.setScalar(Math.max(.01, p.userData.life));
-    if(p.userData.life<=0) { scene.remove(p); p.material.dispose(); parts.splice(i,1); }
+    if(p.userData.life<=0) {
+      p.visible = false;
+      p.material.opacity = 0;
+      _partPool.push(p); // return to pool instead of dispose
+      parts.splice(i,1);
+    }
   }
 }
 
@@ -1113,18 +1146,36 @@ function bestApple(aiSnake, blocked, diff) {
   // Easy mode: just pick nearest
   if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
 
-  // ─── PERFORMANCE: limit to 5 closest candidates ───
+  // ─── PERFORMANCE: select 5 closest candidates (O(n) partial selection) ───
   // Running a full BFS per apple is expensive. With 50+ death apples,
   // doing 50+ BFS calls per AI snake per tick kills the framerate.
-  // Sort by distance, take the 5 closest, and only run BFS on those.
+  // Use partial selection to find the 5 closest without sorting all.
   var MAX_CANDIDATES = 5;
   if (candidates.length > MAX_CANDIDATES) {
-    candidates.sort(function(a, b) {
-      var da = Math.abs(a.x - aiSnake[0].x) + Math.abs(a.z - aiSnake[0].z);
-      var db = Math.abs(b.x - aiSnake[0].x) + Math.abs(b.z - aiSnake[0].z);
-      return da - db;
-    });
-    candidates.length = MAX_CANDIDATES;
+    var hx = aiSnake[0].x, hz = aiSnake[0].z;
+    // Partial selection: maintain a small sorted list of top-5 closest
+    var top = [];
+    for (var c = 0; c < candidates.length; c++) {
+      var cand = candidates[c];
+      var dist = Math.abs(cand.x - hx) + Math.abs(cand.z - hz);
+      // Insert into top list maintaining order (ascending by distance)
+      var inserted = false;
+      for (var t = 0; t < top.length; t++) {
+        if (dist < top[t].dist) {
+          top.splice(t, 0, {apple: cand, dist: dist});
+          inserted = true;
+          break;
+        }
+      }
+      if (!inserted && top.length < MAX_CANDIDATES) {
+        top.push({apple: cand, dist: dist});
+      }
+    }
+    // Extract just the apples from top
+    candidates.length = 0;
+    for (var t = 0; t < top.length; t++) {
+      candidates.push(top[t].apple);
+    }
   }
 
   var best = null;
@@ -1703,12 +1754,12 @@ function stepAI() {
       if (apples[i] && nx === apples[i].x && nz === apples[i].z) {
         ai.score++;
         ate = true;
+        var eatenApple = apples[i];
         var newA = spawnOneApple();
         apples[i] = newA;
+        // Incremental hash update instead of full rebuild + dedup
+        if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
         appleDirty = true;
-        if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
-        // Deduplicate in case a duplicate was spawned at the same position
-        if (typeof deduplicateApples === 'function') deduplicateApples();
         log('AI ' + index + ' ate apple at (' + nx + ',' + nz + ')');
         // Directional eat sound based on AI position relative to player
         if (snake.length > 0) {
@@ -1737,11 +1788,13 @@ function aiDie(aiIndex, cause) {
   }
 
   // ─── Convert body to apples (collectible by anyone) ───
-  // Every segment becomes an apple. Use addToAppleSet() for O(1)
-  // per-apple hash update. Do NOT call refreshApples() here — the
-  // game loop will call it on the next tick when appleDirty is true.
+  // Convert every 2nd segment to keep death apple count manageable.
+  // With long snakes (30+ segments), converting all segments floods the
+  // board and slows down refreshApples(), bestApple(), and isOccupied().
+  // Use addToAppleSet() for O(1) per-apple hash update. Do NOT call
+  // refreshApples() here — the game loop will call it on the next tick.
   var appleCount = 0;
-  for (var i = ai.snake.length - 1; i >= 0; i--) {
+  for (var i = ai.snake.length - 1; i >= 0; i -= 2) {
     var seg = ai.snake[i];
     if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
       var newApple = {x: seg.x, z: seg.z, fromDeath: true};
@@ -2097,14 +2150,14 @@ function step() {
      if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
        score++; scoreEl.textContent=score; ate=true;
        sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
-       log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-       var newA = spawnOneApple();
-       apples[i] = newA;
+         log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+         var eatenApple = apples[i];
+         var newA = spawnOneApple();
+         apples[i] = newA;
+         // Incremental hash update instead of full rebuild + dedup
+         if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
          appleDirty = true;
-         if(typeof rebuildAppleSet === 'function') rebuildAppleSet();
-         // Deduplicate in case a duplicate was spawned at the same position
-       if(typeof deduplicateApples === 'function') deduplicateApples();
-       if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+          if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
        break;
      }
    }
@@ -2468,10 +2521,10 @@ function removeOutOfBounds() {
     }
   }
   // Remove any duplicates that may have been created during spawn
-  if (typeof deduplicateApples === 'function') deduplicateApples();
-    log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ' regular + ' + deathApples.length + ' death)');
-    appleDirty = true;
-    if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
+   if (typeof deduplicateApples === 'function') deduplicateApples();
+     // deduplicateApples() already calls rebuildAppleSet() internally — no need to call again
+     log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ' regular + ' + deathApples.length + ' death)');
+     appleDirty = true;
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;

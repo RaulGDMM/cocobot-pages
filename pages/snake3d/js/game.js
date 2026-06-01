@@ -88,14 +88,14 @@ function step() {
      if(apples[i] && nx===apples[i].x && nz===apples[i].z) {
        score++; scoreEl.textContent=score; ate=true;
        sfxEat(); burst(apples[i].x, apples[i].z, 0xff6644, 10);
-       log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
-       var newA = spawnOneApple();
-       apples[i] = newA;
+         log('Eat apple at ('+apples[i].x+','+apples[i].z+') score='+score);
+         var eatenApple = apples[i];
+         var newA = spawnOneApple();
+         apples[i] = newA;
+         // Incremental hash update instead of full rebuild + dedup
+         if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA);
          appleDirty = true;
-         if(typeof rebuildAppleSet === 'function') rebuildAppleSet();
-         // Deduplicate in case a duplicate was spawned at the same position
-       if(typeof deduplicateApples === 'function') deduplicateApples();
-       if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+          if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
        break;
      }
    }
@@ -459,10 +459,10 @@ function removeOutOfBounds() {
     }
   }
   // Remove any duplicates that may have been created during spawn
-  if (typeof deduplicateApples === 'function') deduplicateApples();
-    log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ' regular + ' + deathApples.length + ' death)');
-    appleDirty = true;
-    if (typeof rebuildAppleSet === 'function') rebuildAppleSet();
+   if (typeof deduplicateApples === 'function') deduplicateApples();
+     // deduplicateApples() already calls rebuildAppleSet() internally — no need to call again
+     log('  Apples: ' + before + ' → ' + apples.filter(Boolean).length + ' (target: ' + NUM_APPLES + ' regular + ' + deathApples.length + ' death)');
+     appleDirty = true;
 
   // ── Obstacles ──
   var beforeObs = obstacles.length;

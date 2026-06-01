@@ -168,12 +168,12 @@ describe('ai.js — death apple throttling', () => {
     setObstacles([]);
   });
 
-  test('aiDie converts body to apples synchronously', () => {
+  test('aiDie converts body to apples (every 2nd segment)', () => {
     var applesBefore = apples.length;
     aiDie(0, 'wall');
     var newApples = apples.length - applesBefore;
-    // 10 segments → 10 apples (all segments)
-    expect(newApples).toBe(10);
+    // 10 segments → 5 apples (every 2nd segment)
+    expect(newApples).toBe(5);
   });
 
   test('death apples update appleSet incrementally', () => {
@@ -234,5 +234,161 @@ describe('ai.js — death apple throttling', () => {
     expect(applesAfterSecond).toBeGreaterThan(applesAfterFirst);
     // All death apples should still be present
     expect(appleDirty).toBe(true);
+  });
+
+  test('odd-length snake converts ceil(n/2) segments', () => {
+    // Replace with a 7-segment snake
+    aiSnakes[0].snake = [
+      {x: 5, z: 0}, {x: 4, z: 0}, {x: 3, z: 0},
+      {x: 2, z: 0}, {x: 1, z: 0}, {x: 0, z: 0}, {x: -1, z: 0}
+    ];
+    var applesBefore = apples.length;
+    aiDie(0, 'wall');
+    var newApples = apples.length - applesBefore;
+    // 7 segments → 4 apples (indices 6,4,2,0)
+    expect(newApples).toBe(4);
+  });
+});
+
+// ─── Particle object pool ───
+describe('particles.js — object pool', () => {
+  beforeEach(() => {
+    // Reset pool and active particles before each test
+    parts.length = 0;
+    _partPool.length = 0;
+    // Rebuild pool from scratch (all meshes that were in scene)
+    // Since we can't easily re-add, just repopulate
+    for (var i = 0; i < MAX_PARTICLES; i++) {
+      var m = new THREE.Mesh(partGeo, partMat.clone());
+      m.visible = false;
+      scene.add(m);
+      _partPool.push(m);
+    }
+  });
+
+  test('MAX_PARTICLES is defined', () => {
+    expect(MAX_PARTICLES).toBe(200);
+  });
+
+  test('_partPool is an array', () => {
+    expect(Array.isArray(_partPool)).toBe(true);
+  });
+
+  test('_partPool has MAX_PARTICLES meshes pre-allocated', () => {
+    expect(_partPool.length).toBe(MAX_PARTICLES);
+  });
+
+  test('burst returns meshes to pool instead of destroying', () => {
+    var poolBefore = _partPool.length;
+    burst(0, 0, 0xff0000, 10);
+    // Pool should have 10 fewer meshes
+    expect(_partPool.length).toBe(poolBefore - 10);
+    // Active particles should be 10
+    expect(parts.length).toBe(10);
+  });
+
+  test('tickParts returns expired particles to pool', () => {
+    burst(0, 0, 0xff0000, 5);
+    var poolBefore = _partPool.length;
+    // Simulate all particles expiring
+    for (var i = 0; i < parts.length; i++) {
+      parts[i].userData.life = 0;
+    }
+    tickParts(0.016);
+    // Pool should have 5 more meshes
+    expect(_partPool.length).toBe(poolBefore + 5);
+    // Active particles should be 0
+    expect(parts.length).toBe(0);
+  });
+
+  test('burst skips if pool is exhausted', () => {
+    // Exhaust the pool
+    _partPool.length = 0;
+    burst(0, 0, 0xff0000, 10);
+    // No particles created because pool is empty
+    expect(parts.length).toBe(0);
+    // Restore pool
+    _partPool.length = MAX_PARTICLES;
+  });
+});
+
+// ─── updateAppleSet (incremental hash update) ───
+describe('apples.js — updateAppleSet()', () => {
+  beforeEach(() => {
+    setSnake([]);
+    setObstacles([]);
+  });
+
+  test('updateAppleSet removes old and adds new', () => {
+    setApples([{x: 1, z: 2}]);
+    expect(appleSet['1,2']).toBe(true);
+    updateAppleSet({x: 1, z: 2}, {x: 3, z: 4});
+    expect(appleSet['1,2']).toBe(undefined);
+    expect(appleSet['3,4']).toBe(true);
+  });
+
+  test('updateAppleSet handles null old apple', () => {
+    setApples([]);
+    updateAppleSet(null, {x: 5, z: 5});
+    expect(appleSet['5,5']).toBe(true);
+  });
+
+  test('updateAppleSet handles null new apple', () => {
+    setApples([{x: 1, z: 1}]);
+    updateAppleSet({x: 1, z: 1}, null);
+    expect(appleSet['1,1']).toBe(undefined);
+  });
+
+  test('updateAppleSet handles both null', () => {
+    setApples([]);
+    updateAppleSet(null, null);
+    expect(Object.keys(appleSet).length).toBe(0);
+  });
+});
+
+// ─── bestApple() partial selection ───
+describe('ai.js — bestApple() partial selection', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
+    setObstacles([]);
+  });
+
+  test('bestApple selects from closest candidates with many apples', () => {
+    var manyApples = [];
+    for (var i = 0; i < 60; i++) {
+      manyApples.push({x: i % 10, z: Math.floor(i / 10)});
+    }
+    setApples(manyApples);
+    var blocked = buildBlockedSet();
+    var result = bestApple([{x: 0, z: 0}, {x: -1, z: 0}], blocked, 'medium');
+    expect(result).not.toBeNull();
+    // Should pick one of the closest apples
+    var dist = Math.abs(result.x) + Math.abs(result.z);
+    expect(dist).toBeLessThan(15); // reasonable distance for nearest
+  });
+
+  test('bestApple returns nearest apple when few candidates', () => {
+    setApples([{x: 2, z: 0}, {x: 10, z: 0}]);
+    var blocked = buildBlockedSet();
+    var result = bestApple([{x: 0, z: 0}, {x: -1, z: 0}], blocked, 'medium');
+    expect(result).not.toBeNull();
+    expect(result.x).toBe(2);
+    expect(result.z).toBe(0);
+  });
+
+  test('bestApple partial selection preserves order by distance', () => {
+    // Create apples at known distances
+    setApples([
+      {x: 10, z: 0}, {x: 20, z: 0}, {x: 30, z: 0},
+      {x: 1, z: 0}, {x: 50, z: 0}, {x: 2, z: 0},
+      {x: 100, z: 0}, {x: 3, z: 0}, {x: 15, z: 0},
+      {x: 4, z: 0}, {x: 25, z: 0}
+    ]);
+    var blocked = buildBlockedSet();
+    var result = bestApple([{x: 0, z: 0}, {x: -1, z: 0}], blocked, 'medium');
+    expect(result).not.toBeNull();
+    // Should pick one of the closest (1, 2, or 3)
+    var dist = Math.abs(result.x) + Math.abs(result.z);
+    expect(dist).toBeLessThanOrEqual(3);
   });
 });
