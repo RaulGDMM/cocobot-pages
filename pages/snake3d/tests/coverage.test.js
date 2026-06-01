@@ -22,9 +22,9 @@ describe('scene.js — gw()', () => {
 
 // ─── buildApples() ───
 describe('apples.js — buildApples()', () => {
-  test('creates NUM_APPLES apple groups', () => {
+  test('creates NUM_APPLES + margin apple groups', () => {
     buildApples();
-    expect(appleMeshes.length).toBe(NUM_APPLES);
+    expect(appleMeshes.length).toBe(NUM_APPLES + APPLE_POOL_MARGIN);
   });
 
   test('apple groups are initially hidden', () => {
@@ -35,7 +35,7 @@ describe('apples.js — buildApples()', () => {
 
   test('adds apple groups to appleGroup', () => {
     buildApples();
-    expect(appleGroup.children.length).toBe(NUM_APPLES);
+    expect(appleGroup.children.length).toBe(NUM_APPLES + APPLE_POOL_MARGIN);
   });
 
   test('clears existing children', () => {

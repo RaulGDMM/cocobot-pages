@@ -631,10 +631,14 @@ var appleMeshes = [];
 var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
 var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
 
+// Extra margin for death apples (snake bodies converted to apples).
+// A large snake can be 50-100 segments; with 3 AI, ~200 is safe.
+var APPLE_POOL_MARGIN = 200;
+
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
   appleMeshes = [];
-  var numApples = calcNumApples(GRID_SIZE);
+  var numApples = calcNumApples(GRID_SIZE) + APPLE_POOL_MARGIN;
   for(var i = 0; i < numApples; i++) {
     var g = new THREE.Group();
     var m = new THREE.Mesh(appleGeo, appleMat);
@@ -672,21 +676,10 @@ function spawnOneApple() {
 function refreshApples() {
   if (!appleMeshes || !appleMeshes.length) return;
   var totalApples = apples.length;
-  var rendered = 0;
   for(var i = 0; i < totalApples; i++) {
-    if(i >= appleMeshes.length) {
-      // Create extra mesh for death apples beyond the initial pool
-      var g = new THREE.Group();
-      var m = new THREE.Mesh(appleGeo, appleMat);
-      g.add(m);
-      var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
-      appleGroup.add(g);
-      appleMeshes.push(g);
-    }
     if(apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
-      rendered++;
     } else {
       appleMeshes[i].visible = false;
     }
@@ -2078,20 +2071,6 @@ function step() {
 function die(cause) {
   log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; running=false; sfxDie();
-
-  // ─── Convert body to apples (collectible by other AI snakes) ───
-  var appleCount = 0;
-  for (var i = snake.length - 1; i >= 0; i--) {
-    var seg = snake[i];
-    if (seg.x >= gridMinX && seg.x < gridMaxX && seg.z >= gridMinZ && seg.z < gridMaxZ) {
-      apples.push({x: seg.x, z: seg.z, fromDeath: true});
-      appleCount++;
-    }
-  }
-  if (appleCount > 0) {
-    log('Player body → ' + appleCount + ' apples');
-    if (typeof refreshApples === 'function') refreshApples();
-  }
 
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   // ─── AI MODE: save high score per mode/difficulty/gridSize ───

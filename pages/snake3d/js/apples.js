@@ -4,10 +4,14 @@ var appleMeshes = [];
 var appleGeo = new THREE.SphereGeometry(.25, 10, 10);
 var appleMat = new THREE.MeshStandardMaterial({color:0xff2233, emissive:0x881122, emissiveIntensity:.5});
 
+// Extra margin for death apples (snake bodies converted to apples).
+// A large snake can be 50-100 segments; with 3 AI, ~200 is safe.
+var APPLE_POOL_MARGIN = 200;
+
 function buildApples() {
   while(appleGroup.children.length) { var c=appleGroup.children[0]; appleGroup.remove(c); }
   appleMeshes = [];
-  var numApples = calcNumApples(GRID_SIZE);
+  var numApples = calcNumApples(GRID_SIZE) + APPLE_POOL_MARGIN;
   for(var i = 0; i < numApples; i++) {
     var g = new THREE.Group();
     var m = new THREE.Mesh(appleGeo, appleMat);
@@ -45,21 +49,10 @@ function spawnOneApple() {
 function refreshApples() {
   if (!appleMeshes || !appleMeshes.length) return;
   var totalApples = apples.length;
-  var rendered = 0;
   for(var i = 0; i < totalApples; i++) {
-    if(i >= appleMeshes.length) {
-      // Create extra mesh for death apples beyond the initial pool
-      var g = new THREE.Group();
-      var m = new THREE.Mesh(appleGeo, appleMat);
-      g.add(m);
-      var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
-      appleGroup.add(g);
-      appleMeshes.push(g);
-    }
     if(apples[i]) {
       appleMeshes[i].visible = true;
       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
-      rendered++;
     } else {
       appleMeshes[i].visible = false;
     }
