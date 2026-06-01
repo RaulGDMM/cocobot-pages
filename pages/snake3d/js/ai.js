@@ -11,7 +11,7 @@
 var AI_STRATEGY = {
   easy: {
     bfsPathfinding: false,
-    floodFillDepth: 30,
+    floodFillDepth: 15,
     tailChasing: false,
     lookahead: false,
     bestApple: false,
@@ -19,11 +19,13 @@ var AI_STRATEGY = {
     antiTrap: true,
     minSpaceFactor: 1.5,
     errorRate: 0.38,
-    corneringRate: 0.00
+    corneringRate: 0.00,
+    spaceCheckRelaxation: 0.25,
+    playerPerceptionRadius: 5
   },
   medium: {
     bfsPathfinding: true,
-    floodFillDepth: 60,
+    floodFillDepth: 40,
     tailChasing: true,
     lookahead: false,
     bestApple: true,
@@ -31,7 +33,9 @@ var AI_STRATEGY = {
     antiTrap: true,
     minSpaceFactor: 1.7,
     errorRate: 0.10,
-    corneringRate: 0.40
+    corneringRate: 0.40,
+    spaceCheckRelaxation: 0.10,
+    playerPerceptionRadius: 9
   },
   hard: {
     bfsPathfinding: true,
@@ -43,7 +47,9 @@ var AI_STRATEGY = {
     antiTrap: true,
     minSpaceFactor: 1.3,
     errorRate: 0.02,
-    corneringRate: 0.85
+    corneringRate: 0.85,
+    spaceCheckRelaxation: 0.00,
+    playerPerceptionRadius: -1
   }
 };
 
@@ -332,7 +338,10 @@ function cellInShrinkZone(x, z) {
 }
 
 // ─── Evaluate safe directions for an AI snake ───
-function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
+// perceptionRadius: max Manhattan distance at which the AI "sees" the player.
+//   -1 = infinite (hard mode, always sees player).
+//   Positive number = limited perception (easy/medium).
+function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
   var possibleDirs = [
     aiDir,
     aiDir - TURN_ANGLE,
@@ -342,6 +351,13 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
   var safe = [];
   var head = aiSnake[0];
 
+  // ─── Player perception: does the AI "see" the player? ───
+  var canSeePlayer = (perceptionRadius < 0); // -1 = infinite vision
+  if (!canSeePlayer && snake.length > 0) {
+    var manhattanToPlayer = Math.abs(snake[0].x - head.x) + Math.abs(snake[0].z - head.z);
+    canSeePlayer = (manhattanToPlayer <= perceptionRadius);
+  }
+
   possibleDirs.forEach(function(dir) {
     var nx = head.x + Math.round(Math.cos(dir));
     var nz = head.z + Math.round(Math.sin(dir));
@@ -350,7 +366,8 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir) {
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
     if (corpses && corpses.some(function(c) { return c.x === nx && c.z === nz; })) return;
-    if (snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
+    // Player snake: only treated as obstacle if AI can "see" it
+    if (canSeePlayer && snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (aiSnakes) {
       for (var i = 0; i < aiSnakes.length; i++) {
         if (i === aiIndex) continue;
@@ -517,7 +534,8 @@ function aiDecideDirection(aiIndex, diff) {
 
   // ─── If stuck, force a random safe direction to break the loop ───
   if (aiIsStuck(ai)) {
-    var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
+    var stratStuck = AI_STRATEGY[diff] || AI_STRATEGY.medium;
+    var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, stratStuck.playerPerceptionRadius);
     if (safe.length > 1) {
       // Pick a random safe direction (not the current one)
       var newDirs = safe.filter(function(d) { return d !== ai.direction; });
@@ -533,7 +551,7 @@ function aiDecideDirection(aiIndex, diff) {
   }
 
   var strat = AI_STRATEGY[diff] || AI_STRATEGY.medium;
-  var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction);
+  var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, strat.playerPerceptionRadius);
   if (safe.length === 0) return ai.direction;
 
   // ─── Build blocked set ───
@@ -548,10 +566,18 @@ function aiDecideDirection(aiIndex, diff) {
   var minSpace = Math.ceil(ai.snake.length * (strat.minSpaceFactor || 2.0));
   var safeWithSpace = [];
 
+  // ─── Space check relaxation (human-like imperfection) ───
+  // In easy/medium, the AI occasionally accepts a direction with tight space,
+  // mimicking a human player who misjudges risk. Hard mode stays 100% rigorous.
+  var spaceRelaxation = strat.spaceCheckRelaxation || 0;
+
   for (var s = 0; s < safe.length; s++) {
     var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
     var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
     if (minSafeSpace(nx, nz, ai.snake, blocked, minSpace)) {
+      safeWithSpace.push(safe[s]);
+    } else if (spaceRelaxation > 0 && Math.random() < spaceRelaxation) {
+      // Human-like mistake: accept tight space direction
       safeWithSpace.push(safe[s]);
     }
   }

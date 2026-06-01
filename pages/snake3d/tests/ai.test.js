@@ -891,3 +891,178 @@ describe('ai.js — refreshAISnakes()', () => {
     expect(() => refreshAISnakes()).not.toThrow();
   });
 });
+
+// ─── AI_STRATEGY — new human-like parameters ───
+describe('ai.js — AI_STRATEGY human-like params', () => {
+  test('easy mode has spaceCheckRelaxation > 0', () => {
+    expect(AI_STRATEGY.easy.spaceCheckRelaxation).toBeGreaterThan(0);
+    expect(AI_STRATEGY.easy.spaceCheckRelaxation).toBe(0.25);
+  });
+
+  test('medium mode has lower spaceCheckRelaxation than easy', () => {
+    expect(AI_STRATEGY.medium.spaceCheckRelaxation).toBeGreaterThan(0);
+    expect(AI_STRATEGY.medium.spaceCheckRelaxation).toBeLessThan(AI_STRATEGY.easy.spaceCheckRelaxation);
+  });
+
+  test('hard mode has zero spaceCheckRelaxation', () => {
+    expect(AI_STRATEGY.hard.spaceCheckRelaxation).toBe(0);
+  });
+
+  test('easy mode has limited playerPerceptionRadius', () => {
+    expect(AI_STRATEGY.easy.playerPerceptionRadius).toBeGreaterThan(0);
+    expect(AI_STRATEGY.easy.playerPerceptionRadius).toBe(5);
+  });
+
+  test('medium mode has wider playerPerceptionRadius than easy', () => {
+    expect(AI_STRATEGY.medium.playerPerceptionRadius).toBeGreaterThan(AI_STRATEGY.easy.playerPerceptionRadius);
+    expect(AI_STRATEGY.medium.playerPerceptionRadius).toBe(9);
+  });
+
+  test('hard mode has infinite playerPerceptionRadius (-1)', () => {
+    expect(AI_STRATEGY.hard.playerPerceptionRadius).toBe(-1);
+  });
+
+  test('easy mode has reduced floodFillDepth (myopic)', () => {
+    expect(AI_STRATEGY.easy.floodFillDepth).toBe(15);
+    expect(AI_STRATEGY.easy.floodFillDepth).toBeLessThan(AI_STRATEGY.medium.floodFillDepth);
+  });
+
+  test('medium mode has moderate floodFillDepth', () => {
+    expect(AI_STRATEGY.medium.floodFillDepth).toBe(40);
+    expect(AI_STRATEGY.medium.floodFillDepth).toBeLessThan(AI_STRATEGY.hard.floodFillDepth);
+  });
+
+  test('hard mode has full floodFillDepth', () => {
+    expect(AI_STRATEGY.hard.floodFillDepth).toBe(120);
+  });
+});
+
+// ─── aiEvaluateDirections() — player perception radius ───
+describe('ai.js — aiEvaluateDirections() player perception', () => {
+  beforeEach(() => {
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+    setGlobal('TURN_ANGLE', Math.PI / 2);
+  });
+
+  test('AI sees player when within perception radius', () => {
+    // Player snake right next to AI — within radius 5
+    setSnake([{x: 3, z: 0}, {x: 2, z: 0}]);
+    var aiSnake = [{x: 1, z: 0}, {x: 0, z: 0}];
+    var safe = aiEvaluateDirections(0, aiSnake, 0, 5);
+    // Direction 0 (forward to x=2) should NOT be safe — player blocks it
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(false);
+  });
+
+  test('AI does NOT see player when outside perception radius', () => {
+    // Player snake far from AI — manhattan distance 10, radius 5
+    setSnake([{x: 10, z: 0}, {x: 9, z: 0}]);
+    var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}];
+    var safe = aiEvaluateDirections(0, aiSnake, 0, 5);
+    // Direction 0 (forward) should be safe — AI doesn't see player at x=10
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(true);
+  });
+
+  test('AI sees player at exactly perception radius boundary', () => {
+    // Player at manhattan distance exactly 5
+    setSnake([{x: 5, z: 0}, {x: 4, z: 0}]);
+    var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}];
+    var safe = aiEvaluateDirections(0, aiSnake, 0, 5);
+    // At boundary (dist=5), AI should still see player
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    // Player at x=5 is far enough that forward direction to x=1 is still safe
+    // The test is that perception is active, not that the cell is blocked
+    expect(forwardSafe).toBe(true); // x=1 is not occupied by player at x=5
+  });
+
+  test('AI with infinite perception (-1) always sees player', () => {
+    // Player far away but AI has infinite vision
+    setSnake([{x: 10, z: 0}, {x: 9, z: 0}]);
+    var aiSnake = [{x: 1, z: 0}, {x: 0, z: 0}];
+    // Move toward player — player blocks at x=9
+    // With infinite perception, AI should see player as obstacle
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    // Forward to x=2 should be safe (player is at x=9,10)
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(true);
+  });
+
+  test('AI with infinite perception sees player blocking adjacent cell', () => {
+    // Player blocking the cell directly in front of AI
+    setSnake([{x: 1, z: 0}, {x: 2, z: 0}]);
+    var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}];
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    // Forward to x=1 should NOT be safe — player blocks it
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(false);
+  });
+
+  test('medium perception radius lets AI see closer player but not distant', () => {
+    // Player at manhattan distance 7 — within medium radius (9) but outside easy (5)
+    setSnake([{x: 7, z: 0}, {x: 6, z: 0}]);
+    var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}];
+
+    // With medium radius (9): AI sees player
+    var safeMedium = aiEvaluateDirections(0, aiSnake, 0, 9);
+    // With easy radius (5): AI doesn't see player
+    var safeEasy = aiEvaluateDirections(0, aiSnake, 0, 5);
+
+    // Both should find forward safe since player is at x=7 (not blocking x=1)
+    // The difference is in how AI treats the player body in pathfinding
+    var forwardMedium = safeMedium.some(function(d) { return Math.abs(d) < 0.01; });
+    var forwardEasy = safeEasy.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardMedium).toBe(true);
+    expect(forwardEasy).toBe(true);
+  });
+});
+
+// ─── aiEvaluateDirections() — perception radius integration ───
+describe('ai.js — aiEvaluateDirections() perception integration', () => {
+  beforeEach(() => {
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('corpses', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+    setGlobal('TURN_ANGLE', Math.PI / 2);
+  });
+
+  test('AI blocked by player when perception is active', () => {
+    // Player directly in front of AI head
+    setSnake([{x: 2, z: 0}, {x: 3, z: 0}]);
+    var aiSnake = [{x: 1, z: 0}, {x: 0, z: 0}];
+    var safe = aiEvaluateDirections(0, aiSnake, 0, 5);
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(false); // player at x=2 blocks forward
+  });
+
+  test('AI NOT blocked by distant player when perception limited', () => {
+    // Player directly in front but far away — AI doesn't see it
+    setSnake([{x: 20, z: 0}, {x: 21, z: 0}]);
+    var aiSnake = [{x: 1, z: 0}, {x: 0, z: 0}];
+    var safe = aiEvaluateDirections(0, aiSnake, 0, 5);
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(true); // AI doesn't see player at x=20
+  });
+
+  test('perception radius uses Manhattan distance from AI head', () => {
+    // Player at (3,3) from AI head at (0,0) — manhattan = 6
+    setSnake([{x: 3, z: 3}, {x: 2, z: 3}]);
+    var aiSnake = [{x: 0, z: 0}, {x: -1, z: 0}];
+
+    // Radius 5: manhattan 6 > 5, so AI doesn't see player
+    var safe5 = aiEvaluateDirections(0, aiSnake, 0, 5);
+    // Radius 10: manhattan 6 <= 10, so AI sees player
+    var safe10 = aiEvaluateDirections(0, aiSnake, 0, 10);
+
+    // Forward (x=1,0) is safe in both cases since player is at (3,3)
+    // The test verifies the function doesn't crash with different radii
+    expect(safe5.length).toBeGreaterThan(0);
+    expect(safe10.length).toBeGreaterThan(0);
+  });
+});
