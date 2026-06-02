@@ -646,6 +646,41 @@ function aiDecideDirection(aiIndex, diff) {
     blocked[ai.snake[i].x + ',' + ai.snake[i].z] = true;
   }
 
+  // ─── CRITICAL: If AI head is in shrink danger zone, prioritize ESCAPE ───
+  // When the countdown is active and the AI is in the red zone, survival is
+  // the ONLY priority. Skip apple-seeking and hunting strategies entirely.
+  var headInShrinkZone = cellInShrinkZone(ai.snake[0].x, ai.snake[0].z);
+  if (headInShrinkZone) {
+    // Force survival mode: pick direction that gets OUT of the shrink zone
+    var bestEscapeScore = -Infinity;
+    var bestEscapeDir = safe[0];
+    for (var s = 0; s < safe.length; s++) {
+      var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+      var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+      var score = 0;
+
+      // HUGE bonus for moving to a SAFE cell (outside shrink zone)
+      if (!cellInShrinkZone(nx, nz)) {
+        score += 2000;
+      }
+
+      // Space matters more when trapped — avoid dead ends
+      var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+      score += space * 3;
+
+      // Escape routes matter
+      var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+      score += escapes * 10;
+
+      if (score > bestEscapeScore) {
+        bestEscapeScore = score;
+        bestEscapeDir = safe[s];
+      }
+    }
+    log('AI ' + aiIndex + ' in shrink zone — escaping');
+    return snapToCardinal(bestEscapeDir);
+  }
+
   // ─── CRITICAL: Filter safe directions by minimum reachable space ───
   // This is the main anti-coiling mechanism. The AI will NOT commit to a
   // direction unless it has enough reachable space to survive.
@@ -712,35 +747,41 @@ function aiDecideDirection(aiIndex, diff) {
   if (strat.bfsPathfinding) {
     var targetApple = bestApple(ai.snake, blocked, diff);
     if (targetApple) {
-      var path = bfsPath(
-        ai.snake[0].x, ai.snake[0].z,
-        targetApple.x, targetApple.z,
-        blocked, ai.snake, gridSize * gridSize
-      );
-      if (path && path.length > 1) {
-        var nextStep = path[1];
-        for (var s = 0; s < safeWithSpace.length; s++) {
-          var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
-          var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
-          if (nx === nextStep.x && nz === nextStep.z) {
-            // Anti-trap: verify escape routes — but SKIP when apple is very close (≤2 steps)
-            // This prevents the AI from refusing to take the last step to an edge apple
-            if (strat.antiTrap) {
-              var manhattanToApple = Math.abs(nextStep.x - targetApple.x) + Math.abs(nextStep.z - targetApple.z);
-              if (manhattanToApple > 2) {
-                var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-                // Near edges, 1 escape is acceptable (wall constrains movement naturally)
-                var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
-                                nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
-                if (escapes < (nearEdge ? 1 : 2)) continue;
+      // Skip if target apple is in shrink danger zone — survival first
+      if (!cellInShrinkZone(targetApple.x, targetApple.z)) {
+        var path = bfsPath(
+          ai.snake[0].x, ai.snake[0].z,
+          targetApple.x, targetApple.z,
+          blocked, ai.snake, gridSize * gridSize
+        );
+        if (path && path.length > 1) {
+          var nextStep = path[1];
+          // Skip if next step leads into shrink zone
+          if (!cellInShrinkZone(nextStep.x, nextStep.z)) {
+            for (var s = 0; s < safeWithSpace.length; s++) {
+              var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
+              var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
+              if (nx === nextStep.x && nz === nextStep.z) {
+                // Anti-trap: verify escape routes — but SKIP when apple is very close (≤2 steps)
+                // This prevents the AI from refusing to take the last step to an edge apple
+                if (strat.antiTrap) {
+                  var manhattanToApple = Math.abs(nextStep.x - targetApple.x) + Math.abs(nextStep.z - targetApple.z);
+                  if (manhattanToApple > 2) {
+                    var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+                    // Near edges, 1 escape is acceptable (wall constrains movement naturally)
+                    var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
+                                    nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
+                    if (escapes < (nearEdge ? 1 : 2)) continue;
+                  }
+                }
+                // Lookahead: verify future positions
+                if (strat.lookahead) {
+                  var laScore = lookaheadScore(ai.snake, safeWithSpace[s], 5, blocked);
+                  if (laScore < -500) continue;
+                }
+                return snapToCardinal(safeWithSpace[s]);
               }
             }
-            // Lookahead: verify future positions
-            if (strat.lookahead) {
-              var laScore = lookaheadScore(ai.snake, safeWithSpace[s], 5, blocked);
-              if (laScore < -500) continue;
-            }
-            return snapToCardinal(safeWithSpace[s]);
           }
         }
       }
