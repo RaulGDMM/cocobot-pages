@@ -1880,14 +1880,34 @@ function aiDecideDirection(aiIndex, diff) {
   // mimicking a human player who misjudges risk. Hard mode stays 100% rigorous.
   var spaceRelaxation = strat.spaceCheckRelaxation || 0;
 
+  // When shrink countdown is active, directions leading into the danger zone
+  // are excluded from safeWithSpace — survival takes priority over everything.
+  var shrinkActive = !!(shrinkCountdowns && shrinkCountdowns.length > 0);
+
   for (var s = 0; s < safe.length; s++) {
     var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
     var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+
+    // HARD BLOCK: if shrink is active and direction leads into danger zone, skip
+    if (shrinkActive && cellInShrinkZone(nx, nz)) continue;
+
     if (minSafeSpace(nx, nz, ai.snake, blocked, minSpace)) {
       safeWithSpace.push(safe[s]);
     } else if (spaceRelaxation > 0 && Math.random() < spaceRelaxation) {
       // Human-like mistake: accept tight space direction
       safeWithSpace.push(safe[s]);
+    }
+  }
+
+  // If shrink blocked ALL space-safe directions, fall back to safe dirs
+  // that are OUTSIDE the shrink zone (even if tight on space)
+  if (safeWithSpace.length === 0 && shrinkActive) {
+    for (var s = 0; s < safe.length; s++) {
+      var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+      var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+      if (!cellInShrinkZone(nx, nz)) {
+        safeWithSpace.push(safe[s]);
+      }
     }
   }
 
@@ -1900,8 +1920,8 @@ function aiDecideDirection(aiIndex, diff) {
       var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
       var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
       var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
-      // Penalize shrink danger zone in survival mode
-      if (cellInShrinkZone(nx, nz)) space -= 20;
+      // HARD BLOCK: if shrink is active and direction leads into danger zone, skip entirely
+      if (shrinkActive && cellInShrinkZone(nx, nz)) continue;
       if (space > bestSpace) {
         bestSpace = space;
         bestDir = safe[s];
@@ -1943,9 +1963,16 @@ function aiDecideDirection(aiIndex, diff) {
           blocked, ai.snake, gridSize * gridSize
         );
         if (path && path.length > 1) {
-          var nextStep = path[1];
-          // Skip if next step leads into shrink zone
-          if (!cellInShrinkZone(nextStep.x, nextStep.z)) {
+          // Verify the ENTIRE path doesn't go through shrink zone
+          var pathThroughShrink = false;
+          for (var p = 1; p < path.length; p++) {
+            if (cellInShrinkZone(path[p].x, path[p].z)) {
+              pathThroughShrink = true;
+              break;
+            }
+          }
+          if (!pathThroughShrink) {
+            var nextStep = path[1];
             for (var s = 0; s < safeWithSpace.length; s++) {
               var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
               var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
