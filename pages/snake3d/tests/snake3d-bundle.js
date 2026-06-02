@@ -840,13 +840,8 @@ function buildApples() {
   for(var i = 0; i < numApples; i++) {
     var g = new THREE.Group();
     var m = new THREE.Mesh(appleGeo, appleMat);
-    g.add(m);
-    var gl = new THREE.PointLight(0xff3344, .3, 3); g.add(gl);
-    // Keep a direct reference to the point light so refreshApples() can toggle
-    // it without scanning children. Death apples disable their light to avoid
-    // dozens of simultaneous point lights when a snake corpse converts.
-    g.userData.light = gl;
-    appleGroup.add(g);
+     g.add(m);
+     appleGroup.add(g);
     appleMeshes.push(g);
     g.visible = false;
   }
@@ -995,13 +990,8 @@ function refreshApples() {
   for(var i = 0; i < totalApples; i++) {
     if(apples[i]) {
       appleMeshes[i].visible = true;
-      appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
-      // Death apples render the sphere but disable their point light. Without
-      // this, a converting corpse would switch on dozens of point lights at
-      // once, forcing THREE.js to re-shade every object against every light.
-      var light = appleMeshes[i].userData && appleMeshes[i].userData.light;
-      if (light) light.visible = !apples[i].fromDeath;
-      appleMeshes[i].userData.animate = !apples[i].fromDeath;
+       appleMeshes[i].position.set(gw(apples[i].x), .25, gw(apples[i].z));
+       appleMeshes[i].userData.animate = !apples[i].fromDeath;
       if (!apples[i].fromDeath) animatedAppleMeshIndices.push(i);
     } else {
       appleMeshes[i].visible = false;
@@ -2264,7 +2254,7 @@ function processCorpses() {
 
 // ─── Show AI death message on screen ───
 function showAiDeathMessage(ai, cause) {
-  var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla'};
+  var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
   var colorName = colorNames[ai.color] || 'desconocida';
 
   var causeMsg = '';

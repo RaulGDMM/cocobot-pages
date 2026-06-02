@@ -1082,3 +1082,108 @@ describe('ai.js — aiEvaluateDirections() perception integration', () => {
     expect(safe10.length).toBeGreaterThan(0);
   });
 });
+
+// ─── showAiDeathMessage() ───
+describe('ai.js — showAiDeathMessage()', () => {
+  var deathMsgEl;
+
+  beforeEach(() => {
+    deathMsgEl = document.getElementById('ai-death-msg');
+    // Reset: remove visible class and clear timer
+    deathMsgEl.classList.remove('visible');
+    clearTimeout(deathMsgEl._hideTimer);
+  });
+
+  // Color mapping — all 8 SNAKE_COLOR_NAMES
+  test('translates green to "verde"', () => {
+    showAiDeathMessage({color: 'green'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('verde');
+  });
+
+  test('translates red to "roja"', () => {
+    showAiDeathMessage({color: 'red'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('roja');
+  });
+
+  test('translates blue to "azul"', () => {
+    showAiDeathMessage({color: 'blue'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('azul');
+  });
+
+  test('translates yellow to "amarilla"', () => {
+    showAiDeathMessage({color: 'yellow'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('amarilla');
+  });
+
+  test('translates cyan to "cyan"', () => {
+    showAiDeathMessage({color: 'cyan'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('cyan');
+  });
+
+  test('translates purple to "púrpura"', () => {
+    showAiDeathMessage({color: 'purple'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('púrpura');
+  });
+
+  test('translates orange to "naranja"', () => {
+    showAiDeathMessage({color: 'orange'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('naranja');
+  });
+
+  test('translates salmon to "salmón"', () => {
+    showAiDeathMessage({color: 'salmon'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('salmón');
+  });
+
+  test('falls back to "desconocida" for unknown colors', () => {
+    showAiDeathMessage({color: 'magenta'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('desconocida');
+  });
+
+  // Death causes
+  test('shows "contra la pared" for wall cause', () => {
+    showAiDeathMessage({color: 'green'}, 'wall');
+    expect(deathMsgEl.textContent).toContain('contra la pared');
+  });
+
+  test('shows "contra sí misma" for self cause', () => {
+    showAiDeathMessage({color: 'red'}, 'self');
+    expect(deathMsgEl.textContent).toContain('contra sí misma');
+  });
+
+  test('shows "contra un obstáculo" for obstacle cause', () => {
+    showAiDeathMessage({color: 'blue'}, 'obstacle');
+    expect(deathMsgEl.textContent).toContain('contra un obstáculo');
+  });
+
+  test('shows "contra un cadáver" for corpse cause', () => {
+    showAiDeathMessage({color: 'yellow'}, 'corpse');
+    expect(deathMsgEl.textContent).toContain('contra un cadáver');
+  });
+
+  test('shows "contra el jugador" for player cause', () => {
+    showAiDeathMessage({color: 'cyan'}, 'player');
+    expect(deathMsgEl.textContent).toContain('contra el jugador');
+  });
+
+  test('shows "contra otra serpiente" for ai cause', () => {
+    showAiDeathMessage({color: 'purple'}, 'ai');
+    expect(deathMsgEl.textContent).toContain('contra otra serpiente');
+  });
+
+  // DOM behavior
+  test('adds visible class to element', () => {
+    showAiDeathMessage({color: 'green'}, 'wall');
+    expect(deathMsgEl.classList.contains('visible')).toBe(true);
+  });
+
+  test('message starts with skull emoji', () => {
+    showAiDeathMessage({color: 'green'}, 'wall');
+    expect(deathMsgEl.textContent).toMatch(/^💀/);
+  });
+
+  test('sets auto-hide timer', () => {
+    showAiDeathMessage({color: 'green'}, 'wall');
+    expect(deathMsgEl._hideTimer).toBeDefined();
+  });
+});

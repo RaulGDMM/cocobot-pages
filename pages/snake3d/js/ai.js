@@ -1067,7 +1067,7 @@ function processCorpses() {
 
 // ─── Show AI death message on screen ───
 function showAiDeathMessage(ai, cause) {
-  var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla'};
+  var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
   var colorName = colorNames[ai.color] || 'desconocida';
 
   var causeMsg = '';
