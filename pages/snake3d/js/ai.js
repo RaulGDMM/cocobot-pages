@@ -407,7 +407,9 @@ function lookaheadScore(aiSnake, dir, steps, blocked) {
 // ─── Check if a cell is in a shrink danger zone ───
 // Returns true if the cell is OUTSIDE the future safe zone of any active countdown
 function cellInShrinkZone(x, z) {
-  if (!shrinkCountdowns || shrinkCountdowns.length === 0) return false;
+  if (!shrinkCountdowns || shrinkCountdowns.length === 0) {
+    return false;
+  }
   for (var i = 0; i < shrinkCountdowns.length; i++) {
     var cd = shrinkCountdowns[i];
     var b = calcShrinkBoundsFromCurrent(cd);
@@ -416,6 +418,20 @@ function cellInShrinkZone(x, z) {
     }
   }
   return false;
+}
+
+// ─── Debug: log shrink state ───
+function logShrinkState(label) {
+  if (!shrinkCountdowns || shrinkCountdowns.length === 0) {
+    log('['+label+'] NO countdowns active (shrinkCountdowns='+(shrinkCountdowns?shrinkCountdowns.length:'null')+')');
+    return;
+  }
+  for (var i = 0; i < shrinkCountdowns.length; i++) {
+    var cd = shrinkCountdowns[i];
+    var b = calcShrinkBoundsFromCurrent(cd);
+    var elapsed = (performance.now() - cd.startTime) / 1000;
+    log('['+label+'] cd['+i+']: elapsed='+elapsed.toFixed(1)+'s/'+(cd.duration/1000)+'s shrink='+cd.shrinkAmount+' offset=('+cd.offsetX+','+cd.offsetZ+') safe=('+b.newMinX+','+b.newMinZ+')-('+b.newMaxX+','+b.newMaxZ+') grid=('+gridMinX+','+gridMinZ+')-('+gridMaxX+','+gridMaxZ+')');
+  }
 }
 
 // ─── Evaluate safe directions for an AI snake ───
@@ -651,6 +667,9 @@ function aiDecideDirection(aiIndex, diff) {
   // the ONLY priority. Skip apple-seeking and hunting strategies entirely.
   var headInShrinkZone = cellInShrinkZone(ai.snake[0].x, ai.snake[0].z);
   if (headInShrinkZone) {
+    logShrinkState('ESCAPE AI '+aiIndex+' head=('+ai.snake[0].x+','+ai.snake[0].z+')');
+  }
+  if (headInShrinkZone) {
     // Force survival mode: pick direction that gets OUT of the shrink zone
     var bestEscapeScore = -Infinity;
     var bestEscapeDir = safe[0];
@@ -695,6 +714,11 @@ function aiDecideDirection(aiIndex, diff) {
   // When shrink countdown is active, directions leading into the danger zone
   // are excluded from safeWithSpace — survival takes priority over everything.
   var shrinkActive = !!(shrinkCountdowns && shrinkCountdowns.length > 0);
+  if (shrinkActive) {
+    logShrinkState('aiDecide AI '+aiIndex);
+  } else {
+    log('[aiDecide AI '+aiIndex+'] shrinkActive=FALSE countdowns='+(shrinkCountdowns?shrinkCountdowns.length:0));
+  }
 
   for (var s = 0; s < safe.length; s++) {
     var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
