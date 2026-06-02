@@ -698,6 +698,7 @@ footer a:hover { color: var(--primary); }
   <a href="#problemas-reales" onclick="toggleMenu()">🔧 Problemas Reales y Soluciones</a>
   <a href="#opinión" onclick="toggleMenu()">💭 Opinión: Modelos Locales</a>
   <a href="#comunidad" onclick="toggleMenu()">🗣️ Feedback Comunidad</a>
+  <a href="#qwen37" onclick="toggleMenu()">🚀 Qwen3.7: Lo Nuevo</a>
   <a href="#fuentes" onclick="toggleMenu()">📚 Fuentes</a>
 </nav>
 
@@ -712,7 +713,7 @@ footer a:hover { color: var(--primary); }
     <span class="badge">Modelo denso 27B</span>
     <span class="badge">Gated DeltaNet</span>
     <span class="badge">256K Context</span>
-    <span class="badge purple">🔥 Actualizado Mayo 2026</span>
+    <span class="badge purple">🔥 Actualizado Junio 2026</span>
   </div>
 </div>
 
@@ -1243,6 +1244,90 @@ footer a:hover { color: var(--primary); }
   <p class="source">Fuentes: <a href="https://www.reddit.com/r/LocalLLaMA/" target="_blank">Reddit r/LocalLLaMA</a>, <a href="https://deepinsightai.io/qwen-3-6/" target="_blank">DeepInsightAI</a>, <a href="https://benchlm.ai/models/qwen3-6-27b" target="_blank">BenchLM.ai</a>, <a href="https://forums.developer.nvidia.com/t/whats-the-best-speed-we-can-get-with-qwen-3-6-27b-without-quantizing/367561" target="_blank">NVIDIA Forums</a> — Agregado 1 de mayo, 2026</p>
 </section>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NUEVA SECCIÓN: Qwen3.7 — Lo Nuevo                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="qwen37">
+  <h2>🚀 Qwen3.7: <span class="accent">Lo Nuevo</span></h2>
+  <p>Alibaba ha lanzado la familia Qwen3.7. Aquí está el estado actual con datos oficiales:</p>
+
+  <div class="highlight">
+    <strong>Qwen3.7-Max — 19 de mayo, 2026</strong>
+    <p>Flagship de texto, API-only (no open weights). 1M de contexto. #5 global en Intelligence Index v4.0, #1 entre modelos chinos. Precio: <strong>$2.50/1M in, $7.50/1M out</strong> — 4× más barato que GPT-5.5 y 6× que Claude Opus.</p>
+  </div>
+
+  <div class="highlight success">
+    <strong>Qwen3.7-Plus — 2 de junio, 2026 (HOY)</strong>
+    <p>Variante multimodal con visión + texto, lanzada hoy. #16 en Vision Arena (Alibaba = #5 lab mundial en visión). API-only. Capabilities agenticas: deep reasoning, self-programming, tool invocation, verification/testing y autonomous iteration.</p>
+  </div>
+
+  <div class="highlight miss">
+    <strong>27B / 35B open weights — Aún no lanzados</strong>
+    <p>Anunciados como "forthcoming" pero sin fecha confirmada. Basándose en el patrón de 3.6 (API primero, open weights 3-4 semanas después), se esperan en junio/julio 2026. <strong>Max y Plus NO serán open source.</strong></p>
+  </div>
+
+  <h3>Benchmarks Oficiales Qwen3.7-Max</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Categoría</th><th>Benchmark</th><th>Qwen3.7-Max</th><th>Comparación</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="2">General</td><td>Intelligence Index v4.0</td><td><strong>56.6</strong></td><td>#5 global, #1 chino</td></tr>
+        <tr><td>Arena AI Elo</td><td><strong>1,475</strong></td><td>#13 global</td></tr>
+        <tr><td rowspan="4">Coding Agent</td><td>Terminal Bench 2.0-Terminus</td><td><strong>69.7</strong></td><td>Beats DS-V4-Pro Max (67.9)</td></tr>
+        <tr><td>SWE-Verified</td><td><strong>80.4</strong></td><td>On par Opus-4.6 Max (80.8)</td></tr>
+        <tr><td>SWE-Pro</td><td><strong>60.6</strong></td><td>Leads K2.6 (59.5) &amp; DS-V4-Pro (59.0)</td></tr>
+        <tr><td>MCP-Mark</td><td><strong>60.8</strong></td><td>Beats GLM 5.1 (57.5)</td></tr>
+        <tr><td rowspan="5">STEM &amp; Reasoning</td><td>GPQA Diamond</td><td><strong>92.4</strong></td><td>Leads Opus-4.6 (91.3)</td></tr>
+        <tr><td>Humanity's Last Exam</td><td><strong>41.4</strong></td><td>Leads Opus-4.6 (40.0)</td></tr>
+        <tr><td>HMMT 2026 Feb</td><td><strong>97.1</strong></td><td>Leads Opus-4.6 (96.2)</td></tr>
+        <tr><td>IMOAnswerBench</td><td><strong>90.0</strong></td><td>Leads DS-V4-Pro (89.8)</td></tr>
+        <tr><td>Apex Math</td><td><strong>44.5</strong></td><td>Beats Opus 4.6 Max (34.5)</td></tr>
+        <tr><td rowspan="3">General &amp; Multi</td><td>IFBench</td><td><strong>79.1</strong></td><td>Precise instruction following</td></tr>
+        <tr><td>WMT24++</td><td><strong>85.8</strong></td><td>55 idiomas</td></tr>
+        <tr><td>MRCR-v2 128k</td><td><strong>90.4</strong></td><td>Long-context retrieval</td></tr>
+        <tr><td rowspan="2">Agent</td><td>MCP-Atlas</td><td><strong>76.4</strong></td><td>Beats Opus-4.6 (75.8)</td></tr>
+        <tr><td>SpreadSheetBench-v1</td><td><strong>87.0</strong></td><td>Office automation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Qwen3.7-Max vs Qwen3.6-27B: Comparativa Directa</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Qwen3.6-27B (open)</th><th>Qwen3.7-Max (API)</th><th>Salto</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GPQA Diamond</td><td>87.8</td><td><strong>92.4</strong></td><td class="winner">+4.6</td></tr>
+        <tr><td>SWE-Verified</td><td>77.2</td><td><strong>80.4</strong></td><td class="winner">+3.2</td></tr>
+        <tr><td>Terminal-Bench</td><td>59.3</td><td><strong>69.7</strong></td><td class="winner">+10.4</td></tr>
+        <tr><td>HMMT</td><td>93.8</td><td><strong>97.1</strong></td><td class="winner">+3.3</td></tr>
+        <tr><td>Context</td><td>256K</td><td><strong>1M</strong></td><td class="winner">4×</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight blue">
+    <strong>Características destacadas de Qwen3.7-Max:</strong>
+    <ul>
+      <li>✅ <strong>1M tokens de contexto</strong> — ~750,000 palabras / codebase completo</li>
+      <li>✅ <strong>35 horas de operación autónoma</strong> — 1,158 tool calls sin intervención humana</li>
+      <li>✅ <strong>22.9% tasa de alucinación</strong> — más baja de todos los frontier models</li>
+      <li>✅ <strong>Protocolo Anthropic nativo</strong> — drop-in replacement para Claude Code</li>
+      <li>✅ <strong>10× speedup</strong> en kernel optimization challenge (vs Triton reference)</li>
+    </ul>
+  </div>
+
+  <div class="highlight warning">
+    <strong>¿Qué significa para los usuarios de modelos locales?</strong>
+    <p>Qwen3.7-Max y Plus son API-only. Si necesitas ejecutar localmente, sigue con Qwen3.6-27B hasta que salgan los open weights 27B/35B de la familia 3.7. El patrón sugiere junio/julio 2026. Mientras tanto, Max a $2.50/1M es una alternativa barata si no te importa usar API.</p>
+  </div>
+
+  <p class="source">Fuentes: <a href="https://qwen.ai/blog?id=qwen3.7" target="_blank">Qwen Blog Oficial</a>, <a href="https://www.marktechpost.com/2026/06/02/alibabas-qwen-team-launches-qwen3-7-plus/" target="_blank">MarkTechPost (Qwen3.7-Plus)</a>, <a href="https://www.aimadetools.com/blog/qwen-3-7-complete-guide/" target="_blank">AimadeTools Guide</a> — Agregado 2 de junio, 2026</p>
+</section>
+
 <!-- Fuentes -->
 <section id="fuentes">
   <h2>📚 <span class="accent">Fuentes</span></h2>
@@ -1289,14 +1374,22 @@ footer a:hover { color: var(--primary); }
     <li><a href="https://www.youtube.com/watch?v=HT2NplHskIQ" target="_blank">YouTube: Digital Space Port Review</a></li>
   </ul>
 
+  <h3>Datos Qwen3.7</h3>
+  <ul>
+    <li><a href="https://qwen.ai/blog?id=qwen3.7" target="_blank">Qwen3.7-Max — Blog post oficial</a> — Benchmarks y capacidades</li>
+    <li><a href="https://www.marktechpost.com/2026/06/02/alibabas-qwen-team-launches-qwen3-7-plus/" target="_blank">MarkTechPost: Qwen3.7-Plus Launch</a> — Lanzamiento y Vision Arena</li>
+    <li><a href="https://www.aimadetools.com/blog/qwen-3-7-complete-guide/" target="_blank">AimadeTools: Qwen 3.7 Complete Guide</a> — Pricing y comparativas</li>
+    <li><a href="https://overchat.ai/ai-hub/qwen-3-7-max" target="_blank">AI Hub: Qwen 3.7 Max and Plus</a></li>
+  </ul>
+
   <div class="highlight">
-    <strong>Nota:</strong> Página actualizada al 1 de mayo, 2026. Incluye nueva sección de problemas reales descubiertos por la comunidad, soluciones confirmadas, y feedback actualizado a 9 días del lanzamiento.
+    <strong>Nota:</strong> Página actualizada al 2 de junio, 2026. Incluye sección Qwen3.7 con benchmarks oficiales, lanzamiento Qwen3.7-Plus, problemas reales, soluciones y feedback de comunidad.
   </div>
 </section>
 
 <footer>
   <p>Generado y actualizado por Cocobot 🐱 | Datos oficiales de HuggingFace + feedback comunidad</p>
-  <p style="margin-top: 8px;">Última actualización: 1 de mayo, 2026 — Benchmarks reales + Problemas + Soluciones + Feedback comunidad</p>
+  <p style="margin-top: 8px;">Última actualización: 2 de junio, 2026 — Qwen3.7 benchmarks oficiales + Qwen3.7-Plus + Problemas + Soluciones + Feedback comunidad</p>
   <p style="margin-top: 8px;"><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a> · <a href="https://huggingface.co/Qwen" target="_blank">Qwen Models</a> · <a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a> · <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">Fixed Templates</a></p>
 </footer>
 
