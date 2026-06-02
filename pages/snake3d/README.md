@@ -13,6 +13,8 @@ Juego clásico de la serpiente renderizado en 3D con **Three.js**. Recoge manzan
 - **Modo Multijugador vs IA** — Compite contra hasta 7 serpientes controladas por inteligencia artificial (modos vs2 a vs8).
 - **3 niveles de dificultad** — Fácil, Medio y Difícil (afectan la tasa de error y agresividad de la IA).
 - **8 colores de serpiente** — Verde, rojo, azul, amarillo, cyan, purple, naranja, salmón.
+- **Puntuación y clasificación en tiempo real** — Cuando una IA muere, todas las serpientes vivas ganan 5 puntos y el asesino recibe +5 bonus. Leaderboard desplegable en el marcador con ranking en vivo, emojis de estado (🟢/💀), y actualización cada segundo. Al terminar, mensaje de ranking final con 🏆 si ganas.
+- **Mensajes de muerte con colores** — Al morir una IA, el mensaje muestra su color ("la serpiente roja chocó contra la pared") en lugar de "desconocida".
 - **Tablero configurable** — Ajusta el tamaño del grid con un slider (-50% a +50%). Hasta 66×66 en vs8, con textura de casillas nítida incluso en tableros grandes.
 - **Obstáculos progresivos** — Aparecen cada N manzanas recogidas (proporcional al tamaño del tablero).
 - **Escalado proporcional** — El número de manzanas y obstáculos se ajusta automáticamente al tamaño del tablero (`calcNumApples()`, `calcMaxObstacles()`).
@@ -51,8 +53,8 @@ snake3d/
 │   ├── obstacles.js        # Generación, validación y render de obstáculos
 │   ├── particles.js        # Sistema de partículas con object pool (burst al comer/morir)
 │   ├── ai.js               # IA oponentes (BFS, evaluación, cornering, corpses, processCorpses)
-│   ├── ui.js               # Selectores UI (color, modo, dificultad, tamaño)
-│   ├── game.js             # Lógica principal (step, die, shrink, corpse collision)
+│   ├── ui.js               # Selectores UI (color, modo, dificultad, tamaño) + leaderboard
+│   ├── game.js             # Lógica principal (step, die, shrink, corpse collision, timer leaderboard)
 │   ├── controls.js         # Input: teclado + táctil
 │   └── main.js             # Inicialización, game loop, WebGL context loss, start
 ├── music/                  # 20 pistas retro (MP3)
@@ -64,6 +66,7 @@ snake3d/
 │   ├── corpse_optimization.test.js  # Tests de optimización de cadáveres (corpseSet, batch, no burst)
 │   ├── game.test.js        # Tests de lógica de juego (step, die, cámara, colisiones)
 │   ├── helpers.js          # Helpers compartidos (setSnake, setApples, setObstacles)
+│   ├── leaderboard.test.js # Tests de leaderboard UI (updateLeaderboard, toggle, touch, cleanup, edge cases)
 │   ├── optimization.test.js # Tests de optimización (appleSet, corpseSet, dirty flag, particle pool)
 │   ├── obstacles.test.js   # Tests de obstáculos (isSafeForObstacle, spawn, distancia)
 │   ├── shrink.test.js      # Tests de reducción dinámica del tablero
@@ -391,7 +394,16 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 - Se registra un **cadáver** en `corpses[]` con todos los segmentos de la serpiente.
 - Se popula `corpseSet` para lookups O(1) de colisión.
 - Se emiten partículas en la posición de la cabeza.
+- **Distribución de puntos**: todas las serpientes vivas (incluido el jugador) reciben `DEATH_POINTS = 5`. Si el jugador causó la muerte, recibe `KILLER_BONUS = 5` adicional (+10 total).
+- **Mensajes de muerte con colores**: `showAiDeathMessage()` muestra el color de la serpiente muerta ("la serpiente roja chocó contra la pared") con emojis contextuales y puntos ganados. Si el color no está en el mapeo, muestra el nombre del color en bruto.
 - **Activa shrink**: llama a `maybeTriggerShrink()` → inicia countdown de 10s con `SHRINK_STEP=6` celdas.
+
+**Puntuación y ranking (`calcRankings` / `getPlayerRank`)**:
+- `calcRankings()`: construye un array con jugador + todas las IA, ordenado por: puntuación DESC, vivo primero, orden de creación como desempate final.
+- `getPlayerRank()`: devuelve la posición del jugador en el ranking actual.
+- **Leaderboard en el HUD**: desplegable al pulsar el marcador (`#score-box`). Muestra ranking con emojis de posición (🥇/🥈/🥉), colores de serpiente, estado vivo/muerto (🟢/💀), y puntuación. Se actualiza cada segundo durante la partida.
+- **Modo solo**: oculta flecha de expansión y ranking, muestra solo el contador de manzanas.
+- **Mensaje final**: al morir, muestra ranking completo con 🏆 si el jugador termina 1º, 💀 si no.
 
 **Conversión progresiva (`processCorpses`)**:
 - Se ejecuta cada tick (cada 200ms) en el game loop.
@@ -425,6 +437,9 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 - **`getGameConfig()`**: devuelve el config completo con `gridSize` calculado vía `resolveGridSize()`.
 - **`updateDifficultyVisibility()`**: oculta dificultad en modo solo.
 - **`updateHighScoreDisplay()`**: lee el high score de `localStorage` para la configuración actual y lo muestra.
+- **`updateLeaderboard()`**: actualiza el dropdown de clasificación con ranking en vivo. Modo solo oculta flecha y ranking. Modo vs muestra posición del jugador con emoji (🥇/🥈/🥉), colores de serpiente, estado vivo/muerto (🟢/💀), y puntuación. Se actualiza cada segundo durante la partida.
+- **Toggle del leaderboard**: click en `#score-box` abre/cierra el dropdown. Click fuera lo cierra.
+- **Prevención de propagación táctil**: `touchstart` en `#score-box` y `#leaderboard-dropdown` llama a `stopPropagation()` para evitar que el evento burbujee a las zonas táctiles de giro en móvil.
 
 ### `game.js` — Lógica principal del juego
 
@@ -457,9 +472,11 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 
 **`die(cause)`**:
 - Detiene el juego (`running = false`, `gameOver = true`).
+- Limpia `_leaderboardTimer` para detener actualizaciones del marcador.
 - Guarda high score en `localStorage` con clave específica de la configuración.
 - Incrementa contador de partidas.
 - Muestra mensaje de causa de muerte en español (`wall`, `self`, `obstacle`, `ai`, `corpse`, `shrink`).
+- Muestra ranking final con 🏆 si posición 1, 💀 si no.
 - Muestra overlay con botón "REINTENTAR".
 
 **Shrink — Reducción dinámica del tablero**:
@@ -499,6 +516,8 @@ El módulo más complejo. Gestiona serpientes IA con comportamiento autónomo:
 4. `tickParts(dt)` → actualiza partículas.
 5. `updateCam(dt)` → cámara suave.
 6. `renderer.render(scene, camera)`.
+
+**Timer del leaderboard**: `setInterval` de 1000ms que llama a `updateLeaderboard()` mientras `running && !gameOver`. Se inicia al pulsar JUGAR y se limpia en `die()` y al reiniciar partida.
 
 **Botón JUGAR**:
 - `initAudio()` → desbloquea Web Audio API (requiere interacción del usuario).
@@ -653,17 +672,18 @@ npm run coverage     # Reporte HTML de cobertura
 
 Los tests usan un **bundle concatenado** (`tests/snake3d-bundle.js`) generado por `scripts/gen-bundle.js` que une todos los módulos en orden. `jest.setup.js` mockuea el DOM y Three.js para que el código del juego funcione en Node.js.
 
-**Suites de tests** (13 suites, 650 tests):
+**Suites de tests** (14 suites, 709 tests):
 
 | Suite | Qué cubre |
 |---|---|
-| `ai.test.js` | snapToCardinal, DIRS, buildBlockedSet, BFS, countReachable, bestApple, cornering, initAI, aiDie, stepAI, perception, blockedSet cache, BFS bodySet |
+| `ai.test.js` | snapToCardinal, DIRS, buildBlockedSet, BFS, countReachable, bestApple, cornering, initAI, aiDie, stepAI, perception, blockedSet cache, BFS bodySet, showAiDeathMessage con colores y puntos |
 | `apples.test.js` | isOccupied, deduplicateApples, spawn, colisiones combinadas |
 | `blocked_cache.test.js` | caché de buildBlockedSet, cloneBlocked, ciclo de vida de cache durante stepAI |
 | `config.test.js` | constantes, resolveGridSize, high score keys, escalado proporcional, AI_STRATEGY, modos vs5-v8, GRID_MAX=66, shrink proporcional |
 | `coverage.test.js` | gw, buildApples, refreshApples, buildObstacles, buildSnake, burst, tickParts, initGame, step, die, audio, music |
-| `corpse_optimization.test.js` | CORPSE_CONVERSION_BATCH, corpseSet hash, processCorpses, no burst on conversion |
+| `corpse_optimization.test.js` | CORPSE_CONVERSION_BATCH, corpseSet hash, processCorpses, no burst on conversion, death apples sin PointLight |
 | `game.test.js` | step, die, colisiones (wall, self, obstacle, AI), turnL/R |
+| `leaderboard.test.js` | updateLeaderboard, toggle por click, prevención de propagación táctil, cleanup entre partidas, edge cases (todas muertas, score 0), modo solo vs vs |
 | `obstacles.test.js` | isSafeForObstacle, spawn, distancias, edge cases |
 | `optimization.test.js` | appleSet, corpseSet, appleDirty, bestApple limiting, death apple throttling, particle pool, updateAppleSet, appleIndex, getAppleIndexAt, replaceAppleAt |
 | `shrink.test.js` | SHRINK constants, calcShrinkTarget, maybeTriggerShrink, removeOutOfBounds, truncateSnakesToBounds, rebuildBoard offset/textura nítida, calidad móvil adaptativa, shrink proporcional vs2/vs3/vs4/vs8 |

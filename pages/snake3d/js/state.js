@@ -46,6 +46,7 @@ var _initialGridSize = GRID_SIZE;
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
 var scoreEl = document.getElementById('score');
+var scoreBoxEl = document.getElementById('score-box');
 var highscoreEl = document.getElementById('highscore');
 var overlay = document.getElementById('overlay');
 var startBtn = document.getElementById('start-btn');

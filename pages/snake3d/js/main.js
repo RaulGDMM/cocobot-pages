@@ -89,15 +89,27 @@ startBtn.addEventListener('click', function() {
   initGame();
 
   // ─── AI MODE: initialize AI snakes ───
-  initAI();
-  // Build AI snake meshes
-  if(aiSnakes) {
-    aiSnakes.forEach(function(ai, i) {
-      ai.groupData = buildSnake(ai.color);
-    });
-  }
+   initAI();
+   // Build AI snake meshes
+   if(aiSnakes) {
+     aiSnakes.forEach(function(ai, i) {
+       ai.groupData = buildSnake(ai.color);
+     });
+   }
 
-  running=true;
+   // ─── Update leaderboard AFTER aiSnakes is set ───
+    if (typeof updateLeaderboard === 'function') updateLeaderboard();
+
+    // ─── Periodic leaderboard update (every second) ───
+    // Keeps the rank display fresh as AI snakes die and scores change.
+    if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
+    _leaderboardTimer = setInterval(function() {
+      if (running && !gameOver && aiSnakes && aiSnakes.length > 0) {
+        if (typeof updateLeaderboard === 'function') updateLeaderboard();
+      }
+    }, 1000);
+
+    running=true;
   lastMoveTime = performance.now();
   log('RUNNING! MOVE_INTERVAL='+MOVE_INTERVAL+'ms');
 });

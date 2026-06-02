@@ -187,6 +187,86 @@ function initUISelectors() {
   // Initial visibility state
   updateDifficultyVisibility();
   updateHighScoreDisplay();
+
+  // ─── Score box: click to toggle leaderboard (event delegation on document) ───
+  // Using document-level delegation so it survives innerHTML replacements.
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    var scoreBox = document.getElementById('score-box');
+    var lb = document.getElementById('leaderboard-dropdown');
+    if (!scoreBox || !lb) return;
+
+    if (scoreBox.contains(target)) {
+      e.stopPropagation();
+      lb.classList.toggle('visible');
+    } else if (lb.classList.contains('visible') && !lb.contains(target)) {
+      lb.classList.remove('visible');
+    }
+  });
+
+  // ─── Prevent touch on score-box from reaching touch zones ───
+  // On mobile, tapping the score-box would trigger tz-left/tz-right
+  // and turn the snake. Stop propagation on touchstart.
+  var sb = document.getElementById('score-box');
+  if (sb) {
+    sb.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+    }, {passive: true});
+  }
+
+  // ─── Same for leaderboard dropdown when visible ───
+  var lb = document.getElementById('leaderboard-dropdown');
+  if (lb) {
+    lb.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+    }, {passive: true});
+  }
+}
+
+// ─── Update leaderboard dropdown ───
+function updateLeaderboard() {
+  var lb = document.getElementById('leaderboard-dropdown');
+  if (!lb) return;
+
+  // ─── Solo mode: hide leaderboard, show plain score ───
+  if (!aiSnakes || aiSnakes.length === 0) {
+    lb.classList.remove('visible');
+    lb.innerHTML = '';
+    if (scoreEl && scoreBoxEl) {
+      scoreBoxEl.innerHTML = '🍎 <span id="score">' + score + '</span>';
+    }
+    return;
+  }
+
+  var rankings = calcRankings();
+  if (!rankings || rankings.length === 0) return;
+
+  var colorHex = {green: '#44ff44', red: '#ff4444', blue: '#4488ff', yellow: '#ffdd44', cyan: '#44ffff', purple: '#cc44ff', orange: '#ff8844', salmon: '#ff8888'};
+
+  var html = '<div class="lb-title">📊 Clasificación</div>';
+  for (var i = 0; i < rankings.length; i++) {
+    var r = rankings[i];
+    var isPlayer = r.isPlayer ? ' player' : '';
+    var isDead = !r.alive ? ' lb-dead' : '';
+    var dotColor = colorHex[r.color] || '#888888';
+    var rankEmoji = r.rank === 1 ? '🥇' : r.rank === 2 ? '🥈' : r.rank === 3 ? '🥉' : r.rank;
+    var statusEmoji = r.alive ? '🟢' : '💀';
+    html += '<div class="lb-row' + isPlayer + isDead + '">';
+    html += '<span class="lb-rank">' + rankEmoji + '</span>';
+    html += '<span class="lb-dot" style="background:' + dotColor + '"></span>';
+    html += '<span class="lb-name">' + r.name + ' ' + statusEmoji + '</span>';
+    html += '<span class="lb-score">' + r.score + '</span>';
+    html += '</div>';
+  }
+  lb.innerHTML = html;
+
+  // Update score box to show rank + expand arrow
+  var playerRank = getPlayerRank();
+  if (scoreEl && scoreBoxEl) {
+    var total = rankings.length;
+    var rankStr = playerRank === 1 ? '🥇' : playerRank === 2 ? '🥈' : playerRank === 3 ? '🥉' : playerRank + 'º';
+    scoreBoxEl.innerHTML = '🍎 <span id="score">' + score + '</span> <span style="color:#ffaa00;font-size:.8em">(' + rankStr + '/' + total + ')</span> <span class="lb-arrow" style="color:#556677;font-size:.7em">▼</span>';
+  }
 }
 
 // ─── Module exports (for testing — ignored in browser) ───

@@ -58,8 +58,8 @@ function initGame() {
   log('Snake: '+snake.length+' seg, dir=0, grid=' + gridSize + ', half=' + half);
 
    // ─── Store initial grid size for proportional shrinking ───
-   _initialGridSize = gridSize;
-  }
+      _initialGridSize = gridSize;
+     }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
 function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
@@ -96,15 +96,17 @@ function step() {
   var ate = false;
   var appleIndexAtHead = (typeof getAppleIndexAt === 'function') ? getAppleIndexAt(nx, nz) : -1;
   if(appleIndexAtHead >= 0) {
-       score++; scoreEl.textContent=score; ate=true;
-       var eatenApple = apples[appleIndexAtHead];
-       sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
-         log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
-         var newA = (typeof replacementForEatenApple === 'function') ? replacementForEatenApple(eatenApple) : spawnOneApple();
-         if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
-         else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
-          if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
-   }
+        score++; scoreEl.textContent=score; ate=true;
+        var eatenApple = apples[appleIndexAtHead];
+        sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
+          log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
+          var newA = (typeof replacementForEatenApple === 'function') ? replacementForEatenApple(eatenApple) : spawnOneApple();
+          if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
+          else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
+           if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+           // Update leaderboard after score change
+           if (typeof updateLeaderboard === 'function') updateLeaderboard();
+    }
   if(!ate) snake.pop();
   refreshApples();
 }
@@ -112,6 +114,9 @@ function step() {
 function die(cause) {
   log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; running=false; sfxDie();
+
+  // ─── Stop periodic leaderboard update ───
+  if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
 
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   // ─── AI MODE: save high score per mode/difficulty/gridSize ───
@@ -128,7 +133,22 @@ function die(cause) {
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
   else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
-  finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
+
+  // ─── AI MODE: show final ranking ───
+  var rankingMsg = '';
+  if (aiSnakes && aiSnakes.length > 0) {
+    var rankings = calcRankings();
+    var playerRank = 0;
+    for (var r = 0; r < rankings.length; r++) {
+      if (rankings[r].isPlayer) { playerRank = rankings[r].rank; break; }
+    }
+    var total = rankings.length;
+    var rankEmoji = playerRank === 1 ? '🏆' : playerRank === 2 ? '🥈' : playerRank === 3 ? '🥉' : playerRank + 'º';
+    rankingMsg = 'Posición: ' + rankEmoji + ' de ' + total + ' — ' + score + ' puntos';
+  }
+
+  var emoji = (aiSnakes && aiSnakes.length > 0) ? (playerRank === 1 ? '🏆' : '💀') : '💀';
+  finalScoreEl.textContent = emoji + ' ' + (rankingMsg || 'Puntuación: ' + score + ' 🍎') + '\n' + (causeMsg || 'Game Over');
   finalScoreEl.style.display='block';
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');

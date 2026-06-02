@@ -1135,41 +1135,53 @@ describe('ai.js — showAiDeathMessage()', () => {
     expect(deathMsgEl.textContent).toContain('salmón');
   });
 
-  test('falls back to "desconocida" for unknown colors', () => {
+  test('falls back to raw color name for unknown colors', () => {
     showAiDeathMessage({color: 'magenta'}, 'wall');
-    expect(deathMsgEl.textContent).toContain('desconocida');
+    expect(deathMsgEl.textContent).toContain('magenta');
   });
 
   // Death causes
-  test('shows "contra la pared" for wall cause', () => {
-    showAiDeathMessage({color: 'green'}, 'wall');
-    expect(deathMsgEl.textContent).toContain('contra la pared');
-  });
+  test('shows wall death message', () => {
+     showAiDeathMessage({color: 'red'}, 'wall');
+     expect(deathMsgEl.textContent).toContain('roja');
+     expect(deathMsgEl.textContent).toContain('pared');
+     expect(deathMsgEl.textContent).toContain('+ 5 puntos');
+   });
 
-  test('shows "contra sí misma" for self cause', () => {
-    showAiDeathMessage({color: 'red'}, 'self');
-    expect(deathMsgEl.textContent).toContain('contra sí misma');
-  });
+   test('shows self death message', () => {
+     showAiDeathMessage({color: 'blue'}, 'self');
+     expect(deathMsgEl.textContent).toContain('azul');
+     expect(deathMsgEl.textContent).toContain('mordió a sí misma');
+     expect(deathMsgEl.textContent).toContain('+ 5 puntos');
+   });
 
-  test('shows "contra un obstáculo" for obstacle cause', () => {
-    showAiDeathMessage({color: 'blue'}, 'obstacle');
-    expect(deathMsgEl.textContent).toContain('contra un obstáculo');
-  });
+   test('shows obstacle death message', () => {
+     showAiDeathMessage({color: 'yellow'}, 'obstacle');
+     expect(deathMsgEl.textContent).toContain('amarilla');
+     expect(deathMsgEl.textContent).toContain('obstáculo');
+     expect(deathMsgEl.textContent).toContain('+ 5 puntos');
+   });
 
-  test('shows "contra un cadáver" for corpse cause', () => {
-    showAiDeathMessage({color: 'yellow'}, 'corpse');
-    expect(deathMsgEl.textContent).toContain('contra un cadáver');
-  });
+   test('shows corpse death message', () => {
+     showAiDeathMessage({color: 'cyan'}, 'corpse');
+     expect(deathMsgEl.textContent).toContain('cyan');
+     expect(deathMsgEl.textContent).toContain('cadáver');
+     expect(deathMsgEl.textContent).toContain('+ 5 puntos');
+   });
 
-  test('shows "contra el jugador" for player cause', () => {
-    showAiDeathMessage({color: 'cyan'}, 'player');
-    expect(deathMsgEl.textContent).toContain('contra el jugador');
-  });
+   test('shows player kill message with bonus points', () => {
+     showAiDeathMessage({color: 'purple'}, 'player');
+     expect(deathMsgEl.textContent).toContain('púrpura');
+     expect(deathMsgEl.textContent).toContain('contra ti');
+     expect(deathMsgEl.textContent).toContain('+ 10 puntos');
+   });
 
-  test('shows "contra otra serpiente" for ai cause', () => {
-    showAiDeathMessage({color: 'purple'}, 'ai');
-    expect(deathMsgEl.textContent).toContain('contra otra serpiente');
-  });
+   test('shows AI kill message', () => {
+     showAiDeathMessage({color: 'orange'}, 'ai');
+     expect(deathMsgEl.textContent).toContain('naranja');
+     expect(deathMsgEl.textContent).toContain('otra serpiente');
+     expect(deathMsgEl.textContent).toContain('+ 5 puntos');
+   });
 
   // DOM behavior
   test('adds visible class to element', () => {
@@ -1177,13 +1189,198 @@ describe('ai.js — showAiDeathMessage()', () => {
     expect(deathMsgEl.classList.contains('visible')).toBe(true);
   });
 
-  test('message starts with skull emoji', () => {
+  test('message starts with emoji', () => {
     showAiDeathMessage({color: 'green'}, 'wall');
-    expect(deathMsgEl.textContent).toMatch(/^💀/);
+    expect(deathMsgEl.textContent).toMatch(/^[\u{1F300}-\u{1F9FF}]/u);
   });
 
   test('sets auto-hide timer', () => {
     showAiDeathMessage({color: 'green'}, 'wall');
     expect(deathMsgEl._hideTimer).toBeDefined();
+  });
+});
+
+// ─── DEATH POINTS constants ───
+describe('ai.js — DEATH_POINTS / KILLER_BONUS', () => {
+  test('DEATH_POINTS is 5', () => {
+    expect(DEATH_POINTS).toBe(5);
+  });
+
+  test('KILLER_BONUS is 5', () => {
+    expect(KILLER_BONUS).toBe(5);
+  });
+});
+
+// ─── calcRankings() ───
+describe('ai.js — calcRankings()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}]);
+    setGlobal('aiSnakes', []);
+    setGlobal('gameOver', false);
+    setGlobal('score', 0);
+    setGlobal('playerColor', 'green');
+  });
+
+  test('returns array with player when no AIs', () => {
+    var rankings = calcRankings();
+    expect(rankings.length).toBe(1);
+    expect(rankings[0].isPlayer).toBe(true);
+    expect(rankings[0].name).toBe('Tú');
+    expect(rankings[0].rank).toBe(1);
+  });
+
+  test('includes AI snakes in rankings', () => {
+    setGlobal('aiSnakes', [
+      {color: 'red', score: 10, alive: true},
+      {color: 'blue', score: 5, alive: true}
+    ]);
+    setGlobal('score', 8);
+
+    var rankings = calcRankings();
+    expect(rankings.length).toBe(3);
+    // Sorted by score DESC: red(10), player(8), blue(5)
+    expect(rankings[0].color).toBe('red');
+    expect(rankings[0].rank).toBe(1);
+    expect(rankings[1].isPlayer).toBe(true);
+    expect(rankings[1].rank).toBe(2);
+    expect(rankings[2].color).toBe('blue');
+    expect(rankings[2].rank).toBe(3);
+  });
+
+  test('alive snakes rank higher on score tie', () => {
+    setGlobal('score', 10);
+    setGlobal('aiSnakes', [
+      {color: 'red', score: 10, alive: false}
+    ]);
+
+    var rankings = calcRankings();
+    // Both have 10 points, player is alive → player ranks first
+    expect(rankings[0].isPlayer).toBe(true);
+    expect(rankings[0].rank).toBe(1);
+    expect(rankings[1].color).toBe('red');
+    expect(rankings[1].rank).toBe(2);
+  });
+
+  test('death order tiebreaker for dead snakes with same score', () => {
+    setGlobal('score', 0);
+    setGlobal('gameOver', true);
+    setGlobal('aiSnakes', [
+      {color: 'red', score: 0, alive: false},
+      {color: 'blue', score: 0, alive: false}
+    ]);
+
+    var rankings = calcRankings();
+    // Player is first in the array (index 0), so ranks higher among tied entries
+    expect(rankings[0].isPlayer).toBe(true);
+  });
+
+  test('maps color names correctly', () => {
+    setGlobal('aiSnakes', [
+      {color: 'purple', score: 5, alive: true},
+      {color: 'salmon', score: 3, alive: true},
+      {color: 'cyan', score: 2, alive: true}
+    ]);
+
+    var rankings = calcRankings();
+    var names = rankings.map(function(r) { return r.name; });
+    expect(names).toContain('púrpura');
+    expect(names).toContain('salmón');
+    expect(names).toContain('cyan');
+  });
+});
+
+// ─── getPlayerRank() ───
+describe('ai.js — getPlayerRank()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}]);
+    setGlobal('aiSnakes', []);
+    setGlobal('gameOver', false);
+    setGlobal('score', 0);
+    setGlobal('playerColor', 'green');
+  });
+
+  test('returns 1 when player is leading', () => {
+    setGlobal('score', 20);
+    setGlobal('aiSnakes', [
+      {color: 'red', score: 10, alive: true}
+    ]);
+    expect(getPlayerRank()).toBe(1);
+  });
+
+  test('returns 2 when player is behind', () => {
+    setGlobal('score', 5);
+    setGlobal('aiSnakes', [
+      {color: 'red', score: 15, alive: true}
+    ]);
+    expect(getPlayerRank()).toBe(2);
+  });
+
+  test('returns 1 when alone', () => {
+    expect(getPlayerRank()).toBe(1);
+  });
+});
+
+// ─── distributeDeathPoints() ───
+describe('ai.js — distributeDeathPoints()', () => {
+  beforeEach(() => {
+    setSnake([{x: 0, z: 0}]);
+    setGlobal('gameOver', false);
+    setGlobal('score', 0);
+    setGlobal('playerColor', 'green');
+    setGlobal('aiSnakes', [
+      {id: 'ai_0', color: 'red', score: 0, alive: true, snake: [{x: 10, z: 0}, {x: 9, z: 0}]},
+      {id: 'ai_1', color: 'blue', score: 0, alive: true, snake: [{x: -10, z: 0}, {x: -11, z: 0}]}
+    ]);
+  });
+
+  test('wall death: all living get DEATH_POINTS', () => {
+    distributeDeathPoints(0, 'wall');
+    expect(score).toBe(DEATH_POINTS); // player gets 5
+    expect(aiSnakes[1].score).toBe(DEATH_POINTS); // blue gets 5
+  });
+
+  test('player kill: player gets DEATH_POINTS + KILLER_BONUS', () => {
+    distributeDeathPoints(0, 'player');
+    expect(score).toBe(DEATH_POINTS + KILLER_BONUS); // player gets 10
+    expect(aiSnakes[1].score).toBe(DEATH_POINTS); // blue gets 5
+  });
+
+  test('ai kill: killer AI gets bonus', () => {
+    // AI 0 dies hitting AI 1
+    aiSnakes[0].snake[0] = {x: -10, z: 0}; // head at AI 1's position
+    distributeDeathPoints(0, 'ai');
+    expect(score).toBe(DEATH_POINTS); // player gets 5
+    expect(aiSnakes[1].score).toBe(DEATH_POINTS + KILLER_BONUS); // blue (killer) gets 10
+  });
+
+  test('dead snakes do not receive points', () => {
+    aiSnakes[1].alive = false;
+    distributeDeathPoints(0, 'wall');
+    expect(score).toBe(DEATH_POINTS); // player gets 5
+    expect(aiSnakes[1].score).toBe(0); // dead blue gets nothing
+  });
+
+  test('does not distribute to dead player', () => {
+    setGlobal('gameOver', true);
+    distributeDeathPoints(0, 'wall');
+    expect(score).toBe(0); // dead player gets nothing
+  });
+
+  test('self death: all living get DEATH_POINTS', () => {
+    distributeDeathPoints(0, 'self');
+    expect(score).toBe(DEATH_POINTS);
+    expect(aiSnakes[1].score).toBe(DEATH_POINTS);
+  });
+
+  test('obstacle death: all living get DEATH_POINTS', () => {
+    distributeDeathPoints(0, 'obstacle');
+    expect(score).toBe(DEATH_POINTS);
+    expect(aiSnakes[1].score).toBe(DEATH_POINTS);
+  });
+
+  test('corpse death: all living get DEATH_POINTS', () => {
+    distributeDeathPoints(0, 'corpse');
+    expect(score).toBe(DEATH_POINTS);
+    expect(aiSnakes[1].score).toBe(DEATH_POINTS);
   });
 });

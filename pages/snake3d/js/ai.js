@@ -953,12 +953,133 @@ function stepAI() {
   disableBlockedCache();
 }
 
+// ─── DEATH POINTS ───
+// When a snake dies, living snakes earn points.
+// Killer gets extra bonus.
+var DEATH_POINTS = 5;
+var KILLER_BONUS = 5; // extra points for the killer (total = DEATH_POINTS + KILLER_BONUS)
+
+// ─── Calculate rankings for all snakes ───
+// Returns array of {name, color, score, alive, isPlayer, rank} sorted by rank.
+// Tiebreaker: alive > dead, then earlier death order.
+function calcRankings() {
+  var all = [];
+
+  // Player
+  all.push({
+    name: 'Tú',
+    color: playerColor,
+    score: score,
+    alive: !gameOver && snake && snake.length > 0,
+    isPlayer: true
+  });
+
+  // AI snakes
+  if (aiSnakes) {
+    var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
+    for (var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      all.push({
+        name: colorNames[ai.color] || ai.color,
+        color: ai.color,
+        score: ai.score,
+        alive: ai.alive,
+        isPlayer: false
+      });
+    }
+  }
+
+  // Sort: score DESC, alive first, then by original order (death order tiebreaker)
+  var originalIndex = 0;
+  for (var j = 0; j < all.length; j++) {
+    all[j]._orig = j;
+  }
+  all.sort(function(a, b) {
+    if (b.score !== a.score) return b.score - a.score;
+    if (a.alive !== b.alive) return b.alive ? 1 : -1; // alive first
+    return a._orig - b._orig; // earlier = better (died first or is player)
+  });
+
+  // Assign ranks
+  for (var k = 0; k < all.length; k++) {
+    all[k].rank = k + 1;
+  }
+
+  // Clean up temp property
+  for (var m = 0; m < all.length; m++) {
+    delete all[m]._orig;
+  }
+
+  return all;
+}
+
+// ─── Get player's current rank ───
+function getPlayerRank() {
+  var rankings = calcRankings();
+  for (var i = 0; i < rankings.length; i++) {
+    if (rankings[i].isPlayer) return rankings[i].rank;
+  }
+  return rankings.length; // fallback
+}
+
+// ─── Distribute death points to living snakes ───
+// cause: 'wall', 'self', 'obstacle', 'corpse' → all living get DEATH_POINTS
+//        'player' → player gets DEATH_POINTS + KILLER_BONUS, others get DEATH_POINTS
+//        'ai' → killer AI gets DEATH_POINTS + KILLER_BONUS, others get DEATH_POINTS
+function distributeDeathPoints(deadIndex, cause) {
+  var killerIndex = -1;
+
+  if (cause === 'player') {
+    // Player is the killer
+  } else if (cause === 'ai') {
+    // Find which AI the dead one hit
+    var deadHead = aiSnakes[deadIndex].snake[0];
+    for (var i = 0; i < aiSnakes.length; i++) {
+      if (i === deadIndex) continue;
+      var other = aiSnakes[i];
+      if (!other.alive) continue;
+      if (other.snake.some(function(s) { return s.x === deadHead.x && s.z === deadHead.z; })) {
+        killerIndex = i;
+        break;
+      }
+    }
+  }
+
+  // Give points to all living snakes
+  if (!gameOver && snake && snake.length > 0) {
+    if (cause === 'player') {
+      score += DEATH_POINTS + KILLER_BONUS;
+    } else {
+      score += DEATH_POINTS;
+    }
+    scoreEl.textContent = score;
+  }
+
+  if (aiSnakes) {
+    for (var j = 0; j < aiSnakes.length; j++) {
+      if (j === deadIndex) continue;
+      if (!aiSnakes[j].alive) continue;
+      if (j === killerIndex) {
+        aiSnakes[j].score += DEATH_POINTS + KILLER_BONUS;
+      } else {
+        aiSnakes[j].score += DEATH_POINTS;
+      }
+    }
+  }
+
+  // Update leaderboard
+  updateLeaderboard();
+}
+
 // ─── AI snake dies ───
 // The dead body stays visible on the board and converts to apples
 // segment by segment, starting from the head, one per tick.
 function aiDie(aiIndex, cause) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return;
+
+  // ─── Distribute death points BEFORE marking as dead ───
+  distributeDeathPoints(aiIndex, cause);
 
   ai.alive = false;
 
@@ -1068,17 +1189,28 @@ function processCorpses() {
 // ─── Show AI death message on screen ───
 function showAiDeathMessage(ai, cause) {
   var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
-  var colorName = colorNames[ai.color] || 'desconocida';
+  var colorName = colorNames[ai.color] || ai.color;
 
-  var causeMsg = '';
-  if (cause === 'wall') causeMsg = 'contra la pared';
-  else if (cause === 'self') causeMsg = 'contra sí misma';
-  else if (cause === 'obstacle') causeMsg = 'contra un obstáculo';
-  else if (cause === 'corpse') causeMsg = 'contra un cadáver';
-  else if (cause === 'player') causeMsg = 'contra el jugador';
-  else if (cause === 'ai') causeMsg = 'contra otra serpiente';
+  var msg = '';
+  var pointsEarned = DEATH_POINTS;
+  var isKiller = false;
 
-  var msg = '💀 Serpiente ' + colorName + ' ha muerto por chocarse ' + causeMsg;
+  if (cause === 'player') {
+    // Player killed this AI
+    pointsEarned = DEATH_POINTS + KILLER_BONUS;
+    isKiller = true;
+    msg = '💥 ¡La serpiente ' + colorName + ' chocó contra ti! + ' + pointsEarned + ' puntos 🎉';
+  } else if (cause === 'wall') {
+    msg = '🧱 La serpiente ' + colorName + ' se estrelló contra la pared... + ' + pointsEarned + ' puntos 🍀';
+  } else if (cause === 'self') {
+    msg = '🔄 ¡La serpiente ' + colorName + ' se mordió a sí misma! + ' + pointsEarned + ' puntos 😂';
+  } else if (cause === 'obstacle') {
+    msg = '🪨 La serpiente ' + colorName + ' chocó contra un obstáculo + ' + pointsEarned + ' puntos 💪';
+  } else if (cause === 'corpse') {
+    msg = '💀 La serpiente ' + colorName + ' chocó contra un cadáver + ' + pointsEarned + ' puntos 🦴';
+  } else if (cause === 'ai') {
+    msg = '⚔️ La serpiente ' + colorName + ' fue eliminada por otra serpiente + ' + pointsEarned + ' puntos 🔥';
+  }
 
   var el = document.getElementById('ai-death-msg');
   if (el) {

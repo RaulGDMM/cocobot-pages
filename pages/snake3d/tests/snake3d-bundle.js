@@ -255,6 +255,7 @@ var _initialGridSize = GRID_SIZE;
 // ─── DOM ───
 var canvas = document.getElementById('game-canvas');
 var scoreEl = document.getElementById('score');
+var scoreBoxEl = document.getElementById('score-box');
 var highscoreEl = document.getElementById('highscore');
 var overlay = document.getElementById('overlay');
 var startBtn = document.getElementById('start-btn');
@@ -2140,12 +2141,133 @@ function stepAI() {
   disableBlockedCache();
 }
 
+// ─── DEATH POINTS ───
+// When a snake dies, living snakes earn points.
+// Killer gets extra bonus.
+var DEATH_POINTS = 5;
+var KILLER_BONUS = 5; // extra points for the killer (total = DEATH_POINTS + KILLER_BONUS)
+
+// ─── Calculate rankings for all snakes ───
+// Returns array of {name, color, score, alive, isPlayer, rank} sorted by rank.
+// Tiebreaker: alive > dead, then earlier death order.
+function calcRankings() {
+  var all = [];
+
+  // Player
+  all.push({
+    name: 'Tú',
+    color: playerColor,
+    score: score,
+    alive: !gameOver && snake && snake.length > 0,
+    isPlayer: true
+  });
+
+  // AI snakes
+  if (aiSnakes) {
+    var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
+    for (var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      all.push({
+        name: colorNames[ai.color] || ai.color,
+        color: ai.color,
+        score: ai.score,
+        alive: ai.alive,
+        isPlayer: false
+      });
+    }
+  }
+
+  // Sort: score DESC, alive first, then by original order (death order tiebreaker)
+  var originalIndex = 0;
+  for (var j = 0; j < all.length; j++) {
+    all[j]._orig = j;
+  }
+  all.sort(function(a, b) {
+    if (b.score !== a.score) return b.score - a.score;
+    if (a.alive !== b.alive) return b.alive ? 1 : -1; // alive first
+    return a._orig - b._orig; // earlier = better (died first or is player)
+  });
+
+  // Assign ranks
+  for (var k = 0; k < all.length; k++) {
+    all[k].rank = k + 1;
+  }
+
+  // Clean up temp property
+  for (var m = 0; m < all.length; m++) {
+    delete all[m]._orig;
+  }
+
+  return all;
+}
+
+// ─── Get player's current rank ───
+function getPlayerRank() {
+  var rankings = calcRankings();
+  for (var i = 0; i < rankings.length; i++) {
+    if (rankings[i].isPlayer) return rankings[i].rank;
+  }
+  return rankings.length; // fallback
+}
+
+// ─── Distribute death points to living snakes ───
+// cause: 'wall', 'self', 'obstacle', 'corpse' → all living get DEATH_POINTS
+//        'player' → player gets DEATH_POINTS + KILLER_BONUS, others get DEATH_POINTS
+//        'ai' → killer AI gets DEATH_POINTS + KILLER_BONUS, others get DEATH_POINTS
+function distributeDeathPoints(deadIndex, cause) {
+  var killerIndex = -1;
+
+  if (cause === 'player') {
+    // Player is the killer
+  } else if (cause === 'ai') {
+    // Find which AI the dead one hit
+    var deadHead = aiSnakes[deadIndex].snake[0];
+    for (var i = 0; i < aiSnakes.length; i++) {
+      if (i === deadIndex) continue;
+      var other = aiSnakes[i];
+      if (!other.alive) continue;
+      if (other.snake.some(function(s) { return s.x === deadHead.x && s.z === deadHead.z; })) {
+        killerIndex = i;
+        break;
+      }
+    }
+  }
+
+  // Give points to all living snakes
+  if (!gameOver && snake && snake.length > 0) {
+    if (cause === 'player') {
+      score += DEATH_POINTS + KILLER_BONUS;
+    } else {
+      score += DEATH_POINTS;
+    }
+    scoreEl.textContent = score;
+  }
+
+  if (aiSnakes) {
+    for (var j = 0; j < aiSnakes.length; j++) {
+      if (j === deadIndex) continue;
+      if (!aiSnakes[j].alive) continue;
+      if (j === killerIndex) {
+        aiSnakes[j].score += DEATH_POINTS + KILLER_BONUS;
+      } else {
+        aiSnakes[j].score += DEATH_POINTS;
+      }
+    }
+  }
+
+  // Update leaderboard
+  updateLeaderboard();
+}
+
 // ─── AI snake dies ───
 // The dead body stays visible on the board and converts to apples
 // segment by segment, starting from the head, one per tick.
 function aiDie(aiIndex, cause) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return;
+
+  // ─── Distribute death points BEFORE marking as dead ───
+  distributeDeathPoints(aiIndex, cause);
 
   ai.alive = false;
 
@@ -2255,17 +2377,28 @@ function processCorpses() {
 // ─── Show AI death message on screen ───
 function showAiDeathMessage(ai, cause) {
   var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
-  var colorName = colorNames[ai.color] || 'desconocida';
+  var colorName = colorNames[ai.color] || ai.color;
 
-  var causeMsg = '';
-  if (cause === 'wall') causeMsg = 'contra la pared';
-  else if (cause === 'self') causeMsg = 'contra sí misma';
-  else if (cause === 'obstacle') causeMsg = 'contra un obstáculo';
-  else if (cause === 'corpse') causeMsg = 'contra un cadáver';
-  else if (cause === 'player') causeMsg = 'contra el jugador';
-  else if (cause === 'ai') causeMsg = 'contra otra serpiente';
+  var msg = '';
+  var pointsEarned = DEATH_POINTS;
+  var isKiller = false;
 
-  var msg = '💀 Serpiente ' + colorName + ' ha muerto por chocarse ' + causeMsg;
+  if (cause === 'player') {
+    // Player killed this AI
+    pointsEarned = DEATH_POINTS + KILLER_BONUS;
+    isKiller = true;
+    msg = '💥 ¡La serpiente ' + colorName + ' chocó contra ti! + ' + pointsEarned + ' puntos 🎉';
+  } else if (cause === 'wall') {
+    msg = '🧱 La serpiente ' + colorName + ' se estrelló contra la pared... + ' + pointsEarned + ' puntos 🍀';
+  } else if (cause === 'self') {
+    msg = '🔄 ¡La serpiente ' + colorName + ' se mordió a sí misma! + ' + pointsEarned + ' puntos 😂';
+  } else if (cause === 'obstacle') {
+    msg = '🪨 La serpiente ' + colorName + ' chocó contra un obstáculo + ' + pointsEarned + ' puntos 💪';
+  } else if (cause === 'corpse') {
+    msg = '💀 La serpiente ' + colorName + ' chocó contra un cadáver + ' + pointsEarned + ' puntos 🦴';
+  } else if (cause === 'ai') {
+    msg = '⚔️ La serpiente ' + colorName + ' fue eliminada por otra serpiente + ' + pointsEarned + ' puntos 🔥';
+  }
 
   var el = document.getElementById('ai-death-msg');
   if (el) {
@@ -2481,6 +2614,86 @@ function initUISelectors() {
   // Initial visibility state
   updateDifficultyVisibility();
   updateHighScoreDisplay();
+
+  // ─── Score box: click to toggle leaderboard (event delegation on document) ───
+  // Using document-level delegation so it survives innerHTML replacements.
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    var scoreBox = document.getElementById('score-box');
+    var lb = document.getElementById('leaderboard-dropdown');
+    if (!scoreBox || !lb) return;
+
+    if (scoreBox.contains(target)) {
+      e.stopPropagation();
+      lb.classList.toggle('visible');
+    } else if (lb.classList.contains('visible') && !lb.contains(target)) {
+      lb.classList.remove('visible');
+    }
+  });
+
+  // ─── Prevent touch on score-box from reaching touch zones ───
+  // On mobile, tapping the score-box would trigger tz-left/tz-right
+  // and turn the snake. Stop propagation on touchstart.
+  var sb = document.getElementById('score-box');
+  if (sb) {
+    sb.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+    }, {passive: true});
+  }
+
+  // ─── Same for leaderboard dropdown when visible ───
+  var lb = document.getElementById('leaderboard-dropdown');
+  if (lb) {
+    lb.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+    }, {passive: true});
+  }
+}
+
+// ─── Update leaderboard dropdown ───
+function updateLeaderboard() {
+  var lb = document.getElementById('leaderboard-dropdown');
+  if (!lb) return;
+
+  // ─── Solo mode: hide leaderboard, show plain score ───
+  if (!aiSnakes || aiSnakes.length === 0) {
+    lb.classList.remove('visible');
+    lb.innerHTML = '';
+    if (scoreEl && scoreBoxEl) {
+      scoreBoxEl.innerHTML = '🍎 <span id="score">' + score + '</span>';
+    }
+    return;
+  }
+
+  var rankings = calcRankings();
+  if (!rankings || rankings.length === 0) return;
+
+  var colorHex = {green: '#44ff44', red: '#ff4444', blue: '#4488ff', yellow: '#ffdd44', cyan: '#44ffff', purple: '#cc44ff', orange: '#ff8844', salmon: '#ff8888'};
+
+  var html = '<div class="lb-title">📊 Clasificación</div>';
+  for (var i = 0; i < rankings.length; i++) {
+    var r = rankings[i];
+    var isPlayer = r.isPlayer ? ' player' : '';
+    var isDead = !r.alive ? ' lb-dead' : '';
+    var dotColor = colorHex[r.color] || '#888888';
+    var rankEmoji = r.rank === 1 ? '🥇' : r.rank === 2 ? '🥈' : r.rank === 3 ? '🥉' : r.rank;
+    var statusEmoji = r.alive ? '🟢' : '💀';
+    html += '<div class="lb-row' + isPlayer + isDead + '">';
+    html += '<span class="lb-rank">' + rankEmoji + '</span>';
+    html += '<span class="lb-dot" style="background:' + dotColor + '"></span>';
+    html += '<span class="lb-name">' + r.name + ' ' + statusEmoji + '</span>';
+    html += '<span class="lb-score">' + r.score + '</span>';
+    html += '</div>';
+  }
+  lb.innerHTML = html;
+
+  // Update score box to show rank + expand arrow
+  var playerRank = getPlayerRank();
+  if (scoreEl && scoreBoxEl) {
+    var total = rankings.length;
+    var rankStr = playerRank === 1 ? '🥇' : playerRank === 2 ? '🥈' : playerRank === 3 ? '🥉' : playerRank + 'º';
+    scoreBoxEl.innerHTML = '🍎 <span id="score">' + score + '</span> <span style="color:#ffaa00;font-size:.8em">(' + rankStr + '/' + total + ')</span> <span class="lb-arrow" style="color:#556677;font-size:.7em">▼</span>';
+  }
 }
 
 // ─── Module exports (for testing — ignored in browser) ───
@@ -2561,8 +2774,8 @@ function initGame() {
   log('Snake: '+snake.length+' seg, dir=0, grid=' + gridSize + ', half=' + half);
 
    // ─── Store initial grid size for proportional shrinking ───
-   _initialGridSize = gridSize;
-  }
+      _initialGridSize = gridSize;
+     }
 
 function turnL(){if(!running||gameOver)return;direction-=TURN_ANGLE;sfxTurn();}
 function turnR(){if(!running||gameOver)return;direction+=TURN_ANGLE;sfxTurn();}
@@ -2599,15 +2812,17 @@ function step() {
   var ate = false;
   var appleIndexAtHead = (typeof getAppleIndexAt === 'function') ? getAppleIndexAt(nx, nz) : -1;
   if(appleIndexAtHead >= 0) {
-       score++; scoreEl.textContent=score; ate=true;
-       var eatenApple = apples[appleIndexAtHead];
-       sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
-         log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
-         var newA = (typeof replacementForEatenApple === 'function') ? replacementForEatenApple(eatenApple) : spawnOneApple();
-         if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
-         else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
-          if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
-   }
+        score++; scoreEl.textContent=score; ate=true;
+        var eatenApple = apples[appleIndexAtHead];
+        sfxEat(); burst(eatenApple.x, eatenApple.z, 0xff6644, 10);
+          log('Eat apple at ('+eatenApple.x+','+eatenApple.z+') score='+score);
+          var newA = (typeof replacementForEatenApple === 'function') ? replacementForEatenApple(eatenApple) : spawnOneApple();
+          if (typeof replaceAppleAt === 'function') replaceAppleAt(appleIndexAtHead, newA);
+          else { apples[appleIndexAtHead] = newA; if (typeof updateAppleSet === 'function') updateAppleSet(eatenApple, newA, appleIndexAtHead); appleDirty = true; }
+           if(score % OBSTACLE_SPAWN_EVERY === 0) spawnObstacle();
+           // Update leaderboard after score change
+           if (typeof updateLeaderboard === 'function') updateLeaderboard();
+    }
   if(!ate) snake.pop();
   refreshApples();
 }
@@ -2615,6 +2830,9 @@ function step() {
 function die(cause) {
   log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; running=false; sfxDie();
+
+  // ─── Stop periodic leaderboard update ───
+  if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
 
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   // ─── AI MODE: save high score per mode/difficulty/gridSize ───
@@ -2631,7 +2849,22 @@ function die(cause) {
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
   else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
-  finalScoreEl.textContent = 'Puntuación: ' + score + ' 🍎\n' + (causeMsg || 'Game Over');
+
+  // ─── AI MODE: show final ranking ───
+  var rankingMsg = '';
+  if (aiSnakes && aiSnakes.length > 0) {
+    var rankings = calcRankings();
+    var playerRank = 0;
+    for (var r = 0; r < rankings.length; r++) {
+      if (rankings[r].isPlayer) { playerRank = rankings[r].rank; break; }
+    }
+    var total = rankings.length;
+    var rankEmoji = playerRank === 1 ? '🏆' : playerRank === 2 ? '🥈' : playerRank === 3 ? '🥉' : playerRank + 'º';
+    rankingMsg = 'Posición: ' + rankEmoji + ' de ' + total + ' — ' + score + ' puntos';
+  }
+
+  var emoji = (aiSnakes && aiSnakes.length > 0) ? (playerRank === 1 ? '🏆' : '💀') : '💀';
+  finalScoreEl.textContent = emoji + ' ' + (rankingMsg || 'Puntuación: ' + score + ' 🍎') + '\n' + (causeMsg || 'Game Over');
   finalScoreEl.style.display='block';
   startBtn.textContent='REINTENTAR';
   overlay.classList.remove('hidden');

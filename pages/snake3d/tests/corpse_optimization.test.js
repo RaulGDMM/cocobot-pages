@@ -345,12 +345,12 @@ describe('ai.js — no burst() during corpse conversion', () => {
   });
 });
 
-// ─── Death apples disable their point light ───
-// Each apple mesh carries a THREE.PointLight. When a corpse converts, dozens of
-// segments become visible apples at once. If every one kept its light on, the
-// forward renderer would re-shade every object against every light, stalling
-// frames. Death apples (fromDeath) must render the sphere but keep the light off.
-describe('apples.js — death apples disable point light', () => {
+// ─── Death apples do NOT use point lights ───
+// Each apple mesh used to carry a THREE.PointLight, but that was removed
+// because dozens of simultaneous death apples would cause the forward renderer
+// to re-shade every object against every light, stalling frames.
+// Death apples (fromDeath) render the sphere but NO light.
+describe('apples.js — death apples have no point light overhead', () => {
   beforeEach(() => {
     setSnake([{x: 0, z: 0}]);
     setObstacles([]);
@@ -358,68 +358,57 @@ describe('apples.js — death apples disable point light', () => {
     buildApples(); // rebuild the apple mesh pool fresh
   });
 
-  test('buildApples stores a light reference on each apple mesh', () => {
+  test('buildApples does not add point lights to apple meshes', () => {
     expect(appleMeshes.length).toBeGreaterThan(0);
     for (var i = 0; i < appleMeshes.length; i++) {
-      expect(appleMeshes[i].userData).toBeDefined();
-      expect(appleMeshes[i].userData.light).toBeDefined();
+      // No userData.light — that was removed for performance
+      expect(appleMeshes[i].userData.light).toBeUndefined();
     }
   });
 
-  test('refreshApples keeps the light on for normal apples', () => {
+  test('refreshApples works with normal apples without lights', () => {
     setApples([{x: 1, z: 1}, {x: 2, z: 2}]);
     appleDirty = true;
     refreshApples();
     expect(appleMeshes[0].visible).toBe(true);
-    expect(appleMeshes[0].userData.light.visible).toBe(true);
-    expect(appleMeshes[1].userData.light.visible).toBe(true);
+    expect(appleMeshes[1].visible).toBe(true);
   });
 
-  test('refreshApples disables the light for death apples', () => {
+  test('refreshApples works with death apples without lights', () => {
     setApples([{x: 1, z: 1, fromDeath: true}, {x: 2, z: 2, fromDeath: true}]);
     appleDirty = true;
     refreshApples();
-    // Sphere still visible (the apple is on the board)...
+    // Sphere still visible (the apple is on the board)
     expect(appleMeshes[0].visible).toBe(true);
     expect(appleMeshes[1].visible).toBe(true);
-    // ...but the per-apple point light is OFF
-    expect(appleMeshes[0].userData.light.visible).toBe(false);
-    expect(appleMeshes[1].userData.light.visible).toBe(false);
   });
 
-  test('a mix of normal and death apples toggles lights independently', () => {
+  test('a mix of normal and death apples works without lights', () => {
     setApples([{x: 1, z: 1}, {x: 2, z: 2, fromDeath: true}, {x: 3, z: 3}]);
     appleDirty = true;
     refreshApples();
-    expect(appleMeshes[0].userData.light.visible).toBe(true);
-    expect(appleMeshes[1].userData.light.visible).toBe(false);
-    expect(appleMeshes[2].userData.light.visible).toBe(true);
+    expect(appleMeshes[0].visible).toBe(true);
+    expect(appleMeshes[1].visible).toBe(true);
+    expect(appleMeshes[2].visible).toBe(true);
   });
 
-  test('reusing a death-apple slot for a normal apple re-enables the light', () => {
-    // Start as a death apple — light off
-    setApples([{x: 1, z: 1, fromDeath: true}]);
-    appleDirty = true;
-    refreshApples();
-    expect(appleMeshes[0].userData.light.visible).toBe(false);
-
-    // Replace with a freshly spawned (normal) apple in the same slot
-    apples[0] = {x: 4, z: 4};
-    appleDirty = true;
-    refreshApples();
-    expect(appleMeshes[0].userData.light.visible).toBe(true);
-  });
-
-  test('many simultaneous death apples never add point lights', () => {
+  test('many simultaneous death apples do not add point lights', () => {
     var many = [];
     for (var i = 0; i < 60; i++) many.push({x: i % 20, z: Math.floor(i / 20), fromDeath: true});
     setApples(many);
     appleDirty = true;
     refreshApples();
-    var lit = 0;
+    // Count visible meshes — all should be visible as spheres
+    var visible = 0;
     for (var j = 0; j < appleMeshes.length; j++) {
-      if (appleMeshes[j].visible && appleMeshes[j].userData.light.visible) lit++;
+      if (appleMeshes[j].visible) visible++;
     }
-    expect(lit).toBe(0); // a full corpse of death apples adds zero point lights
+    expect(visible).toBe(60); // all 60 death apples are visible as spheres
+    // No lights added — that's the whole point
+    var lights = 0;
+    for (var k = 0; k < appleMeshes.length; k++) {
+      if (appleMeshes[k].userData && appleMeshes[k].userData.light) lights++;
+    }
+    expect(lights).toBe(0);
   });
 });
