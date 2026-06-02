@@ -673,6 +673,22 @@ function aiDecideDirection(aiIndex, diff) {
     // Force survival mode: pick direction that gets OUT of the shrink zone
     var bestEscapeScore = -Infinity;
     var bestEscapeDir = safe[0];
+
+    // Compute the "tightest" future safe zone across all countdowns.
+    // We want to move toward the CENTER of that zone.
+    var safeCenterX = 0, safeCenterZ = 0;
+    var tightMinX = gridMinX, tightMaxX = gridMaxX;
+    var tightMinZ = gridMinZ, tightMaxZ = gridMaxZ;
+    for (var ci = 0; ci < shrinkCountdowns.length; ci++) {
+      var cb = calcShrinkBoundsFromCurrent(shrinkCountdowns[ci]);
+      if (cb.newMinX > tightMinX) tightMinX = cb.newMinX;
+      if (cb.newMaxX < tightMaxX) tightMaxX = cb.newMaxX;
+      if (cb.newMinZ > tightMinZ) tightMinZ = cb.newMinZ;
+      if (cb.newMaxZ < tightMaxZ) tightMaxZ = cb.newMaxZ;
+    }
+    safeCenterX = (tightMinX + tightMaxX) / 2;
+    safeCenterZ = (tightMinZ + tightMaxZ) / 2;
+
     for (var s = 0; s < safe.length; s++) {
       var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
       var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
@@ -683,13 +699,19 @@ function aiDecideDirection(aiIndex, diff) {
         score += 2000;
       }
 
-      // Space matters more when trapped — avoid dead ends
-      var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
-      score += space * 3;
+      // CRITICAL: distance to safe zone center is the DOMINANT factor.
+      // Moving toward center beats everything — space is just a tiebreaker.
+      var distBefore = Math.abs(ai.snake[0].x - safeCenterX) + Math.abs(ai.snake[0].z - safeCenterZ);
+      var distAfter = Math.abs(nx - safeCenterX) + Math.abs(nz - safeCenterZ);
+      score += (distBefore - distAfter) * 500; // Closer to center = much higher score
 
-      // Escape routes matter
+      // Space is a secondary tiebreaker — avoid dead ends but don't override direction
+      var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+      score += space;
+
+      // Escape routes: small bonus
       var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-      score += escapes * 10;
+      score += escapes * 5;
 
       if (score > bestEscapeScore) {
         bestEscapeScore = score;
@@ -698,6 +720,84 @@ function aiDecideDirection(aiIndex, diff) {
     }
     log('AI ' + aiIndex + ' in shrink zone — escaping');
     return snapToCardinal(bestEscapeDir);
+  }
+
+  // ─── PROACTIVE REPOSITIONING: move toward safe zone while countdown is active ───
+  // Don't wait until the head is in danger or urgency is high. As soon as a
+  // countdown starts, if the AI is far from the safe zone center, it should
+  // start drifting toward it. This prevents losing body segments at shrink time.
+  if (shrinkActive) {
+    // Compute the "tightest" future safe zone across all countdowns
+    var safeCenterX = 0, safeCenterZ = 0;
+    var tightMinX = gridMinX, tightMaxX = gridMaxX;
+    var tightMinZ = gridMinZ, tightMaxZ = gridMaxZ;
+    for (var ci = 0; ci < shrinkCountdowns.length; ci++) {
+      var cb = calcShrinkBoundsFromCurrent(shrinkCountdowns[ci]);
+      if (cb.newMinX > tightMinX) tightMinX = cb.newMinX;
+      if (cb.newMaxX < tightMaxX) tightMaxX = cb.newMaxX;
+      if (cb.newMinZ > tightMinZ) tightMinZ = cb.newMinZ;
+      if (cb.newMaxZ < tightMaxZ) tightMaxZ = cb.newMaxZ;
+    }
+    safeCenterX = (tightMinX + tightMaxX) / 2;
+    safeCenterZ = (tightMinZ + tightMaxZ) / 2;
+
+    // Check if any body segment is in the shrink zone
+    var bodyInShrinkZone = false;
+    for (var bi = 1; bi < ai.snake.length; bi++) {
+      if (cellInShrinkZone(ai.snake[bi].x, ai.snake[bi].z)) {
+        bodyInShrinkZone = true;
+        break;
+      }
+    }
+
+    // Distance from head to safe zone center
+    var headDistToCenter = Math.abs(ai.snake[0].x - safeCenterX) + Math.abs(ai.snake[0].z - safeCenterZ);
+    // Safe zone half-diagonal — how far from center is still "safe"
+    var safeZoneHalfW = (tightMaxX - tightMinX) / 4;
+    var safeZoneHalfH = (tightMaxZ - tightMinZ) / 4;
+
+    // Trigger proactive repositioning if:
+    // 1. Body is in danger zone (immediate), OR
+    // 2. Head is far from safe center (more than 1/4 of safe zone dimension)
+    var needsReposition = bodyInShrinkZone ||
+      headDistToCenter > (safeZoneHalfW + safeZoneHalfH);
+
+    if (needsReposition) {
+      var bestPreScore = -Infinity;
+      var bestPreDir = safe[0];
+
+      for (var s = 0; s < safe.length; s++) {
+        var nx = ai.snake[0].x + Math.round(Math.cos(safe[s]));
+        var nz = ai.snake[0].z + Math.round(Math.sin(safe[s]));
+        var score = 0;
+
+        // Direction toward safe center — dominant factor
+        var distBefore = Math.abs(ai.snake[0].x - safeCenterX) + Math.abs(ai.snake[0].z - safeCenterZ);
+        var distAfter = Math.abs(nx - safeCenterX) + Math.abs(nz - safeCenterZ);
+        var dirWeight = bodyInShrinkZone ? 400 : 200;
+        score += (distBefore - distAfter) * dirWeight;
+
+        // Strong penalty for moving INTO shrink zone
+        if (cellInShrinkZone(nx, nz)) {
+          score -= 1500;
+        }
+
+        // Space and escapes as tiebreakers — keep it safe
+        var space = countReachable(nx, nz, ai.snake, strat.floodFillDepth || 50);
+        score += space;
+        var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
+        score += escapes * 5;
+
+        if (score > bestPreScore) {
+          bestPreScore = score;
+          bestPreDir = safe[s];
+        }
+      }
+
+      var reason = bodyInShrinkZone ? 'body in shrink zone' : 'far from safe center (dist=' + headDistToCenter.toFixed(0) + ')';
+      log('AI ' + aiIndex + ' proactively repositioning (' + reason + ')');
+      return snapToCardinal(bestPreDir);
+    }
   }
 
   // ─── CRITICAL: Filter safe directions by minimum reachable space ───
