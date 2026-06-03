@@ -997,6 +997,116 @@ function aiDecideDirection(aiIndex, diff) {
   return snapToCardinal(bestDir);
 }
 
+// ─── Detect and handle head-on collisions ───
+// Called BEFORE stepAI() and step() to find pairs of snakes that would move
+// into the same cell. Both die. Returns true if any collision occurred.
+function detectAndHandleHeadOnCollisions() {
+  if (!aiSnakes || aiSnakes.length === 0) return false;
+
+  var destinations = [];
+
+  // Player destination (only if alive and not spectating)
+  if (snake.length > 0 && !gameOver) {
+    var px = snake[0].x + Math.round(Math.cos(direction));
+    var pz = snake[0].z + Math.round(Math.sin(direction));
+    destinations.push({type: 'player', x: px, z: pz});
+  }
+
+  // AI destinations
+  for (var i = 0; i < aiSnakes.length; i++) {
+    var ai = aiSnakes[i];
+    if (!ai.alive) continue;
+    var ax = ai.snake[0].x + Math.round(Math.cos(ai.direction));
+    var az = ai.snake[0].z + Math.round(Math.sin(ai.direction));
+    destinations.push({type: 'ai', index: i, x: ax, z: az});
+  }
+
+  // Check all pairs for head-on collision
+  var handled = {};
+  var collisions = [];
+
+  for (var a = 0; a < destinations.length; a++) {
+    for (var b = a + 1; b < destinations.length; b++) {
+      var da = destinations[a];
+      var db = destinations[b];
+      if (da.x === db.x && da.z === db.z) {
+        if (!handled[a] && !handled[b]) {
+          handled[a] = true;
+          handled[b] = true;
+          collisions.push([da, db]);
+        }
+      }
+    }
+  }
+
+  if (collisions.length === 0) return false;
+
+  var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
+
+  // Collect all collision info for the message, then kill snakes
+  var allNames = [];
+  var totalPoints = 0;
+  var allDiedAIIndices = [];
+
+  for (var c = 0; c < collisions.length; c++) {
+    var pair = collisions[c];
+    var s1 = pair[0], s2 = pair[1];
+
+    if (s1.type === 'player') allNames.push('Tú');
+    else allNames.push('serpiente ' + (colorNames[aiSnakes[s1.index].color] || aiSnakes[s1.index].color));
+
+    if (s2.type === 'player') allNames.push('Tú');
+    else allNames.push('serpiente ' + (colorNames[aiSnakes[s2.index].color] || aiSnakes[s2.index].color));
+
+    if (s1.type === 'ai') allDiedAIIndices.push(s1.index);
+    if (s2.type === 'ai') allDiedAIIndices.push(s2.index);
+
+    log('💥💥 HEAD-ON at (' + s1.x + ',' + s1.z + ')');
+
+    // Kill both snakes
+    if (s1.type === 'player') {
+      die('headon');
+    } else if (s1.type === 'ai') {
+      aiDie(s1.index, 'headon');
+    }
+
+    if (s2.type === 'player') {
+      die('headon');
+    } else if (s2.type === 'ai') {
+      aiDie(s2.index, 'headon');
+    }
+  }
+
+  // Count surviving snakes for points
+  var livingCount = 0;
+  var hasPlayerDeath = allNames.indexOf('Tú') !== -1;
+  if (!hasPlayerDeath) {
+    // Both AI died — player is alive
+    livingCount = 1;
+  }
+  for (var li = 0; li < aiSnakes.length; li++) {
+    if (aiSnakes[li].alive && allDiedAIIndices.indexOf(li) === -1) livingCount++;
+  }
+
+  totalPoints = (DEATH_POINTS + KILLER_BONUS) * 2 * collisions.length * livingCount;
+
+  // Show joint head-on collision message AFTER individual death messages
+  var nameStr = allNames.join(', ');
+  var deadCount = collisions.length * 2;
+  var msg = '💥💥 ¡Choque de cabezas entre ' + nameStr + '! 😵 ' + deadCount + ' eliminadas — ' + totalPoints + ' puntos repartidos 🎯';
+  var el = document.getElementById('ai-death-msg');
+  if (el) {
+    el.textContent = msg;
+    el.classList.add('visible');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(function() {
+      el.classList.remove('visible');
+    }, 5000);
+  }
+
+  return true;
+}
+
 // ─── Initialize AI snakes ───
 function initAI() {
   log('=== initAI() mode=' + gameMode + ' diff=' + difficulty + ' ===');
@@ -1402,6 +1512,8 @@ function showAiDeathMessage(ai, cause) {
     msg = '💀 La serpiente ' + colorName + ' chocó contra un cadáver + ' + pointsEarned + ' puntos 🦴';
   } else if (cause === 'ai') {
     msg = '⚔️ La serpiente ' + colorName + ' fue eliminada por otra serpiente + ' + pointsEarned + ' puntos 🔥';
+  } else if (cause === 'headon') {
+    msg = '💥 La serpiente ' + colorName + ' murió en choque de cabezas 😵💫';
   }
 
   var el = document.getElementById('ai-death-msg');

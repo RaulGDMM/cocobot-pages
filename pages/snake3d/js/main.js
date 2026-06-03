@@ -22,7 +22,11 @@ function loop(now) {
 
    if(running && !gameOver && !paused) {
         if(now-lastMoveTime >= MOVE_INTERVAL) {
-           // ─── AI MODE: step AI before player ───
+           // ─── HEAD-ON COLLISION: detect before any movement ───
+           if(aiSnakes && aiSnakes.length > 0 && typeof detectAndHandleHeadOnCollisions === 'function') {
+             detectAndHandleHeadOnCollisions();
+           }
+           // ─── AI MODE: step AI before player (surviving AI still move) ───
            if(aiSnakes && aiSnakes.length > 0) stepAI();
            step();
            // ─── CORPSES: convert one segment per corpse per tick ───
@@ -38,9 +42,13 @@ function loop(now) {
       }
 
       // ─── SPECTATOR MODE: game continues after player death ───
-       if(spectating && running && !paused) {
-         if(now-lastMoveTime >= MOVE_INTERVAL) {
-           if(aiSnakes && aiSnakes.length > 0) stepAI();
+        if(spectating && running && !paused) {
+          if(now-lastMoveTime >= MOVE_INTERVAL) {
+            // ─── HEAD-ON COLLISION: detect AI vs AI before movement ───
+            if(aiSnakes && aiSnakes.length > 0 && typeof detectAndHandleHeadOnCollisions === 'function') {
+              detectAndHandleHeadOnCollisions();
+            }
+            if(aiSnakes && aiSnakes.length > 0) stepAI();
            // Player does NOT step (gameOver = true)
            if(typeof processCorpses === 'function') processCorpses();
            // Refresh apple meshes — step() normally does this, but in spectator

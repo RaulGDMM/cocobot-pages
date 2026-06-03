@@ -130,6 +130,7 @@ function die(cause) {
   else if(cause === 'ai') causeMsg = 'Una serpiente enemiga te ha alcanzado';
   else if(cause === 'corpse') causeMsg = 'Has chocado contra un cadáver';
   else if(cause === 'shrink') causeMsg = '¡El tablero se redujo y te dejó fuera!';
+  else if(cause === 'headon') causeMsg = '💥 Choque de cabezas — ambas eliminadas';
 
   // ─── SPECTATOR MODE: check if any AI is still alive ───
   var aliveAI = 0;
