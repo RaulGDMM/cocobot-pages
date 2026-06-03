@@ -115,9 +115,6 @@ function die(cause) {
   log('GAME OVER score='+score+' cause='+(cause||'unknown'));
   gameOver=true; sfxDie();
 
-  // ─── Stop periodic leaderboard update ───
-  if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
-
   if(snake.length) burst(snake[0].x,snake[0].z,0xff0000,12);
   // ─── AI MODE: save high score per mode/difficulty/gridSize ───
   var hsKey = getHighScoreKey(gameMode, difficulty, gridSize);
@@ -223,6 +220,8 @@ function die(cause) {
   } else {
     // ─── Normal game over (no AI alive) ───
     running = false;
+    // Stop periodic leaderboard update
+    if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
 
     // ─── AI MODE: show final ranking ───
     var rankingMsg = '';
