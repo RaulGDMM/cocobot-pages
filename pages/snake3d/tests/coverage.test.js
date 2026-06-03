@@ -997,3 +997,30 @@ describe('audio.js — Music Player', () => {
     expect(() => toggleMusic()).not.toThrow();
   });
 });
+
+// ─── Helpers branch coverage ───
+describe('helpers.js — branch coverage', () => {
+  test('setSnake handles undefined corpseSet', () => {
+    const origCorpseSet = corpseSet;
+    delete global['corpseSet'];
+    expect(() => setSnake([{x: 0, z: 0}])).not.toThrow();
+    global['corpseSet'] = origCorpseSet;
+  });
+
+  test('setApples handles undefined rebuildAppleSet', () => {
+    const origRebuild = rebuildAppleSet;
+    delete global['rebuildAppleSet'];
+    expect(() => setApples([{x: 1, z: 1}])).not.toThrow();
+    global['rebuildAppleSet'] = origRebuild;
+  });
+
+  test('setApples handles undefined corpseSet', () => {
+    const origCorpseSet = corpseSet;
+    const origRebuild = rebuildAppleSet;
+    delete global['corpseSet'];
+    delete global['rebuildAppleSet'];
+    expect(() => setApples([{x: 1, z: 1}])).not.toThrow();
+    global['corpseSet'] = origCorpseSet;
+    global['rebuildAppleSet'] = origRebuild;
+  });
+});
