@@ -20,22 +20,69 @@ function loop(now) {
     if(frameCount===1) log('7. First frame OK');
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
-    if(running && !gameOver && !paused) {
-       if(now-lastMoveTime >= MOVE_INTERVAL) {
-          // ─── AI MODE: step AI before player ───
-          if(aiSnakes && aiSnakes.length > 0) stepAI();
-          step();
-          // ─── CORPSES: convert one segment per corpse per tick ───
-          if(typeof processCorpses === 'function') processCorpses();
-          lastMoveTime=now;
-        }
-       refreshSnake();
-       // ─── AI MODE: refresh AI snake meshes ───
-       refreshAISnakes();
+   if(running && !gameOver && !paused) {
+        if(now-lastMoveTime >= MOVE_INTERVAL) {
+           // ─── AI MODE: step AI before player ───
+           if(aiSnakes && aiSnakes.length > 0) stepAI();
+           step();
+           // ─── CORPSES: convert one segment per corpse per tick ───
+           if(typeof processCorpses === 'function') processCorpses();
+           lastMoveTime=now;
+         }
+        refreshSnake();
+        // ─── AI MODE: refresh AI snake meshes ───
+        refreshAISnakes();
 
-       // ─── GRID SHRINK: process countdowns ───
-       processShrinkCountdowns(now);
-     }
+        // ─── GRID SHRINK: process countdowns ───
+        processShrinkCountdowns(now);
+      }
+
+      // ─── SPECTATOR MODE: game continues after player death ───
+       if(spectating && running && !paused) {
+         if(now-lastMoveTime >= MOVE_INTERVAL) {
+           if(aiSnakes && aiSnakes.length > 0) stepAI();
+           // Player does NOT step (gameOver = true)
+           if(typeof processCorpses === 'function') processCorpses();
+           // Refresh apple meshes — step() normally does this, but in spectator
+           // mode step() is skipped (gameOver=true). Without this, appleDirty
+           // set by stepAI() on eat never triggers a visual update.
+           if(typeof refreshApples === 'function') refreshApples();
+           lastMoveTime=now;
+
+          // Check if all AI are now dead → end spectator, show game over
+          var anyAlive = false;
+          if(aiSnakes) {
+            for(var si = 0; si < aiSnakes.length; si++) {
+              if(aiSnakes[si].alive) { anyAlive = true; break; }
+            }
+          }
+          if(!anyAlive) {
+            spectating = false;
+            running = false;
+            // Hide spectate button
+            var specBtn = document.getElementById('spectate-btn');
+            if (specBtn) specBtn.style.display = 'none';
+            // Show final game over with rankings
+            var rankings = calcRankings();
+            var playerRank = 0;
+            for(var sr = 0; sr < rankings.length; sr++) {
+              if(rankings[sr].isPlayer) { playerRank = rankings[sr].rank; break; }
+            }
+            var total = rankings.length;
+            var rankEmoji = playerRank === 1 ? '🏆' : playerRank === 2 ? '🥈' : playerRank === 3 ? '🥉' : playerRank + 'º';
+            finalScoreEl.textContent = (playerRank === 1 ? '🏆' : '💀') + ' Posición: ' + rankEmoji + ' de ' + total + ' — ' + score + ' puntos';
+            finalScoreEl.style.display = 'block';
+            startBtn.textContent = 'REINTENTAR';
+            overlay.classList.remove('hidden');
+            overlay.classList.remove('spectator');
+            hintL.style.opacity = '1'; hintR.style.opacity = '1';
+            if(typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
+            log('👁 SPECTATOR END — all AI dead, final rank: ' + playerRank);
+          }
+        }
+       refreshAISnakes();
+        processShrinkCountdowns(now);
+       }
 
     // Apple animation. Death apples are intentionally static: after several
     // enemy deaths they dominate apple count, and animating all of them every
@@ -73,6 +120,17 @@ window.addEventListener('resize', function() {
 // ─── START ───
 startBtn.addEventListener('click', function() {
   log('▶ CLICK ' + startBtn.textContent);
+
+  // ─── SPECTATOR: exit spectator and start fresh ───
+  if (spectating) {
+    spectating = false;
+    running = false;
+    var specBtnStart = document.getElementById('spectate-btn');
+    if (specBtnStart) specBtnStart.style.display = 'none';
+    if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
+    overlay.classList.remove('spectator');
+  }
+
   initAudio();
 
   // ─── AI MODE: read config from UI ───
@@ -104,7 +162,7 @@ startBtn.addEventListener('click', function() {
     // Keeps the rank display fresh as AI snakes die and scores change.
     if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
     _leaderboardTimer = setInterval(function() {
-      if (running && !gameOver && aiSnakes && aiSnakes.length > 0) {
+      if (running && aiSnakes && aiSnakes.length > 0 && (!gameOver || spectating)) {
         if (typeof updateLeaderboard === 'function') updateLeaderboard();
       }
     }, 1000);
@@ -113,6 +171,34 @@ startBtn.addEventListener('click', function() {
   lastMoveTime = performance.now();
   log('RUNNING! MOVE_INTERVAL='+MOVE_INTERVAL+'ms');
 });
+
+// ─── SPECTATE BUTTON: end spectator, show game over ───
+(function() {
+  var specBtn = document.getElementById('spectate-btn');
+  if (!specBtn) return;
+  specBtn.addEventListener('click', function() {
+    if (!spectating) return;
+    spectating = false;
+    running = false;
+    specBtn.style.display = 'none';
+    // Show final game over with rankings
+    var rankings = calcRankings();
+    var playerRank = 0;
+    for (var tr = 0; tr < rankings.length; tr++) {
+      if (rankings[tr].isPlayer) { playerRank = rankings[tr].rank; break; }
+    }
+    var total = rankings.length;
+    var rankEmoji = playerRank === 1 ? '🏆' : playerRank === 2 ? '🥈' : playerRank === 3 ? '🥉' : playerRank + 'º';
+    finalScoreEl.textContent = (playerRank === 1 ? '🏆' : '💀') + ' Posición: ' + rankEmoji + ' de ' + total + ' — ' + score + ' puntos';
+    finalScoreEl.style.display = 'block';
+    startBtn.textContent = 'REINTENTAR';
+    overlay.classList.remove('hidden');
+    overlay.classList.remove('spectator');
+    hintL.style.opacity = '1'; hintR.style.opacity = '1';
+    if (typeof _leaderboardTimer !== 'undefined') clearInterval(_leaderboardTimer);
+    log('👁 SPECTATOR TERMINATED');
+  });
+})();
 
 // ─── INIT ───
 buildSnake(); buildObstacles(); buildApples();

@@ -69,30 +69,36 @@ describe('config.js — calcShrinkTarget()', () => {
 
 describe('config.js — calcNextShrinkSize()', () => {
   test('proportional shrink: vs4 (3 AI, grid 40)', () => {
-    // After 1 death (2 alive): target = 22 + 18 * 2/3 = 34
-    expect(calcNextShrinkSize(40, 40, 3, 1)).toBe(34);
-    // After 2 deaths (1 alive): target = 22 + 18 * 1/3 = 28
-    expect(calcNextShrinkSize(34, 40, 3, 2)).toBe(28);
-    // After 3 deaths (0 alive): target = 22
-    expect(calcNextShrinkSize(28, 40, 3, 3)).toBe(22);
+    // totalSnakes = 4 (3 AI + 1 player), soloSize = 22
+    // 1 AI death (3 alive): target = round(22 + 18 * 3/4) = round(35.5) = 36
+    expect(calcNextShrinkSize(40, 3, 1, true)).toBe(36);
+    // 2 AI deaths (2 alive): target = round(22 + 14 * 2/4) = round(29) = 30
+    expect(calcNextShrinkSize(36, 3, 2, true)).toBe(30);
+    // 3 AI deaths (1 alive = player only): target = round(22 + 8 * 1/4) = round(24) = 24
+    expect(calcNextShrinkSize(30, 3, 3, true)).toBe(24);
+    // Player death (3 AI alive, 0 player): target = round(22 + 18 * 3/4) = 36
+    expect(calcNextShrinkSize(40, 3, 1, false)).toBe(36);
+    // All dead: target = 22
+    expect(calcNextShrinkSize(22, 3, 4, false)).toBe(22);
   });
 
   test('proportional shrink: vs8 (7 AI, grid 62)', () => {
-    // After 1 death (6 alive): target = 22 + 40 * 6/7 = 56
-    expect(calcNextShrinkSize(62, 62, 7, 1)).toBe(56);
-    // After 7 deaths (0 alive): target = 22
-    expect(calcNextShrinkSize(28, 62, 7, 7)).toBe(22);
+    // totalSnakes = 8 (7 AI + 1 player), soloSize = 22
+    // 1 AI death (7 alive): target = round(22 + 40 * 7/8) = round(57) = 58
+    expect(calcNextShrinkSize(62, 7, 1, true)).toBe(58);
+    // 7 AI deaths (1 alive = player only): target = round(22 + 6 * 1/8) = round(22.75) = 23 → even: 24
+    expect(calcNextShrinkSize(28, 7, 7, true)).toBe(24);
   });
 
   test('legacy mode (initialAICount=0) uses fixed SHRINK_STEP', () => {
-    expect(calcNextShrinkSize(40, 40, 0, 0)).toBe(34);
-    expect(calcNextShrinkSize(34, 34, 0, 0)).toBe(28);
-    expect(calcNextShrinkSize(28, 28, 0, 0)).toBe(22);
+    expect(calcNextShrinkSize(40, 0, 0, true)).toBe(34);
+    expect(calcNextShrinkSize(34, 0, 0, true)).toBe(28);
+    expect(calcNextShrinkSize(28, 0, 0, true)).toBe(22);
   });
 
   test('clamps to GRID_MIN', () => {
-    expect(calcNextShrinkSize(18, 18, 0, 0)).toBe(16);
-    expect(calcNextShrinkSize(16, 16, 0, 0)).toBe(16);
+    expect(calcNextShrinkSize(18, 0, 0, true)).toBe(16);
+    expect(calcNextShrinkSize(16, 0, 0, true)).toBe(16);
   });
 });
 
@@ -146,6 +152,7 @@ describe('game.js — maybeTriggerShrink()', () => {
     gridMaxZ = 20;
     shrinkCountdowns = [];
     gameOver = false;
+    spectating = false;
     snake = [{x: 0, z: 0}];
     aiSnakes = [
       {alive: true, snake: [{x: 5, z: 5}]},
@@ -181,6 +188,28 @@ describe('game.js — maybeTriggerShrink()', () => {
     aiSnakes = [];
     maybeTriggerShrink();
     expect(shrinkCountdowns.length).toBe(0);
+  });
+
+  test('SHRINKS when player dies in spectator mode (vs4)', () => {
+    // Simulate player death in vs4: gameOver=true, spectating=true, snake cleared, 3 AI alive
+    gameOver = true;
+    spectating = true;
+    snake = [];
+    aiSnakes = [
+      {alive: true, snake: [{x: 5, z: 5}]},
+      {alive: true, snake: [{x: -5, z: 5}]},
+      {alive: true, snake: [{x: 0, z: -5}]}
+    ];
+    gridMinX = -20;
+    gridMaxX = 20;
+    gridMinZ = -20;
+    gridMaxZ = 20;
+    shrinkCountdowns = [];
+    // Player death calls maybeTriggerShrink(true)
+    // totalSnakes=4, alive=3 (all AI), target=round(22+18*3/4)=36, shrink=40-36=4
+    maybeTriggerShrink(true);
+    expect(shrinkCountdowns.length).toBe(1);
+    expect(shrinkCountdowns[0].shrinkAmount).toBe(4); // 40 → 36
   });
 });
 

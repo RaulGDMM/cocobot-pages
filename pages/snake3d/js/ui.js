@@ -196,6 +196,22 @@ function initUISelectors() {
     var lb = document.getElementById('leaderboard-dropdown');
     if (!scoreBox || !lb) return;
 
+    // ─── SPECTATOR: click on AI row to switch camera target ───
+    var row = target;
+    while (row && row !== lb && row !== document.body) {
+      if (row.classList && row.classList.contains('lb-row') && row.dataset.aiIndex !== undefined) {
+        var idx = parseInt(row.dataset.aiIndex);
+        if (aiSnakes && aiSnakes[idx] && aiSnakes[idx].alive) {
+          followAIIndex = idx;
+          if (typeof updateLeaderboard === 'function') updateLeaderboard();
+          e.stopPropagation();
+          return;
+        }
+        break;
+      }
+      row = row.parentElement;
+    }
+
     if (scoreBox.contains(target)) {
       e.stopPropagation();
       lb.classList.toggle('visible');
@@ -251,10 +267,32 @@ function updateLeaderboard() {
     var dotColor = colorHex[r.color] || '#888888';
     var rankEmoji = r.rank === 1 ? '🥇' : r.rank === 2 ? '🥈' : r.rank === 3 ? '🥉' : r.rank;
     var statusEmoji = r.alive ? '🟢' : '💀';
-    html += '<div class="lb-row' + isPlayer + isDead + '">';
+    // In spectator mode: add eye icon on alive AI rows for camera switching
+    var spectatorIcon = '';
+    var spectatorClass = '';
+    if (spectating && !r.isPlayer && r.alive) {
+      var aiIdx = -1;
+      if (aiSnakes) {
+        for (var _si = 0; _si < aiSnakes.length; _si++) {
+          if (aiSnakes[_si].color === r.color) { aiIdx = _si; break; }
+        }
+      }
+      if (aiIdx >= 0) {
+        spectatorIcon = ' 👁';
+        if (aiIdx === followAIIndex) {
+          spectatorClass = ' lb-following';
+          spectatorIcon = ' 👁';
+        }
+        html += '<div class="lb-row' + isPlayer + isDead + spectatorClass + '" data-ai-index="' + aiIdx + '" style="cursor:pointer">';
+      } else {
+        html += '<div class="lb-row' + isPlayer + isDead + '">';
+      }
+    } else {
+      html += '<div class="lb-row' + isPlayer + isDead + '">';
+    }
     html += '<span class="lb-rank">' + rankEmoji + '</span>';
     html += '<span class="lb-dot" style="background:' + dotColor + '"></span>';
-    html += '<span class="lb-name">' + r.name + ' ' + statusEmoji + '</span>';
+    html += '<span class="lb-name">' + r.name + ' ' + statusEmoji + spectatorIcon + '</span>';
     html += '<span class="lb-score">' + r.score + '</span>';
     html += '</div>';
   }

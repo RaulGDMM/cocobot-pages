@@ -123,20 +123,25 @@ function calcShrinkTarget(initialGridSize, deaths, initialAICount) {
 }
 
 // Calculate next shrink target from current state.
-// initialGridSize: the grid size at game start
+// currentGridSize: the grid size at time of call
 // initialAICount: number of AI snakes at game start
-// deaths: how many AI snakes have died so far
-// Returns the target grid size after this death, or GRID_MIN if all AI dead.
-function calcNextShrinkSize(currentGridSize, initialGridSize, initialAICount, deaths) {
+// deaths: total deaths (AI deaths + player death if applicable)
+// playerAlive: whether the player snake is still alive
+// Returns the target grid size after this death, or GRID_MIN if all snakes dead.
+function calcNextShrinkSize(currentGridSize, initialAICount, deaths, playerAlive) {
   if (initialAICount <= 0) {
     // Legacy: no AI, use fixed step
     var result = currentGridSize - SHRINK_STEP;
     return Math.max(GRID_MIN, result);
   }
   var soloSize = 22;
-  var aliveAI = initialAICount - deaths;
-  if (aliveAI <= 0) return Math.max(GRID_MIN, soloSize);
-  var result = Math.round(soloSize + (initialGridSize - soloSize) * aliveAI / initialAICount);
+  var totalSnakes = initialAICount + 1; // AI + player
+  var aliveAI = initialAICount - (deaths - (playerAlive ? 0 : 1));
+  if (aliveAI < 0) aliveAI = 0;
+  var totalAlive = aliveAI + (playerAlive ? 1 : 0);
+  if (totalAlive <= 0) return Math.max(GRID_MIN, soloSize);
+  // Proportional: each death shrinks grid by (currentGridSize - soloSize) / totalSnakes
+  var result = Math.round(soloSize + (currentGridSize - soloSize) * totalAlive / totalSnakes);
   // Force even
   if (result % 2 !== 0) result += 1;
   return Math.max(GRID_MIN, Math.min(result, currentGridSize));

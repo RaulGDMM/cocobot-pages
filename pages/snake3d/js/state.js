@@ -23,6 +23,14 @@ var gridSizeModifier = 0;
 var aiSnakes = [];
 var corpses = [];
 
+// ─── SPECTATOR MODE ───
+// When the player dies but AI snakes are still alive, the game continues
+// in spectator mode. The camera follows an AI snake, and the player can
+// switch targets via the leaderboard or end the game with a button.
+var spectating = false;
+var followAIIndex = -1;
+var playerDeathPos = null;
+
 // ─── GRID BOUNDARIES (for dynamic shrinking) ───
 // Initially equal to -half / half. Updated when grid shrinks.
 var gridMinX = -half;

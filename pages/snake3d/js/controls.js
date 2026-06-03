@@ -15,7 +15,7 @@ document.getElementById('tz-right').addEventListener('touchstart',function(e){e.
 var _pauseOverlay = null;
 var _pauseText = null;
 function togglePause() {
-  if (!running || gameOver) return;
+  if (!running || (gameOver && !spectating)) return;
   paused = !paused;
   var btn = document.getElementById('pause-btn');
   if (btn) btn.textContent = paused ? '▶' : '⏸';
