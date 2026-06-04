@@ -516,13 +516,23 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
     return false;
   }
 
-  // Safe directions, split into firm (no contested apple) and risky (steps
-  // onto an apple an adjacent opponent could grab the same tick).
+  // Safe directions, split into firm (preferred) and risky (used only as a
+  // last resort): a risky direction either dives onto a contested apple or
+  // heads straight into an oncoming snake's lane.
   var risky = [];
 
+  // How many cells ahead we look for an oncoming head-on lane. Detecting the
+  // confrontation early lets the snake peel away while a side escape still
+  // exists, instead of discovering it one cell before impact (too late when
+  // both snakes are long and boxed in — the classic "raced down the same row
+  // of apples toward each other" death).
+  var HEADON_LOOKAHEAD = 4;
+
   possibleDirs.forEach(function(dir) {
-    var nx = head.x + Math.round(Math.cos(dir));
-    var nz = head.z + Math.round(Math.sin(dir));
+    var dx = Math.round(Math.cos(dir));
+    var dz = Math.round(Math.sin(dir));
+    var nx = head.x + dx;
+    var nz = head.z + dz;
 
     if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return;
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
@@ -553,6 +563,30 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
       if (nx === ox && nz === oz) return;
       // Swap: AI moves into the other's head while it moves into our cell
       if (nx === other.head.x && nz === other.head.z && ox === head.x && oz === head.z) return;
+
+      // ─── Oncoming head-on lane (early warning) ───
+      // If the opponent's head lies straight ahead along this candidate's
+      // direction (same lane), within HEADON_LOOKAHEAD cells, AND it is moving
+      // toward us (opposite heading), continuing here marches into a head-on.
+      // Mark it risky so we peel away NOW while a side route is still open.
+      if (!contested) {
+        var odx = Math.round(Math.cos(other.dir));
+        var odz = Math.round(Math.sin(other.dir));
+        var oncoming = (odx === -dx && odz === -dz); // exactly opposite heading
+        if (oncoming) {
+          // Vector from our candidate cell to the opponent head.
+          var rx = other.head.x - nx;
+          var rz = other.head.z - nz;
+          // Must be on the same lane (no lateral offset) and ahead of us.
+          var sameLane = (dx !== 0) ? (rz === 0 && rx * dx > 0)
+                                    : (rx === 0 && rz * dz > 0);
+          if (sameLane) {
+            var ahead = Math.abs(rx) + Math.abs(rz);
+            if (ahead <= HEADON_LOOKAHEAD) contested = true;
+          }
+        }
+      }
+
 
       // ─── Contested apple (soft) ───
       // The two snakes that collide head-on "trying to grab the same apple"

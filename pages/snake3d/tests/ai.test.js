@@ -1161,6 +1161,76 @@ describe('ai.js — aiEvaluateDirections() contested apple', () => {
   });
 });
 
+// ─── aiEvaluateDirections() — oncoming head-on lane ───
+describe('ai.js — aiEvaluateDirections() oncoming lane', () => {
+  beforeEach(() => {
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+    setGlobal('gridMinX', -11);
+    setGlobal('gridMaxX', 11);
+    setGlobal('gridMinZ', -11);
+    setGlobal('gridMaxZ', 11);
+    setGlobal('TURN_ANGLE', Math.PI / 2);
+    setGlobal('corpses', []);
+    setGlobal('corpseSet', {});
+    setApples([]);
+    setSnake([]); // isolate AI-vs-AI
+  });
+
+  test('AI peels away from an opponent approaching head-on in the same row', () => {
+    // Both on row z=0. This AI at (0,0) heading +x (dir 0). Opponent head at
+    // (4,0) heading -x (dir π) — 4 cells ahead, closing in. Going forward marches
+    // into a head-on, so forward should be dropped in favor of a turn.
+    setGlobal('aiSnakes', [
+      { snake: [{x: 0, z: 0}, {x: -1, z: 0}], direction: 0, alive: true, color: 'green' },
+      { snake: [{x: 4, z: 0}, {x: 5, z: 0}], direction: Math.PI, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(false); // peeled away early
+    expect(safe.length).toBeGreaterThan(0); // turn options remain
+  });
+
+  test('AI does NOT peel away from a same-row opponent moving the same way', () => {
+    // Opponent ahead but heading the SAME way (+x) — no head-on, just a chase.
+    setGlobal('aiSnakes', [
+      { snake: [{x: 0, z: 0}, {x: -1, z: 0}], direction: 0, alive: true, color: 'green' },
+      { snake: [{x: 4, z: 0}, {x: 3, z: 0}], direction: 0, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(true); // same direction, no head-on lane
+  });
+
+  test('AI does NOT peel away from a distant oncoming opponent (beyond lookahead)', () => {
+    // Oncoming but far away (8 cells) — outside the head-on lookahead window.
+    setGlobal('aiSnakes', [
+      { snake: [{x: 0, z: 0}, {x: -1, z: 0}], direction: 0, alive: true, color: 'green' },
+      { snake: [{x: 8, z: 0}, {x: 9, z: 0}], direction: Math.PI, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(true); // too far to react yet
+  });
+
+  test('AI does NOT peel away from an oncoming opponent on a different row', () => {
+    // Oncoming heading but on row z=2, not in this AI's lane (z=0).
+    setGlobal('aiSnakes', [
+      { snake: [{x: 0, z: 0}, {x: -1, z: 0}], direction: 0, alive: true, color: 'green' },
+      { snake: [{x: 4, z: 2}, {x: 5, z: 2}], direction: Math.PI, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    var forwardSafe = safe.some(function(d) { return Math.abs(d) < 0.01; });
+    expect(forwardSafe).toBe(true); // different lane, no conflict
+  });
+});
+
 // ─── showAiDeathMessage() ───
 describe('ai.js — showAiDeathMessage()', () => {
   var deathMsgEl;
