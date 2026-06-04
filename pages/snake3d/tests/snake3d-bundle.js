@@ -1560,13 +1560,25 @@ function bestApple(aiSnake, blocked, diff, aiIndex) {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
 
-    // Penalize apples that other alive snakes are racing for
-    // If another snake is closer (or equidistant with lower index), abandon it
+    // Penalize apples that another alive snake is racing for.
+    // The player counts as just another competitor (same treatment as AIs):
+    // if another snake is closer (or equidistant with priority), abandon it.
     var appleContested = 0;
     var appleCloser = 0;
+    // Player competitor (skip if the player head coincides with this snake's
+    // head — then it's effectively the same entity, not a competitor)
+    if (snake && snake.length > 0 && !(snake[0].x === head.x && snake[0].z === head.z)) {
+      var pDist = Math.abs(apple.x - snake[0].x) + Math.abs(apple.z - snake[0].z);
+      if (pDist < 10) {
+        appleContested++;
+        // Player wins ties (treated like a higher-priority competitor)
+        if (pDist <= manhattanDist) appleCloser++;
+      }
+    }
     if (aiSnakes) {
       for (var co = 0; co < aiSnakes.length; co++) {
         if (!aiSnakes[co].alive) continue;
+        if (co === aiIndex) continue; // don't compete with ourselves
         var coHead = aiSnakes[co].snake[0];
         var coDist = Math.abs(apple.x - coHead.x) + Math.abs(apple.z - coHead.z);
         if (coDist < 10) {
@@ -1671,11 +1683,30 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
   var safe = [];
   var head = aiSnake[0];
 
-  // ─── Player perception: does the AI "see" the player? ───
-  var canSeePlayer = (perceptionRadius < 0); // -1 = infinite vision
-  if (!canSeePlayer && snake.length > 0) {
-    var manhattanToPlayer = Math.abs(snake[0].x - head.x) + Math.abs(snake[0].z - head.z);
-    canSeePlayer = (manhattanToPlayer <= perceptionRadius);
+  // ─── Unified competitor model ───
+  // From an AI's point of view, another AI is just another player: the player
+  // and every other living AI are treated IDENTICALLY. We build one list of
+  // "other snakes" and apply the SAME perception + collision-avoidance rules to
+  // all of them, instead of special-casing the player.
+  //   perceptionRadius: max Manhattan distance (to a snake's head) at which the
+  //   AI perceives that snake. -1 = infinite (hard mode, always perceives).
+  var otherSnakes = [];
+  if (snake && snake.length > 0) {
+    otherSnakes.push({ body: snake, head: snake[0], dir: direction });
+  }
+  if (aiSnakes) {
+    for (var oi = 0; oi < aiSnakes.length; oi++) {
+      if (oi === aiIndex) continue;
+      if (!aiSnakes[oi].alive) continue;
+      otherSnakes.push({ body: aiSnakes[oi].snake, head: aiSnakes[oi].snake[0], dir: aiSnakes[oi].direction });
+    }
+  }
+
+  // A snake is "perceived" when its head is within perceptionRadius (same
+  // handicap for the player and for other AIs).
+  function perceives(otherHead) {
+    if (perceptionRadius < 0) return true; // infinite vision
+    return (Math.abs(otherHead.x - head.x) + Math.abs(otherHead.z - head.z)) <= perceptionRadius;
   }
 
   possibleDirs.forEach(function(dir) {
@@ -1685,45 +1716,31 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
     if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return;
     if (aiSnake.some(function(s) { return s.x === nx && s.z === nz; })) return;
     if (obstacles.some(function(o) { return o.x === nx && o.z === nz; })) return;
-    // Player snake: only treated as obstacle if AI can "see" it
-    if (canSeePlayer && snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-    if (aiSnakes) {
-      for (var i = 0; i < aiSnakes.length; i++) {
-        if (i === aiIndex) continue;
-        var other = aiSnakes[i];
-        if (!other.alive) continue;
-        if (other.snake.some(function(s) { return s.x === nx && s.z === nz; })) return;
-      }
-    }
 
     // Corpses (unconverted segments are solid) — O(1) via corpseSet
     if (corpseSet && corpseSet[nx + ',' + nz]) return;
 
-    // ─── COLLISION AVOIDANCE ───
-    // 1) Don't head to same destination cell as another snake (ANY angle)
-    // 2) Don't move into another snake's current head if it's heading toward us (swap)
-    if (canSeePlayer && snake.length > 0) {
-      var ppdx = snake[0].x + Math.round(Math.cos(direction));
-      var ppdz = snake[0].z + Math.round(Math.sin(direction));
-      // Same destination — always avoid (head-on, perpendicular, or racing)
-      if (nx === ppdx && nz === ppdz) return;
-      // Swap: AI moves into player's head, player moves into AI's cell
-      if (nx === snake[0].x && nz === snake[0].z && ppdx === head.x && ppdz === head.z) return;
-    }
-    // Other AI predicted destinations
-    if (aiSnakes) {
-      for (var ca = 0; ca < aiSnakes.length; ca++) {
-        if (ca === aiIndex) continue;
-        var other = aiSnakes[ca];
-        if (!other.alive) continue;
-        var otherHead = other.snake[0];
-        var ox = otherHead.x + Math.round(Math.cos(other.direction));
-        var oz = otherHead.z + Math.round(Math.sin(other.direction));
-        // Same destination — always avoid
-        if (nx === ox && nz === oz) return;
-        // Swap: AI moves into other's head, other moves into AI's cell
-        if (nx === otherHead.x && nz === otherHead.z && ox === head.x && oz === head.z) return;
+    // ─── Other snakes (player + AIs), treated identically ───
+    // For each perceived snake:
+    //   1) its body is a solid obstacle,
+    //   2) avoid racing into the same destination cell (head-on / perpendicular),
+    //   3) avoid swapping cells with its head.
+    for (var os = 0; os < otherSnakes.length; os++) {
+      var other = otherSnakes[os];
+      if (!perceives(other.head)) continue;
+
+      var blocksBody = false;
+      for (var bi = 0; bi < other.body.length; bi++) {
+        if (other.body[bi].x === nx && other.body[bi].z === nz) { blocksBody = true; break; }
       }
+      if (blocksBody) return;
+
+      var ox = other.head.x + Math.round(Math.cos(other.dir));
+      var oz = other.head.z + Math.round(Math.sin(other.dir));
+      // Same destination — always avoid (head-on, perpendicular, or racing)
+      if (nx === ox && nz === oz) return;
+      // Swap: AI moves into the other's head while it moves into our cell
+      if (nx === other.head.x && nz === other.head.z && ox === head.x && oz === head.z) return;
     }
 
     safe.push(dir);
