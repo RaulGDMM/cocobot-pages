@@ -1225,9 +1225,9 @@ function detectAndHandleHeadOnCollisions() {
     }
 
     // Perpendicular (side collision): one head hits the side of the other's
-    // head. The snake that turned into the other dies; if it's ambiguous
-    // (both turned or both went straight), both die — but as an ordinary
-    // collision, NOT a head-on.
+    // head. The snake that turned into the other dies. If it's ambiguous
+    // (both turned or both went straight), choose one deterministic victim;
+    // side collisions should not create a two-death shrink cascade.
     var s1Turned = s1.dir !== s1.prevDir;
     var s2Turned = s2.dir !== s2.prevDir;
 
@@ -1238,10 +1238,15 @@ function detectAndHandleHeadOnCollisions() {
       log('↩️ SIDE COLLISION: ' + getName(s2) + ' turned into ' + getName(s1) + ' at (' + s1.x + ',' + s1.z + ')');
       killSnake(s2, 'ai');
     } else {
-      // Both turned or both went straight — ambiguous side collision, both die
-      log('↩️ SIDE COLLISION: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s1, 'ai');
-      killSnake(s2, 'ai');
+      // Both turned or both went straight — ambiguous side collision. Pick a
+      // stable victim from geometry only (lower incoming axis priority yields)
+      // so this stays identity-neutral and only one snake dies.
+      var s1AxisPriority = Math.abs(Math.round(Math.cos(s1.dir))) ? 0 : 1;
+      var s2AxisPriority = Math.abs(Math.round(Math.cos(s2.dir))) ? 0 : 1;
+      var victimSide = s1AxisPriority > s2AxisPriority ? s1 : s2;
+      var survivorSide = victimSide === s1 ? s2 : s1;
+      log('↩️ SIDE COLLISION: ' + getName(victimSide) + ' yielded to ' + getName(survivorSide) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(victimSide, 'ai');
     }
   }
 

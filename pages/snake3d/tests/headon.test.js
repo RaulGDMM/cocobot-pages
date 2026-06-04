@@ -30,6 +30,7 @@ describe('ai.js — detectAndHandleHeadOnCollisions()', () => {
     setGlobal('difficulty', 'medium');
     setGlobal('spectating', false);
     setGlobal('running', true);
+    setGlobal('shrinkCountdowns', []);
   });
 
   test('returns false when no AI snakes', () => {
@@ -326,6 +327,44 @@ describe('ai.js — detectAndHandleHeadOnCollisions()', () => {
     expect(result).toBe(true);
     expect(gameOver).toBe(false);          // player survives (didn't turn)
     expect(aiSnakes[0].alive).toBe(false); // the AI that turned dies
+
+    var msgEl = document.getElementById('ai-death-msg');
+    expect(msgEl.textContent).not.toContain('Choque de cabezas');
+  });
+
+  test('ambiguous perpendicular AI clash kills only one snake', () => {
+    // Two AIs enter the same cell perpendicularly without either having just
+    // turned. This is a side collision, not a front-to-front crash, so it
+    // should not remove both snakes and schedule a double-shrink cascade.
+    setSnake([]);
+    setGlobal('aiSnakes', [
+      {
+        id: 'ai_0',
+        alive: true,
+        snake: [{x: 0, z: 1}, {x: 0, z: 2}],
+        direction: -Math.PI / 2, // facing -Z → dest (0,0)
+        prevDirection: -Math.PI / 2,
+        color: 'blue',
+        score: 0,
+        groupData: null
+      },
+      {
+        id: 'ai_1',
+        alive: true,
+        snake: [{x: -1, z: 0}, {x: -2, z: 0}],
+        direction: 0, // facing +X → dest (0,0)
+        prevDirection: 0,
+        color: 'salmon',
+        score: 0,
+        groupData: null
+      }
+    ]);
+
+    var result = detectAndHandleHeadOnCollisions();
+    var aliveCount = aiSnakes.filter(function(ai) { return ai.alive; }).length;
+
+    expect(result).toBe(true);
+    expect(aliveCount).toBe(1);
 
     var msgEl = document.getElementById('ai-death-msg');
     expect(msgEl.textContent).not.toContain('Choque de cabezas');
