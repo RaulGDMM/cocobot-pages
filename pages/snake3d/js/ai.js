@@ -358,17 +358,23 @@ function bestApple(aiSnake, blocked, diff) {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
 
-    // Penalize apples that other alive snakes are also racing for
+    // Penalize apples that other alive snakes are racing for
+    // If another snake is closer to the apple, abandon it entirely
     var appleContested = 0;
+    var appleCloser = 0;
     if (aiSnakes) {
       for (var co = 0; co < aiSnakes.length; co++) {
         if (!aiSnakes[co].alive) continue;
         var coHead = aiSnakes[co].snake[0];
         var coDist = Math.abs(apple.x - coHead.x) + Math.abs(apple.z - coHead.z);
-        if (coDist < 8) appleContested++; // Another snake within 8 steps
+        if (coDist < 10) {
+          appleContested++;
+          if (coDist < manhattanDist) appleCloser++; // Other snake is closer
+        }
       }
     }
-    score -= appleContested * 15; // Prefer uncontested apples
+    score -= appleContested * 30; // Moderate penalty for nearby snakes
+    score -= appleCloser * 500;  // Heavy penalty — another snake will get it first
 
     if (score > bestScore) {
       bestScore = score;
