@@ -215,6 +215,7 @@ log('2. Three.js v' + THREE.REVISION);
 // ─── STATE ───
 var snake = [];
 var direction = 0;
+var playerPrevDirection = 0;
 var apples = [];
 var obstacles = [];
 var score = 0;
@@ -1559,6 +1560,18 @@ function bestApple(aiSnake, blocked, diff) {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
 
+    // Penalize apples that other alive snakes are also racing for
+    var appleContested = 0;
+    if (aiSnakes) {
+      for (var co = 0; co < aiSnakes.length; co++) {
+        if (!aiSnakes[co].alive) continue;
+        var coHead = aiSnakes[co].snake[0];
+        var coDist = Math.abs(apple.x - coHead.x) + Math.abs(apple.z - coHead.z);
+        if (coDist < 8) appleContested++; // Another snake within 8 steps
+      }
+    }
+    score -= appleContested * 15; // Prefer uncontested apples
+
     if (score > bestScore) {
       bestScore = score;
       best = apple;
@@ -1676,6 +1689,34 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
 
     // Corpses (unconverted segments are solid) — O(1) via corpseSet
     if (corpseSet && corpseSet[nx + ',' + nz]) return;
+
+    // ─── COLLISION AVOIDANCE: don't head to same cell as another snake
+    // going in the same direction (racing) or opposite direction (head-on) ───
+    // Player predicted destination
+    if (canSeePlayer && snake.length > 0) {
+      var ppdx = snake[0].x + Math.round(Math.cos(direction));
+      var ppdz = snake[0].z + Math.round(Math.sin(direction));
+      if (nx === ppdx && nz === ppdz) {
+        var pCosAngle = Math.cos(dir - direction);
+        if (pCosAngle > 0.9) return; // Same direction — avoid racing
+        if (pCosAngle < -0.9) return; // Head-on — avoid (both die)
+      }
+    }
+    // Other AI predicted destinations
+    if (aiSnakes) {
+      for (var ca = 0; ca < aiSnakes.length; ca++) {
+        if (ca === aiIndex) continue;
+        var other = aiSnakes[ca];
+        if (!other.alive) continue;
+        var ox = other.snake[0].x + Math.round(Math.cos(other.direction));
+        var oz = other.snake[0].z + Math.round(Math.sin(other.direction));
+        if (nx === ox && nz === oz) {
+          var cosAngle = Math.cos(dir - other.direction);
+          if (cosAngle > 0.9) return; // Same direction — avoid racing into same cell
+          if (cosAngle < -0.9) return; // Head-on — avoid (both would die)
+        }
+      }
+    }
 
     safe.push(dir);
   });
@@ -2210,7 +2251,7 @@ function detectAndHandleHeadOnCollisions() {
   if (snake.length > 0 && !gameOver) {
     var px = snake[0].x + Math.round(Math.cos(direction));
     var pz = snake[0].z + Math.round(Math.sin(direction));
-    destinations.push({type: 'player', x: px, z: pz});
+    destinations.push({type: 'player', x: px, z: pz, dir: direction, prevDir: playerPrevDirection});
   }
 
   // AI destinations
@@ -2219,10 +2260,10 @@ function detectAndHandleHeadOnCollisions() {
     if (!ai.alive) continue;
     var ax = ai.snake[0].x + Math.round(Math.cos(ai.direction));
     var az = ai.snake[0].z + Math.round(Math.sin(ai.direction));
-    destinations.push({type: 'ai', index: i, x: ax, z: az});
+    destinations.push({type: 'ai', index: i, x: ax, z: az, dir: ai.direction, prevDir: ai.prevDirection});
   }
 
-  // Check all pairs for head-on collision
+  // Check all pairs for collision at same destination
   var handled = {};
   var collisions = [];
 
@@ -2244,68 +2285,112 @@ function detectAndHandleHeadOnCollisions() {
 
   var colorNames = {green: 'verde', red: 'roja', blue: 'azul', yellow: 'amarilla', cyan: 'cyan', purple: 'púrpura', orange: 'naranja', salmon: 'salmón'};
 
-  // Collect all collision info for the message, then kill snakes
-  var allNames = [];
-  var totalPoints = 0;
-  var allDiedAIIndices = [];
+  // Helper: get snake name for messages
+  function getName(s) {
+    if (s.type === 'player') return 'Tú';
+    return 'serpiente ' + (colorNames[aiSnakes[s.index].color] || aiSnakes[s.index].color);
+  }
 
+  // Helper: determine which snake(s) die based on direction comparison
+  function resolveCollision(s1, s2) {
+    var cosAngle = Math.cos(s1.dir - s2.dir);
+    var relDir = getRelativeDirection(s1.dir, s2.dir);
+
+    if (relDir === 'opposite') {
+      // True head-on: both die
+      log('💥💥 HEAD-ON: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(s1);
+      killSnake(s2);
+      return;
+    }
+
+    if (relDir === 'same') {
+      // Same direction: the trailing one dies (the one behind)
+      // Compute current positions from destination and direction
+      var p1x = s1.x - Math.round(Math.cos(s1.dir));
+      var p1z = s1.z - Math.round(Math.sin(s1.dir));
+      var p2x = s2.x - Math.round(Math.cos(s2.dir));
+      var p2z = s2.z - Math.round(Math.sin(s2.dir));
+      // The one further behind (opposite to movement direction) is trailing
+      var behind1 = -(p1x * Math.cos(s1.dir) + p1z * Math.sin(s1.dir));
+      var behind2 = -(p2x * Math.cos(s2.dir) + p2z * Math.sin(s2.dir));
+      var victim = behind1 > behind2 ? s1 : s2;
+      var survivor = behind1 > behind2 ? s2 : s1;
+      log('🔀 SAME-DIR RACE: ' + getName(victim) + ' behind ' + getName(survivor) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(victim);
+      return;
+    }
+
+    // Perpendicular: only the one that turned dies
+    var s1Turned = s1.dir !== s1.prevDir;
+    var s2Turned = s2.dir !== s2.prevDir;
+
+    if (s1Turned && !s2Turned) {
+      log('↩️ SIDE COLLISION: ' + getName(s1) + ' turned into ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(s1);
+    } else if (s2Turned && !s1Turned) {
+      log('↩️ SIDE COLLISION: ' + getName(s2) + ' turned into ' + getName(s1) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(s2);
+    } else {
+      // Both turned or both went straight — both die
+      log('💥💥 HEAD-ON: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(s1);
+      killSnake(s2);
+    }
+  }
+
+  function killSnake(s) {
+    if (s.type === 'player') {
+      die('headon');
+    } else if (s.type === 'ai') {
+      aiDie(s.index, 'headon');
+    }
+  }
+
+  // Process each collision
   for (var c = 0; c < collisions.length; c++) {
     var pair = collisions[c];
-    var s1 = pair[0], s2 = pair[1];
+    resolveCollision(pair[0], pair[1]);
+  }
 
-    if (s1.type === 'player') allNames.push('Tú');
-    else allNames.push('serpiente ' + (colorNames[aiSnakes[s1.index].color] || aiSnakes[s1.index].color));
-
-    if (s2.type === 'player') allNames.push('Tú');
-    else allNames.push('serpiente ' + (colorNames[aiSnakes[s2.index].color] || aiSnakes[s2.index].color));
-
-    if (s1.type === 'ai') allDiedAIIndices.push(s1.index);
-    if (s2.type === 'ai') allDiedAIIndices.push(s2.index);
-
-    log('💥💥 HEAD-ON at (' + s1.x + ',' + s1.z + ')');
-
-    // Kill both snakes
-    if (s1.type === 'player') {
-      die('headon');
-    } else if (s1.type === 'ai') {
-      aiDie(s1.index, 'headon');
-    }
-
-    if (s2.type === 'player') {
-      die('headon');
-    } else if (s2.type === 'ai') {
-      aiDie(s2.index, 'headon');
+  // Show a summary message based on what happened
+  var anyHeadOn = false;
+  var headOnNames = [];
+  for (var c = 0; c < collisions.length; c++) {
+    var s1 = collisions[c][0], s2 = collisions[c][1];
+    var relDir = getRelativeDirection(s1.dir, s2.dir);
+    if (relDir === 'opposite') {
+      anyHeadOn = true;
+      headOnNames.push(getName(s1));
+      headOnNames.push(getName(s2));
     }
   }
 
-  // Count surviving snakes for points
-  var livingCount = 0;
-  var hasPlayerDeath = allNames.indexOf('Tú') !== -1;
-  if (!hasPlayerDeath) {
-    // Both AI died — player is alive
-    livingCount = 1;
-  }
-  for (var li = 0; li < aiSnakes.length; li++) {
-    if (aiSnakes[li].alive && allDiedAIIndices.indexOf(li) === -1) livingCount++;
-  }
-
-  totalPoints = (DEATH_POINTS + KILLER_BONUS) * 2 * collisions.length * livingCount;
-
-  // Show joint head-on collision message AFTER individual death messages
-  var nameStr = allNames.join(', ');
-  var deadCount = collisions.length * 2;
-  var msg = '💥💥 ¡Choque de cabezas entre ' + nameStr + '! 😵 ' + deadCount + ' eliminadas — ' + totalPoints + ' puntos repartidos 🎯';
-  var el = document.getElementById('ai-death-msg');
-  if (el) {
-    el.textContent = msg;
-    el.classList.add('visible');
-    clearTimeout(el._hideTimer);
-    el._hideTimer = setTimeout(function() {
-      el.classList.remove('visible');
-    }, 5000);
+  if (anyHeadOn) {
+    var nameStr = headOnNames.join(', ');
+    var deadCount = headOnNames.length;
+    var msg = '💥💥 ¡Choque de cabezas entre ' + nameStr + '! 😵 ' + deadCount + ' eliminadas — puntos repartidos 🎯';
+    var el = document.getElementById('ai-death-msg');
+    if (el) {
+      el.textContent = msg;
+      el.classList.add('visible');
+      clearTimeout(el._hideTimer);
+      el._hideTimer = setTimeout(function() {
+        el.classList.remove('visible');
+      }, 5000);
+    }
   }
 
   return true;
+}
+
+// ─── Determine relative direction between two snakes ───
+// Returns: 'opposite', 'same', or 'perpendicular'
+function getRelativeDirection(dir1, dir2) {
+  var cosAngle = Math.cos(dir1 - dir2);
+  if (cosAngle > 0.9) return 'same';
+  if (cosAngle < -0.9) return 'opposite';
+  return 'perpendicular';
 }
 
 // ─── Initialize AI snakes ───
@@ -2347,6 +2432,7 @@ function initAI() {
       id: 'ai_' + i,
       snake: snakeData,
       direction: initDir,
+      prevDirection: initDir,
       color: availableColors[i] || 'red',
       alive: true,
       score: 0,
@@ -2368,6 +2454,9 @@ function stepAI() {
 
   aiSnakes.forEach(function(ai, index) {
     if (!ai.alive) return;
+
+    // Save direction before AI decides (for collision fault determination)
+    ai.prevDirection = ai.direction;
 
     // Board changed since the previous snake moved — refresh the cache.
     invalidateBlockedCache();
@@ -3105,7 +3194,7 @@ function initGame() {
   // Clear old snake groups from sGroup
     while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
 
-   snake=[]; direction=0; score=0; gameOver=false;
+   snake=[]; direction=0; playerPrevDirection=0; score=0; gameOver=false;
         obstacles=[]; apples=[]; corpses=[];
         if(typeof corpseSet !== 'undefined') corpseSet = {};
   scoreEl.textContent='0';

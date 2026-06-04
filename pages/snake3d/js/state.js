@@ -1,6 +1,7 @@
 // ─── STATE ───
 var snake = [];
 var direction = 0;
+var playerPrevDirection = 0;
 var apples = [];
 var obstacles = [];
 var score = 0;

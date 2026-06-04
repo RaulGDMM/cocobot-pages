@@ -21,11 +21,13 @@ function loop(now) {
     if(frameCount===60) log('8. 60 frames OK, waiting for JUGAR');
 
    if(running && !gameOver && !paused) {
-        if(now-lastMoveTime >= MOVE_INTERVAL) {
-           // ─── HEAD-ON COLLISION: detect before any movement ───
-           if(aiSnakes && aiSnakes.length > 0 && typeof detectAndHandleHeadOnCollisions === 'function') {
-             detectAndHandleHeadOnCollisions();
-           }
+         if(now-lastMoveTime >= MOVE_INTERVAL) {
+            // ─── Save player direction before tick (for collision fault) ───
+            playerPrevDirection = direction;
+            // ─── HEAD-ON COLLISION: detect before any movement ───
+            if(aiSnakes && aiSnakes.length > 0 && typeof detectAndHandleHeadOnCollisions === 'function') {
+              detectAndHandleHeadOnCollisions();
+            }
            // ─── AI MODE: step AI before player (surviving AI still move) ───
            if(aiSnakes && aiSnakes.length > 0) stepAI();
            step();
@@ -44,6 +46,8 @@ function loop(now) {
       // ─── SPECTATOR MODE: game continues after player death ───
         if(spectating && running && !paused) {
           if(now-lastMoveTime >= MOVE_INTERVAL) {
+            // ─── Save player direction (for collision fault, though player is dead) ───
+            playerPrevDirection = direction;
             // ─── HEAD-ON COLLISION: detect AI vs AI before movement ───
             if(aiSnakes && aiSnakes.length > 0 && typeof detectAndHandleHeadOnCollisions === 'function') {
               detectAndHandleHeadOnCollisions();

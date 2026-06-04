@@ -34,7 +34,7 @@ function initGame() {
   // Clear old snake groups from sGroup
     while(sGroup.children.length) { var c = sGroup.children[0]; sGroup.remove(c); }
 
-   snake=[]; direction=0; score=0; gameOver=false;
+   snake=[]; direction=0; playerPrevDirection=0; score=0; gameOver=false;
         obstacles=[]; apples=[]; corpses=[];
         if(typeof corpseSet !== 'undefined') corpseSet = {};
   scoreEl.textContent='0';
