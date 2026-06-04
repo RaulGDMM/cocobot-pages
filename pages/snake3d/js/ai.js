@@ -488,17 +488,16 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
     // Corpses (unconverted segments are solid) — O(1) via corpseSet
     if (corpseSet && corpseSet[nx + ',' + nz]) return;
 
-    // ─── COLLISION AVOIDANCE: don't head to same cell as another snake
-    // going in the same direction (racing) or opposite direction (head-on) ───
-    // Player predicted destination
+    // ─── COLLISION AVOIDANCE ───
+    // 1) Don't head to same destination cell as another snake (ANY angle)
+    // 2) Don't move into another snake's current head if it's heading toward us (swap)
     if (canSeePlayer && snake.length > 0) {
       var ppdx = snake[0].x + Math.round(Math.cos(direction));
       var ppdz = snake[0].z + Math.round(Math.sin(direction));
-      if (nx === ppdx && nz === ppdz) {
-        var pCosAngle = Math.cos(dir - direction);
-        if (pCosAngle > 0.9) return; // Same direction — avoid racing
-        if (pCosAngle < -0.9) return; // Head-on — avoid (both die)
-      }
+      // Same destination — always avoid (head-on, perpendicular, or racing)
+      if (nx === ppdx && nz === ppdz) return;
+      // Swap: AI moves into player's head, player moves into AI's cell
+      if (nx === snake[0].x && nz === snake[0].z && ppdx === head.x && ppdz === head.z) return;
     }
     // Other AI predicted destinations
     if (aiSnakes) {
@@ -506,13 +505,13 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
         if (ca === aiIndex) continue;
         var other = aiSnakes[ca];
         if (!other.alive) continue;
-        var ox = other.snake[0].x + Math.round(Math.cos(other.direction));
-        var oz = other.snake[0].z + Math.round(Math.sin(other.direction));
-        if (nx === ox && nz === oz) {
-          var cosAngle = Math.cos(dir - other.direction);
-          if (cosAngle > 0.9) return; // Same direction — avoid racing into same cell
-          if (cosAngle < -0.9) return; // Head-on — avoid (both would die)
-        }
+        var otherHead = other.snake[0];
+        var ox = otherHead.x + Math.round(Math.cos(other.direction));
+        var oz = otherHead.z + Math.round(Math.sin(other.direction));
+        // Same destination — always avoid
+        if (nx === ox && nz === oz) return;
+        // Swap: AI moves into other's head, other moves into AI's cell
+        if (nx === otherHead.x && nz === otherHead.z && ox === head.x && oz === head.z) return;
       }
     }
 
@@ -1045,39 +1044,46 @@ function detectAndHandleHeadOnCollisions() {
 
   var destinations = [];
 
-  // Player destination (only if alive and not spectating)
-  if (snake.length > 0 && !gameOver) {
-    var px = snake[0].x + Math.round(Math.cos(direction));
-    var pz = snake[0].z + Math.round(Math.sin(direction));
-    destinations.push({type: 'player', x: px, z: pz, dir: direction, prevDir: playerPrevDirection});
-  }
+ // Player destination (only if alive and not spectating)
+    if (snake.length > 0 && !gameOver) {
+      var px = snake[0].x + Math.round(Math.cos(direction));
+      var pz = snake[0].z + Math.round(Math.sin(direction));
+      destinations.push({type: 'player', x: px, z: pz, cx: snake[0].x, cz: snake[0].z, dir: direction, prevDir: playerPrevDirection});
+    }
 
-  // AI destinations
-  for (var i = 0; i < aiSnakes.length; i++) {
-    var ai = aiSnakes[i];
-    if (!ai.alive) continue;
-    var ax = ai.snake[0].x + Math.round(Math.cos(ai.direction));
-    var az = ai.snake[0].z + Math.round(Math.sin(ai.direction));
-    destinations.push({type: 'ai', index: i, x: ax, z: az, dir: ai.direction, prevDir: ai.prevDirection});
-  }
+    // AI destinations
+    for (var i = 0; i < aiSnakes.length; i++) {
+      var ai = aiSnakes[i];
+      if (!ai.alive) continue;
+      var ax = ai.snake[0].x + Math.round(Math.cos(ai.direction));
+      var az = ai.snake[0].z + Math.round(Math.sin(ai.direction));
+      destinations.push({type: 'ai', index: i, x: ax, z: az, cx: ai.snake[0].x, cz: ai.snake[0].z, dir: ai.direction, prevDir: ai.prevDirection});
+    }
 
-  // Check all pairs for collision at same destination
-  var handled = {};
-  var collisions = [];
+    // Check all pairs for collision at same destination
+    var handled = {};
+    var collisions = [];
 
-  for (var a = 0; a < destinations.length; a++) {
-    for (var b = a + 1; b < destinations.length; b++) {
-      var da = destinations[a];
-      var db = destinations[b];
-      if (da.x === db.x && da.z === db.z) {
-        if (!handled[a] && !handled[b]) {
+    for (var a = 0; a < destinations.length; a++) {
+      for (var b = a + 1; b < destinations.length; b++) {
+        var da = destinations[a];
+        var db = destinations[b];
+        // Same destination collision
+        if (da.x === db.x && da.z === db.z) {
+          if (!handled[a] && !handled[b]) {
+            handled[a] = true;
+            handled[b] = true;
+            collisions.push([da, db]);
+          }
+        }
+        // Swap collision: A moves to B's current cell, B moves to A's current cell
+        else if (!handled[a] && !handled[b] && da.x === db.cx && da.z === db.cz && db.x === da.cx && db.z === da.cz) {
           handled[a] = true;
           handled[b] = true;
           collisions.push([da, db]);
         }
       }
     }
-  }
 
   if (collisions.length === 0) return false;
 
