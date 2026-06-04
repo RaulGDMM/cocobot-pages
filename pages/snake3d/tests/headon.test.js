@@ -302,6 +302,34 @@ describe('ai.js — detectAndHandleHeadOnCollisions()', () => {
     expect(aiSnakes[0].alive).toBe(false); // AI0 died
     expect(aiSnakes[1].alive).toBe(true); // AI1 survives (not involved)
   });
+
+  test('perpendicular clash is a normal side collision, not a head-on', () => {
+    // Player at (0,0) facing +X and went straight → dest (1,0)
+    // AI at (1,1) facing -Z having just turned → dest (1,0)
+    // They meet perpendicular: the AI ran into the side, so it dies as an
+    // ordinary collision and NO head-on message is shown.
+    setSnake([{x: 0, z: 0}, {x: -1, z: 0}]);
+    setGlobal('direction', 0);
+    setGlobal('playerPrevDirection', 0); // player went straight
+    setGlobal('aiSnakes', [{
+      id: 'ai_0',
+      alive: true,
+      snake: [{x: 1, z: 1}, {x: 1, z: 2}],
+      direction: -Math.PI / 2, // facing -Z → dest (1,0)
+      prevDirection: 0,         // was facing +X → it turned
+      color: 'red',
+      score: 0,
+      groupData: null
+    }]);
+
+    var result = detectAndHandleHeadOnCollisions();
+    expect(result).toBe(true);
+    expect(gameOver).toBe(false);          // player survives (didn't turn)
+    expect(aiSnakes[0].alive).toBe(false); // the AI that turned dies
+
+    var msgEl = document.getElementById('ai-death-msg');
+    expect(msgEl.textContent).not.toContain('Choque de cabezas');
+  });
 });
 
 // ─── showAiDeathMessage() — headon cause ───

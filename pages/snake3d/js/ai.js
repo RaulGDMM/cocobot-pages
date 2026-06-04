@@ -1190,21 +1190,25 @@ function detectAndHandleHeadOnCollisions() {
     return 'serpiente ' + (colorNames[aiSnakes[s.index].color] || aiSnakes[s.index].color);
   }
 
-  // Helper: determine which snake(s) die based on direction comparison
+  // Helper: determine which snake(s) die based on direction comparison.
+  // Only a TRUE front-to-front clash (opposite headings) counts as a "head-on"
+  // (cause 'headon' → both die with the 💥 head-on message). A perpendicular
+  // clash — one head running into the side of another head — is an ordinary
+  // collision (cause 'ai'), as is a same-direction rear-end.
   function resolveCollision(s1, s2) {
-    var cosAngle = Math.cos(s1.dir - s2.dir);
     var relDir = getRelativeDirection(s1.dir, s2.dir);
 
     if (relDir === 'opposite') {
       // True head-on: both die
       log('💥💥 HEAD-ON: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s1);
-      killSnake(s2);
+      killSnake(s1, 'headon');
+      killSnake(s2, 'headon');
       return;
     }
 
     if (relDir === 'same') {
-      // Same direction: the trailing one dies (the one behind)
+      // Same direction: the trailing one dies (the one behind) — a rear-end,
+      // i.e. an ordinary collision, not a head-on.
       // Compute current positions from destination and direction
       var p1x = s1.x - Math.round(Math.cos(s1.dir));
       var p1z = s1.z - Math.round(Math.sin(s1.dir));
@@ -1216,33 +1220,36 @@ function detectAndHandleHeadOnCollisions() {
       var victim = behind1 > behind2 ? s1 : s2;
       var survivor = behind1 > behind2 ? s2 : s1;
       log('🔀 SAME-DIR RACE: ' + getName(victim) + ' behind ' + getName(survivor) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(victim);
+      killSnake(victim, 'ai');
       return;
     }
 
-    // Perpendicular: only the one that turned dies
+    // Perpendicular (side collision): one head hits the side of the other's
+    // head. The snake that turned into the other dies; if it's ambiguous
+    // (both turned or both went straight), both die — but as an ordinary
+    // collision, NOT a head-on.
     var s1Turned = s1.dir !== s1.prevDir;
     var s2Turned = s2.dir !== s2.prevDir;
 
     if (s1Turned && !s2Turned) {
       log('↩️ SIDE COLLISION: ' + getName(s1) + ' turned into ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s1);
+      killSnake(s1, 'ai');
     } else if (s2Turned && !s1Turned) {
       log('↩️ SIDE COLLISION: ' + getName(s2) + ' turned into ' + getName(s1) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s2);
+      killSnake(s2, 'ai');
     } else {
-      // Both turned or both went straight — both die
-      log('💥💥 HEAD-ON: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s1);
-      killSnake(s2);
+      // Both turned or both went straight — ambiguous side collision, both die
+      log('↩️ SIDE COLLISION: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(s1, 'ai');
+      killSnake(s2, 'ai');
     }
   }
 
-  function killSnake(s) {
+  function killSnake(s, cause) {
     if (s.type === 'player') {
-      die('headon');
+      die(cause);
     } else if (s.type === 'ai') {
-      aiDie(s.index, 'headon');
+      aiDie(s.index, cause);
     }
   }
 
