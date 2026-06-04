@@ -2393,24 +2393,24 @@ function detectAndHandleHeadOnCollisions() {
   }
 
   // Helper: determine which snake(s) die based on direction comparison.
-  // Only a TRUE front-to-front clash (opposite headings) counts as a "head-on"
-  // (cause 'headon' → both die with the 💥 head-on message). A perpendicular
-  // clash — one head running into the side of another head — is an ordinary
-  // collision (cause 'ai'), as is a same-direction rear-end.
+  // Keep the original collision semantics; only display true opposite-heading
+  // crashes as "head-on". Side/rear-end collisions still use the old internal
+  // 'headon' cause for scoring/timing behavior, but show a normal collision
+  // message via displayCause.
   function resolveCollision(s1, s2) {
+    var cosAngle = Math.cos(s1.dir - s2.dir);
     var relDir = getRelativeDirection(s1.dir, s2.dir);
 
     if (relDir === 'opposite') {
       // True head-on: both die
       log('💥💥 HEAD-ON: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s1, 'headon');
-      killSnake(s2, 'headon');
+      killSnake(s1, 'headon', 'headon');
+      killSnake(s2, 'headon', 'headon');
       return;
     }
 
     if (relDir === 'same') {
-      // Same direction: the trailing one dies (the one behind) — a rear-end,
-      // i.e. an ordinary collision, not a head-on.
+      // Same direction: the trailing one dies (the one behind)
       // Compute current positions from destination and direction
       var p1x = s1.x - Math.round(Math.cos(s1.dir));
       var p1z = s1.z - Math.round(Math.sin(s1.dir));
@@ -2422,41 +2422,34 @@ function detectAndHandleHeadOnCollisions() {
       var victim = behind1 > behind2 ? s1 : s2;
       var survivor = behind1 > behind2 ? s2 : s1;
       log('🔀 SAME-DIR RACE: ' + getName(victim) + ' behind ' + getName(survivor) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(victim, 'ai');
+      killSnake(victim, 'headon', 'ai');
       return;
     }
 
-    // Perpendicular (side collision): one head hits the side of the other's
-    // head. The snake that turned into the other dies. If it's ambiguous
-    // (both turned or both went straight), choose one deterministic victim;
-    // side collisions should not create a two-death shrink cascade.
+    // Perpendicular: only the one that turned dies
     var s1Turned = s1.dir !== s1.prevDir;
     var s2Turned = s2.dir !== s2.prevDir;
 
     if (s1Turned && !s2Turned) {
       log('↩️ SIDE COLLISION: ' + getName(s1) + ' turned into ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s1, 'ai');
+      killSnake(s1, 'headon', 'ai');
     } else if (s2Turned && !s1Turned) {
       log('↩️ SIDE COLLISION: ' + getName(s2) + ' turned into ' + getName(s1) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(s2, 'ai');
+      killSnake(s2, 'headon', 'ai');
     } else {
-      // Both turned or both went straight — ambiguous side collision. Pick a
-      // stable victim from geometry only (lower incoming axis priority yields)
-      // so this stays identity-neutral and only one snake dies.
-      var s1AxisPriority = Math.abs(Math.round(Math.cos(s1.dir))) ? 0 : 1;
-      var s2AxisPriority = Math.abs(Math.round(Math.cos(s2.dir))) ? 0 : 1;
-      var victimSide = s1AxisPriority > s2AxisPriority ? s1 : s2;
-      var survivorSide = victimSide === s1 ? s2 : s1;
-      log('↩️ SIDE COLLISION: ' + getName(victimSide) + ' yielded to ' + getName(survivorSide) + ' at (' + s1.x + ',' + s1.z + ')');
-      killSnake(victimSide, 'ai');
+      // Both turned or both went straight — both die, as before, but this is
+      // not a true opposite-heading head-on for display purposes.
+      log('↩️ SIDE COLLISION: ' + getName(s1) + ' vs ' + getName(s2) + ' at (' + s1.x + ',' + s1.z + ')');
+      killSnake(s1, 'headon', 'ai');
+      killSnake(s2, 'headon', 'ai');
     }
   }
 
-  function killSnake(s, cause) {
+  function killSnake(s, cause, displayCause) {
     if (s.type === 'player') {
-      die(cause);
+      die(displayCause || cause);
     } else if (s.type === 'ai') {
-      aiDie(s.index, cause);
+      aiDie(s.index, cause, displayCause || cause);
     }
   }
 
@@ -2779,7 +2772,7 @@ function distributeDeathPoints(deadIndex, cause) {
 // ─── AI snake dies ───
 // The dead body stays visible on the board and converts to apples
 // segment by segment, starting from the head, one per tick.
-function aiDie(aiIndex, cause) {
+function aiDie(aiIndex, cause, displayCause) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return;
 
@@ -2825,8 +2818,9 @@ function aiDie(aiIndex, cause) {
     burst(ai.snake[0].x, ai.snake[0].z, 0xff4444, 8);
   }
 
-  // Show death message
-  showAiDeathMessage(ai, cause);
+  // Show death message. displayCause lets collision handling keep the original
+  // internal cause while avoiding a head-on message for side/rear-end hits.
+  showAiDeathMessage(ai, displayCause || cause);
 
   // ─── Trigger grid shrink on AI death ───
   maybeTriggerShrink();

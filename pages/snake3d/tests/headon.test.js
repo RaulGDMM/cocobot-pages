@@ -332,10 +332,10 @@ describe('ai.js — detectAndHandleHeadOnCollisions()', () => {
     expect(msgEl.textContent).not.toContain('Choque de cabezas');
   });
 
-  test('ambiguous perpendicular AI clash kills only one snake', () => {
+  test('ambiguous perpendicular AI clash keeps original two-death behavior but no head-on message', () => {
     // Two AIs enter the same cell perpendicularly without either having just
-    // turned. This is a side collision, not a front-to-front crash, so it
-    // should not remove both snakes and schedule a double-shrink cascade.
+    // turned. Original gameplay behavior removes both, but the visible message
+    // must still be a normal collision, not "Choque de cabezas".
     setSnake([]);
     setGlobal('aiSnakes', [
       {
@@ -364,10 +364,11 @@ describe('ai.js — detectAndHandleHeadOnCollisions()', () => {
     var aliveCount = aiSnakes.filter(function(ai) { return ai.alive; }).length;
 
     expect(result).toBe(true);
-    expect(aliveCount).toBe(1);
+    expect(aliveCount).toBe(0);
 
     var msgEl = document.getElementById('ai-death-msg');
     expect(msgEl.textContent).not.toContain('Choque de cabezas');
+    expect(msgEl.textContent).toContain('fue eliminada por otra serpiente');
   });
 });
 
