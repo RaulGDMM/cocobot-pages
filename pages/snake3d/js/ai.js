@@ -300,7 +300,7 @@ function nearestApple(x, z) {
 
 // ─── Strategic apple selection ───
 // Choose the best apple considering reachability and space after reaching it
-function bestApple(aiSnake, blocked, diff) {
+function bestApple(aiSnake, blocked, diff, aiIndex) {
   if (!apples || apples.length === 0) return null;
 
   // Easy mode: just pick nearest
@@ -359,7 +359,7 @@ function bestApple(aiSnake, blocked, diff) {
     }
 
     // Penalize apples that other alive snakes are racing for
-    // If another snake is closer to the apple, abandon it entirely
+    // If another snake is closer (or equidistant with lower index), abandon it
     var appleContested = 0;
     var appleCloser = 0;
     if (aiSnakes) {
@@ -369,7 +369,10 @@ function bestApple(aiSnake, blocked, diff) {
         var coDist = Math.abs(apple.x - coHead.x) + Math.abs(apple.z - coHead.z);
         if (coDist < 10) {
           appleContested++;
-          if (coDist < manhattanDist) appleCloser++; // Other snake is closer
+          // Other snake is closer, or equidistant but has lower index (they get priority)
+          if (coDist < manhattanDist || (coDist === manhattanDist && co < aiIndex)) {
+            appleCloser++;
+          }
         }
       }
     }
@@ -934,7 +937,7 @@ function aiDecideDirection(aiIndex, diff) {
 
   // ─── Strategy 2: BFS pathfinding to best apple ───
   if (strat.bfsPathfinding) {
-    var targetApple = bestApple(ai.snake, blocked, diff);
+    var targetApple = bestApple(ai.snake, blocked, diff, aiIndex);
     if (targetApple) {
       // Skip if target apple is in shrink danger zone — survival first
       if (!cellInShrinkZone(targetApple.x, targetApple.z)) {
