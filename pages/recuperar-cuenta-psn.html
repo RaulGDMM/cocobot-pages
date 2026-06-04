@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 Guía para Recuperar Cuenta PSN - Problema de Inicio de Sesión</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0e27; color: #e0e0e0; min-height: 100vh; line-height: 1.7; }
+  .hero {
+    background: linear-gradient(135deg, #003087 0%, #0070d1 40%, #003087 70%, #001844 100%);
+    padding: 3rem 1.5rem; text-align: center; position: relative; overflow: hidden;
+    border-bottom: 4px solid #00d4ff;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(0,212,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255,0,100,0.08) 0%, transparent 50%);
+    animation: heroPulse 8s ease-in-out infinite;
+  }
+  @keyframes heroPulse { 0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.1) rotate(3deg)} }
+  .hero h1 { font-size: 2.2rem; font-weight: 900; color: #fff; text-shadow: 0 0 30px rgba(0,212,255,0.5); position: relative; z-index: 1; }
+  .hero .emoji { font-size: 2.5rem; }
+  .hero .subtitle { font-size: 1.1rem; color: #a0d2ff; margin-top: 0.8rem; position: relative; z-index: 1; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .problem-box {
+    background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid #00d4ff33;
+    border-left: 5px solid #ff4757; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;
+  }
+  .problem-box h2 { color: #ff6b81; font-size: 1.3rem; margin-bottom: 1rem; }
+  .problem-box ul { list-style: none; padding: 0; }
+  .problem-box li { padding: 0.4rem 0 0.4rem 1.5rem; position: relative; color: #ccc; }
+  .problem-box li::before { content: '⚠️'; position: absolute; left: 0; }
+  .step {
+    background: linear-gradient(135deg, #0f1923, #1a2332); border: 1px solid #1e3a5f;
+    border-radius: 16px; margin-bottom: 1.5rem; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.1); }
+  .step-header {
+    padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+    cursor: pointer; user-select: none;
+  }
+  .step-number {
+    background: linear-gradient(135deg, #0070d1, #00d4ff); color: #fff; font-weight: 900;
+    font-size: 1.3rem; width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(0,212,255,0.3);
+  }
+  .step-title { font-size: 1.15rem; font-weight: 700; color: #fff; }
+  .step-difficulty {
+    margin-left: auto; font-size: 0.75rem; padding: 0.3rem 0.8rem; border-radius: 20px;
+    font-weight: 600; flex-shrink: 0;
+  }
+  .diff-easy { background: #00b89433; color: #00b894; border: 1px solid #00b89455; }
+  .diff-medium { background: #fdcb6e33; color: #fdcb6e; border: 1px solid #fdcb6e55; }
+  .diff-hard { background: #ff6b6b33; color: #ff6b6b; border: 1px solid #ff6b6b55; }
+  .step-body { padding: 0 1.5rem 1.5rem; display: none; }
+  .step-body.open { display: block; }
+  .step-body p { color: #b0b0b0; margin-bottom: 0.8rem; }
+  .step-body .detail {
+    background: #0a0e1a; border: 1px solid #1e3a5f; border-radius: 8px;
+    padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.95rem;
+  }
+  .step-body .detail strong { color: #00d4ff; }
+  .step-body .warning {
+    background: #ff475715; border: 1px solid #ff475744; border-radius: 8px;
+    padding: 1rem 1.2rem; margin: 0.8rem 0; color: #ff9a9e;
+  }
+  .step-body .tip {
+    background: #00b89415; border: 1px solid #00b89444; border-radius: 8px;
+    padding: 1rem 1.2rem; margin: 0.8rem 0; color: #7ee8c0;
+  }
+  .step-body .tip::before { content: '💡 '; }
+  .step-body .warning::before { content: '⚠️ '; }
+  .step-body ol, .step-body ul { padding-left: 1.5rem; margin: 0.5rem 0; }
+  .step-body li { padding: 0.3rem 0; color: #b0b0b0; }
+  .step-body a { color: #00d4ff; text-decoration: none; border-bottom: 1px dashed #00d4ff55; }
+  .step-body a:hover { border-bottom-color: #00d4ff; }
+  .step-body code {
+    font-family: 'JetBrains Mono', monospace; background: #0a0e1a;
+    padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.9em; color: #00d4ff;
+  }
+  .priority {
+    background: linear-gradient(135deg, #00308722, #0070d122); border: 2px solid #0070d1;
+    border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;
+  }
+  .priority h2 { color: #00d4ff; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .priority p { color: #a0d2ff; }
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem; margin-top: 1rem;
+  }
+  .contact-card {
+    background: linear-gradient(135deg, #0f1923, #1a2332); border: 1px solid #1e3a5f;
+    border-radius: 12px; padding: 1.2rem; text-align: center; transition: transform 0.2s;
+  }
+  .contact-card:hover { transform: translateY(-3px); }
+  .contact-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .contact-card h3 { color: #fff; font-size: 1rem; margin-bottom: 0.3rem; }
+  .contact-card p { color: #888; font-size: 0.85rem; }
+  .back-btn {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: linear-gradient(135deg, #0070d1, #00d4ff); color: #fff; border: none;
+    border-radius: 50%; width: 56px; height: 56px; font-size: 1.5rem; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,212,255,0.4); z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s; text-decoration: none;
+  }
+  .back-btn:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(0,212,255,0.6); }
+  .visitor-counter { text-align: center; padding: 1rem; color: #555; font-size: 0.8rem; }
+  .footer {
+    text-align: center; padding: 2rem 1rem; color: #444; font-size: 0.85rem;
+    border-top: 1px solid #1a2332;
+  }
+  .footer a { color: #0070d1; text-decoration: none; }
+  .step-header::after {
+    content: '▼'; color: #00d4ff66; font-size: 0.7rem; transition: transform 0.3s; margin-left: 0.5rem;
+  }
+  .step-header.active::after { transform: rotate(180deg); }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.5rem; }
+    .step-header { flex-wrap: wrap; }
+    .step-difficulty { margin-left: 0; margin-top: 0.5rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1><span class="emoji">🎮</span> Recuperar Cuenta PSN Bloqueada</h1>
+  <p class="subtitle">Guía paso a paso para Abraham — Problema de verificación y emails de recuperación</p>
+</div>
+
+<div class="container">
+
+  <div class="problem-box">
+    <h2>📋 Resumen del Problema</h2>
+    <ul>
+      <li>Abraham cambió de teléfono y perdió acceso a la verificación en dos pasos (2FA) de su cuenta PSN</li>
+      <li>Al intentar recuperar la contraseña, PlayStation pide escanear un código QR que no puede generar</li>
+      <li>Los emails de recuperación de PlayStation <strong>no le llegan</strong> a su bandeja de entrada</li>
+      <li>No puede cambiar el email asociado porque necesita la contraseña actual</li>
+      <li>No ha podido contactar con Soporte de PlayStation a través de su web</li>
+      <li>La cuenta está compartida en la PS5 con Alexis, que sí puede hacer login</li>
+    </ul>
+  </div>
+
+  <div class="priority">
+    <h2>🎯 Estrategia Prioritaria</h2>
+    <p>El problema central es que <strong>PlayStation no envía los emails de recuperación</strong>.
+       La solución pasa por contactar directamente con Soporte de PlayStation usando métodos alternativos
+       para que desactiven el 2FA y actualicen el email de la cuenta.</p>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">1</div>
+      <div class="step-title">Verificar Spam y Filtros de Email</div>
+      <span class="step-difficulty diff-easy">Fácil</span>
+    </div>
+    <div class="step-body">
+      <p>Antes de nada, asegurarse de que los emails de PlayStation no están siendo filtrados como spam.</p>
+      <div class="detail">
+        <strong>Qué hacer:</strong>
+        <ol>
+          <li>Revisar la carpeta de <strong>Spam</strong> / <strong>Correo no deseado</strong></li>
+          <li>Revisar también la carpeta de <strong>Promociones</strong> (si usa Gmail)</li>
+          <li>Buscar en el buscador del email: <code>from:sonyentertainmentnetwork.com</code></li>
+          <li>Buscar también: <code>from:playstation.net</code></li>
+          <li>Verificar que no hay reglas/filtros automáticos que muevan estos emails a carpetas ocultas</li>
+        </ol>
+      </div>
+      <div class="tip">Si usa Gmail, revisa también las etiquetas y filtros en Configuración → Ver toda la configuración → Filtros y direcciones bloqueadas.</div>
+      <div class="warning">Si usa un email corporativo, es muy probable que el firewall de la empresa esté bloqueando los emails de Sony. Probar con otro email personal.</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">2</div>
+      <div class="step-title">Añadir PlayStation a Contactos Confiables</div>
+      <span class="step-difficulty diff-easy">Fácil</span>
+    </div>
+    <div class="step-body">
+      <p>Añadir las direcciones de PlayStation como contactos confiables ayuda a que los emails lleguen.</p>
+      <div class="detail">
+        <strong>Direcciones a añadir a contactos:</strong>
+        <ul>
+          <li><code>noreply@sonyentertainmentnetwork.com</code></li>
+          <li><code>account-security@sonyentertainmentnetwork.com</code></li>
+          <li><code>support-es@playstation.com</code></li>
+        </ul>
+      </div>
+      <div class="detail">
+        <strong>En Gmail:</strong> Configuración → Filtros → Crear filtro → De: <code>*@sonyentertainmentnetwork.com</code> → Crear filtro → <strong>No marcar como spam</strong>.
+      </div>
+      <div class="detail">
+        <strong>En Outlook:</strong> Configuración → Correo → Reglas → Nueva regla → Si es de <code>*@sonyentertainmentnetwork.com</code>, mover a Bandeja de entrada.
+      </div>
+      <div class="tip">Tras añadir a la whitelist, pedir de nuevo el email de recuperación desde PlayStation.</div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">3</div>
+      <div class="step-title">Usar la Cuenta de Alexis como Interino</div>
+      <span class="step-difficulty diff-easy">Fácil</span>
+    </div>
+    <div class="step-body">
+      <p>Como la cuenta de Abraham está compartida en la consola y la de Alexis funciona, usar esa mientras se resuelve.</p>
+      <div class="detail">
+        <strong>Qué hacer en la PS5:</strong>
+        <ol>
+          <li>Iniciar sesión con la cuenta de <strong>Alexis</strong> en la PS5</li>
+          <li>Ir a <strong>Configuración → Usuarios y Cuentas → Iniciar sesión</strong></li>
+          <li>Intentar iniciar sesión con la cuenta de Abraham de nuevo</li>
+          <li>Si Abraham es la <strong>consola principal</strong>, los juegos y PS Plus siguen accesibles con Alexis</li>
+        </ol>
+      </div>
+      <div class="warning">Esto no resuelve el problema, pero permite seguir jugando mientras se busca solución.</div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">4</div>
+      <div class="step-title">📞 Llamar al Soporte PlayStation (RECOMENDADO)</div>
+      <span class="step-difficulty diff-medium">Media</span>
+    </div>
+    <div class="step-body">
+      <p>El método más efectivo cuando los emails no llegan es llamar directamente. Un agente puede desactivar el 2FA y actualizar el email tras verificar la identidad.</p>
+      <div class="detail">
+        <strong>Teléfonos de Soporte PlayStation en España:</strong>
+        <ul>
+          <li><strong>900 34 07 85</strong> (llamada gratuita desde España)</li>
+          <li><strong>+34 917 684 000</strong> (alternativo)</li>
+          <li>Horario: L-V 9:00-21:00, Sábados 10:00-14:00</li>
+        </ul>
+      </div>
+      <div class="detail">
+        <strong>Qué tener preparado antes de llamar:</strong>
+        <ol>
+          <li><strong>ID de PlayStation</strong> (nombre de usuario PSN) de Abraham</li>
+          <li><strong>Email asociado</strong> a la cuenta</li>
+          <li><strong>Datos de compra</strong>: recibos de compras en PlayStation Store (tarjeta, PayPal, etc.)</li>
+          <li><strong>Código serial de la PS5</strong>: en la consola o en la caja</li>
+          <li><strong>Número de serie</strong>: Configuración → Sistema → Información del sistema</li>
+        </ol>
+      </div>
+      <div class="detail">
+        <strong>Qué pedir al agente:</strong>
+        <ol>
+          <li>Explicar que cambió de teléfono y perdió acceso al 2FA</li>
+          <li>Solicitar la <strong>desactivación de la verificación en dos pasos</strong></li>
+          <li>Pedir que <strong>actualicen el email</strong> asociado a la cuenta</li>
+          <li>Solicitar un <strong>enlace de recuperación directa</strong> al email verificado</li>
+        </ol>
+      </div>
+      <div class="tip">Menor espera: lunes-miércoles por la mañana (9:00-11:00).</div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">5</div>
+      <div class="step-title">Chat en Vivo con Soporte</div>
+      <span class="step-difficulty diff-medium">Media</span>
+    </div>
+    <div class="step-body">
+      <p>Si no se puede por teléfono, el chat en vivo es la segunda mejor opción.</p>
+      <div class="detail">
+        <strong>Cómo acceder al chat:</strong>
+        <ol>
+          <li>Ir a <a href="https://support.playstation.com" target="_blank">support.playstation.com</a></li>
+          <li>Seleccionar <strong>PlayStation 5</strong> o <strong>Cuenta de PlayStation</strong></li>
+          <li>Elegir: <strong>"No puedo iniciar sesión"</strong> o <strong>"Verificación en dos pasos"</strong></li>
+          <li>Seguir el asistente hasta que aparezca <strong>"Chat con un agente"</strong></li>
+          <li>Si no aparece, seguir seleccionando "No he podido resolver mi problema"</li>
+        </ol>
+      </div>
+      <div class="warning">El asistente virtual a veces no muestra el chat directamente. Seleccionar "ninguna de estas opciones me ayuda" hasta que ofrezca un agente humano.</div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">6</div>
+      <div class="step-title">Contactar por Redes Sociales</div>
+      <span class="step-difficulty diff-easy">Fácil</span>
+    </div>
+    <div class="step-body">
+      <p>PlayStation responde relativamente rápido por redes sociales (24-48h).</p>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="icon">🐦</div>
+          <h3>X (Twitter)</h3>
+          <p>DM a <strong>@AskPlayStation</strong> o <strong>@PlayStation_ES</strong></p>
+        </div>
+        <div class="contact-card">
+          <div class="icon">📘</div>
+          <h3>Facebook</h3>
+          <p>Mensaje a <strong>PlayStation España</strong></p>
+        </div>
+        <div class="contact-card">
+          <div class="icon">💬</div>
+          <h3>Comunidad</h3>
+          <p><a href="https://community.playstation.com" target="_blank">community.playstation.com</a></p>
+        </div>
+      </div>
+      <div class="detail" style="margin-top: 1rem;">
+        <strong>Plantilla del mensaje:</strong>
+        <p style="color: #aaa; font-size: 0.9rem;">"Hola, no puedo iniciar sesión en mi cuenta PSN porque perdí acceso al teléfono con la verificación en dos pasos. Los emails de recuperación no me llegan. Necesito que desactiven el 2FA y actualicen mi email. Mi ID de PSN es: [NOMBRE]. Gracias."</p>
+      </div>
+      <div class="tip">Incluir ID de PSN y email asociado. NO compartir contraseña ni datos bancarios por redes sociales.</div>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">7</div>
+      <div class="step-title">Formulario de Contacto Web</div>
+      <span class="step-difficulty diff-medium">Media</span>
+    </div>
+    <div class="step-body">
+      <p>Formulario que envía un ticket al soporte. Más lento, pero queda constancia escrita.</p>
+      <div class="detail">
+        <strong>Cómo acceder:</strong>
+        <ol>
+          <li>Ir a <a href="https://support.playstation.com/es-ES/" target="_blank">support.playstation.com/es-ES/</a></li>
+          <li>Seleccionar <strong>"Cuenta de PlayStation"</strong></li>
+          <li>Elegir <strong>"Inicio de sesión"</strong> → <strong>"Problemas con verificación en dos pasos"</strong></li>
+          <li>Seguir hasta el formulario de contacto</li>
+        </ol>
+      </div>
+      <div class="detail">
+        <strong>URL directa:</strong><br>
+        <a href="https://support.playstation.com/es-ES/contact/" target="_blank">support.playstation.com/es-ES/contact/</a>
+      </div>
+      <div class="warning">El formulario puede pedir iniciar sesión. Probar en modo incógnito o desde la cuenta de Alexis en la PS5.</div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">8</div>
+      <div class="step-title">Verificación de Identidad con Comprobantes</div>
+      <span class="step-difficulty diff-hard">Avanzada</span>
+    </div>
+    <div class="step-body">
+      <p>Si el soporte pide verificar la identidad, necesitará comprobantes de propiedad de la cuenta.</p>
+      <div class="detail">
+        <strong>Documentos útiles:</strong>
+        <ul>
+          <li><strong>Recibos de compra</strong> de la PlayStation Store (PSN cards, compras con tarjeta)</li>
+          <li><strong>Extractos de tarjeta/PayPal</strong> con cargos de Sony/PlayStation</li>
+          <li><strong>Códigos de compra</strong> de juegos digitales (códigos de 12 dígitos)</li>
+          <li><strong>Factura de la PS5</strong> (si está a nombre de Abraham)</li>
+          <li><strong>DNI</strong> (pueden pedirlo para verificar)</li>
+        </ul>
+      </div>
+      <div class="tip">Los recibos de PSN cards o tarjetas regalo son especialmente útiles — tienen códigos únicos vinculados a la cuenta.</div>
+      <div class="warning">NUNCA enviar fotos del DNI o datos bancarios completos por email o redes sociales. Solo por canales oficiales de soporte.</div>
+    </div>
+  </div>
+
+  <!-- STEP 9 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">9</div>
+      <div class="step-title">Cambiar a un Email Alternativo</div>
+      <span class="step-difficulty diff-medium">Media</span>
+    </div>
+    <div class="step-body">
+      <p>Si el problema es con el proveedor de email actual, probar con otro.</p>
+      <div class="detail">
+        <strong>Estrategia:</strong>
+        <ol>
+          <li>Si Abraham tiene otro email (Outlook, Yahoo, etc.), probar si los emails de PlayStation llegan ahí</li>
+          <li>Contactar con soporte y pedir <strong>cambiar el email asociado</strong> por uno alternativo</li>
+          <li>Para esto necesitan verificar la identidad (ver paso 8)</li>
+          <li>Una vez cambiado, pedir el enlace de recuperación al nuevo email</li>
+        </ol>
+      </div>
+      <div class="tip">Si el email actual ya no se usa o fue comprometido, explicarlo claramente al soporte — es motivo válido para cambiarlo.</div>
+    </div>
+  </div>
+
+  <!-- STEP 10 -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">10</div>
+      <div class="step-title">🔒 Prevención Futura — Configurar Bien el 2FA</div>
+      <span class="step-difficulty diff-medium">Media</span>
+    </div>
+    <div class="step-body">
+      <p>Una vez recuperada la cuenta, configurar el 2FA correctamente para evitar que vuelva a pasar.</p>
+      <div class="detail">
+        <strong>Recomendaciones:</strong>
+        <ol>
+          <li>Usar una <strong>app autenticadora</strong> (Google Authenticator, Authy, Microsoft Authenticator) en lugar de SMS</li>
+          <li>Las apps autenticadoras se pueden <strong>transferir entre teléfonos</strong> fácilmente con código de respaldo</li>
+          <li>Generar y guardar <strong>códigos de respaldo</strong> (backup codes) — imprimirlos o guardarlos en un gestor de contraseñas</li>
+          <li>Tener un <strong>email de recuperación alternativo</strong> configurado</li>
+          <li>Usar un <strong>gestor de contraseñas</strong> (Bitwarden, 1Password, KeePass) para no olvidar la contraseña</li>
+        </ol>
+      </div>
+      <div class="detail">
+        <strong>Cómo configurar en PSN:</strong>
+        <ol>
+          <li>Ir a <a href="https://account.sonyentertainmentnetwork.com" target="_blank">account.sonyentertainmentnetwork.com</a></li>
+          <li><strong>Seguridad</strong> → <strong>Verificación en dos pasos</strong></li>
+          <li>Elegir <strong>App autenticadora</strong> (recomendado) o SMS</li>
+          <li>Guardar los <strong>códigos de respaldo</strong> en un lugar seguro</li>
+        </ol>
+      </div>
+      <div class="tip">Authy es especialmente recomendable porque permite respaldar y restaurar los códigos en múltiples dispositivos con una cuenta en la nube.</div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="step">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number" style="background: linear-gradient(135deg, #ff6b6b, #ff4757);">📚</div>
+      <div class="step-title">Enlaces Útiles de PlayStation</div>
+      <span class="step-difficulty diff-easy">Referencia</span>
+    </div>
+    <div class="step-body">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="icon">🔧</div>
+          <h3>Soporte General</h3>
+          <p><a href="https://support.playstation.com" target="_blank">support.playstation.com</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="icon">🔑</div>
+          <h3>Recuperar Cuenta</h3>
+          <p><a href="https://account.sonyentertainmentnetwork.com/signin/retrieve/" target="_blank">Recuperar contraseña</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="icon">🛡️</div>
+          <h3>Seguridad de Cuenta</h3>
+          <p><a href="https://account.sonyentertainmentnetwork.com" target="_blank">Gestionar cuenta PSN</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="icon">📱</div>
+          <h3>App PlayStation</h3>
+          <p><a href="https://www.playstation.com/en-us/app/" target="_blank">Descargar app oficial</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="visitor-counter">
+    Visitas: <span id="visitCount">...</span> | Última actualización: 4 de junio de 2026
+  </div>
+
+</div>
+
+<a href="javascript:history.back()" class="back-btn" title="Volver atrás">←</a>
+
+<div class="footer">
+  <p>Cocobot Pages — Guía creada para ayudar a Abraham con su cuenta PSN</p>
+  <p style="margin-top: 0.5rem;"><a href="/">Volver al inicio</a></p>
+</div>
+
+<script>
+  function toggleStep(header) {
+    const body = header.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    header.classList.toggle('active');
+  }
+
+  // Open first step by default
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstStep = document.querySelector('.step:first-child .step-header');
+    if (firstStep) toggleStep(firstStep);
+
+    // Visitor counter
+    let count = parseInt(localStorage.getItem('psn_page_visits') || '0') + 1;
+    localStorage.setItem('psn_page_visits', count);
+    document.getElementById('visitCount').textContent = count;
+  });
+</script>
+
+</body>
+</html>
