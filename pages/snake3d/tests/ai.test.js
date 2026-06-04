@@ -1083,6 +1083,84 @@ describe('ai.js — aiEvaluateDirections() perception integration', () => {
   });
 });
 
+// ─── aiEvaluateDirections() — contested apple yielding ───
+describe('ai.js — aiEvaluateDirections() contested apple', () => {
+  beforeEach(() => {
+    setObstacles([]);
+    setGlobal('aiSnakes', []);
+    setGlobal('gridSize', 22);
+    setGlobal('half', 11);
+    setGlobal('gridMinX', -11);
+    setGlobal('gridMaxX', 11);
+    setGlobal('gridMinZ', -11);
+    setGlobal('gridMaxZ', 11);
+    setGlobal('TURN_ANGLE', Math.PI / 2);
+    setGlobal('corpses', []);
+    setGlobal('corpseSet', {});
+    setSnake([]); // no player — isolate AI-vs-AI behavior
+  });
+
+  test('AI yields apple to opponent that sorts first (lower x)', () => {
+    // Apple at (0,0). This AI head at (1,0) wants to move to (0,0) [dir π].
+    // Opponent head at (0,1) is also adjacent to the apple but heads +x (dir 0),
+    // so it is NOT predicted to enter (0,0) — only the contested-apple rule
+    // applies. Opponent sorts first (x=0 < x=1), so this AI yields.
+    setApples([{x: 0, z: 0}]);
+    setGlobal('aiSnakes', [
+      { snake: [{x: 1, z: 0}, {x: 2, z: 0}], direction: Math.PI, alive: true, color: 'green' },
+      { snake: [{x: 0, z: 1}, {x: 0, z: 2}], direction: 0, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    var safe = aiEvaluateDirections(0, aiSnake, Math.PI, -1);
+    var towardApple = safe.some(function(d) {
+      var nx = aiSnake[0].x + Math.round(Math.cos(d));
+      var nz = aiSnake[0].z + Math.round(Math.sin(d));
+      return nx === 0 && nz === 0;
+    });
+    expect(towardApple).toBe(false); // yielded — opponent has priority
+    expect(safe.length).toBeGreaterThan(0); // still has an alternative
+  });
+
+  test('AI takes apple when it sorts first (lower x than opponent)', () => {
+    // Apple at (0,0). This AI head at (-1,0) heads +x (dir 0) → (0,0).
+    // Opponent head at (0,1) is adjacent to the apple but heads +x (dir 0),
+    // so it is NOT predicted to enter (0,0). This AI sorts first (x=-1 < x=0),
+    // so it keeps the apple instead of yielding.
+    setApples([{x: 0, z: 0}]);
+    setGlobal('aiSnakes', [
+      { snake: [{x: -1, z: 0}, {x: -2, z: 0}], direction: 0, alive: true, color: 'green' },
+      { snake: [{x: 0, z: 1}, {x: 0, z: 2}], direction: 0, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    var safe = aiEvaluateDirections(0, aiSnake, 0, -1);
+    var towardApple = safe.some(function(d) {
+      var nx = aiSnake[0].x + Math.round(Math.cos(d));
+      var nz = aiSnake[0].z + Math.round(Math.sin(d));
+      return nx === 0 && nz === 0;
+    });
+    expect(towardApple).toBe(true); // we have priority, we take it
+  });
+
+  test('no yielding when cell has no apple (plain adjacency)', () => {
+    // Same geometry but no apple at (0,0) — nothing to contest.
+    setApples([]);
+    setGlobal('aiSnakes', [
+      { snake: [{x: 1, z: 0}, {x: 2, z: 0}], direction: Math.PI, alive: true, color: 'green' },
+      { snake: [{x: -1, z: 0}, {x: -2, z: 0}], direction: 0, alive: true, color: 'red' }
+    ]);
+    var aiSnake = aiSnakes[0].snake;
+    // Opponent at (-1,0) heading +x predicts dest (0,0); this AI heading π also
+    // predicts dest (0,0) → same-destination hard avoidance still applies.
+    var safe = aiEvaluateDirections(0, aiSnake, Math.PI, -1);
+    var towardCenter = safe.some(function(d) {
+      var nx = aiSnake[0].x + Math.round(Math.cos(d));
+      var nz = aiSnake[0].z + Math.round(Math.sin(d));
+      return nx === 0 && nz === 0;
+    });
+    expect(towardCenter).toBe(false); // blocked by same-destination rule
+  });
+});
+
 // ─── showAiDeathMessage() ───
 describe('ai.js — showAiDeathMessage()', () => {
   var deathMsgEl;

@@ -507,6 +507,19 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
     return (Math.abs(otherHead.x - head.x) + Math.abs(otherHead.z - head.z)) <= perceptionRadius;
   }
 
+  // Is there an apple at (x,z)? Small scan (apples are few, ≤ ~24).
+  function appleAt(x, z) {
+    if (!apples) return false;
+    for (var ai = 0; ai < apples.length; ai++) {
+      if (apples[ai] && apples[ai].x === x && apples[ai].z === z) return true;
+    }
+    return false;
+  }
+
+  // Safe directions, split into firm (no contested apple) and risky (steps
+  // onto an apple an adjacent opponent could grab the same tick).
+  var risky = [];
+
   possibleDirs.forEach(function(dir) {
     var nx = head.x + Math.round(Math.cos(dir));
     var nz = head.z + Math.round(Math.sin(dir));
@@ -523,6 +536,7 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
     //   1) its body is a solid obstacle,
     //   2) avoid racing into the same destination cell (head-on / perpendicular),
     //   3) avoid swapping cells with its head.
+    var contested = false;
     for (var os = 0; os < otherSnakes.length; os++) {
       var other = otherSnakes[os];
       if (!perceives(other.head)) continue;
@@ -539,12 +553,33 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
       if (nx === ox && nz === oz) return;
       // Swap: AI moves into the other's head while it moves into our cell
       if (nx === other.head.x && nz === other.head.z && ox === head.x && oz === head.z) return;
+
+      // ─── Contested apple (soft) ───
+      // The two snakes that collide head-on "trying to grab the same apple"
+      // are BOTH one step away from that apple cell. The current-direction
+      // prediction above misses this because the opponent may turn toward the
+      // apple this very tick. So: if this candidate cell holds an apple and the
+      // opponent's head is also adjacent to it, only ONE snake should dive in.
+      // The other yields. The tie-break is identity-neutral (head coordinates),
+      // so the player and AIs are treated exactly the same.
+      if (!contested &&
+          (Math.abs(other.head.x - nx) + Math.abs(other.head.z - nz)) === 1 &&
+          appleAt(nx, nz)) {
+        // Yield when the opponent's head sorts before ours (lower x, then z).
+        if (other.head.x < head.x ||
+            (other.head.x === head.x && other.head.z < head.z)) {
+          contested = true;
+        }
+      }
     }
 
-    safe.push(dir);
+    if (contested) risky.push(dir);
+    else safe.push(dir);
   });
 
-  return safe;
+  // Prefer firm directions; only fall back to contested ones if nothing else
+  // is available (yielding must never strand the snake with zero options).
+  return safe.length > 0 ? safe : risky;
 }
 
 // ─── Check if a position is near a board edge ───
