@@ -5,6 +5,92 @@
   },
   "days": [
     {
+      "date": "2026-06-05",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Google DeepMind lanza Gemma 4 12B: modelo multimodal sin encoders que corre en laptop de 16 GB",
+          "summary": "Google DeepMind publicó Gemma 4 12B, un modelo denso multimodal con arquitectura unificada que elimina los encoders de visión y audio tradicionales. Las imágenes y el audio se proyectan directamente al backbone del LLM, reduciendo drásticamente la latencia multimodal. Es el primer modelo de tamaño medio con audio nativo y corre localmente en laptops con 16 GB de VRAM. Incluye un modelo MTP dedicado para maximizar velocidad de inferencia. Disponible en Apache 2.0 con soporte inmediato en vLLM, Ollama, llama.cpp, MLX y Unsloth GGUFs. Google también lanzó apps nativas para macOS (Google AI Edge Gallery y Eloquent) para interacción local por voz y visión.",
+          "source": "https://developers.googleblog.com/gemma-4-12b-the-developer-guide/",
+          "source_name": "Google Developers Blog",
+          "star": true
+        },
+        {
+          "category": "image",
+          "title": "Ideogram 4 open-source: modelo de imagen #1 abierto con entrenamiento por bounding boxes",
+          "summary": "Ideogram lanzó Ideogram 4.0 como modelo de pesos abiertos, alcanzando el puesto #1 entre modelos abiertos y #8 general en el Arena de texto a imagen. El modelo fue entrenado con bounding boxes vinculados a descripciones de región, enseñándole dónde pertenece cada objeto, texto y elemento de layout. Esto mejora drásticamente el renderizado de texto, branding y diseño comercial. Los pesos se publicaron inmediatamente en fal.ai y Hugging Face. La técnica convierte la generación de imagen en un problema de predicción de siguiente token, reduciendo significativamente la intensidad computacional vs. difusión tradicional.",
+          "source": "https://www.latent.space/p/ainews-reve-2-and-ideogram-4-layouts",
+          "source_name": "Latent.Space",
+          "star": true
+        },
+        {
+          "category": "image",
+          "title": "Reve 2.0: modelo de imagen 4K con generación y edición por layouts precisos",
+          "summary": "Reve lanzó Reve 2.0, presentado como el mejor modelo de imagen 4K del mundo. El modelo introduce un pipeline innovador de generación y edición basado en layouts precisos, permitiendo crear imágenes que el usuario puede 'tocar' y ajustar composición sin rehacer desde cero. Alcanzó el puesto #2 en el Arena de texto a imagen (detrás de GPT Image 2, por delante de Nano Banana 2, MAI Image 2.5, Grok Imagine V4 e Ideogram V4). La capacidad de mantener una representación interna legible de la escena permite que agentes hagan cambios sin arruinar la jerarquía visual.",
+          "source": "https://www.latent.space/p/ainews-reve-2-and-ideogram-4-layouts",
+          "source_name": "Latent.Space",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Microsoft publica MAI-Thinking-1: modelo de razonamiento con 97% en AIME 2025 y 53% en SWE-Bench Pro",
+          "summary": "Microsoft presentó MAI-Thinking-1 con un reporte técnico de 109 páginas, notable por su transparencia. El modelo se entrenó sin datos sintéticos ni destilación de terceros, usando una mezcla privada de NLL: 50% código, 17.5% STEM, 17.5% matemáticas, 10% conocimiento general y 5% multilingüe. Reporta 97% en AIME 2025, 53% en SWE-Bench Pro y gana preferencia humana vs. Sonnet 4.6 en comparaciones ciegas. Microsoft también está empujando la estrategia 'Frontier-Tuning': adaptación RL específica para workflows, con modelos MAI ajustados para Excel que igualan calidad de GPT-5.4 con hasta 10× más eficiencia. Se acompaña de MAI-Image-2.5 (#3 texto a imagen) y MAI-Code-1-Flash.",
+          "source": "https://www.latent.space/p/ainews-reve-2-and-ideogram-4-layouts",
+          "source_name": "Latent.Space",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "ChartNet (MIT-IBM): dataset de 1M gráficos que permite a modelos pequeños superar a GPT-4o",
+          "summary": "Investigadores de MIT e IBM publicaron ChartNet, un dataset multimodal de más de 1 millón de gráficos de alta calidad para entrenar VLMs en comprensión de gráficos. Cada punto incluye: imagen renderizada, código ejecutable, descripción textual, tabla de datos numéricos y pares pregunta-respuesta. El pipeline genera variaciones iterativas desde un gráfico 'semilla'. Al entrenar modelos abiertos como la serie Granite Vision de IBM, los modelos pequeños superaron significativamente a modelos comerciales mucho más grandes en reconstrucción de gráficos, extracción de datos, resumen y preguntas sobre gráficos. Publicado en CVPR 2026.",
+          "source": "https://news.mit.edu/2026/mit-researchers-teach-ai-models-to-interpret-charts-0603",
+          "source_name": "MIT News",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Meta lanza agente IA empresarial para automatizar operaciones en WhatsApp, Messenger e Instagram",
+          "summary": "Meta presentó un agente de IA empresarial diseñado para ayudar a negocios a automatizar operaciones diarias. Más de 1 millón de empresas ya usan versiones anteriores de chatbots con agentes en WhatsApp y Messenger. La nueva versión se añadirá a Instagram y se lanzará globalmente para negocios de todos los tamaños. Meta confirma que la API de Muse Spark (su primer modelo de Superintelligence Labs) está en pruebas con socios tempranos y apunta a un lanzamiento este mes de junio.",
+          "source": "https://www.reuters.com/business/meta-launches-enterprise-focused-ai-business-agent-automate-daily-operations-2026-06-03/",
+          "source_name": "Reuters",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "Google Magenta RealTime 2: modelo abierto de música en tiempo real con latencia de ~200ms",
+          "summary": "Google Magenta lanzó Magenta RealTime 2, el único modelo de pesos abiertos que soporta generación de audio musical continua en tiempo real con baja latencia (~200ms end-to-end). Soporta control por MIDI, audio y texto. Incluye motor C++ MLX nativo para Apple Silicon MacBooks y plugin DAW. Publicado en Hugging Face con pesos abiertos. Representa un avance significativo para la generación musical local y en dispositivo.",
+          "source": "https://magenta.withgoogle.com/magenta-realtime-2",
+          "source_name": "Google Magenta",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Cámara de Representantes de EE.UU. presenta borrador de marco regulatorio nacional para IA",
+          "summary": "Los congresistas bipartidistas Jay Obernolte (R-Calif.) y Lori Trahan (D-Mass.) publicaron un borrador de discusión para un marco regulatorio federal de IA. Propone: preempción de 3 años de regulaciones estatales sobre desarrollo de modelos IA, codificación del Centro de IA y Estándares de Innovación (CAISI) bajo el Departamento de Comercio, requisitos de transparencia para desarrolladores frontier, y reporte obligatorio de incidentes de seguridad. Incluye creación de un AI Workforce Research Hub en el Departamento de Trabajo. Es la primera respuesta legislativa sustantiva del Congreso a la política de IA de la Casa Blanca.",
+          "source": "https://thehill.com/policy/technology/5909898-national-ai-framework-draft/",
+          "source_name": "The Hill",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Demis Hassabis (Google DeepMind): la IA general llegará hacia 2030, ±1 año",
+          "summary": "En un coloquio en la Stanford Graduate School of Business, el CEO de Google DeepMind Demis Hassabis predijo que la Inteligencia General Artificial llegará alrededor de 2030, más o menos un año. Comparó este hito con la 'singularidad' tecnológica, describiéndolo como el inicio de una 'nueva era humana'. Señaló la posibilidad de un 'mundo post-escasez' y advirtió que la sociedad tiene poco tiempo para prepararse. Criticó a algunos pares de la industria por ser 'demasiado ciertos' sobre sus pronósticos, enfatizando que la trayectoria exacta sigue por escribirse.",
+          "source": "https://www.businessinsider.com/google-deepmind-ceo-demis-hassabis-agi-new-human-era-2026-6",
+          "source_name": "Business Insider",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: de b9474 a b9521 — 47 builds nuevos con CUDA MOE PDL, SYCL MMVQ y fixes de servidor",
+          "summary": "Desde tu versión b9474, llama.cpp ha publicado 47 builds nuevos (hasta b9521, lanzado hoy 5 de junio). Highlights: b9521 — CUDA: enroll mul_mat_vec_q_moe into PDL para mejorar rendimiento MoE; b9519 — SYCL: port multi-column MMVQ desde backend CUDA para mejor soporte AMD; b9518 — server: disable on-device spec checkpoints (fix de estabilidad); b9515 — consolidación de código imatrix en imatrix-loader.cpp; b9512 — return filter para ahorrar memoria. CVEs activos: GHSA-j8rj-fmpv-wcxw (CRITICAL, RCE no autenticada en RPC backend), GHSA-3p4r-fq3f-q74v (HIGH, Heap Buffer Overflow en cálculo mem_size), GHSA-96jg-mvhq-q7q7 (HIGH, Heap Buffer Overflow en parsing GGUF).",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub - llama.cpp",
+          "star": true
+        }
+      ],
+      "summary": "Semana intensa con lanzamientos clave: Google Gemma 4 12B revoluciona la IA multimodal local, Ideogram 4 y Reve 2.0 avanzan la generación de imagen con layouts, Microsoft publica MAI-Thinking-1 con resultados de élite, y ChartNet de MIT-IBM demuestra que modelos pequeños pueden superar a los grandes en comprensión de gráficos."
+    },
+    {
       "date": "2026-06-04",
       "news": [
         {
