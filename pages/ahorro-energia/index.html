@@ -191,6 +191,20 @@
             opacity: 0.9;
         }
 
+        /* WARNING BOX */
+        .warning-box {
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px solid rgba(255, 107, 107, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box h3 {
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+
         /* TABLES */
         table {
             width: 100%;
@@ -380,6 +394,7 @@
             <li><a href="#solucion">💡 La Solución</a></li>
             <li><a href="#gas">🔥 Gas</a></li>
             <li><a href="#luz">💡 Luz</a></li>
+            <li><a href="#ofertas">⚠️ Cuidado con las Ofertas</a></li>
             <li><a href="#paso-a-paso">📞 Paso a Paso</a></li>
             <li><a href="#ahorro">💰 Ahorro</a></li>
             <li><a href="#opinon">🐱 Opinión</a></li>
@@ -580,6 +595,84 @@
             </div>
         </div>
 
+        <!-- CUIDADO CON LAS OFERTAS -->
+        <div class="section" id="ofertas">
+            <h2 class="section-title">⚠️ Cuidado con las Ofertas de tu Compañía Actual</h2>
+            
+            <div class="warning-box">
+                <h3>🚨 Lo más probable: te llamarán para ofrecerte una "oferta irresistible"</h3>
+                <p>En cuanto empieces a gestionar el cambio de compañía (o incluso antes), es muy probable que RecibAS llamadas o emails de tu compañía actual (Repsol, Factor Energia, Endesa, etc.) ofreciéndote una <strong>"nueva tarifa con descuento"</strong> para que te quedes.</p>
+            </div>
+
+            <div class="card">
+                <h3>¿Por qué tienen trampa estas ofertas?</h3>
+                <p><strong>1. Como mucho, igualan al mercado libre</strong></p>
+                <p>Las ofertas que te hacen son del mercado libre, no de la tarifa regulada. Es decir, como mucho te ofrecen el mismo precio que ya tenías (o uno ligeramente mejor), pero <strong>nunca igualan a la TUR/PVPC</strong>.</p>
+                
+                <p style="margin-top: 1rem;"><strong>2. Cuando se acaba la oferta... sube el precio</strong></p>
+                <p>La mayoría de ofertas tienen una duración de 6-12 meses. Cuando se acaba ese periodo:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li><strong>No te avisan</strong> de que el precio va a subir</li>
+                    <li>El precio vuelve automáticamente al precio de mercado libre (más caro)</li>
+                    <li>Tú te sigues pagando más sin darte cuenta</li>
+                </ul>
+
+                <p style="margin-top: 1rem;"><strong>3. Te atan con permanencia</strong></p>
+                <p>Muchas ofertas "especiales" incluyen permanencia de 12-24 meses. Si te das cuenta de que estás pagando de más, no puedes irte sin penalización.</p>
+
+                <p style="margin-top: 1rem;"><strong>4. A veces son peores que lo que ya tenías</strong></p>
+                <p>No es raro que la "oferta" que te hacen sea en realidad un precio similar o incluso peor que el que ya tenías, pero con permanencia añadida.</p>
+            </div>
+
+            <div class="card">
+                <h3>💡 Mi consejo: No caigas en la trampa</h3>
+                <p><strong>Si te llaman con una oferta:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>Pregunta: <em>"¿Este precio es fijo para siempre o tiene duración?"</em></li>
+                    <li>Pregunta: <em>"¿Cuánto paga el kWh cuando se acaba la oferta?"</em></li>
+                    <li>Pregunta: <em>"¿Tiene permanencia?"</em></li>
+                    <li>Compara el precio final con la TUR/PVPC (que es más barato y sin permanencia)</li>
+                    <li><strong>Lo más probable es que decidas seguir con el cambio</strong></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>📊 Comparativa: Oferta de mercado libre vs. Tarifa regulada</h3>
+                <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Oferta mercado libre</th>
+                        <th>TUR/PVPC</th>
+                    </tr>
+                    <tr>
+                        <td>Precio del kWh</td>
+                        <td class="cost">0,15-0,20 €/kWh (con descuento temporal)</td>
+                        <td class="savings">0,036-0,12 €/kWh (precio real del mercado)</td>
+                    </tr>
+                    <tr>
+                        <td>¿Cuánto dura?</td>
+                        <td class="cost">6-12 meses, luego sube</td>
+                        <td class="savings">Para siempre (mientras sigas en regulada)</td>
+                    </tr>
+                    <tr>
+                        <td>Permanencia</td>
+                        <td class="cost">12-24 meses</td>
+                        <td class="savings">Ninguna</td>
+                    </tr>
+                    <tr>
+                        <td>¿Te avisan cuando sube?</td>
+                        <td class="cost">No</td>
+                        <td class="savings">No aplica (no sube)</td>
+                    </tr>
+                    <tr>
+                        <td>Margen de beneficio</td>
+                        <td class="cost">Sí (la compañía se queda un %)</td>
+                        <td class="savings">No (precio fijado por el gobierno)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
         <!-- PASO A PASO -->
         <div class="section" id="paso-a-paso">
             <h2 class="section-title">📞 Paso a Paso: Cómo hacerlo</h2>
@@ -618,7 +711,17 @@
             </div>
 
             <div class="step">
-                <h3><span class="step-number">4</span> Recibe las facturas de cierre</h3>
+                <h3><span class="step-number">4</span> Plazo de activación</h3>
+                <p><strong>El cambio puede tardar hasta 15 días hábiles</strong> en activarse completamente. Durante este tiempo:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>Seguirás recibiendo facturas de tu compañía antigua</li>
+                    <li>No se corta el suministro</li>
+                    <li>Una vez activo, Curenergía te enviará las primeras facturas</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h3><span class="step-number">5</span> Recibe las facturas de cierre</h3>
                 <p>Te llegarán las facturas finales de tu compañía anterior con los días consumidos hasta el cambio. Págalas y olvídate.</p>
             </div>
 
@@ -627,7 +730,7 @@
                 <ul style="margin-left: 2rem; margin-top: 0.5rem;">
                     <li><strong>No hay permanencia</strong> en las tarifas reguladas</li>
                     <li><strong>No hay penalización</strong> por cambiar</li>
-                    <li><strong>El cambio tarda 24-48 horas</strong> en activarse</li>
+                    <li><strong>El cambio tarda hasta 15 días hábiles</strong> en activarse</li>
                     <li><strong>No se corta el suministro</strong> durante el cambio</li>
                     <li><strong>Tienes 14 días</strong> para desistir si no estás contento</li>
                 </ul>
@@ -695,6 +798,10 @@
 
                 <p style="margin-top: 1rem;">
                     Las compañías de mercado libre son como esos ratones de jardín que entran en la despensa: te roban sin que te des cuenta, mes a mes, factura a factura. Y lo peor es que muchos ni se enteran hasta que un amigo (o un gato con WiFi) les dice: "¿Sabías que puedes pagar la mitad?"
+                </p>
+
+                <p style="margin-top: 1rem;">
+                    <strong>Sobre las ofertas de tu compañía actual:</strong> Son como cuando un gato te deja ver el ratón pero no atraparlo: te dan una ilusión de ahorro, pero al final el ratón se escapa y tú sigues con hambre (y con la factura cara). No caigáis en la trampa.
                 </p>
 
                 <p style="margin-top: 1rem;">
