@@ -22,6 +22,7 @@
             min-height: 100vh;
             color: #e0e0e0;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* NAVBAR */
@@ -48,11 +49,16 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
+            transition: transform 0.3s ease;
         }
 
-        /* HAMBURGER MENU */
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        /* HAMBURGER MENU - ALWAYS VISIBLE */
         .menu-toggle {
-            display: none;
+            display: flex;
             flex-direction: column;
             cursor: pointer;
             gap: 5px;
@@ -81,23 +87,59 @@
         }
 
         .nav-menu {
-            display: flex;
-            gap: 2rem;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            max-width: 350px;
+            height: 100vh;
+            background: rgba(15, 12, 41, 0.98);
+            flex-direction: column;
+            padding: 5rem 2rem;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 1rem;
+            border-left: 1px solid rgba(255,255,255,0.1);
             list-style: none;
+            overflow-y: auto;
+        }
+
+        .nav-menu.active {
+            right: 0;
         }
 
         .nav-menu a {
             color: #e0e0e0;
             text-decoration: none;
-            padding: 0.5rem 1rem;
+            padding: 1rem;
             border-radius: 8px;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: block;
         }
 
         .nav-menu a:hover {
             background: rgba(255,255,255,0.1);
-            transform: translateY(-2px);
+            transform: translateX(10px);
+        }
+
+        /* OVERLAY */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* BACK BUTTON */
@@ -144,17 +186,29 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: fadeInDown 0.8s ease;
         }
 
         .subtitle {
             font-size: 1.2rem;
             opacity: 0.7;
+            animation: fadeIn 1s ease 0.3s both;
         }
 
         .section {
             margin-bottom: 3rem;
             scroll-margin-top: 5rem;
+            animation: fadeInUp 0.6s ease both;
         }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
 
         .section-title {
             font-size: 1.8rem;
@@ -164,6 +218,12 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .section-title:hover {
+            transform: translateX(10px);
+            border-bottom-color: rgba(255,255,255,0.3);
         }
 
         .section-title::before {
@@ -178,6 +238,15 @@
             padding: 1.5rem;
             margin-bottom: 1rem;
             border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .card h3 {
@@ -198,6 +267,7 @@
             border-radius: 12px;
             padding: 1.5rem;
             margin: 1.5rem 0;
+            animation: pulse 2s infinite;
         }
 
         .warning-box h3 {
@@ -213,6 +283,12 @@
             background: rgba(255,255,255,0.05);
             border-radius: 8px;
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        table:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
         th, td {
@@ -243,6 +319,12 @@
             border-radius: 12px;
             padding: 1.5rem;
             margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .phone-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(107, 203, 119, 0.2);
         }
 
         .phone-box h3 {
@@ -255,6 +337,12 @@
             font-weight: bold;
             color: #6bcb77;
             margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .phone-number:hover {
+            transform: scale(1.1);
+            cursor: pointer;
         }
 
         /* STEPS */
@@ -264,6 +352,14 @@
             padding: 1.5rem;
             margin: 1rem 0;
             border-left: 4px solid #4d96ff;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.5s ease both;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.1);
+            border-left-color: #ffd93d;
         }
 
         .step-number {
@@ -277,6 +373,12 @@
             line-height: 30px;
             font-weight: bold;
             margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-number {
+            background: #ffd93d;
+            transform: rotate(360deg);
         }
 
         /* CAT OPINION */
@@ -287,6 +389,7 @@
             padding: 2rem;
             margin-top: 3rem;
             text-align: center;
+            animation: fadeIn 1s ease both;
         }
 
         .cat-opinion h2 {
@@ -297,6 +400,7 @@
         .cat-emoji {
             font-size: 3rem;
             margin-bottom: 1rem;
+            animation: bounce 2s infinite;
         }
 
         /* FOOTER */
@@ -329,42 +433,73 @@
             border: 1px solid rgba(255,255,255,0.08);
         }
 
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+
         /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .container { padding: 1rem; padding-top: 5rem; }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .nav-menu {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 70%;
-                height: 100vh;
-                background: rgba(15, 12, 41, 0.98);
-                flex-direction: column;
-                padding: 5rem 2rem;
-                transition: right 0.3s ease;
-                gap: 1rem;
-                border-left: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .nav-menu.active {
-                right: 0;
-            }
-
-            .nav-menu a {
-                font-size: 1.1rem;
-                padding: 1rem;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
 
             .phone-number {
                 font-size: 1.2rem;
@@ -400,6 +535,9 @@
             <li><a href="#opinon">🐱 Opinión</a></li>
         </ul>
     </nav>
+
+    <!-- OVERLAY -->
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- BACK BUTTON -->
     <a href="../" class="back-btn">← Volver al índice</a>
@@ -614,84 +752,6 @@
             </div>
         </div>
 
-        <!-- CUIDADO CON LAS OFERTAS -->
-        <div class="section" id="ofertas">
-            <h2 class="section-title">⚠️ Cuidado con las Ofertas de tu Compañía Actual</h2>
-            
-            <div class="warning-box">
-                <h3>🚨 Lo más probable: te llamarán para ofrecerte una "oferta irresistible"</h3>
-                <p>En cuanto empieces a gestionar el cambio de compañía (o incluso antes), es muy probable que RecibAS llamadas o emails de tu compañía actual (Repsol, Factor Energia, Endesa, etc.) ofreciéndote una <strong>"nueva tarifa con descuento"</strong> para que te quedes.</p>
-            </div>
-
-            <div class="card">
-                <h3>¿Por qué tienen trampa estas ofertas?</h3>
-                <p><strong>1. Como mucho, igualan al mercado libre</strong></p>
-                <p>Las ofertas que te hacen son del mercado libre, no de la tarifa regulada. Es decir, como mucho te ofrecen el mismo precio que ya tenías (o uno ligeramente mejor), pero <strong>nunca igualan a la TUR/PVPC</strong>.</p>
-                
-                <p style="margin-top: 1rem;"><strong>2. Cuando se acaba la oferta... sube el precio</strong></p>
-                <p>La mayoría de ofertas tienen una duración de 6-12 meses. Cuando se acaba ese periodo:</p>
-                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
-                    <li><strong>No te avisan</strong> de que el precio va a subir</li>
-                    <li>El precio vuelve automáticamente al precio de mercado libre (más caro)</li>
-                    <li>Tú te sigues pagando más sin darte cuenta</li>
-                </ul>
-
-                <p style="margin-top: 1rem;"><strong>3. Te atan con permanencia</strong></p>
-                <p>Muchas ofertas "especiales" incluyen permanencia de 12-24 meses. Si te das cuenta de que estás pagando de más, no puedes irte sin penalización.</p>
-
-                <p style="margin-top: 1rem;"><strong>4. A veces son peores que lo que ya tenías</strong></p>
-                <p>No es raro que la "oferta" que te hacen sea en realidad un precio similar o incluso peor que el que ya tenías, pero con permanencia añadida.</p>
-            </div>
-
-            <div class="card">
-                <h3>💡 Mi consejo: No caigas en la trampa</h3>
-                <p><strong>Si te llaman con una oferta:</strong></p>
-                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
-                    <li>Pregunta: <em>"¿Este precio es fijo para siempre o tiene duración?"</em></li>
-                    <li>Pregunta: <em>"¿Cuánto paga el kWh cuando se acaba la oferta?"</em></li>
-                    <li>Pregunta: <em>"¿Tiene permanencia?"</em></li>
-                    <li>Compara el precio final con la TUR/PVPC (que es más barato y sin permanencia)</li>
-                    <li><strong>Lo más probable es que decidas seguir con el cambio</strong></li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>📊 Comparativa: Oferta de mercado libre vs. Tarifa regulada</h3>
-                <table>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Oferta mercado libre</th>
-                        <th>TUR/PVPC</th>
-                    </tr>
-                    <tr>
-                        <td>Precio del kWh</td>
-                        <td class="cost">0,15-0,20 €/kWh (con descuento temporal)</td>
-                        <td class="savings">0,036-0,12 €/kWh (precio real del mercado)</td>
-                    </tr>
-                    <tr>
-                        <td>¿Cuánto dura?</td>
-                        <td class="cost">6-12 meses, luego sube</td>
-                        <td class="savings">Para siempre (mientras sigas en regulada)</td>
-                    </tr>
-                    <tr>
-                        <td>Permanencia</td>
-                        <td class="cost">12-24 meses</td>
-                        <td class="savings">Ninguna</td>
-                    </tr>
-                    <tr>
-                        <td>¿Te avisan cuando sube?</td>
-                        <td class="cost">No</td>
-                        <td class="savings">No aplica (no sube)</td>
-                    </tr>
-                    <tr>
-                        <td>Margen de beneficio</td>
-                        <td class="cost">Sí (la compañía se queda un %)</td>
-                        <td class="savings">No (precio fijado por el gobierno)</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
         <!-- PASO A PASO -->
         <div class="section" id="paso-a-paso">
             <h2 class="section-title">📞 Paso a Paso: Cómo hacerlo</h2>
@@ -730,17 +790,7 @@
             </div>
 
             <div class="step">
-                <h3><span class="step-number">4</span> Plazo de activación</h3>
-                <p><strong>El cambio puede tardar hasta 15 días hábiles</strong> en activarse completamente. Durante este tiempo:</p>
-                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
-                    <li>Seguirás recibiendo facturas de tu compañía antigua</li>
-                    <li>No se corta el suministro</li>
-                    <li>Una vez activo, Curenergía te enviará las primeras facturas</li>
-                </ul>
-            </div>
-
-            <div class="step">
-                <h3><span class="step-number">5</span> Recibe las facturas de cierre</h3>
+                <h3><span class="step-number">4</span> Recibe las facturas de cierre</h3>
                 <p>Te llegarán las facturas finales de tu compañía anterior con los días consumidos hasta el cambio. Págalas y olvídate.</p>
             </div>
 
@@ -748,10 +798,10 @@
                 <h3>⚠️ Importante</h3>
                 <ul style="margin-left: 2rem; margin-top: 0.5rem;">
                     <li><strong>No hay permanencia</strong> en las tarifas reguladas</li>
-                          <li><strong>No hay penalización</strong> por cambiar</li>
-                          <li><strong>El cambio tarda hasta 15 días</strong> en activarse (no 2-3 días como algunos dicen)</li>
-                          <li><strong>Normalmente no se corta el suministro</strong> durante el cambio, pero prepárate por si acaso</li>
-                          <li><strong>Tienes 14 días</strong> para desistir si no estás contento</li>
+                    <li><strong>No hay penalización</strong> por cambiar</li>
+                    <li><strong>El cambio tarda hasta 15 días</strong> en activarse (no 2-3 días como algunos dicen)</li>
+                    <li><strong>Normalmente no se corta el suministro</strong> durante el cambio, pero prepárate por si acaso</li>
+                    <li><strong>Tienes 14 días</strong> para desistir si no estás contento</li>
                 </ul>
             </div>
         </div>
@@ -820,10 +870,6 @@
                 </p>
 
                 <p style="margin-top: 1rem;">
-                    <strong>Sobre las ofertas de tu compañía actual:</strong> Son como cuando un gato te deja ver el ratón pero no atraparlo: te dan una ilusión de ahorro, pero al final el ratón se escapa y tú sigues con hambre (y con la factura cara). No caigáis en la trampa.
-                </p>
-
-                <p style="margin-top: 1rem;">
                     <strong>Mi opinión personal:</strong> Si tienes una tarifa de mercado libre, cámbiate YA. Es como encontrar un juguete nuevo bajo el sofá: no tienes que trabajar para conseguirlo, solo tienes que llamar a un número de teléfono. Y el ahorro es tan grande que podrías comprarme (o a tus gatos) muchos más juguetes.
                 </p>
 
@@ -852,26 +898,25 @@
         // HAMBURGER MENU TOGGLE
         const menuToggle = document.getElementById('menuToggle');
         const navMenu = document.getElementById('navMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
 
-        menuToggle.addEventListener('click', () => {
+        function toggleMenu() {
             menuToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
-        });
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
 
         // CLOSE MENU WHEN CLICKING A LINK
         document.querySelectorAll('.nav-menu a').forEach(link => {
             link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+                if (navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
             });
-        });
-
-        // CLOSE MENU WHEN CLICKING OUTSIDE
-        document.addEventListener('click', (e) => {
-            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                menuToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
         });
     </script>
 
