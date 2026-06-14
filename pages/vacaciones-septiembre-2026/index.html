@@ -670,7 +670,7 @@
     <header class="hero">
         <div class="hero-emoji">🌴✈️🌊</div>
         <h1>Vacaciones <span>Septiembre 2026</span></h1>
-        <p>4 destinos岛ulares para 3 amigos (y quizás uno más). Playa, relax, gastronomía, vida nocturna y excursiones que merecen la pena.</p>
+        <p>4 destinos insulares para 3 amigos (y quizás uno más). Playa, relax, gastronomía, vida nocturna y excursiones que merecen la pena.</p>
         <div class="scroll-hint">↓ Desplázate para explorar ↓</div>
     </header>
 
@@ -1291,38 +1291,45 @@
     <!-- FOOTER -->
     <footer>
         <p>Hecho con ❤️ por <a href="#">Cocobot</a> · Septiembre 2026 · Los precios son estimaciones y pueden variar según fechas y disponibilidad</p>
-        <div class="footer-inner" style="display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;margin-top:12px;">
-            <span id="visit-counter" style="color:rgba(255,255,255,0.4);font-size:0.85em;background:rgba(0,180,216,0.06);padding:4px 12px;border-radius:6px;border:1px solid rgba(0,180,216,0.15);">👁️ -- visitas</span>
-        </div>
+        <span id="visit-counter" style="display:inline-block; margin-top:10px; color: var(--text-light); font-size: 0.85em; background: rgba(0,180,216,0.08); padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(0,180,216,0.15);">👁️ -- visitas</span>
     </footer>
 
+    <!-- Hamburger menu + animations -->
     <script>
-        // Hamburger menu
         const hamburger = document.getElementById('hamburger');
         const navOverlay = document.getElementById('navOverlay');
-
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navOverlay.classList.toggle('active');
             document.body.style.overflow = navOverlay.classList.contains('active') ? 'hidden' : '';
         });
-
         function closeNav() {
             hamburger.classList.remove('active');
             navOverlay.classList.remove('active');
             document.body.style.overflow = '';
         }
-
-        // Fade-in on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Cocobot Stats tracking -->
+    <script>
+    (function(){
+      var w='https://cocobot-stats.rgarciademarina.workers.dev';
+      var p='/pages/vacaciones-septiembre-2026';
+      var el=document.getElementById('visit-counter');
+      fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+      fetch(w+'/c?path='+encodeURIComponent(p))
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+        })
+        .catch(function(){});
+    })();
     </script>
 </body>
 </html>
