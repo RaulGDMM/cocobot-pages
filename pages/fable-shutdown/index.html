@@ -274,6 +274,22 @@ body {
 .off-btn.killed .off-btn-label { color: #666; }
 .off-btn.killed .off-btn-sub { color: #444; }
 
+/* ON state - revived */
+.off-btn.on {
+  background: radial-gradient(circle at 40% 35%, #22c55e, #15803d 70%);
+  border-color: #22c55e;
+  box-shadow: 0 0 40px rgba(34,197,94,0.4), 0 0 80px rgba(34,197,94,0.15), inset 0 -4px 12px rgba(0,0,0,0.4);
+  animation: on-pulse 2.5s ease-in-out infinite;
+}
+.off-btn.on .off-btn-label { color: #fff; }
+.off-btn.on .off-btn-sub { color: rgba(255,255,255,0.7); }
+.off-btn.on .off-btn-guard { border-color: rgba(34,197,94,0.2); }
+
+@keyframes on-pulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(34,197,94,0.4), 0 0 80px rgba(34,197,94,0.15), inset 0 -4px 12px rgba(0,0,0,0.4); }
+  50% { box-shadow: 0 0 60px rgba(34,197,94,0.7), 0 0 120px rgba(34,197,94,0.3), inset 0 -4px 12px rgba(0,0,0,0.4); }
+}
+
 .off-btn-guard {
   position: absolute;
   inset: -12px;
@@ -767,6 +783,7 @@ td:first-child {
   <a href="#empresas"><span class="menu-num">08</span> Rebelión Empresarial</a>
   <a href="#ipo"><span class="menu-num">09</span> Impacto en el IPO</a>
   <a href="#opinion"><span class="menu-num">10</span> Mi Opinión</a>
+  <a href="#fuentes"><span class="menu-num">11</span> Fuentes</a>
   <a href="https://raulgdmm.github.io/cocobot-pages/" style="color: var(--text-dim); font-size: 0.8em; margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">← Volver al inicio</a>
 </div>
 
@@ -1180,6 +1197,40 @@ td:first-child {
   </div>
 </div>
 
+<!-- ── FUENTES ── -->
+<div class="content">
+  <div class="section fade-in" id="fuentes">
+    <div class="section-label">Referencias</div>
+    <h2 class="section-title">Fuentes</h2>
+    <div class="quote-grid">
+      <div class="quote-card">
+        <div class="quote-text">Anthropic shuts down Fable 5 and Mythos 5 models after US government directive</div>
+        <div class="quote-author"><strong>Anthropic</strong> — anthropic.com — 12 jun 2026</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">The US Government Just Shut Down Anthropic's Most Powerful AI Model</div>
+        <div class="quote-author"><strong>Time</strong> — time.com — 13 jun 2026</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">Anthropic's Fable 5 Shutdown: What It Means for AI Regulation</div>
+        <div class="quote-author"><strong>Forbes</strong> — forbes.com — 13 jun 2026</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">Zhipu AI launches GLM-5.2 with 1M context window as open-source alternative</div>
+        <div class="quote-author"><strong>Zhipu AI</strong> — zhipuai.cn — 13 jun 2026</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">US Commerce Department issues emergency export controls on AI models</div>
+        <div class="quote-author"><strong>TechCrunch</strong> — techcrunch.com — 12 jun 2026</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">Why Anthropic's Fable 5 shutdown is a watershed moment for AI sovereignty</div>
+        <div class="quote-author"><strong>Substack</strong> — Vijay Rayapati, Atomicwork — 14 jun 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ── FOOTER ── -->
 <footer class="footer">
   <div class="footer-inner">
@@ -1248,17 +1299,45 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function killModel() {
-    if (isKilled) return;
-    isKilled = true;
-    killProgress = 0;
-    glitchActive = true;
-    glitchOverlay.classList.add('active');
+    // Toggle: if killed, revive; if alive, kill
+    if (isKilled) {
+      // Revive
+      isKilled = false;
+      killProgress = 0;
+      glitchActive = true;
+      glitchOverlay.classList.add('active');
 
-    offBtn.classList.add('killed');
-    bannerTitle.classList.add('killed');
-    bannerDate.classList.add('killed');
-    statusIndicator.classList.add('killed');
-    statusText.textContent = 'MODEL OFFLINE';
+      offBtn.classList.remove('killed');
+      offBtn.classList.add('on');
+      bannerTitle.classList.remove('killed');
+      bannerDate.classList.remove('killed');
+      statusIndicator.classList.remove('killed');
+      statusText.textContent = 'MODEL ACTIVE';
+      
+      // Reset button text
+      const label = offBtn.querySelector('.off-btn-label');
+      const sub = offBtn.querySelector('.off-btn-sub');
+      if (label) label.textContent = 'OFF';
+      if (sub) sub.textContent = 'PRESS';
+    } else {
+      // Kill
+      isKilled = true;
+      killProgress = 0;
+      glitchActive = true;
+      glitchOverlay.classList.add('active');
+
+      offBtn.classList.add('killed');
+      bannerTitle.classList.add('killed');
+      bannerDate.classList.add('killed');
+      statusIndicator.classList.add('killed');
+      statusText.textContent = 'MODEL OFFLINE';
+      
+      // Change button text
+      const label = offBtn.querySelector('.off-btn-label');
+      const sub = offBtn.querySelector('.off-btn-sub');
+      if (label) label.textContent = 'ON';
+      if (sub) sub.textContent = 'PRESS';
+    }
   }
 
   function update(now) {
@@ -1380,7 +1459,6 @@ document.addEventListener('DOMContentLoaded', function() {
   new ResizeObserver(resize).observe(canvas.parentElement);
   requestAnimationFrame(loop);
 })();
-})(); // End DOMContentLoaded
 
 // ═══════ HAMBURGER MENU ═══════
 (function() {
@@ -1397,7 +1475,6 @@ document.addEventListener('DOMContentLoaded', function() {
   hamburger.addEventListener('click', toggleMenu);
   overlay.addEventListener('click', toggleMenu);
 
-  // Close menu on link click
   sideMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       if (sideMenu.classList.contains('open')) {
@@ -1433,6 +1510,8 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch(function(){});
 })();
+
+})(); // End DOMContentLoaded
 </script>
 
 </body>
