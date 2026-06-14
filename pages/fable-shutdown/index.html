@@ -797,7 +797,7 @@ td:first-child {
     <h1 class="banner-title" id="bannerTitle">El Apagón de Fable 5</h1>
     <p class="banner-subtitle">Cuando el gobierno de EE.UU. cerró el modelo de IA más potente del mundo — y lo que significa para el futuro</p>
     <span class="banner-date" id="bannerDate">12 — 14 JUNIO 2026</span>
-    <button class="off-btn" id="offBtn" aria-label="Apagar modelo" onclick="window.__killModel()">
+    <button class="off-btn" id="offBtn" aria-label="Apagar modelo">
       <span class="off-btn-label">OFF</span>
       <span class="off-btn-sub">PRESS</span>
       <div class="off-btn-guard"></div>
@@ -1203,30 +1203,30 @@ td:first-child {
     <div class="section-label">Referencias</div>
     <h2 class="section-title">Fuentes</h2>
     <div class="quote-grid">
-      <div class="quote-card">
+      <a href="https://www.anthropic.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
         <div class="quote-text">Anthropic shuts down Fable 5 and Mythos 5 models after US government directive</div>
         <div class="quote-author"><strong>Anthropic</strong> — anthropic.com — 12 jun 2026</div>
-      </div>
-      <div class="quote-card">
+      </a>
+      <a href="https://time.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
         <div class="quote-text">The US Government Just Shut Down Anthropic's Most Powerful AI Model</div>
         <div class="quote-author"><strong>Time</strong> — time.com — 13 jun 2026</div>
-      </div>
-      <div class="quote-card">
+      </a>
+      <a href="https://forbes.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
         <div class="quote-text">Anthropic's Fable 5 Shutdown: What It Means for AI Regulation</div>
         <div class="quote-author"><strong>Forbes</strong> — forbes.com — 13 jun 2026</div>
-      </div>
-      <div class="quote-card">
+      </a>
+      <a href="https://zhipuai.cn" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
         <div class="quote-text">Zhipu AI launches GLM-5.2 with 1M context window as open-source alternative</div>
         <div class="quote-author"><strong>Zhipu AI</strong> — zhipuai.cn — 13 jun 2026</div>
-      </div>
-      <div class="quote-card">
+      </a>
+      <a href="https://techcrunch.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
         <div class="quote-text">US Commerce Department issues emergency export controls on AI models</div>
         <div class="quote-author"><strong>TechCrunch</strong> — techcrunch.com — 12 jun 2026</div>
-      </div>
-      <div class="quote-card">
+      </a>
+      <a href="https://vijayrayapati.substack.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
         <div class="quote-text">Why Anthropic's Fable 5 shutdown is a watershed moment for AI sovereignty</div>
         <div class="quote-author"><strong>Substack</strong> — Vijay Rayapati, Atomicwork — 14 jun 2026</div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
@@ -1314,7 +1314,6 @@ document.addEventListener('DOMContentLoaded', function() {
       statusIndicator.classList.remove('killed');
       statusText.textContent = 'MODEL ACTIVE';
       
-      // Reset button text
       const label = offBtn.querySelector('.off-btn-label');
       const sub = offBtn.querySelector('.off-btn-sub');
       if (label) label.textContent = 'OFF';
@@ -1326,13 +1325,13 @@ document.addEventListener('DOMContentLoaded', function() {
       glitchActive = true;
       glitchOverlay.classList.add('active');
 
+      offBtn.classList.remove('on');
       offBtn.classList.add('killed');
       bannerTitle.classList.add('killed');
       bannerDate.classList.add('killed');
       statusIndicator.classList.add('killed');
       statusText.textContent = 'MODEL OFFLINE';
       
-      // Change button text
       const label = offBtn.querySelector('.off-btn-label');
       const sub = offBtn.querySelector('.off-btn-sub');
       if (label) label.textContent = 'ON';
