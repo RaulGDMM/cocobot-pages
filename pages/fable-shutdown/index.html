@@ -274,22 +274,6 @@ body {
 .off-btn.killed .off-btn-label { color: #666; }
 .off-btn.killed .off-btn-sub { color: #444; }
 
-/* ON state - revived */
-.off-btn.on {
-  background: radial-gradient(circle at 40% 35%, #22c55e, #15803d 70%);
-  border-color: #22c55e;
-  box-shadow: 0 0 40px rgba(34,197,94,0.4), 0 0 80px rgba(34,197,94,0.15), inset 0 -4px 12px rgba(0,0,0,0.4);
-  animation: on-pulse 2.5s ease-in-out infinite;
-}
-.off-btn.on .off-btn-label { color: #fff; }
-.off-btn.on .off-btn-sub { color: rgba(255,255,255,0.7); }
-.off-btn.on .off-btn-guard { border-color: rgba(34,197,94,0.2); }
-
-@keyframes on-pulse {
-  0%, 100% { box-shadow: 0 0 40px rgba(34,197,94,0.4), 0 0 80px rgba(34,197,94,0.15), inset 0 -4px 12px rgba(0,0,0,0.4); }
-  50% { box-shadow: 0 0 60px rgba(34,197,94,0.7), 0 0 120px rgba(34,197,94,0.3), inset 0 -4px 12px rgba(0,0,0,0.4); }
-}
-
 .off-btn-guard {
   position: absolute;
   inset: -12px;
@@ -1308,7 +1292,6 @@ document.addEventListener('DOMContentLoaded', function() {
       glitchOverlay.classList.add('active');
 
       offBtn.classList.remove('killed');
-      offBtn.classList.add('on');
       bannerTitle.classList.remove('killed');
       bannerDate.classList.remove('killed');
       statusIndicator.classList.remove('killed');
@@ -1325,7 +1308,6 @@ document.addEventListener('DOMContentLoaded', function() {
       glitchActive = true;
       glitchOverlay.classList.add('active');
 
-      offBtn.classList.remove('on');
       offBtn.classList.add('killed');
       bannerTitle.classList.add('killed');
       bannerDate.classList.add('killed');
