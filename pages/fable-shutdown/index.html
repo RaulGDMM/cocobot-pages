@@ -780,7 +780,7 @@ td:first-child {
     <h1 class="banner-title" id="bannerTitle">El Apagón de Fable 5</h1>
     <p class="banner-subtitle">Cuando el gobierno de EE.UU. cerró el modelo de IA más potente del mundo — y lo que significa para el futuro</p>
     <span class="banner-date" id="bannerDate">12 — 14 JUNIO 2026</span>
-    <button class="off-btn" id="offBtn" aria-label="Apagar modelo">
+    <button class="off-btn" id="offBtn" aria-label="Apagar modelo" onclick="window.__killModel()">
       <span class="off-btn-label">OFF</span>
       <span class="off-btn-sub">PRESS</span>
       <div class="off-btn-guard"></div>
@@ -1192,6 +1192,7 @@ td:first-child {
 
 <!-- ═══════ KILL SWITCH ANIMATION ═══════ -->
 // ═══════ NEURAL NET ANIMATION + KILL SWITCH ═══════
+document.addEventListener('DOMContentLoaded', function() {
 (function() {
   const canvas = document.getElementById('neural-canvas');
   const ctx = canvas.getContext('2d');
@@ -1371,11 +1372,15 @@ td:first-child {
 
   // Button click handler
   offBtn.addEventListener('click', killModel);
+  
+  // Expose globally for inline onclick
+  window.__killModel = killModel;
 
   resize();
   new ResizeObserver(resize).observe(canvas.parentElement);
   requestAnimationFrame(loop);
 })();
+})(); // End DOMContentLoaded
 
 // ═══════ HAMBURGER MENU ═══════
 (function() {
