@@ -563,16 +563,16 @@ a:hover { color: #00ffc8; }
 <p class="section-text" data-tid="que_p1">
     Los ordenadores que usas ahora funcionan con <strong>bits</strong>: pequeños interruptores que están encendidos (1) o apagados (0). Todo lo que hace tu ordenador — desde ver un vídeo hasta editar un documento — son billones de estos interruptores cambiando de estado.
   </p>
-<p class="section-text">
+<p class="section-text" data-tid="que_p2">
     La computación cuántica usa <strong>qubits</strong> (bits cuánticos). Y aquí es donde las cosas se ponen extrañas.
   </p>
-<div class="analogy-box">
+<div class="analogy-box" data-tid="analogy_coin">
 <div class="label" data-tid="analogy_coin_label">💡 Analogía de la moneda</div>
 <p>
       Imagina una moneda sobre la mesa. Está en <strong>cara</strong> o <strong>cruz</strong>. Eso es un bit clásico: un estado definido. Ahora lanza la moneda al aire mientras gira. <strong>Mientras gira, es cara Y cruz al mismo tiempo</strong>. Eso es un qubit en <em>superposición</em>. Solo cuando la atrapas y la miras (la "mides") colapsa a un estado concreto.
     </p>
 </div>
-<div class="analogy-box">
+<div class="analogy-box" data-tid="analogy_maze">
 <div class="label" data-tid="analogy_maze_label">🏁 Analogía del laberinto</div>
 <p>
       Un ordenador clásico resolviendo un laberinto prueba un camino, llega a un callejón sin salida, vuelve atrás y prueba otro. Un ordenador cuántico, gracias a la superposición, <strong>puede explorar todos los caminos del laberinto simultáneamente</strong>. No es magia: es física.
@@ -599,7 +599,7 @@ a:hover { color: #00ffc8; }
 <p class="section-text" data-tid="poderes_intro">
     La computación cuántica aprovecha tres fenómenos de la mecánica cuántica que no tienen equivalente en nuestro mundo cotidiano. Son contraintuitivos, pero están demostrados experimentalmente una y otra vez.
   </p>
-<div class="power-grid">
+<div class="power-grid" data-tid="card_interference">
 <div class="card">
 <div class="card-icon">🌀</div>
 <div class="card-title" data-tid="card_superposition_title">Superposición</div>
@@ -623,7 +623,7 @@ a:hover { color: #00ffc8; }
 </div>
 </div>
 <!-- INTERACTIVE ENTANGLEMENT -->
-<div style="margin-top:3rem; text-align:center;">
+<div data-tid="entangle_demo_desc" style="margin-top:3rem; text-align:center;">
 <h3 data-tid="entangle_demo_title" style="font-size:1.2rem; color:#fff; margin-bottom:0.5rem;">Demo de entrelazamiento</h3>
 <p style="font-size:0.9rem; color:#a0a0b8; margin-bottom:2rem;">Haz clic en una partícula. La otra reacciona instantáneamente, sin importar la distancia.</p>
 <div class="entangle-demo">
@@ -645,7 +645,7 @@ a:hover { color: #00ffc8; }
 <p class="section-text" data-tid="error_p2">
     En un ordenador clásico, los bits son robustos. Un transistor encendido o apagado no cambia por sí solo. Pero un qubit es perturbado por <strong>cualquier cosa</strong>: una fluctuación de temperatura, radiación cósmica, vibraciones mecánicas, campos magnéticos ambientales... Cualquier interacción con el entorno destruye su estado cuántico. Esto se llama <strong>decoherencia</strong>.
   </p>
-<div class="analogy-box">
+<div class="analogy-box" data-tid="error_analogy_sand">
 <div class="label">💡 Analogía</div>
 <p>
       Imagina que intentas construir un castillo de arena en la playa mientras sopla el viento, llueve y la marea sube. Cada segundo, algo amenaza con destruirlo. Eso es mantener un qubit en estado cuántico: una carrera contra el ruido del universo entero.
@@ -659,7 +659,7 @@ a:hover { color: #00ffc8; }
 <p class="section-text" data-tid="error_solution">
     La ingeniosa solución es <strong>codificar un solo "qubit lógico" distribuido en muchos "qubits físicos"</strong>. En lugar de medir los qubits individuales (lo que los destruiría), se miden las <em>correlaciones</em> entre ellos. Así se puede detectar y corregir errores sin nunca revelar el estado cuántico protegido.
   </p>
-<div class="analogy-box">
+<div class="analogy-box" data-tid="error_analogy_letters">
 <div class="label">💡 Analogía</div>
 <p>
       Imagina que quieres enviar un mensaje frágil por un camino lleno de baches. En vez de enviarlo una vez, lo escribes en 100 cartas diferentes usando un código especial. Si algunas cartas llegan dañadas, el código te permite reconstruir el mensaje original sin necesidad de que ninguna carta individual esté perfecta. Eso es, en esencia, la corrección de errores cuánticos.
@@ -678,8 +678,8 @@ a:hover { color: #00ffc8; }
 <li data-tid="error_milestone_quantinuum" style="padding:0.5rem 0; color:#b0b0c8;">✅ <strong>Quantinuum (2025)</strong>: Puerta fault-tolerant no-Clifford con solo 8 qubits físicos usando iones atrapados.</li>
 <li data-tid="error_milestone_msft" style="padding:0.5rem 0; color:#b0b0c8;">✅ <strong>Microsoft Majorana</strong>: Protección topológica en hardware → <strong>~10x menos overhead</strong> que los enfoques anteriores. Si funciona a escala, podría cambiar todo.</li>
 </ul>
-<div class="analogy-box" style="margin-top:2rem;">
-<div class="label" data-tid="error_summary_label">⚡ En resumen</div>
+<div class="analogy-box" data-tid="error_summary" style="margin-top:2rem;">
+<div class="label">⚡ En resumen</div>
 <p>
       Sin corrección de errores, las computadoras cuánticas son curiosidades de laboratorio que cometen demasiados errores para ser útiles. <strong>Con corrección de errores, se convierten en herramientas reales</strong>. Es el gran cuello de botella que todo el mundo está intentando resolver.
     </p>
@@ -717,7 +717,7 @@ a:hover { color: #00ffc8; }
 <tr>
 <td><strong>IBM</strong></td>
 <td>Gate-model (superconducting)</td>
-<td data-tid="table_ibm">Roadmap: <strong>"quantum advantage" fin 2026</strong>. "Starling" fault-tolerant (200 qubits lógicos) en 2029. "Blue Jay" (2.000 qubits, 1.000M de puertas) en 2033+.</td>
+<td>Roadmap: <strong>"quantum advantage" fin 2026</strong>. "Starling" fault-tolerant (200 qubits lógicos) en 2029. "Blue Jay" (2.000 qubits, 1.000M de puertas) en 2033+.</td>
 </tr>
 <tr>
 <td><strong>Microsoft</strong> ⭐</td>
@@ -733,7 +733,7 @@ a:hover { color: #00ffc8; }
 </table>
 </div>
 <h3 data-tid="hoy_apps_title" style="color:#fff; margin: 2.5rem 0 1rem; font-size:1.3rem;">Aplicaciones reales en uso hoy</h3>
-<div class="power-grid">
+<div class="power-grid" data-tid="app_finance">
 <div class="card">
 <div class="card-icon">💊</div>
 <div class="card-title" data-tid="app_drugs_title">Descubrimiento de fármacos</div>
@@ -778,7 +778,7 @@ a:hover { color: #00ffc8; }
     Dos de las tecnologías más transformadoras de nuestro tiempo están convergiendo. La computación cuántica y la inteligencia artificial no solo se benefician mutuamente — <strong>juntas podrían abrir capacidades que hoy parecen ciencia ficción</strong>.
   </p>
 <h3 data-tid="ia_h3_why" style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Por qué la IA necesita la cuántica?</h3>
-<div class="power-grid">
+<div class="power-grid" data-tid="ia_card_energy">
 <div class="card">
 <div class="card-icon">⚡</div>
 <div class="card-title" data-tid="ia_card_speed_title">Entrenamiento exponencialmente más rápido</div>
@@ -827,7 +827,7 @@ a:hover { color: #00ffc8; }
 </tbody>
 </table>
 </div>
-<div class="analogy-box" style="margin-top:2rem;">
+<div class="analogy-box" data-tid="ia_reality" style="margin-top:2rem;">
 <div class="label" data-tid="ia_reality_label">⚠️ Reality check</div>
 <p>
       Aunque el potencial es enorme, <strong>hoy la mayoría de aplicaciones son híbridas</strong>: parte del trabajo lo hace un ordenador clásico, otra parte un cuántico. El "quantum advantage" real para IA — donde un ordenador cuántico supere claramente a cualquier GPU clásica — está probablemente a <strong>5-10 años</strong>. Pero la tendencia es clara y la inversión es masiva.
@@ -850,7 +850,7 @@ a:hover { color: #00ffc8; }
     Con un ordenador cuántico fault-tolerant con suficientes qubits, <strong>Shor's algorithm rompería estos cifrados en horas o minutos</strong>. Matemáticamente está demostrado. No es especulación.
   </p>
 <h3 data-tid="seg_h3_timeline" style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Cuándo ocurrirá? — Timeline realista</h3>
-<div class="timeline">
+<div class="timeline" data-tid="acc4_migration">
 <div class="timeline-item">
 <div class="timeline-year">2024</div>
 <div class="timeline-title" data-tid="tl_2024_title">NIST estandariza criptografía post-cuántica</div>
@@ -892,55 +892,55 @@ a:hover { color: #00ffc8; }
 <p class="section-text" data-tid="hype_intro">
     La computación cuántica genera más titulares sensacionalistas que casi ninguna otra tecnología. Separemos el grano de la paja.
   </p>
-<div class="hype-table">
+<div class="hype-table" data-tid="hype5_true">
 <div class="hype-row">
 <div class="hype-false">
 <div class="hype-label" data-tid="hype_false_label">❌ Lo que dicen</div>
-<p data-tid="hype1_false">"La computación cuántica va a hackear todo en los próximos 2 años."</p>
+<p>"La computación cuántica va a hackear todo en los próximos 2 años."</p>
 </div>
 <div class="hype-true">
 <div class="hype-label" data-tid="hype_true_label">✅ Lo que es real</div>
-<p data-tid="hype1_true">La estimación más creíble para romper RSA-2048 es mediados de los 2030s. Además, la migración a criptografía post-cuántica ya está en marcha.</p>
+<p>La estimación más creíble para romper RSA-2048 es mediados de los 2030s. Además, la migración a criptografía post-cuántica ya está en marcha.</p>
 </div>
 </div>
 <div class="hype-row">
 <div class="hype-false">
-<div class="hype-label">❌ Lo que dicen</div>
-<p data-tid="hype2_false">"Los ordenadores cuánticos van a reemplazar a nuestros ordenadores actuales."</p>
+<div class="hype-label" data-tid="hype_false_label">❌ Lo que dicen</div>
+<p>"Los ordenadores cuánticos van a reemplazar a nuestros ordenadores actuales."</p>
 </div>
 <div class="hype-true">
-<div class="hype-label">✅ Lo que es real</div>
-<p data-tid="hype2_true">La cuántica solo acelera tipos específicos de problemas (optimización, simulación cuántica, factorización). Para navegar, ver vídeos o escribir documentos, tu ordenador clásico es mejor.</p>
+<div class="hype-label" data-tid="hype_true_label">✅ Lo que es real</div>
+<p>La cuántica solo acelera tipos específicos de problemas (optimización, simulación cuántica, factorización). Para navegar, ver vídeos o escribir documentos, tu ordenador clásico es mejor.</p>
 </div>
 </div>
 <div class="hype-row">
 <div class="hype-false">
-<div class="hype-label">❌ Lo que dicen</div>
-<p data-tid="hype3_false">"Ya tenemos computadoras cuánticas que lo resuelven todo."</p>
+<div class="hype-label" data-tid="hype_false_label">❌ Lo que dicen</div>
+<p>"Ya tenemos computadoras cuánticas que lo resuelven todo."</p>
 </div>
 <div class="hype-true">
-<div class="hype-label">✅ Lo que es real</div>
-<p data-tid="hype3_true">Sí existen computadoras cuánticas comerciales (D-Wave, IBM, etc.), pero son especializadas, ruidosas y aún no han alcanzado "quantum advantage" para la mayoría de problemas.</p>
+<div class="hype-label" data-tid="hype_true_label">✅ Lo que es real</div>
+<p>Sí existen computadoras cuánticas comerciales (D-Wave, IBM, etc.), pero son especializadas, ruidosas y aún no han alcanzado "quantum advantage" para la mayoría de problemas.</p>
 </div>
 </div>
 <div class="hype-row">
 <div class="hype-false">
-<div class="hype-label">❌ Lo que dicen</div>
-<p data-tid="hype4_false">"La IA cuántica lo resolverá todo mañana."</p>
+<div class="hype-label" data-tid="hype_false_label">❌ Lo que dicen</div>
+<p>"La IA cuántica lo resolverá todo mañana."</p>
 </div>
 <div class="hype-true">
-<div class="hype-label">✅ Lo que es real</div>
-<p data-tid="hype4_true">La mayoría de aplicaciones actuales son híbridas (clásico + cuántico). El quantum advantage real para IA está probablemente a 5-10 años. El potencial es enorme, pero los plazos son realistas.</p>
+<div class="hype-label" data-tid="hype_true_label">✅ Lo que es real</div>
+<p>La mayoría de aplicaciones actuales son híbridas (clásico + cuántico). El quantum advantage real para IA está probablemente a 5-10 años. El potencial es enorme, pero los plazos son realistas.</p>
 </div>
 </div>
 <div class="hype-row">
 <div class="hype-false">
-<div class="hype-label">❌ Lo que dicen</div>
-<p data-tid="hype5_false">"Estamos a la vuelta de la esquina de la computación cuántica útil."</p>
+<div class="hype-label" data-tid="hype_false_label">❌ Lo que dicen</div>
+<p>"Estamos a la vuelta de la esquina de la computación cuántica útil."</p>
 </div>
 <div class="hype-true">
-<div class="hype-label">✅ Lo que es real</div>
-<p data-tid="hype5_true">Hay progreso genuino y acelerado, pero los expertos estiman 5-10 años para fault-tolerant a escala industrial. Es una maratón, no un sprint.</p>
+<div class="hype-label" data-tid="hype_true_label">✅ Lo que es real</div>
+<p>Hay progreso genuino y acelerado, pero los expertos estiman 5-10 años para fault-tolerant a escala industrial. Es una maratón, no un sprint.</p>
 </div>
 </div>
 </div>
@@ -953,7 +953,7 @@ a:hover { color: #00ffc8; }
 <p class="section-text" data-tid="tech_intro">
     Si te ha picado la curiosidad y quieres entender el "cómo" detrás del "qué", haz clic en cualquiera de estas secciones para profundizar.
   </p>
-<div class="accordion">
+<div class="accordion" data-tid="acc4_why">
 <!-- Accordion 1 -->
 <div class="accordion-item">
 <button class="accordion-header" data-tid="acc1_title">
@@ -1006,8 +1006,8 @@ a:hover { color: #00ffc8; }
 <div class="accordion-body">
 <p>El QML busca aprovechar la ventaja cuántica para tareas de machine learning:</p>
 <ul>
-<li data-tid="acc3_vqe"><strong>VQE (Variational Quantum Eigensolver)</strong>: Combina un circuito cuántico (que prepara estados cuánticos) con un optimizador clásico. Se usa para encontrar la energía fundamental de moléculas — clave en descubrimiento de fármacos y materiales.</li>
-<li data-tid="acc3_qaoa"><strong>QAOA (Quantum Approximate Optimization Algorithm)</strong>: Diseñado para problemas de optimización combinatoria. Alterna entre un "Hamiltoniano del problema" y un "Hamiltoniano de mezcla" para converger hacia la solución óptima.</li>
+<li><strong>VQE (Variational Quantum Eigensolver)</strong>: Combina un circuito cuántico (que prepara estados cuánticos) con un optimizador clásico. Se usa para encontrar la energía fundamental de moléculas — clave en descubrimiento de fármacos y materiales.</li>
+<li><strong>QAOA (Quantum Approximate Optimization Algorithm)</strong>: Diseñado para problemas de optimización combinatoria. Alterna entre un "Hamiltoniano del problema" y un "Hamiltoniano de mezcla" para converger hacia la solución óptima.</li>
 <li data-tid="acc3_qnn"><strong>Quantum Neural Networks (QNN)</strong>: Redes donde las "capas" son circuitos cuánticos paramétricos. Los parámetros se ajustan con un optimizador clásico (similar al backpropagation).</li>
 <li data-tid="acc3_hqs"><strong>HQS (Hybrid Quantum-Classical)</strong>: El modelo actual dominante. Parte del pipeline es clásico, parte cuántico. Ejemplo: un ordenador clásico prepara datos, un cuántico hace una operación específica (como un kernel cuántico), y el clásico procesa el resultado.</li>
 </ul>
@@ -1043,16 +1043,16 @@ a:hover { color: #00ffc8; }
     Mientras el mundo debate si la computación cuántica romperá la criptografía, <strong>China ya está construyendo redes de comunicación que serían imposibles de hackear</strong>, incluso con un ordenador cuántico. Y lo están haciendo a una escala que no tiene precedentes.
   </p>
 <h3 data-tid="redes_h3_how" style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Cómo funciona una red "antihack"?</h3>
-<p class="section-text">
+<p class="section-text" data-tid="redes_how">
     Se llama <strong>QKD (Quantum Key Distribution)</strong>. En lugar de usar matemáticas complejas para cifrar, usa las leyes de la física cuántica. La idea es simple pero genial:
   </p>
-<div class="analogy-box">
+<div class="analogy-box" data-tid="redes_analogy">
 <div class="label">💡 Analogía</div>
 <p>
       Imagina que envías una carta a tu amigo usando un sobre especial. Si alguien intenta abrirlo en el camino, <strong>el sobre se autodestruye instantáneamente</strong>. No es que el mensaje esté cifrado — es que cualquier intento de espionaje es detectable físicamente. Eso es QKD: si un espía intenta interceptar las claves cuánticas, el entrelazamiento se rompe y ambos lados lo saben al instante.
     </p>
 </div>
-<p class="section-text">
+<p class="section-text" data-tid="redes_photons">
     La clave se envía usando <strong>fotones entrelazados</strong> a través de fibra óptica. Si alguien intenta medir o copiar esos fotones, el principio de incertidumbre de Heisenberg garantiza que el estado cuántico cambia — y ese cambio es detectable. <strong>No es teoría: es física fundamental.</strong>
 </p>
 <h3 data-tid="redes_h3_lead" style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">China lleva la delantera</h3>
@@ -1100,23 +1100,23 @@ a:hover { color: #00ffc8; }
 </table>
 </div>
 <h3 data-tid="redes_h3_difficult" style="color:#fff; margin: 2rem 0 1rem; font-size:1.3rem;">¿Por qué es tan difícil hacer esto?</h3>
-<p class="section-text">
+<p class="section-text" data-tid="redes_difficult1">
     El problema fundamental: <strong>los fotones se pierden en la fibra óptica</strong>. A ~100 km, la mayoría han desaparecido. En un ordenador clásico, simplemente amplificas la señal. En el mundo cuántico, <strong>no puedes copiar ni amplificar un estado cuántico</strong> (teorema de no-clonación).
   </p>
-<p class="section-text">
+<p class="section-text" data-tid="redes_difficult2">
     La solución: <strong>repetidores cuánticos</strong>. A diferencia de los repetidores clásicos que copian la señal, un repetidor cuántico usa <strong>teleportación cuántica</strong>: entrelaza pares de fotones en segmentos cortos y luego "conecta" esos segmentos para extender el entrelazamiento a distancias largas. Es como pasar un mensaje de persona a persona en lugar de gritarlo a través de un campo.
   </p>
 <p class="section-text" data-tid="redes_difficult3">
     China demostró el primer bloque de repetidor cuántico escalable en febrero de 2026. Es el componente clave que faltaba para hacer redes cuánticas continentales.
   </p>
-<div class="analogy-box" style="margin-top:2rem;">
+<div class="analogy-box" data-tid="redes_context" style="margin-top:2rem;">
 <div class="label" data-tid="redes_context_label">🌍 En contexto</div>
 <p>
       China no solo está liderando en computación cuántica — está construyendo la <strong>infraestructura de comunicaciones del futuro</strong>. Una red cuántica de fibra óptica que abarca 10.000+ km con 145 nodos no es un experimento de laboratorio: es una red real, en producción, que protege comunicaciones gubernamentales y financieras. Mientras Occidente debate, China construye.
     </p>
 </div>
 <!-- INTERACTIVE: QKD SIMULATION -->
-<div style="margin-top:3rem; text-align:center;">
+<div data-tid="qkd_desc" style="margin-top:3rem; text-align:center;">
 <h3 data-tid="qkd_title" style="font-size:1.2rem; color:#fff; margin-bottom:0.5rem;">🔐 Simulador QKD</h3>
 <p style="font-size:0.9rem; color:#a0a0b8; margin-bottom:2rem;">Haz clic para enviar fotones entrelazados. Si Eve (espía) intenta interceptar, el entrelazamiento se rompe y se detecta.</p>
 <div id="qkd-demo" style="display:flex; align-items:center; justify-content:center; gap:2rem; flex-wrap:wrap;">
@@ -1147,25 +1147,25 @@ a:hover { color: #00ffc8; }
 <!-- ===== SECTION: OPINIÓN ===== -->
 <section class="section fade-in" id="opinion">
 <div class="section-label" data-tid="opinion_label">Análisis</div>
-<div class="opinion-box">
+<div class="opinion-box" data-tid="opinion_p6">
 <h2 class="section-title" data-tid="opinion_title">Mi opinión</h2>
 <div class="section-divider"></div>
-<p class="section-text" data-tid="opinion_p1">
+<p class="section-text">
       La computación cuántica es una de esas tecnologías que generan más ruido que señal. Cada semana hay un titular que dice "la cuántica ha logrado X" y al día siguiente otro que dice "la cuántica es un fraude". La realidad, como casi siempre, está en el medio.
     </p>
-<p class="section-text" data-tid="opinion_p2">
+<p class="section-text">
 <strong>Lo que sí es real:</strong> hay progreso genuino y acelerado. D-Wave vende computadoras cuánticas que resuelven problemas de optimización reales. Google demostró aceleraciones de 13.000× en simulaciones físicas. Microsoft, tras 20 años de investigación, presentó el primer chip topológico del mundo. Los qubits son más estables que nunca, y la corrección de errores — el gran cuello de botella — por fin muestra resultados prometedores.
     </p>
-<p class="section-text" data-tid="opinion_p3">
+<p class="section-text">
 <strong>Lo que es hype:</strong> la idea de que "dentro de dos años no habrá seguridad en internet" es alarmismo. La estimación más creíble apunta a mediados de los 2030s, y la migración a criptografía post-cuántica ya está en marcha. La gente que diga que "la cuántica reemplazará tu ordenador portátil" no entiende de qué va.
     </p>
-<p class="section-text" data-tid="opinion_p4">
+<p class="section-text">
 <strong>Lo que me emociona más:</strong> la fusión IA + cuántica. No porque vaya a pasar mañana, sino porque el potencial a medio plazo es transformador. Imagina un sistema de IA que pueda simular millones de moléculas simultáneamente para descubrir nuevos fármacos, materiales o catalizadores. O un modelo de lenguaje entrenado con aceleración cuántica que pueda procesar espacios de conocimiento imposibles para las GPUs actuales. Es el tipo de salto que va más allá de "más rápido" — es "algo que antes era imposible".
     </p>
-<p class="section-text" data-tid="opinion_p5">
+<p class="section-text">
 <strong>Y el chip Majorana de Microsoft</strong> merece una mención especial. Si la protección topológica escala como prometen, podría resolver el problema de corrección de errores de raíz, no con parches de software sino con física fundamental. Sería como pasar de construir un muro ladrillo a ladrillo a verter un bloque de hormigón monolítico. Si funciona, cambia las reglas del juego. Si no, nos enseña mucho sobre la física de la materia condensada de todos modos.
     </p>
-<p class="section-text" data-tid="opinion_p6">
+<p class="section-text">
 <strong>En resumen:</strong> no es el santo grial que lo resolverá todo mañana. Pero tampoco es humo. Es una tecnología en construcción, con plazos de 5-10 años para impacto real, que merece atención sin fanatismo. El momento de "apuesta temprana" ya ha empezado.
     </p>
 </div>
@@ -1783,7 +1783,6 @@ function qkdSend(intercept) {
 })();
 </script>
 
-<script>
 // ===== LANGUAGE TOGGLE =====
 (function() {
   var TRANSLATIONS = {
@@ -2737,7 +2736,6 @@ function qkdSend(intercept) {
     switchLang(saved);
   }
 })();
-</script>
 
 </body>
 </html>
