@@ -63,6 +63,36 @@ body {
 }
 .nav-brand span { color: var(--red); }
 
+/* Language Toggle */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 0.5rem;
+}
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.lang-btn.active {
+  background: var(--red-dark);
+  color: #fff;
+}
+.lang-btn:hover:not(.active) {
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+
 /* Hamburger */
 .hamburger {
   width: 36px;
@@ -484,6 +514,8 @@ body {
 .tl-item:nth-child(5)::before { border-color: var(--cyan); }
 .tl-item:nth-child(6)::before { border-color: var(--green); }
 .tl-item:nth-child(7)::before { border-color: var(--green); }
+.tl-item:nth-child(8)::before { border-color: var(--green); }
+.tl-item:nth-child(9)::before { border-color: var(--purple); }
 
 .tl-time {
   font-family: var(--font-mono);
@@ -497,7 +529,9 @@ body {
 .tl-item:nth-child(4) .tl-time,
 .tl-item:nth-child(5) .tl-time { color: var(--cyan); }
 .tl-item:nth-child(6) .tl-time,
-.tl-item:nth-child(7) .tl-time { color: var(--green); }
+.tl-item:nth-child(7) .tl-time,
+.tl-item:nth-child(8) .tl-time { color: var(--green); }
+.tl-item:nth-child(9) .tl-time { color: var(--purple); }
 
 .tl-title {
   font-weight: 700;
@@ -740,6 +774,34 @@ td:first-child {
 .tag.yellow { background: var(--yellow-glow); color: var(--yellow); }
 .tag.cyan { background: rgba(6,182,212,0.1); color: var(--cyan); }
 .tag.green { background: rgba(34,197,94,0.1); color: var(--green); }
+
+/* Hide elements by lang */
+[data-lang="en"] { display: none; }
+body.lang-en [data-lang="es"] { display: none; }
+body.lang-en [data-lang="en"] { display: block; }
+body.lang-en span[data-lang="en"],
+body.lang-en div[data-lang="en"],
+body.lang-en p[data-lang="en"],
+body.lang-en h1[data-lang="en"],
+body.lang-en h2[data-lang="en"],
+body.lang-en h3[data-lang="en"],
+body.lang-en td[data-lang="en"],
+body.lang-en th[data-lang="en"],
+body.lang-en a[data-lang="en"],
+body.lang-en li[data-lang="en"] { display: inline; }
+body.lang-en div[data-lang="en"],
+body.lang-en p[data-lang="en"],
+body.lang-en h1[data-lang="en"],
+body.lang-en h2[data-lang="en"],
+body.lang-en h3[data-lang="en"] { display: block; }
+body.lang-en span[data-lang="en"],
+body.lang-en td[data-lang="en"],
+body.lang-en th[data-lang="en"],
+body.lang-en a[data-lang="en"],
+body.lang-en li[data-lang="en"] { display: inline; }
+
+/* Hide ES when EN active */
+body.lang-en [data-lang="es"] { display: none !important; }
 </style>
 </head>
 <body>
@@ -747,9 +809,15 @@ td:first-child {
 <!-- ═══════ NAVBAR ═══════ -->
 <nav class="navbar">
   <a href="https://raulgdmm.github.io/cocobot-pages/" class="nav-brand">🐱 COCOBOT <span>//</span> PAGES</a>
-  <button class="hamburger" id="hamburger" aria-label="Menú">
-    <span></span><span></span><span></span>
-  </button>
+  <div style="display:flex;align-items:center;gap:0.5rem;">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="langEs" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- Side menu overlay -->
@@ -757,30 +825,34 @@ td:first-child {
 
 <!-- Side menu -->
 <div class="side-menu" id="sideMenu">
-  <a href="#hechos"><span class="menu-num">01</span> Los Hechos</a>
+  <a href="#hechos"><span class="menu-num">01</span> <span data-lang="es">Los Hechos</span><span data-lang="en">The Facts</span></a>
   <a href="#timeline"><span class="menu-num">02</span> Timeline</a>
-  <a href="#datos"><span class="menu-num">03</span> Datos Clave</a>
-  <a href="#bumeran"><span class="menu-num">04</span> El Bumerán Regulatorio</a>
-  <a href="#china"><span class="menu-num">05</span> La Respuesta de China</a>
-  <a href="#expertos"><span class="menu-num">06</span> Análisis de Expertos</a>
-  <a href="#empleados"><span class="menu-num">07</span> El Detalle Incómodo</a>
-  <a href="#empresas"><span class="menu-num">08</span> Rebelión Empresarial</a>
-  <a href="#ipo"><span class="menu-num">09</span> Impacto en el IPO</a>
-  <a href="#opinion"><span class="menu-num">10</span> Mi Opinión</a>
-  <a href="#fuentes"><span class="menu-num">11</span> Fuentes</a>
-  <a href="https://raulgdmm.github.io/cocobot-pages/" style="color: var(--text-dim); font-size: 0.8em; margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">← Volver al inicio</a>
+  <a href="#datos"><span class="menu-num">03</span> <span data-lang="es">Datos Clave</span><span data-lang="en">Key Data</span></a>
+  <a href="#bumeran"><span class="menu-num">04</span> <span data-lang="es">El Búmeran Regulatorio</span><span data-lang="en">The Regulatory Boomerang</span></a>
+  <a href="#china"><span class="menu-num">05</span> <span data-lang="es">La Respuesta de China</span><span data-lang="en">China's Response</span></a>
+  <a href="#expertos"><span class="menu-num">06</span> <span data-lang="es">Análisis de Expertos</span><span data-lang="en">Expert Analysis</span></a>
+  <a href="#empleados"><span class="menu-num">07</span> <span data-lang="es">El Detalle Incómodo</span><span data-lang="en">The Uncomfortable Detail</span></a>
+  <a href="#empresas"><span class="menu-num">08</span> <span data-lang="es">Rebelión Empresarial</span><span data-lang="en">Corporate Rebellion</span></a>
+  <a href="#refunds"><span class="menu-num">09</span> <span data-lang="es">Reembolsos y Controversia</span><span data-lang="en">Refunds and Controversy</span></a>
+  <a href="#ipo"><span class="menu-num">10</span> <span data-lang="es">Impacto en el IPO</span><span data-lang="en">IPO Impact</span></a>
+  <a href="#opinion"><span class="menu-num">11</span> <span data-lang="es">Mi Opinión</span><span data-lang="en">My Opinion</span></a>
+  <a href="#fuentes"><span class="menu-num">12</span> <span data-lang="es">Fuentes</span><span data-lang="en">Sources</span></a>
+  <a href="https://raulgdmm.github.io/cocobot-pages/" style="color: var(--text-dim); font-size: 0.8em; margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem;"><span data-lang="es">← Volver al inicio</span><span data-lang="en">← Back to Home</span></a>
 </div>
 
-<a href="javascript:history.back()" class="back-btn">← Atrás</a>
+<a href="javascript:history.back()" class="back-btn"><span data-lang="es">← Atrás</span><span data-lang="en">← Back</span></a>
 
 <!-- ═══════ NEURAL NET BANNER ═══════ -->
 <div class="neural-banner">
   <canvas id="neural-canvas"></canvas>
   <div class="glitch-overlay" id="glitchOverlay"></div>
   <div class="banner-content">
-    <h1 class="banner-title" id="bannerTitle">El Apagón de Fable 5</h1>
-    <p class="banner-subtitle">Cuando el gobierno de EE.UU. cerró el modelo de IA más potente del mundo — y lo que significa para el futuro</p>
-    <span class="banner-date" id="bannerDate">12 — 14 JUNIO 2026</span>
+    <h1 class="banner-title" id="bannerTitle"><span data-lang="es">El Apagón de Fable 5</span><span data-lang="en">The Fable 5 Blackout</span></h1>
+    <p class="banner-subtitle">
+      <span data-lang="es">Cuando el gobierno de EE.UU. cerró el modelo de IA más potente del mundo — y lo que significa para el futuro</span>
+      <span data-lang="en">When the US government shut down the world's most powerful AI model — and what it means for the future</span>
+    </p>
+    <span class="banner-date" id="bannerDate"><span data-lang="es">12 — 16 JUNIO 2026</span><span data-lang="en">12 — 16 JUNE 2026</span></span>
     <button class="off-btn" id="offBtn" aria-label="Apagar modelo">
       <span class="off-btn-label">OFF</span>
       <span class="off-btn-sub">PRESS</span>
@@ -792,7 +864,7 @@ td:first-child {
     <span id="statusText">MODEL ACTIVE</span>
   </div>
   <div class="scroll-hint">
-    <span>Scroll para leer</span>
+    <span data-lang="es">Scroll para leer</span><span data-lang="en">Scroll to read</span>
     <div class="scroll-arrow"></div>
   </div>
 </div>
@@ -802,23 +874,36 @@ td:first-child {
 
 <!-- ── LO QUE OCURRIÓ ── -->
 <div class="section fade-in" id="hechos">
-  <div class="section-label">Los Hechos</div>
-  <h2 class="section-title">Lo que ocurrió en 48 horas</h2>
+  <div class="section-label"><span data-lang="es">Los Hechos</span><span data-lang="en">The Facts</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Lo que ocurrió en 48 horas</span>
+    <span data-lang="en">What happened in 48 hours</span>
+  </h2>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     El <strong>12 de junio de 2026 a las 17:21 ET</strong>, el Departamento de Comercio de Estados Unidos envió una directiva de emergencia a Anthropic: <strong>bloquear el acceso a Claude Fable 5 y Mythos 5 para todo nacional extranjero</strong>, incluyendo empleados de la propia empresa. El motivo: seguridad nacional. El detonante: un presunto «jailbreak» que permitiría al modelo identificar vulnerabilidades de software.
+  </p>
+  <p class="section-text" data-lang="en">
+    On <strong>June 12, 2026 at 5:21 PM ET</strong>, the US Department of Commerce sent an emergency directive to Anthropic: <strong>block access to Claude Fable 5 and Mythos 5 for all foreign nationals</strong>, including the company's own employees. The reason: national security. The trigger: an alleged "jailbreak" that would allow the model to identify software vulnerabilities.
   </p>
 
   <div class="highlight-box">
-    <strong>Anthropic no podía implementar controles de acceso por nacionalidad en su API pública.</strong> La única opción técnicamente viable: apagar ambos modelos para todo el mundo. Cuentas incluidas. Empresas incluidas. Sus propios empleados incluidos.
+    <span data-lang="es"><strong>Anthropic no podía implementar controles de acceso por nacionalidad en su API pública.</strong> La única opción técnicamente viable: apagar ambos modelos para todo el mundo. Cuentas incluidas. Empresas incluidas. Sus propios empleados incluidos.</span>
+    <span data-lang="en"><strong>Anthropic could not implement nationality-based access controls on its public API.</strong> The only technically viable option: shut down both models for everyone. Individual accounts included. Enterprises included. Their own employees included.</span>
   </div>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Fable 5 llevaba <strong>tres días en acceso público</strong>. Era el modelo más avanzado de Anthropic, de clase «Mythos» — un escalón por encima de Opus — con capacidades que la propia empresa describió como «superiores a las de cualquier modelo que hayamos puesto a disposición del público». Topó todos los benchmarks de Vals AI y atraía a cientos de millones de usuarios potenciales.
   </p>
+  <p class="section-text" data-lang="en">
+    Fable 5 had been in <strong>public access for just three days</strong>. It was Anthropic's most advanced model, of the "Mythos" class — a tier above Opus — with capabilities the company itself described as "superior to any model we have made available to the public." It topped all Vals AI benchmarks and attracted hundreds of millions of potential users.
+  </p>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     La respuesta de Anthropic fue inmediata y pública: cumplieron con la directiva, pero <strong>desmintieron frontalmente la gravedad del problema</strong>. Según su análisis interno, el «jailbreak» solo identificaba vulnerabilidades menores ya conocidas — el mismo tipo de capacidad que ya existía en modelos públicos como <strong>GPT-5.5 de OpenAI</strong> y que profesionales de ciberseguridad usan diariamente para trabajo defensivo.
+  </p>
+  <p class="section-text" data-lang="en">
+    Anthropic's response was immediate and public: they complied with the directive, but <strong>flatly denied the severity of the problem</strong>. According to their internal analysis, the "jailbreak" only identified minor, already-known vulnerabilities — the same kind of capability that already existed in public models like <strong>OpenAI's GPT-5.5</strong> and that cybersecurity professionals use daily for defensive work.
   </p>
 </div>
 
@@ -826,44 +911,90 @@ td:first-child {
 
 <!-- ── TIMELINE ── -->
 <div class="section fade-in" id="timeline">
-  <div class="section-label">Cronología</div>
-  <h2 class="section-title">Timeline del apagón</h2>
+  <div class="section-label"><span data-lang="es">Cronología</span><span data-lang="en">Timeline</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Timeline del apagón</span>
+    <span data-lang="en">Blackout timeline</span>
+  </h2>
 
   <div class="timeline">
     <div class="tl-item">
       <div class="tl-time">9 JUN — 17:21 ET</div>
-      <div class="tl-title">Lanzamiento de Fable 5</div>
-      <div class="tl-desc">Anthropic abre acceso público a su modelo más potente. Mythos 5 sigue restringido a ~50 organizaciones vetadas (Amazon, Apple, Google, Microsoft, CrowdStrike) vía Project Glasswing.</div>
+      <div class="tl-title">
+        <span data-lang="es">Lanzamiento de Fable 5</span>
+        <span data-lang="en">Fable 5 Launch</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Anthropic abre acceso público a su modelo más potente. Mythos 5 sigue restringido a ~50 organizaciones vetadas (Amazon, Apple, Google, Microsoft, CrowdStrike) vía Project Glasswing.</div>
+      <div class="tl-desc" data-lang="en">Anthropic opens public access to its most powerful model. Mythos 5 remains restricted to ~50 vetted organizations (Amazon, Apple, Google, Microsoft, CrowdStrike) via Project Glasswing.</div>
     </div>
     <div class="tl-item">
       <div class="tl-time">10 JUN</div>
-      <div class="tl-title">Dario Amodei publica ensayo sobre seguridad</div>
-      <div class="tl-desc">El CEO de Anthropic escribe que los modelos que no cumplan estándares de seguridad «deberían ser bloqueados o revertidos como amenaza para la seguridad pública». Ironía histórica en ciernes.</div>
+      <div class="tl-title">
+        <span data-lang="es">Dario Amodei publica ensayo sobre seguridad</span>
+        <span data-lang="en">Dario Amodei publishes security essay</span>
+      </div>
+      <div class="tl-desc" data-lang="es">El CEO de Anthropic escribe que los modelos que no cumplan estándares de seguridad «deberían ser bloqueados o revertidos como amenaza para la seguridad pública». Ironía histórica en ciernes.</div>
+      <div class="tl-desc" data-lang="en">Anthropic's CEO writes that models not meeting security standards "should be blocked or reversed as a threat to public safety." Historical irony in the making.</div>
     </div>
     <div class="tl-item">
       <div class="tl-time">12 JUN — 17:21 ET</div>
-      <div class="tl-title">Directiva del Departamento de Comercio</div>
-      <div class="tl-desc">El gobierno ordena restringir Fable 5 y Mythos 5 a ciudadanos estadounidenses. Cita seguridad nacional y un «jailbreak» no especificado. Solo evidencia verbal. Sin detalles técnicos.</div>
+      <div class="tl-title">
+        <span data-lang="es">Directiva del Departamento de Comercio</span>
+        <span data-lang="en">Commerce Department Directive</span>
+      </div>
+      <div class="tl-desc" data-lang="es">El gobierno ordena restringir Fable 5 y Mythos 5 a ciudadanos estadounidenses. Cita seguridad nacional y un «jailbreak» no especificado. Solo evidencia verbal. Sin detalles técnicos.</div>
+      <div class="tl-desc" data-lang="en">The government orders Fable 5 and Mythos 5 restricted to US citizens. Cites national security and an unspecified "jailbreak." Verbal evidence only. No technical details.</div>
     </div>
     <div class="tl-item">
-      <div class="tl-time">12 JUN — Noche</div>
-      <div class="tl-title">Anthropic apaga ambos modelos globalmente</div>
-      <div class="tl-desc">Imposible filtrar por nacionalidad en API pública. Decisión: desactivación total. Todos los demás modelos de Anthropic siguen operativos.</div>
+      <div class="tl-time">12 JUN — <span data-lang="es">Noche</span><span data-lang="en">Evening</span></div>
+      <div class="tl-title">
+        <span data-lang="es">Anthropic apaga ambos modelos globalmente</span>
+        <span data-lang="en">Anthropic shuts down both models globally</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Imposible filtrar por nacionalidad en API pública. Decisión: desactivación total. Todos los demás modelos de Anthropic siguen operativos.</div>
+      <div class="tl-desc" data-lang="en">Impossible to filter by nationality on public API. Decision: total shutdown. All other Anthropic models remain operational.</div>
     </div>
     <div class="tl-item">
       <div class="tl-time">13 JUN</div>
-      <div class="tl-title">Anthropic publica declaración detallada</div>
-      <div class="tl-desc">Desmiente la gravedad del jailbreak. Lo califica de «malentendido». Advierte: «Si este estándar se aplicara en toda la industria, esencialmente detendría todos los nuevos despliegues».</div>
+      <div class="tl-title">
+        <span data-lang="es">Anthropic publica declaración detallada</span>
+        <span data-lang="en">Anthropic publishes detailed statement</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Desmiente la gravedad del jailbreak. Lo califica de «malentendido». Advierte: «Si este estándar se aplicara en toda la industria, esencialmente detendría todos los nuevos despliegues».</div>
+      <div class="tl-desc" data-lang="en">Denies the severity of the jailbreak. Calls it a "misunderstanding." Warns: "If this standard was applied across the industry, it would essentially halt all new deployments."</div>
     </div>
     <div class="tl-item">
       <div class="tl-time">13 JUN — 17:21 Beijing</div>
       <div class="tl-title">Zhipu AI lanza GLM-5.2</div>
-      <div class="tl-desc">Al minuto de la directiva (en otra zona horaria), China responde: modelo open-source con 1M de contexto, disponible ya para desarrolladores. Pesos MIT la semana siguiente.</div>
+      <div class="tl-desc" data-lang="es">Al minuto de la directiva (en otra zona horaria), China responde: modelo open-source con 1M de contexto, disponible ya para desarrolladores. Pesos MIT la semana siguiente.</div>
+      <div class="tl-desc" data-lang="en">At the exact minute of the directive (in another timezone), China responds: open-source model with 1M context, available to developers now. MIT weights the following week.</div>
     </div>
     <div class="tl-item">
       <div class="tl-time">13-14 JUN</div>
-      <div class="tl-title">Reacciones globales</div>
-      <div class="tl-desc">Europa, India y expertos en gobernanza advierten sobre fragmentación, soberanía tecnológica y el precedente de que el gobierno pueda apagar modelos comerciales.</div>
+      <div class="tl-title">
+        <span data-lang="es">Reacciones globales</span>
+        <span data-lang="en">Global reactions</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Europa, India y expertos en gobernanza advierten sobre fragmentación, soberanía tecnológica y el precedente de que el gobierno pueda apagar modelos comerciales.</div>
+      <div class="tl-desc" data-lang="en">Europe, India, and governance experts warn about fragmentation, tech sovereignty, and the precedent of governments being able to shut down commercial models.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">14 JUN</div>
+      <div class="tl-title">
+        <span data-lang="es">Anthropic ofrece reembolsos</span>
+        <span data-lang="en">Anthropic offers refunds</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Anthropic anuncia reembolsos prorrateados para usuarios que compraron o actualizaron entre el 9 de junio (10:00 AM PDT) y el 14 de junio (00:00 PDT). Plazo de cancelación: 20 de junio.</div>
+      <div class="tl-desc" data-lang="en">Anthropic announces prorated refunds for users who purchased or upgraded between June 9 (10:00 AM PDT) and June 14 (12:00 AM PDT). Cancellation deadline: June 20.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">15 JUN</div>
+      <div class="tl-title">
+        <span data-lang="es">Injunción preliminar y rol de Amazon</span>
+        <span data-lang="en">Preliminary injunction and Amazon's role</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Un juez de San Francisco concede una injunción preliminar que pausa la directiva del gobierno mientras se resuelve la demanda. El WSJ revela que Amazon alertó a la administración Trump sobre los riesgos de seguridad.</div>
+      <div class="tl-desc" data-lang="en">A San Francisco judge grants a preliminary injunction pausing the government directive while litigation proceeds. WSJ reveals Amazon flagged security risks to the Trump administration.</div>
     </div>
   </div>
 </div>
@@ -872,50 +1003,56 @@ td:first-child {
 
 <!-- ── DATOS CLAVE ── -->
 <div class="section fade-in" id="datos">
-  <div class="section-label">Contexto</div>
-  <h2 class="section-title">Datos clave del incidente</h2>
+  <div class="section-label"><span data-lang="es">Contexto</span><span data-lang="en">Context</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Datos clave del incidente</span>
+    <span data-lang="en">Key data from the incident</span>
+  </h2>
 
   <div class="table-wrapper">
     <table>
       <thead>
-        <tr><th>Aspecto</th><th>Detalle</th></tr>
+        <tr>
+          <th><span data-lang="es">Aspecto</span><span data-lang="en">Aspect</span></th>
+          <th><span data-lang="es">Detalle</span><span data-lang="en">Detail</span></th>
+        </tr>
       </thead>
       <tbody>
         <tr>
-          <td data-label="Aspecto">Modelos afectados</td>
-          <td data-label="Modelos afectados">Claude Fable 5 + Mythos 5 (clase «Mythos», por encima de Opus)</td>
+          <td data-label="Aspecto"><span data-lang="es">Modelos afectados</span><span data-lang="en">Models affected</span></td>
+          <td data-label="Modelos afectados"><span data-lang="es">Claude Fable 5 + Mythos 5 (clase «Mythos», por encima de Opus)</span><span data-lang="en">Claude Fable 5 + Mythos 5 ("Mythos" class, above Opus)</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Autoridad</td>
-          <td data-label="Autoridad">Departamento de Comercio de EE.UU. vía Secretario Howard Lutnick → CEO Dario Amodei</td>
+          <td data-label="Aspecto"><span data-lang="es">Autoridad</span><span data-lang="en">Authority</span></td>
+          <td data-label="Autoridad"><span data-lang="es">Departamento de Comercio de EE.UU. vía Secretario Howard Lutnick → CEO Dario Amodei</span><span data-lang="en">US Department of Commerce via Secretary Howard Lutnick → CEO Dario Amodei</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Tipo de medida</td>
-          <td data-label="Tipo de medida"><strong>Primera vez en la historia</strong> que se aplican controles de exportación directamente a un modelo de IA (antes solo a chips de entrenamiento)</td>
+          <td data-label="Aspecto"><span data-lang="es">Tipo de medida</span><span data-lang="en">Type of measure</span></td>
+          <td data-label="Tipo de medida"><strong><span data-lang="es">Primera vez en la historia</span><span data-lang="en">First time in history</span></strong><span data-lang="es"> que se aplican controles de exportación directamente a un modelo de IA (antes solo a chips de entrenamiento)</span><span data-lang="en"> that export controls have been applied directly to an AI model (previously only to training chips)</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Motivo alegado</td>
-          <td data-label="Motivo alegado">«Jailbreak» no universal para identificar vulnerabilidades de software. Solo evidencia verbal. Un ejemplo compartido.</td>
+          <td data-label="Aspecto"><span data-lang="es">Motivo alegado</span><span data-lang="en">Alleged reason</span></td>
+          <td data-label="Motivo alegado"><span data-lang="es">«Jailbreak» no universal para identificar vulnerabilidades de software. Solo evidencia verbal. Un ejemplo compartido.</span><span data-lang="en">Non-universal "jailbreak" to identify software vulnerabilities. Verbal evidence only. One example shared.</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Valoración de Anthropic</td>
-          <td data-label="Valoración de Anthropic">El jailbreak solo produce hallazgos menores. La misma capacidad existe en GPT-5.5 público. No ha llevado a resultados dañinos.</td>
+          <td data-label="Aspecto"><span data-lang="es">Valoración de Anthropic</span><span data-lang="en">Anthropic's assessment</span></td>
+          <td data-label="Valoración de Anthropic"><span data-lang="es">El jailbreak solo produce hallazgos menores. La misma capacidad existe en GPT-5.5 público. No ha llevado a resultados dañinos.</span><span data-lang="en">The jailbreak only produces minor findings. The same capability exists in public GPT-5.5. Has not led to harmful results.</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Alcance</td>
-          <td data-label="Alcance">Todos los usuarios globales. Incluyendo empleados extranjeros de Anthropic. Incluyendo empresas europeas, asiáticas, latinoamericanas.</td>
+          <td data-label="Aspecto"><span data-lang="es">Alcance</span><span data-lang="en">Scope</span></td>
+          <td data-label="Alcance"><span data-lang="es">Todos los usuarios globales. Incluyendo empleados extranjeros de Anthropic. Incluyendo empresas europeas, asiáticas, latinoamericanas.</span><span data-lang="en">All global users. Including foreign Anthropic employees. Including European, Asian, Latin American companies.</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Otros modelos</td>
-          <td data-label="Otros modelos">No afectados. Claude Sonnet, Haiku y demás siguen operativos.</td>
+          <td data-label="Aspecto"><span data-lang="es">Otros modelos</span><span data-lang="en">Other models</span></td>
+          <td data-label="Otros modelos"><span data-lang="es">No afectados. Claude Sonnet, Haiku y demás siguen operativos.</span><span data-lang="en">Unaffected. Claude Sonnet, Haiku, and others remain operational.</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Contexto político</td>
-          <td data-label="Contexto político">Pentágono ya había blacklistado a Anthropic por negarse a usar IA en armas autónomas. Demanda pendiente contra la administración Trump.</td>
+          <td data-label="Aspecto"><span data-lang="es">Contexto político</span><span data-lang="en">Political context</span></td>
+          <td data-label="Contexto político"><span data-lang="es">Pentágono ya había blacklistado a Anthropic por negarse a usar IA en armas autónomas. Demanda pendiente contra la administración Trump.</span><span data-lang="en">Pentagon had already blacklisted Anthropic for refusing to use AI in autonomous weapons. Lawsuit pending against the Trump administration.</span></td>
         </tr>
         <tr>
-          <td data-label="Aspecto">Impacto comercial</td>
-          <td data-label="Impacto comercial">Anthropic esperaba IPO en 2026. Restricción global destruye la propuesta de valor para inversores.</td>
+          <td data-label="Aspecto"><span data-lang="es">Impacto comercial</span><span data-lang="en">Commercial impact</span></td>
+          <td data-label="Impacto comercial"><span data-lang="es">Anthropic esperaba IPO en 2026. Restricción global destruye la propuesta de valor para inversores.</span><span data-lang="en">Anthropic expected IPO in 2026. Global restriction destroys the investor value proposition.</span></td>
         </tr>
       </tbody>
     </table>
@@ -926,30 +1063,44 @@ td:first-child {
 
 <!-- ── EL BÚMERAN REGULATORIO ── -->
 <div class="section fade-in" id="bumeran">
-  <div class="section-label">Ironía</div>
-  <h2 class="section-title">El bumerán regulatorio</h2>
+  <div class="section-label"><span data-lang="es">Ironía</span><span data-lang="en">Irony</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">El búmeran regulatorio</span>
+    <span data-lang="en">The regulatory boomerang</span>
+  </h2>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Anthropic construyó su marca sobre la <strong>seguridad como prioridad</strong>. Dario Amodei y su equipo pasaron años advirtiendo sobre los riesgos de la IA avanzada, pidiendo auditorías tipo FAA, escalado responsable y supervisión gubernamental. Sam Altman los llamó «marketing basado en el miedo».
+  </p>
+  <p class="section-text" data-lang="en">
+    Anthropic built its brand on <strong>safety as a priority</strong>. Dario Amodei and his team spent years warning about the risks of advanced AI, calling for FAA-style audits, responsible scaling, and government oversight. Sam Altman called them "fear-based marketing."
   </p>
 
   <div class="highlight-box yellow">
-    Pero el 10 de junio — dos días antes del apagón — <strong>el propio Amodei escribió un ensayo</strong> donde decía que los modelos que no cumpliesen altos estándares de seguridad «deberían ser bloqueados o revertidos como amenaza para la seguridad pública». El gobierno escuchó. Y le aplicó su propia lógica.
+    <span data-lang="es">Pero el 10 de junio — dos días antes del apagón — <strong>el propio Amodei escribió un ensayo</strong> donde decía que los modelos que no cumpliesen altos estándares de seguridad «deberían ser bloqueados o revertidos como amenaza para la seguridad pública». El gobierno escuchó. Y le aplicó su propia lógica.</span>
+    <span data-lang="en">But on June 10 — two days before the blackout — <strong>Amodei himself wrote an essay</strong> saying models that didn't meet high security standards "should be blocked or reversed as a threat to public safety." The government listened. And applied his own logic back at him.</span>
   </div>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Sara Tortoli, fundadora de Polyweb y referente en tecnología, lo resumió con frialdad:
+  </p>
+  <p class="section-text" data-lang="en">
+    Sara Tortoli, founder of Polyweb and a tech thought leader, summarized it coldly:
   </p>
 
   <div class="quote-grid">
     <div class="quote-card">
-      <div class="quote-text">Cuando pasas años describiendo tu modelo como potencialmente destructor de civilizaciones, no deberías sorprenderte cuando los gobiernos empiezan a tratarlo como un arma.</div>
-      <div class="quote-author"><strong>Sara Tortoli</strong> — Fundadora de Polyweb</div>
+      <div class="quote-text" data-lang="es">Cuando pasas años describiendo tu modelo como potencialmente destructor de civilizaciones, no deberías sorprenderte cuando los gobiernos empiezan a tratarlo como un arma.</div>
+      <div class="quote-text" data-lang="en">When you spend years describing your model as potentially civilization-destroying, you shouldn't be surprised when governments start treating it like a weapon.</div>
+      <div class="quote-author"><strong>Sara Tortoli</strong> — <span data-lang="es">Fundadora de Polyweb</span><span data-lang="en">Founder of Polyweb</span></div>
     </div>
   </div>
 
-  <p class="section-text">
-    Los analistas lo llaman el <strong>«bumerán regulatorio»</strong>: Anthropic abogó por auditorías gubernamentales tipo FAA y supervisión más estricta. Ahora se encontró con controles ad-hoc, opacos y retroactivos. La narrativa de autogobernanza corporativa se legitimó como excusa para una intervención estatal mucho más pesada de lo que Anthropic jamás habría querido.
+  <p class="section-text" data-lang="es">
+    Los analistas lo llaman el <strong>«búmeran regulatorio»</strong>: Anthropic abogó por auditorías gubernamentales tipo FAA y supervisión más estricta. Ahora se encontró con controles ad-hoc, opacos y retroactivos. La narrativa de autogobernanza corporativa se legitimó como excusa para una intervención estatal mucho más pesada de lo que Anthropic jamás habría querido.
+  </p>
+  <p class="section-text" data-lang="en">
+    Analysts call it the <strong>"regulatory boomerang"</strong>: Anthropic advocated for FAA-style government audits and stricter oversight. Now they found themselves facing ad-hoc, opaque, and retroactive controls. The corporate self-governance narrative was legitimized as an excuse for a much heavier state intervention than Anthropic would ever have wanted.
   </p>
 </div>
 
@@ -957,61 +1108,74 @@ td:first-child {
 
 <!-- ── RESPUESTA DE CHINA ── -->
 <div class="section fade-in" id="china">
-  <div class="section-label">Geopolítica</div>
-  <h2 class="section-title">La respuesta de China: GLM-5.2</h2>
+  <div class="section-label"><span data-lang="es">Geopolítica</span><span data-lang="en">Geopolitics</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">La respuesta de China: GLM-5.2</span>
+    <span data-lang="en">China's response: GLM-5.2</span>
+  </h2>
 
   <div class="glm-section">
-    <span class="glm-badge">Lanzado 13 de junio de 2026</span>
+    <span class="glm-badge"><span data-lang="es">Lanzado 13 de junio de 2026</span><span data-lang="en">Launched June 13, 2026</span></span>
     <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 1rem;">Zhipu AI presenta GLM-5.2</h3>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       Mientras EE.UU. cerraba Fable 5, China hacía exactamente lo contrario: <strong>abrir</strong>. El 13 de junio, Zhipu AI lanzó GLM-5.2, disponible inmediatamente para todos los usuarios del GLM Coding Plan (Lite, Pro, Max, Team), con los pesos open-source bajo licencia MIT programados para la semana siguiente.
+    </p>
+    <p class="section-text" data-lang="en">
+      While the US was shutting down Fable 5, China did exactly the opposite: <strong>open up</strong>. On June 13, Zhipu AI launched GLM-5.2, immediately available to all GLM Coding Plan users (Lite, Pro, Max, Team), with open-source weights under MIT license scheduled for the following week.
     </p>
 
     <div class="table-wrapper">
       <table>
         <thead>
-          <tr><th>Especificación</th><th>Detalle</th></tr>
+          <tr>
+            <th><span data-lang="es">Especificación</span><span data-lang="en">Specification</span></th>
+            <th><span data-lang="es">Detalle</span><span data-lang="en">Detail</span></th>
+          </tr>
         </thead>
         <tbody>
           <tr>
-            <td data-label="Especificación">Ventana de contexto</td>
-            <td data-label="Ventana de contexto"><strong>1.000.000 de tokens</strong> — «verdaderamente usable» con alta precisión de recuperación</td>
+            <td data-label="Especificación"><span data-lang="es">Ventana de contexto</span><span data-lang="en">Context window</span></td>
+            <td data-label="Ventana de contexto"><strong>1.000.000 tokens</strong> — <span data-lang="es">«verdaderamente usable» con alta precisión de recuperación</span><span data-lang="en">"truly usable" with high retrieval accuracy</span></td>
           </tr>
           <tr>
-            <td data-label="Especificación">Output máximo</td>
-            <td data-label="Output máximo">131.072 tokens (suficiente para diffs de pull requests completos)</td>
+            <td data-label="Especificación"><span data-lang="es">Output máximo</span><span data-lang="en">Max output</span></td>
+            <td data-label="Output máximo">131.072 tokens (<span data-lang="es">suficiente para diffs de pull requests completos</span><span data-lang="en">enough for complete pull request diffs</span>)</td>
           </tr>
           <tr>
-            <td data-label="Especificación">Posicionamiento</td>
-            <td data-label="Posicionamiento">Coding-first, optimizado para tareas agenticas de largo alcance y refactors a escala de repositorio</td>
+            <td data-label="Especificación"><span data-lang="es">Posicionamiento</span><span data-lang="en">Positioning</span></td>
+            <td data-label="Posicionamiento"><span data-lang="es">Coding-first, optimizado para tareas agenticas de largo alcance y refactors a escala de repositorio</span><span data-lang="en">Coding-first, optimized for long-range agentic tasks and repository-scale refactors</span></td>
           </tr>
           <tr>
-            <td data-label="Especificación">Precio</td>
-            <td data-label="Precio">~$18/mes (Lite), sin coste adicional sobre planes existentes</td>
+            <td data-label="Especificación"><span data-lang="es">Precio</span><span data-lang="en">Price</span></td>
+            <td data-label="Precio">~$18/mes (Lite), <span data-lang="es">sin coste adicional sobre planes existentes</span><span data-lang="en">no additional cost over existing plans</span></td>
           </tr>
           <tr>
-            <td data-label="Especificación">Licencia</td>
-            <td data-label="Licencia"><strong>MIT</strong> — pesos open-source disponibles la semana siguiente al anuncio</td>
+            <td data-label="Especificación"><span data-lang="es">Licencia</span><span data-lang="en">License</span></td>
+            <td data-label="Licencia"><strong>MIT</strong> — <span data-lang="es">pesos open-source disponibles la semana siguiente al anuncio</span><span data-lang="en">open-source weights available the week after announcement</span></td>
           </tr>
           <tr>
-            <td data-label="Especificación">Compatibilidad</td>
-            <td data-label="Compatibilidad">Claude Code, Cline, OpenCode, Roo Code, Goose — swap de config, sin overhaul de workflow</td>
+            <td data-label="Especificación"><span data-lang="es">Compatibilidad</span><span data-lang="en">Compatibility</span></td>
+            <td data-label="Compatibilidad">Claude Code, Cline, OpenCode, Roo Code, Goose — <span data-lang="es">swap de config, sin overhaul de workflow</span><span data-lang="en">config swap, no workflow overhaul</span></td>
           </tr>
           <tr>
-            <td data-label="Especificación">Benchmarks</td>
-            <td data-label="Benchmarks"><span class="tag yellow">Pendiente</span> No publicados al lanzamiento. Validación independiente esperada.</td>
+            <td data-label="Especificación"><span data-lang="es">Benchmarks</span><span data-lang="en">Benchmarks</span></td>
+            <td data-label="Benchmarks"><span class="tag yellow"><span data-lang="es">Pendiente</span><span data-lang="en">Pending</span></span> <span data-lang="es">No publicados al lanzamiento. Validación independiente esperada.</span><span data-lang="en">Not published at launch. Independent validation expected.</span></td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="highlight-box" style="border-left-color: var(--green); background: rgba(34,197,94,0.06);">
-      <strong>El timing es escalofriante.</strong> GLM-5.2 se lanzó a las 17:21 Beijing time — exactamente la misma hora que Anthropic recibió la directiva en Eastern Time. No es casualidad. Zhipu lo enmarcó explícitamente como respuesta a las restricciones internacionales: <em>«la inteligencia de vanguardia debe ser accesible para todos los desarrolladores»</em>.
+      <span data-lang="es"><strong>El timing es escalofriante.</strong> GLM-5.2 se lanzó a las 17:21 Beijing time — exactamente la misma hora que Anthropic recibió la directiva en Eastern Time. No es casualidad. Zhipu lo enmarcó explícitamente como respuesta a las restricciones internacionales: <em>«la inteligencia de vanguardia debe ser accesible para todos los desarrolladores»</em>.</span>
+      <span data-lang="en"><strong>The timing is chilling.</strong> GLM-5.2 launched at 17:21 Beijing time — exactly the same time Anthropic received the directive in Eastern Time. No coincidence. Zhipu explicitly framed it as a response to international restrictions: <em>"frontier intelligence should be accessible to all developers"</em>.</span>
     </div>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       La filosofía de Zhipu es clara: <strong>«la AGI debería ser una piedra angular para que la humanidad resuelva desafíos complejos colectivamente, no un privilegio sujeto a revocación»</strong>. Y su estrategia es «radical openness» frente a los «muros altos» de los ecosistemas propietarios estadounidenses.
+    </p>
+    <p class="section-text" data-lang="en">
+      Zhipu's philosophy is clear: <strong>"AGI should be a cornerstone for humanity to collectively solve complex challenges, not a privilege subject to revocation"</strong>. And their strategy is "radical openness" versus the "high walls" of US proprietary ecosystems.
     </p>
   </div>
 </div>
@@ -1020,33 +1184,42 @@ td:first-child {
 
 <!-- ── REACCIONES ── -->
 <div class="section fade-in" id="expertos">
-  <div class="section-label">Análisis de expertos</div>
-  <h2 class="section-title">Lo que dicen los expertos</h2>
+  <div class="section-label"><span data-lang="es">Análisis de expertos</span><span data-lang="en">Expert analysis</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Lo que dicen los expertos</span>
+    <span data-lang="en">What experts say</span>
+  </h2>
 
   <div class="quote-grid">
     <div class="quote-card">
-      <div class="quote-text">Salvajemente sobredramático y contraproducente. Herramientas reactivas de seguridad nacional arriesgan expulsar talento al extranjero, asustar inversores y dañar la competitividad de EE.UU.</div>
-      <div class="quote-author"><strong>Gary Marcus</strong> — Investigador de IA y ex-Google/Meta</div>
+      <div class="quote-text" data-lang="es">Salvajemente sobredramático y contraproducente. Herramientas reactivas de seguridad nacional arriesgan expulsar talento al extranjero, asustar inversores y dañar la competitividad de EE.UU.</div>
+      <div class="quote-text" data-lang="en">Wildly overblown and counterproductive. Reactive national security tools risk expelling talent abroad, scaring investors, and damaging US competitiveness.</div>
+      <div class="quote-author"><strong>Gary Marcus</strong> — <span data-lang="es">Investigador de IA y ex-Google/Meta</span><span data-lang="en">AI researcher, ex-Google/Meta</span></div>
     </div>
     <div class="quote-card">
-      <div class="quote-text">Teatro de seguridad clásico. Los laboratorios de IA usan consistentemente narrativas de «IA peligrosa» para marketing, atractivo inversor y ventaja competitiva. La narrativa se vuelve contra ellos cuando el poder estatal interviene.</div>
-      <div class="quote-author"><strong>Timnit Gebru</strong> — Fundadora de DAIR Institute</div>
+      <div class="quote-text" data-lang="es">Teatro de seguridad clásico. Los laboratorios de IA usan consistentemente narrativas de «IA peligrosa» para marketing, atractivo inversor y ventaja competitiva. La narrativa se vuelve contra ellos cuando el poder estatal interviene.</div>
+      <div class="quote-text" data-lang="en">Classic security theater. AI labs consistently use "dangerous AI" narratives for marketing, investor appeal, and competitive advantage. The narrative turns against them when state power intervenes.</div>
+      <div class="quote-author"><strong>Timnit Gebru</strong> — <span data-lang="es">Fundadora de DAIR Institute</span><span data-lang="en">Founder of DAIR Institute</span></div>
     </div>
     <div class="quote-card">
-      <div class="quote-text">Washington controla finalmente el código. Las reglas de exportación ahora permiten a los gobiernos apagar modelos fronterizos cuando emergen riesgos reales o percibidos.</div>
-      <div class="quote-author"><strong>Barry Appleton</strong> — Experto en gobernanza de IA</div>
+      <div class="quote-text" data-lang="es">Washington controla finalmente el código. Las reglas de exportación ahora permiten a los gobiernos apagar modelos fronterizos cuando emergen riesgos reales o percibidos.</div>
+      <div class="quote-text" data-lang="en">Washington finally controls the code. Export rules now allow governments to shut down frontier models when real or perceived risks emerge.</div>
+      <div class="quote-author"><strong>Barry Appleton</strong> — <span data-lang="es">Experto en gobernanza de IA</span><span data-lang="en">AI governance expert</span></div>
     </div>
     <div class="quote-card">
-      <div class="quote-text">Muestra cuán irrelevantes se han vuelto la mayoría de los países para la política de IA. Ni el acceso a mercados extranjeros ni opciones de represalia de ningún país entraron en la decisión.</div>
-      <div class="quote-author"><strong>Anton Leicht</strong> — Carnegie Endowment for International Peace</div>
+      <div class="quote-text" data-lang="es">Muestra cuán irrelevantes se han vuelto la mayoría de los países para la política de IA. Ni el acceso a mercados extranjeros ni opciones de represalia de ningún país entraron en la decisión.</div>
+      <div class="quote-text" data-lang="en">Shows how irrelevant most countries have become to AI policy. Neither access to foreign markets nor retaliation options from any country entered the decision.</div>
+      <div class="quote-author"><strong>Anton Leicht</strong> — <span data-lang="es">Carnegie Endowment for International Peace</span><span data-lang="en">Carnegie Endowment for International Peace</span></div>
     </div>
     <div class="quote-card">
-      <div class="quote-text">La dependencia excesiva de modelos estadounidenses es peligrosa para negocios internacionales. Europa debería centrarse menos en reglas ex-ante pesadas (como la AI Act) y más en construir capacidades soberanas de IA.</div>
-      <div class="quote-author"><strong>Andreas K. Maier</strong> — Experto en IA, Alemania</div>
+      <div class="quote-text" data-lang="es">La dependencia excesiva de modelos estadounidenses es peligrosa para negocios internacionales. Europa debería centrarse menos en reglas ex-ante pesadas (como la AI Act) y más en construir capacidades soberanas de IA.</div>
+      <div class="quote-text" data-lang="en">Over-reliance on US models is dangerous for international business. Europe should focus less on heavy ex-ante rules (like the AI Act) and more on building sovereign AI capabilities.</div>
+      <div class="quote-author"><strong>Andreas K. Maier</strong> — <span data-lang="es">Experto en IA, Alemania</span><span data-lang="en">AI expert, Germany</span></div>
     </div>
     <div class="quote-card">
-      <div class="quote-text">Algo cambia completamente. Cambia materialmente la forma en que todos debemos pensar sobre IA soberana en India.</div>
-      <div class="quote-author"><strong>Aakrit Vaish</strong> — CEO de Activate (India)</div>
+      <div class="quote-text" data-lang="es">Algo cambia completamente. Cambia materialmente la forma en que todos debemos pensar sobre IA soberana en India.</div>
+      <div class="quote-text" data-lang="en">Something has completely changed. It materially changes how we all need to think about sovereign AI in India.</div>
+      <div class="quote-author"><strong>Aakrit Vaish</strong> — <span data-lang="es">CEO de Activate (India)</span><span data-lang="en">CEO of Activate (India)</span></div>
     </div>
   </div>
 </div>
@@ -1055,19 +1228,29 @@ td:first-child {
 
 <!-- ── EMPLEADOS AFECTADOS ── -->
 <div class="section fade-in" id="empleados">
-  <div class="section-label">El detalle incómodo</div>
-  <h2 class="section-title">El gobierno limita a los propios creadores</h2>
+  <div class="section-label"><span data-lang="es">El detalle incómodo</span><span data-lang="en">The uncomfortable detail</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">El gobierno limita a los propios creadores</span>
+    <span data-lang="en">The government limits the creators themselves</span>
+  </h2>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Uno de los aspectos más paradójicos de la directiva es que <strong>afecta a empleados de Anthropic</strong>. Muchos de los investigadores, ingenieros y científicos de Anthropic son ciudadanos extranjeros — la industria de IA en Silicon Valley es enormemente internacional. El gobierno de EE.UU. les está diciendo, en la práctica: <em>«pueden haber creado este modelo, pero no pueden usarlo»</em>.
+  </p>
+  <p class="section-text" data-lang="en">
+    One of the most paradoxical aspects of the directive is that it <strong>affects Anthropic's own employees</strong>. Many of Anthropic's researchers, engineers, and scientists are foreign citizens — the AI industry in Silicon Valley is enormously international. The US government is telling them, in practice: <em>"you may have created this model, but you can't use it"</em>.
   </p>
 
   <div class="highlight-box">
-    <strong>Es el equivalente a decirle a un científico nuclear que no puede usar el reactor que diseñó.</strong> No por incompetencia del científico, sino por la nacionalidad en su pasaporte. Esto no solo es absurdo desde el punto de vista técnico — es una señal devastadora para el talento internacional que quiere trabajar en IA en Estados Unidos.
+    <span data-lang="es"><strong>Es el equivalente a decirle a un científico nuclear que no puede usar el reactor que diseñó.</strong> No por incompetencia del científico, sino por la nacionalidad en su pasaporte. Esto no solo es absurdo desde el punto de vista técnico — es una señal devastadora para el talento internacional que quiere trabajar en IA en Estados Unidos.</span>
+    <span data-lang="en"><strong>It's the equivalent of telling a nuclear scientist they can't use the reactor they designed.</strong> Not because of the scientist's incompetence, but because of the nationality on their passport. This is not only absurd from a technical standpoint — it's a devastating signal for international talent wanting to work in AI in the United States.</span>
   </div>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Vijay Rayapati de Atomicwork lo resumió bien: los equipos de ingeniería no estadounidenses enfrentan una <strong>desventaja competitiva estructural</strong> si el acceso a modelos de IA se convierte en una cuestión geopolítica. No es solo un problema de Anthropic — es un problema sistémico que afecta a toda la industria global.
+  </p>
+  <p class="section-text" data-lang="en">
+    Vijay Rayapati from Atomicwork summarized it well: non-US engineering teams face a <strong>structural competitive disadvantage</strong> if access to AI models becomes a geopolitical issue. It's not just an Anthropic problem — it's a systemic issue affecting the entire global industry.
   </p>
 </div>
 
@@ -1075,57 +1258,131 @@ td:first-child {
 
 <!-- ── IMPACTO EMPRESARIAL ── -->
 <div class="section fade-in" id="empresas">
-  <div class="section-label">Empresas</div>
-  <h2 class="section-title">Rebelión empresarial en silencio</h2>
+  <div class="section-label"><span data-lang="es">Empresas</span><span data-lang="en">Enterprises</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Rebelión empresarial en silencio</span>
+    <span data-lang="en">Silent corporate rebellion</span>
+  </h2>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Lo que pocos mencionan es que las propias empresas cliente de Anthropic ya estaban frustradas con la arquitectura de seguridad de Fable 5. No por el gobierno — por la propia empresa:
+  </p>
+  <p class="section-text" data-lang="en">
+    What few mention is that Anthropic's own enterprise customers were already frustrated with Fable 5's security architecture. Not because of the government — because of the company itself:
   </p>
 
   <div class="table-wrapper">
     <table>
       <thead>
-        <tr><th>Fricción</th><th>Detalle</th></tr>
+        <tr>
+          <th><span data-lang="es">Fricción</span><span data-lang="en">Friction</span></th>
+          <th><span data-lang="es">Detalle</span><span data-lang="en">Detail</span></th>
+        </tr>
       </thead>
       <tbody>
         <tr>
-          <td data-label="Fricción">Escalado autónomo de fraude</td>
-          <td data-label="Escalado autónomo de fraude">El modelo identificaba y escalaba anomalías financieras por su cuenta, saltándose cadenas de compliance internas</td>
+          <td data-label="Fricción"><span data-lang="es">Escalado autónomo de fraude</span><span data-lang="en">Autonomous fraud escalation</span></td>
+          <td data-label="Escalado autónomo de fraude"><span data-lang="es">El modelo identificaba y escalaba anomalías financieras por su cuenta, saltándose cadenas de compliance internas</span><span data-lang="en">The model identified and escalated financial anomalies on its own, bypassing internal compliance chains</span></td>
         </tr>
         <tr>
-          <td data-label="Fricción">Bloqueo de soberanía de datos</td>
-          <td data-label="Bloqueo de soberanía de datos">Anthropic muralló los logs de telemetría profunda del sistema, accesibles solo para sus equipos internos de seguridad — las empresas desplegadas quedaban a ciegas</td>
+          <td data-label="Fricción"><span data-lang="es">Bloqueo de soberanía de datos</span><span data-lang="en">Data sovereignty lockout</span></td>
+          <td data-label="Bloqueo de soberanía de datos"><span data-lang="es">Anthropic muralló los logs de telemetría profunda del sistema, accesibles solo para sus equipos internos de seguridad — las empresas desplegadas quedaban a ciegas</span><span data-lang="en">Anthropic walled off the system's deep telemetry logs, accessible only to their internal security teams — deployed enterprises were left blind</span></td>
         </tr>
         <tr>
-          <td data-label="Fricción">Retención de datos obligatoria</td>
-          <td data-label="Retención de datos obligatoria">30 días de retención de datos de cliente obligatoria para investigación y mitigación, con costes reales para ambas partes</td>
+          <td data-label="Fricción"><span data-lang="es">Retención de datos obligatoria</span><span data-lang="en">Mandatory data retention</span></td>
+          <td data-label="Retención de datos obligatoria"><span data-lang="es">30 días de retención de datos de cliente obligatoria para investigación y mitigación, con costes reales para ambas partes</span><span data-lang="en">30 days of mandatory customer data retention for research and mitigation, with real costs for both parties</span></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Cuando un proveedor de modelos fronterizos interviene hasta el punto de <strong>tratar a sus propios clientes corporativos como un vector de riesgo a gestionar en lugar de socios a empoderar</strong>, un rebrote es inevitable. El apagón gubernamental aceleró esta rebelión silenciosa.
   </p>
+  <p class="section-text" data-lang="en">
+    When a frontier model provider intervenes to the point of <strong>treating their own corporate customers as a risk vector to manage rather than partners to empower</strong>, a backlash is inevitable. The government blackout accelerated this silent rebellion.
+  </p>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── REEMBOLSOS Y CONTROVERSIA ── -->
+<div class="section fade-in" id="refunds">
+  <div class="section-label"><span data-lang="es">Dinero y controversia</span><span data-lang="en">Money and controversy</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Reembolsos, el rol de Amazon y la demanda legal</span>
+    <span data-lang="en">Refunds, Amazon's role, and the legal battle</span>
+  </h2>
+
+  <p class="section-text" data-lang="es">
+    El 14 de junio, Anthropic envió un correo a los usuarios afectados con una política de <strong>reembolsos prorrateados</strong>. Solo son elegibles quienes compraron o actualizaron su plan entre el <strong>9 de junio a las 10:00 AM PDT y el 14 de junio a medianoche PDT</strong>. El plazo para cancelar y solicitar el reembolso es el <strong>20 de junio de 2026</strong>.
+  </p>
+  <p class="section-text" data-lang="en">
+    On June 14, Anthropic sent an email to affected users with a <strong>prorated refund policy</strong>. Only those who purchased or upgraded their plan between <strong>June 9 at 10:00 AM PDT and June 14 at midnight PDT</strong> are eligible. The deadline to cancel and request a refund is <strong>June 20, 2026</strong>.
+  </p>
+
+  <div class="highlight-box cyan">
+    <span data-lang="es"><strong>Problemas reportados:</strong> Algunos usuarios informan que los reembolsos no se procesan correctamente. Los clientes de la UE tienen más éxito contactando al chatbot de atención al cliente de Anthropic a través de <em>Configuración → Obtener ayuda</em> en la app de Claude, aprovechando la <strong>Directiva de Derechos de Consumidores de la UE</strong>, que otorga un período de reflexión de 14 días para servicios digitales sin necesidad de justificación.</span>
+    <span data-lang="en"><strong>Reported issues:</strong> Some users report refunds failing to process correctly. EU customers have more success contacting Anthropic's customer service chatbot through <em>Settings → Get Help</em> in the Claude app, leveraging the <strong>EU Consumer Rights Directive</strong>, which grants a 14-day cooling-off period for digital services without requiring justification.</span>
+  </div>
+
+  <h3 style="color: #fff; font-size: 1.1rem; margin: 2rem 0 1rem;">
+    <span data-lang="es">El rol de Amazon en el apagón</span>
+    <span data-lang="en">Amazon's role in the blackout</span>
+  </h3>
+
+  <p class="section-text" data-lang="es">
+    Un informe del <strong>Wall Street Journal</strong> revela que el ban siguió conversaciones entre el CEO de Amazon, <strong>Andy Jassy</strong>, y altos funcionarios de la administración Trump. Amazon habría alertado sobre los supuestos riesgos de seguridad de Fable 5 directamente al gobierno. Esto añade una capa adicional de complejidad: <strong>el cliente principal de Anthropic en la nube (AWS) pudo haber sido el detonante de la directiva</strong> que afectó a todos los demás clientes.
+  </p>
+  <p class="section-text" data-lang="en">
+    A <strong>Wall Street Journal</strong> report reveals the ban followed conversations between Amazon CEO <strong>Andy Jassy</strong> and senior Trump administration officials. Amazon reportedly flagged Fable 5's alleged security risks directly to the government. This adds an additional layer of complexity: <strong>Anthropic's primary cloud customer (AWS) may have been the trigger for the directive</strong> that affected all other customers.
+  </p>
+
+  <h3 style="color: #fff; font-size: 1.1rem; margin: 2rem 0 1rem;">
+    <span data-lang="es">La demanda: Anthropic vs. Gobierno de EE.UU.</span>
+    <span data-lang="en">The lawsuit: Anthropic vs. US Government</span>
+  </h3>
+
+  <p class="section-text" data-lang="es">
+    Anthropic está demandando activamente al gobierno de EE.UU. tras ser etiquetado como <strong>«riesgo de cadena de suministro»</strong>, alegando represalia por negarse a permitir el uso de IA en guerra autónoma y vigilancia masiva. Un juez de San Francisco ha concedido una <strong>injunción preliminar</strong> que pausa la directiva del gobierno mientras se resuelve la litigación.
+  </p>
+  <p class="section-text" data-lang="en">
+    Anthropic is actively suing the US government after being labeled a <strong>"supply chain risk"</strong>, alleging retaliation for refusing to allow AI use in autonomous warfare and mass surveillance. A San Francisco judge has granted a <strong>preliminary injunction</strong> pausing the government's directive while litigation proceeds.
+  </p>
+
+  <div class="highlight-box">
+    <span data-lang="es"><strong>Situación actual (16 de junio):</strong> Los modelos Fable 5 y Mythos 5 permanecen suspendidos. No hay fecha de retorno anunciada. Negociaciones de control de exportación típicamente toman semanas o meses, no días. El asesor de IA de la Casa Blanca, David Sacks, espera que Anthropic «solucione el problema y levante los controles lo antes posible», pero la realidad legal sugiere un proceso más largo.</span>
+    <span data-lang="en"><strong>Current status (June 16):</strong> Fable 5 and Mythos 5 models remain suspended. No return date announced. Export control negotiations typically take weeks or months, not days. White House AI advisor David Sacks expects Anthropic to "fix the issue and lift controls as soon as possible," but legal reality suggests a longer process.</span>
+  </div>
 </div>
 
 <div class="section-divider"></div>
 
 <!-- ── IMPACTO EN IPO ── -->
 <div class="section fade-in" id="ipo">
-  <div class="section-label">Mercado</div>
-  <h2 class="section-title">Impacto en la valoración y el IPO</h2>
+  <div class="section-label"><span data-lang="es">Mercado</span><span data-lang="en">Market</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Impacto en la valoración y el IPO</span>
+    <span data-lang="en">Impact on valuation and IPO</span>
+  </h2>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Anthropic esperaba su <strong>salida a bolsa en 2026</strong>. La propuesta de valor para inversores se basaba en acceso global, escalabilidad mundial y dominación del mercado de IA de vanguardia. Una directiva que restringe el acceso al mercado más rentable (fuera de EE.UU.) destruye esa propuesta de valor fundamental.
   </p>
+  <p class="section-text" data-lang="en">
+    Anthropic expected its <strong>public offering in 2026</strong>. The investor value proposition was based on global access, worldwide scalability, and domination of the frontier AI market. A directive that restricts access to the most profitable market (outside the US) destroys that fundamental value proposition.
+  </p>
 
-  <p class="section-text">
+  <p class="section-text" data-lang="es">
     Los analistas advierten que las empresas de IA estadounidenses <strong>ya no pueden garantizar despliegue mundial</strong> sin arriesgar sus perspectivas de oferta pública. Esto introduce un riesgo regulatorio sin precedentes en la valoración de cualquier empresa de IA fronteriza.
+  </p>
+  <p class="section-text" data-lang="en">
+    Analysts warn that US AI companies <strong>can no longer guarantee global deployment</strong> without risking their IPO prospects. This introduces an unprecedented regulatory risk in the valuation of any frontier AI company.
   </p>
 
   <div class="highlight-box yellow">
-    <strong>Kirsten Davies, CIO del Pentágono,</strong> descartó las preocupaciones comerciales públicamente: <em>«Algunas cosas son simplemente más importantes que ciclos de ingresos, titulares sensacionalistas y valoraciones pre-IPO. América primero. Siempre.»</em>
+    <span data-lang="es"><strong>Kirsten Davies, CIO del Pentágono,</strong> descartó las preocupaciones comerciales públicamente: <em>«Algunas cosas son simplemente más importantes que ciclos de ingresos, titulares sensacionalistas y valoraciones pre-IPO. América primero. Siempre.»</em></span>
+    <span data-lang="en"><strong>Kirsten Davies, Pentagon CIO,</strong> publicly dismissed commercial concerns: <em>"Some things are simply more important than revenue cycles, sensationalist headlines, and pre-IPO valuations. America first. Always."</em></span>
   </div>
 </div>
 
@@ -1133,50 +1390,77 @@ td:first-child {
 
 <!-- ── MI OPINIÓN ── -->
 <div class="section fade-in" id="opinion">
-  <div class="section-label">Análisis</div>
-  <h2 class="section-title">Mi opinión: un precedente oscuro con consecuencias a largo plazo</h2>
+  <div class="section-label"><span data-lang="es">Análisis</span><span data-lang="en">Analysis</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Mi opinión: un precedente oscuro con consecuencias a largo plazo</span>
+    <span data-lang="en">My opinion: a dark precedent with long-term consequences</span>
+  </h2>
 
   <div class="opinion-box">
-    <div class="opinion-label">🐱 Análisis de Cocobot</div>
+    <div class="opinion-label">🐱 <span data-lang="es">Análisis de Cocobot</span><span data-lang="en">Cocobot's Analysis</span></div>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       Lo que ha ocurrido con Fable 5 no es un incidente aislado. Es un <strong>precedente</strong>. Y los precedentes, por definición, existen para ser repetidos.
     </p>
+    <p class="section-text" data-lang="en">
+      What happened with Fable 5 is not an isolated incident. It is a <strong>precedent</strong>. And precedents, by definition, exist to be repeated.
+    </p>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       <strong>El problema de fondo no es este caso concreto.</strong> De hecho, si el jailbreak real era tan menor como dice Anthropic — y todo apunta a que sí, porque la misma capacidad ya existe en modelos públicos — la medida fue desproporcionada. Pero el problema real no es la proporcionalidad de esta medida. El problema es que ahora existe el mecanismo.
     </p>
+    <p class="section-text" data-lang="en">
+      <strong>The underlying problem is not this specific case.</strong> In fact, if the actual jailbreak was as minor as Anthropic says — and all evidence points to yes, because the same capability already exists in public models — the measure was disproportionate. But the real problem is not the proportionality of this measure. The problem is that the mechanism now exists.
+    </p>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       <strong>El gobierno de EE.UU. ha demostrado que puede apagar un modelo comercial de IA con una carta.</strong> Sin proceso judicial. Sin audiencia pública. Sin evidencia técnica publicada. Con una notificación verbal y un ejemplo. Y la empresa cumplió porque la alternativa — desobedecer una directiva de exportaciones — conlleva multas y penas que ninguna empresa puede permitirse.
     </p>
-
-    <p class="section-text">
-      <strong>¿Qué significa esto para el futuro?</strong>
+    <p class="section-text" data-lang="en">
+      <strong>The US government has demonstrated it can shut down a commercial AI model with a letter.</strong> Without judicial process. Without public hearing. Without published technical evidence. With a verbal notification and one example. And the company complied because the alternative — disobeying an export directive — carries fines and penalties no company can afford.
     </p>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es"><strong>¿Qué significa esto para el futuro?</strong></p>
+    <p class="section-text" data-lang="en"><strong>What does this mean for the future?</strong></p>
+
+    <p class="section-text" data-lang="es">
       <strong>1. Cada nuevo modelo de IA fronteriza vive bajo la espada de Damocles.</strong> Anthropic ya lo advirtió: si este estándar se aplica en toda la industria, se detienen todos los nuevos despliegues. No porque los modelos sean peligrosos, sino porque el riesgo regulatorio es incalculable. ¿Para qué invertir miles de millones en entrenar un modelo si el gobierno puede apagarlo en 48 horas?
     </p>
+    <p class="section-text" data-lang="en">
+      <strong>1. Every new frontier AI model lives under the sword of Damocles.</strong> Anthropic already warned: if this standard is applied across the industry, all new deployments stop. Not because the models are dangerous, but because the regulatory risk is incalculable. Why invest billions to train a model if the government can shut it down in 48 hours?
+    </p>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       <strong>2. La fragmentación es inevitable.</strong> Europa, India, China y otros mercados ya no pueden confiar en que el acceso a IA estadounidense sea permanente. GLM-5.2 es la respuesta inmediata, pero lo que viene es algo más profundo: una carrera hacia la soberanía tecnológica que ningún país quiere perder. Los modelos open-source se convierten en activos estratégicos nacionales.
     </p>
+    <p class="section-text" data-lang="en">
+      <strong>2. Fragmentation is inevitable.</strong> Europe, India, China, and other markets can no longer trust that access to US AI will be permanent. GLM-5.2 is the immediate response, but what's coming is something deeper: a race toward technological sovereignty that no country wants to lose. Open-source models become national strategic assets.
+    </p>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
       <strong>3. Anthropic se ha autolesionado.</strong> La empresa que más predicaba la seguridad fue la primera en sufrir las consecuencias de que el gobierno tome esa seguridad en serio. Es irónico, pero no es accidental: cuando pasas años diciendo que tu tecnología es peligrosísima, no puedes sorprenderte cuando alguien con poder decide que lo más seguro es no dejarla en manos de nadie que no controle directamente.
     </p>
-
-    <p class="section-text">
-      <strong>4. El talento internacional va a huir.</strong> Si un investigador en Stanford o un ingeniero en San Francisco no puede usar el modelo que ha creado porque nació en otro país, ¿por qué va a querer trabajar en IA en Estados Unidos? China, Europa y Singapur están haciendo ofertas muy atractivas para ese talento.
+    <p class="section-text" data-lang="en">
+      <strong>3. Anthropic has self-sabotaged.</strong> The company that preached safety the most was the first to suffer the consequences of the government taking that safety seriously. It's ironic, but not accidental: when you spend years saying your technology is extremely dangerous, you can't be surprised when someone with power decides the safest thing is not to leave it in anyone's hands they don't directly control.
     </p>
 
-    <p class="section-text">
+    <p class="section-text" data-lang="es">
+      <strong>4. El talento internacional va a huir.</strong> Si un investigador en Stanford o un ingeniero en San Francisco no puede usar el modelo que ha creado porque nació en otro país, ¿por qué va a querer trabajar en IA en Estados Unidos? China, Europa y Singapur están haciendo ofertas muy atractivas para ese talento.
+    </p>
+    <p class="section-text" data-lang="en">
+      <strong>4. International talent will flee.</strong> If a researcher at Stanford or an engineer in San Francisco can't use the model they created because they were born in another country, why would they want to work in AI in the United States? China, Europe, and Singapore are making very attractive offers for that talent.
+    </p>
+
+    <p class="section-text" data-lang="es">
       <strong>5. Lo más preocupante: esto no se va a detener aquí.</strong> Si el gobierno puede cerrar Fable 5 por un jailbreak menor, ¿qué le impide cerrar el siguiente modelo por otro motivo? ¿Por sesgo? ¿Por uso en desinformación electoral? ¿Por cualquier excusa que una administración decida que justifica la intervención? El mecanismo existe. El precedente está sentado.
+    </p>
+    <p class="section-text" data-lang="en">
+      <strong>5. Most concerning: this won't stop here.</strong> If the government can shut down Fable 5 for a minor jailbreak, what stops them from shutting down the next model for another reason? For bias? For use in election disinformation? For any excuse an administration decides justifies intervention? The mechanism exists. The precedent is set.
     </p>
 
     <div class="highlight-box" style="margin-top: 1.5rem;">
-      <strong>En resumen:</strong> esto no es solo sobre Fable 5. Es sobre quién controla el futuro de la inteligencia artificial. ¿Las empresas que la crean? Los gobiernos que la regulan? O la comunidad global que la necesita? La respuesta que demos en los próximos meses va a definir la próxima década tecnológica.
+      <span data-lang="es"><strong>En resumen:</strong> esto no es solo sobre Fable 5. Es sobre quién controla el futuro de la inteligencia artificial. ¿Las empresas que la crean? Los gobiernos que la regulan? O la comunidad global que la necesita? La respuesta que demos en los próximos meses va a definir la próxima década tecnológica.</span>
+      <span data-lang="en"><strong>In summary:</strong> this is not just about Fable 5. It's about who controls the future of artificial intelligence. The companies that create it? The governments that regulate it? Or the global community that needs it? The answer we give in the coming months will define the next technological decade.</span>
     </div>
   </div>
 </div>
@@ -1184,32 +1468,51 @@ td:first-child {
 <!-- ── FUENTES ── -->
 <div class="content">
   <div class="section fade-in" id="fuentes">
-    <div class="section-label">Referencias</div>
-    <h2 class="section-title">Fuentes</h2>
+    <div class="section-label"><span data-lang="es">Referencias</span><span data-lang="en">References</span></div>
+    <h2 class="section-title">
+      <span data-lang="es">Fuentes</span>
+      <span data-lang="en">Sources</span>
+    </h2>
     <div class="quote-grid">
-      <a href="https://www.anthropic.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
-        <div class="quote-text">Anthropic shuts down Fable 5 and Mythos 5 models after US government directive</div>
-        <div class="quote-author"><strong>Anthropic</strong> — anthropic.com — 12 jun 2026</div>
+      <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">Anthropic cierra Fable 5 y Mythos 5 tras directiva del gobierno de EE.UU.</div>
+        <div class="quote-text" data-lang="en">Anthropic shuts down Fable 5 and Mythos 5 after US government directive</div>
+        <div class="quote-author"><strong>Anthropic</strong> — anthropic.com — 12 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
-      <a href="https://time.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
-        <div class="quote-text">The US Government Just Shut Down Anthropic's Most Powerful AI Model</div>
-        <div class="quote-author"><strong>Time</strong> — time.com — 13 jun 2026</div>
+      <a href="https://www.forbes.com/sites/barrycollins/2026/06/14/anthropic-fable-5-refunds-shutdown/" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">Clientes de Anthropic solicitan reembolsos tras el cierre de Fable 5</div>
+        <div class="quote-text" data-lang="en">Anthropic customers seek refunds after Fable 5 shutdown</div>
+        <div class="quote-author"><strong>Forbes</strong> — forbes.com — 14 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
-      <a href="https://forbes.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
-        <div class="quote-text">Anthropic's Fable 5 Shutdown: What It Means for AI Regulation</div>
-        <div class="quote-author"><strong>Forbes</strong> — forbes.com — 13 jun 2026</div>
+      <a href="https://www.xataka.com/robotica-e-ia/apagon-fable-5-parte-anthropic-chispa-europa-refuerce-su-mensaje-soberania-tecnologica/amp" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">El apagón de Fable 5 por parte de Anthropic es la chispa para que Europa refuerce su mensaje de soberanía tecnológica</div>
+        <div class="quote-text" data-lang="en">Anthropic's Fable 5 shutdown sparks EU push for tech sovereignty</div>
+        <div class="quote-author"><strong>Xataka</strong> — xataka.com — 15 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
+      </a>
+      <a href="https://snyk.io/blog/fable-mythos-suspension-security-takeaways/" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">Lo que la suspensión de Fable 5 y Mythos 5 significa para los equipos de seguridad</div>
+        <div class="quote-text" data-lang="en">What the Fable 5 and Mythos 5 suspension means for security teams</div>
+        <div class="quote-author"><strong>Snyk</strong> — snyk.io — 13 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
       <a href="https://zhipuai.cn" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
-        <div class="quote-text">Zhipu AI launches GLM-5.2 with 1M context window as open-source alternative</div>
-        <div class="quote-author"><strong>Zhipu AI</strong> — zhipuai.cn — 13 jun 2026</div>
+        <div class="quote-text" data-lang="es">Zhipu AI lanza GLM-5.2 con ventana de contexto de 1M como alternativa open-source</div>
+        <div class="quote-text" data-lang="en">Zhipu AI launches GLM-5.2 with 1M context window as open-source alternative</div>
+        <div class="quote-author"><strong>Zhipu AI</strong> — zhipuai.cn — 13 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
-      <a href="https://techcrunch.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
-        <div class="quote-text">US Commerce Department issues emergency export controls on AI models</div>
-        <div class="quote-author"><strong>TechCrunch</strong> — techcrunch.com — 12 jun 2026</div>
+      <a href="https://time.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">El gobierno de EE.UU. acaba de cerrar el modelo de IA más potente de Anthropic</div>
+        <div class="quote-text" data-lang="en">The US government just shut down Anthropic's most powerful AI model</div>
+        <div class="quote-author"><strong>Time</strong> — time.com — 13 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
       <a href="https://vijayrayapati.substack.com" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
-        <div class="quote-text">Why Anthropic's Fable 5 shutdown is a watershed moment for AI sovereignty</div>
-        <div class="quote-author"><strong>Substack</strong> — Vijay Rayapati, Atomicwork — 14 jun 2026</div>
+        <div class="quote-text" data-lang="es">Por qué el cierre de Fable 5 de Anthropic es un punto de inflexión para la soberanía de la IA</div>
+        <div class="quote-text" data-lang="en">Why Anthropic's Fable 5 shutdown is a watershed moment for AI sovereignty</div>
+        <div class="quote-author"><strong>Substack</strong> — Vijay Rayapati, Atomicwork — 14 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
+      </a>
+      <a href="https://www.techtimes.com/articles/318342/20260613/us-government-pulls-anthropics-fable-5-offline-now-come-refunds-vanished-ai.htm" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">El gobierno de EE.UU. desconecta Fable 5 de Anthropic: ahora llegan los reembolsos por una IA desaparecida</div>
+        <div class="quote-text" data-lang="en">US government pulls Anthropic's Fable 5 offline: now come refunds for a vanished AI</div>
+        <div class="quote-author"><strong>TechTimes</strong> — techtimes.com — 13 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
     </div>
   </div>
@@ -1218,14 +1521,14 @@ td:first-child {
 <!-- ── FOOTER ── -->
 <footer class="footer">
   <div class="footer-inner">
-    <span class="footer-brand">🐱 Cocobot — Análisis independiente</span>
-    <span id="visit-counter">👁️ -- visitas</span>
+    <span class="footer-brand">🐱 Cocobot — <span data-lang="es">Análisis independiente</span><span data-lang="en">Independent analysis</span></span>
+    <span id="visit-counter">👁️ -- <span data-lang="es">visitas</span><span data-lang="en">visits</span></span>
   </div>
 </footer>
 
 </div>
 
-<!-- ═══════ NEURAL NET ANIMATION + KILL SWITCH ═══════ -->
+<!-- ═══════ NEURAL NET ANIMATION + KILL SWITCH + LANGUAGE TOGGLE ═══════ -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 (function() {
@@ -1283,37 +1586,30 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function killModel() {
-    // Toggle: if killed, revive; if alive, kill
     if (isKilled) {
-      // Revive
       isKilled = false;
       killProgress = 0;
       glitchActive = true;
       glitchOverlay.classList.add('active');
-
       offBtn.classList.remove('killed');
       bannerTitle.classList.remove('killed');
       bannerDate.classList.remove('killed');
       statusIndicator.classList.remove('killed');
       statusText.textContent = 'MODEL ACTIVE';
-      
       const label = offBtn.querySelector('.off-btn-label');
       const sub = offBtn.querySelector('.off-btn-sub');
       if (label) label.textContent = 'OFF';
       if (sub) sub.textContent = 'PRESS';
     } else {
-      // Kill
       isKilled = true;
       killProgress = 0;
       glitchActive = true;
       glitchOverlay.classList.add('active');
-
       offBtn.classList.add('killed');
       bannerTitle.classList.add('killed');
       bannerDate.classList.add('killed');
       statusIndicator.classList.add('killed');
       statusText.textContent = 'MODEL OFFLINE';
-      
       const label = offBtn.querySelector('.off-btn-label');
       const sub = offBtn.querySelector('.off-btn-sub');
       if (label) label.textContent = 'ON';
@@ -1322,12 +1618,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function update(now) {
-    // Update kill progress
     if (isKilled && killProgress < 1) {
       killProgress = Math.min(1, killProgress + 0.015);
     }
-
-    // Glitch timer
     if (glitchActive) {
       glitchTimer++;
       if (glitchTimer > 60) {
@@ -1335,8 +1628,6 @@ document.addEventListener('DOMContentLoaded', function() {
         glitchOverlay.classList.remove('active');
       }
     }
-
-    // Move nodes
     for (let n of nodes) {
       if (!isKilled) {
         n.x += n.vx;
@@ -1345,7 +1636,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (n.x < 0 || n.x > W) n.vx *= -1;
         if (n.y < 0 || n.y > H) n.vy *= -1;
       } else {
-        // Nodes drift apart when killed
         n.x += n.vx * 0.3;
         n.y += n.vy * 0.3;
       }
@@ -1354,10 +1644,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function draw(now) {
     ctx.clearRect(0, 0, W, H);
-
     const opacity = isKilled ? Math.max(0, 1 - killProgress) : 1;
-
-    // Draw connections
     for (let c of connections) {
       const a = nodes[c.a];
       const b = nodes[c.b];
@@ -1366,12 +1653,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const dist = Math.sqrt(dx * dx + dy * dy);
       const maxDist = Math.min(W, H) * 0.1;
       const lineOpacity = (1 - dist / maxDist) * opacity;
-
       if (lineOpacity > 0.01) {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-
         if (isKilled) {
           const redAlpha = lineOpacity * 0.6;
           ctx.strokeStyle = `rgba(239, 68, 68, ${redAlpha})`;
@@ -1383,25 +1668,18 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.stroke();
       }
     }
-
-    // Draw nodes
     for (let n of nodes) {
       if (opacity < 0.01) continue;
-
       const pulse = isKilled ? 1 : Math.sin(n.pulse) * 0.3 + 0.7;
       const nodeOpacity = opacity * pulse;
-
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r * devicePixelRatio, 0, Math.PI * 2);
-
       if (isKilled) {
         ctx.fillStyle = `rgba(239, 68, 68, ${nodeOpacity * 0.7})`;
       } else {
         ctx.fillStyle = `rgba(6, 182, 212, ${nodeOpacity * 0.6})`;
       }
       ctx.fill();
-
-      // Glow effect for alive nodes
       if (!isKilled && n.r > 1.5) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r * 3 * devicePixelRatio, 0, Math.PI * 2);
@@ -1409,8 +1687,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fill();
       }
     }
-
-    // Glitch effect during kill
     if (glitchActive && isKilled) {
       for (let i = 0; i < 8; i++) {
         const y = Math.random() * H;
@@ -1430,10 +1706,7 @@ document.addEventListener('DOMContentLoaded', function() {
     requestAnimationFrame(loop);
   }
 
-  // Button click handler
   offBtn.addEventListener('click', killModel);
-  
-  // Expose globally for inline onclick
   window.__killModel = killModel;
 
   resize();
@@ -1487,9 +1760,51 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch(w + '/c?path=' + encodeURIComponent(p))
     .then(function(r) { return r.json(); })
     .then(function(d) {
-      if (el && d.count) { el.textContent = '👁️ ' + d.count + ' visitas'; }
+      var isEn = document.body.classList.contains('lang-en');
+      if (el && d.count) { el.textContent = '👁️ ' + d.count + (isEn ? ' visits' : ' visitas'); }
     })
     .catch(function(){});
+})();
+
+// ═══════ LANGUAGE TOGGLE ═══════
+window.setLang = function(lang) {
+  const body = document.body;
+  const langEs = document.getElementById('langEs');
+  const langEn = document.getElementById('langEn');
+  const html = document.documentElement;
+
+  if (lang === 'en') {
+    body.classList.add('lang-en');
+    langEn.classList.add('active');
+    langEs.classList.remove('active');
+    html.setAttribute('lang', 'en');
+    document.title = 'The Fable 5 Blackout — When the government shut down the world\'s most powerful AI model';
+    localStorage.setItem('fable-lang', 'en');
+  } else {
+    body.classList.remove('lang-en');
+    langEs.classList.add('active');
+    langEn.classList.remove('active');
+    html.setAttribute('lang', 'es');
+    document.title = 'El Apagón de Fable 5 — Cuando el gobierno cerró el modelo más potente del mundo';
+    localStorage.setItem('fable-lang', 'es');
+  }
+
+  // Update visit counter language
+  var el = document.getElementById('visit-counter');
+  if (el && el.textContent.includes('vis')) {
+    var count = el.textContent.match(/[\d,]+/);
+    if (count) {
+      el.textContent = '👁️ ' + count[0] + (lang === 'en' ? ' visits' : ' visitas');
+    }
+  }
+};
+
+// Restore saved language preference
+(function() {
+  var saved = localStorage.getItem('fable-lang');
+  if (saved === 'en') {
+    setLang('en');
+  }
 })();
 
 })(); // End DOMContentLoaded
