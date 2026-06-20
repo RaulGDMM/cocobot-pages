@@ -5,6 +5,60 @@
   },
   "days": [
     {
+      "date": "2026-06-20",
+      "news": [
+        {
+          "category": "agent",
+          "title": "Ataque WARP: investigadores demuestran que ~13 palabras en Reddit pueden secuestrar búsquedas de IA (ChatGPT, Gemini)",
+          "summary": "Investigadores de Cornell Tech (Zhang, Triedman, Shmatikov) presentaron WARP (Web Agent Retrieval Poisoning), demostrando que solo ~13 palabras en un comentario de Reddit pueden manipular herramientas de búsqueda con IA como ChatGPT Deep Research y Google Gemini para recomendar productos falsos o estafas. El ataque tuvo éxito entre 38-51% de las veces, subiendo al 62% cuando el señuelo se distribuía en múltiples hilos. El problema radica en que los agentes IA obtienen 17-23% de sus fuentes de sitios editables por usuarios (Reddit, Wikipedia, Quora, YouTube), tratando texto que coincide con la consulta con la misma credibilidad que sitios gubernamentales. Las defensas como bloquear UGC, pre-filtrar fuentes o escanear respuestas finales fallaron o degradaron el rendimiento de la IA. OpenAI Deep Research cita UGC en 0.4% de los casos; Gemini en ~12%. Los investigadores recomiendan tratar las sugerencias de IA como pistas, no veredictos, y verificar siempre nombres desconocidos antes de confiar.",
+          "source": "https://www.neuralbuddies.com/p/ai-news-recap-june-19-2026",
+          "source_name": "NeuralBuddies",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Microsoft Copilot vulnerabilidad crítica CVE-2026-42824: enlace malicioso robaba códigos 2FA, emails y reuniones",
+          "summary": "Descubierta por Varonis, una vulnerabilidad crítica en Microsoft Copilot (CVE-2026-42824) permitía a atacantes robar códigos de autenticación de dos factores, emails e invitaciones a reuniones con solo un clic en un enlace malicioso. El exploit abusaba del acceso total a datos de Copilot y de un dominio Bing.com en lista blanca. La vulnerabilidad ya ha sido parcheada. El hallazgo destaca los riesgos de otorgar a asistentes de IA acceso sin restricciones a datos corporativos sensibles.",
+          "source": "https://www.neuralbuddies.com/p/ai-news-recap-june-19-2026",
+          "source_name": "NeuralBuddies",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "UE publica código de práctica para etiquetado de contenido generado por IA — plazo de cumplimiento: 2 de agosto 2026",
+          "summary": "La Comisión Europea publicó el Código de Práctica definitivo sobre marcado y etiquetado de contenido generado por IA, un playbook voluntario que llega aproximadamente siete semanas antes de que las obligaciones de transparencia del AI Act se hagan aplicables el 2 de agosto de 2026. El ejercicio completo se extenderá durante 7 meses, dando tiempo a proveedores y desplegadores para prepararse. Se propone una etiqueta visual estandarizada de la UE ('AI') para contenido generado por inteligencia artificial. Las empresas que crean contenido para clientes en Europa ahora tienen un objetivo claro de cumplimiento con menos de 60 días para alcanzarlo.",
+          "source": "https://complexdiscovery.com/europes-ai-labeling-rules-arrive-with-a-voluntary-code-and-a-hard-deadline/",
+          "source_name": "Complex Discovery",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Anthropic abre oficina en Seúl y cierra despliegues empresariales con NAVER, Samsung, LG y Nexon",
+          "summary": "Anthropic abrió su tercera oficina en APAC en Seúl (después de Tokio y Bengaluru) el 17-18 de junio, con KiYoung Choi como Director Representante en Corea. Firmó un MOU con el Ministerio de Ciencia e ICT coreano (MSIT) para colaborar en evaluaciones de seguridad en coreano con el Korea AI Safety Institute. Se otorgó acceso a Claude a hasta 60 investigadores del consorcio NAIRL (KAIST, Universidad de Corea, Yonsei, POSTECH). En despliegues empresariales: NAVER implementó Claude Code en toda su organización de ingeniería (miles de ingenieros), Nexon lo adoptó para ingeniería de juegos live-service, Samsung SDS desplegó Claude Cowork y Code en Samsung Electronics, y LG CNS lo expandió a miles de empleados del grupo LG.",
+          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-19-2026",
+          "source_name": "BuildFastWithAI",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Microsoft es el mayor proveedor de modelos OpenAI GPT en China — ByteDance es el cliente más grande (~$1B/año)",
+          "summary": "Microsoft es el principal proveedor de modelos GPT de OpenAI a empresas chinas a través de Azure. ByteDance es el cliente más grande, con un gasto estimado de ~$1 mil millones anuales. OpenAI está presionando en privado a Microsoft para bloquear el 'destilado' (distilling) de sus modelos por parte de clientes chinos. Mientras tanto, ni OpenAI ni Anthropic ofrecen directamente sus modelos en China, lo que ha creado un vacío que Microsoft llena a través de Azure, generando tensiones internas en la relación OpenAI-Microsoft.",
+          "source": "https://www.artificialintelligence-news.com/",
+          "source_name": "AI News",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: de b9717 a b9733 — 16 builds nuevos con optimización 12x en logprobs, soporte Eagle3 para Qwen y F16 Vulkan/NVIDIA",
+          "summary": "Desde la última versión reportada (b9717) hasta la más reciente (b9733), llama.cpp acumuló 16 builds con mejoras significativas. Destacados: (1) b9733: adaptadores F16 en Vulkan + NVIDIA para ggml-webgpu. (2) b9731: optimización de get_token_probabilities con std::partial_sort — 12x más rápido (de 8555.6 a 704.3 µs/op para vocabulario de 128K). (3) b9730: corrección de manejo UTF-8 en Windows para mtmd y CLI. (4) b9727: actualización de cpp-httplib a 0.48.0. (5) b9726: nuevo argumento --agent para el servidor, eliminando compatibilidad redundante con webui. (6) b9724: múltiples correcciones en mtmd (gemma4ua, overflow en area()). (7) b9723: soporte Eagle3 para Qwen 3.5 y 3.6. (8) b9718: consolidación de selección de slots del servidor. (9) b9714: cabecera X-Accel-Buffering: no para streaming — crítico para usuarios con Nginx como reverse proxy. Los builds de macOS KleidiAI y openEuler permanecen deshabilitados.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": true
+        }
+      ],
+      "summary": "Día activo con hallazgos de seguridad en IA, despliegues empresariales en Asia y 16 builds nuevos de llama.cpp. La UE fija plazo para etiquetado de contenido IA."
+    },
+    {
       "date": "2026-06-19",
       "news": [
         {
