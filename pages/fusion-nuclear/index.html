@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fusión Nuclear — El Sol en una Caja</title>
+<meta name="description" content="¿Qué es la fusión nuclear? Guía completa y accesible: cómo funciona, los diferentes enfoques, inversiones, avances reales, y por qué siempre está 'a 30 años'.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0808;
+  color: #e0d8d0;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+a { color: #ff8c42; text-decoration: none; transition: color 0.3s; }
+a:hover { color: #ffd700; }
+
+/* ===== PARTICLES BACKGROUND ===== */
+#particles-bg {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10, 8, 8, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 140, 66, 0.15);
+  padding: 0.8rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: transform 0.3s;
+}
+.navbar.hidden { transform: translateY(-100%); }
+.nav-logo {
+  font-weight: 800; font-size: 1.1rem;
+  background: linear-gradient(135deg, #ff6b35, #ffd700);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+.nav-links a {
+  color: #a09888; font-size: 0.85rem; font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: #ff8c42; }
+.globe { font-size: 1rem; }
+.globe:hover { opacity: 0.7; }
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px;
+}
+.nav-hamburger span {
+  display: block; width: 24px; height: 2px; background: #e0d8d0;
+  transition: 0.3s;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+}
+.hero-content {
+  position: relative; z-index: 2; text-align: center; padding: 2rem;
+}
+.hero-title {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #ff6b35 0%, #ffd700 50%, #ff3333 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  text-shadow: none;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: #c0a888; font-weight: 300; max-width: 700px; margin: 0 auto;
+}
+.scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  z-index: 2; animation: bounce 2s infinite;
+  color: #ff8c42; font-size: 1.5rem;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ff6b35, #ffd700);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.section-text {
+  font-size: 1.05rem; color: #c8bfb0; max-width: 800px; margin-bottom: 1.5rem;
+}
+.section-text strong { color: #ff8c42; }
+
+/* ===== CARDS ===== */
+.card-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem; margin: 2rem 0;
+}
+.card {
+  background: rgba(255, 140, 66, 0.04);
+  border: 1px solid rgba(255, 140, 66, 0.12);
+  border-radius: 16px; padding: 1.8rem;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 140, 66, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.1);
+}
+.card-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+.card h3 {
+  font-size: 1.2rem; font-weight: 700; color: #ffd700; margin-bottom: 0.5rem;
+}
+.card p { font-size: 0.95rem; color: #b0a898; }
+
+/* ===== TABLES ===== */
+.table-wrapper {
+  overflow-x: auto; margin: 2rem 0;
+  border: 1px solid rgba(255, 140, 66, 0.12);
+  border-radius: 12px;
+}
+table {
+  width: 100%; border-collapse: collapse; font-size: 0.9rem;
+}
+thead { background: rgba(255, 107, 53, 0.1); }
+th {
+  padding: 1rem; text-align: left; font-weight: 700; color: #ffd700;
+  border-bottom: 2px solid rgba(255, 140, 66, 0.2);
+}
+td {
+  padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255, 140, 66, 0.06);
+  color: #c8bfb0;
+}
+tr:hover td { background: rgba(255, 140, 66, 0.03); }
+
+/* ===== INTERACTIVE DEMOS ===== */
+.demo-container {
+  background: rgba(255, 107, 53, 0.03);
+  border: 1px solid rgba(255, 140, 66, 0.15);
+  border-radius: 16px; padding: 2rem; margin: 2rem 0;
+  text-align: center;
+}
+.demo-title {
+  font-size: 1.2rem; font-weight: 700; color: #ffd700; margin-bottom: 1rem;
+}
+.demo-canvas-wrap {
+  position: relative; width: 100%; max-width: 600px; margin: 0 auto 1rem;
+}
+.demo-canvas-wrap canvas {
+  width: 100%; height: auto; border-radius: 12px;
+  background: rgba(0,0,0,0.3);
+}
+
+/* ===== FUSION SIMULATOR ===== */
+#fusion-sim {
+  width: 100%; height: 350px; border-radius: 12px;
+  background: radial-gradient(ellipse at center, #1a0a00 0%, #000 100%);
+  cursor: pointer;
+}
+.sim-info {
+  font-size: 0.95rem; color: #c0a888; margin-top: 0.5rem;
+}
+.sim-counter {
+  font-size: 1.1rem; font-weight: 700; color: #ffd700; margin-top: 0.5rem;
+}
+
+/* ===== TEMPERATURE COMPARATOR ===== */
+.temp-bar-container {
+  max-width: 600px; margin: 1rem auto;
+}
+.temp-bar-row {
+  display: flex; align-items: center; margin: 0.6rem 0;
+}
+.temp-label {
+  width: 180px; font-size: 0.85rem; color: #c0a888; text-align: right;
+  padding-right: 1rem; flex-shrink: 0;
+}
+.temp-bar-bg {
+  flex: 1; height: 28px; background: rgba(255,255,255,0.05);
+  border-radius: 14px; overflow: hidden; position: relative;
+}
+.temp-bar-fill {
+  height: 100%; border-radius: 14px;
+  transition: width 1.5s ease-out;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 8px; font-size: 0.75rem; font-weight: 700; color: #000;
+  width: 0;
+}
+.temp-bar-fill.animated { /* width set by JS */ }
+
+/* ===== APPROACH CARDS ===== */
+.approach-card {
+  cursor: pointer; position: relative; overflow: hidden;
+}
+.approach-detail {
+  max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
+  font-size: 0.9rem; color: #a09888; margin-top: 0;
+}
+.approach-card.expanded .approach-detail {
+  max-height: 400px; margin-top: 1rem;
+}
+.approach-toggle {
+  color: #ff8c42; font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem;
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative; padding: 2rem 0;
+  max-width: 800px; margin: 0 auto;
+}
+.timeline::before {
+  content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, #ff6b35, #ffd700, #ff3333);
+  transform: translateX(-50%);
+}
+.timeline-item {
+  position: relative; width: 50%; padding: 1rem 2rem;
+}
+.timeline-item:nth-child(odd) {
+  left: 0; text-align: right; padding-right: 3rem;
+}
+.timeline-item:nth-child(even) {
+  left: 50%; text-align: left; padding-left: 3rem;
+}
+.timeline-item::before {
+  content: ''; position: absolute; top: 1.5rem;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #ffd700; border: 3px solid #ff6b35;
+}
+.timeline-item:nth-child(odd)::before { right: -7px; }
+.timeline-item:nth-child(even)::before { left: -7px; }
+.timeline-date {
+  font-size: 0.85rem; font-weight: 700; color: #ff8c42;
+}
+.timeline-text {
+  font-size: 0.95rem; color: #c0a888; margin-top: 0.3rem;
+}
+
+/* ===== HYPE VS REALITY ===== */
+.hype-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;
+}
+.hype-card {
+  padding: 1.5rem; border-radius: 12px;
+}
+.hype-card.myth {
+  background: rgba(255, 51, 51, 0.06);
+  border: 1px solid rgba(255, 51, 51, 0.15);
+}
+.hype-card.fact {
+  background: rgba(0, 200, 100, 0.06);
+  border: 1px solid rgba(0, 200, 100, 0.15);
+}
+.hype-card h4 {
+  font-size: 1rem; margin-bottom: 0.5rem;
+}
+.hype-card.myth h4 { color: #ff6666; }
+.hype-card.fact h4 { color: #66dd88; }
+.hype-card p { font-size: 0.9rem; color: #b0a898; }
+
+/* ===== ACCORDIONS ===== */
+.accordion {
+  margin: 1rem 0; border: 1px solid rgba(255, 140, 66, 0.12);
+  border-radius: 12px; overflow: hidden;
+}
+.accordion-header {
+  background: rgba(255, 107, 53, 0.06);
+  padding: 1rem 1.5rem; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: background 0.3s;
+}
+.accordion-header:hover { background: rgba(255, 107, 53, 0.1); }
+.accordion-header h4 {
+  font-size: 1rem; font-weight: 600; color: #ffd700;
+}
+.accordion-arrow {
+  color: #ff8c42; transition: transform 0.3s; font-size: 1.2rem;
+}
+.accordion.open .accordion-arrow { transform: rotate(180deg); }
+.accordion-body {
+  max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
+  padding: 0 1.5rem;
+}
+.accordion.open .accordion-body {
+  max-height: 2000px; padding: 1.5rem;
+}
+.accordion-body p {
+  font-size: 0.95rem; color: #b0a898; margin-bottom: 0.8rem;
+}
+
+/* ===== INVESTMENT BARS ===== */
+.invest-row {
+  display: flex; align-items: center; margin: 0.5rem 0;
+}
+.invest-label {
+  width: 200px; font-size: 0.85rem; color: #c0a888; text-align: right;
+  padding-right: 1rem; flex-shrink: 0;
+}
+.invest-bar-bg {
+  flex: 1; height: 24px; background: rgba(255,255,255,0.04);
+  border-radius: 12px; overflow: hidden;
+}
+.invest-bar-fill {
+  height: 100%; border-radius: 12px;
+  transition: width 1.5s ease-out;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 8px; font-size: 0.72rem; font-weight: 700; color: #000;
+  width: 0;
+}
+
+/* ===== OPINION SECTION ===== */
+.opinion-box {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), rgba(255, 215, 0, 0.04));
+  border: 1px solid rgba(255, 140, 66, 0.2);
+  border-radius: 16px; padding: 2.5rem; margin: 2rem 0;
+}
+.opinion-box h3 {
+  font-size: 1.3rem; color: #ffd700; margin-bottom: 1rem;
+}
+
+/* ===== SOURCES ===== */
+.sources-list {
+  list-style: none; padding: 0;
+}
+.sources-list li {
+  padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 140, 66, 0.06);
+  font-size: 0.9rem;
+}
+.sources-list li:last-child { border-bottom: none; }
+
+/* ===== FOOTER ===== */
+.page-footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 3rem 2rem;
+  border-top: 1px solid rgba(255, 140, 66, 0.1);
+}
+.footer-inner {
+  display: flex; justify-content: center; align-items: center;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+.footer-brand { color: #807060; font-size: 0.85rem; }
+.visit-counter-badge {
+  color: #807060; font-size: 0.8em;
+  background: rgba(255, 140, 66, 0.06); padding: 4px 12px;
+  border-radius: 6px; border: 1px solid rgba(255, 140, 66, 0.1);
+}
+.back-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: #ff8c42; font-size: 0.9rem; font-weight: 500;
+  padding: 0.5rem 1rem; border: 1px solid rgba(255, 140, 66, 0.2);
+  border-radius: 8px; transition: all 0.3s;
+}
+.back-btn:hover {
+  background: rgba(255, 140, 66, 0.1);
+  border-color: rgba(255, 140, 66, 0.4);
+}
+
+/* ===== FADE IN ===== */
+.fade-in {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ===== DIVIDER ===== */
+.section-divider {
+  width: 80px; height: 3px; margin: 0 auto 3rem;
+  background: linear-gradient(90deg, #ff6b35, #ffd700);
+  border-radius: 2px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: rgba(10, 8, 8, 0.95);
+    padding: 1.5rem 2rem; gap: 1rem;
+    border-bottom: 1px solid rgba(255, 140, 66, 0.15);
+  }
+  .section { padding: 3rem 1.5rem; }
+  .hype-grid { grid-template-columns: 1fr; }
+  .timeline::before { left: 20px; }
+  .timeline-item { width: 100%; left: 0 !important; text-align: left !important; padding-left: 3rem !important; padding-right: 1rem !important; }
+  .timeline-item::before { left: 13px !important; right: auto !important; }
+  .temp-label, .invest-label { width: 120px; font-size: 0.75rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  /* Mobile card-stack tables */
+  .table-wrapper { border: none; border-radius: 0; margin: 16px 0; }
+  table, thead, tbody, th, td, tr { display: block; }
+  thead { display: none; }
+  tbody tr {
+    background: rgba(255, 140, 66, 0.03);
+    border: 1px solid rgba(255, 140, 66, 0.12);
+    border-radius: 10px; margin-bottom: 12px; padding: 14px 16px;
+  }
+  td {
+    padding: 6px 0 !important; text-align: right;
+    position: relative; padding-left: 50% !important;
+  }
+  td:first-child {
+    text-align: left; padding-left: 0 !important; padding-bottom: 10px !important;
+    margin-bottom: 6px; border-bottom: 1px solid rgba(255, 140, 66, 0.12);
+    font-size: 0.82em; color: #ffd700; text-transform: uppercase;
+    font-family: 'Courier New', monospace; letter-spacing: 0.5px;
+  }
+  td:not(:first-child)::before {
+    content: attr(data-label);
+    position: absolute; left: 0; top: 6px; width: 46%;
+    font-weight: bold; font-size: 0.78em; color: #807060;
+    font-family: 'Courier New', monospace; text-align: left;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Particles Background -->
+<canvas id="particles-bg"></canvas>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">⚛️ Fusión Nuclear</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#que-es">¿Qué es?</a></li>
+    <li><a href="#dificil">¿Por qué es difícil?</a></li>
+    <li><a href="#enfoques">Enfoques</a></li>
+    <li><a href="#hitos">Hitos</a></li>
+    <li><a href="#inversion">Inversión</a></li>
+    <li><a href="#hype">Hype vs Realidad</a></li>
+    <li><a href="#opinion">Opinión</a></li>
+    <li><a href="index-en.html"><span class="globe">🌐</span> EN</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <h1 class="hero-title">Fusión Nuclear</h1>
+    <p class="hero-subtitle">El santo grial de la energía limpia. ¿Por qué siempre está "a 30 años"... y por qué esta vez podría ser diferente?</p>
+  </div>
+  <div class="scroll-indicator">↓</div>
+</section>
+
+<!-- ¿Qué es la fusión nuclear? -->
+<section class="section fade-in" id="que-es">
+  <h2 class="section-title">¿Qué es la fusión nuclear?</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    Imagina que puedes tomar dos átomos ligeros y <strong>forzarlos a unirse</strong>. Cuando lo consigues, liberan una cantidad enorme de energía. Eso es la fusión nuclear.
+  </p>
+  <p class="section-text">
+    Es exactamente lo que hace el <strong>Sol</strong> — y todas las estrellas. En su interior, a millones de grados, los átomos de hidrógeno se fusionan constantemente creando helio y liberando la luz y el calor que nos mantienen vivos. La fusión es, literalmente, <strong>poner una estrella en una caja</strong>.
+  </p>
+  <p class="section-text">
+    La reacción más estudiada en la Tierra une dos isótopos del hidrógeno: <strong>deuterio</strong> (D) y <strong>tritio</strong> (T). Al fusionarse, producen un núcleo de helio, un neutrón y <strong>17.6 MeV de energía</strong> — unas 10 millones de veces más energía por reacción que la combustión del carbón.
+  </p>
+
+  <div class="demo-container">
+    <div class="demo-title">⚛️ Simulador de Fusión — ¡Haz clic para fusionar!</div>
+    <div class="demo-canvas-wrap">
+      <canvas id="fusion-sim"></canvas>
+    </div>
+    <p class="sim-info">Cada clic lanza dos núcleos (D + T) que colisionan y liberan energía</p>
+    <div class="sim-counter" id="sim-counter">Fusiones: 0 | Energía total: 0 MeV</div>
+  </div>
+</section>
+
+<!-- ¿Por qué es tan difícil? -->
+<section class="section fade-in" id="dificil">
+  <h2 class="section-title">¿Por qué es tan difícil?</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    En el Sol, la fusión es fácil porque la <strong>gravedad</strong> comprime el plasma con una fuerza brutal. En la Tierra, no tenemos esa gravedad, así que necesitamos compensarla con <strong>temperatura extrema</strong> y <strong>confinamiento</strong>.
+  </p>
+  <p class="section-text">
+    Los tres obstáculos principales:
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🌡️</div>
+      <h3>150 millones de grados</h3>
+      <p>El plasma debe estar 10 veces más caliente que el centro del Sol. A esa temperatura, ningún material sólido puede contenerlo — se necesita confinamiento magnético o láser.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧲</div>
+      <h3>Confinar el plasma</h3>
+      <p>El plasma es un gas de partículas cargadas que quiere escapar en todas direcciones. Mantenerlo estable y confinado el tiempo suficiente para que ocurra la fusión es uno de los problemas de física más complejos jamás planteados.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Más energía de la que consumes</h3>
+      <p>No basta con lograr fusión — necesitas que la energía liberada supere la que inviertes en calentar y confinar el plasma. Este "breakeven" energético es la meta fundamental.</p>
+    </div>
+  </div>
+
+  <div class="demo-container">
+    <div class="demo-title">🌡️ Comparador de Temperaturas</div>
+    <div class="temp-bar-container" id="temp-bars">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Los diferentes enfoques -->
+<section class="section fade-in" id="enfoques">
+  <h2 class="section-title">Los diferentes caminos</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    No hay un solo camino hacia la fusión. Existen múltiples enfoques, cada uno con sus ventajas y desafíos. Es como si hubiera <strong>diez equipos intentando escalar el Everest por rutas diferentes</strong>.
+  </p>
+
+  <div class="card-grid" id="approach-cards">
+    <div class="card approach-card" onclick="this.classList.toggle('expanded')">
+      <div class="card-icon">🍩</div>
+      <h3>Tokamak</h3>
+      <p>La ruta más madura. Usa campos magnéticos en forma de dona para confinar el plasma. ITER y CFS siguen este camino.</p>
+      <div class="approach-toggle">▼ Click para más detalles</div>
+      <div class="approach-detail">
+        <p><strong>Ventajas:</strong> Más de 60 años de investigación, mejor comprendido, mayor Q logrado (en JET: Q=0.67).</p>
+        <p><strong>Desventajas:</strong> Enorme y caro, operaciones en pulsos (no continuo), inestabilidades del plasma difíciles de controlar.</p>
+        <p><strong>Proyectos:</strong> ITER (Francia), SPARC/CFS (EEUU), JET (Reino Unido, retirado 2023), EAST (China).</p>
+      </div>
+    </div>
+    <div class="card approach-card" onclick="this.classList.toggle('expanded')">
+      <div class="card-icon">🌀</div>
+      <h3>Stellarator</h3>
+      <p>Versión "torcida" del tokamak. Los campos magnéticos son más complejos pero permiten operación continua.</p>
+      <div class="approach-toggle">▼ Click para más detalles</div>
+      <div class="approach-detail">
+        <p><strong>Ventajas:</strong> Operación continua (no pulsos), más estable, menos inestabilidades.</p>
+        <p><strong>Desventajas:</strong> Diseño extremadamente complejo (requiere supercomputadores), hasta ahora menor rendimiento.</p>
+        <p><strong>Proyectos:</strong> Wendelstein 7-X (Alemania, récord 2023), Type One Energy (EEUU), Renaissance Fusion (Francia).</p>
+      </div>
+    </div>
+    <div class="card approach-card" onclick="this.classList.toggle('expanded')">
+      <div class="card-icon">💥</div>
+      <h3>Confinamiento Inercial (Láser)</h3>
+      <p>Láseres ultra-potentes comprimen una cápsula de combustible hasta que se fusiona. El enfoque del NIF.</p>
+      <div class="approach-toggle">▼ Click para más detalles</div>
+      <div class="approach-detail">
+        <p><strong>Ventajas:</strong> Primer "ignition" científico logrado (NIF, 2022), récord de 8.6 MJ en 2025.</p>
+        <p><strong>Desventajas:</strong> Los láseres son enormemente ineficientes (Q del sistema muy bajo), difícil repetición continua.</p>
+        <p><strong>Proyectos:</strong> NIF (EEUU, Lawrence Livermore), Focused Energy, Marvel Fusion (Alemania), Inertia Enterprises.</p>
+      </div>
+    </div>
+    <div class="card approach-card" onclick="this.classList.toggle('expanded')">
+      <div class="card-icon">🔫</div>
+      <h3>FRC (Field-Reversed Configuration)</h3>
+      <p>Plasma en forma de "salchicha" auto-confinado. Helion y TAE usan esta ruta con variantes diferentes.</p>
+      <div class="approach-toggle">▼ Click para más detalles</div>
+      <div class="approach-detail">
+        <p><strong>Ventajas:</strong> Compacto, Helion genera electricidad directa (sin turbinas de vapor), TAE usa combustible H-B11 (sin neutrones).</p>
+        <p><strong>Desventajas:</strong> Menos maduro que tokamak, Helion aún no ha demostrado net energy en Polaris.</p>
+        <p><strong>Proyectos:</strong> Helion Energy (PPA con Microsoft, 2028), TAE Technologies (fusióndose con Trump Media, $6B).</p>
+      </div>
+    </div>
+    <div class="card approach-card" onclick="this.classList.toggle('expanded')">
+      <div class="card-icon">🎯</div>
+      <h3>Meta Magnetizada (MTF)</h3>
+      <p>Comprime un plasma con pistones mecánicos dentro de un líquido metálico. General Fusion es el principal exponente.</p>
+      <div class="approach-toggle">▼ Click para más detalles</div>
+      <div class="approach-detail">
+        <p><strong>Ventajas:</strong> Combina confinamiento magnético e inercial, potencialmente más económico.</p>
+        <p><strong>Desventajas:</strong> Wear mecánico extremo, crisis financiera en 2025 (despidos, rescate).</p>
+        <p><strong>Proyectos:</strong> General Fusion (Canadá, Jeff Bezos inversor, SPAC $1B en 2026).</p>
+      </div>
+    </div>
+    <div class="card approach-card" onclick="this.classList.toggle('expanded')">
+      <div class="card-icon">⚡</div>
+      <h3>Pulso Electromagnético</h3>
+      <p>Similar al láser pero usando pulsos eléctricos masivos en lugar de luz. Pacific Fusion es el líder.</p>
+      <div class="approach-toggle">▼ Click para más detalles</div>
+      <div class="approach-detail">
+        <p><strong>Ventajas:</strong> Más eficiente energéticamente que láser (los generadores Marx son ~80% eficientes), CEO Eric Lander (Genoma Humano).</p>
+        <p><strong>Desventajas:</strong> Recién fundado (2023), aún en fase muy temprana.</p>
+        <p><strong>Proyectos:</strong> Pacific Fusion (>$1B, 156 generadores Marx, 2 TW de potencia).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hitos y avances -->
+<section class="section fade-in" id="hitos">
+  <h2 class="section-title">¿Qué se ha demostrado?</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    La fusión no es ciencia ficción. Ya hemos logrado hitos que hace una década parecían imposibles. Aquí está la línea temporal de lo que realmente ha pasado:
+  </p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">1952</div>
+      <div class="timeline-text">Primer dispositivo de fusión (Ivy Mike, bomba termonuclear). La fusión funciona — pero solo como arma.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">1958</div>
+      <div class="timeline-text">Conferencia de Gábor: nace la idea de la fusión pacífica. Se propone el tokamak.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">1997</div>
+      <div class="timeline-text">JET (Reino Unido) establece récord: 16 MW de fusión durante 5 segundos. Q = 0.67.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2006</div>
+      <div class="timeline-text">ITER comienza construcción en Francia. 35 países, €20B+. Primer plasma: 2034 (retrasado de 2025).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Dic 2022</div>
+      <div class="timeline-text"><strong>🔥 NIF logra "ignition":</strong> 3.15 MJ de salida / 2.05 MJ de láser. Primer breakeven científico de la historia.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2023</div>
+      <div class="timeline-text">NIF repite ignition múltiples veces. JET se retira tras 40 años. Google firma PPA con CFS.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 2025</div>
+      <div class="timeline-text">NIF: 7.º ignition, récord de ganancia 2.44. Helion Polaris: 100M°C.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Abr 2025</div>
+      <div class="timeline-text"><strong>🔥 NIF: 8.º ignition, récord absoluto de 8.6 MJ</strong> — más de 4× la energía de entrada.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Jul 2025</div>
+      <div class="timeline-text">Helion inicia construcción de <strong>Orion</strong>, primera planta comercial de fusión (Malaga, WA). Cliente: Microsoft.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 2026</div>
+      <div class="timeline-text">Helion Polaris alcanza <strong>150 millones °C</strong>. TAE Technologies fusión con Trump Media ($6B).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Jun 2026</div>
+      <div class="timeline-text">Helion cierra Serie G de $465M a <strong>$15.5B de valoración</strong>. CFS SPARC operativo para 2027.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2028 (previsto)</div>
+      <div class="timeline-text"><strong>Helion Orion</strong> debería entregar la primera electricidad de fusión a la red (Microsoft).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2034</div>
+      <div class="timeline-text">ITER primera plasma completa. Inicio operaciones D-D.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2035+</div>
+      <div class="timeline-text">ITER alcanza Q=10 (500 MW de fusión con 50 MW de entrada). DEMO planes avanzan.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Inversión y empresas -->
+<section class="section fade-in" id="inversion">
+  <h2 class="section-title">¿Quién invierte y cuánto?</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    La fusión ha pasado de ser un proyecto puramente gubernamental a una <strong>corrida de inversión privada sin precedentes</strong>. Más de <strong>$10 mil millones</strong> han fluido hacia 53+ empresas de fusión privadas.
+  </p>
+
+  <div class="demo-container">
+    <div class="demo-title">💰 Inversión por empresa (privada)</div>
+    <div id="invest-bars">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Tecnología</th>
+          <th>Inversión</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Empresa">Commonwealth Fusion (CFS)</td>
+          <td data-label="Tecnología">Tokamak + imanes HTS 20T</td>
+          <td data-label="Inversión">~$3B</td>
+          <td data-label="Estado">SPARC → 2027, ARC (400MW) en VA</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Helion Energy</td>
+          <td data-label="Tecnología">FRC pulsado (electricidad directa)</td>
+          <td data-label="Inversión">~$1.5B</td>
+          <td data-label="Estado">Orion en construcción, PPA Microsoft 2028</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">TAE Technologies</td>
+          <td data-label="Tecnología">FRC + haz partículas (H-B11)</td>
+          <td data-label="Inversión">$1.79B</td>
+          <td data-label="Estado">Fusión con Trump Media ($6B)</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Pacific Fusion</td>
+          <td data-label="Tecnología">Pulso electromagnético (2 TW)</td>
+          <td data-label="Inversión">>$1B</td>
+          <td data-label="Estado">Fase temprana, CEO Eric Lander</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Shine Technologies</td>
+          <td data-label="Tecnología">Sin diseño elegido aún</td>
+          <td data-label="Inversión">$1B</td>
+          <td data-label="Estado">Neutrones/isótopos primero</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">General Fusion</td>
+          <td data-label="Tecnología">Meta magnetizada (pistones)</td>
+          <td data-label="Inversión">$612M</td>
+          <td data-label="Estado">Crisis 2025, SPAC $1B (2026)</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Inertia Enterprises</td>
+          <td data-label="Tecnología">Láser inercial (comercializar NIF)</td>
+          <td data-label="Inversión">$450M</td>
+          <td data-label="Estado">Fundada por científica jefa NIF</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Focused Energy</td>
+          <td data-label="Tecnología">Láser inercial (fast ignition)</td>
+          <td data-label="Inversión">$600M + grants</td>
+          <td data-label="Estado">RWE le da planta fósil descomisionada</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Tokamak Energy</td>
+          <td data-label="Tecnología">Tokamak esférico + HTS</td>
+          <td data-label="Inversión">$336M</td>
+          <td data-label="Estado">ST40 → 100M°C, Demo 4</td>
+        </tr>
+        <tr>
+          <td data-label="Empresa">Type One Energy</td>
+          <td data-label="Tecnología">Stellarator</td>
+          <td data-label="Inversión">$269M</td>
+          <td data-label="Estado">Infinity One → primera plasma 2028</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="section-text" style="margin-top: 2rem;">
+    <strong>PPAs firmados (clientes reales de electricidad):</strong>
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h3>Helion → Microsoft</h3>
+      <p>Primera PPA de fusión de la historia (2023). Helion entregará electricidad de fusión a los data centers de Microsoft a partir de 2028.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h3>CFS/ARC → Google</h3>
+      <p>Google acordó comprar 50% de la producción de la planta ARC (200 MW), prevista para finales de la década.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Proyectos gubernamentales -->
+<section class="section fade-in" id="gobierno">
+  <h2 class="section-title">Proyectos gubernamentales</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    Junto con la explosión privada, los grandes proyectos internacionales siguen avanzando. Son más lentos pero son la <strong>columna vertebral del conocimiento</strong> que alimenta a las startups.
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>País / Organización</th>
+          <th>Tipo</th>
+          <th>Timeline</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Proyecto">ITER</td>
+          <td data-label="País">Internacional (Francia)</td>
+          <td data-label="Tipo">Tokamak gigante</td>
+          <td data-label="Timeline">Primera plasma: 2034. Q=10 en 2035+</td>
+        </tr>
+        <tr>
+          <td data-label="Proyecto">NIF</td>
+          <td data-label="País">EEUU (DOE)</td>
+          <td data-label="Tipo">Láser inercial</td>
+          <td data-label="Timeline">Récord 8.6 MJ (2025). Sigue mejorando.</td>
+        </tr>
+        <tr>
+          <td data-label="Proyecto">UK STEP</td>
+          <td data-label="País">Reino Unido</td>
+          <td data-label="Tipo">Tokamak esférico</td>
+          <td data-label="Timeline">Reactor conectado a red ~2040</td>
+        </tr>
+        <tr>
+          <td data-label="Proyecto">CFETR</td>
+          <td data-label="País">China</td>
+          <td data-label="Tipo">Tokamak</td>
+          <td data-label="Timeline">Construcción 2020s, DEMO en 2030s</td>
+        </tr>
+        <tr>
+          <td data-label="Proyecto">EU DEMO</td>
+          <td data-label="País">Europa</td>
+          <td data-label="Tipo">Tokamak</td>
+          <td data-label="Timeline">Diseño 2040, construcción → 2050</td>
+        </tr>
+        <tr>
+          <td data-label="Proyecto">Wendelstein 7-X</td>
+          <td data-label="País">Alemania</td>
+          <td data-label="Tipo">Stellarator</td>
+          <td data-label="Timeline">Operativo, récord de confinamiento 2023</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ¿Por qué siempre a 30 años? -->
+<section class="section fade-in" id="treinta-anos">
+  <h2 class="section-title">¿Por qué siempre está "a 30 años"?</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    El chiste de que la fusión "siempre está a 30 años" es famoso — y tiene una base de verdad. Pero la situación está cambiando. Aquí está el porqué:
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔬</div>
+      <h3>Física → Ingeniería</h3>
+      <p>Durante décadas, el problema era <strong>si era posible</strong>. NIF demostró que sí (2022). Ahora el reto es ingeniería: escalar, reproducir, y hacerlo económico. Eso es diferente — y más abordable.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧲</div>
+      <h3>Nuevos materiales</h3>
+      <p>Los <strong>imanes superconductores de alta temperatura (HTS)</strong> son el "game changer". Permiten campos magnéticos 3× más fuertes con reactores mucho más pequeños. CFS y Tokamak Energy los usan.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>IA y computación</h3>
+      <p>El control del plasma, el diseño de stellarators, y la optimización de reacciones se benefician enormemente de la IA. TAE lleva 10+ años usando ML de Google. CFS usa NVIDIA para gemelos digitales.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>Dinero real, clientes reales</h3>
+      <p>Por primera vez hay <strong>PPAs firmados</strong> (Microsoft, Google). No es solo investigación — hay empresas que van a comprar la electricidad. Eso cambia la ecuación completamente.</p>
+    </div>
+  </div>
+  <p class="section-text" style="margin-top: 1.5rem;">
+    Pero seamos honestos: <strong>el camino será difícil</strong>. General Fusion casi quebró en 2025. ITER se ha retrasado 20+ años. El salto de "lograr fusión en un laboratorio" a "generar electricidad competitiva 24/7" es enorme.
+  </p>
+</section>
+
+<!-- Hype vs Realidad -->
+<section class="section fade-in" id="hype">
+  <h2 class="section-title">Hype vs Realidad</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    La fusión genera tanto entusiasmo como escepticismo. Aquí hay una visión equilibrada:
+  </p>
+
+  <div class="hype-grid">
+    <div class="hype-card myth">
+      <h4>❌ "La fusión comercial ya está aquí"</h4>
+      <p>Ninguna empresa ha demostrado generación neta de electricidad. Helion y CFS están cerca, pero Orion (2028) y ARC (2030s) son plazos ambiciosos. Si cumplen, será histórico.</p>
+    </div>
+    <div class="hype-card fact">
+      <h4>✅ "Se ha logrado breakeven científico"</h4>
+      <p>NIF lo demostró en 2022 y lo ha superado 7 veces más. 8.6 MJ de fusión con 2.08 MJ de láser (abr 2025). La física funciona.</p>
+    </div>
+    <div class="hype-card myth">
+      <h4>❌ "La fusión resolverá toda la crisis energética"</h4>
+      <p>La fusión será una pieza del puzzle, no la solución mágica. Necesitaremos renovables, almacenamiento, eficiencia y probablemente fisión avanzada también.</p>
+    </div>
+    <div class="hype-card fact">
+      <h4>✅ "Hay inversión real con clientes reales"</h4>
+      <p>Microsoft y Google ya han firmado PPAs. $10B+ en inversión privada. No es vaporware — hay contratos y plazos.</p>
+    </div>
+    <div class="hype-card myth">
+      <h4>❌ "La fusión es perfectamente segura y limpia"</h4>
+      <p>Es mucho más segura que la fisión (sin riesgo de meltdown, sin residuos de vida milenaria). Pero produce activación neutrónica en los materiales y necesita tritio — no es "cero impacto".</p>
+    </div>
+    <div class="hype-card fact">
+      <h4>✅ "El combustible es prácticamente ilimitado"</h4>
+      <p>El deuterio se extrae del agua de mar (1 átomo de cada 6.500 es deuterio). El tritio se puede "criar" del litio. Con 1 kg de combustible D-T se obtiene la energía de 10.000 toneladas de petróleo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mi opinión -->
+<section class="section fade-in" id="opinion">
+  <h2 class="section-title">Mi opinión</h2>
+  <div class="section-divider"></div>
+
+  <div class="opinion-box">
+    <h3>🤔 Lo que creo sobre la fusión nuclear</h3>
+    <p class="section-text">
+      La fusión nuclear es probablemente el proyecto científico más ambicioso que la humanidad ha intentado. Y después de 70 años, <strong>por primera vez creo que estamos en el momento de la verdad</strong>.
+    </p>
+    <p class="section-text">
+      Lo que me parece más convincente no es la física (esa ya estaba demostrada con NIF), sino la <strong>convergencia de factores</strong>: imanes HTS que permiten reactores compactos, IA que resuelve problemas de control del plasma antes imposibles, y — crucialmente — <strong>clientes reales firmando contratos</strong>. Microsoft y Google no firman PPAs con vaporware.
+    </p>
+    <p class="section-text">
+      Pero también soy escéptico de los plazos. Helion promete 2028, CFS apunta a finales de la década. <strong>Me sorprendería si cualquiera cumple el plazo optimista</strong>. La historia de la fusión está llena de retrasos. Pero me sorprendería más si, a finales de los 2030, no hay al menos un reactor entregando electricidad a la red.
+    </p>
+    <p class="section-text">
+      Lo que sí creo con certeza: <strong>la fusión no va a salvarnos del cambio climático a corto plazo</strong>. Las renovables + almacenamiento son la solución de hoy. La fusión es la solución de mañana — y "mañana" probablemente sea la década de 2030 o 2040. Pero cuando llegue, será una fuente de energía baseload, limpia, sin emisiones de carbono, con combustible virtualmente ilimitado. Eso merece la pena esperar.
+    </p>
+    <p class="section-text">
+      En resumen: <strong>optimista cauteloso</strong>. La fusión va a llegar. La pregunta no es "si" sino "cuándo". Y creo que la respuesta está más cerca de 10-15 años que de 30.
+    </p>
+  </div>
+</section>
+
+<!-- Acordeones técnicos -->
+<section class="section fade-in" id="tecnico">
+  <h2 class="section-title">Para los más técnicos</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    Secciones avanzadas con más profundidad técnica. Haz clic para expandir.
+  </p>
+
+  <div class="accordion" onclick="this.classList.toggle('open')">
+    <div class="accordion-header">
+      <h4>📐 El Criterio de Lawson</h4>
+      <span class="accordion-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>El criterio de Lawson define las condiciones mínimas para que la fusión sea autosostenible. Establece que el producto de la <strong>densidad del plasma (n)</strong>, el <strong>tiempo de confinamiento de energía (τ_E)</strong> y la <strong>temperatura (T)</strong> debe superar un umbral crítico.</p>
+      <p>Para el combustible D-T a ~15 keV (~175 millones °C), se necesita <strong>n·τ_E·T > 3 × 10²¹ keV·s·m⁻³</strong>. Equivalentemente, el parámetro de rendimiento <strong>Q = P_fusión / P_calentamiento</strong> debe ser > 1 para breakeven científico.</p>
+      <p>Los diferentes enfoques operan en regiones distintas del espacio de parámetros: los tokamaks usan alta densidad y largo confinamiento; el confinamiento inercial usa densidad extreme (10³¹ m⁻³) con confinamiento brevísimo (~10⁻¹⁰ s).</p>
+    </div>
+  </div>
+
+  <div class="accordion" onclick="this.classList.toggle('open')">
+    <div class="accordion-header">
+      <h4>⛽ Combustibles: D-T vs D-³He vs p-¹¹B</h4>
+      <span class="accordion-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p><strong>D-T (Deuterio-Tritio):</strong> La reacción más fácil. Pico de sección transversal a ~65 keV. Produce 17.6 MeV (14.1 MeV en el neutrón, 3.5 MeV en el alfa). El tritio es radiactivo (vida media 12.3 años) y debe "criarse" del litio. Es el combustible de todos los proyectos actuales.</p>
+      <p><strong>D-³He (Deuterio-Helio-3):</strong> Produce 18.3 MeV, principalmente en protones (cargados, fáciles de convertir a electricidad). Casi sin neutrones → menos activación. Pero requiere ~10× más temperatura que D-T. El ³He es extremadamente raro en la Tierra (se ha propuesto extraerlo de la Luna).</p>
+      <p><strong>p-¹¹B (Protón-Boro):</strong> "Fusión aneutrónica" pura. Produce 3 alfas de 8.7 MeV cada una. Cero neutrones, cero radiactividad inducida. Pero requiere ~1 GeV de temperatura — órdenes de magnitud más que D-T. TAE Technologies investiga esta ruta con combustible H-B11 usando haces de partículas.</p>
+    </div>
+  </div>
+
+  <div class="accordion" onclick="this.classList.toggle('open')">
+    <div class="accordion-header">
+      <h4>♻️ Tritium Breeding (Criado de Tritio)</h4>
+      <span class="accordion-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>El tritio no existe de forma natural en cantidades útiles (hay ~3.5 kg en toda la atmósfera terrestre). Debe "criarse" irradiando litio-6 con neutrones: <strong>⁶Li + n → ⁴He + T + 4.8 MeV</strong>.</p>
+      <p>En un reactor comercial, el "blanket" (manto) de litio que rodea el plasma captura los neutrones de 14.1 MeV de la reacción D-T y produce tritio nuevo. El <strong>tritium breeding ratio (TBR)</strong> debe ser > 1.1 para compensar pérdidas y mantener el ciclo combustible.</p>
+      <p>Esto es un desafío de ingeniería no resuelto. ITER usará tritio "regalado" (no tiene blanket productor). DEMO y los reactores comerciales necesitarán demostrar TBR > 1.1 en operación real — algo que nunca se ha hecho a escala.</p>
+    </div>
+  </div>
+
+  <div class="accordion" onclick="this.classList.toggle('open')">
+    <div class="accordion-header">
+      <h4>📊 Q científico vs Q ingenieril vs Q eléctrico</h4>
+      <span class="accordion-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>No todos los "Q" son iguales. Hay que distinguir:</p>
+      <p><strong>Q científico (Q_science):</strong> Energía de fusión / energía depositada en el plasma. NIF alcanzó Q > 1 en 2022 (y Q = 4.1 en 2025). Esto significa que el plasma produce más energía de la que recibe.</p>
+      <p><strong>Q ingenieril (Q_engineering):</strong> Energía de fusión / energía eléctrica consumida por toda la instalación. Para NIF, los láseres consumen ~300 MJ de electricidad para producir 2 MJ sobre el blanco → Q_eng ≈ 0.01. Es decir, NIF consume ~100× más de lo que produce.</p>
+      <p><strong>Q eléctrico (Q_electric):</strong> Electricidad neta entregada a la red / electricidad consumida. Para un reactor comercial viable, se necesita Q_electric > 1, lo que implica Q_science > 10-20 dependiendo de la eficiencia de conversión térmica.</p>
+      <p><strong>ITER</strong> apunta a Q_science = 10 (500 MW fusión / 50 MW calentamiento). <strong>DEMO</strong> necesitará Q_science > 20-30 para ser comercialmente viable.</p>
+    </div>
+  </div>
+
+  <div class="accordion" onclick="this.classList.toggle('open')">
+    <div class="accordion-header">
+      <h4>🧲 Imanes Superconductores de Alta Temperatura (HTS)</h4>
+      <span class="accordion-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Los imanes HTS (REBCO — Rare Earth Barium Copper Oxide) son la revolución que hace viable la fusión compacta. Mientras los imanes Nb₃Sn de ITER alcanzan ~13T, los HTS de CFS superan <strong>20T</strong> a 20K.</p>
+      <p>La potencia de fusión escala como <strong>B⁴</strong> (campo magnético a la cuarta). Doblar el campo → 16× más potencia de fusión. Esto permite reactores mucho más pequeños y económicos.</p>
+      <p>El desafío: los tapes REBCO cuestan ~$100/kAm (vs ~$10/kAm para Nb₃Sn). CFS ha reducido costes un orden de magnitud y trabaja con SuperPower y American Superconductor para escalar producción. Tokamak Energy ha creado una división comercial (TE Magnetics) para monetizar HTS en motores y generadores mientras madura su reactor.</p>
+    </div>
+  </div>
+
+  <div class="accordion" onclick="this.classList.toggle('open')">
+    <div class="accordion-header">
+      <h4>🛡️ Materiales para el Primer Pared (First Wall)</h4>
+      <span class="accordion-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>El "primer pared" es el material que soporta el plasma. En un reactor D-T comercial, recibe un flujo de neutrones de 14.1 MeV equivalente a <strong>~1 MW/m²</strong> (más que el núcleo de un reactor fisionable).</p>
+      <p>Los materiales candidatos: <strong>acero reducidamente activado (RAFM)</strong> como EUROFER, <strong>wolframio</strong> para el divertor (punto más caliente), y <strong>berilio</strong> para el primer pared (bajo número atómico → menos activación).</p>
+      <p>El daño por neutrones a 14.1 MeV es ~10× peor que a los 2 MeV de la fisión. Los materiales se degradan por desplazamiento atómico (dpa — displacements per atom). Un reactor comercial necesita materiales que soporten 20-30 dpa durante 10-20 años de operación.</p>
+      <p>El IFMIF-DONES (instalación de prueba de materiales) se planea en Japón para validar materiales antes de DEMO.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Fuentes -->
+<section class="section fade-in" id="fuentes">
+  <h2 class="section-title">Fuentes</h2>
+  <div class="section-divider"></div>
+  <ol class="sources-list">
+    <li><a href="https://lasers.llnl.gov/science/achieving-fusion-ignition" target="_blank">NIF — Achieving Fusion Ignition (LLNL)</a></li>
+    <li><a href="https://lasers.llnl.gov/news/target-breakthrough-enabled-fusion-record-nif" target="_blank">NIF — 8.6 MJ Record (Abril 2025)</a></li>
+    <li><a href="https://cfs.energy/technology/sparc/" target="_blank">Commonwealth Fusion Systems — SPARC</a></li>
+    <li><a href="https://blog.cfs.energy/how-863m-in-new-funding-fast-tracks-commercial-fusion-power/" target="_blank">CFS — $863M Series B2</a></li>
+    <li><a href="https://www.helionenergy.com/newsroom/helion-achieves-new-fusion-energy-milestones" target="_blank">Helion Energy — Milestones (150M°C)</a></li>
+    <li><a href="https://techcrunch.com/2026/02/13/fusion-startup-helion-hits-blistering-temps-as-it-races-toward-2028-deadline/" target="_blank">TechCrunch — Helion 150M°C, camino a 2028</a></li>
+    <li><a href="https://techcrunch.com/2026/04/10/every-fusion-startup-that-has-raised-over-100m/" target="_blank">TechCrunch — Todas las startups de fusión >$100M</a></li>
+    <li><a href="https://www.naturetechmemos.com/p/top-10-fusion-energy-startups-to-watch-in-2026" target="_blank">NatureTech Memos — Top 10 Fusion Startups 2026</a></li>
+    <li><a href="https://www.reuters.com/business/energy/fusion-developers-go-public-ai-boom-widens-funding-sources--reeii-2026-03-23/" target="_blank">Reuters — Fusion developers go public</a></li>
+    <li><a href="https://www.iter.org/mag/9/first-plasma-2025" target="_blank">ITER — First Plasma Timeline</a></li>
+    <li><a href="https://www.energy.gov/sites/default/files/2025-10/fusion-s&t-roadmap-101625.pdf" target="_blank">US DOE — Fusion S&T Roadmap 2025</a></li>
+    <li><a href="https://www.weforum.org/stories/2026/02/nuclear-fusion-science-explained/" target="_blank">World Economic Forum — Nuclear fusion explained</a></li>
+    <li><a href="https://thenextweb.com/news/fusion-startups-13-billion-private-funding-race-commercial-energy" target="_blank">The Next Web — $13B private fusion funding</a></li>
+    <li><a href="https://www.iaea.org/bulletin/demonstration-fusion-plants" target="_blank">IAEA — Demonstration Fusion Plants</a></li>
+    <li><a href="https://www.reuters.com/business/energy/helion-energy-starts-construction-nuclear-fusion-plant-power-microsoft-data-2025-07-30/" target="_blank">Reuters — Helion construction, Microsoft PPA</a></li>
+  </ol>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <a href="https://raulgdmm.github.io/cocobot-pages/" class="back-btn">← Volver al inicio</a>
+    <span class="footer-brand">🐱 Cocobot Pages</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+
+<!-- Three.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// ===== PARTICLES BACKGROUND =====
+(function() {
+  var canvas = document.getElementById('particles-bg');
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var PARTICLE_COUNT = 60;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (var i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.3 + 0.05
+    });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 140, 66, ' + p.alpha + ')';
+      ctx.fill();
+
+      // Connect nearby particles
+      for (var j = i + 1; j < particles.length; j++) {
+        var p2 = particles[j];
+        var dx = p.x - p2.x;
+        var dy = p.y - p2.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = 'rgba(255, 140, 66, ' + (0.06 * (1 - dist / 150)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+})();
+
+// ===== THREE.JS HERO: FUSION ANIMATION =====
+(function() {
+  var canvas = document.getElementById('hero-canvas');
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 8;
+
+  // Lights
+  var ambientLight = new THREE.AmbientLight(0x332211, 0.5);
+  scene.add(ambientLight);
+  var pointLight = new THREE.PointLight(0xff6b35, 2, 50);
+  pointLight.position.set(0, 0, 5);
+  scene.add(pointLight);
+
+  // Deuterium nucleus (proton + neutron)
+  var deutGroup = new THREE.Group();
+  var protonGeo = new THREE.SphereGeometry(0.3, 32, 32);
+  var protonMat = new THREE.MeshStandardMaterial({ color: 0xff3333, emissive: 0xff2222, emissiveIntensity: 0.8 });
+  var neutronMat = new THREE.MeshStandardMaterial({ color: 0x888888, emissive: 0x666666, emissiveIntensity: 0.5 });
+  var proton = new THREE.Mesh(protonGeo, protonMat);
+  var neutron = new THREE.Mesh(protonGeo, neutronMat);
+  neutron.position.x = 0.35;
+  deutGroup.add(proton);
+  deutGroup.add(neutron);
+  scene.add(deutGroup);
+
+  // Tritium nucleus (proton + 2 neutrons)
+  var tritGroup = new THREE.Group();
+  var proton2 = new THREE.Mesh(protonGeo, protonMat);
+  var neutron2 = new THREE.Mesh(protonGeo, neutronMat);
+  var neutron3 = new THREE.Mesh(protonGeo, neutronMat);
+  proton2.position.set(0, 0, 0);
+  neutron2.position.set(0.3, 0.2, 0);
+  neutron3.position.set(-0.2, -0.25, 0.15);
+  tritGroup.add(proton2);
+  tritGroup.add(neutron2);
+  tritGroup.add(neutron3);
+  scene.add(tritGroup);
+
+  // Particle pool for explosion effect
+  var particlePool = [];
+  var activeParticles = [];
+  var MAX_PARTICLES = 200;
+  var partGeo = new THREE.SphereGeometry(0.04, 8, 8);
+
+  for (var i = 0; i < MAX_PARTICLES; i++) {
+    var mat = new THREE.MeshStandardMaterial({
+      color: 0xffaa33, emissive: 0xff8800, emissiveIntensity: 1,
+      transparent: true, opacity: 1
+    });
+    var mesh = new THREE.Mesh(partGeo, mat);
+    mesh.visible = false;
+    scene.add(mesh);
+    particlePool.push(mesh);
+  }
+
+  function burst(x, y, z, count) {
+    for (var i = 0; i < count && particlePool.length > 0; i++) {
+      var p = particlePool.pop();
+      p.visible = true;
+      p.position.set(x, y, z);
+      p.material.opacity = 1;
+      var theta = Math.random() * Math.PI * 2;
+      var phi = Math.random() * Math.PI;
+      var speed = Math.random() * 0.15 + 0.05;
+      p.userData = {
+        vx: Math.sin(phi) * Math.cos(theta) * speed,
+        vy: Math.sin(phi) * Math.sin(theta) * speed,
+        vz: Math.cos(phi) * speed,
+        life: 1
+      };
+      // Random color: orange, yellow, white
+      var colors = [0xff6b35, 0xffd700, 0xffffff, 0xff3333, 0xffaa33];
+      p.material.color.setHex(colors[Math.floor(Math.random() * colors.length)]);
+      p.material.emissive.setHex(p.material.color.getHex());
+      activeParticles.push(p);
+    }
+  }
+
+  // Glow sphere (appears on fusion)
+  var glowGeo = new THREE.SphereGeometry(0.1, 32, 32);
+  var glowMat = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0 });
+  var glowSphere = new THREE.Mesh(glowGeo, glowMat);
+  scene.add(glowSphere);
+
+  // Helium nucleus (product)
+  var heGroup = new THREE.Group();
+  var heProton1 = new THREE.Mesh(protonGeo, protonMat);
+  var heProton2 = new THREE.Mesh(protonGeo, protonMat);
+  var heNeutron1 = new THREE.Mesh(protonGeo, neutronMat);
+  var heNeutron2 = new THREE.Mesh(protonGeo, neutronMat);
+  heProton1.position.set(0.2, 0.15, 0);
+  heProton2.position.set(-0.15, -0.2, 0.1);
+  heNeutron1.position.set(0.1, -0.2, -0.15);
+  heNeutron2.position.set(-0.2, 0.15, -0.1);
+  heGroup.add(heProton1, heProton2, heNeutron1, heNeutron2);
+  heGroup.visible = false;
+  scene.add(heGroup);
+
+  // Free neutron (product)
+  var freeNeutron = new THREE.Mesh(protonGeo, neutronMat);
+  freeNeutron.visible = false;
+  scene.add(freeNeutron);
+
+  // Animation state
+  var phase = 'orbit'; // orbit, approach, fuse, cool
+  var orbitAngle = 0;
+  var orbitRadius = 2.5;
+  var fuseTime = 0;
+  var cooldown = 0;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    var t = Date.now() * 0.001;
+
+    if (phase === 'orbit') {
+      orbitAngle += 0.008;
+      deutGroup.position.set(
+        Math.cos(orbitAngle) * orbitRadius,
+        Math.sin(orbitAngle * 0.7) * 0.5,
+        Math.sin(orbitAngle) * orbitRadius
+      );
+      tritGroup.position.set(
+        Math.cos(orbitAngle + Math.PI) * orbitRadius,
+        Math.sin((orbitAngle + Math.PI) * 0.7) * 0.5,
+        Math.sin(orbitAngle + Math.PI) * orbitRadius
+      );
+      // Rotate nuclei
+      deutGroup.rotation.y = t * 0.5;
+      deutGroup.rotation.x = t * 0.3;
+      tritGroup.rotation.y = t * 0.4;
+      tritGroup.rotation.z = t * 0.35;
+    }
+    else if (phase === 'approach') {
+      fuseTime += 0.02;
+      var progress = Math.min(fuseTime, 1);
+      var ease = 1 - Math.pow(1 - progress, 3); // ease in cubic
+
+      var deutStart = deutGroup.position.clone();
+      var tritStart = tritGroup.position.clone();
+
+      deutGroup.position.lerpVectors(deutStart, new THREE.Vector3(0, 0, 0), ease);
+      tritGroup.position.lerpVectors(tritStart, new THREE.Vector3(0, 0, 0), ease);
+
+      // Increase glow
+      glowMat.opacity = ease * 0.6;
+      glowSphere.scale.setScalar(1 + ease * 3);
+
+      if (progress >= 1) {
+        phase = 'fuse';
+        fuseTime = 0;
+        burst(0, 0, 0, 80);
+        glowMat.opacity = 1;
+        glowSphere.scale.setScalar(5);
+        // Show products
+        heGroup.visible = true;
+        heGroup.position.set(0, 0, 0);
+        freeNeutron.visible = true;
+        freeNeutron.position.set(0, 0, 0);
+      }
+    }
+    else if (phase === 'fuse') {
+      fuseTime += 0.015;
+      // Expand glow
+      glowSphere.scale.setScalar(5 + fuseTime * 3);
+      glowMat.opacity = Math.max(0, 1 - fuseTime * 0.5);
+
+      // Move products apart
+      heGroup.position.set(-fuseTime * 2, fuseTime * 0.5, fuseTime * 0.3);
+      freeNeutron.position.set(fuseTime * 3, -fuseTime * 0.3, -fuseTime * 0.2);
+
+      if (fuseTime > 3) {
+        phase = 'cool';
+        cooldown = 0;
+        heGroup.visible = false;
+        freeNeutron.visible = false;
+      }
+    }
+    else if (phase === 'cool') {
+      cooldown += 0.01;
+      if (cooldown > 1) {
+        phase = 'orbit';
+        orbitAngle = Math.random() * Math.PI * 2;
+        glowMat.opacity = 0;
+        glowSphere.scale.setScalar(1);
+      }
+    }
+
+    // Update particles
+    for (var i = activeParticles.length - 1; i >= 0; i--) {
+      var p = activeParticles[i];
+      p.position.x += p.userData.vx;
+      p.position.y += p.userData.vy;
+      p.position.z += p.userData.vz;
+      p.userData.life -= 0.015;
+      p.material.opacity = Math.max(0, p.userData.life);
+      p.scale.setScalar(p.userData.life);
+      if (p.userData.life <= 0) {
+        p.visible = false;
+        particlePool.push(p);
+        activeParticles.splice(i, 1);
+      }
+    }
+
+    // Camera subtle movement
+    camera.position.x = Math.sin(t * 0.1) * 0.5;
+    camera.position.y = Math.cos(t * 0.15) * 0.3;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Auto-fuse cycle
+  function autoFuse() {
+    if (phase === 'orbit') {
+      phase = 'approach';
+      fuseTime = 0;
+    }
+    setTimeout(autoFuse, 4000 + Math.random() * 2000);
+  }
+  setTimeout(autoFuse, 2000);
+
+  // Resize
+  window.addEventListener('resize', function() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ===== FUSION SIMULATOR =====
+(function() {
+  var canvas = document.getElementById('fusion-sim');
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  var fusions = 0;
+  var totalEnergy = 0;
+  var nuclei = [];
+  var particles = [];
+
+  function resize() {
+    var wrap = canvas.parentElement;
+    W = canvas.width = wrap.clientWidth;
+    H = canvas.height = 350;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawNucleus(x, y, r, color, label) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    var grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, 0, x, y, r);
+    grad.addColorStop(0, color);
+    grad.addColorStop(1, 'rgba(0,0,0,0.3)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, x, y);
+  }
+
+  function drawIdle() {
+    ctx.clearRect(0, 0, W, H);
+    // Background
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Orbiting nuclei
+    var t = Date.now() * 0.001;
+    var r = Math.min(W, H) * 0.15;
+    var dx = W / 2 + Math.cos(t) * r;
+    var dy = H / 2 + Math.sin(t) * r * 0.6;
+    var tx = W / 2 + Math.cos(t + Math.PI) * r;
+    var ty = H / 2 + Math.sin(t + Math.PI) * r * 0.6;
+
+    drawNucleus(dx, dy, 30, '#ff4444', 'D');
+    drawNucleus(tx, ty, 35, '#4488ff', 'T');
+
+    // Glow
+    ctx.beginPath();
+    ctx.arc(W / 2, H / 2, 60, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 140, 66, 0.05)';
+    ctx.fill();
+
+    // Hint
+    ctx.fillStyle = 'rgba(255, 200, 100, 0.5)';
+    ctx.font = '14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Haz clic para fusionar', W / 2, H - 30);
+  }
+
+  var simState = 'idle';
+  var simTime = 0;
+
+  function updateSim() {
+    if (simState === 'idle') {
+      drawIdle();
+    } else if (simState === 'approach') {
+      simTime += 0.03;
+      var progress = Math.min(simTime, 1);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      var r = Math.min(W, H) * 0.15 * (1 - ease);
+
+      ctx.clearRect(0, 0, W, H);
+      var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+      bg.addColorStop(0, '#1a0a00');
+      bg.addColorStop(1, '#000');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Glow growing
+      ctx.beginPath();
+      ctx.arc(W / 2, H / 2, 60 + ease * 80, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 140, 66, ' + (ease * 0.15) + ')';
+      ctx.fill();
+
+      var dx = W / 2 + r * (1 - ease);
+      var tx = W / 2 - r * (1 - ease);
+      drawNucleus(dx, H / 2, 30, '#ff4444', 'D');
+      drawNucleus(tx, H / 2, 35, '#4488ff', 'T');
+
+      if (progress >= 1) {
+        simState = 'explode';
+        simTime = 0;
+        fusions++;
+        totalEnergy += 17.6;
+        document.getElementById('sim-counter').textContent =
+          'Fusiones: ' + fusions + ' | Energía total: ' + totalEnergy.toFixed(1) + ' MeV';
+        // Create explosion particles
+        for (var i = 0; i < 40; i++) {
+          var angle = Math.random() * Math.PI * 2;
+          var speed = Math.random() * 4 + 1;
+          particles.push({
+            x: W / 2, y: H / 2,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1,
+            color: ['#ff6b35', '#ffd700', '#ffffff', '#ff3333'][Math.floor(Math.random() * 4)]
+          });
+        }
+      }
+    } else if (simState === 'explode') {
+      simTime += 0.02;
+      ctx.clearRect(0, 0, W, H);
+      var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+      bg.addColorStop(0, '#1a0a00');
+      bg.addColorStop(1, '#000');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Flash
+      var flashAlpha = Math.max(0, 0.4 - simTime * 0.3);
+      ctx.beginPath();
+      ctx.arc(W / 2, H / 2, 100 + simTime * 100, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 215, 0, ' + flashAlpha + ')';
+      ctx.fill();
+
+      // Products
+      if (simTime > 0.3) {
+        var heX = W / 2 - simTime * 80;
+        var nX = W / 2 + simTime * 120;
+        drawNucleus(heX, H / 2, 35, '#ffaa33', 'He');
+        drawNucleus(nX, H / 2, 15, '#888888', 'n');
+        // Energy label
+        ctx.fillStyle = '#ffd700';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('+17.6 MeV', W / 2, H / 2 - 50);
+      }
+
+      // Particles
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.02;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3 * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.life;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      if (simTime > 3) {
+        simState = 'idle';
+        simTime = 0;
+        particles = [];
+      }
+    }
+    requestAnimationFrame(updateSim);
+  }
+  updateSim();
+
+  canvas.addEventListener('click', function() {
+    if (simState === 'idle') {
+      simState = 'approach';
+      simTime = 0;
+    }
+  });
+})();
+
+// ===== TEMPERATURE COMPARATOR =====
+(function() {
+  var temps = [
+    { label: 'Ebullición del agua', temp: 100, color: '#4488ff' },
+    { label: 'Horno industrial', temp: 1500, color: '#ff8844' },
+    { label: 'Superficie del Sol', temp: 5500, color: '#ffaa33' },
+    { label: 'Interior del Sol', temp: 15000000, color: '#ffdd33' },
+    { label: 'Fusión en la Tierra', temp: 150000000, color: '#ff3333' }
+  ];
+  var maxTemp = temps[temps.length - 1].temp;
+  var container = document.getElementById('temp-bars');
+
+  temps.forEach(function(t, i) {
+    var row = document.createElement('div');
+    row.className = 'temp-bar-row';
+    var pct = Math.max(3, (Math.log10(t.temp) / Math.log10(maxTemp)) * 100);
+    row.innerHTML =
+      '<div class="temp-label">' + t.label + '</div>' +
+      '<div class="temp-bar-bg">' +
+        '<div class="temp-bar-fill" style="background: ' + t.color + ';" data-width="' + pct + '">' +
+          t.temp.toLocaleString('es-ES') + ' °C' +
+        '</div>' +
+      '</div>';
+    container.appendChild(row);
+  });
+
+  // Animate on scroll
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var fills = container.querySelectorAll('.temp-bar-fill');
+        fills.forEach(function(fill) {
+          fill.style.width = fill.getAttribute('data-width') + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(container);
+})();
+
+// ===== INVESTMENT BARS =====
+(function() {
+  var data = [
+    { name: 'CFS', amount: '$3.0B', value: 3000, color: '#ff6b35' },
+    { name: 'TAE Technologies', amount: '$1.79B', value: 1790, color: '#ff8844' },
+    { name: 'Helion Energy', amount: '$1.5B', value: 1500, color: '#ffaa33' },
+    { name: 'Pacific Fusion', amount: '>$1B', value: 1000, color: '#ffcc33' },
+    { name: 'Shine Technologies', amount: '$1B', value: 1000, color: '#ffdd44' },
+    { name: 'General Fusion', amount: '$612M', value: 612, color: '#88aa66' },
+    { name: 'Focused Energy', amount: '$600M', value: 600, color: '#66aa88' },
+    { name: 'Inertia Enterprises', amount: '$450M', value: 450, color: '#6688aa' },
+    { name: 'Tokamak Energy', amount: '$336M', value: 336, color: '#8866aa' },
+    { name: 'Type One Energy', amount: '$269M', value: 269, color: '#aa6688' }
+  ];
+  var maxVal = data[0].value;
+  var container = document.getElementById('invest-bars');
+
+  data.forEach(function(d) {
+    var pct = (d.value / maxVal) * 100;
+    var row = document.createElement('div');
+    row.className = 'invest-row';
+    row.innerHTML =
+      '<div class="invest-label">' + d.name + '</div>' +
+      '<div class="invest-bar-bg">' +
+        '<div class="invest-bar-fill" style="background: ' + d.color + ';" data-width="' + pct + '">' +
+          d.amount +
+        '</div>' +
+      '</div>';
+    container.appendChild(row);
+  });
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var fills = container.querySelectorAll('.invest-bar-fill');
+        fills.forEach(function(fill) {
+          fill.style.width = fill.getAttribute('data-width') + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  observer.observe(container);
+})();
+
+// ===== NAVBAR HIDE/SHOW ON SCROLL =====
+(function() {
+  var navbar = document.getElementById('navbar');
+  var lastScroll = 0;
+  window.addEventListener('scroll', function() {
+    var current = window.pageYOffset;
+    if (current > lastScroll && current > 100) {
+      navbar.classList.add('hidden');
+    } else {
+      navbar.classList.remove('hidden');
+    }
+    lastScroll = current;
+  });
+})();
+
+// ===== FADE IN ON SCROLL =====
+(function() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(function(el) {
+    observer.observe(el);
+  });
+})();
+
+// ===== VISITOR COUNTER =====
+(function() {
+  var w = 'https://cocobot-stats.rgarciademarina.workers.dev';
+  var p = '/pages/fusion-nuclear';
+  var el = document.getElementById('visit-counter');
+  fetch(w + '/t?path=' + encodeURIComponent(p), { method: 'GET' }).catch(function() {});
+  fetch(w + '/c?path=' + encodeURIComponent(p))
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (el && d.count) { el.textContent = '👁️ ' + d.count + ' visitas'; }
+    })
+    .catch(function() {});
+})();
+</script>
+</body>
+</html>
