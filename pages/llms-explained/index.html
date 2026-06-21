@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html data-lang="es" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LLMs Explained — Cómo Funciona la IA que Usas a Diario</title>
+<meta content="¿Qué son los LLMs? Guía completa y accesible: qué es la IA, transformers, tokens, contexto, vectores, y por qué entenderlos te hace mejor usuario. Interactivos incluidos." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; max-width: 100vw; overflow-x: hidden; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #060a08;
+  color: #d0e0d8;
+  line-height: 1.7;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+a { color: #00e676; text-decoration: none; transition: color 0.3s; }
+a:hover { color: #69f0ae; }
+
+/* ===== PARTICLES BACKGROUND ===== */
+#particles-bg {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(6, 10, 8, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 230, 118, 0.12);
+  padding: 0.8rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: transform 0.3s;
+}
+.navbar.hidden { transform: translateY(-100%); }
+.nav-logo {
+  font-weight: 800; font-size: 1.1rem;
+  background: linear-gradient(135deg, #00e676, #00bfa5, #00e5ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+.nav-links a {
+  color: #88a898; font-size: 0.82rem; font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: #00e676; }
+.globe { font-size: 1rem; cursor: pointer; }
+.globe:hover { opacity: 0.7; }
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px;
+}
+.nav-hamburger span {
+  display: block; width: 24px; height: 2px; background: #d0e0d8;
+  transition: 0.3s;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+}
+.hero-content {
+  position: relative; z-index: 2; text-align: center; padding: 2rem;
+}
+.hero-title {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #00e676 0%, #00bfa5 50%, #00e5ff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  animation: fadeInUp 1s ease-out;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: #88a898; font-weight: 300; max-width: 700px; margin: 0 auto;
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+.scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  z-index: 2; animation: bounce 2s infinite;
+}
+.scroll-indicator svg { width: 30px; height: 30px; stroke: #00e676; }
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.section-label {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 3px; color: #00bfa5; margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff, #a0c8b8);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.section-text {
+  font-size: 1.05rem; color: #a0b8a8; max-width: 800px;
+  margin-bottom: 1.5rem;
+}
+.section-text strong { color: #e0f0e8; }
+
+/* ===== CARDS ===== */
+.card-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem; margin: 2rem 0;
+}
+.card {
+  background: rgba(0, 230, 118, 0.03);
+  border: 1px solid rgba(0, 230, 118, 0.1);
+  border-radius: 16px; padding: 2rem;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 230, 118, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 230, 118, 0.08);
+}
+.card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem; color: #fff; }
+.card-text { font-size: 0.95rem; color: #88a898; }
+
+/* ===== TABLES ===== */
+.table-wrapper {
+  overflow-x: auto; margin: 2rem 0;
+  border: 1px solid rgba(0, 230, 118, 0.1);
+  border-radius: 12px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+thead { background: rgba(0, 191, 165, 0.1); }
+th {
+  padding: 1rem; text-align: left; font-weight: 700; color: #00e676;
+  border-bottom: 2px solid rgba(0, 230, 118, 0.15);
+}
+td {
+  padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: #a0b8a8;
+}
+
+/* ===== ACCORDION / DEEP DIVE ===== */
+.accordion { margin: 2rem 0; }
+.accordion-item {
+  border: 1px solid rgba(0, 230, 118, 0.1);
+  border-radius: 12px; margin-bottom: 0.8rem;
+  overflow: hidden;
+}
+.accordion-header {
+  background: rgba(0, 230, 118, 0.04);
+  padding: 1rem 1.5rem; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600; color: #b0d0c0;
+  transition: background 0.3s, color 0.3s;
+  user-select: none;
+}
+.accordion-header:hover {
+  background: rgba(0, 230, 118, 0.08);
+  color: #00e676;
+}
+.accordion-header .arrow {
+  transition: transform 0.3s; font-size: 0.8rem;
+}
+.accordion-item.open .accordion-header .arrow {
+  transform: rotate(180deg);
+}
+.accordion-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+  padding: 0 1.5rem;
+  color: #90a898; font-size: 0.95rem; line-height: 1.8;
+}
+.accordion-item.open .accordion-body {
+  max-height: 3000px; padding: 1.5rem;
+}
+
+/* ===== INTERACTIVE DEMOS ===== */
+.demo-container {
+  background: rgba(0, 230, 118, 0.02);
+  border: 1px solid rgba(0, 230, 118, 0.12);
+  border-radius: 16px; padding: 2rem;
+  margin: 3rem 0; text-align: center;
+}
+.demo-title {
+  font-size: 1.2rem; font-weight: 700; color: #00e676;
+  margin-bottom: 1rem;
+}
+.demo-canvas-wrap {
+  display: flex; justify-content: center; margin: 1rem 0;
+}
+.demo-canvas-wrap canvas {
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+}
+.demo-controls {
+  display: flex; gap: 1rem; justify-content: center;
+  flex-wrap: wrap; margin: 1rem 0;
+}
+.demo-btn {
+  background: rgba(0, 230, 118, 0.1);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  color: #00e676; padding: 0.6rem 1.5rem;
+  border-radius: 8px; cursor: pointer;
+  font-size: 0.9rem; font-weight: 600;
+  transition: all 0.3s;
+}
+.demo-btn:hover {
+  background: rgba(0, 230, 118, 0.2);
+  border-color: #00e676;
+}
+.demo-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  color: #d0e0d8; padding: 0.8rem 1.2rem;
+  border-radius: 8px; font-size: 1rem;
+  width: 100%; max-width: 600px;
+  font-family: 'Inter', sans-serif;
+}
+.demo-input:focus {
+  outline: none;
+  border-color: #00e676;
+}
+.demo-result {
+  margin-top: 1rem; font-size: 0.95rem;
+  color: #a0b8a8; min-height: 2rem;
+}
+.token-chip {
+  display: inline-block;
+  background: rgba(0, 230, 118, 0.1);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  padding: 0.2rem 0.6rem; border-radius: 6px;
+  margin: 0.2rem; font-size: 0.85rem;
+  color: #69f0ae;
+}
+
+/* ===== CONTEXT WINDOW DEMO ===== */
+.context-demo {
+  max-width: 700px; margin: 2rem auto;
+}
+.context-bar {
+  height: 60px; border-radius: 12px;
+  background: linear-gradient(90deg, #00e676, #00bfa5, #00e5ff);
+  position: relative; margin: 1rem 0;
+  overflow: hidden;
+}
+.context-window-visual {
+  position: relative; height: 80px;
+  border: 2px solid rgba(0, 230, 118, 0.3);
+  border-radius: 12px; overflow: hidden;
+  margin: 1rem 0;
+}
+.context-content {
+  position: absolute; top: 0; left: 0;
+  height: 100%; display: flex; align-items: center;
+  padding: 0 1rem; white-space: nowrap;
+  transition: transform 0.5s ease;
+  font-size: 0.85rem; color: #a0b8a8;
+}
+.context-visible {
+  position: absolute; top: 0; left: 0;
+  height: 100%; width: 100%;
+  border-left: 3px solid #00e676;
+  border-right: 3px solid #00e676;
+  background: rgba(0, 230, 118, 0.05);
+}
+.context-slider {
+  width: 100%; margin: 1rem 0;
+  -webkit-appearance: none; appearance: none;
+  height: 8px; border-radius: 4px;
+  background: rgba(0, 230, 118, 0.15);
+  outline: none;
+}
+.context-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #00e676; cursor: pointer;
+}
+
+/* ===== ATTENTION DEMO ===== */
+.attention-grid {
+  display: inline-grid; gap: 2px;
+  margin: 1rem auto;
+}
+.attention-cell {
+  width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 600;
+  border-radius: 4px; transition: all 0.3s;
+  cursor: pointer;
+}
+.attention-cell:hover {
+  transform: scale(1.15); z-index: 10;
+}
+
+/* ===== VECTOR SPACE DEMO ===== */
+.vector-canvas-wrap {
+  position: relative; display: inline-block;
+}
+.vector-label {
+  position: absolute; font-size: 0.75rem;
+  color: #69f0ae; font-weight: 600;
+  pointer-events: none;
+}
+
+/* ===== HIGHLIGHT BOX ===== */
+.highlight-box {
+  background: rgba(0, 230, 118, 0.05);
+  border-left: 4px solid #00e676;
+  padding: 1.5rem 2rem; margin: 2rem 0;
+  border-radius: 0 12px 12px 0;
+}
+.highlight-box p { color: #b0d0c0; font-size: 1rem; }
+
+/* ===== FOOTER ===== */
+.page-footer {
+  text-align: center; padding: 2rem 0;
+  border-top: 1px solid rgba(0, 230, 118, 0.08);
+  margin-top: 3rem; position: relative; z-index: 2;
+}
+.footer-inner {
+  display: flex; justify-content: center; align-items: center;
+  gap: 20px; flex-wrap: wrap;
+}
+.footer-brand { color: #668878; font-size: 0.85em; }
+.visit-counter-badge {
+  color: #668878; font-size: 0.8em;
+  background: rgba(0, 230, 118, 0.04);
+  padding: 4px 10px; border-radius: 6px;
+  border: 1px solid rgba(0, 230, 118, 0.08);
+}
+.back-link {
+  display: inline-block; margin-top: 1rem;
+  color: #00e676; font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.active {
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; right: 0;
+    width: 70%; height: 100vh;
+    background: rgba(6, 10, 8, 0.98);
+    padding: 5rem 2rem; gap: 1rem;
+    border-left: 1px solid rgba(0, 230, 118, 0.1);
+  }
+  .section { padding: 3rem 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .attention-cell { width: 35px; height: 35px; font-size: 0.6rem; }
+}
+</style>
+</head>
+<body>
+<!-- ===== PARTICLES BG ===== -->
+<canvas id="particles-bg"></canvas>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="nav-logo">🧠 LLMs Explained</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#que-es-ia">¿Qué es la IA?</a></li>
+    <li><a href="#llms">LLMs</a></li>
+    <li><a href="#transformers">Transformers</a></li>
+    <li><a href="#tokens">Tokens</a></li>
+    <li><a href="#contexto">Contexto</a></li>
+    <li><a href="#vectores">Vectores</a></li>
+    <li><a href="#agentes">Agentes</a></li>
+    <li><a href="#por-que-importa">¿Por qué importa?</a></li>
+    <li><a class="globe" onclick="toggleLang()" title="Switch language">🌐</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <h1 class="hero-title" data-es="LLMs Explained" data-en="LLMs Explained">LLMs Explained</h1>
+    <p class="hero-subtitle" data-es="Cómo funciona la IA que usas a diario — y por qué entenderla te hace mejor usuario" data-en="How the AI you use daily works — and why understanding it makes you a better user">Cómo funciona la IA que usas a diario — y por qué entenderla te hace mejor usuario</p>
+  </div>
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ===== SECTION: ¿QUÉ ES LA IA? ===== -->
+<section class="section" id="que-es-ia">
+  <div class="section-label" data-es="FUNDAMENTOS" data-en="FOUNDATIONS">FUNDAMENTOS</div>
+  <h2 class="section-title" data-es="¿Qué es la IA (realmente)?" data-en="What is AI (really)?">¿Qué es la IA (realmente)?</h2>
+  
+  <p class="section-text" data-es="Inteligencia Artificial es un paraguas. Bajo ese nombre caben cosas que no tienen nada que ver entre sí, desde un filtro spam hasta un modelo que escribe código. Entender esta diferencia es el primer paso para no confundirte." data-en="Artificial Intelligence is an umbrella term. Under that name sit things that have nothing to do with each other, from a spam filter to a model that writes code. Understanding this difference is the first step to not getting confused.">Inteligencia Artificial es un paraguas. Bajo ese nombre caben cosas que no tienen nada que ver entre sí, desde un filtro spam hasta un modelo que escribe código. Entender esta diferencia es el primer paso para no confundirte.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3 class="card-title" data-es="IA Simbólica (1950s–1980s)" data-en="Symbolic AI (1950s–1980s)">IA Simbólica (1950s–1980s)</h3>
+      <p class="card-text" data-es="Reglas manuales escritas por humanos. Si X entonces Y. Funciona bien en dominios cerrados pero no escala. Es como darle una receta de cocina al robot." data-en="Manual rules written by humans. If X then Y. Works well in closed domains but doesn't scale. Like giving the robot a recipe.">Reglas manuales escritas por humanos. Si X entonces Y. Funciona bien en dominios cerrados pero no escala. Es como darle una receta de cocina al robot.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3 class="card-title" data-es="Machine Learning (1990s–2010s)" data-en="Machine Learning (1990s–2010s)">Machine Learning (1990s–2010s)</h3>
+      <p class="card-text" data-es="En lugar de programar reglas, el algoritmo las aprende de datos. Un clasificador de emails spam, un sistema de recomendación de Netflix. Potente, pero necesita datos etiquetados y no genera texto libre." data-en="Instead of programming rules, the algorithm learns them from data. A spam classifier, Netflix recommendations. Powerful, but needs labeled data and doesn't generate free text.">En lugar de programar reglas, el algoritmo las aprende de datos. Un clasificador de emails spam, un sistema de recomendación de Netflix. Potente, pero necesita datos etiquetados y no genera texto libre.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3 class="card-title" data-es="Deep Learning (2010s–hoy)" data-en="Deep Learning (2010s–today)">Deep Learning (2010s–hoy)</h3>
+      <p class="card-text" data-es="Redes neuronales profundas con muchas capas. Reconocimiento de imágenes, traducción automática, y lo más relevante: LLMs. Aprende representaciones jerárquicas de los datos sin que nadie le diga qué buscar." data-en="Deep neural networks with many layers. Image recognition, machine translation, and most relevantly: LLMs. Learns hierarchical representations from data without being told what to look for.">Redes neuronales profundas con muchas capas. Reconocimiento de imágenes, traducción automática, y lo más relevante: LLMs. Aprende representaciones jerárquicas de los datos sin que nadie le diga qué buscar.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💬</div>
+      <h3 class="card-title" data-es="LLMs (2017–hoy)" data-en="LLMs (2017–today)">LLMs (2017–hoy)</h3>
+      <p class="card-text" data-es="Large Language Models. Un tipo especial de deep learning basado en la arquitectura Transformer. Predicen texto token a token, pero como resultado muestran comprensión, razonamiento y creatividad emergentes." data-en="Large Language Models. A special type of deep learning based on the Transformer architecture. They predict text token by token, but as a result show emergent understanding, reasoning, and creativity.">Large Language Models. Un tipo especial de deep learning basado en la arquitectura Transformer. Predicen texto token a token, pero como resultado muestran comprensión, razonamiento y creatividad emergentes.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p data-es="💡 <strong>La clave:</strong> los LLMs no son &quot;inteligentes&quot; en el sentido humano. Son máquinas estadísticas extraordinariamente capaces que predicen la siguiente palabra. Pero esa simpleza, escalada a billones de parámetros y trillones de palabras, produce comportamientos que parecen inteligencia." data-en="💡 <strong>The key:</strong> LLMs are not &quot;intelligent&quot; in the human sense. They are extraordinarily capable statistical machines that predict the next word. But that simplicity, scaled to trillions of parameters and quadrillions of words, produces behaviors that look like intelligence.">💡 <strong>La clave:</strong> los LLMs no son "inteligentes" en el sentido humano. Son máquinas estadísticas extraordinariamente capaces que predicen la siguiente palabra. Pero esa simpleza, escalada a billones de parámetros y trillones de palabras, produce comportamientos que parecen inteligencia.</p>
+  </div>
+
+  <!-- ACCORDION: Deep dive IA -->
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: ¿Cómo aprende una red neuronal?" data-en="🔬 Deep dive: How does a neural network learn?">🔬 Deep dive: ¿Cómo aprende una red neuronal?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p>Una red neuronal es esencialmente una función matemática con millones (o billones) de parámetros ajustables. El entrenamiento funciona así:</p><p><strong>1. Forward pass:</strong> La red recibe un input (ej: &quot;El gato&quot;) y produce una predicción (ej: &quot;salta&quot;).</p><p><strong>2. Loss (pérdida):</strong> Se compara la predicción con la respuesta real del dataset. Si el texto real era &quot;sobre el muro&quot;, la red cometió un error.</p><p><strong>3. Backpropagation:</strong> El error se propaga hacia atrás por todas las capas. Cada parámetro se ajusta ligeramente en la dirección que reduce el error (gradiente descendente).</p><p><strong>4. Repetición:</strong> Se repite miles de millones de veces con miles de millones de ejemplos. Al final, los parámetros codifican patrones del lenguaje.</p><p>Los parámetros de un LLM son análogos a las conexiones sinápticas del cerebro. No almacenan &quot;conocimiento&quot; como hechos — almacenan patrones estadísticos que, cuando se combinan, producen comportamientos inteligentes.</p>" data-en="<p>A neural network is essentially a mathematical function with millions (or trillions) of adjustable parameters. Training works like this:</p><p><strong>1. Forward pass:</strong> The network receives an input (e.g., &quot;The cat&quot;) and produces a prediction (e.g., &quot;jumps&quot;).</p><p><strong>2. Loss:</strong> The prediction is compared with the actual answer from the dataset. If the actual text was &quot;on the wall&quot;, the network made an error.</p><p><strong>3. Backpropagation:</strong> The error propagates backward through all layers. Each parameter is adjusted slightly in the direction that reduces the error (gradient descent).</p><p><strong>4. Repetition:</strong> Repeated billions of times with billions of examples. Eventually, the parameters encode language patterns.</p><p>LLM parameters are analogous to synaptic connections in the brain. They don't store &quot;knowledge&quot; as facts — they store statistical patterns that, when combined, produce intelligent behaviors.</p>"><p>Una red neuronal es esencialmente una función matemática con millones (o billones) de parámetros ajustables. El entrenamiento funciona así:</p><p><strong>1. Forward pass:</strong> La red recibe un input (ej: "El gato") y produce una predicción (ej: "salta").</p><p><strong>2. Loss (pérdida):</strong> Se compara la predicción con la respuesta real del dataset. Si el texto real era "sobre el muro", la red cometió un error.</p><p><strong>3. Backpropagation:</strong> El error se propaga hacia atrás por todas las capas. Cada parámetro se ajusta ligeramente en la dirección que reduce el error (gradiente descendente).</p><p><strong>4. Repetición:</strong> Se repite miles de millones de veces con miles de millones de ejemplos. Al final, los parámetros codifican patrones del lenguaje.</p><p>Los parámetros de un LLM son análogos a las conexiones sinápticas del cerebro. No almacenan "conocimiento" como hechos — almacenan patrones estadísticos que, cuando se combinan, producen comportamientos inteligentes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: LLMs ===== -->
+<section class="section" id="llms">
+  <div class="section-label" data-es="MODELOS DE LENGUAJE" data-en="LANGUAGE MODELS">MODELOS DE LENGUAJE</div>
+  <h2 class="section-title" data-es="¿Qué es un LLM?" data-en="What is an LLM?">¿Qué es un LLM?</h2>
+  
+  <p class="section-text" data-es="LLM = Large Language Model. Es un modelo de deep learning entrenado para procesar y generar lenguaje natural. &quot;Large&quot; significa billones de parámetros. &quot;Language&quot; significa que su input y output es texto. &quot;Model&quot; significa que es una función matemática que ha aprendido a mapear inputs a outputs." data-en="LLM = Large Language Model. A deep learning model trained to process and generate natural language. &quot;Large&quot; means trillions of parameters. &quot;Language&quot; means its input and output is text. &quot;Model&quot; means it's a mathematical function that has learned to map inputs to outputs.">LLM = Large Language Model. Es un modelo de deep learning entrenado para procesar y generar lenguaje natural. "Large" significa billones de parámetros. "Language" significa que su input y output es texto. "Model" significa que es una función matemática que ha aprendido a mapear inputs a outputs.</p>
+
+  <div class="highlight-box">
+    <p data-es="🤔 <strong>Piensa en un autocompletado superpotente.</strong> Tu móvil sugiere la siguiente palabra cuando escribes. Un LLM hace exactamente lo mismo, pero con un contexto de miles de palabras y una precisión que parece magia. La diferencia entre &quot;sugerir&quot; y &quot;razonar&quot; es solo de escala." data-en="🤔 <strong>Think of a super-powered autocomplete.</strong> Your phone suggests the next word when you type. An LLM does exactly the same, but with a context of thousands of words and a precision that seems like magic. The difference between &quot;suggesting&quot; and &quot;reasoning&quot; is only one of scale.">🤔 <strong>Piensa en un autocompletado superpotente.</strong> Tu móvil sugiere la siguiente palabra cuando escribes. Un LLM hace exactamente lo mismo, pero con un contexto de miles de palabras y una precisión que parece magia. La diferencia entre "sugerir" y "razonar" es solo de escala.</p>
+  </div>
+
+  <h3 style="color:#00e676; margin:2rem 0 1rem;" data-es="Ejemplos de LLMs" data-en="Examples of LLMs">Ejemplos de LLMs</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th data-es="Modelo" data-en="Model">Modelo</th><th data-es="Desarrollador" data-en="Developer">Desarrollador</th><th data-es="Tipo" data-en="Type">Tipo</th><th data-es="Parámetros (aprox.)" data-en="Parameters (approx.)">Parámetros (aprox.)</th></tr></thead>
+      <tbody>
+        <tr><td>GPT-4o / GPT-5</td><td>OpenAI</td><td data-es="Cerrado" data-en="Closed">Cerrado</td><td>~1.8T (GPT-4)</td></tr>
+        <tr><td>Claude 4 (Sonnet/Opus)</td><td>Anthropic</td><td data-es="Cerrado" data-en="Closed">Cerrado</td><td>~200B–1.5T</td></tr>
+        <tr><td>Gemini 2.5 Pro</td><td>Google</td><td data-es="Cerrado" data-en="Closed">Cerrado</td><td>~300B+</td></tr>
+        <tr><td>Llama 4</td><td>Meta</td><td data-es="Abierto" data-en="Open">Abierto</td><td>~177B</td></tr>
+        <tr><td>Qwen3.6</td><td>Alibaba</td><td data-es="Abierto" data-en="Open">Abierto</td><td>~27B–235B</td></tr>
+        <tr><td>Mistral Large</td><td>Mistral AI</td><td data-es="Cerrado/Abierto" data-en="Closed/Open">Cerrado/Abierto</td><td>~123B</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: Fine-tuning vs Prompting vs RAG" data-en="🔬 Deep dive: Fine-tuning vs Prompting vs RAG">🔬 Deep dive: Fine-tuning vs Prompting vs RAG</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p><strong>Prompting:</strong> Le das instrucciones al modelo sin modificarlo. Es gratis, inmediato, y funciona sorprendentemente bien. &quot;Actúa como un experto en Python&quot; es prompting.</p><p><strong>Fine-tuning:</strong> Retrenas el modelo con datos específicos. Útil cuando necesitas que el modelo adopte un estilo, formato o conocimiento muy específico. Requiere datos de calidad y GPU potente.</p><p><strong>RAG (Retrieval-Augmented Generation):</strong> Antes de generar la respuesta, el sistema busca información relevante en una base de datos externa y se la pasa al modelo como contexto. Es la forma más práctica de dar &quot;conocimiento actualizado&quot; a un LLM.</p><p>En la práctica: el 90% de los usuarios solo necesitan buen prompting. El 9% necesita RAG. El 1% necesita fine-tuning.</p>" data-en="<p><strong>Prompting:</strong> You give the model instructions without modifying it. Free, immediate, and surprisingly effective. &quot;Act as a Python expert&quot; is prompting.</p><p><strong>Fine-tuning:</strong> You retrain the model with specific data. Useful when you need the model to adopt a very specific style, format, or knowledge. Requires quality data and powerful GPU.</p><p><strong>RAG (Retrieval-Augmented Generation):</strong> Before generating the response, the system searches for relevant information in an external database and passes it to the model as context. The most practical way to give an LLM &quot;up-to-date knowledge&quot;.</p><p>In practice: 90% of users only need good prompting. 9% need RAG. 1% need fine-tuning.</p>"><p><strong>Prompting:</strong> Le das instrucciones al modelo sin modificarlo. Es gratis, inmediato, y funciona sorprendentemente bien. "Actúa como un experto en Python" es prompting.</p><p><strong>Fine-tuning:</strong> Retrenas el modelo con datos específicos. Útil cuando necesitas que el modelo adopte un estilo, formato o conocimiento muy específico. Requiere datos de calidad y GPU potente.</p><p><strong>RAG (Retrieval-Augmented Generation):</strong> Antes de generar la respuesta, el sistema busca información relevante en una base de datos externa y se la pasa al modelo como contexto. Es la forma más práctica de dar "conocimiento actualizado" a un LLM.</p><p>En la práctica: el 90% de los usuarios solo necesitan buen prompting. El 9% necesita RAG. El 1% necesita fine-tuning.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: TRANSFORMERS ===== -->
+<section class="section" id="transformers">
+  <div class="section-label" data-es="ARQUITECTURA" data-en="ARCHITECTURE">ARQUITECTURA</div>
+  <h2 class="section-title" data-es="Transformers — Attention Is All You Need" data-en="Transformers — Attention Is All You Need">Transformers — Attention Is All You Need</h2>
+  
+  <p class="section-text" data-es="En 2017, Google publicó un paper que cambió todo: &quot;Attention Is All You Need&quot;. Introdujeron el <strong>Transformer</strong>, una arquitectura que abandonaba las redes recurrentes (RNN) y se basaba completamente en <strong>atención</strong>. Todos los LLMs actuales (GPT, Claude, Gemini, Llama) usan Transformers." data-en="In 2017, Google published a paper that changed everything: &quot;Attention Is All You Need&quot;. They introduced the <strong>Transformer</strong>, an architecture that abandoned recurrent networks (RNNs) and relied entirely on <strong>attention</strong>. All current LLMs (GPT, Claude, Gemini, Llama) use Transformers.">En 2017, Google publicó un paper que cambió todo: "Attention Is All You Need". Introdujeron el <strong>Transformer</strong>, una arquitectura que abandonaba las redes recurrentes (RNN) y se basaba completamente en <strong>atención</strong>. Todos los LLMs actuales (GPT, Claude, Gemini, Llama) usan Transformers.</p>
+
+  <div class="highlight-box">
+    <p data-es="🎯 <strong>El concepto clave: Atención (Attention).</strong> Cuando lees una frase, no prestas la misma atención a todas las palabras. Si digo &quot;El <em>gato</em> saltó porque el <em>perro</em> ladró&quot;, tu cerebro conecta &quot;gato&quot; con &quot;saltó&quot; y &quot;perro&quot; con &quot;ladró&quot;. El mecanismo de atención hace exactamente esto: calcula qué palabras de la entrada son relevantes para cada palabra que genera." data-en="🎯 <strong>The key concept: Attention.</strong> When you read a sentence, you don't pay equal attention to all words. If I say &quot;The <em>cat</em> jumped because the <em>dog</em> barked&quot;, your brain connects &quot;cat&quot; with &quot;jumped&quot; and &quot;dog&quot; with &quot;barked&quot;. The attention mechanism does exactly this: it calculates which input words are relevant for each word it generates.">🎯 <strong>El concepto clave: Atención (Attention).</strong> Cuando lees una frase, no prestas la misma atención a todas las palabras. Si digo "El <em>gato</em> saltó porque el <em>perro</em> ladró", tu cerebro conecta "gato" con "saltó" y "perro" con "ladró". El mecanismo de atención hace exactamente esto: calcula qué palabras de la entrada son relevantes para cada palabra que genera.</p>
+  </div>
+
+  <!-- INTERACTIVE: ATTENTION MAP -->
+  <div class="demo-container">
+    <div class="demo-title" data-es="🎯 Mapa de Atención Interactivo" data-en="🎯 Interactive Attention Map">🎯 Mapa de Atención Interactivo</div>
+    <p style="color:#88a898; margin-bottom:1rem;" data-es="Haz clic en cada palabra para ver a qué otras palabras &quot;presta atención&quot; el modelo. Los colores más cálidos = más atención." data-en="Click on each word to see which other words the model &quot;pays attention to&quot;. Warmer colors = more attention.">Haz clic en cada palabra para ver a qué otras palabras "presta atención" el modelo. Los colores más cálidos = más atención.</p>
+    <div id="attention-demo"></div>
+    <div class="demo-result" id="attention-result"></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: Arquitectura del Transformer" data-en="🔬 Deep dive: Transformer Architecture">🔬 Deep dive: Arquitectura del Transformer</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p>Un Transformer tiene dos partes principales:</p><p><strong>Encoder:</strong> Transforma el texto de entrada en representaciones vectoriales. Usa &quot;self-attention&quot; para que cada palabra &quot;vea&quot; todas las demás.</p><p><strong>Decoder:</strong> Genera texto palabra a palabra. Usa &quot;masked self-attention&quot; (solo ve lo que ya ha generado) + &quot;cross-attention&quot; (mira el encoder).</p><p><strong>Los GPT son solo decoders</strong> — no tienen encoder. Reciben texto y generan texto. La simplicidad es su fortaleza.</p><p><strong>Componentes clave del Decoder:</strong></p><p>1. <strong>Token Embedding:</strong> Cada token se convierte en un vector de números (ej: 4096 dimensiones).</p><p>2. <strong>Positional Encoding:</strong> Se añade información de posición (el orden importa: &quot;el gato persigue al perro&quot; ≠ &quot;el perro persigue al gato&quot;).</p><p>3. <strong>Multi-Head Self-Attention:</strong> Múltiples &quot;heads&quot; calculan atención en paralelo, cada uno capturando relaciones diferentes (sintácticas, semánticas, etc.).</p><p>4. <strong>Feed-Forward Network:</strong> Cada posición se procesa independientemente con una red neuronal pequeña.</p><p>5. <strong>Layer Normalization + Residual Connections:</strong> Estabilizan el entrenamiento y permiten redes muy profundas.</p><p>Un GPT-4 tiene ~100+ de estas capas apiladas. Cada capa refina un poco más la representación.</p>" data-en="<p>A Transformer has two main parts:</p><p><strong>Encoder:</strong> Transforms input text into vector representations. Uses &quot;self-attention&quot; so each word &quot;sees&quot; all others.</p><p><strong>Decoder:</strong> Generates text word by word. Uses &quot;masked self-attention&quot; (only sees what it has already generated) + &quot;cross-attention&quot; (looks at the encoder).</p><p><strong>GPTs are decoders only</strong> — no encoder. They receive text and generate text. Simplicity is their strength.</p><p><strong>Key Decoder components:</strong></p><p>1. <strong>Token Embedding:</strong> Each token is converted into a vector of numbers (e.g., 4096 dimensions).</p><p>2. <strong>Positional Encoding:</strong> Position information is added (order matters: &quot;the cat chases the dog&quot; ≠ &quot;the dog chases the cat&quot;).</p><p>3. <strong>Multi-Head Self-Attention:</strong> Multiple &quot;heads&quot; compute attention in parallel, each capturing different relationships (syntactic, semantic, etc.).</p><p>4. <strong>Feed-Forward Network:</strong> Each position is processed independently with a small neural network.</p><p>5. <strong>Layer Normalization + Residual Connections:</strong> Stabilize training and enable very deep networks.</p><p>GPT-4 has ~100+ of these layers stacked. Each layer refines the representation a bit more.</p>"><p>Un Transformer tiene dos partes principales:</p><p><strong>Encoder:</strong> Transforma el texto de entrada en representaciones vectoriales. Usa "self-attention" para que cada palabra "vea" todas las demás.</p><p><strong>Decoder:</strong> Genera texto palabra a palabra. Usa "masked self-attention" (solo ve lo que ya ha generado) + "cross-attention" (mira el encoder).</p><p><strong>Los GPT son solo decoders</strong> — no tienen encoder. Reciben texto y generan texto. La simplicidad es su fortaleza.</p><p><strong>Componentes clave del Decoder:</strong></p><p>1. <strong>Token Embedding:</strong> Cada token se convierte en un vector de números (ej: 4096 dimensiones).</p><p>2. <strong>Positional Encoding:</strong> Se añade información de posición (el orden importa: "el gato persigue al perro" ≠ "el perro persigue al gato").</p><p>3. <strong>Multi-Head Self-Attention:</strong> Múltiples "heads" calculan atención en paralelo, cada uno capturando relaciones diferentes (sintácticas, semánticas, etc.).</p><p>4. <strong>Feed-Forward Network:</strong> Cada posición se procesa independientemente con una red neuronal pequeña.</p><p>5. <strong>Layer Normalization + Residual Connections:</strong> Estabilizan el entrenamiento y permiten redes muy profundas.</p><p>Un GPT-4 tiene ~100+ de estas capas apiladas. Cada capa refina un poco más la representación.</p></div>
+    </div>
+  </div>
+</section>
+<!-- ===== SECTION: TOKENS ===== -->
+<section class="section" id="tokens">
+  <div class="section-label" data-es="UNIDADES FUNDAMENTALES" data-en="FUNDAMENTAL UNITS">UNIDADES FUNDAMENTALES</div>
+  <h2 class="section-title" data-es="Tokens — La moneda de los LLMs" data-en="Tokens — The currency of LLMs">Tokens — La moneda de los LLMs</h2>
+  
+  <p class="section-text" data-es="Los LLMs no ven palabras — ven <strong>tokens</strong>. Un token puede ser una palabra completa (&quot;perro&quot;), parte de una palabra (&quot;desarrollo&quot; → &quot;des&quot; + &quot;arrollo&quot;), o incluso un carácter raro. El tokenizer divide tu texto en tokens antes de que el modelo lo procese." data-en="LLMs don't see words — they see <strong>tokens</strong>. A token can be a complete word (&quot;dog&quot;), part of a word (&quot;development&quot; → &quot;devel&quot; + &quot;opment&quot;), or even a rare character. The tokenizer splits your text into tokens before the model processes it.">Los LLMs no ven palabras — ven <strong>tokens</strong>. Un token puede ser una palabra completa ("perro"), parte de una palabra ("desarrollo" → "des" + "arrollo"), o incluso un carácter raro. El tokenizer divide tu texto en tokens antes de que el modelo lo procese.</p>
+
+  <div class="highlight-box">
+    <p data-es="⚡ <strong>¿Por qué importan los tokens?</strong> Porque los LLMs se cobran por token. Y tu ventana de contexto se mide en tokens. Y la calidad de la respuesta depende de cómo se tokeniza tu prompt. Entender tokens es entender la economía de la IA." data-en="⚡ <strong>Why do tokens matter?</strong> Because LLMs charge per token. Your context window is measured in tokens. And response quality depends on how your prompt is tokenized. Understanding tokens is understanding AI economics.">⚡ <strong>¿Por qué importan los tokens?</strong> Porque los LLMs se cobran por token. Y tu ventana de contexto se mide en tokens. Y la calidad de la respuesta depende de cómo se tokeniza tu prompt. Entender tokens es entender la economía de la IA.</p>
+  </div>
+
+  <!-- INTERACTIVE: TOKENIZER -->
+  <div class="demo-container">
+    <div class="demo-title" data-es="🔤 Tokenizador Interactivo" data-en="🔤 Interactive Tokenizer">🔤 Tokenizador Interactivo</div>
+    <p style="color:#88a898; margin-bottom:1rem;" data-es="Escribe texto y ver cómo se divide en tokens. Usa el tokenizer de GPT-4 (tiktoken) simulado." data-en="Type text and see how it's split into tokens. Uses a simulated GPT-4 (tiktoken) tokenizer.">Escribe texto y ver cómo se divide en tokens. Usa el tokenizer de GPT-4 (tiktoken) simulado.</p>
+    <textarea class="demo-input" id="token-input" rows="3" placeholder="Escribe algo aquí..." data-es-placeholder="Escribe algo aquí..." data-en-placeholder="Type something here...">La inteligencia artificial está transformando el mundo</textarea>
+    <div class="demo-result" id="token-result" style="margin-top:1rem;"></div>
+    <div style="margin-top:0.5rem; color:#668878; font-size:0.85rem;" id="token-count"></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: ¿Cómo funciona un tokenizer?" data-en="🔬 Deep dive: How does a tokenizer work?">🔬 Deep dive: ¿Cómo funciona un tokenizer?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p>Los LLMs modernos usan <strong>Byte-Pair Encoding (BPE)</strong> o variantes como <strong>Byte-level BPE</strong> (GPT) o <strong>Unigram</strong> (Claude).</p><p><strong>BPE funciona así:</strong></p><p>1. Empiezas con todos los caracteres individuales como tokens.</p><p>2. Encuentras el par de tokens más frecuente en tu corpus de entrenamiento.</p><p>3. Los fusionas en un nuevo token.</p><p>4. Repites hasta tener el vocabulario deseado (ej: 50,000 tokens).</p><p>Resultado: palabras frecuentes son 1 token (&quot;el&quot;, &quot;la&quot;, &quot;perro&quot;), palabras raras se dividen en partes (&quot;desarrollo&quot; → 2-3 tokens).</p><p><strong>Consecuencias prácticas:</strong></p><p>• Los idiomas con muchas palabras compuestas (alemán, turco) usan más tokens por palabra.</p><p>• Los caracteres CJK (chino, japonés) suelen ser 1 token por carácter.</p><p>• &quot;No lo sé&quot; = 4 tokens. &quot;idk&quot; = 1 token. A veces menos texto ≠ menos tokens.</p>" data-en="<p>Modern LLMs use <strong>Byte-Pair Encoding (BPE)</strong> or variants like <strong>Byte-level BPE</strong> (GPT) or <strong>Unigram</strong> (Claude).</p><p><strong>BPE works like this:</strong></p><p>1. You start with all individual characters as tokens.</p><p>2. You find the most frequent pair of tokens in your training corpus.</p><p>3. You merge them into a new token.</p><p>4. You repeat until you have the desired vocabulary (e.g., 50,000 tokens).</p><p>Result: frequent words are 1 token (&quot;the&quot;, &quot;a&quot;, &quot;dog&quot;), rare words are split into parts (&quot;development&quot; → 2-3 tokens).</p><p><strong>Practical consequences:</strong></p><p>• Languages with many compound words (German, Turkish) use more tokens per word.</p><p>• CJK characters (Chinese, Japanese) are usually 1 token per character.</p><p>• &quot;I don't know&quot; = 4 tokens. &quot;idk&quot; = 1 token. Less text ≠ fewer tokens.</p>"><p>Los LLMs modernos usan <strong>Byte-Pair Encoding (BPE)</strong> o variantes como <strong>Byte-level BPE</strong> (GPT) o <strong>Unigram</strong> (Claude).</p><p><strong>BPE funciona así:</strong></p><p>1. Empiezas con todos los caracteres individuales como tokens.</p><p>2. Encuentras el par de tokens más frecuente en tu corpus de entrenamiento.</p><p>3. Los fusionas en un nuevo token.</p><p>4. Repites hasta tener el vocabulario deseado (ej: 50,000 tokens).</p><p>Resultado: palabras frecuentes son 1 token ("el", "la", "perro"), palabras raras se dividen en partes ("desarrollo" → 2-3 tokens).</p><p><strong>Consecuencias prácticas:</strong></p><p>• Los idiomas con muchas palabras compuestas (alemán, turco) usan más tokens por palabra.</p><p>• Los caracteres CJK (chino, japonés) suelen ser 1 token por carácter.</p><p>• "No lo sé" = 4 tokens. "idk" = 1 token. A veces menos texto ≠ menos tokens.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: CONTEXTO ===== -->
+<section class="section" id="contexto">
+  <div class="section-label" data-es="MEMORIA" data-en="MEMORY">MEMORIA</div>
+  <h2 class="section-title" data-es="Ventana de Contexto — La memoria del modelo" data-en="Context Window — The model's memory">Ventana de Contexto — La memoria del modelo</h2>
+  
+  <p class="section-text" data-es="La <strong>ventana de contexto</strong> es el número máximo de tokens que un LLM puede procesar a la vez. Es su &quot;memoria de trabajo&quot;. Todo lo que esté dentro de la ventana, el modelo lo &quot;ve&quot;. Todo lo que esté fuera, simplemente no existe para el modelo." data-en="The <strong>context window</strong> is the maximum number of tokens an LLM can process at once. It's its &quot;working memory&quot;. Everything inside the window, the model &quot;sees&quot;. Everything outside simply doesn't exist for the model.">La <strong>ventana de contexto</strong> es el número máximo de tokens que un LLM puede procesar a la vez. Es su "memoria de trabajo". Todo lo que esté dentro de la ventana, el modelo lo "ve". Todo lo que esté fuera, simplemente no existe para el modelo.</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th data-es="Modelo" data-en="Model">Modelo</th><th data-es="Ventana de Contexto" data-en="Context Window">Ventana de Contexto</th><th data-es="Equivale a..." data-en="Equivalent to...">Equivale a...</th></tr></thead>
+      <tbody>
+        <tr><td>GPT-4o</td><td>128K tokens</td><td data-es="~500 páginas" data-en="~500 pages">~500 páginas</td></tr>
+        <tr><td>Claude 4 Sonnet</td><td>200K tokens</td><td data-es="~750 páginas" data-en="~750 pages">~750 páginas</td></tr>
+        <tr><td>Claude 4 Opus</td><td>200K tokens</td><td data-es="~750 páginas" data-en="~750 pages">~750 páginas</td></tr>
+        <tr><td>Gemini 2.5 Pro</td><td>1M tokens</td><td data-es="~3,000 páginas" data-en="~3,000 pages">~3,000 páginas</td></tr>
+        <tr><td>Llama 4</td><td>128K tokens</td><td data-es="~500 páginas" data-en="~500 pages">~500 páginas</td></tr>
+        <tr><td>Qwen3.6-27B (local)</td><td>170K tokens</td><td data-es="~640 páginas" data-en="~640 pages">~640 páginas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box">
+    <p data-es="🧠 <strong>Mito:</strong> &quot;Si la ventana es grande, el modelo recuerda todo.&quot; <strong>Realidad:</strong> Los LLMs tienen peor memoria en el inicio y el final de la ventana (&quot;lost in the middle&quot;). El contenido más reciente tiene más peso. Y cuando la ventana está llena, lo más antiguo se pierde sin aviso." data-en="🧠 <strong>Myth:</strong> &quot;If the window is large, the model remembers everything.&quot; <strong>Reality:</strong> LLMs have worse memory at the beginning and end of the window (&quot;lost in the middle&quot;). The most recent content has more weight. And when the window is full, the oldest content is lost without warning.">🧠 <strong>Mito:</strong> "Si la ventana es grande, el modelo recuerda todo." <strong>Realidad:</strong> Los LLMs tienen peor memoria en el inicio y el final de la ventana ("lost in the middle"). El contenido más reciente tiene más peso. Y cuando la ventana está llena, lo más antiguo se pierde sin aviso.</p>
+  </div>
+
+  <!-- INTERACTIVE: CONTEXT WINDOW -->
+  <div class="demo-container">
+    <div class="demo-title" data-es="🪟 Simulador de Ventana de Contexto" data-en="🪟 Context Window Simulator">🪟 Simulador de Ventana de Contexto</div>
+    <p style="color:#88a898; margin-bottom:1rem;" data-es="Mueve el slider para ver cómo cambia la ventana de contexto. Observa qué información el modelo &quot;ve&quot; y qué olvida." data-en="Move the slider to see how the context window changes. Observe what information the model &quot;sees&quot; and what it forgets.">Mueve el slider para ver cómo cambia la ventana de contexto. Observa qué información el modelo "ve" y qué olvida.</p>
+    <div class="context-demo">
+      <div class="context-window-visual" id="context-window">
+        <div class="context-content" id="context-content">
+          [Sesión 1] Hola, soy Raúl, trabajo en software...
+          [Sesión 2] ¿Puedes ayudarme con Python?...
+          [Sesión 3] Necesito una función para...
+          [Sesión 4] El código da error en la línea 42...
+          [Sesión 5] ¿Puedes refactorizarlo?...
+          [Sesión 6] Ahora necesito añadir tests...
+          [Sesión 7] ¿Cómo configuro pytest?...
+          [Sesión 8] Perfecto, ahora deploy...
+        </div>
+        <div class="context-visible" id="context-visible"></div>
+      </div>
+      <input type="range" class="context-slider" id="context-slider" min="10" max="100" value="60">
+      <div style="display:flex; justify-content:space-between; color:#668878; font-size:0.8rem; margin-top:0.5rem;">
+        <span data-es="Ventana pequeña (8K tokens)" data-en="Small window (8K tokens)">Ventana pequeña (8K tokens)</span>
+        <span data-es="Ventana grande (200K tokens)" data-en="Large window (200K tokens)">Ventana grande (200K tokens)</span>
+      </div>
+      <div class="demo-result" id="context-result" style="margin-top:1rem;"></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: &quot;Lost in the Middle&quot; y estrategias" data-en="🔬 Deep dive: &quot;Lost in the Middle&quot; and strategies">🔬 Deep dive: "Lost in the Middle" y estrategias</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p>Estudio de Jiang et al. (2023): los LLMs tienen un patrón de memoria en forma de U. Recuerdan mejor lo del <strong>inicio</strong> y el <strong>final</strong> de la ventana, pero &quot;pierden&quot; información del medio.</p><p><strong>Estrategias prácticas:</strong></p><p>• <strong>Pon lo importante al final:</strong> La instrucción clave debe estar cerca del final del prompt.</p><p>• <strong>Resumir el contexto antiguo:</strong> En conversaciones largas, pide al modelo que resuma lo anterior y reinicia la conversación.</p><p>• <strong>Chunking:</strong> Si procesas documentos largos, divídelos en trozos y procesa cada uno por separado.</p><p>• <strong>Prompt engineering:</strong> Usa &quot;recap&quot; periódicos: &quot;Basándote en todo lo que hemos hablado hasta ahora, resume los puntos clave.&quot;</p>" data-en="<p>Study by Jiang et al. (2023): LLMs have a U-shaped memory pattern. They remember better the <strong>beginning</strong> and <strong>end</strong> of the window, but &quot;lose&quot; information in the middle.</p><p><strong>Practical strategies:</strong></p><p>• <strong>Put important things at the end:</strong> The key instruction should be near the end of the prompt.</p><p>• <strong>Summarize old context:</strong> In long conversations, ask the model to summarize and restart.</p><p>• <strong>Chunking:</strong> If processing long documents, split them and process each chunk separately.</p><p>• <strong>Prompt engineering:</strong> Use periodic &quot;recaps&quot;: &quot;Based on everything we've discussed so far, summarize the key points.&quot;</p>"><p>Estudio de Jiang et al. (2023): los LLMs tienen un patrón de memoria en forma de U. Recuerdan mejor lo del <strong>inicio</strong> y el <strong>final</strong> de la ventana, pero "pierden" información del medio.</p><p><strong>Estrategias prácticas:</strong></p><p>• <strong>Pon lo importante al final:</strong> La instrucción clave debe estar cerca del final del prompt.</p><p>• <strong>Resumir el contexto antiguo:</strong> En conversaciones largas, pide al modelo que resuma lo anterior y reinicia la conversación.</p><p>• <strong>Chunking:</strong> Si procesas documentos largos, divídelos en trozos y procesa cada uno por separado.</p><p>• <strong>Prompt engineering:</strong> Usa "recap" periódicos: "Basándote en todo lo que hemos hablado hasta ahora, resume los puntos clave."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: VECTORES ===== -->
+<section class="section" id="vectores">
+  <div class="section-label" data-es="REPRESENTACIÓN" data-en="REPRESENTATION">REPRESENTACIÓN</div>
+  <h2 class="section-title" data-es="Vectores y Embeddings — El lenguaje de los LLMs" data-en="Vectors and Embeddings — The language of LLMs">Vectores y Embeddings — El lenguaje de los LLMs</h2>
+  
+  <p class="section-text" data-es="Los LLMs no entienden texto — entienden <strong>números</strong>. Cada token se convierte en un <strong>vector</strong>: una lista de cientos o miles de números. Y aquí viene la magia: palabras con significado similar tienen vectores similares en el espacio matemático." data-en="LLMs don't understand text — they understand <strong>numbers</strong>. Each token is converted into a <strong>vector</strong>: a list of hundreds or thousands of numbers. And here's the magic: words with similar meaning have similar vectors in mathematical space.">Los LLMs no entienden texto — entienden <strong>números</strong>. Cada token se convierte en un <strong>vector</strong>: una lista de cientos o miles de números. Y aquí viene la magia: palabras con significado similar tienen vectores similares en el espacio matemático.</p>
+
+  <div class="highlight-box">
+    <p data-es="📐 <strong>Ejemplo clásico:</strong> vector(&quot;rey&quot;) - vector(&quot;hombre&quot;) + vector(&quot;mujer&quot;) ≈ vector(&quot;reina&quot;). Las relaciones semánticas se expresan como aritmética vectorial. Esto no es programado — emerge del entrenamiento." data-en="📐 <strong>Classic example:</strong> vector(&quot;king&quot;) - vector(&quot;man&quot;) + vector(&quot;woman&quot;) ≈ vector(&quot;queen&quot;). Semantic relationships are expressed as vector arithmetic. This is not programmed — it emerges from training.">📐 <strong>Ejemplo clásico:</strong> vector("rey") - vector("hombre") + vector("mujer") ≈ vector("reina"). Las relaciones semánticas se expresan como aritmética vectorial. Esto no es programado — emerge del entrenamiento.</p>
+  </div>
+
+  <!-- INTERACTIVE: VECTOR SPACE -->
+  <div class="demo-container">
+    <div class="demo-title" data-es="📊 Espacio Vectorial Interactivo (2D)" data-en="📊 Interactive Vector Space (2D)">📊 Espacio Vectorial Interactivo (2D)</div>
+    <p style="color:#88a898; margin-bottom:1rem;" data-es="Palabras similares están cerca en el espacio vectorial. Haz clic en una palabra para ver sus vecinos más cercanos." data-en="Similar words are close in vector space. Click a word to see its nearest neighbors.">Palabras similares están cerca en el espacio vectorial. Haz clic en una palabra para ver sus vecinos más cercanos.</p>
+    <div class="demo-canvas-wrap">
+      <canvas id="vector-canvas" width="600" height="450"></canvas>
+    </div>
+    <div class="demo-result" id="vector-result"></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: Embeddings y Bases Vectoriales" data-en="🔬 Deep dive: Embeddings and Vector Databases">🔬 Deep dive: Embeddings y Bases Vectoriales</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p>Un <strong>embedding</strong> es el vector que representa un token, frase o documento. Los modelos de embeddings (como text-embedding-3-large de OpenAI) convierten texto en vectores de 1536–3072 dimensiones.</p><p><strong>¿Para qué sirven?</strong></p><p>• <strong>Búsqueda semántica:</strong> En lugar de buscar coincidencias exactas, buscas vectores cercanos. &quot;¿Cómo curar un resfriado?&quot; encuentra resultados sobre &quot;tratar un catarro&quot; aunque no compartan palabras.</p><p>• <strong>RAG (Retrieval-Augmented Generation):</strong> Tu documento se convierte en vectores, se almacena en una base de datos vectorial (Pinecone, Weaviate, Qdrant), y cuando haces una pregunta, se buscan los vectores más similares.</p><p>• <strong>Clasificación:</strong> Los vectores de textos similares están cerca, lo que permite clasificar automáticamente (spam, sentimiento, categoría).</p><p><strong>Bases de datos vectoriales:</strong> Son como SQL pero para vectores. En lugar de WHERE name = 'X', haces &quot;dame los 5 vectores más parecidos a este&quot;. La distancia se mide con cosine similarity o euclidean distance.</p>" data-en="<p>An <strong>embedding</strong> is the vector that represents a token, phrase, or document. Embedding models (like OpenAI's text-embedding-3-large) convert text into vectors of 1536–3072 dimensions.</p><p><strong>What are they for?</strong></p><p>• <strong>Semantic search:</strong> Instead of exact matches, you search for close vectors. &quot;How to cure a cold?&quot; finds results about &quot;treat a cold&quot; even though they share no words.</p><p>• <strong>RAG (Retrieval-Augmented Generation):</strong> Your document is converted to vectors, stored in a vector database (Pinecone, Weaviate, Qdrant), and when you ask a question, the most similar vectors are retrieved.</p><p>• <strong>Classification:</strong> Vectors of similar texts are close, enabling automatic classification (spam, sentiment, category).</p><p><strong>Vector databases:</strong> Like SQL but for vectors. Instead of WHERE name = 'X', you say &quot;give me the 5 vectors most similar to this one&quot;. Distance is measured with cosine similarity or euclidean distance.</p>"><p>Un <strong>embedding</strong> es el vector que representa un token, frase o documento. Los modelos de embeddings (como text-embedding-3-large de OpenAI) convierten texto en vectores de 1536–3072 dimensiones.</p><p><strong>¿Para qué sirven?</strong></p><p>• <strong>Búsqueda semántica:</strong> En lugar de buscar coincidencias exactas, buscas vectores cercanos. "¿Cómo curar un resfriado?" encuentra resultados sobre "tratar un catarro" aunque no compartan palabras.</p><p>• <strong>RAG (Retrieval-Augmented Generation):</strong> Tu documento se convierte en vectores, se almacena en una base de datos vectorial (Pinecone, Weaviate, Qdrant), y cuando haces una pregunta, se buscan los vectores más similares.</p><p>• <strong>Clasificación:</strong> Los vectores de textos similares están cerca, lo que permite clasificar automáticamente (spam, sentimiento, categoría).</p><p><strong>Bases de datos vectoriales:</strong> Son como SQL pero para vectores. En lugar de WHERE name = 'X', haces "dame los 5 vectores más parecidos a este". La distancia se mide con cosine similarity o euclidean distance.</p></div>
+    </div>
+  </div>
+</section>
+<!-- ===== SECTION: AGENTES ===== -->
+<section class="section" id="agentes">
+  <div class="section-label" data-es="MÁS ALLÁ DEL CHAT" data-en="BEYOND CHAT">MÁS ALLÁ DEL CHAT</div>
+  <h2 class="section-title" data-es="Agentes — Cuando el LLM toma acción" data-en="Agents — When the LLM takes action">Agentes — Cuando el LLM toma acción</h2>
+  
+  <p class="section-text" data-es="Un chat es un LLM que responde. Un <strong>agente</strong> es un LLM que puede <strong>actuar</strong>: llamar a herramientas, buscar información, ejecutar código, enviar emails. La diferencia es que el agente tiene un <strong>loop de pensamiento → acción → observación</strong>." data-en="A chat is an LLM that responds. An <strong>agent</strong> is an LLM that can <strong>act</strong>: call tools, search for information, execute code, send emails. The difference is that the agent has a <strong>thought → action → observation loop</strong>.">Un chat es un LLM que responde. Un <strong>agente</strong> es un LLM que puede <strong>actuar</strong>: llamar a herramientas, buscar información, ejecutar código, enviar emails. La diferencia es que el agente tiene un <strong>loop de pensamiento → acción → observación</strong>.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3 class="card-title" data-es="El Loop del Agente" data-en="The Agent Loop">El Loop del Agente</h3>
+      <p class="card-text" data-es="1. <strong>Pensar:</strong> El LLM decide qué hacer. 2. <strong>Actuar:</strong> Llama a una herramienta (buscar, ejecutar código, leer un archivo). 3. <strong>Observar:</strong> Recibe el resultado. 4. <strong>Repetir:</strong> Con la nueva información, decide el siguiente paso. Hasta completar la tarea." data-en="1. <strong>Think:</strong> The LLM decides what to do. 2. <strong>Act:</strong> Calls a tool (search, execute code, read a file). 3. <strong>Observe:</strong> Receives the result. 4. <strong>Repeat:</strong> With new information, decides the next step. Until the task is complete.">1. <strong>Pensar:</strong> El LLM decide qué hacer. 2. <strong>Actuar:</strong> Llama a una herramienta (buscar, ejecutar código, leer un archivo). 3. <strong>Observar:</strong> Recibe el resultado. 4. <strong>Repetir:</strong> Con la nueva información, decide el siguiente paso. Hasta completar la tarea.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3 class="card-title" data-es="Herramientas (Tools)" data-en="Tools">Herramientas (Tools)</h3>
+      <p class="card-text" data-es="Las herramientas son funciones que el agente puede llamar. Cada herramienta tiene un nombre, descripción y parámetros. El LLM decide cuál llamar y con qué argumentos. Ejemplos: web_search, read_file, terminal, browser_click." data-en="Tools are functions the agent can call. Each tool has a name, description, and parameters. The LLM decides which to call and with what arguments. Examples: web_search, read_file, terminal, browser_click.">Las herramientas son funciones que el agente puede llamar. Cada herramienta tiene un nombre, descripción y parámetros. El LLM decide cuál llamar y con qué argumentos. Ejemplos: web_search, read_file, terminal, browser_click.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💾</div>
+      <h3 class="card-title" data-es="Memoria del Agente" data-en="Agent Memory">Memoria del Agente</h3>
+      <p class="card-text" data-es="Los agentes pueden tener memoria persistente: recuerdan preferencias del usuario, lecciones aprendidas, y procedimientos guardados (skills). Esto les permite mejorar con el tiempo, no empezar de cero cada vez." data-en="Agents can have persistent memory: they remember user preferences, learned lessons, and saved procedures (skills). This lets them improve over time, not start from scratch each time.">Los agentes pueden tener memoria persistente: recuerdan preferencias del usuario, lecciones aprendidas, y procedimientos guardados (skills). Esto les permite mejorar con el tiempo, no empezar de cero cada vez.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <h3 class="card-title" data-es="Planificación" data-en="Planning">Planificación</h3>
+      <p class="card-text" data-es="Los agentes avanzados descomponen tareas complejas en sub-tareas, las ejecutan en paralelo cuando es posible, y combinan resultados. Es como tener un equipo de trabajo donde el LLM es el manager." data-en="Advanced agents break complex tasks into sub-tasks, execute them in parallel when possible, and combine results. Like having a team where the LLM is the manager.">Los agentes avanzados descomponen tareas complejas en sub-tareas, las ejecutan en paralelo cuando es posible, y combinan resultados. Es como tener un equipo de trabajo donde el LLM es el manager.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p data-es="🚀 <strong>Entender tokens, contexto y atención es crucial para los agentes:</strong> Cada llamada a herramienta consume tokens de contexto. Un agente que hace 10 llamadas puede agotar la ventana. Y si el modelo no &quot;recuerda&quot; bien lo del medio, puede perder el hilo de la tarea. Diseñar un buen agente requiere entender estos límites." data-en="🚀 <strong>Understanding tokens, context, and attention is crucial for agents:</strong> Each tool call consumes context tokens. An agent making 10 calls can exhaust the window. And if the model doesn't &quot;remember&quot; the middle well, it can lose the thread of the task. Designing a good agent requires understanding these limits.">🚀 <strong>Entender tokens, contexto y atención es crucial para los agentes:</strong> Cada llamada a herramienta consume tokens de contexto. Un agente que hace 10 llamadas puede agotar la ventana. Y si el modelo no "recuerda" bien lo del medio, puede perder el hilo de la tarea. Diseñar un buen agente requiere entender estos límites.</p>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span data-es="🔬 Deep dive: Patrones de Agentes" data-en="🔬 Deep dive: Agent Patterns">🔬 Deep dive: Patrones de Agentes</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body" data-es="<p><strong>ReAct (Reason + Act):</strong> El patrón más básico. El modelo alterna entre razonar (&quot;necesito buscar X&quot;) y actuar (llamar a web_search). Simple pero efectivo.</p><p><strong>Tool Use (Function Calling):</strong> El modelo recibe schemas de herramientas y decide cuál llamar. Más estructurado que ReAct. Es lo que usa la API de OpenAI con function_calling.</p><p><strong>Multi-Agent:</strong> Varios agentes especializados colaboran. Un agent planifica, otro ejecuta código, otro revisa. Cada uno tiene su propia ventana de contexto y herramientas.</p><p><strong>Reflection / Self-Correction:</strong> El agente revisa su propio trabajo antes de entregarlo. &quot;¿He respondido a todas las partes de la pregunta?&quot; &quot;¿El código compila?&quot;</p><p><strong>Long-running / Cron:</strong> Agentes que se ejecutan periódicamente sin intervención humana. Recopilan datos, monitorean servicios, generan reportes.</p>" data-en="<p><strong>ReAct (Reason + Act):</strong> The most basic pattern. The model alternates between reasoning (&quot;I need to search for X&quot;) and acting (calling web_search). Simple but effective.</p><p><strong>Tool Use (Function Calling):</strong> The model receives tool schemas and decides which to call. More structured than ReAct. This is what OpenAI's API uses with function_calling.</p><p><strong>Multi-Agent:</strong> Multiple specialized agents collaborate. One plans, one executes code, one reviews. Each has its own context window and tools.</p><p><strong>Reflection / Self-Correction:</strong> The agent reviews its own work before delivering. &quot;Have I answered all parts of the question?&quot; &quot;Does the code compile?&quot;</p><p><strong>Long-running / Cron:</strong> Agents that run periodically without human intervention. They collect data, monitor services, generate reports.</p>"><p><strong>ReAct (Reason + Act):</strong> El patrón más básico. El modelo alterna entre razonar ("necesito buscar X") y actuar (llamar a web_search). Simple pero efectivo.</p><p><strong>Tool Use (Function Calling):</strong> El modelo recibe schemas de herramientas y decide cuál llamar. Más estructurado que ReAct. Es lo que usa la API de OpenAI con function_calling.</p><p><strong>Multi-Agent:</strong> Varios agentes especializados colaboran. Un agent planifica, otro ejecuta código, otro revisa. Cada uno tiene su propia ventana de contexto y herramientas.</p><p><strong>Reflection / Self-Correction:</strong> El agente revisa su propio trabajo antes de entregarlo. "¿He respondido a todas las partes de la pregunta?" "¿El código compila?"</p><p><strong>Long-running / Cron:</strong> Agentes que se ejecutan periódicamente sin intervención humana. Recopilan datos, monitorean servicios, generan reportes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: POR QUÉ IMPORTA ===== -->
+<section class="section" id="por-que-importa">
+  <div class="section-label" data-es="CONCLUSIÓN" data-en="CONCLUSION">CONCLUSIÓN</div>
+  <h2 class="section-title" data-es="¿Por qué importa entender esto?" data-en="Why does understanding this matter?">¿Por qué importa entender esto?</h2>
+  
+  <p class="section-text" data-es="Puedes usar un LLM sin entender cómo funciona, como puedes conducir sin saber cómo funciona el motor. Pero cuando entiendes los conceptos fundamentales, las cosas cambian:" data-en="You can use an LLM without understanding how it works, like you can drive without knowing how the engine works. But when you understand the fundamental concepts, things change:">Puedes usar un LLM sin entender cómo funciona, como puedes conducir sin saber cómo funciona el motor. Pero cuando entiendes los conceptos fundamentales, las cosas cambian:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3 class="card-title" data-es="Ahorras dinero" data-en="You save money">Ahorras dinero</h3>
+      <p class="card-text" data-es="Si sabes que se cobra por token, optimizas tus prompts. Si sabes que la ventana de contexto es limitada, gestionas la conversación mejor. Si sabes que los tokens no son palabras, no te sorprendes con la factura." data-en="If you know you're charged per token, you optimize your prompts. If you know the context window is limited, you manage conversations better. If you know tokens aren't words, you're not surprised by the bill.">Si sabes que se cobra por token, optimizas tus prompts. Si sabes que la ventana de contexto es limitada, gestionas la conversación mejor. Si sabes que los tokens no son palabras, no te sorprendes con la factura.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3 class="card-title" data-es="Mejores resultados" data-en="Better results">Mejores resultados</h3>
+      <p class="card-text" data-es="Si sabes que el modelo &quot;pierde&quot; info del medio, pones lo importante al final. Si sabes cómo funciona la atención, estructuras tus prompts para que el modelo conecte las ideas correctas." data-en="If you know the model &quot;loses&quot; info in the middle, you put important things at the end. If you know how attention works, you structure your prompts so the model connects the right ideas.">Si sabes que el modelo "pierde" info del medio, pones lo importante al final. Si sabes cómo funciona la atención, estructuras tus prompts para que el modelo conecte las ideas correctas.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3 class="card-title" data-es="Menos alucinaciones" data-en="Fewer hallucinations">Menos alucinaciones</h3>
+      <p class="card-text" data-es="Si sabes que el modelo predice probabilidades, no hechos, verificas sus respuestas. Si sabes que no tiene memoria más allá de la ventana, no esperas que recuerde lo de hace tres semanas." data-en="If you know the model predicts probabilities, not facts, you verify its answers. If you know it has no memory beyond the window, you don't expect it to remember from three weeks ago.">Si sabes que el modelo predice probabilidades, no hechos, verificas sus respuestas. Si sabes que no tiene memoria más allá de la ventana, no esperas que recuerde lo de hace tres semanas.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔮</div>
+      <h3 class="card-title" data-es="Sabes qué es posible" data-en="You know what's possible">Sabes qué es posible</h3>
+      <p class="card-text" data-es="Si sabes que los vectores capturan significado, entiendes cómo funciona la búsqueda semántica y el RAG. Si sabes cómo funciona la atención, entiendes por qué un agente puede (o no) hacer algo." data-en="If you know vectors capture meaning, you understand how semantic search and RAG work. If you know how attention works, you understand why an agent can (or cannot) do something.">Si sabes que los vectores capturan significado, entiendes cómo funciona la búsqueda semántica y el RAG. Si sabes cómo funciona la atención, entiendes por qué un agente puede (o no) hacer algo.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p data-es="🎓 <strong>En resumen:</strong> No necesitas ser ingeniero para usar bien un LLM. Pero sí necesitas entender sus limitaciones fundamentales. Los tokens son su moneda, la ventana de contexto es su memoria, la atención es su foco, y los vectores son su lenguaje interno. Conocer esto te convierte de un usuario casual a un usuario competente." data-en="🎓 <strong>In summary:</strong> You don't need to be an engineer to use an LLM well. But you do need to understand its fundamental limitations. Tokens are its currency, the context window is its memory, attention is its focus, and vectors are its internal language. Knowing this turns you from a casual user into a competent one.">🎓 <strong>En resumen:</strong> No necesitas ser ingeniero para usar bien un LLM. Pero sí necesitas entender sus limitaciones fundamentales. Los tokens son su moneda, la ventana de contexto es su memoria, la atención es su foco, y los vectores son su lenguaje interno. Conocer esto te convierte de un usuario casual a un usuario competente.</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot Pages</span>
+    <span class="visit-counter-badge" id="visit-counter"></span>
+  </div>
+  <a href="../index.html" class="back-link" data-es="← Volver a Cocobot Pages" data-en="← Back to Cocobot Pages">← Volver a Cocobot Pages</a>
+</footer>
+<script>
+// ===== LANGUAGE TOGGLE =====
+let currentLang = 'es';
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  document.documentElement.setAttribute('data-lang', currentLang);
+  document.documentElement.setAttribute('lang', currentLang);
+  document.querySelectorAll('[data-es]').forEach(el => {
+    const text = el.getAttribute(`data-${currentLang}`);
+    if (text) el.innerHTML = text;
+  });
+  document.querySelectorAll('[data-es-placeholder]').forEach(el => {
+    const ph = el.getAttribute(`data-${currentLang}-placeholder`);
+    if (ph) el.placeholder = ph;
+  });
+  // Re-run demos in new language
+  runTokenizer();
+  updateContextResult();
+}
+
+// ===== NAVBAR =====
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const navbar = document.querySelector('.navbar');
+  const st = window.pageYOffset;
+  if (st > lastScroll && st > 100) navbar.classList.add('hidden');
+  else navbar.classList.remove('hidden');
+  lastScroll = st;
+});
+function toggleMenu() {
+  document.getElementById('navHamburger').classList.toggle('active');
+  document.getElementById('navLinks').classList.toggle('active');
+}
+
+// ===== ACCORDION =====
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  item.classList.toggle('open');
+}
+
+// ===== VISIT COUNTER =====
+(function() {
+  const key = 'llms-visit-counter';
+  let count = parseInt(localStorage.getItem(key) || '0') + 1;
+  localStorage.setItem(key, count);
+  const el = document.getElementById('visit-counter');
+  if (el) el.textContent = `👁️ ${count} ${currentLang === 'es' ? 'visitas' : 'visits'}`;
+})();
+
+// ===== PARTICLES BACKGROUND =====
+(function() {
+  const canvas = document.getElementById('particles-bg');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.opacity = Math.random() * 0.4 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 230, 118, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0, 230, 118, ${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== THREE.JS NEURAL NETWORK HERO =====
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 22;
+
+  // Create neural network nodes
+  const nodes = [];
+  const connections = [];
+  const layers = [5, 9, 13, 9, 5];
+  const layerSpacing = 6;
+  const nodeSpacing = 2.2;
+
+  layers.forEach((count, layerIdx) => {
+    const x = (layerIdx - (layers.length - 1) / 2) * layerSpacing;
+    for (let i = 0; i < count; i++) {
+      const y = (i - (count - 1) / 2) * nodeSpacing;
+      // Glowing node
+      const node = new THREE.Mesh(
+        new THREE.SphereGeometry(0.25, 16, 16),
+        new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.9 })
+      );
+      node.position.set(x, y, 0);
+      node.userData = { layer: layerIdx, baseY: y, phase: Math.random() * Math.PI * 2 };
+      scene.add(node);
+      nodes.push(node);
+
+      // Glow ring
+      const glow = new THREE.Mesh(
+        new THREE.RingGeometry(0.35, 0.5, 32),
+        new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.15, side: THREE.DoubleSide })
+      );
+      glow.position.copy(node.position);
+      glow.userData = { nodeRef: node };
+      scene.add(glow);
+      nodes.push(glow);
+    }
+  });
+
+  // Create connections with visible lines
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i].userData.nodeRef && nodes[i].userData.layer === undefined) continue;
+    for (let j = 0; j < nodes.length; j++) {
+      if (!nodes[j].userData.nodeRef && nodes[j].userData.layer === undefined) continue;
+      if (nodes[j].userData.layer === nodes[i].userData.layer + 1) {
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+          nodes[i].position.clone(), nodes[j].position.clone()
+        ]);
+        const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+          color: 0x00bfa5, transparent: true, opacity: 0.25
+        }));
+        scene.add(line);
+        connections.push({ line, from: nodes[i], to: nodes[j] });
+      }
+    }
+  }
+
+  // Pulse animation
+  let time = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    time += 0.008;
+
+    nodes.forEach(node => {
+      if (node.userData.phase !== undefined) {
+        // Main nodes
+        const pulse = Math.sin(time * 2 + node.userData.phase) * 0.3 + 1;
+        node.scale.set(pulse, pulse, pulse);
+        node.position.y = node.userData.baseY + Math.sin(time + node.userData.phase) * 0.5;
+        node.material.opacity = 0.6 + Math.sin(time * 3 + node.userData.phase) * 0.3;
+      } else if (node.userData.nodeRef) {
+        // Glow rings
+        node.position.copy(node.userData.nodeRef.position);
+        node.lookAt(camera.position);
+        const s = 1 + Math.sin(time * 2 + node.userData.nodeRef.userData.phase) * 0.5;
+        node.scale.set(s, s, s);
+        node.material.opacity = 0.1 + Math.sin(time * 3 + node.userData.nodeRef.userData.phase) * 0.08;
+      }
+    });
+
+    // Update connection positions
+    connections.forEach(({ line, from, to }) => {
+      const positions = line.geometry.attributes.position.array;
+      positions[0] = from.position.x; positions[1] = from.position.y; positions[2] = from.position.z;
+      positions[3] = to.position.x; positions[4] = to.position.y; positions[5] = to.position.z;
+      line.geometry.attributes.position.needsUpdate = true;
+    });
+
+    // Gentle rotation
+    scene.rotation.y = Math.sin(time * 0.4) * 0.15;
+    scene.rotation.x = Math.sin(time * 0.3) * 0.05;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ===== TOKENIZER DEMO =====
+function simpleTokenize(text) {
+  // Simulated BPE tokenizer (simplified)
+  const tokens = [];
+  // Split by spaces first, then handle subword
+  const words = text.split(/(\s+)/);
+  words.forEach(word => {
+    if (!word) return;
+    if (word.match(/\s+/)) {
+      tokens.push(word);
+      return;
+    }
+    // Long words get split
+    if (word.length > 6) {
+      const mid = Math.ceil(word.length / 2);
+      tokens.push(word.slice(0, mid));
+      tokens.push(word.slice(mid));
+    } else {
+      tokens.push(word);
+    }
+  });
+  return tokens;
+}
+
+function runTokenizer() {
+  const input = document.getElementById('token-input');
+  const result = document.getElementById('token-result');
+  const count = document.getElementById('token-count');
+  if (!input || !result) return;
+
+  const text = input.value;
+  const tokens = simpleTokenize(text);
+  const colors = ['#00e676', '#00bfa5', '#00e5ff', '#69f0ae', '#76ff03', '#ffd54f', '#ff8a65', '#ea80fc'];
+
+  result.innerHTML = tokens.map((t, i) => {
+    const color = colors[i % colors.length];
+    const display = t === ' ' ? '␣' : t;
+    return `<span class="token-chip" style="border-color:${color}; color:${color}">${display}</span>`;
+  }).join('');
+
+  count.textContent = currentLang === 'es'
+    ? `${tokens.length} tokens · ${text.length} caracteres`
+    : `${tokens.length} tokens · ${text.length} characters`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const tokenInput = document.getElementById('token-input');
+  if (tokenInput) {
+    tokenInput.addEventListener('input', runTokenizer);
+    runTokenizer();
+  }
+});
+<script>
+// ===== ATTENTION MAP DEMO =====
+(function() {
+  const words = ['El', 'gato', 'negro', 'saltó', 'sobre', 'el', 'cojín', 'suave'];
+  // Simulated attention weights (which words each word attends to)
+  const attention = {
+    'El':      [0.8, 0.15, 0.03, 0.01, 0.0, 0.0, 0.0, 0.01],
+    'gato':    [0.1, 0.7, 0.1, 0.05, 0.02, 0.01, 0.01, 0.01],
+    'negro':   [0.02, 0.15, 0.7, 0.05, 0.03, 0.02, 0.01, 0.02],
+    'saltó':   [0.01, 0.2, 0.05, 0.6, 0.08, 0.02, 0.02, 0.02],
+    'sobre':   [0.01, 0.02, 0.01, 0.15, 0.65, 0.05, 0.08, 0.03],
+    'el':      [0.05, 0.01, 0.01, 0.02, 0.1, 0.7, 0.08, 0.03],
+    'cojín':   [0.01, 0.02, 0.01, 0.01, 0.05, 0.15, 0.65, 0.11],
+    'suave':   [0.01, 0.01, 0.05, 0.01, 0.02, 0.02, 0.15, 0.75]
+  };
+
+  const container = document.getElementById('attention-demo');
+  if (!container) return;
+
+  function buildGrid() {
+    container.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.className = 'attention-grid';
+    grid.style.gridTemplateColumns = `repeat(${words.length}, 50px)`;
+
+    words.forEach((word, i) => {
+      words.forEach((_, j) => {
+        const cell = document.createElement('div');
+        cell.className = 'attention-cell';
+        const weight = attention[words[i]][j];
+        const intensity = Math.floor(weight * 255);
+        cell.style.background = `rgba(0, 230, 118, ${weight * 0.8})`;
+        cell.textContent = words[j];
+        cell.title = `${words[i]} → ${words[j]}: ${(weight * 100).toFixed(0)}%`;
+        cell.addEventListener('click', () => {
+          const result = document.getElementById('attention-result');
+          if (result) {
+            result.innerHTML = `<strong>${words[i]}</strong> ${currentLang === 'es' ? 'presta' : 'pays'} <strong>${(weight * 100).toFixed(0)}%</strong> ${currentLang === 'es' ? 'de atención a' : 'attention to'} <strong>${words[j]}</strong>`;
+          }
+        });
+        grid.appendChild(cell);
+      });
+    });
+
+    // Labels
+    const rowLabels = document.createElement('div');
+    rowLabels.style.cssText = 'display:flex; flex-direction:column; justify-content:space-around; margin-right:0.5rem;';
+    words.forEach(w => {
+      const label = document.createElement('div');
+      label.style.cssText = 'height:50px; display:flex; align-items:center; font-size:0.75rem; color:#88a898;';
+      label.textContent = w;
+      rowLabels.appendChild(label);
+    });
+
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'flex';
+    wrapper.style.alignItems = 'stretch';
+    wrapper.appendChild(rowLabels);
+    wrapper.appendChild(grid);
+    container.appendChild(wrapper);
+  }
+  buildGrid();
+})();
+
+// ===== CONTEXT WINDOW DEMO =====
+(function() {
+  const slider = document.getElementById('context-slider');
+  const result = document.getElementById('context-result');
+  if (!slider) return;
+
+  const messages = [
+    { text: 'Hola, soy Raúl, trabajo en software', tokens: 8 },
+    { text: '¿Puedes ayudarme con Python?', tokens: 6 },
+    { text: 'Necesito una función para procesar CSV', tokens: 8 },
+    { text: 'El código da error en la línea 42', tokens: 8 },
+    { text: '¿Puedes refactorizarlo con pandas?', tokens: 6 },
+    { text: 'Ahora necesito añadir tests unitarios', tokens: 7 },
+    { text: '¿Cómo configuro pytest con xdist?', tokens: 6 },
+    { text: 'Perfecto, ahora necesito hacer deploy', tokens: 7 }
+  ];
+
+  function updateContextResult() {
+    const val = parseInt(slider.value);
+    const maxTokens = Math.floor(val * 2); // 20 to 200K
+    let totalTokens = 0;
+    let visible = [];
+    let forgotten = [];
+
+    messages.forEach((msg, i) => {
+      totalTokens += msg.tokens;
+      if (totalTokens <= maxTokens) {
+        visible.push(msg);
+      } else {
+        forgotten.push(msg);
+      }
+    });
+
+    if (result) {
+      const sees = visible.map(m => m.text).join(' → ');
+      const forgets = forgotten.length > 0 ? forgotten.map(m => m.text).join(' → ') : '';
+      result.innerHTML = `
+        <div style="text-align:left; margin-bottom:0.5rem;">
+          <strong style="color:#00e676;">✓ ${currentLang === 'es' ? 'El modelo VE:' : 'Model SEES:'}</strong><br>
+          <span style="color:#69f0ae; font-size:0.85rem;">${sees}</span>
+        </div>
+        ${forgotten.length > 0 ? `
+        <div style="text-align:left;">
+          <strong style="color:#ff5252;">✗ ${currentLang === 'es' ? 'El modelo OLVIDA:' : 'Model FORGETS:'}</strong><br>
+          <span style="color:#ff8a80; font-size:0.85rem; text-decoration:line-through;">${forgets}</span>
+        </div>` : ''}
+        <div style="margin-top:0.5rem; font-size:0.8rem; color:#668878;">
+          ${currentLang === 'es' ? 'Ventana:' : 'Window:'} ${maxTokens}K tokens · ${visible.length}/${messages.length} ${currentLang === 'es' ? 'mensajes visibles' : 'messages visible'}
+        </div>
+      `;
+    }
+  }
+
+  slider.addEventListener('input', updateContextResult);
+  updateContextResult();
+})();
+
+// ===== VECTOR SPACE DEMO =====
+(function() {
+  const canvas = document.getElementById('vector-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Simulated 2D word embeddings (clustered by meaning)
+  const words = [
+    { text: 'perro', x: 100, y: 100, cluster: 'animals' },
+    { text: 'gato', x: 130, y: 120, cluster: 'animals' },
+    { text: 'caballo', x: 110, y: 80, cluster: 'animals' },
+    { text: 'león', x: 150, y: 90, cluster: 'animals' },
+    { text: 'coche', x: 350, y: 100, cluster: 'vehicles' },
+    { text: 'tren', x: 380, y: 120, cluster: 'vehicles' },
+    { text: 'avión', x: 360, y: 80, cluster: 'vehicles' },
+    { text: 'barco', x: 400, y: 110, cluster: 'vehicles' },
+    { text: 'feliz', x: 200, y: 300, cluster: 'emotions' },
+    { text: 'contento', x: 230, y: 310, cluster: 'emotions' },
+    { text: 'triste', x: 280, y: 320, cluster: 'emotions' },
+    { text: 'enojado', x: 260, y: 290, cluster: 'emotions' },
+    { text: 'rápido', x: 480, y: 300, cluster: 'adjectives' },
+    { text: 'veloz', x: 500, y: 310, cluster: 'adjectives' },
+    { text: 'lento', x: 450, y: 280, cluster: 'adjectives' },
+    { text: 'grande', x: 470, y: 340, cluster: 'adjectives' },
+    { text: 'rey', x: 150, y: 200, cluster: 'royalty' },
+    { text: 'reina', x: 180, y: 220, cluster: 'royalty' },
+    { text: 'príncipe', x: 130, y: 230, cluster: 'royalty' },
+    { text: 'corona', x: 170, y: 190, cluster: 'royalty' },
+  ];
+
+  const clusterColors = {
+    animals: '#00e676',
+    vehicles: '#00e5ff',
+    emotions: '#ffd54f',
+    adjectives: '#ff8a65',
+    royalty: '#ea80fc'
+  };
+
+  let selectedWord = null;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw cluster labels
+    const clusterCenters = {};
+    words.forEach(w => {
+      if (!clusterCenters[w.cluster]) clusterCenters[w.cluster] = { x: 0, y: 0, count: 0 };
+      clusterCenters[w.cluster].x += w.x;
+      clusterCenters[w.cluster].y += w.y;
+      clusterCenters[w.cluster].count++;
+    });
+
+    Object.entries(clusterCenters).forEach(([name, data]) => {
+      data.x /= data.count;
+      data.y /= data.count;
+      ctx.beginPath();
+      ctx.arc(data.x, data.y, 60, 0, Math.PI * 2);
+      ctx.strokeStyle = `${clusterColors[name]}33`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // Draw connections between close words
+    for (let i = 0; i < words.length; i++) {
+      for (let j = i + 1; j < words.length; j++) {
+        if (words[i].cluster === words[j].cluster) {
+          const dx = words[i].x - words[j].x;
+          const dy = words[i].y - words[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 80) {
+            ctx.beginPath();
+            ctx.moveTo(words[i].x, words[i].y);
+            ctx.lineTo(words[j].x, words[j].y);
+            ctx.strokeStyle = `${clusterColors[words[i].cluster]}44`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // Draw words
+    words.forEach(w => {
+      const isSelected = selectedWord === w;
+      const radius = isSelected ? 22 : 18;
+
+      ctx.beginPath();
+      ctx.arc(w.x, w.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = isSelected ? clusterColors[w.cluster] : `${clusterColors[w.cluster]}44`;
+      ctx.fill();
+      ctx.strokeStyle = clusterColors[w.cluster];
+      ctx.lineWidth = isSelected ? 3 : 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = isSelected ? '#000' : clusterColors[w.cluster];
+      ctx.font = `${isSelected ? 'bold ' : ''}${isSelected ? 10 : 9}px Inter, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(w.text, w.x, w.y);
+    });
+  }
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top) * scaleY;
+
+    selectedWord = null;
+    words.forEach(w => {
+      const dx = mx - w.x;
+      const dy = my - w.y;
+      if (Math.sqrt(dx * dx + dy * dy) < 22) {
+        selectedWord = w;
+      }
+    });
+
+    const result = document.getElementById('vector-result');
+    if (selectedWord && result) {
+      const neighbors = words
+        .filter(w => w.cluster === selectedWord.cluster && w !== selectedWord)
+        .sort((a, b) => {
+          const da = Math.sqrt((a.x - selectedWord.x) ** 2 + (a.y - selectedWord.y) ** 2);
+          const db = Math.sqrt((b.x - selectedWord.x) ** 2 + (b.y - selectedWord.y) ** 2);
+          return da - db;
+        })
+        .slice(0, 3)
+        .map(w => w.text)
+        .join(', ');
+
+      result.innerHTML = `<strong>${selectedWord.text}</strong> ${currentLang === 'es' ? '→ Vecinos más cercanos:' : '→ Nearest neighbors:'} <span style="color:${clusterColors[selectedWord.cluster]}">${neighbors}</span>`;
+    } else if (result) {
+      result.textContent = currentLang === 'es' ? 'Haz clic en una palabra para ver sus vecinos' : 'Click a word to see its neighbors';
+    }
+
+    draw();
+  });
+
+  draw();
+})();
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Close mobile menu
+      document.getElementById('navLinks').classList.remove('active');
+      document.getElementById('navHamburger').classList.remove('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
