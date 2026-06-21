@@ -845,111 +845,91 @@ function toggleAccordion(header) {
 
 // ===== THREE.JS NEURAL NETWORK HERO =====
 (function() {
-  const canvas = document.getElementById('hero-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
+  try {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 22;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 22;
 
-  // Create neural network nodes
-  const nodes = [];
-  const connections = [];
-  const layers = [5, 9, 13, 9, 5];
-  const layerSpacing = 6;
-  const nodeSpacing = 2.2;
+    // Create neural network nodes
+    const nodes = [];
+    const connections = [];
+    const layers = [5, 9, 13, 9, 5];
+    const layerSpacing = 6;
+    const nodeSpacing = 2.2;
 
-  layers.forEach((count, layerIdx) => {
-    const x = (layerIdx - (layers.length - 1) / 2) * layerSpacing;
-    for (let i = 0; i < count; i++) {
-      const y = (i - (count - 1) / 2) * nodeSpacing;
-      // Glowing node
-      const node = new THREE.Mesh(
-        new THREE.SphereGeometry(0.25, 16, 16),
-        new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.9 })
-      );
-      node.position.set(x, y, 0);
-      node.userData = { layer: layerIdx, baseY: y, phase: Math.random() * Math.PI * 2 };
-      scene.add(node);
-      nodes.push(node);
+    layers.forEach((count, layerIdx) => {
+      const x = (layerIdx - (layers.length - 1) / 2) * layerSpacing;
+      for (let i = 0; i < count; i++) {
+        const y = (i - (count - 1) / 2) * nodeSpacing;
+        const node = new THREE.Mesh(
+          new THREE.SphereGeometry(0.3, 16, 16),
+          new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.9 })
+        );
+        node.position.set(x, y, 0);
+        node.userData = { layer: layerIdx, baseY: y, phase: Math.random() * Math.PI * 2 };
+        scene.add(node);
+        nodes.push(node);
+      }
+    });
 
-      // Glow ring
-      const glow = new THREE.Mesh(
-        new THREE.RingGeometry(0.35, 0.5, 32),
-        new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.15, side: THREE.DoubleSide })
-      );
-      glow.position.copy(node.position);
-      glow.userData = { nodeRef: node };
-      scene.add(glow);
-      nodes.push(glow);
-    }
-  });
-
-  // Create connections with visible lines
-  for (let i = 0; i < nodes.length; i++) {
-    if (!nodes[i].userData.nodeRef && nodes[i].userData.layer === undefined) continue;
-    for (let j = 0; j < nodes.length; j++) {
-      if (!nodes[j].userData.nodeRef && nodes[j].userData.layer === undefined) continue;
-      if (nodes[j].userData.layer === nodes[i].userData.layer + 1) {
-        const geometry = new THREE.BufferGeometry().setFromPoints([
-          nodes[i].position.clone(), nodes[j].position.clone()
-        ]);
-        const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-          color: 0x00bfa5, transparent: true, opacity: 0.25
-        }));
-        scene.add(line);
-        connections.push({ line, from: nodes[i], to: nodes[j] });
+    // Create connections
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = 0; j < nodes.length; j++) {
+        if (nodes[j].userData.layer === nodes[i].userData.layer + 1) {
+          const geometry = new THREE.BufferGeometry().setFromPoints([
+            nodes[i].position.clone(), nodes[j].position.clone()
+          ]);
+          const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+            color: 0x00bfa5, transparent: true, opacity: 0.25
+          }));
+          scene.add(line);
+          connections.push({ line, from: nodes[i], to: nodes[j] });
+        }
       }
     }
-  }
 
-  // Pulse animation
-  let time = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    time += 0.008;
+    // Pulse animation
+    let time = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      time += 0.008;
 
-    nodes.forEach(node => {
-      if (node.userData.phase !== undefined) {
-        // Main nodes
+      nodes.forEach(node => {
         const pulse = Math.sin(time * 2 + node.userData.phase) * 0.3 + 1;
         node.scale.set(pulse, pulse, pulse);
         node.position.y = node.userData.baseY + Math.sin(time + node.userData.phase) * 0.5;
         node.material.opacity = 0.6 + Math.sin(time * 3 + node.userData.phase) * 0.3;
-      } else if (node.userData.nodeRef) {
-        // Glow rings
-        node.position.copy(node.userData.nodeRef.position);
-        node.lookAt(camera.position);
-        const s = 1 + Math.sin(time * 2 + node.userData.nodeRef.userData.phase) * 0.5;
-        node.scale.set(s, s, s);
-        node.material.opacity = 0.1 + Math.sin(time * 3 + node.userData.nodeRef.userData.phase) * 0.08;
-      }
+      });
+
+      // Update connection positions
+      connections.forEach(({ line, from, to }) => {
+        const positions = line.geometry.attributes.position.array;
+        positions[0] = from.position.x; positions[1] = from.position.y; positions[2] = from.position.z;
+        positions[3] = to.position.x; positions[4] = to.position.y; positions[5] = to.position.z;
+        line.geometry.attributes.position.needsUpdate = true;
+      });
+
+      scene.rotation.y = Math.sin(time * 0.4) * 0.15;
+      scene.rotation.x = Math.sin(time * 0.3) * 0.05;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     });
-
-    // Update connection positions
-    connections.forEach(({ line, from, to }) => {
-      const positions = line.geometry.attributes.position.array;
-      positions[0] = from.position.x; positions[1] = from.position.y; positions[2] = from.position.z;
-      positions[3] = to.position.x; positions[4] = to.position.y; positions[5] = to.position.z;
-      line.geometry.attributes.position.needsUpdate = true;
-    });
-
-    // Gentle rotation
-    scene.rotation.y = Math.sin(time * 0.4) * 0.15;
-    scene.rotation.x = Math.sin(time * 0.3) * 0.05;
-
-    renderer.render(scene, camera);
+  } catch(e) {
+    console.warn('Three.js hero animation failed:', e);
   }
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
 })();
 
 // ===== TOKENIZER DEMO =====
@@ -1004,7 +984,7 @@ document.addEventListener('DOMContentLoaded', () => {
     runTokenizer();
   }
 });
-<script>
+
 // ===== ATTENTION MAP DEMO =====
 (function() {
   const words = ['El', 'gato', 'negro', 'saltó', 'sobre', 'el', 'cojín', 'suave'];
