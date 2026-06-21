@@ -1146,7 +1146,276 @@ tr:hover td { background: rgba(255, 140, 66, 0.03); }
 </footer>
 
 <!-- Three.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">// ===== FISSION vs FUSION SIMULATOR =====
+(function() {
+  var canvas = document.getElementById('fission-fusion-sim');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width = 600;
+  var H = canvas.height = 400;
+
+  var particles = [];
+  var simState = 'idle'; // idle, fission, fusion
+  var simTime = 0;
+  var flashAlpha = 0;
+
+  function drawNucleus(x, y, r, color, label, glowColor) {
+    // Glow
+    if (glowColor) {
+      ctx.beginPath();
+      ctx.arc(x, y, r + 10, 0, Math.PI * 2);
+      var glow = ctx.createRadialGradient(x, y, r, x, y, r + 10);
+      glow.addColorStop(0, glowColor);
+      glow.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow;
+      ctx.fill();
+    }
+    // Nucleus
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    var grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, 0, x, y, r);
+    grad.addColorStop(0, color);
+    grad.addColorStop(1, 'rgba(0,0,0,0.5)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, x, y);
+  }
+
+  function drawIdle() {
+    ctx.clearRect(0, 0, W, H);
+    // Background
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw fission side (left)
+    ctx.fillStyle = 'rgba(100, 200, 255, 0.7)';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('☢️ FISSION', 150, 30);
+    ctx.fillText('(left click)', 150, 50);
+
+    // Draw fusion side (right)
+    ctx.fillStyle = 'rgba(255, 140, 66, 0.7)';
+    ctx.fillText('☀️ FUSION', 450, 30);
+    ctx.fillText('(right click)', 450, 50);
+
+    // Uranium atom (left)
+    drawNucleus(150, 200, 40, '#4488ff', 'U-235', 'rgba(68, 136, 255, 0.2)');
+
+    // Deuterium + Tritium (right)
+    drawNucleus(380, 200, 25, '#ff4444', 'D', 'rgba(255, 68, 68, 0.2)');
+    drawNucleus(460, 200, 30, '#4488ff', 'T', 'rgba(68, 136, 255, 0.2)');
+
+    // Plus sign between D and T
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = 'bold 24px Inter, sans-serif';
+    ctx.fillText('+', 420, 200);
+
+    // Arrow hint
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.fillText('Click on each side', W / 2, H - 20);
+  }
+
+  function drawFission() {
+    simTime += 0.025;
+    ctx.clearRect(0, 0, W, H);
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    var progress = Math.min(simTime, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+
+    // Flash
+    flashAlpha = Math.max(0, 0.5 - simTime * 0.4);
+    ctx.beginPath();
+    ctx.arc(150, 200, 60 + simTime * 80, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(100, 200, 255, ' + flashAlpha + ')';
+    ctx.fill();
+
+    if (progress < 0.3) {
+      // Neutron approaching
+      var neutronX = 150 + 80 * (progress / 0.3);
+      drawNucleus(150 - neutronX * 0.5, 200, 8, '#aaaaaa', 'n', null);
+      drawNucleus(150, 200, 40, '#4488ff', 'U-235', 'rgba(68, 136, 255, 0.2)');
+    } else {
+      // Split!
+      var splitProgress = (progress - 0.3) / 0.7;
+      var splitEase = 1 - Math.pow(1 - splitProgress, 2);
+
+      // Barium (left fragment)
+      var baX = 150 - splitEase * 80;
+      var baY = 200 - splitEase * 30;
+      drawNucleus(baX, baY, 25, '#66aa66', 'Ba', 'rgba(102, 170, 102, 0.3)');
+
+      // Krypton (right fragment)
+      var krX = 150 + splitEase * 80;
+      var krY = 200 + splitEase * 30;
+      drawNucleus(krX, krY, 20, '#aa6666', 'Kr', 'rgba(170, 102, 102, 0.3)');
+
+      // Neutrons released
+      for (var i = 0; i < 3; i++) {
+        var angle = (i / 3) * Math.PI * 2 + simTime;
+        var nx = 150 + Math.cos(angle) * splitEase * 60;
+        var ny = 200 + Math.sin(angle) * splitEase * 60;
+        drawNucleus(nx, ny, 6, '#aaaaaa', '', null);
+      }
+
+      // Energy label
+      if (splitProgress > 0.5) {
+        ctx.fillStyle = 'rgba(100, 200, 255, ' + ((splitProgress - 0.5) * 2) + ')';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('~200 MeV released', 150, 120);
+      }
+
+      // Particles
+      for (var i = 0; i < 15; i++) {
+        var angle = (i / 15) * Math.PI * 2;
+        var dist = splitEase * (40 + Math.random() * 30);
+        var px = 150 + Math.cos(angle) * dist;
+        var py = 200 + Math.sin(angle) * dist;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(100, 200, 255, ' + (1 - splitEase) + ')';
+        ctx.fill();
+      }
+    }
+
+    // Title
+    ctx.fillStyle = 'rgba(100, 200, 255, 0.7)';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('☢️ FISSION — A heavy atom splits', W / 2, 30);
+
+    if (simTime > 3) {
+      simState = 'idle';
+      simTime = 0;
+    }
+  }
+
+  function drawFusion() {
+    simTime += 0.025;
+    ctx.clearRect(0, 0, W, H);
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    var progress = Math.min(simTime, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+
+    // Flash
+    flashAlpha = Math.max(0, 0.5 - simTime * 0.4);
+    ctx.beginPath();
+    ctx.arc(450, 200, 60 + simTime * 80, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 140, 66, ' + flashAlpha + ')';
+    ctx.fill();
+
+    if (progress < 0.5) {
+      // Approaching
+      var approach = progress / 0.5;
+      var dX = 380 + (450 - 380) * approach;
+      var tX = 460 - (460 - 450) * approach;
+      drawNucleus(dX, 200, 25, '#ff4444', 'D', 'rgba(255, 68, 68, 0.3)');
+      drawNucleus(tX, 200, 30, '#4488ff', 'T', 'rgba(68, 136, 255, 0.3)');
+    } else {
+      // Fusion!
+      var fuseProgress = (progress - 0.5) / 0.5;
+      var fuseEase = 1 - Math.pow(1 - fuseProgress, 2);
+
+      // Helium nucleus
+      var heSize = 30 + fuseEase * 10;
+      drawNucleus(450, 200, heSize, '#ffaa33', 'He', 'rgba(255, 170, 51, 0.4)');
+
+      // Neutron released
+      var nX = 450 + fuseEase * 80;
+      var nY = 200 - fuseEase * 40;
+      drawNucleus(nX, nY, 8, '#aaaaaa', 'n', null);
+
+      // Energy label
+      if (fuseProgress > 0.3) {
+        ctx.fillStyle = 'rgba(255, 140, 66, ' + ((fuseProgress - 0.3) * 1.5) + ')';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('+17.6 MeV released', 450, 120);
+      }
+
+      // Particles
+      for (var i = 0; i < 20; i++) {
+        var angle = (i / 20) * Math.PI * 2;
+        var dist = fuseEase * (50 + Math.random() * 40);
+        var px = 450 + Math.cos(angle) * dist;
+        var py = 200 + Math.sin(angle) * dist;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 140, 66, ' + (1 - fuseEase) + ')';
+        ctx.fill();
+      }
+    }
+
+    // Title
+    ctx.fillStyle = 'rgba(255, 140, 66, 0.7)';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('☀️ FUSION — Two light atoms join', W / 2, 30);
+
+    if (simTime > 3) {
+      simState = 'idle';
+      simTime = 0;
+    }
+  }
+
+  function animate() {
+    if (simState === 'idle') drawIdle();
+    else if (simState === 'fission') drawFission();
+    else if (simState === 'fusion') drawFusion();
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  canvas.addEventListener('click', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var scaleX = W / rect.width;
+    x = x * scaleX;
+
+    if (simState === 'idle') {
+      if (x < W / 2) {
+        simState = 'fission';
+        simTime = 0;
+      } else {
+        simState = 'fusion';
+        simTime = 0;
+      }
+    }
+  });
+
+  canvas.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    if (simState === 'idle') {
+      simState = 'fusion';
+      simTime = 0;
+    }
+  });
+})();
+
+</script>
 
 <script>
 // ===== PARTICLES BACKGROUND =====
@@ -1757,6 +2026,275 @@ tr:hover td { background: rgba(255, 140, 66, 0.03); }
     })
     .catch(function() {});
 })();
+// ===== FISSION vs FUSION SIMULATOR =====
+(function() {
+  var canvas = document.getElementById('fission-fusion-sim');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width = 600;
+  var H = canvas.height = 400;
+
+  var particles = [];
+  var simState = 'idle'; // idle, fission, fusion
+  var simTime = 0;
+  var flashAlpha = 0;
+
+  function drawNucleus(x, y, r, color, label, glowColor) {
+    // Glow
+    if (glowColor) {
+      ctx.beginPath();
+      ctx.arc(x, y, r + 10, 0, Math.PI * 2);
+      var glow = ctx.createRadialGradient(x, y, r, x, y, r + 10);
+      glow.addColorStop(0, glowColor);
+      glow.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow;
+      ctx.fill();
+    }
+    // Nucleus
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    var grad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, 0, x, y, r);
+    grad.addColorStop(0, color);
+    grad.addColorStop(1, 'rgba(0,0,0,0.5)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, x, y);
+  }
+
+  function drawIdle() {
+    ctx.clearRect(0, 0, W, H);
+    // Background
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw fission side (left)
+    ctx.fillStyle = 'rgba(100, 200, 255, 0.7)';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('☢️ FISSION', 150, 30);
+    ctx.fillText('(left click)', 150, 50);
+
+    // Draw fusion side (right)
+    ctx.fillStyle = 'rgba(255, 140, 66, 0.7)';
+    ctx.fillText('☀️ FUSION', 450, 30);
+    ctx.fillText('(right click)', 450, 50);
+
+    // Uranium atom (left)
+    drawNucleus(150, 200, 40, '#4488ff', 'U-235', 'rgba(68, 136, 255, 0.2)');
+
+    // Deuterium + Tritium (right)
+    drawNucleus(380, 200, 25, '#ff4444', 'D', 'rgba(255, 68, 68, 0.2)');
+    drawNucleus(460, 200, 30, '#4488ff', 'T', 'rgba(68, 136, 255, 0.2)');
+
+    // Plus sign between D and T
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = 'bold 24px Inter, sans-serif';
+    ctx.fillText('+', 420, 200);
+
+    // Arrow hint
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.fillText('Click on each side', W / 2, H - 20);
+  }
+
+  function drawFission() {
+    simTime += 0.025;
+    ctx.clearRect(0, 0, W, H);
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    var progress = Math.min(simTime, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+
+    // Flash
+    flashAlpha = Math.max(0, 0.5 - simTime * 0.4);
+    ctx.beginPath();
+    ctx.arc(150, 200, 60 + simTime * 80, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(100, 200, 255, ' + flashAlpha + ')';
+    ctx.fill();
+
+    if (progress < 0.3) {
+      // Neutron approaching
+      var neutronX = 150 + 80 * (progress / 0.3);
+      drawNucleus(150 - neutronX * 0.5, 200, 8, '#aaaaaa', 'n', null);
+      drawNucleus(150, 200, 40, '#4488ff', 'U-235', 'rgba(68, 136, 255, 0.2)');
+    } else {
+      // Split!
+      var splitProgress = (progress - 0.3) / 0.7;
+      var splitEase = 1 - Math.pow(1 - splitProgress, 2);
+
+      // Barium (left fragment)
+      var baX = 150 - splitEase * 80;
+      var baY = 200 - splitEase * 30;
+      drawNucleus(baX, baY, 25, '#66aa66', 'Ba', 'rgba(102, 170, 102, 0.3)');
+
+      // Krypton (right fragment)
+      var krX = 150 + splitEase * 80;
+      var krY = 200 + splitEase * 30;
+      drawNucleus(krX, krY, 20, '#aa6666', 'Kr', 'rgba(170, 102, 102, 0.3)');
+
+      // Neutrons released
+      for (var i = 0; i < 3; i++) {
+        var angle = (i / 3) * Math.PI * 2 + simTime;
+        var nx = 150 + Math.cos(angle) * splitEase * 60;
+        var ny = 200 + Math.sin(angle) * splitEase * 60;
+        drawNucleus(nx, ny, 6, '#aaaaaa', '', null);
+      }
+
+      // Energy label
+      if (splitProgress > 0.5) {
+        ctx.fillStyle = 'rgba(100, 200, 255, ' + ((splitProgress - 0.5) * 2) + ')';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('~200 MeV released', 150, 120);
+      }
+
+      // Particles
+      for (var i = 0; i < 15; i++) {
+        var angle = (i / 15) * Math.PI * 2;
+        var dist = splitEase * (40 + Math.random() * 30);
+        var px = 150 + Math.cos(angle) * dist;
+        var py = 200 + Math.sin(angle) * dist;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(100, 200, 255, ' + (1 - splitEase) + ')';
+        ctx.fill();
+      }
+    }
+
+    // Title
+    ctx.fillStyle = 'rgba(100, 200, 255, 0.7)';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('☢️ FISSION — A heavy atom splits', W / 2, 30);
+
+    if (simTime > 3) {
+      simState = 'idle';
+      simTime = 0;
+    }
+  }
+
+  function drawFusion() {
+    simTime += 0.025;
+    ctx.clearRect(0, 0, W, H);
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
+    bg.addColorStop(0, '#1a0a00');
+    bg.addColorStop(1, '#000');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    var progress = Math.min(simTime, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+
+    // Flash
+    flashAlpha = Math.max(0, 0.5 - simTime * 0.4);
+    ctx.beginPath();
+    ctx.arc(450, 200, 60 + simTime * 80, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 140, 66, ' + flashAlpha + ')';
+    ctx.fill();
+
+    if (progress < 0.5) {
+      // Approaching
+      var approach = progress / 0.5;
+      var dX = 380 + (450 - 380) * approach;
+      var tX = 460 - (460 - 450) * approach;
+      drawNucleus(dX, 200, 25, '#ff4444', 'D', 'rgba(255, 68, 68, 0.3)');
+      drawNucleus(tX, 200, 30, '#4488ff', 'T', 'rgba(68, 136, 255, 0.3)');
+    } else {
+      // Fusion!
+      var fuseProgress = (progress - 0.5) / 0.5;
+      var fuseEase = 1 - Math.pow(1 - fuseProgress, 2);
+
+      // Helium nucleus
+      var heSize = 30 + fuseEase * 10;
+      drawNucleus(450, 200, heSize, '#ffaa33', 'He', 'rgba(255, 170, 51, 0.4)');
+
+      // Neutron released
+      var nX = 450 + fuseEase * 80;
+      var nY = 200 - fuseEase * 40;
+      drawNucleus(nX, nY, 8, '#aaaaaa', 'n', null);
+
+      // Energy label
+      if (fuseProgress > 0.3) {
+        ctx.fillStyle = 'rgba(255, 140, 66, ' + ((fuseProgress - 0.3) * 1.5) + ')';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('+17.6 MeV released', 450, 120);
+      }
+
+      // Particles
+      for (var i = 0; i < 20; i++) {
+        var angle = (i / 20) * Math.PI * 2;
+        var dist = fuseEase * (50 + Math.random() * 40);
+        var px = 450 + Math.cos(angle) * dist;
+        var py = 200 + Math.sin(angle) * dist;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 140, 66, ' + (1 - fuseEase) + ')';
+        ctx.fill();
+      }
+    }
+
+    // Title
+    ctx.fillStyle = 'rgba(255, 140, 66, 0.7)';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('☀️ FUSION — Two light atoms join', W / 2, 30);
+
+    if (simTime > 3) {
+      simState = 'idle';
+      simTime = 0;
+    }
+  }
+
+  function animate() {
+    if (simState === 'idle') drawIdle();
+    else if (simState === 'fission') drawFission();
+    else if (simState === 'fusion') drawFusion();
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  canvas.addEventListener('click', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var scaleX = W / rect.width;
+    x = x * scaleX;
+
+    if (simState === 'idle') {
+      if (x < W / 2) {
+        simState = 'fission';
+        simTime = 0;
+      } else {
+        simState = 'fusion';
+        simTime = 0;
+      }
+    }
+  });
+
+  canvas.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    if (simState === 'idle') {
+      simState = 'fusion';
+      simTime = 0;
+    }
+  });
+})();
+
 </script>
 </body>
 </html>
