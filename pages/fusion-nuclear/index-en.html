@@ -449,6 +449,7 @@ tr:hover td { background: rgba(255, 140, 66, 0.03); }
   <div class="nav-logo">⚛️ Nuclear Fusion</div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#que-es">What is it?</a></li>
+    <li><a href="#fision-vs-fusion">Fission vs Fusion</a></li>
     <li><a href="#dificil">Why is it hard?</a></li>
     <li><a href="#enfoques">Approaches</a></li>
     <li><a href="#hitos">Milestones</a></li>
@@ -495,6 +496,94 @@ tr:hover td { background: rgba(255, 140, 66, 0.03); }
     <div class="sim-counter" id="sim-counter">Fusions: 0 | Total energy: 0 MeV</div>
   </div>
 </section>
+
+<section class="section fade-in" id="fision-vs-fusion">
+  <h2 class="section-title">Fission vs Fusion — What's the difference?</h2>
+  <div class="section-divider"></div>
+  <p class="section-text">
+    It is the most common confusion when talking about nuclear energy. <strong>Fission and fusion are completely opposite processes</strong>, although both release nuclear energy.
+  </p>
+  <p class="section-text">
+    Think of it this way: <strong>fission</strong> is like splitting a piece of wood in half. <strong>Fusion</strong> is like joining two small pieces to create one big one. One <em>splits</em>, the other <em>joins</em>.
+  </p>
+
+  <div class="demo-container">
+    <div class="demo-title">⚡ Fission vs Fusion Simulator — Click to see the difference!</div>
+    <div class="demo-canvas-wrap">
+      <canvas id="fission-fusion-sim" width="600" height="400"></canvas>
+    </div>
+    <p class="sim-info">Left click: Fission (a heavy atom splits) · Right click: Fusion (two light atoms join)</p>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>☢️ Fission</th>
+          <th>☀️ Fusion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Feature">What happens</td>
+          <td data-label="Fission">A heavy nucleus <strong>splits</strong> into two lighter ones</td>
+          <td data-label="Fusion">Two light nuclei <strong>join</strong> into one heavier one</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Fuel</td>
+          <td data-label="Fission">Uranium-235, Plutonium-239 (finite mineral)</td>
+          <td data-label="Fusion">Deuterium + Tritium (from water and lithium, virtually unlimited)</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Energy per reaction</td>
+          <td data-label="Fission">~200 MeV (per U-235 atom)</td>
+          <td data-label="Fusion">~17.6 MeV (per D-T reaction, but MANY more reactions per kg)</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Waste</td>
+          <td data-label="Fission">High activity, millennia half-life (thousands of years)</td>
+          <td data-label="Fusion">Low activity, short half-life (~50-100 years)</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Accident risk</td>
+          <td data-label="Fission">Meltdown possible (Chernobyl, Fukushima)</td>
+          <td data-label="Fusion">Impossible meltdown — if something fails, the plasma extinguishes</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Weapons</td>
+          <td data-label="Fission">Atomic bomb (Hiroshima, Nagasaki)</td>
+          <td data-label="Fusion">Hydrogen bomb (thermonuclear, requires fission to ignite)</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Current status</td>
+          <td data-label="Fission">Mature technology, 440+ commercial reactors in operation</td>
+          <td data-label="Fusion">In development, first commercial reactor expected ~2028-2035</td>
+        </tr>
+        <tr>
+          <td data-label="Feature">Where it occurs naturally</td>
+          <td data-label="Fission">Occasionally (Oklo, Gabon, 2 billion years ago)</td>
+          <td data-label="Fusion">In all stars, including our Sun</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card-grid" style="margin-top: 2rem;">
+    <div class="card">
+      <div class="card-icon">💣</div>
+      <h3>Fission — What we have today</h3>
+      <p>Current nuclear energy uses fission. It is clean in CO₂ emissions, but generates long-lived radioactive waste and has accident risk. It is a proven but imperfect technology.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌟</div>
+      <h3>Fusion — What comes tomorrow</h3>
+      <p>Fusion promises clean, safe energy with unlimited fuel. It produces no millennia-lived waste, cannot have a meltdown, and fuel is extracted from seawater. It is the holy grail we have not yet achieved.</p>
+    </div>
+  </div>
+</section>
+
+
 
 <!-- Why is it so hard? -->
 <section class="section fade-in" id="dificil">
