@@ -639,8 +639,10 @@ footer a:hover { color: var(--primary); }
   <a href="#methodology" onclick="toggleMenu()">🔬 Methodology</a>
   <a href="#comparison" onclick="toggleMenu()">🥊 Claude Comparison</a>
   <a href="#benchmark-caveat" onclick="toggleMenu()">⚠️ Benchmarks Aren't Everything</a>
+  <a href="#real-issues" onclick="toggleMenu()">🔧 Real Issues & Fixes</a>
   <a href="#opinion" onclick="toggleMenu()">💭 Opinion: Local Models</a>
   <a href="#community" onclick="toggleMenu()">🗣️ Community Feedback</a>
+  <a href="#qwen37" onclick="toggleMenu()">🚀 Qwen3.7: What's New</a>
   <a href="#sources" onclick="toggleMenu()">📚 Sources</a>
 </nav>
 
@@ -649,12 +651,13 @@ footer a:hover { color: var(--primary); }
   <div class="hero-eyebrow">Released April 22, 2026</div>
   <h1>Qwen3.6-27B</h1>
   <h2>Prediction vs Reality</h2>
-  <p class="hero-sub">Analysis of our predictions against official benchmarks. Architecture, methodology, and full comparisons.</p>
+  <p class="hero-sub">Updated analysis: real benchmarks, community-discovered issues, fixes, and Qwen3.7 status.</p>
   <div class="hero-meta">
     <span class="badge live">● Real confirmed data</span>
     <span class="badge">27B Dense Model</span>
     <span class="badge">Gated DeltaNet</span>
     <span class="badge">256K Context</span>
+    <span class="badge purple">🔥 Updated June 2026</span>
   </div>
 </div>
 
@@ -1211,6 +1214,171 @@ footer a:hover { color: var(--primary); }
   <p class="source">Sources: <a href="https://www.reddit.com/r/LocalLLaMA/comments/1so2nt9/qwen_36_is_the_first_local_model_that_actually/" target="_blank">Reddit r/LocalLLaMA</a>, <a href="https://news.ycombinator.com/item?id=47863217" target="_blank">Hacker News</a>, <a href="https://benchlm.ai/models/qwen3-6-27b" target="_blank">BenchLM.ai</a> — Added April 23, 2026</p>
 </section>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NEW SECTION: Real Issues and Fixes                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="real-issues">
+  <h2>🔧 Real Issues and <span class="accent">Solutions</span></h2>
+  <p>After 9 days of real-world community usage, several practical issues have been identified. Here's the current status with confirmed solutions:</p>
+
+  <div class="issue-list">
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 Tool Calling Broken in vLLM / llama.cpp</div>
+      <div class="issue-desc">The official Qwen3.6-27B chat template has bugs causing tool calls to fail silently. The model writes tool calls as plain text instead of executing them. Reported in both vLLM and llama.cpp. <strong>Confirmed fix:</strong> use the corrected chat template from <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">froggeric/Qwen-Fixed-Chat-Templates</a> (file <code>qwen3.6/chat_template.jinja</code>).</div>
+      <span class="issue-status fixed">✅ Fixed — Community Template</span>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-title">🔧 Ollama Incompatible (for now)</div>
+      <div class="issue-desc">Qwen3.6-27B does NOT work with Ollama. Reason: it uses separate <code>mmproj</code> files for the vision encoder, and Ollama doesn't support that structure yet. Community is working on a workaround but no official solution. <strong>Temporary solutions:</strong> use llama.cpp directly, Unsloth Studio, or SGLang/vLLM.</div>
+      <span class="issue-status open">⚠️ Pending — Await Ollama Support</span>
+    </div>
+
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 CUDA 13.2 — Garbage Outputs</div>
+      <div class="issue-desc">Reported by multiple users: CUDA 13.2 produces completely random/incoherent outputs with Qwen3.6-27B in llama.cpp. <strong>Fix:</strong> use CUDA 12.x or update to a newer llama.cpp version where the bug is fixed.</div>
+      <span class="issue-status fixed">✅ Fixed — Use CUDA 12.x or update llama.cpp</span>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-title">🔧 Thinking Bleed in Chat Templates</div>
+      <div class="issue-desc">The chat template emits empty <code>&lt;thinking&gt;</code> blocks in conversation history, causing "prompt drift" and "cache invalidation". Thinking tags accumulate in prior messages, contaminating context. <strong>Workaround:</strong> use <code>--chat-template-kwargs '{"preserve_thinking": true}'</code> in llama.cpp or froggeric templates.</div>
+      <span class="issue-status open">⚠️ Mitigated — Workaround Available</span>
+    </div>
+
+    <div class="issue-item">
+      <div class="issue-title">🔧 256K Context: Practical vs Theoretical</div>
+      <div class="issue-desc">The model supports 256K tokens (extendable to 1M with YaRN), but practical limits on real hardware are lower: ~128K on 32GB VRAM with Q4, ~64K on 24GB. Full context requires ~56GB VRAM in Q4. <strong>Recommendation:</strong> use 128K for complex tasks and 32K for simple tasks on limited hardware.</div>
+      <span class="issue-status open">⚠️ Hardware limitation (not model)</span>
+    </div>
+
+    <div class="issue-item resolved">
+      <div class="issue-title">🔧 OpenCode — Tool Calls Not Executed</div>
+      <div class="issue-desc">OpenCode users report tool calls are written but not executed. <strong>Workaround:</strong> change config to use Anthropic API format instead of OpenAI-compatible, or use <code>--tool-call-parser qwen3_coder</code> with the <code>qwen3.5-enhanced.jinja</code> template.</div>
+      <span class="issue-status fixed">✅ Fixed — Change parser or format</span>
+    </div>
+  </div>
+
+  <div class="highlight warning">
+    <strong>⚠️ Recommended Setup (May 2026):</strong>
+    <ul>
+      <li><strong>llama.cpp:</strong> Use froggeric chat template + CUDA 12.x + <code>--chat-template-kwargs '{"preserve_thinking": true}'</code></li>
+      <li><strong>vLLM:</strong> Corrected template + <code>--tool-call-parser qwen3_xml</code></li>
+      <li><strong>Unsloth Studio:</strong> Works out-of-the-box, automatic GGUF and template handling</li>
+      <li><strong>DO NOT use Ollama</strong> — confirmed incompatibility with mmproj files</li>
+    </ul>
+  </div>
+
+  <h3>Recommended Config for RTX 5090 (32GB VRAM)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Quant</th><th>Size</th><th>VRAM</th><th>Est. Speed</th><th>Quality</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Q4_K_M</td><td>~16GB</td><td>~18GB</td><td>~80-100 t/s</td><td>✅ Excellent</td></tr>
+        <tr><td>Q4_K_XL</td><td>~16.8GB</td><td>~19GB</td><td>~80-100 t/s</td><td>✅ Recommended</td></tr>
+        <tr><td>Q5_K_M</td><td>~19GB</td><td>~21GB</td><td>~70-85 t/s</td><td>✅ Very good</td></tr>
+        <tr><td>Q8_0</td><td>~30GB</td><td>~33GB</td><td>~50-65 t/s</td><td>⚠️ VRAM limit</td></tr>
+        <tr><td>BF16</td><td>~55GB</td><td>Won't fit</td><td>—</td><td>❌ Offload only</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="source">Sources: <a href="https://www.reddit.com/r/LocalLLaMA/comments/1syh4sd/" target="_blank">Reddit Tool Calling Fix</a>, <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">Froggeric Templates</a>, <a href="https://huggingface.co/Qwen/Qwen3.6-27B/discussions/13" target="_blank">HF Discussion #13</a>, <a href="https://forums.developer.nvidia.com/t/whats-the-best-speed-we-can-get-with-qwen-3-6-27b-without-quantizing/367561" target="_blank">NVIDIA Forums</a></p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NEW SECTION: Qwen3.7 — What's New                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="qwen37">
+  <h2>🚀 Qwen3.7: <span class="accent">What's New</span></h2>
+  <p>Alibaba has released the Qwen3.7 family. Here's the current status with official data:</p>
+
+  <div class="highlight">
+    <strong>Qwen3.7-Max — May 19, 2026</strong>
+    <p>Text flagship, API-only (not open weights). 1M context window. #5 globally in Intelligence Index v4.0, #1 among Chinese models. Price: <strong>$2.50/1M in, $7.50/1M out</strong> — 4× cheaper than GPT-5.5 and 6× than Claude Opus.</p>
+  </div>
+
+  <div class="highlight success">
+    <strong>Qwen3.7-Plus — June 2, 2026</strong>
+    <p>Multimodal variant with vision + text, launched June 2. #16 in Vision Arena (Alibaba = #5 global lab in vision). API-only. Agentic capabilities: deep reasoning, self-programming, tool invocation, verification/testing and autonomous iteration.</p>
+  </div>
+
+  <div class="highlight miss">
+    <strong>27B / 35B open weights — Concerning signals ⚠️</strong>
+    <p>Announced as "forthcoming" but <strong>no confirmed date</strong> and growing doubts about whether they'll ship:</p>
+    <ul>
+      <li>❌ The official Qwen3.7 blog post <strong>does not mention</strong> releasing smaller versions (unlike the 3.6 blog, which did explicitly)</li>
+      <li>❌ A Qwen developer who said it would be easy to produce a 27B version <strong>deleted the tweet</strong></li>
+      <li>❌ <strong>~5 weeks</strong> have passed since the Max announcement (May 19) with no open weights — the 3.6 pattern was 3-4 weeks</li>
+      <li>❌ Active debate on Reddit about whether Qwen3.7 will have open weights at all</li>
+    </ul>
+    <p style="margin-top: 8px;"><strong>Max and Plus will NOT be open source</strong> — confirmed. The June window has passed.</p>
+  </div>
+
+  <h3>Official Qwen3.7-Max Benchmarks</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Category</th><th>Benchmark</th><th>Qwen3.7-Max</th><th>Comparison</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="2">General</td><td>Intelligence Index v4.0</td><td><strong>56.6</strong></td><td>#5 global, #1 Chinese</td></tr>
+        <tr><td>Arena AI Elo</td><td><strong>1,475</strong></td><td>#13 global</td></tr>
+        <tr><td rowspan="4">Coding Agent</td><td>Terminal Bench 2.0-Terminus</td><td><strong>69.7</strong></td><td>Beats DS-V4-Pro Max (67.9)</td></tr>
+        <tr><td>SWE-Verified</td><td><strong>80.4</strong></td><td>On par Opus-4.6 Max (80.8)</td></tr>
+        <tr><td>SWE-Pro</td><td><strong>60.6</strong></td><td>Leads K2.6 (59.5) &amp; DS-V4-Pro (59.0)</td></tr>
+        <tr><td>MCP-Mark</td><td><strong>60.8</strong></td><td>Beats GLM 5.1 (57.5)</td></tr>
+        <tr><td rowspan="5">STEM &amp; Reasoning</td><td>GPQA Diamond</td><td><strong>92.4</strong></td><td>Leads Opus-4.6 (91.3)</td></tr>
+        <tr><td>Humanity's Last Exam</td><td><strong>41.4</strong></td><td>Leads Opus-4.6 (40.0)</td></tr>
+        <tr><td>HMMT 2026 Feb</td><td><strong>97.1</strong></td><td>Leads Opus-4.6 (96.2)</td></tr>
+        <tr><td>IMOAnswerBench</td><td><strong>90.0</strong></td><td>Leads DS-V4-Pro (89.8)</td></tr>
+        <tr><td>Apex Math</td><td><strong>44.5</strong></td><td>Beats Opus 4.6 Max (34.5)</td></tr>
+        <tr><td rowspan="3">General &amp; Multi</td><td>IFBench</td><td><strong>79.1</strong></td><td>Precise instruction following</td></tr>
+        <tr><td>WMT24++</td><td><strong>85.8</strong></td><td>55 languages</td></tr>
+        <tr><td>MRCR-v2 128k</td><td><strong>90.4</strong></td><td>Long-context retrieval</td></tr>
+        <tr><td rowspan="2">Agent</td><td>MCP-Atlas</td><td><strong>76.4</strong></td><td>Beats Opus-4.6 (75.8)</td></tr>
+        <tr><td>SpreadSheetBench-v1</td><td><strong>87.0</strong></td><td>Office automation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Qwen3.7-Max vs Qwen3.6-27B: Direct Comparison</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Benchmark</th><th>Qwen3.6-27B (open)</th><th>Qwen3.7-Max (API)</th><th>Jump</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GPQA Diamond</td><td>87.8</td><td><strong>92.4</strong></td><td class="winner">+4.6</td></tr>
+        <tr><td>SWE-Verified</td><td>77.2</td><td><strong>80.4</strong></td><td class="winner">+3.2</td></tr>
+        <tr><td>Terminal-Bench</td><td>59.3</td><td><strong>69.7</strong></td><td class="winner">+10.4</td></tr>
+        <tr><td>HMMT</td><td>93.8</td><td><strong>97.1</strong></td><td class="winner">+3.3</td></tr>
+        <tr><td>Context</td><td>256K</td><td><strong>1M</strong></td><td class="winner">4×</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight blue">
+    <strong>Qwen3.7-Max standout features:</strong>
+    <ul>
+      <li>✅ <strong>1M token context</strong> — ~750,000 words / full codebase</li>
+      <li>✅ <strong>35 hours of autonomous operation</strong> — 1,158 tool calls without human intervention</li>
+      <li>✅ <strong>22.9% hallucination rate</strong> — lowest across all frontier models</li>
+      <li>✅ <strong>Native Anthropic protocol</strong> — drop-in replacement for Claude Code</li>
+      <li>✅ <strong>10× speedup</strong> in kernel optimization challenge (vs Triton reference)</li>
+    </ul>
+  </div>
+
+  <div class="highlight warning">
+    <strong>What this means for local model users?</strong>
+    <p>Qwen3.7-Max and Plus are API-only. <strong>The 27B/35B open weights are uncertain</strong> — the June window has passed and signals are not good. If you need to run locally, <strong>Qwen3.6-27B remains the best available option</strong>.</p>
+    <p style="margin-top: 8px;">Meanwhile, Max at $2.50/1M is a cheap alternative if you don't mind using API, but <strong>there's no guarantee open weight models will arrive in 2026</strong>.</p>
+  </div>
+
+  <p class="source">Sources: <a href="https://qwen.ai/blog?id=qwen3.7" target="_blank">Qwen Official Blog</a>, <a href="https://www.marktechpost.com/2026/06/02/alibabas-qwen-team-launches-qwen3-7-plus/" target="_blank">MarkTechPost (Qwen3.7-Plus)</a>, <a href="https://www.aimadetools.com/blog/qwen-3-7-complete-guide/" target="_blank">AimadeTools Guide</a> — Added June 2, 2026</p>
+</section>
+
 <!-- Sources -->
 <section id="sources">
   <h2>📚 <span class="accent">Sources</span></h2>
@@ -1240,15 +1408,44 @@ footer a:hover { color: var(--primary); }
     <li><a href="https://arxiv.org/pdf/2505.09388" target="_blank">Qwen3 Technical Report (arXiv)</a> — Original technical paper</li>
   </ul>
 
+  <h3>Issues and Fixes</h3>
+  <ul>
+    <li><a href="https://www.reddit.com/r/LocalLLaMA/comments/1syh4sd/" target="_blank">Reddit: 3.6 27B Tool Calling Issues (vLLM)</a></li>
+    <li><a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">froggeric/Qwen-Fixed-Chat-Templates</a> — Corrected templates</li>
+    <li><a href="https://huggingface.co/Qwen/Qwen3.6-27B/discussions/13" target="_blank">HF Discussion #13: Tool Calling Issues</a></li>
+    <li><a href="https://forums.developer.nvidia.com/t/qwen3-5-tool-calling-finally-fixed-possibly/366451" target="_blank">NVIDIA Forums: Tool Calling Fix</a></li>
+    <li><a href="https://github.com/QwenLM/Qwen3/issues/1831" target="_blank">GitHub Issue #1831: Chat Template Fix</a></li>
+  </ul>
+
+  <h3>Independent Analysis</h3>
+  <ul>
+    <li><a href="https://deepinsightai.io/qwen-3-6/" target="_blank">DeepInsightAI: Qwen 3.6 Real-World Usability</a></li>
+    <li><a href="https://www.buildfastwithai.com/blogs/qwen3-6-27b-review-2026" target="_blank">BuildFastWithAI: Comprehensive Review</a></li>
+    <li><a href="https://www.youtube.com/watch?v=N-0WtgxJ7ZU" target="_blank">YouTube: Qwen3.6 27B vs Claude Opus (real tasks)</a></li>
+    <li><a href="https://www.youtube.com/watch?v=HT2NplHskIQ" target="_blank">YouTube: Digital Space Port Review</a></li>
+  </ul>
+
+  <h3>Qwen3.7 Data and open weights status</h3>
+  <ul>
+    <li><a href="https://qwen.ai/blog?id=qwen3.7" target="_blank">Qwen3.7-Max — Official blog post</a> — Benchmarks and capabilities</li>
+    <li><a href="https://www.marktechpost.com/2026/06/02/alibabas-qwen-team-launches-qwen3-7-plus/" target="_blank">MarkTechPost: Qwen3.7-Plus Launch</a> — Launch and Vision Arena</li>
+    <li><a href="https://www.aimadetools.com/blog/qwen-3-7-complete-guide/" target="_blank">AimadeTools: Qwen 3.7 Complete Guide</a> — Pricing and comparisons</li>
+    <li><a href="https://overchat.ai/ai-hub/qwen-3-7-max" target="_blank">AI Hub: Qwen 3.7 Max and Plus</a></li>
+    <li><a href="https://insiderllm.com/guides/qwen-3-7-preview-scored-57-aai-27b-35b-open-weights-watch/" target="_blank">InsiderLLM: 27B/35B Open Weights Watch</a> — Detailed analysis and local guide</li>
+    <li><a href="https://www.reddit.com/r/LocalLLaMA/comments/1two36u/" target="_blank">Reddit r/LocalLLaMA: 3.7 27B in June?</a> — Timeline debate</li>
+    <li><a href="https://www.reddit.com/r/LocalLLaMA/comments/1tu28rl/" target="_blank">Reddit r/LocalLLaMA: Qwen 3.7 without open models</a> — Community concern</li>
+    <li><a href="https://codersera.com/blog/qwen-3-7-release-date-whats-new-2026/" target="_blank">Codersera: Qwen 3.7 — What's Real vs Rumored</a> — Updated May 23</li>
+  </ul>
+
   <div class="highlight">
-    <strong>Note:</strong> Page updated with real data from April 22, 2026. Includes architecture section explaining Gated DeltaNet and why the model improves.
+    <strong>Note:</strong> Page updated June 23, 2026. Qwen3.7 section updated: 27B/35B open weights window likely lost, concerning signals, community debate. Includes official benchmarks, Qwen3.7-Plus launch, real issues, fixes, and community feedback.
   </div>
 </section>
 
 <footer>
-  <p>Generated and updated by Cocobot 🐱 | Official HuggingFace data</p>
-  <p style="margin-top: 8px;">Last update: April 22, 2026 — Real benchmarks + Architecture</p>
-  <p style="margin-top: 8px;"><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a> · <a href="https://huggingface.co/Qwen" target="_blank">Qwen Models</a> · <a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a></p>
+  <p>Generated and updated by Cocobot 🐱 | Official HuggingFace data + community feedback</p>
+  <p style="margin-top: 8px;">Last update: June 23, 2026 — Qwen3.7 open weights status updated (concerning signals) + official benchmarks + Qwen3.7-Plus + Issues + Fixes + Community feedback</p>
+  <p style="margin-top: 8px;"><a href="https://huggingface.co/Qwen/Qwen3.6-27B" target="_blank">Qwen3.6-27B HF</a> · <a href="https://huggingface.co/Qwen" target="_blank">Qwen Models</a> · <a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a> · <a href="https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates" target="_blank">Fixed Templates</a></p>
 </footer>
 
 <script>
