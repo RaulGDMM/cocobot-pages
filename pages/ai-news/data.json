@@ -5,6 +5,52 @@
   },
   "days": [
     {
+      "date": "2026-06-25",
+      "news": [
+        {
+          "category": "general",
+          "title": "OpenAI revela 'Jalapeño': su primer chip de IA personalizado, fabricado por Broadcom",
+          "summary": "OpenAI presentó Jalapeño, su primer procesador de inferencia diseñado específicamente para workloads de LLMs, en colaboración con Broadcom (silicon/networking) y Celestica (integración de racks). El chip fue diseñado en solo 9 meses — el ciclo ASIC más rápido en semiconductores de alto rendimiento — y OpenAI usó sus propios modelos de IA para acelerar el diseño. Early testing muestra 'substantially better performance per watt' vs. state-of-the-art. Está probando GPT-5.3-Codex-Spark. Despliegue inicial previsto para finales de 2026 en data centers de escala gigavatios con Microsoft. Es el primer paso de una plataforma multi-generación que busca reducir la dependencia de Nvidia en inferencia y optimizar costos operativos.",
+          "source": "https://techcrunch.com/2026/06/24/openai-unveils-its-first-custom-chip-built-by-broadcom/",
+          "source_name": "TechCrunch",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Mistral lanza OCR 4: modelo de inteligencia documental con salida estructurada y autohospedaje",
+          "summary": "Mistral AI publicó OCR 4 el 23 de junio, un modelo de extracción documental que va más allá del texto plano: devuelve bounding boxes, clasificación tipada de bloques, y scores de confianza por palabra. Soporta 170 idiomas en 10 grupos lingüísticos y corre en un solo contenedor para despliegues completamente autohospedados — clave para empresas reguladas que no pueden enviar datos sensibles a la nube. La salida estructurada alimenta directamente pipelines de RAG, búsqueda empresarial y agentes IA con inputs listos para citación. Se presentó en el AI Now Summit.",
+          "source": "https://mistral.ai/news/ocr-4/",
+          "source_name": "Mistral AI",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Los puestos de ingeniería son los más resilientes a la IA, según datos de SignalFire",
+          "summary": "El State of Talent Report 2026 de SignalFire analiza millones de empleados en 80M+ empresas y muestra que, mientras el hiring tech general cayó 25% vs. 2019, los roles de ingeniería solo bajaron 11% — la función más resiliente. Los ingenieros representan el 55% de nuevos hires en las 'Tech Majors' (vs. 46% en 2019), y las startups early-stage contrataron un 7% más de ingenieros. Jensen Huang (NVIDIA) confirma: 'los ingenieros de software están más ocupados que nunca' gracias a la paradoja de Jevons — la IA aumenta productividad pero también expande el alcance del trabajo. Peter McCrory (Anthropic) añade que no hay diferencia material en tasas de desempleo entre workers que usan IA intensivamente vs. roles físicos.",
+          "source": "https://techcrunch.com/2026/06/24/ai-was-supposed-to-kill-engineering-jobs-but-new-data-suggests-theyre-the-most-resilient/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Ex-CEO de Infosys lanza Hang Ten Systems con $32M para desafiar los servicios IT tradicionales",
+          "summary": "Vishal Sikka (ex-CEO de Infosys, 12 años en SAP, ex-board Oracle) fundó Hang Ten Systems con sede en la Bay Area, levantando una ronda seed de $32M liderada por Mayfield, con inversión estratégica de Aramco Ventures y participación angel. Jerry Yang (co-fundador de Yahoo) se une al board. La empresa ofrece servicios enterprise AI-native: construir, modificar y operar software continuamente usando generación de código agéntica, skills IA reutilizables y expertise de dominio. Se diferencia de los servicios IT tradicionales que escalan linealmente con headcount. Primeros clientes: Siemens Gamesa Renewable Energy y Fresenius.",
+          "source": "https://techcrunch.com/2026/06/24/ai-was-supposed-to-kill-engineering-jobs-but-new-data-suggests-theyre-the-most-resilient/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: de b9737 a b9787 — 50 builds nuevos con rework Hexagon, fixes Vulkan y soporte LFM2.5",
+          "summary": "El usuario tiene b9737; la última versión es b9787 (publicada hoy 25 de junio). Highlights de los 50 builds:\n\n- **b9787**: Fix SYCL UT cases de conv_3d (#24900)\n- **b9786**: OpenCL soporta filas no contiguas en norm (#24965)\n- **b9785**: Chat hardening de caps check (#24973)\n- **b9784**: Rework mayor de Hexagon DSP — MUL_MAT y MUL_MAT_ID con tiled weight repack 32x32, kernel-params, graph caching, fp16 intermediates, DMA prefetch alignment. Dropped soporte Hexagon < v73.\n- **b9782**: Remoción de json-partial no usado\n- **b9781**: Vulkan permite reducir graph submission batches para evitar driver timeouts (#24872)\n- **b9780**: Vulkan falla el build cuando un shader no compila — fix de #24393 (#24450)\n- **b9777**: Soporte para LFM2.5-ColBERT-350M y LFM2.5-Embedding-350M (#24913)\n- **b9776**: Vulkan aplica bias antes de softmax en Flash Attention para evitar overflow (#24909)\n\n**Veredicto**: ✅ Merece actualizar. 50 builds con fixes de estabilidad Vulkan (crítico si usas Vulkan), rework completo de Hexagon (si usas DSP Qualcomm), y soporte de nuevos modelos LFM2.5. Los fixes de overflow en Flash Attention y build safety de Vulkan son mejoras de confiabilidad importantes.\n\n**CVEs activos**: 5 advisories pendientes (GHSA-j8rj-fmpv-wcxw CRITICAL: RCE vía RPC backend; GHSA-3p4r-fq3f-q74v HIGH: Heap overflow en mem_size). Ninguno es nuevo — todos de enero-marzo 2026.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": false
+        }
+      ],
+      "summary": "Día interesante: OpenAI revela su primer chip propio 'Jalapeño' con Broadcom, Mistral lanza OCR 4 con salida estructurada para documentos, y datos de SignalFire muestran que los puestos de ingeniería son los más resilientes a la IA. llama.cpp avanza 50 builds con mejoras en Vulkan, Hexagon y soporte LFM2.5."
+    },
+    {
       "date": "2026-06-24",
       "news": [
         {
