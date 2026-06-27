@@ -222,8 +222,48 @@ body {
 /* ── NEURON BACKGROUND ── */
 #neuron-bg {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 0; pointer-events: none; opacity: 0.4;
+  z-index: 0; pointer-events: none; opacity: 0.85;
 }
+
+/* ── TIMELINE ── */
+.timeline {
+  position: relative; margin: 2.5rem 0; padding-left: 2rem;
+  border-left: 2px solid var(--border);
+}
+.timeline-item {
+  position: relative; margin-bottom: 1.8rem; padding-left: 1.5rem;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -2.35rem; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--gold); background: var(--bg);
+}
+.timeline-item.future::before {
+  border-style: dashed; background: transparent;
+}
+.timeline-date {
+  font-family: var(--font-mono); font-size: 0.72em;
+  color: var(--gold); letter-spacing: 1px; margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+.timeline-item.future .timeline-date { color: var(--text-dim); }
+.timeline-title {
+  font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem;
+}
+.timeline-desc {
+  font-size: 0.9em; color: var(--text); line-height: 1.6;
+}
+.timeline-desc strong { color: #fff; }
+.timeline-tag {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.65em;
+  padding: 2px 8px; border-radius: 4px; margin-top: 0.4rem;
+  text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+}
+.timeline-tag.confirmed { background: rgba(34,197,94,0.15); color: var(--green); }
+.timeline-tag.announced { background: rgba(6,182,212,0.15); color: var(--cyan); }
+.timeline-tag.predicted { background: rgba(245,158,11,0.15); color: var(--gold); }
+.timeline-tag.speculated { background: rgba(168,85,247,0.15); color: var(--purple); }
 
 /* ── SECTIONS ── */
 .section { margin-bottom: 4rem; scroll-margin-top: 70px; }
@@ -566,19 +606,20 @@ body.lang-en [data-lang="es"] { display: none !important; }
 <div class="side-menu-overlay" id="menuOverlay"></div>
 <div class="side-menu" id="sideMenu">
   <a href="#contexto"><span class="menu-num">01</span> <span data-lang="es">Contexto Actual</span><span data-lang="en">Current Context</span></a>
-  <a href="#q3"><span class="menu-num">02</span> Q3 2026</a>
-  <a href="#q4"><span class="menu-num">03</span> Q4 2026</a>
-  <a href="#q1"><span class="menu-num">04</span> Q1 2027</a>
-  <a href="#q2"><span class="menu-num">05</span> Q2 2027</a>
-  <a href="#probabilidades"><span class="menu-num">06</span> <span data-lang="es">Probabilidades</span><span data-lang="en">Probabilities</span></a>
-  <a href="#escenarios"><span class="menu-num">07</span> <span data-lang="es">Escenarios</span><span data-lang="en">Scenarios</span></a>
-  <a href="#indicadores"><span class="menu-num">08</span> <span data-lang="es">Indicadores Clave</span><span data-lang="en">Key Indicators</span></a>
-  <a href="#opinion"><span class="menu-num">09</span> <span data-lang="es">Mi Opinión</span><span data-lang="en">My Opinion</span></a>
-  <a href="#fuentes"><span class="menu-num">10</span> <span data-lang="es">Fuentes</span><span data-lang="en">Sources</span></a>
+  <a href="#timeline"><span class="menu-num">02</span> <span data-lang="es">Línea de Tiempo</span><span data-lang="en">Timeline</span></a>
+  <a href="#q3"><span class="menu-num">03</span> Q3 2026</a>
+  <a href="#q4"><span class="menu-num">04</span> Q4 2026</a>
+  <a href="#q1"><span class="menu-num">05</span> Q1 2027</a>
+  <a href="#q2"><span class="menu-num">06</span> Q2 2027</a>
+  <a href="#probabilidades"><span class="menu-num">07</span> <span data-lang="es">Probabilidades</span><span data-lang="en">Probabilities</span></a>
+  <a href="#escenarios"><span class="menu-num">08</span> <span data-lang="es">Escenarios</span><span data-lang="en">Scenarios</span></a>
+  <a href="#indicadores"><span class="menu-num">09</span> <span data-lang="es">Indicadores Clave</span><span data-lang="en">Key Indicators</span></a>
+  <a href="#opinion"><span class="menu-num">10</span> <span data-lang="es">Mi Opinión</span><span data-lang="en">My Opinion</span></a>
+  <a href="#fuentes"><span class="menu-num">11</span> <span data-lang="es">Fuentes</span><span data-lang="en">Sources</span></a>
   <a href="https://raulgdmm.github.io/cocobot-pages/" style="color: var(--text-dim); font-size: 0.8em; margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem;"><span data-lang="es">← Volver al inicio</span><span data-lang="en">← Back to Home</span></a>
 </div>
 
-<button class="back-btn" id="backBtn" onclick="window.history.back()"><span data-lang="es">← Atrás</span><span data-lang="en">← Back</span></button>
+<a href="https://raulgdmm.github.io/cocobot-pages/" class="back-btn"><span data-lang="es">← Atrás</span><span data-lang="en">← Back</span></a>
 
 <!-- ═══════ CRYSTAL BALL BANNER ═══════ -->
 <div class="crystal-banner">
@@ -664,6 +705,89 @@ body.lang-en [data-lang="es"] { display: none !important; }
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ── TIMELINE ── -->
+<div class="section fade-in" id="timeline">
+  <div class="section-label"><span data-lang="es">Línea de tiempo</span><span data-lang="en">Timeline</span></div>
+  <h2 class="section-title">
+    <span data-lang="es">Lo que pasó y lo que viene</span>
+    <span data-lang="en">What happened and what's coming</span>
+  </h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">02 Jun 2026</div>
+      <div class="timeline-title"><span data-lang="es">Orden ejecutiva de Trump sobre IA</span><span data-lang="en">Trump's AI Executive Order</span></div>
+      <div class="timeline-desc"><span data-lang="es">EE.UU. ordena revisión previa de 30 días para todos los modelos frontier. Inicio de las restricciones por nacionalidad.</span><span data-lang="en">US mandates 30-day pre-review for all frontier models. Start of nationality-based restrictions.</span></div>
+      <span class="timeline-tag confirmed"><span data-lang="es">Confirmado</span><span data-lang="en">Confirmed</span></span>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">12 Jun 2026</div>
+      <div class="timeline-title">Fable 5 / Mythos 5 suspendido</div>
+      <div class="timeline-desc"><span data-lang="es">Anthropic retira forzosamente Fable 5. 15 días sin acceso al modelo más avanzado.</span><span data-lang="en">Anthropic forcibly removes Fable 5. 15 days without access to the most advanced model.</span></div>
+      <span class="timeline-tag confirmed"><span data-lang="es">Confirmado</span><span data-lang="en">Confirmed</span></span>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">20 May 2026</div>
+      <div class="timeline-title">Qwen 3.7 Max anunciado</div>
+      <div class="timeline-desc"><span data-lang="es">Alibaba presenta Qwen 3.7 Max en Hangzhou. 1M contexto, 56.6 en AI Index. GA el 1 de junio.</span><span data-lang="en">Alibaba unveils Qwen 3.7 Max in Hangzhou. 1M context, 56.6 on AI Index. GA on June 1.</span></div>
+      <span class="timeline-tag confirmed"><span data-lang="es">Confirmado</span><span data-lang="en">Confirmed</span></span>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Jun 2026</div>
+      <div class="timeline-title">GLM-5.2 open-source (Z.ai)</div>
+      <div class="timeline-desc"><span data-lang="es">Zhipu AI libera GLM-5.2 bajo MIT. 753B parámetros, 1M contexto. Jeremy Howard: «tan bueno como Opus 4.8».</span><span data-lang="en">Zhipu AI releases GLM-5.2 under MIT. 753B params, 1M context. Jeremy Howard: «as good as Opus 4.8».</span></div>
+      <span class="timeline-tag confirmed"><span data-lang="es">Confirmado</span><span data-lang="en">Confirmed</span></span>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">08 Jul 2026</div>
+      <div class="timeline-title"><span data-lang="es">KYC Anthropic entra en vigor</span><span data-lang="en">Anthropic KYC takes effect</span></div>
+      <div class="timeline-desc"><span data-lang="es">Verificación biométrica facial + pasaporte obligatoria para acceder a Fable 5. Solo ciudadanos americanos.</span><span data-lang="en">Facial biometric verification + passport mandatory for Fable 5 access. US citizens only.</span></div>
+      <span class="timeline-tag announced"><span data-lang="es">Anunciado</span><span data-lang="en">Announced</span></span>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Jul-Ago 2026</div>
+      <div class="timeline-title">GPT 5.6 — Expansión Five Eyes</div>
+      <div class="timeline-desc"><span data-lang="es">OpenAI expande acceso a UK, Canadá, Australia y NZ. El resto del mundo sigue sin acceso.</span><span data-lang="en">OpenAI expands access to UK, Canada, Australia and NZ. Rest of world still locked out.</span></div>
+      <span class="timeline-tag predicted"><span data-lang="es">Predicho</span><span data-lang="en">Predicted</span></span>
+    </div>
+
+    <div class="timeline-item future">
+      <div class="timeline-date">Ago-Sep 2026</div>
+      <div class="timeline-title"><span data-lang="es">Siguiente salto chino</span><span data-lang="en">Next Chinese leap</span></div>
+      <div class="timeline-desc"><span data-lang="es">Kimi K3 (Moonshot), Qwen 3.8 (Alibaba) o GLM-6 (Z.ai). Ritmo: 6-8 semanas por iteración.</span><span data-lang="en">Kimi K3 (Moonshot), Qwen 3.8 (Alibaba) or GLM-6 (Z.ai). Pace: 6-8 weeks per iteration.</span></div>
+      <span class="timeline-tag predicted"><span data-lang="es">Predicho</span><span data-lang="en">Predicted</span></span>
+    </div>
+
+    <div class="timeline-item future">
+      <div class="timeline-date">Q4 2026</div>
+      <div class="timeline-title">Huawei Ascend 950DT</div>
+      <div class="timeline-desc"><span data-lang="es">Chip de entrenamiento para cerrar la brecha de cómputo. Permite entrenar modelos de clase Mythos en China.</span><span data-lang="en">Training chip to close the compute gap. Enables training Mythos-class models in China.</span></div>
+      <span class="timeline-tag predicted"><span data-lang="es">Predicho</span><span data-lang="en">Predicted</span></span>
+    </div>
+
+    <div class="timeline-item future">
+      <div class="timeline-date">Dic 2026</div>
+      <div class="timeline-title"><span data-lang="es">Modelo open de clase Fable (Z.ai)</span><span data-lang="en">Fable-class open model (Z.ai)</span></div>
+      <div class="timeline-desc"><span data-lang="es">Z.ai pronostica un modelo open al nivel de Fable 5 antes de fin de año. Si se cumple, cambia el equilibrio de poder.</span><span data-lang="en">Z.ai forecasts a Fable 5-level open model before year end. If it happens, it shifts the balance of power.</span></div>
+      <span class="timeline-tag speculated"><span data-lang="es">Especulado</span><span data-lang="en">Speculated</span></span>
+    </div>
+
+    <div class="timeline-item future">
+      <div class="timeline-date">Q1 2027</div>
+      <div class="timeline-title"><span data-lang="es">Consecuencias y reacciones</span><span data-lang="en">Consequences and reactions</span></div>
+      <div class="timeline-desc"><span data-lang="es">EE.UU. reacciona al modelo chino. Europa acelera soberanía IA. Fuga de talento global.</span><span data-lang="en">US reacts to Chinese model. Europe accelerates AI sovereignty. Global talent drain.</span></div>
+      <span class="timeline-tag speculated"><span data-lang="es">Especulado</span><span data-lang="en">Speculated</span></span>
+    </div>
   </div>
 </div>
 
@@ -1550,7 +1674,7 @@ window.setLang = function(lang) {
 // ═══════ SCROLL HIDE NAVBAR + BACK BTN ═══════
 (function() {
   const navbar = document.querySelector('.navbar');
-  const backBtn = document.getElementById('backBtn');
+  const backBtn = document.querySelector('.back-btn');
   let lastScroll = 0;
   window.addEventListener('scroll', function() {
     const current = window.pageYOffset;
@@ -1617,12 +1741,12 @@ window.setLang = function(lang) {
         const dx = a.x - b.x, dy = a.y - b.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < maxDist) {
-          const opacity = (1 - dist / maxDist) * 0.12;
+          const opacity = (1 - dist / maxDist) * 0.35;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
           ctx.strokeStyle = `rgba(245, 158, 11, ${opacity})`;
-          ctx.lineWidth = 0.5 * devicePixelRatio;
+          ctx.lineWidth = 0.8 * devicePixelRatio;
           ctx.stroke();
         }
       }
@@ -1632,7 +1756,7 @@ window.setLang = function(lang) {
       const pulse = Math.sin(n.pulse) * 0.3 + 0.7;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r * devicePixelRatio, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(245, 158, 11, ${pulse * 0.25})`;
+      ctx.fillStyle = `rgba(245, 158, 11, ${pulse * 0.55})`;
       ctx.fill();
     }
 
