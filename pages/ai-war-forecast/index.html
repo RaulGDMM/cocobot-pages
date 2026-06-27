@@ -11,8 +11,8 @@
   --bg-card: #0d0f14;
   --bg-card-hover: #12151c;
   --border: #1a1e28;
-  --text: #c8ccd4;
-  --text-dim: #6b7280;
+  --text: #d4d8e0;
+  --text-dim: #8890a0;
   --gold: #f59e0b;
   --gold-glow: rgba(245,158,11,0.15);
   --gold-dark: #92400e;
@@ -53,7 +53,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
+  transition: transform 0.3s ease;
 }
+.navbar.hidden { transform: translateY(-100%); }
 .nav-brand {
   font-size: 0.85em; font-weight: 700; color: #fff;
   text-decoration: none; font-family: var(--font-mono);
@@ -133,6 +135,7 @@ body {
 .back-btn:hover {
   background: var(--gold-dark); border-color: var(--gold); color: #fff;
 }
+.back-btn.hidden { opacity: 0; pointer-events: none; }
 
 /* ── CRYSTAL BALL BANNER ── */
 .crystal-banner {
@@ -569,7 +572,7 @@ body.lang-en [data-lang="es"] { display: none !important; }
   <a href="https://raulgdmm.github.io/cocobot-pages/" style="color: var(--text-dim); font-size: 0.8em; margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem;"><span data-lang="es">← Volver al inicio</span><span data-lang="en">← Back to Home</span></a>
 </div>
 
-<a href="javascript:history.back()" class="back-btn"><span data-lang="es">← Atrás</span><span data-lang="en">← Back</span></a>
+<button class="back-btn" id="backBtn" onclick="window.history.back()"><span data-lang="es">← Atrás</span><span data-lang="en">← Back</span></button>
 
 <!-- ═══════ CRYSTAL BALL BANNER ═══════ -->
 <div class="crystal-banner">
@@ -1327,7 +1330,7 @@ document.addEventListener('DOMContentLoaded', function() {
     particles = [];
     const count = Math.floor((W * H) / 12000);
     const cx = W / 2, cy = H / 2;
-    const radius = Math.min(W, H) * 0.25;
+    const radius = Math.min(W, H) * 0.45;
 
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
@@ -1353,7 +1356,7 @@ document.addEventListener('DOMContentLoaded', function() {
     time = now * 0.001;
     ctx.clearRect(0, 0, W, H);
     const cx = W / 2, cy = H / 2;
-    const radius = Math.min(W, H) * 0.25;
+    const radius = Math.min(W, H) * 0.45;
 
     // Draw crystal ball glow
     const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 1.8);
@@ -1534,6 +1537,24 @@ window.setLang = function(lang) {
 (function() {
   var saved = localStorage.getItem('aiwar-lang');
   if (saved === 'en') setLang('en');
+})();
+
+// ═══════ SCROLL HIDE NAVBAR + BACK BTN ═══════
+(function() {
+  const navbar = document.querySelector('.navbar');
+  const backBtn = document.getElementById('backBtn');
+  let lastScroll = 0;
+  window.addEventListener('scroll', function() {
+    const current = window.pageYOffset;
+    if (current > lastScroll && current > 120) {
+      navbar.classList.add('hidden');
+      backBtn.classList.add('hidden');
+    } else {
+      navbar.classList.remove('hidden');
+      backBtn.classList.remove('hidden');
+    }
+    lastScroll = current;
+  }, { passive: true });
 })();
 
 })(); // End DOMContentLoaded
