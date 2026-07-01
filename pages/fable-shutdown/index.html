@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El Apagón de Fable 5 — Cuando el gobierno cerró el modelo más potente del mundo</title>
-<meta name="description" content="Análisis profundo del cierre forzado de Claude Fable 5 y Mythos 5 por el gobierno de EE.UU., el lanzamiento de GPT 5.6 con restricciones por nacionalidad, y sus implicaciones para el futuro de la IA global. Actualizado 27 jun 2026.">
+<title>El Apagón de Fable 5 — Cuando el gobierno cerró el modelo más potente del mundo (y lo volvió a abrir)</title>
+<meta name="description" content="Análisis profundo del cierre forzado de Claude Fable 5 y Mythos 5 por el gobierno de EE.UU., su restauración el 2 de julio de 2026, el lanzamiento de Sonnet 5, y sus implicaciones para el futuro de la IA global. Actualizado 1 jul 2026.">
 <style>
 :root {
   --bg: #07080a;
@@ -359,7 +359,54 @@ body {
   50% { transform: rotate(45deg) translateY(6px); opacity: 0.8; }
 }
 
-/* STATUS INDICATOR */
+/* ── BACK ONLINE BANNER ── */
+.back-online-banner {
+  background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(6,182,212,0.08));
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin: 2rem auto;
+  max-width: 860px;
+  text-align: center;
+  animation: banner-pulse 3s ease-in-out infinite;
+}
+.back-online-banner .banner-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.back-online-banner .banner-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px rgba(34,197,94,0.6);
+  animation: dot-blink 1.5s ease-in-out infinite;
+}
+.back-online-banner .banner-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+.back-online-banner .banner-desc {
+  font-size: 0.95em;
+  color: var(--text);
+  line-height: 1.6;
+}
+@keyframes banner-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(34,197,94,0.1); }
+  50% { box-shadow: 0 0 40px rgba(34,197,94,0.2); }
+}
+
+/* ── STATUS INDICATOR ── */
 .status-indicator {
   position: absolute;
   top: 1.5rem;
@@ -880,6 +927,21 @@ body.lang-en [data-lang="es"] { display: none !important; }
 <!-- ═══════ MAIN CONTENT ═══════ -->
 <div class="content">
 
+<!-- ── BACK ONLINE BANNER ── -->
+<div class="back-online-banner">
+  <div class="banner-status">
+    <span class="banner-dot"></span>
+    <span data-lang="es">Modelo Restaurado</span><span data-lang="en">Model Restored</span>
+  </div>
+  <div class="banner-title">
+    <span data-lang="es">Fable 5 ha vuelto</span><span data-lang="en">Fable 5 is back</span>
+  </div>
+  <div class="banner-desc">
+    <span data-lang="es">El 1 de julio de 2026, el Departamento de Comercio de EE.UU. levantó las restricciones. Anthropic empezó a restaurar el acceso el 2 de julio. 19 días de apagón, finalmente resuelto.</span>
+    <span data-lang="en">On July 1, 2026, the US Commerce Department lifted restrictions. Anthropic began restoring access on July 2. 19 days of blackout, finally resolved.</span>
+  </div>
+</div>
+
 <!-- ── LO QUE OCURRIÓ ── -->
 <div class="section fade-in" id="hechos">
   <div class="section-label"><span data-lang="es">Los Hechos</span><span data-lang="en">The Facts</span></div>
@@ -1084,6 +1146,24 @@ body.lang-en [data-lang="es"] { display: none !important; }
       </div>
       <div class="tl-desc" data-lang="es">Fable 5 sigue suspendido. Mientras tanto, GPT 5.6 se lanza con restricciones de acceso por nacionalidad. El patrón es claro: la IA fronteriza ya no se lanza — se licencia. Washington decide quién accede primero; el resto espera.</div>
       <div class="tl-desc" data-lang="en">Fable 5 remains suspended. Meanwhile, GPT 5.6 launches with nationality-based access restrictions. The pattern is clear: frontier AI is no longer launched — it is licensed. Washington decides who gets access first; everyone else waits.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">30 JUN</div>
+      <div class="tl-title">
+        <span data-lang="es">Anthropic lanza Claude Sonnet 5</span>
+        <span data-lang="en">Anthropic launches Claude Sonnet 5</span>
+      </div>
+      <div class="tl-desc" data-lang="es">Mientras Fable 5 sigue offline, Anthropic lanza Sonnet 5 como modelo por defecto para Free y Pro. Lo posiciona como más potente en workflows agenticos (browsers, terminales, planificación autónoma). Precio introductorio: $2/millón input, $10/millón output hasta agosto. No es un reemplazo de Fable 5, pero cubre el hueco.</div>
+      <div class="tl-desc" data-lang="en">While Fable 5 remains offline, Anthropic launches Sonnet 5 as the default model for Free and Pro. Positioned as stronger in agentic workflows (browsers, terminals, autonomous planning). Introductory pricing: $2M input, $10M output through August. Not a Fable 5 replacement, but fills the gap.</div>
+    </div>
+    <div class="tl-item" style="border-left: 2px solid var(--green);">
+      <div class="tl-time" style="color: var(--green);">1 JUL</div>
+      <div class="tl-title">
+        <span data-lang="es">🟢 EE.UU. levanta las restricciones — Fable 5 vuelve</span>
+        <span data-lang="en">🟢 US lifts restrictions — Fable 5 returns</span>
+      </div>
+      <div class="tl-desc" data-lang="es"><strong>El desenlace.</strong> El Departamento de Comercio notifica a Anthropic que retira los controles de exportación. Anthropic anuncia que empezará a restaurar acceso a Fable 5 y Mythos 5 a partir del 2 de julio. El secretario Lutnick confirma que Anthropic acordó «detectar y abordar proactivamente riesgos de seguridad» y colaborar con el gobierno en estándares para futuros modelos. 19 días de apagón, finalmente resuelto.</div>
+      <div class="tl-desc" data-lang="en"><strong>The resolution.</strong> The Commerce Department notifies Anthropic it is lifting export controls. Anthropic announces it will begin restoring access to Fable 5 and Mythos 5 starting July 2. Secretary Lutnick confirms Anthropic agreed to "proactively detect and address security risks" and collaborate with the government on standards for future models. 19 days of blackout, finally resolved.</div>
     </div>
   </div>
 </div>
@@ -1497,9 +1577,9 @@ body.lang-en [data-lang="es"] { display: none !important; }
     Anthropic is actively suing the US government after being labeled a <strong>"supply chain risk"</strong>, alleging retaliation for refusing to allow AI use in autonomous warfare and mass surveillance. A San Francisco judge has granted a <strong>preliminary injunction</strong> pausing the government's directive while litigation proceeds.
   </p>
 
-  <div class="highlight-box">
-    <span data-lang="es"><strong>Situación actual (22 de junio):</strong> Los modelos Fable 5 y Mythos 5 permanecen suspendidos. Sin fecha de retorno anunciada tras diez días. El plazo de reembolsos (20 de junio) ya ha cerrado. El 23 de junio entra en vigor el sistema de créditos prepagados ($10/millón input, $50/millón output), aunque Anthropic no ha aclarado cómo se ejecutará durante la suspensión. Trump ha ablandado su postura tras la reunión G7 con Amodei, pero la directiva del Departamento de Comercio sigue vigente sin cambios legales. Trump ha mencionado la Defense Production Act como poder reservado. El mercado predictivo Kalshi da un 57% de probabilidad de restauración antes del 1 de julio. Anthropic aún no ha publicado la refutación técnica prometida. La actualización de la política de privacidad (efectiva 8 de julio) sugiere un posible camino hacia la restauración solo para ciudadanos estadounidenses mediante verificación de identidad.</span>
-    <span data-lang="en"><strong>Current status (June 22):</strong> Fable 5 and Mythos 5 models remain suspended. No return date announced after ten days. The refund deadline (June 20) has closed. On June 23, the prepaid credit system takes effect ($10/million input, $50/million output), though Anthropic has not clarified how this will execute during the suspension. Trump has softened his stance after the G7 meeting with Amodei, but the Commerce Department directive remains fully active with no legal changes. Trump has mentioned the Defense Production Act as a reserved power. The Kalshi prediction market gives a 57% probability of restoration before July 1. Anthropic has still not published its promised technical rebuttal. The privacy policy update (effective July 8) suggests a possible path toward US-citizen-only restoration via identity verification.</span>
+  <div class="highlight-box" style="border-left-color: var(--green); background: rgba(34,197,94,0.06);">
+    <span data-lang="es"><strong>✅ RESUELTO (1 de julio):</strong> El Departamento de Comercio de EE.UU. ha levantado las restricciones sobre Fable 5 y Mythos 5. Anthropic anunció que empezará a restaurar el acceso a partir del 2 de julio de 2026. El acuerdo incluye que Anthropic detectará y abordará proactivamente riesgos de seguridad y colaborará con el gobierno en estándares para futuros modelos. El apagón duró 19 días.</span>
+    <span data-lang="en"><strong>✅ RESOLVED (July 1):</strong> The US Commerce Department has lifted restrictions on Fable 5 and Mythos 5. Anthropic announced it will begin restoring access starting July 2, 2026. The agreement includes Anthropic proactively detecting and addressing security risks and collaborating with the government on standards for future models. The blackout lasted 19 days.</span>
   </div>
 </div>
 
@@ -1576,6 +1656,18 @@ body.lang-en [data-lang="es"] { display: none !important; }
           <td data-label="Fecha"><span data-lang="es">27 jun 2026</span><span data-lang="en">June 27, 2026</span></td>
           <td data-label="Evento"><span data-lang="es"><strong>Estado actual:</strong> Fable 5 sigue suspendido (15 días). GPT 5.6 en preview limitado. Sin fecha de retorno para Fable 5. Orden ejecutiva de revisión previa de 30 días en vigor.</span><span data-lang="en"><strong>Current status:</strong> Fable 5 still suspended (15 days). GPT 5.6 in limited preview. No return date for Fable 5. 30-day pre-review executive order in effect.</span></td>
         </tr>
+        <tr>
+          <td data-label="Fecha"><span data-lang="es">30 jun 2026</span><span data-lang="en">June 30, 2026</span></td>
+          <td data-label="Evento"><span data-lang="es"><strong>Sonnet 5 lanzado:</strong> Anthropic lanza Claude Sonnet 5 como modelo por defecto para Free y Pro. Posicionado como más potente en agentic workflows. Precio introductorio: $2M input / $10M output.</span><span data-lang="en"><strong>Sonnet 5 launched:</strong> Anthropic launches Claude Sonnet 5 as default model for Free and Pro. Positioned as stronger in agentic workflows. Introductory pricing: $2M input / $10M output.</span></td>
+        </tr>
+        <tr style="background: rgba(34,197,94,0.04);">
+          <td data-label="Fecha" style="color: var(--green);"><span data-lang="es">1 jul 2026</span><span data-lang="en">July 1, 2026</span></td>
+          <td data-label="Evento"><span data-lang="es"><strong>✅ Restricciones levantadas:</strong> El Departamento de Comercio notifica a Anthropic que retira los controles de exportación. Anthropic anuncia restauración de acceso desde el 2 de julio.</span><span data-lang="en"><strong>✅ Restrictions lifted:</strong> Commerce Department notifies Anthropic it is lifting export controls. Anthropic announces restoration of access starting July 2.</span></td>
+        </tr>
+        <tr style="background: rgba(34,197,94,0.04);">
+          <td data-label="Fecha" style="color: var(--green);"><span data-lang="es">2 jul 2026</span><span data-lang="en">July 2, 2026</span></td>
+          <td data-label="Evento"><span data-lang="es"><strong>🟢 Fable 5 + Mythos 5 restaurados:</strong> Anthropic empieza a restaurar el acceso a ambos modelos. El apagón de 19 días ha terminado.</span><span data-lang="en"><strong>🟢 Fable 5 + Mythos 5 restored:</strong> Anthropic begins restoring access to both models. The 19-day blackout is over.</span></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1621,6 +1713,11 @@ body.lang-en [data-lang="es"] { display: none !important; }
   <div class="highlight-box cyan">
     <span data-lang="es"><strong>Nota:</strong> Los datos de Kalshi reflejan el sentimiento del mercado a 22 de junio de 2026. No son asesoramiento financiero ni predicciones garantizadas. Fuente: <a href="https://news.kalshi.com/p/fable-5-odds-anthropic-access-restored-july-57-percent" target="_blank" rel="noopener" style="color: var(--cyan);">Kalshi News</a>.</span>
     <span data-lang="en"><strong>Note:</strong> Kalshi data reflects market sentiment as of June 22, 2026. Not financial advice or guaranteed predictions. Source: <a href="https://news.kalshi.com/p/fable-5-odds-anthropic-access-restored-july-57-percent" target="_blank" rel="noopener" style="color: var(--cyan);">Kalshi News</a>.</span>
+  </div>
+
+  <div class="highlight-box" style="border-left-color: var(--green); background: rgba(34,197,94,0.06); margin-top: 1rem;">
+    <span data-lang="es"><strong>✅ Resuelto (1 de julio):</strong> El mercado predictivo acertó. Fable 5 y Mythos 5 fueron restaurados tras 19 días de suspensión. El Departamento de Comercio retiró los controles de exportación y Anthropic empezó a restaurar el acceso el 2 de julio. La apuesta de Kalshi al 57% de restauración antes del 1 de julio se materializó.</span>
+    <span data-lang="en"><strong>✅ Resolved (July 1):</strong> The prediction market was right. Fable 5 and Mythos 5 were restored after 19 days of suspension. The Commerce Department lifted export controls and Anthropic began restoring access on July 2. Kalshi's 57% probability of restoration before July 1 came to pass.</span>
   </div>
 </div>
 
@@ -1858,6 +1955,13 @@ body.lang-en [data-lang="es"] { display: none !important; }
       <strong>7. "Voluntary" isn't really voluntary.</strong> OpenAI calls its collaboration with the government "voluntary." But when the alternative is the government shutting down your model overnight (as happened to Anthropic), how much choice is there really? It's like saying it's "voluntary" to hand over your wallet when someone asks with a gun. The result is the same: the government controls what AI you can use, and companies "cooperate" because they have no option.
     </p>
 
+    <p class="section-text" data-lang="es">
+      <strong>8. El desenlace no cambia el precedente.</strong> Que Fable 5 haya vuelto es buena noticia para los usuarios, pero no borra lo que ocurrió. El gobierno demostró que puede apagar y encender modelos de IA a voluntad. Que ahora lo haya vuelto a encender no significa que no lo vuelva a apagar mañana. La diferencia es que ahora todos saben que es posible. Anthropic acordó "detectar y abordar proactivamente riesgos" — en la práctica, autovigilancia bajo supervisión gubernamental. Y Sonnet 5, lanzado durante el apagón, demuestra que Anthropic ya tiene un modelo competente para cubrir el hueco cuando el gobierno decida volver a tirar del cable.
+    </p>
+    <p class="section-text" data-lang="en">
+      <strong>8. The resolution doesn't erase the precedent.</strong> Fable 5 coming back is good news for users, but it doesn't undo what happened. The government proved it can switch AI models on and off at will. That it turned them back on doesn't mean it won't shut them down again tomorrow. The difference is everyone now knows it's possible. Anthropic agreed to "proactively detect and address risks" — in practice, self-monitoring under government supervision. And Sonnet 5, launched during the blackout, proves Anthropic already has a capable model to fill the gap when the government decides to pull the plug again.
+    </p>
+
     <div class="highlight-box" style="margin-top: 1.5rem;">
       <span data-lang="es"><strong>En resumen:</strong> esto no es solo sobre Fable 5. Es sobre quién controla el futuro de la inteligencia artificial. ¿Las empresas que la crean? Los gobiernos que la regulan? O la comunidad global que la necesita? La respuesta que demos en los próximos meses va a definir la próxima década tecnológica.</span>
       <span data-lang="en"><strong>In summary:</strong> this is not just about Fable 5. It's about who controls the future of artificial intelligence. The companies that create it? The governments that regulate it? Or the global community that needs it? The answer we give in the coming months will define the next technological decade.</span>
@@ -1958,6 +2062,26 @@ body.lang-en [data-lang="es"] { display: none !important; }
         <div class="quote-text" data-lang="es">¿Ha vuelto Fable 5? No — Día 15, demo Garbarino e ironía de Mythos</div>
         <div class="quote-text" data-lang="en">Is Fable 5 back? No — Day 15, Garbarino demo & Mythos irony</div>
         <div class="quote-author"><strong>explainx.ai</strong> — explainx.ai — 27 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
+      </a>
+      <a href="https://www.aljazeera.com/economy/2026/7/1/us-lifts-restrictions-on-powerful-ai-models-fable-mythos-anthropic-says" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">EE.UU. levanta restricciones a Fable y Mythos de Anthropic — acceso se restaura</div>
+        <div class="quote-text" data-lang="en">US lifts restrictions on Anthropic's powerful AI models Fable and Mythos</div>
+        <div class="quote-author"><strong>Al Jazeera</strong> — aljazeera.com — 1 <span data-lang="es">jul</span><span data-lang="en">Jul</span> 2026</div>
+      </a>
+      <a href="https://www.forbes.com/sites/ronschmelzer/2026/06/29/is-anthropics-fable-5-coming-back-this-week/" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">¿Vuelve Fable 5 de Anthropic esta semana? Análisis del posible regreso</div>
+        <div class="quote-text" data-lang="en">Is Anthropic's Fable 5 coming back this week? Analysis of potential return</div>
+        <div class="quote-author"><strong>Forbes</strong> — forbes.com — 29 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
+      </a>
+      <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">Anthropic presenta Claude Sonnet 5 — más potente en agentic workflows</div>
+        <div class="quote-text" data-lang="en">Introducing Claude Sonnet 5 — stronger agentic performance</div>
+        <div class="quote-author"><strong>Anthropic</strong> — anthropic.com — 30 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
+      </a>
+      <a href="https://techcrunch.com/2026/06/30/anthropic-launches-claude-sonnet-5-as-a-cheaper-way-to-run-agents/" target="_blank" rel="noopener" class="quote-card" style="text-decoration:none;color:inherit;">
+        <div class="quote-text" data-lang="es">Anthropic lanza Claude Sonnet 5 como forma más económica de ejecutar agentes</div>
+        <div class="quote-text" data-lang="en">Anthropic launches Claude Sonnet 5 as a cheaper way to run agents</div>
+        <div class="quote-author"><strong>TechCrunch</strong> — techcrunch.com — 30 <span data-lang="es">jun</span><span data-lang="en">Jun</span> 2026</div>
       </a>
     </div>
   </div>
