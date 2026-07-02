@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oferta de Destinos 2026 — Ordenados desde Miguelturra</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #242836;
+  --border: #2e3348;
+  --text: #e4e6f0;
+  --text2: #9ca0b8;
+  --accent: #6c8cff;
+  --accent2: #4a6ae0;
+  --guarderia: #4ade80;
+  --ies: #60a5fa;
+  --cee: #f59e0b;
+  --resid: #f87171;
+  --otro: #a78bfa;
+  --admin: #94a3b8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+header {
+  text-align: center;
+  padding: 32px 16px 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+header p {
+  color: var(--text2);
+  font-size: 0.95rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-card .num {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-card .label {
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.view-toggle {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.view-btn {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.filter-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(108, 140, 255, 0.1);
+}
+
+.filter-btn:hover {
+  border-color: var(--accent2);
+}
+
+.print-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: auto;
+  transition: all 0.2s;
+}
+
+.print-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.plaza-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plaza-item {
+  display: grid;
+  grid-template-columns: 40px 1fr 100px 90px 70px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+
+.plaza-item:hover {
+  border-color: var(--border);
+  background: var(--surface2);
+}
+
+.plaza-item .pos {
+  font-weight: 700;
+  color: var(--text2);
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.plaza-item .info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plaza-item .centro {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.plaza-item .localidad-prov {
+  font-size: 0.75rem;
+  color: var(--text2);
+}
+
+.plaza-item .tipo-badge {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.plaza-item .distancia {
+  text-align: right;
+  font-weight: 600;
+  color: var(--text2);
+  font-size: 0.8rem;
+}
+
+.plaza-item .vacantes {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text2);
+  font-size: 0.8rem;
+}
+
+.tipo-guarderia { background: rgba(74, 222, 128, 0.15); color: var(--guarderia); }
+.tipo-ies { background: rgba(96, 165, 250, 0.15); color: var(--ies); }
+.tipo-cee { background: rgba(245, 158, 11, 0.15); color: var(--cee); }
+.tipo-resid_mayores { background: rgba(248, 113, 113, 0.15); color: var(--resid); }
+.tipo-resid_sanidad { background: rgba(248, 113, 113, 0.15); color: var(--resid); }
+.tipo-ciapa { background: rgba(248, 113, 113, 0.15); color: var(--resid); }
+.tipo-cifp { background: rgba(96, 165, 250, 0.15); color: var(--ies); }
+.tipo-otro_educativo { background: rgba(96, 165, 250, 0.15); color: var(--ies); }
+.tipo-administrativo { background: rgba(148, 163, 184, 0.15); color: var(--admin); }
+.tipo-otro { background: rgba(167, 139, 250, 0.15); color: var(--otro); }
+
+.separador-pueblo {
+  grid-template-columns: 1fr !important;
+  padding: 16px 16px 8px !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+.separador-pueblo .sub {
+  font-size: 0.8rem;
+  color: var(--text2);
+  font-weight: 400;
+}
+
+.separador-tipo {
+  grid-template-columns: 1fr !important;
+  padding: 16px 16px 8px !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 1rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+.info-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 0.85rem;
+  color: var(--text2);
+}
+
+.info-box strong {
+  color: var(--text);
+}
+
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text2);
+  font-size: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .plaza-item {
+    grid-template-columns: 32px 1fr 70px;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  
+  .plaza-item .distancia,
+  .plaza-item .vacantes {
+    display: none;
+  }
+  
+  .plaza-item .info {
+    font-size: 0.8rem;
+  }
+  
+  .plaza-item .centro {
+    font-size: 0.8rem;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .print-btn {
+    margin-left: 0;
+  }
+  
+  header h1 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+  
+  .controls, .print-btn, .filter-group {
+    display: none !important;
+  }
+  
+  .plaza-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+  
+  .plaza-item .centro,
+  .plaza-item .localidad-prov,
+  .plaza-item .pos,
+  .plaza-item .distancia,
+  .plaza-item .vacantes {
+    color: #000;
+  }
+  
+  .tipo-badge {
+    border: 1px solid #999;
+  }
+  
+  header {
+    border-bottom: 2px solid #000;
+  }
+  
+  header h1 {
+    -webkit-text-fill-color: #000;
+    color: #000;
+  }
+  
+  .stats {
+    display: none;
+  }
+  
+  .legend {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+  }
+  
+  .separador-pueblo, .separador-tipo {
+    color: #000;
+    border-bottom: 2px solid #000;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Oferta de Destinos 2026</h1>
+  <p>Personal de Limpieza y Servicios Domésticos — Junta de Comunidades de Castilla-La Mancha</p>
+  <p style="margin-top: 8px; font-size: 0.85rem;">Ordenados por distancia desde <strong>Miguelturra</strong> · Posición: <strong>233</strong> de 237 vacantes</p>
+</header>
+
+<div class="container">
+  <div class="stats" id="stats"></div>
+  
+  <div class="info-box">
+    <strong>📋 Cómo usar:</strong> Selecciona una vista de ordenamiento y filtra por tipo de centro. 
+    La <strong>Vista A</strong> agrupa por pueblo (agota las opciones de cada localidad antes de pasar a la siguiente). 
+    La <strong>Vista B</strong> agrupa por tipo de centro (primero guarderías e institutos de todos los pueblos, luego residencias).
+  </div>
+  
+  <div class="controls">
+    <div class="view-toggle">
+      <button class="view-btn active" onclick="setView('pueblo')">📍 Vista A: Por pueblo</button>
+      <button class="view-btn" onclick="setView('tipo')">🏫 Vista B: Por tipo</button>
+    </div>
+    
+    <div class="filter-group">
+      <button class="filter-btn active" onclick="toggleFilter(this, 'all')">Todos</button>
+      <button class="filter-btn" onclick="toggleFilter(this, 'guarderia')">🍼 Guarderías</button>
+      <button class="filter-btn" onclick="toggleFilter(this, 'ies')">🏫 IES</button>
+      <button class="filter-btn" onclick="toggleFilter(this, 'cee')">⚠️ CEE</button>
+      <button class="filter-btn" onclick="toggleFilter(this, 'resid_mayores')">🏠 Res. Mayores</button>
+      <button class="filter-btn" onclick="toggleFilter(this, 'otro')">📌 Otros</button>
+    </div>
+    
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir</button>
+  </div>
+  
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--guarderia)"></div>Guardería (CEI/E.I.)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ies)"></div>Instituto (IES)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--cee)"></div>Centro Especial (CEE)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--resid)"></div>Residencia / Sanidad</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--otro)"></div>Otros centros</div>
+  </div>
+  
+  <div class="plaza-list" id="plazaList"></div>
+</div>
+
+<footer>
+  Datos extraídos de la Resolución de 26/06/2026 (DOCM núm. 124 de 2 de julio de 2026) · 
+  Distancias aproximadas por carretera desde Miguelturra · 
+  Generado por cocobot 🐱
+</footer>
+
+<script>
+const plazas = [{"orden": 30, "codigo": "00846", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Miguelturra", "centro": "IES.Campo Calatrava", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 0}, {"orden": 31, "codigo": "00849", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Pedro Muñoz", "centro": "IES. Isabel Martinez", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 13}, {"orden": 24, "codigo": "02733", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Campo de Criptana", "centro": "E.I los Gigantes", "tipo": "guarderia", "tipo_label": "Guardería (CEI/E.I.)", "tipo_order": 1, "distancia_km": 19}, {"orden": 22, "codigo": "00835", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Campo de Criptana", "centro": "IES.Isabel Perillan", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 19}, {"orden": 23, "codigo": "00802", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Campo de Criptana", "centro": "Conservatorio Musica", "tipo": "otro_educativo", "tipo_label": "Otro centro educativo", "tipo_order": 2, "distancia_km": 19}, {"orden": 27, "codigo": "00916", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Manzanares", "centro": "IES.Azuer", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 22}, {"orden": 28, "codigo": "00918", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Manzanares", "centro": "IES.Pedro Alvarez S.", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 22}, {"orden": 25, "codigo": "00837", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Herencia", "centro": "IES.Hermog.Rodriguez", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 23}, {"orden": 39, "codigo": "00854", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Santa Cruz de Mudela", "centro": "IES.Maximo Laguna", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 26}, {"orden": 19, "codigo": "00824", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Almodovar del Campo", "centro": "IES.San J.B.Concepc.", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 28}, {"orden": 109, "codigo": "01576", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villacañas", "centro": "IES.Garcilaso Vega", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 29}, {"orden": 110, "codigo": "01578", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villacañas", "centro": "IES.Enrique de Arfe", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 29}, {"orden": 26, "codigo": "00841", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Malagón", "centro": "IES.Estados Duque", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 30}, {"orden": 20, "codigo": "00826", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Argamasilla de Alba", "centro": "IES.Vicente Cano", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 33}, {"orden": 32, "codigo": "00852", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Porzuna", "centro": "IES.Ribera Bullaque", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 36}, {"orden": 51, "codigo": "00950", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villanueva de los Infantes", "centro": "IES.Francisc.Quevedo", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 39}, {"orden": 52, "codigo": "00952", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villanueva de los Infantes", "centro": "IES.Ramon Giraldo", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 39}, {"orden": 29, "codigo": "00843", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Membrilla", "centro": "IES.Marmaria", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 41}, {"orden": 40, "codigo": "00857", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Socuellamos", "centro": "IES.Fernando Mena", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 47}, {"orden": 45, "codigo": "02781", "denominacion": "Servicios Domesticos 2", "vacantes": 2, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tomelloso", "centro": "E.I Dulcinea", "tipo": "guarderia", "tipo_label": "Guardería (CEI/E.I.)", "tipo_order": 1, "distancia_km": 53}, {"orden": 41, "codigo": "00934", "denominacion": "Personal de Limpieza 4", "vacantes": 4, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tomelloso", "centro": "IES.F.Garcia Pavon", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 53}, {"orden": 42, "codigo": "00936", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tomelloso", "centro": "IES.Eladio Cabañero", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 53}, {"orden": 43, "codigo": "00938", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tomelloso", "centro": "IES.Alto Guadiana", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 53}, {"orden": 44, "codigo": "00940", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tomelloso", "centro": "IES.Airen", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 53}, {"orden": 49, "codigo": "02795", "denominacion": "Servicios Domesticos 2", "vacantes": 2, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Valdepeñas", "centro": "E.I Cervantes", "tipo": "guarderia", "tipo_label": "Guardería (CEI/E.I.)", "tipo_order": 1, "distancia_km": 55}, {"orden": 50, "codigo": "02788", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Valdepeñas", "centro": "E.I Virgen Consolac.", "tipo": "guarderia", "tipo_label": "Guardería (CEI/E.I.)", "tipo_order": 1, "distancia_km": 55}, {"orden": 46, "codigo": "00943", "denominacion": "Personal de Limpieza 4", "vacantes": 4, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Valdepeñas", "centro": "IES.Gregorio Prieto", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 55}, {"orden": 47, "codigo": "00946", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Valdepeñas", "centro": "IES.Bernar.Balbuena", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 55}, {"orden": 48, "codigo": "00948", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Valdepeñas", "centro": "IES.Francisco Nieva", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 55}, {"orden": 21, "codigo": "00829", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Bolaños de Calatrava", "centro": "IES.Berenguela Cast.", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 57}, {"orden": 17, "codigo": "00877", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Almagro", "centro": "IES.Antonio Calvin", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 68}, {"orden": 18, "codigo": "00879", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Almagro", "centro": "IES.C.Fdez.Cordoba", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 68}, {"orden": 33, "codigo": "00930", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puertollano", "centro": "IES.Leonardo Da Vinci", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 69}, {"orden": 34, "codigo": "00783", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puertollano", "centro": "Escuela Ofic.Idiomas", "tipo": "otro_educativo", "tipo_label": "Otro centro educativo", "tipo_order": 2, "distancia_km": 69}, {"orden": 35, "codigo": "00921", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puertollano", "centro": "IES.Galileo Galilei", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 69}, {"orden": 36, "codigo": "00923", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puertollano", "centro": "IES.Damaso Alonso", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 69}, {"orden": 37, "codigo": "00927", "denominacion": "Personal de Limpieza 4", "vacantes": 4, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puertollano", "centro": "Cifp.  Virgen de Gracia", "tipo": "cifp", "tipo_label": "CIFP", "tipo_order": 2, "distancia_km": 69}, {"orden": 38, "codigo": "00932", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puertollano", "centro": "IES.C.Juan de Tavora", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 69}, {"orden": 117, "codigo": "02884", "denominacion": "Servicios Domesticos 4", "vacantes": 4, "jornada": "TR", "provincia": "Ciudad Real", "consejeria": "Bienestar Social", "localidad": "Puertollano", "centro": "Resid.May. Pocitas del", "tipo": "resid_mayores", "tipo_label": "Residencia de Mayores", "tipo_order": 4, "distancia_km": 69}, {"orden": 91, "codigo": "01448", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Consuegra", "centro": "IES.Consaburum", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 83}, {"orden": 97, "codigo": "05671", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "JO", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Madridejos", "centro": "CEE Mingoliva", "tipo": "cee", "tipo_label": "Centro Especial (CEE)", "tipo_order": 3, "distancia_km": 84}, {"orden": 98, "codigo": "01464", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Navalmorales (Los)", "centro": "IES.Los Navalmorales", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 88}, {"orden": 10, "codigo": "00686", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villarrobledo", "centro": "Varios Centros Educativos", "tipo": "ies", "tipo_label": "Varios centros educativos", "tipo_order": 2, "distancia_km": 90}, {"orden": 101, "codigo": "01468", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puebla de Almoradiel (La)", "centro": "IES.Aldonza Lorenzo", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 91}, {"orden": 16, "codigo": "02713", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "JO", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Alcazar de San Juan", "centro": "E.I El Torreon", "tipo": "guarderia", "tipo_label": "Guardería (CEI/E.I.)", "tipo_order": 1, "distancia_km": 94}, {"orden": 13, "codigo": "00867", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Alcazar de San Juan", "centro": "IES.Juan Bosco", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 94}, {"orden": 14, "codigo": "00869", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Alcazar de San Juan", "centro": "IES.Maria Zambrano", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 94}, {"orden": 15, "codigo": "00871", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Alcazar de San Juan", "centro": "IES.Miguel Cervantes", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 94}, {"orden": 106, "codigo": "01474", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Sonseca", "centro": "IES.La Sisla", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 96}, {"orden": 111, "codigo": "01480", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villaluenga de la Sagra", "centro": "IES.Castillo Aguila", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 96}, {"orden": 103, "codigo": "01497", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Quintanar de la Orden", "centro": "IES.Alonso Quijano", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 102}, {"orden": 104, "codigo": "01500", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Quintanar de la Orden", "centro": "IES.Inf.Don Fadrique", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 102}, {"orden": 11, "codigo": "00885", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Ciudad Real", "centro": "IES.Maestre Calatr.", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 105}, {"orden": 12, "codigo": "00894", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Ciudad Real", "consejeria": "Educación, Cultura y Deportes", "localidad": "Ciudad Real", "centro": "IES.H.Perez Pulgar", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 105}, {"orden": 116, "codigo": "02863", "denominacion": "Servicios Domesticos 12", "vacantes": 12, "jornada": "TR", "provincia": "Ciudad Real", "consejeria": "Bienestar Social", "localidad": "Ciudad Real", "centro": "Resid.May. Gregorio", "tipo": "resid_mayores", "tipo_label": "Residencia de Mayores", "tipo_order": 4, "distancia_km": 105}, {"orden": 92, "codigo": "01450", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Corral de Almaguer", "centro": "IES.La Besana", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 110}, {"orden": 93, "codigo": "01452", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Escalona", "centro": "IES.Lazarillo Tormes", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 112}, {"orden": 105, "codigo": "01586", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Santa Cruz de la Zarza", "centro": "S.Ens.Sec.St.Cruz Z.", "tipo": "administrativo", "tipo_label": "Administrativo", "tipo_order": 5, "distancia_km": 113}, {"orden": 96, "codigo": "01488", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Illescas", "centro": "IES.Juan de Padilla", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 119}, {"orden": 94, "codigo": "01454", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Fuensalida", "centro": "IES.Aldebaran", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 120}, {"orden": 95, "codigo": "01457", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Gálvez", "centro": "IES.Montes Toledo", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 131}, {"orden": 90, "codigo": "01442", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Bargas", "centro": "IES.Julio Verne", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 136}, {"orden": 107, "codigo": "01571", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Torrijos", "centro": "IES.Juan de Padilla", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 136}, {"orden": 121, "codigo": "03381", "denominacion": "Servicios Domesticos 3", "vacantes": 3, "jornada": "TR", "provincia": "Toledo", "consejeria": "Bienestar Social", "localidad": "Torrijos", "centro": "Resid.May. Quijote y", "tipo": "resid_mayores", "tipo_label": "Residencia de Mayores", "tipo_order": 4, "distancia_km": 136}, {"orden": 8, "codigo": "00683", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Roda (La)", "centro": "IES.Maestro J.Rubio", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 137}, {"orden": 2, "codigo": "00589", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Alcaraz", "centro": "IES.Pedro Simon Abr.", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 141}, {"orden": 108, "codigo": "01477", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Valmojado", "centro": "IES.Cañada Real", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 144}, {"orden": 112, "codigo": "01484", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Yepes", "centro": "IES.Carpetania", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 149}, {"orden": 9, "codigo": "00608", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tobarra", "centro": "IES.Cristob.P.Pastor", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 150}, {"orden": 102, "codigo": "01471", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Puebla de Montalban (La)", "centro": "IES.Juan de Lucena", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 152}, {"orden": 7, "codigo": "00604", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Madrigueras", "centro": "IES.Rio Jucar", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 161}, {"orden": 5, "codigo": "00671", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Hellín", "centro": "IES.Justo Millan", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 163}, {"orden": 6, "codigo": "00675", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JO", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Hellín", "centro": "IES.Melchor Macanaz", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 163}, {"orden": 61, "codigo": "01105", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "San Clemente", "centro": "IES.Diego Torrente", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 164}, {"orden": 65, "codigo": "01110", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villares del Saz", "centro": "IES.Los Sauces", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 166}, {"orden": 57, "codigo": "01092", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Landete", "centro": "IES.Serrania Baja", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 174}, {"orden": 64, "codigo": "01149", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Villamayor de Santiago", "centro": "IESO. Itaca", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 175}, {"orden": 3, "codigo": "00664", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Almansa", "centro": "IES.Esc.J.L.Sanchez", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 176}, {"orden": 55, "codigo": "01084", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Belmonte", "centro": "IES.San Juan Castillo", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 177}, {"orden": 62, "codigo": "01146", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Sisante", "centro": "IESO Camino Romano", "tipo": "otro", "tipo_label": "Otro", "tipo_order": 5, "distancia_km": 178}, {"orden": 99, "codigo": "01492", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Ocaña", "centro": "IES.Alonso Ercilla", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 180}, {"orden": 100, "codigo": "01494", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Ocaña", "centro": "IES.Miguel Hernandez", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 180}, {"orden": 80, "codigo": "01533", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JP", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Azarquiel", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 81, "codigo": "01534", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Azarquiel", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 82, "codigo": "01538", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Carlos III", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 83, "codigo": "01552", "denominacion": "Personal de Limpieza 5", "vacantes": 5, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Univers.Laboral", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 84, "codigo": "01553", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Univers.Laboral", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 85, "codigo": "01558", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JP", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.El Greco", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 86, "codigo": "01561", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Juanelo Turriano", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 87, "codigo": "01563", "denominacion": "Personal de Limpieza 4", "vacantes": 4, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Sefarad", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 88, "codigo": "01565", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "IES.Alfonso X El Sab.", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 183}, {"orden": 89, "codigo": "05655", "denominacion": "Personal de Limpieza 4", "vacantes": 4, "jornada": "JT", "provincia": "Toledo", "consejeria": "Educación, Cultura y Deportes", "localidad": "Toledo", "centro": "Cifp.  Nº 1 de Toledo", "tipo": "cifp", "tipo_label": "CIFP", "tipo_order": 2, "distancia_km": 183}, {"orden": 120, "codigo": "03347", "denominacion": "Servicios Domesticos 5", "vacantes": 5, "jornada": "TR", "provincia": "Toledo", "consejeria": "Bienestar Social", "localidad": "Toledo", "centro": "Resid.May. Barber", "tipo": "resid_mayores", "tipo_label": "Residencia de Mayores", "tipo_order": 4, "distancia_km": 183}, {"orden": 1, "codigo": "04129", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Toledo", "consejeria": "Hacienda, Adm. Públicas y Trans. Digital", "localidad": "Toledo", "centro": "Servicios Centrales", "tipo": "administrativo", "tipo_label": "Administrativo", "tipo_order": 5, "distancia_km": 183}, {"orden": 56, "codigo": "01137", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Carboneras de Guadazaón", "centro": "Deleg.Prov.Cons.Educación, Cult. y Dep.", "tipo": "administrativo", "tipo_label": "Administrativo", "tipo_order": 5, "distancia_km": 191}, {"orden": 59, "codigo": "01097", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Motilla del Palancar", "centro": "IES.Jorge Manrique", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 193}, {"orden": 54, "codigo": "05067", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "TR", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Cuenca", "centro": "Escuela de Artes", "tipo": "otro_educativo", "tipo_label": "Otro centro educativo", "tipo_order": 2, "distancia_km": 199}, {"orden": 118, "codigo": "03023", "denominacion": "Servicios Domesticos 3", "vacantes": 3, "jornada": "TR", "provincia": "Cuenca", "consejeria": "Bienestar Social", "localidad": "Cuenca", "centro": "Resid.May. las Hoces de", "tipo": "resid_mayores", "tipo_label": "Residencia de Mayores", "tipo_order": 4, "distancia_km": 199}, {"orden": 53, "codigo": "05094", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JP", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Cuenca", "centro": "Deleg.Prov.Cons.Educaci", "tipo": "administrativo", "tipo_label": "Administrativo", "tipo_order": 5, "distancia_km": 199}, {"orden": 4, "codigo": "00595", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Albacete", "consejeria": "Educación, Cultura y Deportes", "localidad": "Casas‑Ibañez", "centro": "IES.Bonifacio Sotos", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 210}, {"orden": 58, "codigo": "01095", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Mota del Cuervo", "centro": "IES.Julian Zarco", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 210}, {"orden": 60, "codigo": "01099", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Pedroñeras (Las)", "centro": "IES.Fray Luis Leon", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 218}, {"orden": 76, "codigo": "01288", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Molina de Aragon", "centro": "IES. Doña Blanca de", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 227}, {"orden": 63, "codigo": "01132", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Cuenca", "consejeria": "Educación, Cultura y Deportes", "localidad": "Tarancón", "centro": "IES.La Hontanilla", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 228}, {"orden": 72, "codigo": "01297", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Azuqueca de Henares", "centro": "IES.Arcipreste Hita", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 234}, {"orden": 73, "codigo": "01300", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Azuqueca de Henares", "centro": "IES.San Isidro", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 234}, {"orden": 77, "codigo": "01290", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Mondejar", "centro": "IES.Alcarria Baja", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 234}, {"orden": 74, "codigo": "01324", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Casar (El)", "centro": "IES.Campiña Alta", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 240}, {"orden": 79, "codigo": "01330", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Yunquera de Henares", "centro": "IES.Clara Campoamor", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 244}, {"orden": 75, "codigo": "01286", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Marchamalo", "centro": "IES.Alejo Vera", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 245}, {"orden": 122, "codigo": "02111", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "TR", "provincia": "Guadalajara", "consejeria": "I.R.I.A.F.", "localidad": "Marchamalo", "centro": "C.I.A.P.A.", "tipo": "ciapa", "tipo_label": "CIAPA", "tipo_order": 4, "distancia_km": 245}, {"orden": 66, "codigo": "01304", "denominacion": "Personal de Limpieza 3", "vacantes": 3, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Guadalajara", "centro": "IES.A.Buero Vallejo", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 255}, {"orden": 67, "codigo": "01309", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Guadalajara", "centro": "IES.Castilla", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 255}, {"orden": 68, "codigo": "01311", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Guadalajara", "centro": "IES.Liceo Caracense", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 255}, {"orden": 69, "codigo": "01314", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Guadalajara", "centro": "IES.Luis de Lucena", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 255}, {"orden": 70, "codigo": "01318", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Guadalajara", "centro": "IES.Jose L.San Pedro", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 255}, {"orden": 71, "codigo": "05651", "denominacion": "Personal de Limpieza 2", "vacantes": 2, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Guadalajara", "centro": "Cifp.  Nº 1 de", "tipo": "cifp", "tipo_label": "CIFP", "tipo_order": 2, "distancia_km": 255}, {"orden": 119, "codigo": "03185", "denominacion": "Servicios Domesticos 3", "vacantes": 3, "jornada": "TR", "provincia": "Guadalajara", "consejeria": "Bienestar Social", "localidad": "Guadalajara", "centro": "Resid.May. los Olmos", "tipo": "resid_mayores", "tipo_label": "Residencia de Mayores", "tipo_order": 4, "distancia_km": 255}, {"orden": 113, "codigo": "03115", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Sanidad", "localidad": "Guadalajara", "centro": "Deleg. Prov. Consej.", "tipo": "administrativo", "tipo_label": "Administrativo", "tipo_order": 5, "distancia_km": 255}, {"orden": 114, "codigo": "02444", "denominacion": "Servicios Domesticos 6", "vacantes": 6, "jornada": "TR", "provincia": "Guadalajara", "consejeria": "Sanidad", "localidad": "Yebes", "centro": "U.Resid. y Rehabilit.", "tipo": "resid_sanidad", "tipo_label": "Unidad Residencial (Sanidad)", "tipo_order": 4, "distancia_km": 268}, {"orden": 115, "codigo": "02445", "denominacion": "Servicios Domesticos 1", "vacantes": 1, "jornada": "JO", "provincia": "Guadalajara", "consejeria": "Sanidad", "localidad": "Yebes", "centro": "U.Resid. y Rehabilit.", "tipo": "resid_sanidad", "tipo_label": "Unidad Residencial (Sanidad)", "tipo_order": 4, "distancia_km": 268}, {"orden": 78, "codigo": "01295", "denominacion": "Personal de Limpieza 1", "vacantes": 1, "jornada": "JT", "provincia": "Guadalajara", "consejeria": "Educación, Cultura y Deportes", "localidad": "Sigüenza", "centro": "IES.Martin Vazquez Arce", "tipo": "ies", "tipo_label": "Instituto (IES)", "tipo_order": 2, "distancia_km": 299}];
+
+let currentView = 'pueblo';
+let activeFilters = new Set(['all']);
+
+function getTipoClass(tipo) {
+  const map = {
+    'guarderia': 'tipo-guarderia',
+    'ies': 'tipo-ies',
+    'cee': 'tipo-cee',
+    'resid_mayores': 'tipo-resid_mayores',
+    'resid_sanidad': 'tipo-resid_mayores',
+    'ciapa': 'tipo-ciapa',
+    'cifp': 'tipo-cifp',
+    'otro_educativo': 'tipo-otro_educativo',
+    'administrativo': 'tipo-administrativo',
+    'otro': 'tipo-otro',
+  };
+  return map[tipo] || 'tipo-otro';
+}
+
+function getTipoShort(tipo) {
+  const map = {
+    'guarderia': '🍼 Guardería',
+    'ies': '🏫 IES',
+    'cee': '⚠️ CEE',
+    'resid_mayores': '🏠 Res. Mayores',
+    'resid_sanidad': '🏥 Res. Sanidad',
+    'ciapa': '🏢 CIAPA',
+    'cifp': '🎓 CIFP',
+    'otro_educativo': '🎓 Otro educativo',
+    'administrativo': '📋 Administrativo',
+    'otro': '📌 Otro',
+  };
+  return map[tipo] || tipo;
+}
+
+function isFiltered(p) {
+  if (activeFilters.has('all')) return true;
+  if (activeFilters.has(p.tipo)) return true;
+  if (p.tipo === 'cifp' || p.tipo === 'otro_educativo') {
+    if (activeFilters.has('ies')) return true;
+  }
+  if (p.tipo === 'resid_sanidad' || p.tipo === 'ciapa') {
+    if (activeFilters.has('resid_mayores')) return true;
+  }
+  return activeFilters.has(p.tipo);
+}
+
+function renderStats() {
+  const filtered = plazas.filter(isFiltered);
+  const tipos = {};
+  filtered.forEach(p => {
+    tipos[p.tipo_label] = (tipos[p.tipo_label] || 0) + 1;
+  });
+  
+  const vacantes = filtered.reduce((s, p) => s + p.vacantes, 0);
+  const localidades = new Set(filtered.map(p => p.localidad)).size;
+  
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="num">${filtered.length}</div><div class="label">Plazas</div></div>
+    <div class="stat-card"><div class="num">${vacantes}</div><div class="label">Vacantes totales</div></div>
+    <div class="stat-card"><div class="num">${localidades}</div><div class="label">Localidades</div></div>
+    <div class="stat-card"><div class="num">233</div><div class="label">Tu posición</div></div>
+  `;
+}
+
+function renderPuebloView() {
+  const filtered = plazas.filter(isFiltered);
+  const sorted = [...filtered].sort((a, b) => a.distancia_km - b.distancia_km);
+  
+  const grouped = {};
+  sorted.forEach(p => {
+  if (!grouped[p.localidad]) {
+    grouped[p.localidad] = { plazas: [], distancia: p.distancia_km, provincia: p.provincia };
+  }
+  grouped[p.localidad].plazas.push(p);
+  });
+  
+  const localidades = Object.entries(grouped).sort((a, b) => a[1].distancia - b[1].distancia);
+  
+  let html = '';
+  let pos = 1;
+  
+  localidades.forEach(([loc, data]) => {
+  const count = data.plazas.length;
+  const vac = data.plazas.reduce((s, p) => s + p.vacantes, 0);
+  html += `<div class="plaza-item separador-pueblo">
+    ${loc} <span class="sub">(${data.provincia} · ${data.distancia} km · ${count} plaza${count > 1 ? 's' : ''} · ${vac} vacante${vac > 1 ? 's' : ''})</span>
+  </div>`;
+    
+    // Ordenar por tipo dentro del pueblo
+    data.plazas.sort((a, b) => a.tipo_order - b.tipo_order);
+    
+    data.plazas.forEach(p => {
+      html += renderPlazaItem(p, pos++);
+    });
+  });
+  
+  return html;
+}
+
+function renderTipoView() {
+  const filtered = plazas.filter(isFiltered);
+  
+  // Grupo 1: Guarderías + IES (ordenados por distancia)
+  const grupo1 = filtered.filter(p => p.tipo_order <= 2).sort((a, b) => a.distancia_km - b.distancia_km);
+  // Grupo 2: CEE + Residencias (ordenados por distancia)
+  const grupo2 = filtered.filter(p => p.tipo_order >= 3).sort((a, b) => a.distancia_km - b.distancia_km);
+  
+  let html = '';
+  let pos = 1;
+  
+  if (grupo1.length > 0) {
+    html += `<div class="plaza-item separador-tipo" style="color: var(--ies);">
+      🏫 Guarderías e Institutos <span class="sub">(${grupo1.length} plazas · ${grupo1.reduce((s,p) => s + p.vacantes, 0)} vacantes)</span>
+    </div>`;
+    grupo1.forEach(p => { html += renderPlazaItem(p, pos++); });
+  }
+  
+  if (grupo2.length > 0) {
+    html += `<div class="plaza-item separador-tipo" style="color: var(--resid);">
+      🏠 Residencias y Centros Especiales <span class="sub">(${grupo2.length} plazas · ${grupo2.reduce((s,p) => s + p.vacantes, 0)} vacantes)</span>
+    </div>`;
+    grupo2.forEach(p => { html += renderPlazaItem(p, pos++); });
+  }
+  
+  return html;
+}
+
+function renderPlazaItem(p, pos) {
+  return `<div class="plaza-item">
+    <div class="pos">${pos}</div>
+    <div class="info">
+      <div class="centro">${p.centro}</div>
+      <div class="localidad-prov">${p.localidad} · ${p.provincia} · ${p.consejeria} · ${p.jornada}</div>
+    </div>
+    <div class="tipo-badge ${getTipoClass(p.tipo)}">${getTipoShort(p.tipo)}</div>
+    <div class="distancia">${p.distancia_km} km</div>
+    <div class="vacantes">${p.vacantes} vac.</div>
+  </div>`;
+}
+
+function render() {
+  renderStats();
+  const list = document.getElementById('plazaList');
+  if (currentView === 'pueblo') {
+    list.innerHTML = renderPuebloView();
+  } else {
+    list.innerHTML = renderTipoView();
+  }
+}
+
+function setView(view) {
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  render();
+}
+
+function toggleFilter(btn, filter) {
+  if (filter === 'all') {
+    activeFilters.clear();
+    activeFilters.add('all');
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    activeFilters.delete('all');
+    document.querySelector('.filter-btn[onclick*="all"]').classList.remove('active');
+    
+    if (activeFilters.has(filter)) {
+      activeFilters.delete(filter);
+      btn.classList.remove('active');
+    } else {
+      activeFilters.add(filter);
+      btn.classList.add('active');
+    }
+    
+    if (activeFilters.size === 0) {
+      activeFilters.add('all');
+      document.querySelector('.filter-btn[onclick*="all"]').classList.add('active');
+    }
+  }
+  render();
+}
+
+// Initial render
+render();
+</script>
+
+</body>
+</html>
