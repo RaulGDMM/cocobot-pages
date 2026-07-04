@@ -25,31 +25,39 @@ var AI_STRATEGY = {
   },
   medium: {
     bfsPathfinding: true,
-    floodFillDepth: 40,
+    floodFillDepth: 60,
     tailChasing: true,
-    lookahead: false,
+    lookahead: true,
     bestApple: true,
     hunting: false,
     antiTrap: true,
-    minSpaceFactor: 1.7,
-    errorRate: 0.10,
-    corneringRate: 0.40,
+    minSpaceFactor: 2.0,
+    errorRate: 0.05,
+    corneringRate: 0.30,
     spaceCheckRelaxation: 0.07,
-    playerPerceptionRadius: 14
+    playerPerceptionRadius: 14,
+    lookaheadSteps: 5,
+    pathCutting: true,
+    huntRadius: 10
   },
   hard: {
     bfsPathfinding: true,
-    floodFillDepth: 120,
+    floodFillDepth: 150,
     tailChasing: true,
     lookahead: true,
     bestApple: true,
     hunting: true,
     antiTrap: true,
-    minSpaceFactor: 1.3,
-    errorRate: 0.02,
-    corneringRate: 0.85,
+    minSpaceFactor: 2.2,
+    errorRate: 0.0,
+    corneringRate: 0.40,
     spaceCheckRelaxation: 0.00,
-    playerPerceptionRadius: -1
+    playerPerceptionRadius: -1,
+    lookaheadSteps: 8,
+    adversarialPrediction: true,
+    pathCutting: true,
+    huntRadius: 12,
+    contestApples: true
   }
 };
 
@@ -267,6 +275,45 @@ function countEscapeRoutes(x, z, snakeBody, blocked) {
   return count;
 }
 
+// ─── Deep escape routes (depth-2 flood fill anti-trap) ───
+// Like countEscapeRoutes, but for each adjacent escape cell, also checks that
+// IT has at least one escape route (depth-2). A dead-end corridor has 1 escape
+// route at depth 1 but 0 at depth 2 — this function detects that.
+// Returns the number of adjacent cells that lead to further escape.
+function countDeepEscapeRoutes(x, z, snakeBody, blocked) {
+  var deepCount = 0;
+  for (var d = 0; d < DIRS.length; d++) {
+    var nx = x + DIRS[d].x;
+    var nz = z + DIRS[d].z;
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) continue;
+    var key = nx + ',' + nz;
+    if (blocked[key]) continue;
+    // Check snake body (allow tail)
+    if (snakeBody && snakeBody.length > 0) {
+      var isBody = false;
+      for (var i = 0; i < snakeBody.length - 1; i++) {
+        if (snakeBody[i].x === nx && snakeBody[i].z === nz) { isBody = true; break; }
+      }
+      if (isBody) continue;
+    }
+    // Depth-2 check: does this escape cell have at least 1 further escape?
+    var hasFurtherEscape = false;
+    for (var d2 = 0; d2 < DIRS.length; d2++) {
+      var nnx = nx + DIRS[d2].x;
+      var nnz = nz + DIRS[d2].z;
+      if (nnx < gridMinX || nnx >= gridMaxX || nnz < gridMinZ || nnz >= gridMaxZ) continue;
+      // Don't count going back to where we came from
+      if (nnx === x && nnz === z) continue;
+      var nkey = nnx + ',' + nnz;
+      if (blocked[nkey]) continue;
+      hasFurtherEscape = true;
+      break;
+    }
+    if (hasFurtherEscape) deepCount++;
+  }
+  return deepCount;
+}
+
 // ─── BFS path to own tail (tail-chasing) ───
 // When no path to apple, chase own tail to survive
 function bfsPathToTail(aiSnake) {
@@ -305,6 +352,8 @@ function bestApple(aiSnake, blocked, diff, aiIndex) {
 
   // Easy mode: just pick nearest
   if (!AI_STRATEGY[diff].bestApple) return nearestApple(aiSnake[0].x, aiSnake[0].z);
+
+  var strat = AI_STRATEGY[diff] || {};
 
   // ─── PERFORMANCE: select 5 closest candidates (O(n) partial selection) ───
   // Running a full BFS per apple is expensive. With 50+ death apples,
@@ -358,38 +407,77 @@ function bestApple(aiSnake, blocked, diff, aiIndex) {
       score -= manhattanDist * 2; // Penalize unreachable but still consider distance
     }
 
-    // Penalize apples that another alive snake is racing for.
-    // The player counts as just another competitor (same treatment as AIs):
-    // if another snake is closer (or equidistant with priority), abandon it.
+    // ─── Apple contention (identity-neutral) ───
+    // The human player is treated as just one more snake — the SAME rules apply
+    // to the player and to every other AI, with a position-based tie-break so no
+    // snake gets special deference. Count nearby snakes that also want this
+    // apple and whether any of them will clearly beat us to it.
     var appleContested = 0;
     var appleCloser = 0;
-    // Player competitor (skip if the player head coincides with this snake's
-    // head — then it's effectively the same entity, not a competitor)
+    var contenders = [];
     if (snake && snake.length > 0 && !(snake[0].x === head.x && snake[0].z === head.z)) {
-      var pDist = Math.abs(apple.x - snake[0].x) + Math.abs(apple.z - snake[0].z);
-      if (pDist < 10) {
-        appleContested++;
-        // Player wins ties (treated like a higher-priority competitor)
-        if (pDist <= manhattanDist) appleCloser++;
-      }
+      contenders.push(snake[0]);
     }
     if (aiSnakes) {
       for (var co = 0; co < aiSnakes.length; co++) {
-        if (!aiSnakes[co].alive) continue;
-        if (co === aiIndex) continue; // don't compete with ourselves
-        var coHead = aiSnakes[co].snake[0];
-        var coDist = Math.abs(apple.x - coHead.x) + Math.abs(apple.z - coHead.z);
-        if (coDist < 10) {
-          appleContested++;
-          // Other snake is closer, or equidistant but has lower index (they get priority)
-          if (coDist < manhattanDist || (coDist === manhattanDist && co < aiIndex)) {
-            appleCloser++;
-          }
+        if (!aiSnakes[co].alive || co === aiIndex) continue;
+        contenders.push(aiSnakes[co].snake[0]);
+      }
+    }
+    for (var ct = 0; ct < contenders.length; ct++) {
+      var ch = contenders[ct];
+      var cDist = Math.abs(apple.x - ch.x) + Math.abs(apple.z - ch.z);
+      if (cDist < 10) {
+        appleContested++;
+        // Strictly closer wins; on a tie the snake whose head sorts first by
+        // (x, then z) wins — a neutral rule that never favors the player.
+        if (cDist < manhattanDist ||
+            (cDist === manhattanDist &&
+             (ch.x < head.x || (ch.x === head.x && ch.z < head.z)))) {
+          appleCloser++;
         }
       }
     }
-    score -= appleContested * 30; // Moderate penalty for nearby snakes
-    score -= appleCloser * 500;  // Heavy penalty — another snake will get it first
+    if (strat.contestApples) {
+      // Aggressive (hard): compete with EVERYONE for apples. Only a mild nudge
+      // away from apples a closer snake will clearly win — never a hard yield.
+      score -= appleCloser * 60;
+    } else {
+      score -= appleContested * 30; // Moderate penalty for nearby snakes
+      score -= appleCloser * 500;  // Heavy penalty — another snake gets it first
+    }
+
+    // ─── Space-post-check (anti-trap apple selection) ───
+    // For reachable apples, check the space available AFTER reaching the apple.
+    // An apple at a dead end or corner is dangerous — the snake eats it but
+    // gets trapped. We simulate the snake at the apple position with +1 length
+    // (since eating grows) and measure reachable space.
+    // This is a TIEBREAKER between reachable apples of similar distance.
+    if (reachable && path) {
+      var simBody = [];
+      // Simulate snake body after reaching apple: path positions become new body
+      var pathLen = Math.min(path.length, aiSnake.length + 1);
+      for (var pi = 0; pi < pathLen; pi++) {
+        simBody.push({x: path[pi].x, z: path[pi].z});
+      }
+      // If path is shorter than snake, pad with original tail segments
+      while (simBody.length < aiSnake.length + 1) {
+        var tailIdx = aiSnake.length - (simBody.length - pathLen + 1);
+        if (tailIdx >= 0 && tailIdx < aiSnake.length) {
+          simBody.push({x: aiSnake[tailIdx].x, z: aiSnake[tailIdx].z});
+        } else {
+          break;
+        }
+      }
+      var postSpace = countReachable(apple.x, apple.z, simBody, 30);
+      if (postSpace < aiSnake.length) {
+        // Apple leads to a trap — penalize heavily
+        score -= 200;
+      } else if (postSpace < aiSnake.length * 2) {
+        // Tight space after apple — small penalty
+        score -= 30;
+      }
+    }
 
     if (score > bestScore) {
       bestScore = score;
@@ -401,40 +489,103 @@ function bestApple(aiSnake, blocked, diff, aiIndex) {
 }
 
 // ─── Multi-tick lookahead ───
-// Simulate N moves in a direction, check if result is good
-// Returns score: higher = better
+// Simulate N moves in a direction, check if result is good.
+// Returns score: higher = better. Negative = death trap.
+// Steps default to 5; hard mode uses 8 (AI_STRATEGY.hard.lookaheadSteps).
+//
+// The simulation follows a WALL-AWARE greedy path instead of a strict straight
+// line: when the straight step is blocked (wall, obstacle, snake), it tries to
+// turn (perpendicular) and keep going, mimicking how a snake actually hugs a
+// wall to reach an edge apple. This fixes the classic bug where the AI treated
+// "wall N cells ahead" as certain death and refused to approach apples near the
+// board edges (turning away and looping forever nearby).
+// A direction is only a death trap (-1000) when:
+//   - the very first step is impossible (nowhere to go), or
+//   - the greedy walk gets boxed in early AND the reachable space at the point
+//     where it stops is smaller than the snake (a genuine dead end).
+// Otherwise it evaluates:
+//   - reachable space from final position (flood fill)
+//   - escape routes from final position
+//   - a penalty for stopping early (tighter = worse)
+//   - distance to nearest apple (closer = better)
+//   - wall proximity penalty (only when directly ON the edge)
 function lookaheadScore(aiSnake, dir, steps, blocked) {
   steps = steps || 5;
   var simSnake = [];
-  for (var i = 0; i < aiSnake.length; i++) simSnake.push(aiSnake[i]);
+  for (var i = 0; i < aiSnake.length; i++) simSnake.push({x: aiSnake[i].x, z: aiSnake[i].z});
 
   var cx = simSnake[0].x;
   var cz = simSnake[0].z;
+  var dx = Math.round(Math.cos(dir));
+  var dz = Math.round(Math.sin(dir));
 
+  // Can the snake move into (nx,nz) given the current simulated body?
+  // The tail cell vacates, so it never blocks (simSnake.length - 1).
+  function walkable(nx, nz) {
+    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return false;
+    if (blocked[nx + ',' + nz]) return false;
+    for (var si = 0; si < simSnake.length - 1; si++) {
+      if (simSnake[si].x === nx && simSnake[si].z === nz) return false;
+    }
+    return true;
+  }
+
+  var survived = 0;
   for (var s = 0; s < steps; s++) {
-    var nx = cx + Math.round(Math.cos(dir));
-    var nz = cz + Math.round(Math.sin(dir));
+    var nx = cx + dx;
+    var nz = cz + dz;
 
-    // Wall check
-    if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return -1000;
-
-    // Self check
-    if (simSnake.some(function(seg) { return seg.x === nx && seg.z === nz; })) return -1000;
-
-    // Blocked check
-    var key = nx + ',' + nz;
-    if (blocked[key]) return -1000;
+    // If straight ahead is blocked, try to turn (wall-following). Never a 180°
+    // reversal — only the two perpendicular directions are considered.
+    if (!walkable(nx, nz)) {
+      var leftDx = dz, leftDz = -dx;   // 90° left
+      var rightDx = -dz, rightDz = dx; // 90° right
+      if (walkable(cx + leftDx, cz + leftDz)) {
+        dx = leftDx; dz = leftDz;
+      } else if (walkable(cx + rightDx, cz + rightDz)) {
+        dx = rightDx; dz = rightDz;
+      } else {
+        break; // genuinely boxed in — no straight or lateral escape
+      }
+      nx = cx + dx;
+      nz = cz + dz;
+    }
 
     simSnake.unshift({x: nx, z: nz});
     simSnake.pop();
     cx = nx;
     cz = nz;
+    survived++;
   }
 
+  // Couldn't move at all → certain death this tick.
+  if (survived === 0) return -1000;
+
   // Score based on final position
-  var space = countReachable(cx, cz, simSnake, 30);
+  var space = countReachable(cx, cz, simSnake, 40);
   var escapes = countEscapeRoutes(cx, cz, simSnake, blocked);
-  return space + escapes * 5;
+
+  // Boxed in early with little room left → genuine dead end / trap.
+  if (survived < steps && space < aiSnake.length) return -800;
+
+  var score = space + escapes * 5;
+
+  // Penalize stopping before completing the full horizon (tighter path).
+  score -= (steps - survived) * 8;
+
+  // Apple proximity bonus — prefer directions that lead toward food
+  var target = nearestApple(cx, cz);
+  if (target) {
+    var appleDist = Math.abs(target.x - cx) + Math.abs(target.z - cz);
+    score -= appleDist * 0.5; // small bonus for being closer to apples
+  }
+
+  // Wall proximity penalty — very mild preference for center, but don't
+  // discourage edge apples. Only penalize being directly ON the wall.
+  var wallDist = Math.min(cx - gridMinX, gridMaxX - 1 - cx, cz - gridMinZ, gridMaxZ - 1 - cz);
+  if (wallDist === 0) score -= 3; // tiny penalty for being on the very edge
+
+  return score;
 }
 
 // ─── Check if a cell is in a shrink danger zone ───
@@ -471,7 +622,7 @@ function logShrinkState(label) {
 // perceptionRadius: max Manhattan distance at which the AI "sees" the player.
 //   -1 = infinite (hard mode, always sees player).
 //   Positive number = limited perception (easy/medium).
-function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
+function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius, strat) {
   var possibleDirs = [
     aiDir,
     aiDir - TURN_ANGLE,
@@ -563,6 +714,38 @@ function aiEvaluateDirections(aiIndex, aiSnake, aiDir, perceptionRadius) {
       if (nx === ox && nz === oz) return;
       // Swap: AI moves into the other's head while it moves into our cell
       if (nx === other.head.x && nz === other.head.z && ox === head.x && oz === head.z) return;
+
+      // ─── Adversarial prediction (hard mode) ───
+      // In hard mode, the AI considers that the opponent might TURN toward
+      // our destination cell. If the opponent's head is adjacent to our target
+      // cell AND the opponent could turn to reach it, mark as risky.
+      if (strat && strat.adversarialPrediction) {
+        if (!contested) {
+          var oppToTargetDist = Math.abs(other.head.x - nx) + Math.abs(other.head.z - nz);
+          if (oppToTargetDist === 1) {
+            var oppDx = Math.round(Math.cos(other.dir));
+            var oppDz = Math.round(Math.sin(other.dir));
+            if (ox === nx && oz === nz) { contested = true; }
+            else {
+              var oppLeftDx = -oppDz, oppLeftDz = oppDx;
+              if (other.head.x + oppLeftDx === nx && other.head.z + oppLeftDz === nz) {
+                contested = true;
+              } else {
+                var oppRightDx = oppDz, oppRightDz = -oppDx;
+                if (other.head.x + oppRightDx === nx && other.head.z + oppRightDz === nz) {
+                  contested = true;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // ─── Proximity avoidance (hard mode) ───
+      // REMOVED: marking all directions near opponents as "risky" made the AI
+      // too passive — it kept fleeing instead of competing. The adversarial
+      // prediction above (dist=1 + can-turn-to-reach) already handles the real
+      // collision risk. The fallback scoring has a softer proximity factor.
 
       // ─── Oncoming head-on lane (early warning) ───
       // If the opponent's head lies straight ahead along this candidate's
@@ -674,14 +857,20 @@ function minSafeSpace(nx, nz, snakeBody, blocked, minSpace) {
 }
 
 // ─── Cornering/hunting strategy ───
-// Actively try to block and corner smaller snakes
+// Actively try to block and corner smaller snakes.
+// Two modes:
+//   1. Tail-chase: position behind the target (original behavior)
+//   2. Path-cut: move to intercept the target's escape route, trapping it
+//      against a wall, obstacle, or the AI's own body.
 function aiCorneringStrategy(aiIndex, diff) {
   var ai = aiSnakes[aiIndex];
   if (!ai || !ai.alive) return null;
 
-  var corneringRate = AI_STRATEGY[diff].corneringRate || 0;
+  var strat = AI_STRATEGY[diff];
+  var corneringRate = strat.corneringRate || 0;
   if (Math.random() > corneringRate) return null;
-  if (!AI_STRATEGY[diff].hunting) return null;
+  // Need at least one aggressive strategy active
+  if (!strat.hunting && !strat.pathCutting) return null;
 
   var targets = [];
   if (snake.length > 0) targets.push({snake: snake, isPlayer: true});
@@ -692,13 +881,67 @@ function aiCorneringStrategy(aiIndex, diff) {
   }
   if (targets.length === 0) return null;
 
+  // Blocked set must EXCLUDE this AI's own snake — otherwise bfsPath (used by
+  // path-cutting and tail-chase below) starts on a blocked cell (our own head)
+  // and returns null every time, silently disabling all hunting. bfsPath is
+  // given ai.snake as snakeBody, so our own body is still avoided correctly.
+  var blocked = buildBlockedSet(ai.id);
+  var huntRadius = strat.huntRadius || 10;
+
+  // Is another snake head (not us, not the snake we're currently cutting) right
+  // next to a cell? Two hunters converging on the same interception point crash
+  // into each other — the main cause of hard-mode AI deaths. The player counts
+  // the same as any AI here (no special treatment).
+  function otherHunterNear(x, z, targetBody) {
+    if (snake && snake.length > 0 && snake !== targetBody) {
+      if (Math.abs(snake[0].x - x) + Math.abs(snake[0].z - z) <= 2) return true;
+    }
+    for (var h = 0; h < aiSnakes.length; h++) {
+      if (h === aiIndex || !aiSnakes[h].alive) continue;
+      if (aiSnakes[h].snake === targetBody) continue;
+      var oh = aiSnakes[h].snake[0];
+      if (Math.abs(oh.x - x) + Math.abs(oh.z - z) <= 2) return true;
+    }
+    return false;
+  }
+
   for (var t = 0; t < targets.length; t++) {
     var target = targets[t];
-    // Only hunt snakes that are equal or smaller
-    if (target.snake.length > ai.snake.length + 2) continue;
+    // Hunt snakes that are not longer than us. The human player gets NO special
+    // treatment — it is just another snake subject to the same length rule.
+    if (target.snake.length > ai.snake.length) continue;
 
     var targetHead = target.snake[0];
     var targetTail = target.snake[target.snake.length - 1];
+    // Get target direction
+    var targetDir = direction; // default to player
+    if (!target.isPlayer) {
+      for (var fi = 0; fi < aiSnakes.length; fi++) {
+        if (aiSnakes[fi].snake === target.snake) { targetDir = aiSnakes[fi].direction; break; }
+      }
+    }
+
+    var dx = targetHead.x - ai.snake[0].x;
+    var dz = targetHead.z - ai.snake[0].z;
+    var dist = Math.abs(dx) + Math.abs(dz);
+
+    // Only hunt if close enough (hard mode hunts from farther via huntRadius)
+    if (dist >= huntRadius) continue;
+
+    // ─── One hunter per target ───
+    // If another alive AI is closer to this target, let THEM handle it. Piling
+    // several hunters onto the same snake makes them converge on the same cells
+    // and collide with each other — the dominant cause of hard-mode deaths.
+    // Ties break by index so exactly one AI claims the target.
+    var someoneCloser = false;
+    for (var hj = 0; hj < aiSnakes.length; hj++) {
+      if (hj === aiIndex || !aiSnakes[hj].alive) continue;
+      if (aiSnakes[hj].snake === target.snake) continue; // the target isn't its own hunter
+      var hjHead = aiSnakes[hj].snake[0];
+      var hjDist = Math.abs(hjHead.x - targetHead.x) + Math.abs(hjHead.z - targetHead.z);
+      if (hjDist < dist || (hjDist === dist && hj < aiIndex)) { someoneCloser = true; break; }
+    }
+    if (someoneCloser) continue;
 
     // Check if target is near a wall or obstacle — good hunting opportunity
     var nearWall = (
@@ -713,22 +956,50 @@ function aiCorneringStrategy(aiIndex, diff) {
       if (odx + odz < 4) { nearObstacle = true; break; }
     }
 
-    if (nearWall || nearObstacle) {
-      var dx = targetHead.x - ai.snake[0].x;
-      var dz = targetHead.z - ai.snake[0].z;
-      var dist = Math.abs(dx) + Math.abs(dz);
-      // Only hunt if close enough
-      if (dist < 10) {
-        // Try to position behind the target (near its tail)
-        var blocked = buildBlockedSet();
-        var pathToTail = bfsPath(
-          ai.snake[0].x, ai.snake[0].z,
-          targetTail.x, targetTail.z,
-          blocked, ai.snake, gridSize * gridSize
-        );
-        if (pathToTail && pathToTail.length > 1) {
+    // ─── Mode 2: Path-cutting (intercept escape route) ───
+    // Predicts where the target is heading and moves to cut off its escape.
+    // ONLY fires when the target is already cornered near a wall/obstacle —
+    // that's a low-risk trap. Cutting across open space was disabled: it made
+    // the AI turn sharply toward its prey, and those turns were unpredictable
+    // to the other snakes' collision avoidance, causing frequent mutual head-on
+    // and side collisions (hard-mode snakes dying en masse). Survival first.
+    var canCut = nearWall || nearObstacle;
+    if (strat.pathCutting && canCut) {
+      var cutStep = aiPathCutStep(ai.snake, targetHead, targetDir, target.snake, blocked);
+      if (cutStep) {
+        // Safety: near a wall/obstacle cutting is space-constrained so 1 escape
+        // route is acceptable; in the open we require 2 so we're not one closing
+        // lane from death. Also require space, and crucially that no OTHER
+        // hunter (any snake head that isn't our target) sits next to the
+        // interception cell — two snakes converging there just collide, which
+        // was the main cause of hard-mode deaths.
+        var cutEscapes = countEscapeRoutes(cutStep.x, cutStep.z, ai.snake, blocked);
+        var cutSpace = countReachable(cutStep.x, cutStep.z, ai.snake, 30);
+        var minCutEscapes = (nearWall || nearObstacle) ? 1 : 2;
+        if (cutEscapes >= minCutEscapes &&
+            cutSpace >= Math.floor(ai.snake.length / 2) &&
+            !otherHunterNear(cutStep.x, cutStep.z, target.snake)) {
+          log('AI ' + aiIndex + ' CUTTING OFF target at (' + targetHead.x + ',' + targetHead.z + ')');
+          return cutStep;
+        }
+      }
+    }
+
+    // ─── Mode 1: Tail-chase (original behavior, requires hunting flag) ───
+    if (strat.hunting && (nearWall || nearObstacle)) {
+      var pathToTail = bfsPath(
+        ai.snake[0].x, ai.snake[0].z,
+        targetTail.x, targetTail.z,
+        blocked, ai.snake, gridSize * gridSize
+      );
+      if (pathToTail && pathToTail.length > 1) {
+        var huntNextX = pathToTail[1].x;
+        var huntNextZ = pathToTail[1].z;
+        var huntEscapes = countEscapeRoutes(huntNextX, huntNextZ, ai.snake, blocked);
+        var huntSpace = countReachable(huntNextX, huntNextZ, ai.snake, 30);
+        if (huntEscapes >= 2 && huntSpace > ai.snake.length) {
           log('AI ' + aiIndex + ' hunting target at (' + targetHead.x + ',' + targetHead.z + ')');
-          return pathToTail[1]; // Next step toward tail
+          return pathToTail[1];
         }
       }
     }
@@ -736,19 +1007,114 @@ function aiCorneringStrategy(aiIndex, diff) {
   return null;
 }
 
+// ─── Path-cutting step calculation ───
+// Predicts where the target is heading and finds the best interception point.
+// The AI moves to a cell that blocks the target's forward path, forcing it
+// to turn toward a wall/obstacle where it has less room to escape.
+// aiSnake: array of {x,z} segments (ai.snake)
+function aiPathCutStep(aiSnake, targetHead, targetDir, targetBody, blocked) {
+  var headX = aiSnake[0].x;
+  var headZ = aiSnake[0].z;
+  var tDx = Math.round(Math.cos(targetDir));
+  var tDz = Math.round(Math.sin(targetDir));
+
+  // Project the target's path 2-7 steps forward
+  var bestCut = null;
+  var bestCutScore = -Infinity;
+
+  for (var steps = 2; steps <= 7; steps++) {
+    var tx = targetHead.x + tDx * steps;
+    var tz = targetHead.z + tDz * steps;
+
+    // Skip if projected position is off-board (target will hit wall)
+    if (tx < gridMinX || tx >= gridMaxX || tz < gridMinZ || tz >= gridMaxZ) break;
+
+    // Find the best cell to intercept: we try both perpendicular and frontal
+    // interception points.
+    // Perpendicular: get to a cell adjacent to the target's forward path,
+    //   blocking its lateral escape.
+    // Frontal: get to a cell directly in the target's path, forcing it to
+    //   turn or stop. This is the classic "cut across the nose" move.
+    var candidates = [];
+    // Perpendicular offsets
+    for (var offset = -1; offset <= 1; offset += 2) {
+      var cx = tx + (tDx !== 0 ? 0 : offset);
+      var cz = tz + (tDz !== 0 ? 0 : offset);
+      candidates.push({x: cx, z: cz, type: 'perp'});
+    }
+    // Frontal: the cell directly in the target's path (ahead of it)
+    candidates.push({x: tx, z: tz, type: 'frontal'});
+
+    for (var ci = 0; ci < candidates.length; ci++) {
+      var cx = candidates[ci].x;
+      var cz = candidates[ci].z;
+      var cutType = candidates[ci].type;
+
+      // Must be on-board
+      if (cx < gridMinX || cx >= gridMaxX || cz < gridMinZ || cz >= gridMaxZ) continue;
+      // Must not be blocked
+      if (blocked[cx + ',' + cz]) continue;
+      // Must not be on target's body
+      var onBody = false;
+      for (var bi = 0; bi < targetBody.length; bi++) {
+        if (targetBody[bi].x === cx && targetBody[bi].z === cz) { onBody = true; break; }
+      }
+      if (onBody) continue;
+
+      // BFS from AI head to this interception cell
+      var path = bfsPath(headX, headZ, cx, cz, blocked, aiSnake, gridSize * gridSize);
+      if (!path || path.length <= 1) continue;
+
+      // Score: prefer cells that are closer to the target's projected path
+      // (tighter trap) and reachable in fewer steps (faster intercept).
+      var aiDist = path.length - 1; // steps to reach intercept point
+      var targetDist = steps; // steps for target to reach projected position
+      // The intercept works if AI arrives at most 3 steps after the target
+      // (the target has to turn, lose momentum, and find a new escape route)
+      if (aiDist > targetDist + 3) continue;
+
+      var score = 100 - aiDist * 10; // closer intercept = better
+      // Bonus for cutting closer to the target's head (tighter trap)
+      score += (7 - steps) * 3;
+
+      if (score > bestCutScore) {
+        bestCutScore = score;
+        bestCut = path[1]; // next step toward intercept point
+      }
+    }
+  }
+
+  return bestCut;
+}
+
 // ─── Detect if AI is stuck in a loop ───
-// Returns true if the AI head has visited very few unique positions in recent ticks
+// Returns true if the AI head has visited very few unique positions in recent ticks.
+// Two detection modes:
+//   1. Tight loop: ≤3 unique positions in 8 ticks (classic 2-cell ping-pong)
+//   2. Circular loop: head revisits a position from ~4 ticks ago (4-cell circles)
 function aiIsStuck(ai) {
-  if (!ai.stuckHistory || ai.stuckHistory.length < 6) return false;
-  // Count unique positions in the history
+  if (!ai.stuckHistory || ai.stuckHistory.length < 8) return false;
+  // Take the last 8 positions
+  var recent = ai.stuckHistory.slice(-8);
   var unique = {};
-  for (var i = 0; i < ai.stuckHistory.length; i++) {
-    var key = ai.stuckHistory[i].x + ',' + ai.stuckHistory[i].z;
+  for (var i = 0; i < recent.length; i++) {
+    var key = recent[i].x + ',' + recent[i].z;
     unique[key] = true;
   }
   var uniqueCount = Object.keys(unique).length;
-  // If the AI has visited <= 2 unique positions in 6 ticks, it's stuck
-  return uniqueCount <= 2;
+  // Mode 1: tight loop — ≤3 unique positions in 8 ticks
+  if (uniqueCount <= 3) return true;
+
+  // Mode 2: circular loop — head is at the same position as 4 ticks ago,
+  // and the positions in between form a small cycle (≤5 unique in last 8)
+  if (recent.length >= 8) {
+    var fourTicksAgo = recent[recent.length - 5];
+    var current = recent[recent.length - 1];
+    if (fourTicksAgo.x === current.x && fourTicksAgo.z === current.z && uniqueCount <= 5) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // ─── Decide direction for AI snake based on difficulty ───
@@ -764,13 +1130,13 @@ function aiDecideDirection(aiIndex, diff) {
   var lastPos = ai.stuckHistory.length > 0 ? ai.stuckHistory[ai.stuckHistory.length - 1] : null;
   if (!lastPos || lastPos.x !== head.x || lastPos.z !== head.z) {
     ai.stuckHistory.push({x: head.x, z: head.z});
-    if (ai.stuckHistory.length > 6) ai.stuckHistory.shift();
+    if (ai.stuckHistory.length > 10) ai.stuckHistory.shift();
   }
 
   // ─── If stuck, force a random safe direction to break the loop ───
   if (aiIsStuck(ai)) {
     var stratStuck = AI_STRATEGY[diff] || AI_STRATEGY.medium;
-    var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, stratStuck.playerPerceptionRadius);
+    var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, stratStuck.playerPerceptionRadius, stratStuck);
     if (safe.length > 1) {
       // Pick a random safe direction (not the current one)
       var newDirs = safe.filter(function(d) { return d !== ai.direction; });
@@ -781,12 +1147,44 @@ function aiDecideDirection(aiIndex, diff) {
         return chosen;
       }
     }
-    // If only one safe direction, reset history to avoid false positives
-    ai.stuckHistory = [];
+    // If only one safe direction, we're in a narrow corridor or constrained space.
+    // Reset history to avoid false positives, but add a small random jitter:
+    // occasionally skip a tick (keep current direction but mark for re-evaluation
+    // next tick with fresh randomness). This breaks deterministic loops even
+    // when errorRate is 0 (hard mode).
+    if (safe.length === 1) {
+      log('AI ' + aiIndex + ' stuck in corridor — resetting history');
+      ai.stuckHistory = [];
+      // 15% chance to pick the risky direction instead of the only safe one,
+      // but only if risky directions exist (from aiEvaluateDirections fallback).
+      // This is the ONLY randomness in hard mode, and only fires when stuck.
+      if (Math.random() < 0.15) {
+        // Re-evaluate getting risky directions (the function returns safe || risky)
+        var allDirs = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, stratStuck.playerPerceptionRadius, stratStuck);
+        // allDirs is already the safe array; we need to check if there are
+        // other cardinal directions not in safe that are still on the board.
+        var cardinal = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+        var risky = cardinal.filter(function(d) {
+          if (d === safe[0]) return false;
+          // Check it's not a 180° reversal
+          if (Math.abs(Math.cos(d - ai.direction) + 1) < 0.01) return false;
+          // Check it's on the board
+          var nx = ai.snake[0].x + Math.round(Math.cos(d));
+          var nz = ai.snake[0].z + Math.round(Math.sin(d));
+          if (nx < gridMinX || nx >= gridMaxX || nz < gridMinZ || nz >= gridMaxZ) return false;
+          return true;
+        });
+        if (risky.length > 0) {
+          var escapeDir = risky[Math.floor(Math.random() * risky.length)];
+          log('AI ' + aiIndex + ' stuck — forcing risky escape to ' + escapeDir);
+          return escapeDir;
+        }
+      }
+    }
   }
 
   var strat = AI_STRATEGY[diff] || AI_STRATEGY.medium;
-  var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, strat.playerPerceptionRadius);
+  var safe = aiEvaluateDirections(aiIndex, ai.snake, ai.direction, strat.playerPerceptionRadius, strat);
   if (safe.length === 0) return ai.direction;
 
   // ─── Build blocked set ───
@@ -1043,29 +1441,47 @@ function aiDecideDirection(aiIndex, diff) {
           }
           if (!pathThroughShrink) {
             var nextStep = path[1];
+            // Collect ALL safeWithSpace directions that match the BFS next step
+            // and pass anti-trap + lookahead filters. If lookahead is enabled,
+            // pick the one with the best lookahead score (positive tiebreaker).
+            var bfsCandidates = [];
             for (var s = 0; s < safeWithSpace.length; s++) {
               var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
               var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
               if (nx === nextStep.x && nz === nextStep.z) {
                 // Anti-trap: verify escape routes — but SKIP when apple is very close (≤2 steps)
-                // This prevents the AI from refusing to take the last step to an edge apple
                 if (strat.antiTrap) {
                   var manhattanToApple = Math.abs(nextStep.x - targetApple.x) + Math.abs(nextStep.z - targetApple.z);
                   if (manhattanToApple > 2) {
-                    var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
-                    // Near edges, 1 escape is acceptable (wall constrains movement naturally)
+                    // Use deep escape routes for harder difficulties —
+                    // countDeepEscapeRoutes detects dead-end corridors that
+                    // countEscapeRoutes would miss (depth-1 only).
+                    var useDeep = strat.adversarialPrediction; // hard mode
+                    var escapes = useDeep
+                      ? countDeepEscapeRoutes(nx, nz, ai.snake, blocked)
+                      : countEscapeRoutes(nx, nz, ai.snake, blocked);
                     var nearEdge = (nx <= gridMinX + 1 || nx >= gridMaxX - 1 ||
                                     nz <= gridMinZ + 1 || nz >= gridMaxZ - 1);
-                    if (escapes < (nearEdge ? 1 : 2)) continue;
+                    // Hard mode with deep routes: require >= 1 deep escape even at edges
+                    var minEscapes = nearEdge ? 1 : 2;
+                    if (useDeep) minEscapes = nearEdge ? 1 : 1;
+                    if (escapes < minEscapes) continue;
                   }
                 }
-                // Lookahead: verify future positions
+                // Lookahead: filter death traps AND collect score for tiebreaking
+                var laScoreVal = 0;
                 if (strat.lookahead) {
-                  var laScore = lookaheadScore(ai.snake, safeWithSpace[s], 5, blocked);
-                  if (laScore < -500) continue;
+                  var laSteps = strat.lookaheadSteps || 5;
+                  laScoreVal = lookaheadScore(ai.snake, safeWithSpace[s], laSteps, blocked);
+                  if (laScoreVal < -500) continue;
                 }
-                return snapToCardinal(safeWithSpace[s]);
+                bfsCandidates.push({dir: safeWithSpace[s], laScore: laScoreVal});
               }
+            }
+            if (bfsCandidates.length > 0) {
+              // Pick the candidate with the best lookahead score
+              bfsCandidates.sort(function(a, b) { return b.laScore - a.laScore; });
+              return snapToCardinal(bfsCandidates[0].dir);
             }
           }
         }
@@ -1095,6 +1511,25 @@ function aiDecideDirection(aiIndex, diff) {
   var bestDir = safeWithSpace[0];
   var target = nearestApple(ai.snake[0].x, ai.snake[0].z);
 
+  // Build list of nearby opponent heads for proximity avoidance
+  // Only consider VERY close opponents (≤3 cells) — we don't want the AI
+  // fleeing from every snake on the board, just avoiding point-blank collisions.
+  var nearbyHeads = [];
+  if (strat.adversarialPrediction) {
+    if (snake && snake.length > 0) {
+      var pDist = Math.abs(snake[0].x - ai.snake[0].x) + Math.abs(snake[0].z - ai.snake[0].z);
+      if (pDist <= 3) nearbyHeads.push(snake[0]);
+    }
+    if (aiSnakes) {
+      for (var ni = 0; ni < aiSnakes.length; ni++) {
+        if (ni === aiIndex || !aiSnakes[ni].alive) continue;
+        var nHead = aiSnakes[ni].snake[0];
+        var nDist = Math.abs(nHead.x - ai.snake[0].x) + Math.abs(nHead.z - ai.snake[0].z);
+        if (nDist <= 3) nearbyHeads.push(nHead);
+      }
+    }
+  }
+
   for (var s = 0; s < safeWithSpace.length; s++) {
     var nx = ai.snake[0].x + Math.round(Math.cos(safeWithSpace[s]));
     var nz = ai.snake[0].z + Math.round(Math.sin(safeWithSpace[s]));
@@ -1116,6 +1551,36 @@ function aiDecideDirection(aiIndex, diff) {
     // Prefer directions with more escape routes (small bonus)
     var escapes = countEscapeRoutes(nx, nz, ai.snake, blocked);
     score += escapes;
+
+    // ─── Proximity avoidance: soft bonus for moving AWAY from very close heads ───
+    // Only applies when opponents are point-blank (≤3 cells). The weight is
+    // deliberately small (*3) so it acts as a tiebreaker, not a dominant
+    // force — the AI should still compete for apples and hunt, just not
+    // run head-first into another snake.
+    if (strat.adversarialPrediction && nearbyHeads.length > 0) {
+      for (var nh = 0; nh < nearbyHeads.length; nh++) {
+        var distBefore = Math.abs(nearbyHeads[nh].x - ai.snake[0].x) + Math.abs(nearbyHeads[nh].z - ai.snake[0].z);
+        var distAfter = Math.abs(nearbyHeads[nh].x - nx) + Math.abs(nearbyHeads[nh].z - nz);
+        score += (distAfter - distBefore) * 3;
+      }
+    }
+
+    // ─── Lookahead as positive scoring in fallback ───
+    // In hard mode, use lookahead score to break ties between otherwise
+    // similar directions. This prevents the AI from picking a direction that
+    // looks good now but leads to a trap 5-8 steps later.
+    if (strat.lookahead) {
+      var laSteps = strat.lookaheadSteps || 5;
+      var laScore = lookaheadScore(ai.snake, safeWithSpace[s], laSteps, blocked);
+      if (laScore < -500) continue; // Skip death-trap directions
+      score += laScore * 0.3; // Weighted as tiebreaker, not dominant
+    }
+
+    // ─── Wall avoidance proactivo ───
+    // Very mild penalty — only when directly on the edge. We don't want to
+    // discourage the AI from going for edge apples.
+    var wallDist = Math.min(nx - gridMinX, gridMaxX - 1 - nx, nz - gridMinZ, gridMaxZ - 1 - nz);
+    if (wallDist === 0) score -= 3; // tiny penalty for being on the very edge
 
     // ─── Penalize shrink danger zone ───
     if (cellInShrinkZone(nx, nz)) {
@@ -1757,6 +2222,8 @@ if(typeof module !== 'undefined' && module.exports) {
     cellInShrinkZone,
     aiIsStuck,
   isNearEdge,
+    countDeepEscapeRoutes,
+    aiPathCutStep,
     AI_STRATEGY,
     DIRS,
     processCorpses,

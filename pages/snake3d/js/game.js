@@ -281,8 +281,15 @@ function maybeTriggerShrink(playerDied) {
   // Don't shrink if already at minimum
   if (!canShrinkFurther(currentGridSize)) return;
 
-  // Check if there's already an active countdown — don't stack too many
-  if (shrinkCountdowns && shrinkCountdowns.length >= 2) return;
+  // Only ONE shrink countdown at a time. Allowing two simultaneous countdowns
+  // (with independent offsets) made the PREDICTED safe zone diverge from what
+  // was actually applied: countdowns apply sequentially, each recomputed from
+  // the already-shrunk grid, so the second one lands on different bounds than
+  // the overlay/AI predicted. That killed snakes whose head was inside the
+  // displayed safe zone. With a single countdown, the shown safe zone always
+  // equals the applied bounds, so a head in the safe zone always survives
+  // (its out-of-bounds body is truncated, not killed).
+  if (shrinkCountdowns && shrinkCountdowns.length >= 1) return;
 
   // Count deaths for proportional shrink
   var deaths = 0;
@@ -304,7 +311,9 @@ function maybeTriggerShrink(playerDied) {
 
 // Start a shrink countdown with random offset
 // IMPORTANT: boundaries are calculated at EXECUTION time, not creation time.
-// This ensures multiple simultaneous countdowns each shrink from the CURRENT grid.
+// Only one countdown is ever active at a time (see maybeTriggerShrink), so the
+// grid does not change between the countdown's prediction and its application —
+// the displayed safe zone always matches the bounds that get applied.
 function triggerShrinkCountdown(targetGridSize) {
   var currentSize = gridMaxX - gridMinX;
   var shrinkAmount = currentSize - targetGridSize;
@@ -646,18 +655,32 @@ function checkHeadsOutOfBounds() {
 function truncateSnakesToBounds(bounds) {
   var playerLost = 0;
 
-  // Player snake — filter ALL segments outside new bounds
-  if (snake && snake.length > 0) {
-    var before = snake.length;
-    var newSnake = [];
-    for (var i = 0; i < snake.length; i++) {
-      if (snake[i].x >= bounds.newMinX && snake[i].x < bounds.newMaxX &&
-          snake[i].z >= bounds.newMinZ && snake[i].z < bounds.newMaxZ) {
-        newSnake.push(snake[i]);
+  // Keep the contiguous in-bounds run STARTING FROM THE HEAD. A snake body is
+  // a single connected chain, so once a segment falls into the void the rest of
+  // the tail is severed with it — we must NOT skip over out-of-bounds segments
+  // and reconnect the pieces (that produced a visible "jump"/teleport across
+  // the gap). The head (index 0) is ALWAYS kept, even when it is itself out of
+  // bounds: that way an out-of-bounds head is detected and killed by
+  // checkHeadsOutOfBounds() instead of being silently promoted back inside
+  // (which let AI snakes cheat death on shrink).
+  function contiguousInBounds(body, b) {
+    var kept = [body[0]];
+    for (var k = 1; k < body.length; k++) {
+      var s = body[k];
+      if (s.x >= b.newMinX && s.x < b.newMaxX &&
+          s.z >= b.newMinZ && s.z < b.newMaxZ) {
+        kept.push(s);
+      } else {
+        break; // sever here — the tail beyond the gap is lost
       }
     }
-    // Keep at least the head (index 0) even if somehow outside — die() handles that
-    if (newSnake.length < 1) newSnake = [snake[0]];
+    return kept;
+  }
+
+  // Player snake — sever at the first out-of-bounds segment from the head.
+  if (snake && snake.length > 0) {
+    var before = snake.length;
+    var newSnake = contiguousInBounds(snake, bounds);
     playerLost = before - newSnake.length;
     snake.length = 0;
     for (var i = 0; i < newSnake.length; i++) snake.push(newSnake[i]);
@@ -668,20 +691,13 @@ function truncateSnakesToBounds(bounds) {
     }
   }
 
-  // AI snakes — filter ALL segments outside new bounds
+  // AI snakes — same rule: sever at the first out-of-bounds segment from head.
   if (aiSnakes) {
     for (var i = 0; i < aiSnakes.length; i++) {
       var ai = aiSnakes[i];
       if (!ai.alive) continue;
       var before = ai.snake.length;
-      var newSnake = [];
-      for (var j = 0; j < ai.snake.length; j++) {
-        if (ai.snake[j].x >= bounds.newMinX && ai.snake[j].x < bounds.newMaxX &&
-            ai.snake[j].z >= bounds.newMinZ && ai.snake[j].z < bounds.newMaxZ) {
-          newSnake.push(ai.snake[j]);
-        }
-      }
-      if (newSnake.length < 1) newSnake = [ai.snake[0]];
+      var newSnake = contiguousInBounds(ai.snake, bounds);
       var lost = before - newSnake.length;
       ai.snake.length = 0;
       for (var j = 0; j < newSnake.length; j++) ai.snake.push(newSnake[j]);
