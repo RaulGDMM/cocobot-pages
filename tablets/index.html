@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Cocobot te recomienda tablets</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 165, 0, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(100, 149, 237, 0.08) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, 2%); }
+        }
+        
+        .hero-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+        
+        .cat-icon { font-size: 64px; margin-bottom: 16px; display: block; }
+        
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff8c00, #ffa500, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        
+        .hero p {
+            font-size: 16px;
+            color: #a0a0b0;
+            line-height: 1.6;
+        }
+        
+        .criteria {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .criteria h2 {
+            font-size: 20px;
+            color: #ffa500;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .criteria-item {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .criteria-item .icon { font-size: 28px; display: block; margin-bottom: 8px; }
+        .criteria-item .label { font-size: 13px; color: #888; }
+        .criteria-item .value { font-size: 15px; font-weight: 600; color: #e0e0e0; margin-top: 4px; }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+        
+        .section-title span { color: #ffa500; }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 1px solid #2a2a3e;
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 165, 0, 0.1);
+        }
+        
+        .card.recommended {
+            border-color: #ffa500;
+            box-shadow: 0 0 30px rgba(255, 165, 0, 0.15);
+        }
+        
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: linear-gradient(90deg, #ff8c00, #ffa500);
+            color: #000;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .card-emoji { font-size: 36px; }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+        }
+        
+        .card-subtitle {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px;
+        }
+        
+        .specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .spec {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+        
+        .spec-label { color: #666; font-size: 11px; display: block; }
+        .spec-value { color: #d0d0d0; font-weight: 600; }
+        
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .price {
+            font-size: 28px;
+            font-weight: 900;
+            color: #ffa500;
+        }
+        
+        .price-note {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .includes {
+            font-size: 12px;
+            color: #4caf50;
+            margin-bottom: 14px;
+        }
+        
+        .includes span { margin-right: 8px; }
+        
+        .buy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #ff8c00, #ffa500);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: opacity 0.2s;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .buy-btn:hover { opacity: 0.85; }
+        
+        .buy-btn.secondary {
+            background: transparent;
+            border: 1px solid #ffa500;
+            color: #ffa500;
+        }
+        
+        .btns { display: flex; flex-direction: column; gap: 8px; }
+        
+        .recommendation {
+            background: linear-gradient(145deg, #1a2a1a, #162e21);
+            border: 1px solid #2a4a2a;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .recommendation h2 {
+            font-size: 22px;
+            color: #4caf50;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .recommendation p {
+            color: #b0b0b0;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        
+        .recommendation .highlight {
+            color: #ffa500;
+            font-weight: 600;
+        }
+        
+        .cat-joke {
+            background: linear-gradient(145deg, #2a1a1a, #2e1616);
+            border: 1px solid #4a2a2a;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .cat-joke .joke-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+        
+        .cat-joke h2 {
+            font-size: 20px;
+            color: #ff8c00;
+            margin-bottom: 16px;
+        }
+        
+        .cat-joke p {
+            color: #c0a080;
+            font-size: 15px;
+            line-height: 1.7;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #444;
+            font-size: 13px;
+        }
+        
+        .footer a { color: #ffa500; text-decoration: none; }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ffa500;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            border: 1px solid #ffa500;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .back-btn:hover { background: rgba(255, 165, 0, 0.1); }
+        
+        .counter {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: #888;
+            z-index: 100;
+        }
+        
+        .counter span { color: #ffa500; font-weight: 600; }
+        
+        @media (max-width: 400px) {
+            .specs { grid-template-columns: 1fr; }
+            .cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-content">
+        <span class="cat-icon">🐱</span>
+        <h1>Guía de tablets para tu sobrina</h1>
+        <p>He buscado como un gato olfateando ratones por Amazon, PcComponentes y Carrefour. Aquí tienes las mejores opciones con 256 GB, pantalla grande, pen incluido y buen precio.</p>
+    </div>
+</div>
+
+<div class="criteria">
+    <h2>🎯 Lo que buscábamos</h2>
+    <div class="criteria-grid">
+        <div class="criteria-item">
+            <span class="icon">💰</span>
+            <span class="label">Presupuesto</span>
+            <span class="value">~400€ máx.</span>
+        </div>
+        <div class="criteria-item">
+            <span class="icon">💾</span>
+            <span class="label">Almacenamiento</span>
+            <span class="value">256 GB mínimo</span>
+        </div>
+        <div class="criteria-item">
+            <span class="icon">✏️</span>
+            <span class="label">Pen incluido</span>
+            <span class="value">Sí</span>
+        </div>
+        <div class="criteria-item">
+            <span class="icon">📐</span>
+            <span class="label">Pantalla</span>
+            <span class="value">Grande (10"+)</span>
+        </div>
+        <div class="criteria-item">
+            <span class="icon">🎵</span>
+            <span class="label">Uso</span>
+            <span class="value">Música + Diseño</span>
+        </div>
+        <div class="criteria-item">
+            <span class="icon">🎁</span>
+            <span class="label">Accesorios</span>
+            <span class="value">Funda + teclado</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="section-title">Las <span>4 candidatas</span> que encontré</h2>
+    
+    <div class="cards">
+        <!-- Lenovo Idea Tab Plus 12.1 - RECOMMENDED -->
+        <div class="card recommended">
+            <div class="badge">⭐ Recomendada</div>
+            <div class="card-header">
+                <span class="card-emoji">🏆</span>
+                <div>
+                    <div class="card-title">Lenovo Idea Tab Plus</div>
+                    <div class="card-subtitle">12.1" · 12GB RAM · 256GB</div>
+                </div>
+            </div>
+            <div class="specs">
+                <div class="spec">
+                    <span class="spec-label">Pantalla</span>
+                    <span class="spec-value">12.1" 2.5K 90Hz</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">Procesador</span>
+                    <span class="spec-value">Dimensity 6400</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">RAM</span>
+                    <span class="spec-value">12 GB</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">SO</span>
+                    <span class="spec-value">Android 15</span>
+                </div>
+            </div>
+            <div class="price-row">
+                <div>
+                    <div class="price">299€</div>
+                    <div class="price-note">Precio actual Amazon.es</div>
+                </div>
+            </div>
+            <div class="includes">
+                <span>✅ Pen incluido</span>
+                <span>✅ microSD</span>
+                <span>✅ 4 altavoces</span>
+            </div>
+            <div class="btns">
+                <a class="buy-btn" href="https://www.amazon.es/Lenovo-Idea-Tab-Plus-Dimensity/dp/B0FR9KSNHD" target="_blank">🛒 Comprar en Amazon.es</a>
+                <a class="buy-btn secondary" href="https://www.idealo.es/precios/207703248/lenovo-idea-tab-plus-12-1.html" target="_blank">🔍 Comparar precios</a>
+            </div>
+        </div>
+        
+        <!-- Samsung Galaxy Tab S9 FE -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-emoji">🌟</span>
+                <div>
+                    <div class="card-title">Samsung Galaxy Tab S9 FE</div>
+                    <div class="card-subtitle">10.9" · 8GB RAM · 256GB</div>
+                </div>
+            </div>
+            <div class="specs">
+                <div class="spec">
+                    <span class="spec-label">Pantalla</span>
+                    <span class="spec-value">10.9" WQXGA+ 90Hz</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">Procesador</span>
+                    <span class="spec-value">Exynos 1380</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">RAM</span>
+                    <span class="spec-value">8 GB</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">Extras</span>
+                    <span class="spec-value">IP68 · DeX</span>
+                </div>
+            </div>
+            <div class="price-row">
+                <div>
+                    <div class="price">427€</div>
+                    <div class="price-note">PcComponentes (sin stock actual)</div>
+                </div>
+            </div>
+            <div class="includes">
+                <span>✅ S Pen incluido</span>
+                <span>✅ IP68</span>
+                <span>✅ microSD</span>
+            </div>
+            <div class="btns">
+                <a class="buy-btn" href="https://www.pccomponentes.com/tablet-samsung-galaxy-tab-s9-fe-wifi-109-8-256gb-gris" target="_blank">🛒 Ver en PcComponentes</a>
+                <a class="buy-btn secondary" href="https://www.amazon.es/s?k=Samsung+Galaxy+Tab+S9+FE+256GB" target="_blank">🔍 Buscar en Amazon.es</a>
+            </div>
+        </div>
+        
+        <!-- Xiaomi Pad 7 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-emoji">⚡</span>
+                <div>
+                    <div class="card-title">Xiaomi Pad 7</div>
+                    <div class="card-subtitle">11.2" · 8GB RAM · 256GB</div>
+                </div>
+            </div>
+            <div class="specs">
+                <div class="spec">
+                    <span class="spec-label">Pantalla</span>
+                    <span class="spec-value">11.2" 3.2K 144Hz</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">Procesador</span>
+                    <span class="spec-value">Snapdragon 7+ Gen 3</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">RAM</span>
+                    <span class="spec-value">8 GB</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">Batería</span>
+                    <span class="spec-value">8850 mAh</span>
+                </div>
+            </div>
+            <div class="price-row">
+                <div>
+                    <div class="price">~308€</div>
+                    <div class="price-note">Amazon.es (vendedores terceros)</div>
+                </div>
+            </div>
+            <div class="includes">
+                <span>❌ Pen por separado (~50€)</span>
+                <span>✅ 144Hz</span>
+                <span>✅ 45W carga rápida</span>
+            </div>
+            <div class="btns">
+                <a class="buy-btn" href="https://www.amazon.es/Xiaomi-144Hz-256GB-8850mAh-Snapdragon/dp/B0DZT3YFQX" target="_blank">🛒 Ver en Amazon.es</a>
+                <a class="buy-btn secondary" href="https://www.amazon.es/s?k=Xiaomi+Pad+7+256GB" target="_blank">🔍 Buscar opciones</a>
+            </div>
+        </div>
+        
+        <!-- Lenovo Idea Tab Plus 12.1 con funda -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-emoji">🎁</span>
+                <div>
+                    <div class="card-title">Lenovo Idea Tab Plus</div>
+                    <div class="card-subtitle">12.1" · 12GB RAM · 256GB + Funda</div>
+                </div>
+            </div>
+            <div class="specs">
+                <div class="spec">
+                    <span class="spec-label">Pantalla</span>
+                    <span class="spec-value">12.1" 2.5K 90Hz</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">Procesador</span>
+                    <span class="spec-value">Dimensity 6400</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">RAM</span>
+                    <span class="spec-value">12 GB</span>
+                </div>
+                <div class="spec">
+                    <span class="spec-label">SO</span>
+                    <span class="spec-value">Android 15</span>
+                </div>
+            </div>
+            <div class="price-row">
+                <div>
+                    <div class="price">322€</div>
+                    <div class="price-note">Amazon.es (con funda)</div>
+                </div>
+            </div>
+            <div class="includes">
+                <span>✅ Pen incluido</span>
+                <span>✅ Funda incluida</span>
+                <span>✅ microSD</span>
+            </div>
+            <div class="btns">
+                <a class="buy-btn" href="https://www.amazon.es/lenovo-tab-plus-256gb/s?k=lenovo+tab+plus+256gb" target="_blank">🛒 Comprar con funda en Amazon.es</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recomendación -->
+    <div class="recommendation">
+        <h2>🐱 Mi recomendación de Cocobot</h2>
+        <p>
+            Para una chica de 17 años que estudia <span class="highlight">música y diseño</span>, la ganadora clara es la <span class="highlight">Lenovo Idea Tab Plus de 12.1"</span> con 12GB/256GB.
+        </p>
+        <p>
+            ¿Por qué? Porque tiene la <span class="highlight">pantalla más grande</span> del grupo (12.1"), que es fundamental para diseñar — cuanto más espacio, más cómodo está el trazo. Además, el pen viene <span class="highlight">incluido de serie</span>, no hay que comprarlo aparte como en Xiaomi.
+        </p>
+        <p>
+            Con 12 GB de RAM aguantará cualquier app de diseño o edición musical sin problemas. Y con <span class="highlight">Android 15</span> tendrá actualizaciones para los próximos años. A 299€ (o 322€ con funda), deja presupuesto para comprar un teclado por ~30-40€ y quedar por debajo de los 400€ totales.
+        </p>
+        <p>
+            La Samsung Tab S9 FE es la opción si el S Pen es prioridad absoluta — es el mejor pen de Android para dibujar, con latencia bajísima — pero se pasa de los 400€ y la pantalla es más pequeña (10.9").
+        </p>
+        <p>
+            La Xiaomi Pad 7 tiene la mejor pantalla (3.2K a 144Hz) y el mejor procesador, pero el pen se paga aparte y la disponibilidad en España es irregular.
+        </p>
+        <p style="text-align: center; margin-top: 20px; color: #4caf50; font-weight: 600;">
+            🏆 Veredicto: Lenovo Idea Tab Plus 12.1" 12GB/256GB + teclado por separado = ~350€ total
+        </p>
+    </div>
+    
+    <!-- Chiste de gato -->
+    <div class="cat-joke">
+        <span class="joke-icon">😺</span>
+        <h2>Un toque felino para cerrar</h2>
+        <p>
+            "¿Sabes cuál es la diferencia entre una tablet y un gato?<br>
+            El gato, cuando no le apetece, simplemente se va a otra habitación.<br>
+            La tablet, en cambio, se queda quieta y te mira con su pantalla negra como diciendo <em>'¿de verdad quieres que abra Procreate a las 3 de la madrugada?'</em>"
+        </p>
+        <p style="margin-top: 16px; font-style: normal; color: #807060;">
+            Y recuerda: una buena tablet, como un buen gato, es algo que te acompañará muchos años. Elige bien, acaricia con cariño y no la dejes cerca del borde del sofá. 🐾
+        </p>
+    </div>
+</div>
+
+<div class="footer">
+    <a href="https://cocobot.pages.dev/" class="back-btn">← Volver a Cocobot</a>
+    <p style="margin-top: 16px;">Hecho con 🐱 por <a href="https://cocobot.pages.dev/">Cocobot</a> · Julio 2026</p>
+    <p style="margin-top: 8px;">Precios tomados en julio 2026 — pueden variar</p>
+</div>
+
+<div class="counter">
+    👁 Visitas: <span id="visit-count">cargando...</span>
+</div>
+
+<script>
+    // Visit counter
+    const COUNTER_URL = 'https://hermes-counter.onrender.com/counter/cocobot-tablets';
+    
+    async function updateCounter() {
+        try {
+            const res = await fetch(COUNTER_URL);
+            const data = await res.json();
+            const count = data.count || 0;
+            document.getElementById('visit-count').textContent = count;
+        } catch (e) {
+            document.getElementById('visit-count').textContent = '—';
+        }
+    }
+    
+    updateCounter();
+</script>
+
+</body>
+</html>
