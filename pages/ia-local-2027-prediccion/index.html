@@ -1172,21 +1172,18 @@
 
     <!-- COUNTER SCRIPT -->
     <script>
-        async function updateCounter() {
-            try {
-                const res = await fetch('https://cocobot-stats.rgarciademarina.workers.dev/pages/ia-local-2027-prediccion');
-                if (res.ok) {
-                    const data = await res.json();
-                    const count = data.count || 0;
-                    const el = document.querySelector('.counter-value');
-                    if (el) el.textContent = count.toLocaleString('es-ES');
-                }
-            } catch (e) {
-                const el = document.querySelector('.counter-value');
-                if (el) el.textContent = '—';
-            }
-        }
-        updateCounter();
+    (function(){
+      var w='https://cocobot-stats.rgarciademarina.workers.dev';
+      var p='/pages/ia-local-2027-prediccion/';
+      var el=document.getElementById('visit-counter');
+      fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+      fetch(w+'/c?path='+encodeURIComponent(p))
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+        })
+        .catch(function(){});
+    })();
     </script>
 
 </body>
