@@ -1168,7 +1168,7 @@
     </footer>
 
     <!-- BACK BUTTON -->
-    <a href="../index.html" class="back-btn">← Cocobot</a>
+    <a href="https://raulgdmm.github.io/cocobot-pages/" class="back-btn">← Cocobot</a>
 
     <!-- COUNTER SCRIPT -->
     <script>
@@ -1178,10 +1178,12 @@
                 if (res.ok) {
                     const data = await res.json();
                     const count = data.count || 0;
-                    document.getElementById('visit-counter').textContent = '👁️ ' + count.toLocaleString('es-ES') + ' visitas';
+                    const el = document.querySelector('.counter-value');
+                    if (el) el.textContent = count.toLocaleString('es-ES');
                 }
             } catch (e) {
-                document.getElementById('visit-counter').textContent = '👁️ -- visitas';
+                const el = document.querySelector('.counter-value');
+                if (el) el.textContent = '—';
             }
         }
         updateCounter();
