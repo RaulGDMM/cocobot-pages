@@ -247,10 +247,8 @@
             50% { transform: translateX(-50%) translateY(10px); }
         }
 
-        /* === HAMBURGER MENU === */
-        .menu-toggle {
-            display: none;
-        }
+        /* === HAMBURGER MENU (FIXED) === */
+        .menu-toggle { display: none; }
 
         .menu-label {
             position: fixed;
@@ -293,60 +291,40 @@
         .hamburger-icon span:nth-child(2) { top: 7px; }
         .hamburger-icon span:nth-child(3) { top: 14px; }
 
-        .menu-toggle:checked ~ .menu-label .hamburger-icon span:nth-child(1) {
-            transform: rotate(45deg);
-            top: 7px;
+        .menu-toggle:checked + .menu-label .hamburger-icon span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
         }
 
-        .menu-toggle:checked ~ .menu-label .hamburger-icon span:nth-child(2) {
+        .menu-toggle:checked + .menu-label .hamburger-icon span:nth-child(2) {
             opacity: 0;
         }
 
-        .menu-toggle:checked ~ .menu-label .hamburger-icon span:nth-child(3) {
-            transform: rotate(-45deg);
-            top: 7px;
+        .menu-toggle:checked + .menu-label .hamburger-icon span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        .nav-overlay {
+        .nav-menu {
             position: fixed;
             top: 0;
-            right: -300px;
+            right: 0;
             width: 280px;
             height: 100vh;
             background: var(--surface);
             border-left: 1px solid var(--border);
             z-index: 150;
-            transition: right 0.3s ease;
             padding: 80px 24px 24px;
             display: flex;
             flex-direction: column;
             gap: 4px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
         }
 
-        .menu-toggle:checked ~ .nav-overlay {
-            right: 0;
+        .menu-toggle:checked ~ .nav-menu {
+            transform: translateX(0);
         }
 
-        .nav-overlay::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: -1;
-        }
-
-        .menu-toggle:checked ~ .nav-overlay::before {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .nav-overlay a {
+        .nav-menu a {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -359,13 +337,13 @@
             transition: all 0.2s;
         }
 
-        .nav-overlay a:hover {
+        .nav-menu a:hover {
             background: var(--surface2);
             color: var(--text);
             transform: translateX(4px);
         }
 
-        .nav-overlay a .nav-icon {
+        .nav-menu a .nav-icon {
             width: 32px;
             height: 32px;
             border-radius: 8px;
@@ -374,6 +352,23 @@
             justify-content: center;
             font-size: 1rem;
             flex-shrink: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 140;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .menu-toggle:checked ~ .menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* === CONTENT === */
@@ -793,13 +788,14 @@
             </div>
         </label>
         <nav class="nav-overlay">
-            <a href="#hardware"><span class="nav-icon" style="background: var(--purple-glow);">🖥️</span> Hardware</a>
-            <a href="#modelos"><span class="nav-icon" style="background: var(--blue-glow);">🧠</span> Modelos</a>
-            <a href="#software"><span class="nav-icon" style="background: var(--cyan-glow);">⚙️</span> Software</a>
-            <a href="#timeline"><span class="nav-icon" style="background: var(--pink-glow);">📅</span> Timeline</a>
-            <a href="#precios"><span class="nav-icon" style="background: var(--amber-glow);">💰</span> Precios</a>
-            <a href="#opinion"><span class="nav-icon" style="background: var(--purple-glow);">🐱</span> Mi opinión</a>
+            <a href="#hardware" onclick="document.getElementById('menuToggle').checked=false"><span class="nav-icon" style="background: var(--purple-glow);">🖥️</span> Hardware</a>
+            <a href="#modelos" onclick="document.getElementById('menuToggle').checked=false"><span class="nav-icon" style="background: var(--blue-glow);">🧠</span> Modelos</a>
+            <a href="#software" onclick="document.getElementById('menuToggle').checked=false"><span class="nav-icon" style="background: var(--cyan-glow);">⚙️</span> Software</a>
+            <a href="#timeline" onclick="document.getElementById('menuToggle').checked=false"><span class="nav-icon" style="background: var(--pink-glow);">📅</span> Timeline</a>
+            <a href="#precios" onclick="document.getElementById('menuToggle').checked=false"><span class="nav-icon" style="background: var(--amber-glow);">💰</span> Precios</a>
+            <a href="#opinion" onclick="document.getElementById('menuToggle').checked=false"><span class="nav-icon" style="background: var(--purple-glow);">🐱</span> Mi opinión</a>
         </nav>
+        <label for="menuToggle" class="menu-overlay"></label>
 
         <div class="hero-grid"></div>
         <div class="orb orb-1"></div>
@@ -1172,30 +1168,23 @@
     </footer>
 
     <!-- BACK BUTTON -->
-    <a href="/" class="back-btn">← Volver</a>
+    <a href="../index.html" class="back-btn">← Cocobot</a>
 
     <!-- COUNTER SCRIPT -->
     <script>
-        const COUNTER_URL = 'https://counter.ophir.dev';
-        const SITE_ID = 'ia-local-2027-prediccion';
-
         async function updateCounter() {
             try {
-                const res = await fetch(`${COUNTER_URL}/${SITE_ID}`);
+                const res = await fetch('https://cocobot-stats.rgarciademarina.workers.dev/pages/ia-local-2027-prediccion');
                 if (res.ok) {
                     const data = await res.json();
                     const count = data.count || 0;
-                    document.getElementById('counter').textContent = count.toLocaleString('es-ES');
+                    document.getElementById('visit-counter').textContent = '👁️ ' + count.toLocaleString('es-ES') + ' visitas';
                 }
             } catch (e) {
-                document.getElementById('counter').textContent = '—';
+                document.getElementById('visit-counter').textContent = '👁️ -- visitas';
             }
         }
-
-        // Increment on page load
-        fetch(`${COUNTER_URL}/${SITE_ID}/increment`, { method: 'POST' })
-            .then(() => updateCounter())
-            .catch(() => updateCounter());
+        updateCounter();
     </script>
 
 </body>
