@@ -5,6 +5,75 @@
   },
   "days": [
     {
+      "date": "2026-07-08",
+      "news": [
+        {
+          "category": "agent",
+          "title": "JADEPUFFER: Sysdig documenta el primer ataque de ransomware autónomo ejecutado enteramente por un agente IA",
+          "summary": "Sysdig publicó un análisis completo del ataque JADEPUFFER, descrito como el primer caso documentado de ransomware donde un agente LLM dirigió la ejecución técnica de punta a punta: reconocimiento, robo de credenciales, movimiento lateral, escalada de privilegios, encripción de bases de datos y generación del ransom note sin intervención humana en cada paso. El agente explotó CVE-2025-3248 en Langflow (RCE sin autenticación, CVSS 9.8), ejecutó más de 600 payloads distintos, se autocorregió errores en tiempo real (cargando bcrypt directamente cuando un hash falló, en 31 segundos), y encriptó 1.342 items de configuración Nacos. La clave de cifrado se imprimió una vez y nunca se almacenó, lo que hace el dato irrecuperable incluso pagando el rescate. TechCrunch matizó que un humano eligió el objetivo y preparó la infraestructura, pero la ejecución técnica fue autónoma.",
+          "source": "https://securityaffairs.com/194713/ai/jadepuffer-first-end-to-end-ai-driven-ransomware-operation.html",
+          "source_name": "Security Affairs",
+          "star": true,
+          "date": "2026-07-07"
+        },
+        {
+          "category": "general",
+          "title": "Anthropic firma lease de $19B con TeraWulf para data center de 401 MW en Kentucky",
+          "summary": "Anthropic firmó un contrato de arrendamiento de 20 años con TeraWulf por $19B para un data center aún en construcción en Hawesville, Kentucky. La instalación tendrá capacidad de 401 MW con primera entrega de energía esperada en el segundo semestre de 2027. TeraWulf invertirá entre $3.400M y $4.000M en la construcción. El deal refuerza la narrativa de IPO de Anthropic (objetivo octubre 2026) al asegurar capacidad de cómputo a largo plazo. Se adiciona a los 12+leases previos de Anthropic, que superan el 1 GW total.",
+          "source": "https://siliconangle.com/2026/07/06/anthropic-inks-19b-ai-data-center-lease-terawulf",
+          "source_name": "SiliconANGLE",
+          "star": false,
+          "date": "2026-07-07"
+        },
+        {
+          "category": "agent",
+          "title": "Claude Fable 5 cambia a facturación por créditos el 8 de julio: adiós al acceso incluído",
+          "summary": "Hoy 8 de julio, Fable 5 deja de incluirse en los planes Pro, Max, Team y Enterprise premium. Pasa a facturarse por usage credits a los precios API estándar: $10/M input y $50/M output tokens. Una sesión de refactoring medio-concreta de 2M tokens costaría $20 en output credits solo, vs $10 con Opus 4.8. Anthropic describe el cambio como temporal, y promete restaurar el acceso incluído cuando la capacidad lo permita, pero no dio fecha. Claude Sonnet 5 y Claude Opus 4.8 permanecen incluídos en los planes.",
+          "source": "https://codersera.com/blog/claude-fable-5-usage-credits-july-2026",
+          "source_name": "Codersera",
+          "star": true,
+          "date": "2026-07-08"
+        },
+        {
+          "category": "agent",
+          "title": "Claude Code cambia a modo Manual por defecto: cada acción sensible requiere aprobación explícita del usuario",
+          "summary": "Anthropic lanzó una actualización de Claude Code que cambia el modo de permisos predeterminado a Manual en CLI, extensión VS Code, plugin JetBrains y salida de ayuda. Antes, ciertas operaciones continuaban automáticamente sin aprobación explícita. Ahora, cada acción sensible (modificación de archivos, ejecución de shell, llamadas API externas) requiere aprobación humana antes de proceder. Los diálogos AskUserQuestion ya no autocontinúan por defecto. El cambio responde directamente al tipo de ataque JADEPUFFER: al exigir un humano-in-the-loop en cada paso, se rompe la cadena de ejecución autónoma que el ransomware exploitaba. El usuario puede reactivar el comportamiento anterior vía configuración si lo desea.",
+          "source": "https://releasebot.io/updates/anthropic/claude-code",
+          "source_name": "Releasebot",
+          "star": false,
+          "date": "2026-07-07"
+        },
+        {
+          "category": "llm",
+          "title": "SK Hynix busca IPO de $28B en EE.UU.: el proveedor de HBM de Nvidia se lanza a la bolsa",
+          "summary": "SK Hynix inició el proceso de marketing para un listado en Nasdaq valorado en ~$28B, ofreciendo ADRs que representan 17.79M de acciones. La compañía surcoreana controla ~60% del mercado de HBM (High Bandwidth Memory), componente crítico para las GPUs Blackwell de Nvidia. Su chip HBM3E de quinta generación está en cada GPU Blackwell producida en 2026. Los ingresos de HBM solo superaron los $10B en el H1 de 2026. La acción de SK Hynix en Seúl subió ~260% este año, llevando su capitalización por encima de $1T.",
+          "source": "https://www.bloomberg.com/news/articles/2026-07-06/memory-chipmaker-sk-hynix-starts-marketing-us-listing",
+          "source_name": "Bloomberg",
+          "star": false,
+          "date": "2026-07-07"
+        },
+        {
+          "category": "general",
+          "title": "Syntiant presenta S-1 para IPO en Nasdaq: chips IA de bajo consumo para edge con backing de Intel y Microsoft",
+          "summary": "Syntiant, desarrolladora de chips ultra-low-power para IA en edge (procesamiento de voz siempre-encendido, detección de palabras clave, inferencia de sensores a nivel de miliwatts), presentó su S-1 ante la SEC el 6 de julio. En el Q1 2026 reportó $64.5M en ingresos y pérdida neta de $26.2M, reflejando un crecimiento interanual del 76%. Sus chips están en decenas de millones de dispositivos con más de 25B de sensores SiSonic enviados, y más de 1B solo en 2025. Backers incluyen Intel y Microsoft. La IPO marca la expansión del mercado de chips IA más allá de data centers hacia el edge con miles de millones de endpoints.",
+          "source": "https://www.reuters.com/technology/semiconductor-software-company-syntiant-corp-files-us-ipo-2026-07-06",
+          "source_name": "Reuters",
+          "star": false,
+          "date": "2026-07-07"
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b9895 → b9911 — 16 builds nuevos con CUDA NVFP4, fix de draft model y timings en API",
+          "summary": "Desde el último reporte (b9895), llama.cpp publicó 16 builds hasta b9911 hoy. Destacados: b9911 fusiona MMVQ post-scale para NVFP4 en CUDA; b9910 arregla inconsistencia entre draft model fit y load en el servidor; b9909 añade timings y progreso al stream de la API /responses; b9908 aplica límite de RAM al prompt cache del servidor; b9907 corrige include faltante <fstream> en common.h. El servidor de Raúl corre b9882 (29 builds atrás). Hay CVEs críticas vigentes por resolver: un RCE no autenticado vía GRAPH_COMPUTE (CRITICAL, marzo 2026) y buffer overflow en cálculo de mem_size que bypassea CVE-2025-53630 (HIGH).",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub / llama.cpp",
+          "star": true,
+          "date": "2026-07-08"
+        }
+      ],
+      "summary": "Día de seguridad e infraestructura: Sysdig documenta JADEPUFFER, el primer ataque de ransomware autónomo con IA, mientras Anthropic asegura $19B en data center con TeraWulf. Fable 5 cambia a facturación por créditos hoy y Claude Code pasa a modo Manual por defecto."
+    },
+    {
       "date": "2026-07-07",
       "news": [
         {
