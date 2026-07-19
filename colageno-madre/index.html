@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colágeno para mi madre — Guía comparativa</title>
+<meta name="description" content="Comparativa de colágeno hidrolizado en polvo con magnesio y vitaminas. Precios reales de Amazon.es, julio 2026.">
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-hover: #222632;
+    --accent: #6c63ff;
+    --accent-light: #8b83ff;
+    --green: #34d399;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --border: #2d3348;
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  nav .logo {
+    font-weight: 700; font-size: 1.1rem;
+    color: var(--accent-light);
+    text-decoration: none;
+  }
+  nav .nav-links { display: flex; gap: 20px; }
+  nav .nav-links a {
+    color: var(--text-dim); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  nav .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    margin-top: 60px;
+    padding: 80px 24px 60px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(108,99,255,0.12) 0%, transparent 100%);
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--accent-light), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    max-width: 640px; margin: 0 auto;
+    color: var(--text-dim); font-size: 1.1rem;
+  }
+  .hero .date {
+    margin-top: 12px; font-size: 0.85rem; color: var(--text-dim);
+    opacity: 0.7;
+  }
+
+  /* SECTIONS */
+  section {
+    max-width: 1100px; margin: 0 auto;
+    padding: 40px 24px;
+    scroll-margin-top: 70px;
+  }
+  section h2 {
+    font-size: 1.8rem; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  section h2 .emoji { margin-right: 8px; }
+  section .subtitle {
+    color: var(--text-dim); margin-bottom: 32px; font-size: 1rem;
+  }
+
+  /* CURRENT PRODUCT */
+  .current-product {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex; gap: 24px; align-items: center;
+    margin-bottom: 40px;
+  }
+  .current-product .icon {
+    font-size: 3rem; flex-shrink: 0;
+  }
+  .current-product h3 { margin-bottom: 4px; }
+  .current-product .details {
+    color: var(--text-dim); font-size: 0.95rem;
+  }
+  .current-product .details strong { color: var(--text); }
+
+  /* PRODUCT CARDS */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    background: var(--card-hover);
+  }
+  .card .badge {
+    position: absolute; top: 16px; right: 16px;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .badge.best { background: var(--accent); color: #fff; }
+  .badge.value { background: var(--green); color: #000; }
+  .badge.premium { background: var(--orange); color: #000; }
+  .badge.budget { background: var(--red); color: #fff; }
+
+  .card .rank {
+    font-size: 0.8rem; color: var(--text-dim); margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .card h3 {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 8px; line-height: 1.3;
+  }
+  .card .brand {
+    color: var(--accent-light); font-weight: 600;
+  }
+  .card .specs {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .card .spec {
+    background: rgba(108,99,255,0.1);
+    border: 1px solid rgba(108,99,255,0.2);
+    padding: 3px 10px; border-radius: 8px;
+    font-size: 0.8rem; color: var(--accent-light);
+  }
+  .card .price-row {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card .price {
+    font-size: 1.6rem; font-weight: 800; color: var(--green);
+  }
+  .card .per-kg {
+    font-size: 0.85rem; color: var(--text-dim);
+  }
+  .card .rating {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.9rem; color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .card .rating .count {
+    color: var(--text-dim); font-size: 0.85rem;
+  }
+  .card .opinion {
+    flex: 1;
+    font-size: 0.9rem; color: var(--text-dim);
+    margin-bottom: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .card .opinion strong { color: var(--text); }
+  .card .buy-btn {
+    display: block; text-align: center;
+    background: var(--accent);
+    color: #fff; text-decoration: none;
+    padding: 12px; border-radius: 10px;
+    font-weight: 700; font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+  .card .buy-btn:hover { background: var(--accent-light); }
+
+  /* COMPARISON TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  thead {
+    background: var(--card);
+  }
+  th {
+    padding: 14px 16px; text-align: left;
+    font-weight: 700; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--card-hover); }
+  td.price-cell { color: var(--green); font-weight: 700; }
+  td.kg-cell { color: var(--text-dim); }
+  .table-link {
+    color: var(--accent-light); text-decoration: none;
+    font-weight: 600;
+  }
+  .table-link:hover { text-decoration: underline; }
+
+  /* INFO BOXES */
+  .info-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .info-box h4 {
+    font-size: 1.1rem; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .info-box ul {
+    padding-left: 20px;
+    color: var(--text-dim);
+  }
+  .info-box li { margin-bottom: 6px; }
+  .info-box li strong { color: var(--text); }
+
+  /* VERDICT */
+  .verdict {
+    background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(52,211,153,0.1));
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+  }
+  .verdict h3 {
+    font-size: 1.4rem; margin-bottom: 16px;
+  }
+  .verdict p {
+    color: var(--text-dim); max-width: 600px; margin: 0 auto 12px;
+  }
+  .verdict .winner {
+    font-size: 1.2rem; font-weight: 700; color: var(--green);
+    margin-top: 16px;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 40px 24px;
+    color: var(--text-dim); font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .cards { grid-template-columns: 1fr; }
+    .current-product { flex-direction: column; text-align: center; }
+    nav .nav-links { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">🐱 Cocobot</a>
+  <div class="nav-links">
+    <a href="#actual">Actual</a>
+    <a href="#top">Top picks</a>
+    <a href="#tabla">Tabla</a>
+    <a href="#veredicto">Veredicto</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>Colágeno para mi madre</h1>
+  <p>Investigación profunda de colágenos hidrolizados en polvo con magnesio y vitaminas. Precios reales verificados en Amazon.es.</p>
+  <div class="date">📅 Julio 2026 · Precios capturados en directo</div>
+</header>
+
+<!-- CURRENT PRODUCT -->
+<section id="actual">
+  <h2><span class="emoji">📋</span>Lo que toma ahora</h2>
+  <p class="subtitle">Punto de referencia para la comparativa</p>
+
+  <div class="current-product">
+    <div class="icon">🏷️</div>
+    <div>
+      <h3>ColagenLider Plus — NaturLider</h3>
+      <div class="details">
+        <strong>180g</strong> en polvo · Fortigel® (colágeno hidrolizado) + <strong>Vitamina C</strong> + <strong>Vitamina D</strong> + <strong>Magnesio</strong><br>
+        Sabor neutro · Para huesos, cartílagos y formación de colágeno<br>
+        Precio habitual: ~10–12 € (<strong>~55–67 €/kg</strong>)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP PICKS -->
+<section id="top">
+  <h2><span class="emoji">⭐</span>Las mejores opciones</h2>
+  <p class="subtitle">Seleccionados por calidad, precio y similitud con el producto actual</p>
+
+  <div class="cards">
+
+    <!-- 1. THE ODDITY -->
+    <div class="card">
+      <span class="badge value">Mejor precio/kg</span>
+      <div class="rank">Opción 1 · Mejor relación calidad-precio</div>
+      <h3><span class="brand">THE ODDITY®</span> Colágeno con Magnesio + Ácido Hialurónico</h3>
+      <div class="specs">
+        <span class="spec">360g</span>
+        <span class="spec">36 dosis</span>
+        <span class="spec">Vitamina C</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">HA</span>
+        <span class="spec">Sabor limón</span>
+      </div>
+      <div class="price-row">
+        <span class="price">12,99 €</span>
+        <span class="per-kg">36,08 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.5/5 <span class="count">(99 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> Es la ganga. 360g con magnesio, ácido hialurónico y vitamina C por menos de 13 €. El precio por kilo es el más bajo de toda la lista con diferencia. Sabor limón, que puede gustar o no, pero la relación calidad-precio es imbatible.
+      </div>
+      <a href="https://www.amazon.es/s?k=THE+ODDITY+col%C3%A1geno+magnesio+360g" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 2. Weider -->
+    <div class="card">
+      <span class="badge best">Más parecido</span>
+      <div class="rank">Opción 2 · El más parecido al actual</div>
+      <h3><span class="brand">Weider</span> Collagen — Colágeno Hidrolizado Peptan</h3>
+      <div class="specs">
+        <span class="spec">300g</span>
+        <span class="spec">Peptan®</span>
+        <span class="spec">Vitamina C</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">HA</span>
+        <span class="spec">Sin sabor</span>
+      </div>
+      <div class="price-row">
+        <span class="price">14,99 €</span>
+        <span class="per-kg">49,97 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.4/5 <span class="count">(1.387 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> Marca reconocida con colágeno Peptan® (patentado, alta absorción). 300g con extras igual que el ColagenLider, pero con ácido hialurónico añadido. Sabor neutro como el actual. +1.300 valoraciones con 4.4 estrellas — es un producto probado y fiable.
+      </div>
+      <a href="https://www.amazon.es/Weider-Collagen-Hialur%C3%B3nico-Magnesio-Vitamina/dp/B01LNQAYLO" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 3. ESPADIET -->
+    <div class="card">
+      <span class="badge best">Más completo</span>
+      <div class="rank">Opción 3 · Fórmula más completa</div>
+      <h3><span class="brand">ESPADIET</span> Colágeno Hidrolizado Puro + Magnesio</h3>
+      <div class="specs">
+        <span class="spec">300g</span>
+        <span class="spec">Vitamina C</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">HA</span>
+        <span class="spec">Condroitina</span>
+        <span class="spec">MSM</span>
+        <span class="spec">Vit B1, B2, B5, B6</span>
+      </div>
+      <div class="price-row">
+        <span class="price">15,29 €</span>
+        <span class="per-kg">50,97 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.3/5 <span class="count">(203 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> El más completo de toda la lista. Además del colágeno, magnesio y vitamina C, lleva condroitina, MSM y vitaminas del grupo B. Si el objetivo es cuidar articulaciones y huesos, esta fórmula es superior a casi cualquier otra. Solo 203 valoraciones pero la marca tiene buena reputación.
+      </div>
+      <a href="https://www.amazon.es/s?k=ESPADIET+col%C3%A1geno+hidrolizado+magnesio+300g" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 4. Arkopharma -->
+    <div class="card">
+      <span class="badge premium">Premium</span>
+      <div class="rank">Opción 4 · Marca farmacéutica</div>
+      <h3><span class="brand">Arkopharma</span> Arkoflex Colágeno Clásico</h3>
+      <div class="specs">
+        <span class="spec">360g (2 botes)</span>
+        <span class="spec">Vitamina C</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">HA</span>
+        <span class="spec">Vit B1, B2, B6, B12, D3</span>
+        <span class="spec">Manganeso</span>
+        <span class="spec">Cúrcuma</span>
+      </div>
+      <div class="price-row">
+        <span class="price">26,31 €</span>
+        <span class="per-kg">36,54 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.5/5 <span class="count">(356 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> Arkopharma es marca de parafarmacia francesa — calidad farmacéutica. Este pack de 2 botes (360g total) tiene el mejor precio/kg de toda la gama premium. Lleva cúrcuma (antiinflamatorio), manganeso y un combo completo de vitaminas. Si el presupuesto lo permite, es la opción más seria.
+      </div>
+      <a href="https://www.amazon.es/Arkopharma-Arkoflex-Funcionamiento-Cart%C3%ADlagos-Hialur%C3%B3nico/dp/B0731NFWRK" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 5. Drasanvi COLLMAR -->
+    <div class="card">
+      <span class="badge premium">Marino</span>
+      <div class="rank">Opción 5 · Colágeno marino premium</div>
+      <h3><span class="brand">Drasanvi</span> COLLMAR Colágeno Marino Hidrolizado</h3>
+      <div class="specs">
+        <span class="spec">300g</span>
+        <span class="spec">Marino</span>
+        <span class="spec">Vitamina C</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">HA</span>
+        <span class="spec">Sabor vainilla</span>
+      </div>
+      <div class="price-row">
+        <span class="price">19,12 €</span>
+        <span class="per-kg">63,73 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.4/5 <span class="count">(721 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> Colágeno marino, que tiene mayor biodisponibilidad que el bovino. Drasanvi es marca española con buena reputación. Más caro por kilo, pero el colágeno marino se absorbe mejor. 500+ vendidos el mes pasado — es un producto que la gente repite.
+      </div>
+      <a href="https://www.amazon.es/s?k=Drasanvi+COLLMAR+col%C3%A1geno+marino+300g" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 6. HSN 500g -->
+    <div class="card">
+      <span class="badge value">Mayor cantidad</span>
+      <div class="rank">Opción 6 · Más producto por menos</div>
+      <h3><span class="brand">HSN</span> Collessence Colágeno + Magnesio</h3>
+      <div class="specs">
+        <span class="spec">500g</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">Sin sabor</span>
+        <span class="spec">Sin gluten</span>
+        <span class="spec">Sin lactosa</span>
+      </div>
+      <div class="price-row">
+        <span class="price">19,90 €</span>
+        <span class="per-kg">39,80 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.4/5 <span class="count">(19 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> 500g de colágeno con magnesio a un precio/kilo excelente. HSN es marca de suplementación deportiva seria. La pega es que no lleva vitamina C ni ácido hialurónico — solo colágeno + magnesio. Si tu madre solo necesita eso, es una opción brutal. Pocas valoraciones pero marca fiable.
+      </div>
+      <a href="https://www.amazon.es/s?k=HSN+Collessence+col%C3%A1geno+magnesio+500g" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 7. Collagen 1000g -->
+    <div class="card">
+      <span class="badge budget">Económico</span>
+      <div class="rank">Opción 7 · Colágeno puro al mejor precio</div>
+      <h3>Colágeno Hidrolizado <span class="brand">100% puro</span></h3>
+      <div class="specs">
+        <span class="spec">1000g (1kg)</span>
+        <span class="spec">Tipo 1 & 3</span>
+        <span class="spec">Sin sabor</span>
+        <span class="spec">Sin aditivos</span>
+      </div>
+      <div class="price-row">
+        <span class="price">29,95 €</span>
+        <span class="per-kg">29,95 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.6/5 <span class="count">(2.067 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> El más barato de toda la lista por kilo — 29,95 € el kilo. Pero es colágeno puro sin extras (ni magnesio, ni vitaminas). Si tu madre ya toma vitaminas aparte, esto es la opción más económica. +2.000 valoraciones con 4.6 estrellas. El envase es grande y práctico.
+      </div>
+      <a href="https://www.amazon.es/s?k=col%C3%A1geno+hidrolizado+polvo+1000g+puro" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+    <!-- 8. Bestdiet -->
+    <div class="card">
+      <span class="badge value">Pack</span>
+      <div class="rank">Opción 8 · Pack con Vitamina D</div>
+      <h3><span class="brand">Bestdiet</span> Colágeno con Magnesio + Vitamina C y D</h3>
+      <div class="specs">
+        <span class="spec">750g (3x250g)</span>
+        <span class="spec">Vitamina C</span>
+        <span class="spec">Vitamina D</span>
+        <span class="spec">Magnesio</span>
+        <span class="spec">Frutas rojas</span>
+      </div>
+      <div class="price-row">
+        <span class="price">31,99 €</span>
+        <span class="per-kg">42,65 €/kg</span>
+      </div>
+      <div class="rating">⭐ 4.3/5 <span class="count">(31 valoraciones)</span></div>
+      <div class="opinion">
+        <strong>Mi opinión:</strong> El único de la lista que incluye Vitamina D como el ColagenLider actual. Pack de 3 botes (750g total) con magnesio, vitamina C y D. Sabor frutas rojas. Si lo que busca tu madre es algo con la misma fórmula que ahora toma, este es el más cercano.
+      </div>
+      <a href="https://www.amazon.es/Col%C3%A1geno-Magnesio-Vitaminas-Polvo-Pack/dp/B09RB8TZGW" target="_blank" class="buy-btn">Ver en Amazon →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section id="tabla">
+  <h2><span class="emoji">📊</span>Tabla comparativa</h2>
+  <p class="subtitle">Todos los productos de un vistazo</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Tamaño</th>
+          <th>Precio</th>
+          <th>€/kg</th>
+          <th>Extras</th>
+          <th>Valoración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.amazon.es/s?k=THE+ODDITY+col%C3%A1geno+magnesio+360g" target="_blank" class="table-link">THE ODDITY®</a></td>
+          <td>360g</td>
+          <td class="price-cell">12,99 €</td>
+          <td class="kg-cell">36,08</td>
+          <td>Mg, Vit C, HA</td>
+          <td>⭐ 4.5</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/Weider-Collagen-Hialur%C3%B3nico-Magnesio-Vitamina/dp/B01LNQAYLO" target="_blank" class="table-link">Weider Collagen</a></td>
+          <td>300g</td>
+          <td class="price-cell">14,99 €</td>
+          <td class="kg-cell">49,97</td>
+          <td>Peptan®, Mg, Vit C, HA</td>
+          <td>⭐ 4.4</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/s?k=ESPADIET+col%C3%A1geno+hidrolizado+magnesio+300g" target="_blank" class="table-link">ESPADIET</a></td>
+          <td>300g</td>
+          <td class="price-cell">15,29 €</td>
+          <td class="kg-cell">50,97</td>
+          <td>Mg, Vit C, HA, Condroitina, MSM, Vit B</td>
+          <td>⭐ 4.3</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/Arkopharma-Arkoflex-Funcionamiento-Cart%C3%ADlagos-Hialur%C3%B3nico/dp/B0731NFWRK" target="_blank" class="table-link">Arkopharma Arkoflex</a></td>
+          <td>360g (2x)</td>
+          <td class="price-cell">26,31 €</td>
+          <td class="kg-cell">36,54</td>
+          <td>Mg, Vit C, HA, Vit B, D3, Cúrcuma, Mn</td>
+          <td>⭐ 4.5</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/s?k=Drasanvi+COLLMAR+col%C3%A1geno+marino+300g" target="_blank" class="table-link">Drasanvi COLLMAR</a></td>
+          <td>300g</td>
+          <td class="price-cell">19,12 €</td>
+          <td class="kg-cell">63,73</td>
+          <td>Marino, Mg, Vit C, HA</td>
+          <td>⭐ 4.4</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/s?k=HSN+Collessence+col%C3%A1geno+magnesio+500g" target="_blank" class="table-link">HSN Collessence</a></td>
+          <td>500g</td>
+          <td class="price-cell">19,90 €</td>
+          <td class="kg-cell">39,80</td>
+          <td>Mg</td>
+          <td>⭐ 4.4</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/s?k=col%C3%A1geno+hidrolizado+polvo+1000g+puro" target="_blank" class="table-link">Colágeno 100% puro</a></td>
+          <td>1000g</td>
+          <td class="price-cell">29,95 €</td>
+          <td class="kg-cell">29,95</td>
+          <td>Solo colágeno</td>
+          <td>⭐ 4.6</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.amazon.es/Col%C3%A1geno-Magnesio-Vitaminas-Polvo-Pack/dp/B09RB8TZGW" target="_blank" class="table-link">Bestdiet</a></td>
+          <td>750g (3x)</td>
+          <td class="price-cell">31,99 €</td>
+          <td class="kg-cell">42,65</td>
+          <td>Mg, Vit C, Vit D</td>
+          <td>⭐ 4.3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- INFO -->
+<section>
+  <h2><span class="emoji">💡</span>Qué buscar en un colágeno</h2>
+  <p class="subtitle">Guía rápida para elegir</p>
+
+  <div class="info-box">
+    <h4>🔬 Ingredientes clave</h4>
+    <ul>
+      <li><strong>Colágeno hidrolizado:</strong> El colágeno ya roto en péptidos pequeños para mejor absorción. Tipos I y III son los más comunes.</li>
+      <li><strong>Vitamina C:</strong> Esencial — el cuerpo la necesita para sintetizar colágeno nuevo. Sin ella, el suplemento es menos efectivo.</li>
+      <li><strong>Magnesio:</strong> Contribuye al mantenimiento óseo normal. Importante para personas mayores.</li>
+      <li><strong>Vitamina D:</strong> Ayuda a absorber el calcio. Clave para la salud ósea.</li>
+      <li><strong>Ácido hialurónico:</strong> Bonus para piel y articulaciones. No esencial pero muy beneficioso.</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h4>🐟 Bovino vs Marino</h4>
+    <ul>
+      <li><strong>Bovino:</strong> Más económico. Tipos I y III. Bueno para piel, huesos, tendones.</li>
+      <li><strong>Marino:</strong> Más caro pero mayor biodisponibilidad. Tipo I principalmente. Mejor para piel y anti-envejecimiento.</li>
+      <li>Para el uso de tu madre (huesos y cartílagos), el bovino es perfectamente válido y más económico.</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <h4>⚠️ Marcas patentadas a buscar</h4>
+    <ul>
+      <li><strong>Peptan®:</strong> Colágeno bovino patentado de DSM. Alta calidad, estudios clínicos. (Weider lo usa)</li>
+      <li><strong>Fortigel®:</strong> Colágeno marino patentado. El mismo que usa el ColagenLider actual.</li>
+      <li><strong>Naticol®:</strong> Colágeno marino francés. Muy buena absorción.</li>
+      <li><strong>Verisol®:</strong> Péptidos de colágeno con estudios para piel.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- VERDICT -->
+<section id="veredicto">
+  <h2><span class="emoji">🏆</span>Veredicto final</h2>
+  <p class="subtitle">Mi recomendación personal</p>
+
+  <div class="verdict">
+    <h3>Si tuviera que elegir uno...</h3>
+    <p>Para tu madre, que viene de tomar ColagenLider Plus (colágeno + Vit C + Vit D + Magnesio), la transición más suave y con mejor relación calidad-precio es:</p>
+    <div class="winner">🥇 Weider Collagen 300g — 14,99 €</div>
+    <p style="margin-top: 16px;">Marca reconocida, colágeno Peptan® (alta absorción), sabor neutro como el actual, y lleva magnesio + vitamina C + ácido hialurónico extra. La única diferencia con el ColagenLider es que no incluye vitamina D — pero si tu madre ya toma un multivitamínico o complementos de vitamina D aparte, esto es perfecto.</p>
+    <p style="margin-top: 12px; font-size: 0.95rem;"><strong>Alternativa si el presupuesto es ajustado:</strong> THE ODDITY® a solo 12,99 € con 360g — más producto, mismo magnesio y vitamina C.</p>
+    <p style="margin-top: 12px; font-size: 0.95rem;"><strong>Si quiere subir de gama:</strong> Arkopharma Arkoflex — calidad farmacéutica con cúrcuma antiinflamatoria incluida.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Precios verificados en Amazon.es — Julio 2026. Los precios pueden variar.</p>
+  <p style="margin-top: 8px;">Hecho con 🐱 por <a href="https://raulgdmm.github.io/cocobot-pages/">Cocobot</a></p>
+</footer>
+
+</body>
+</html>
