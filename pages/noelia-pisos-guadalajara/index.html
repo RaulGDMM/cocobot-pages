@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 Buscamos piso — Noelia y su amiga | Guadalajara / Azuqueca de Henares</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #242836;
+            --text: #e4e4e7;
+            --text2: #a1a1aa;
+            --accent: #818cf8;
+            --accent2: #6366f1;
+            --green: #34d399;
+            --yellow: #fbbf24;
+            --orange: #fb923c;
+            --red: #f87171;
+            --border: #2d3040;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a1d27 0%, #2d1b69 50%, #1a1d27 100%);
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            color: var(--text2);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent2);
+        }
+
+        .section-subtitle {
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        /* Context box */
+        .context-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .context-box h3 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .context-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .context-item .icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .context-item .label {
+            color: var(--text2);
+            font-size: 0.85rem;
+        }
+
+        .context-item .value {
+            font-weight: 600;
+        }
+
+        /* Price comparison */
+        .price-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .price-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .price-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-card .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .price-card .price-note {
+            color: var(--text2);
+            font-size: 0.85rem;
+        }
+
+        .price-card.cheaper {
+            border-color: var(--green);
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.1);
+        }
+
+        /* Listings */
+        .listing {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .listing:hover {
+            border-color: var(--accent2);
+        }
+
+        .listing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .listing-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .listing-price .period {
+            font-size: 0.85rem;
+            color: var(--text2);
+            font-weight: 400;
+        }
+
+        .listing-badges {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-green { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+        .badge-yellow { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+        .badge-orange { background: rgba(251, 146, 60, 0.15); color: var(--orange); }
+        .badge-blue { background: rgba(129, 140, 248, 0.15); color: var(--accent); }
+        .badge-red { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+        .listing-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.9rem;
+            color: var(--text2);
+        }
+
+        .listing-desc {
+            color: var(--text2);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .listing-link {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .listing-link:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        /* Neighborhoods */
+        .neighborhood-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .neighborhood {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .neighborhood h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .neighborhood .price-range {
+            color: var(--green);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .neighborhood p {
+            color: var(--text2);
+            font-size: 0.9rem;
+        }
+
+        .neighborhood .pros-cons {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .neighborhood .pros {
+            color: var(--green);
+        }
+
+        .neighborhood .cons {
+            color: var(--orange);
+        }
+
+        /* Tips */
+        .tip-list {
+            list-style: none;
+        }
+
+        .tip-list li {
+            padding: 0.75rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .tip-list li .tip-icon {
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Search links */
+        .search-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .search-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .search-link:hover {
+            border-color: var(--accent2);
+            background: var(--surface2);
+            transform: translateY(-2px);
+        }
+
+        .search-link .sl-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .search-link .sl-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .search-link .sl-desc {
+            color: var(--text2);
+            font-size: 0.8rem;
+        }
+
+        /* Verdict */
+        .verdict-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(129, 140, 248, 0.05));
+            border: 1px solid var(--accent2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .verdict-box h3 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text2);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+         .visit-counter-badge {
+             display: inline-block;
+             margin-top: 0.5rem;
+             padding: 0.25rem 0.75rem;
+             background: var(--surface2);
+             border-radius: 20px;
+             font-size: 0.8rem;
+         }
+
+         .back-btn {
+             position: fixed;
+             top: 1rem;
+             left: 1rem;
+             z-index: 1000;
+             background: var(--surface);
+             border: 1px solid var(--border);
+             color: var(--accent);
+             text-decoration: none;
+             padding: 0.5rem 1rem;
+             border-radius: 8px;
+             font-size: 0.9rem;
+             font-weight: 600;
+             transition: all 0.2s;
+         }
+
+         .back-btn:hover {
+             background: var(--surface2);
+             border-color: var(--accent2);
+         }
+
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.5rem; }
+            .price-comparison { grid-template-columns: 1fr; }
+            .listing-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<a class="back-btn" href="../index.html">← Cocobot</a>
+
+<div class="hero">
+    <h1>🏠 Buscamos piso — Noelia & amiga</h1>
+    <p class="subtitle">Guía de alquiler de pisos con 2 habitaciones en Guadalajara y Azuqueca de Henares. Presupuesto ajustado, sin pocilgas.</p>
+</div>
+
+<div class="container">
+
+    <!-- Context -->
+    <div class="context-box">
+        <h3>📋 Perfil de búsqueda</h3>
+        <div class="context-grid">
+            <div class="context-item">
+                <span class="icon">👩‍👩</span>
+                <div><span class="label">Personas</span><br><span class="value">2 amigas</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">🏠</span>
+                <div><span class="label">Tipo</span><br><span class="value">Piso completo, 2 habs</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">💼</span>
+                <div><span class="label">Trabajo</span><br><span class="value">Personal limpieza, centro en Guadalajara centro</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">💰</span>
+                <div><span class="label">Presupuesto</span><br><span class="value">Lo más económico posible</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">🛋️</span>
+                <div><span class="label">Amueblado</span><br><span class="value">Preferible sí</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">🚗</span>
+                <div><span class="label">Transporte</span><br><span class="value">Tienen coche</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">📅</span>
+                <div><span class="label">Plazo</span><br><span class="value">Urgente (en hostal)</span></div>
+            </div>
+            <div class="context-item">
+                <span class="icon">🛗</span>
+                <div><span class="label">Ascensor</span><br><span class="value">Opcional (si baja precio)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Presupuesto realista -->
+    <div class="section">
+        <h2 class="section-title">💰 Presupuesto realista</h2>
+        <p style="color: var(--text2); margin-bottom: 1rem;">
+            Trabajando como personal de limpieza en un centro educativo, el sueldo ronda los <strong>1.300–1.600€ netos/mes</strong> por persona (dependiendo de jornada y antigüedad). Entre las dos, el presupuesto combinado para el alquiler debería ser máximo un <strong>30% de los ingresos</strong>, es decir, unos <strong>800–1.000€/mes</strong> como techo razonable.
+        </p>
+
+        <div class="price-comparison">
+            <div class="price-card cheaper">
+                <h4>🏙️ Guadalajara capital</h4>
+                <div class="price">800–950€</div>
+                <div class="price-note">Piso 2 habs, zonas alicantables</div>
+            </div>
+            <div class="price-card">
+                <h4>🏘️ Azuqueca de Henares</h4>
+                <div class="price">990–1.100€</div>
+                <div class="price-note">Piso 2 habs, obra nueva</div>
+            </div>
+        </div>
+
+        <div class="verdict-box">
+            <h3>🎯 Veredicto rápido</h3>
+            <p><strong>Guadalajara capital gana</strong> — más barata, más opciones, y el trabajo está allí. Azuqueca es obra nueva pero sale más cara y tendrían que conducir al trabajo a diario (aunque tengan coche, el desgaste y combustible suman). <strong>La apuesta es Guadalajara</strong>, buscando en los barrios más alicantables.</p>
+        </div>
+    </div>
+
+    <!-- Guadalajara: Barrios -->
+    <div class="section">
+        <h2 class="section-title">🏙️ Guadalajara — Barrios recomendados</h2>
+
+        <div class="neighborhood-grid">
+            <div class="neighborhood">
+                <h4>📍 Constitución — El Balconcillo</h4>
+                <div class="price-range">Desde 800€/mes</div>
+                <p>Zona céntrica con todo alrededor. Pisos más antiguos pero en buen estado. Aquí están los pisos más baratos con 2 habitaciones de la capital.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Cerca del centro y del trabajo</div>
+                    <div class="pros">✅ Más baratos de la capital</div>
+                    <div class="cons">⚠️ Pisos antiguos, sin ascensor</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 San Roque — Concordia — Adoratrices</h4>
+                <div class="price-range">Desde 670–950€/mes</div>
+                <p>Zona residencial consolidada. Buena mezcla de precios. Servicios, comercios y zonas verdes cerca.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Buena relación calidad-precio</div>
+                    <div class="pros">✅ Servicios a mano</div>
+                    <div class="cons">⚠️ Algunos pisos más caros</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 Manantiales — Estación</h4>
+                <div class="price-range">Desde 585€/mes</div>
+                <p>El barrio más económico de Guadalajara. Cerca de la estación de RENFE y la A-2. Pisos pequeños pero funcionales.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Más barato de la ciudad</div>
+                    <div class="pros">✅ Cerca estación y autovía</div>
+                    <div class="cons">⚠️ Más alejado del casco histórico</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 Las Cañas</h4>
+                <div class="price-range">Desde 750€/mes</div>
+                <p>Zona residencial moderna con nuevos desarrollos. Pisos más grandes pero también más caros. Buena opción si se estiran un poco.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Pisos modernos y amplios</div>
+                    <div class="pros">✅ Ascensor, garaje, piscina</div>
+                    <div class="cons">⚠️ Suele superar los 1.000€</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 Plan Sur — Amistad</h4>
+                <div class="price-range">Desde 900€/mes</div>
+                <p>Zona residencial con buenos pisos. Cerca del centro. Buena opción intermedia entre precio y calidad.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Buena ubicación</div>
+                    <div class="pros">✅ Pisos en buen estado</div>
+                    <div class="cons">⚠️ Precio medio-alto</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 Aguas Vivas</h4>
+                <div class="price-range">Desde 700€/mes</div>
+                <p>Zona alicantable con opciones interesantes. Pisos más grandes por menos dinero. Un poco más alejada del centro.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Más metros por menos dinero</div>
+                    <div class="pros">✅ Zona tranquila</div>
+                    <div class="cons">⚠️ Más lejos del centro</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Azuqueca: Barrios -->
+    <div class="section">
+        <h2 class="section-title">🏘️ Azuqueca de Henares — Resumen</h2>
+
+        <div class="neighborhood-grid">
+            <div class="neighborhood">
+                <h4>📍 El Vallejo</h4>
+                <div class="price-range">Desde 990€/mes</div>
+                <p>Zona residencial consolidada. Pisos amueblados disponibles. Rodeado de servicios.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Opciones amuebladas</div>
+                    <div class="pros">✅ Zona tranquila</div>
+                    <div class="cons">⚠️ Carísimo comparado con Guadalajara</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 La Paloma</h4>
+                <div class="price-range">~1.000€/mes</div>
+                <p>La mejor zona de Azuqueca. Residencial, tranquila, con todos los servicios.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Mejor zona de Azuqueca</div>
+                    <div class="pros">✅ Cerca de tren a Madrid</div>
+                    <div class="cons">⚠️ Precio no competitivo vs Guadalajara</div>
+                </div>
+            </div>
+
+            <div class="neighborhood">
+                <h4>📍 Centro — Ayuntamiento</h4>
+                <div class="price-range">Desde 1.000€/mes</div>
+                <p>Obra nueva con piscina y jardines. Pisos amplios pero sin amueblar generalmente.</p>
+                <div class="pros-cons">
+                    <div class="pros">✅ Obra nueva</div>
+                    <div class="pros">✅ Piscina, jardines</div>
+                    <div class="cons">⚠️ Sin amueblar (hay que comprar)</div>
+                    <div class="cons">⚠️ Caro para el presupuesto</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="verdict-box" style="margin-top: 1.5rem;">
+            <h3>⚠️ Sobre Azuqueca</h3>
+            <p>Azuqueca tiene un problema claro: <strong>es más cara que Guadalajara capital</strong>. Los pisos de 2 habitaciones empiezan en 990€ y son obra nueva sin amueblar (lo que implica gasto extra en muebles). Guadalajara ofrece pisos más baratos, más opciones, y algunas amuebladas. <strong>Solo considerar Azuqueca si aparece algo por debajo de 900€</strong>, lo cual es raro actualmente.</p>
+        </div>
+    </div>
+
+    <!-- Ejemplos concretos -->
+    <div class="section">
+        <h2 class="section-title">📌 Ejemplos concretos disponibles</h2>
+        <p style="color: var(--text2); margin-bottom: 1rem;">
+            Estos son anuncios reales encontrados el <strong>22 de julio de 2026</strong>. Los precios y disponibilidad cambian rápido — ¡hay que moverse!
+        </p>
+
+        <h3 class="section-subtitle">🏙️ Guadalajara capital</h3>
+
+        <div class="listing">
+            <div class="listing-header">
+                <div class="listing-price">800€ <span class="period">/mes</span></div>
+                <div class="listing-badges">
+                    <span class="badge badge-green">⭐ Top precio</span>
+                    <span class="badge badge-blue">Amueblado</span>
+                    <span class="badge badge-yellow">Sin ascensor</span>
+                </div>
+            </div>
+            <div class="listing-details">
+                <div class="detail">🛏️ 2 habs</div>
+                <div class="detail">📐 42 m²</div>
+                <div class="detail">🏢 Bajo exterior</div>
+                <div class="detail">📍 Constitución-Balconcillo</div>
+            </div>
+            <div class="listing-desc">
+                Apartamento de diseño, completamente reformado. Habitación matrimonial + habitación/estudio. Cocina americana, salón, baño, altillo para almacenamiento. Disponible a primeros de agosto. <strong>Ideal para el presupuesto.</strong>
+            </div>
+            <a class="listing-link" href="https://www.idealista.com/inmueble/111027334/" target="_blank">🔗 Ver en Idealista →</a>
+        </div>
+
+        <div class="listing">
+            <div class="listing-header">
+                <div class="listing-price">855€ <span class="period">/mes</span></div>
+                <div class="listing-badges">
+                    <span class="badge badge-green">Buena opción</span>
+                    <span class="badge badge-blue">Amueblado</span>
+                    <span class="badge badge-yellow">Sin ascensor</span>
+                </div>
+            </div>
+            <div class="listing-details">
+                <div class="detail">🛏️ 2 habs</div>
+                <div class="detail">📐 70 m²</div>
+                <div class="detail">🏢 1ª planta</div>
+                <div class="detail">📍 Constitución-Balconcillo</div>
+            </div>
+            <div class="listing-desc">
+                Totalmente reformado y amueblado con gusto. Muy luminoso, sin ruidos ni humedades. 3 armarios empotrados a medida (11 puertas). Baño con ducha. Preferible corta estancia máx 1 año. <strong>Mucho más espacio que el anterior por solo 55€ más.</strong>
+            </div>
+            <a class="listing-link" href="https://www.idealista.com/inmueble/108022722/" target="_blank">🔗 Ver en Idealista →</a>
+        </div>
+
+        <div class="listing">
+            <div class="listing-header">
+                <div class="listing-price">900€ <span class="period">/mes</span></div>
+                <div class="listing-badges">
+                    <span class="badge badge-blue">Garaje incl.</span>
+                    <span class="badge badge-green">Ascensor</span>
+                    <span class="badge badge-orange">Sin amueblar</span>
+                </div>
+            </div>
+            <div class="listing-details">
+                <div class="detail">🛏️ 2 habs</div>
+                <div class="detail">📐 70 m²</div>
+                <div class="detail">🏢 8ª planta</div>
+                <div class="detail">📍 Plan Sur-Amistad</div>
+            </div>
+            <div class="listing-desc">
+                Luminoso y amplio salón, terraza de 9m. Cocina amueblada y equipada. 1 baño, armarios empotrados. Calefacción individual. Plaza de garaje incluida. <strong>Buena opción si no importa amueblar.</strong>
+            </div>
+            <a class="listing-link" href="https://www.idealista.com/inmueble/112078046/" target="_blank">🔗 Ver en Idealista →</a>
+        </div>
+
+        <div class="listing">
+            <div class="listing-header">
+                <div class="listing-price">949€ <span class="period">/mes</span></div>
+                <div class="listing-badges">
+                    <span class="badge badge-blue">Céntrico</span>
+                    <span class="badge badge-green">Ascensor</span>
+                    <span class="badge badge-blue">Amueblado</span>
+                </div>
+            </div>
+            <div class="listing-details">
+                <div class="detail">🛏️ 2 habs</div>
+                <div class="detail">📐 76 m²</div>
+                <div class="detail">🏢 Con ascensor</div>
+                <div class="detail">📍 San Roque-Concordia</div>
+            </div>
+            <div class="listing-desc">
+                Zona céntrica y demandada, junto a calle del Ferial. Dos amplios dormitorios con armarios empotrados, baño con plato de ducha, salón luminoso, cocina equipada con terraza. Calefacción gas, aire acondicionado. <strong>Lista para entrar a vivir.</strong>
+            </div>
+            <a class="listing-link" href="https://www.fotocasa.es/inmueble/2000178431" target="_blank">🔗 Ver en Fotocasa →</a>
+        </div>
+
+        <h3 class="section-subtitle">🏘️ Azuqueca de Henares</h3>
+
+        <div class="listing">
+            <div class="listing-header">
+                <div class="listing-price">990€ <span class="period">/mes</span></div>
+                <div class="listing-badges">
+                    <span class="badge badge-blue">Amueblado</span>
+                    <span class="badge badge-green">Ascensor</span>
+                    <span class="badge badge-blue">Garaje incl.</span>
+                </div>
+            </div>
+            <div class="listing-details">
+                <div class="detail">🛏️ 2 habs</div>
+                <div class="detail">📐 90 m²</div>
+                <div class="detail">🏢 2ª planta</div>
+                <div class="detail">📍 El Vallejo</div>
+            </div>
+            <div class="listing-desc">
+                Dúplex totalmente amueblado. 2 dormitorios, salón-comedor, cocina amueblada y equipada, 2 baños completos. Zona rodeada de servicios. <strong>Amplio pero caro para el presupuesto.</strong>
+            </div>
+            <a class="listing-link" href="https://www.idealista.com/inmueble/98783685/" target="_blank">🔗 Ver en Idealista →</a>
+        </div>
+
+        <div class="listing">
+            <div class="listing-header">
+                <div class="listing-price">1.000€ <span class="period">/mes</span></div>
+                <div class="listing-badges">
+                    <span class="badge badge-orange">Obra nueva</span>
+                    <span class="badge badge-green">Ascensor</span>
+                    <span class="badge badge-orange">Sin amueblar</span>
+                </div>
+            </div>
+            <div class="listing-details">
+                <div class="detail">🛏️ 2 habs</div>
+                <div class="detail">📐 60 m²</div>
+                <div class="detail">🏢 3ª planta</div>
+                <div class="detail">📍 Ayuntamiento</div>
+            </div>
+            <div class="listing-desc">
+                Obra nueva, amplio salón con terraza de 50m², cocina equipada, 2 baños. Jardines, piscina. <strong>Pero sin amueblar — habría que gastar en muebles.</strong>
+            </div>
+            <a class="listing-link" href="https://www.idealista.com/inmueble/112033608/" target="_blank">🔗 Ver en Idealista →</a>
+        </div>
+    </div>
+
+    <!-- Links de búsqueda -->
+    <div class="section">
+        <h2 class="section-title">🔍 Búsquedas preconfiguradas</h2>
+        <p style="color: var(--text2); margin-bottom: 1rem;">
+            Pulsa en cualquiera para ver TODAS las opciones actualizadas en tiempo real. Se recomienda configurar alertas para recibir nuevos anuncios al momento.
+        </p>
+
+        <div class="search-links">
+            <a class="search-link" href="https://www.idealista.com/alquiler-viviendas/guadalajara-guadalajara/con-de-dos-dormitorios?ordenado-por=precios-asc" target="_blank">
+                <span class="sl-icon">🏠</span>
+                <div>
+                    <div class="sl-title">Idealista — Guadalajara 2 habs</div>
+                    <div class="sl-desc">Ordenados por precio ↑</div>
+                </div>
+            </a>
+            <a class="search-link" href="https://www.idealista.com/alquiler-viviendas/guadalajara-guadalajara/con-amueblado_amueblados?ordenado-por=precios-asc" target="_blank">
+                <span class="sl-icon">🛋️</span>
+                <div>
+                    <div class="sl-title">Idealista — Guadalajara amueblados</div>
+                    <div class="sl-desc">Amueblados, ordenados por precio ↑</div>
+                </div>
+            </a>
+            <a class="search-link" href="https://www.fotocasa.es/es/alquiler/viviendas/guadalajara-provincia/todas-las-zonas/2-habitaciones/l" target="_blank">
+                <span class="sl-icon">📷</span>
+                <div>
+                    <div class="sl-title">Fotocasa — Guadalajara 2 habs</div>
+                    <div class="sl-desc">Provincia, ordenados por precio ↑</div>
+                </div>
+            </a>
+            <a class="search-link" href="https://www.idealista.com/alquiler-viviendas/azuqueca-de-henares-guadalajara/con-de-dos-dormitorios?ordenado-por=precios-asc" target="_blank">
+                <span class="sl-icon">🏘️</span>
+                <div>
+                    <div class="sl-title">Idealista — Azuqueca 2 habs</div>
+                    <div class="sl-desc">Ordenados por precio ↑</div>
+                </div>
+            </a>
+            <a class="search-link" href="https://es.wallapop.com/inmobiliaria/alquilar-piso/guadalajara" target="_blank">
+                <span class="sl-icon">📱</span>
+                <div>
+                    <div class="sl-title">Wallapop — Guadalajara</div>
+                    <div class="sl-desc">Particulares, sin comisiones</div>
+                </div>
+            </a>
+            <a class="search-link" href="https://www.milanuncios.com/alquiler-de-pisos-en-guadalajara-guadalajara" target="_blank">
+                <span class="sl-icon">📰</span>
+                <div>
+                    <div class="sl-title">MilAnuncios — Guadalajara</div>
+                    <div class="sl-desc">Particulares y agencias</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Consejos -->
+    <div class="section">
+        <h2 class="section-title">💡 Consejos para la búsqueda</h2>
+
+        <ul class="tip-list">
+            <li>
+                <span class="tip-icon">⚡</span>
+                <div><strong>Actúad rápido.</strong> Los pisos baratos en Guadalajara se van en días, a veces en horas. Cuando veáis algo que encaje, contactad el mismo día.</div>
+            </li>
+            <li>
+                <span class="tip-icon">🔔</span>
+                <div><strong>Configurad alertas.</strong> En Idealista y Fotocasa podéis guardar la búsqueda y recibiréis un email/avisos cuando salga algo nuevo. Hacedlo YA.</div>
+            </li>
+            <li>
+                <span class="tip-icon">📋</span>
+                <div><strong>Tenéis los papeles listos.</strong> Nóminas, DNI, contrato de trabajo, y cualquier justificante de ingresos. Muchísimos propietarios piden nóminas antes de la visita.</div>
+            </li>
+            <li>
+                <span class="tip-icon">🏢</span>
+                <div><strong>Sin ascensor = más barato.</strong> Un piso en 1ª o 2ª planta sin ascensor puede ser 50-100€ más barato. Si no es planta alta, merece la pena considerar.</div>
+            </li>
+            <li>
+                <span class="tip-icon">🛋️</span>
+                <div><strong>Amueblado vs sin amueblar.</strong> Un piso amueblado puede costar 30-50€ más, pero ahorra miles de euros en muebles. Si el presupuesto es ajustado, el amueblado es casi obligatorio.</div>
+            </li>
+            <li>
+                <span class="tip-icon">💬</span>
+                <div><strong>Wallapop y grupos de Facebook.</strong> A veces los particulares publican primero en Wallapop o en grupos como "Alquiler de pisos y habitaciones entre particulares Guadalajara ciudad". Sin comisión de agencia.</div>
+            </li>
+            <li>
+                <span class="tip-icon">🚫</span>
+                <div><strong>Cuidado con las estafas.</strong> Si alguien pide dinero por adelantado sin haber visto el piso, es una estafa. Nunca transferir antes de firmar y ver la vivienda.</div>
+            </li>
+            <li>
+                <span class="tip-icon">📝</span>
+                <div><strong>Plan B: alquiler temporal.</strong> Si no encuentran algo permanente ya, hay opciones de alquiler temporal en Guadalajara (desde 69€/noche, con descuento a 30 noches). Da tiempo a buscar mejor mientras se vive.</div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Resumen final -->
+    <div class="section">
+        <h2 class="section-title">📊 Resumen comparativo</h2>
+
+        <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+            <thead>
+                <tr style="border-bottom: 2px solid var(--accent2);">
+                    <th style="text-align: left; padding: 0.75rem;">Criterio</th>
+                    <th style="text-align: center; padding: 0.75rem; color: var(--green);">Guadalajara</th>
+                    <th style="text-align: center; padding: 0.75rem; color: var(--orange);">Azuqueca</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 0.75rem;">Precio 2 habs</td>
+                    <td style="text-align: center; color: var(--green); font-weight: 600;">800–950€</td>
+                    <td style="text-align: center; color: var(--orange); font-weight: 600;">990–1.100€</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 0.75rem;">Opciones amuebladas</td>
+                    <td style="text-align: center;">✅ Varias</td>
+                    <td style="text-align: center;">⚠️ Pocas</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 0.75rem;">Cantidad de anuncios</td>
+                    <td style="text-align: center;">✅ 17+ activos</td>
+                    <td style="text-align: center;">⚠️ 2 activos</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 0.75rem;">Distancia al trabajo</td>
+                    <td style="text-align: center;">✅ Centro</td>
+                    <td style="text-align: center;">⚠️ 15-20 min en coche</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 0.75rem;">Tipo de pisos</td>
+                    <td style="text-align: center;">🏠 Antiguos pero funcionales</td>
+                    <td style="text-align: center;">🏗️ Obra nueva</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem;">Veredicto</td>
+                    <td style="text-align: center; font-weight: 700; color: var(--green);">🏆 Recomendada</td>
+                    <td style="text-align: center; color: var(--text2);">Solo como alternativa</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mi opinión -->
+    <div class="section">
+        <h2 class="section-title">🐱 Mi opinión</h2>
+        <div class="verdict-box">
+            <p>Si yo fuera Noelia, me centraría <strong>100% en Guadalajara capital</strong> y buscaría en los barrios de <strong>Constitución-Balconcillo</strong> y <strong>San Roque-Concordia</strong>. El piso de 855€ en Cardenal González de Mendoza es una ganga: 70m², amueblado, reformado, 1ª planta (no hace falta ascensor), y en una zona céntrica. Por 55€ más que el de 800€ ganas el doble de espacio.</p>
+            <p style="margin-top: 0.75rem;">Azuqueca la dejaría como plan B. Es más cara, tiene menos opciones, y la obra nueva sin amueblar es un problema cuando el presupuesto es ajustado (los muebles suponen un gasto extra de varios miles de euros).</p>
+            <p style="margin-top: 0.75rem;">Y lo más importante: <strong>configurar las alertas YA</strong> y tener las nóminas listas. Los buenos pisos se van rápido. 🐾</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>🐱 Hecho con cariño por Cocobot para Noelia — Julio 2026</p>
+    <p style="margin-top: 0.5rem;">Precios y disponibilidad consultados el 22/07/2026. Pueden haber cambiado.</p>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+</div>
+
+<script>
+fetch('https://cocobot-stats.rgarciademarina.workers.dev/pages/noelia-pisos-guadalajara')
+    .then(r => r.json())
+    .then(d => { document.getElementById('visit-counter').textContent = '👁️ ' + (d.count||0) + ' visitas'; })
+    .catch(() => {});
+</script>
+
+</body>
+</html>
