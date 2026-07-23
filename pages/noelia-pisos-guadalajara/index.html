@@ -400,6 +400,66 @@
              border-color: var(--accent2);
          }
 
+        /* Hamburger menu */
+        .hamburger-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1001;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.2s;
+        }
+        .hamburger-btn:hover {
+            background: var(--surface2);
+            border-color: var(--accent2);
+        }
+        .nav-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            display: none;
+        }
+        .nav-overlay.active { display: block; }
+        .nav-drawer {
+            position: fixed;
+            top: 0; right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 1000;
+            padding: 4rem 1.5rem 2rem;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+        .nav-drawer.active { right: 0; }
+        .nav-drawer a {
+            display: block;
+            padding: 0.75rem 0;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-drawer a:hover {
+            color: var(--accent);
+        }
+        .nav-drawer a:last-child {
+            border-bottom: none;
+        }
+
 
         /* Responsive */
         @media (max-width: 640px) {
@@ -411,7 +471,25 @@
 </head>
 <body>
 
-<a class="back-btn" href="../index.html">← Cocobot</a>
+<a class="back-btn" href="../../index.html">← Cocobot</a>
+
+<!-- Hamburger menu button -->
+<button class="hamburger-btn" id="hamburger-btn" onclick="toggleNav()">☰</button>
+
+<!-- Nav overlay -->
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+
+<!-- Nav drawer -->
+<nav class="nav-drawer" id="nav-drawer">
+    <a href="#seccion-presupuesto" onclick="toggleNav()">💰 Presupuesto</a>
+    <a href="#seccion-barrios" onclick="toggleNav()">🏙️ Barrios Guadalajara</a>
+    <a href="#seccion-azuqueca" onclick="toggleNav()">🏘️ Azuqueca</a>
+    <a href="#seccion-ejemplos" onclick="toggleNav()">📌 Ejemplos disponibles</a>
+    <a href="#seccion-busquedas" onclick="toggleNav()">🔍 Búsquedas preconfiguradas</a>
+    <a href="#seccion-compartir" onclick="toggleNav()">👩‍👩‍👩‍👩 Compartir 3-4 personas</a>
+    <a href="#seccion-resumen" onclick="toggleNav()">📊 Resumen comparativo</a>
+    <a href="#seccion-opinion" onclick="toggleNav()">🐱 Mi opinión</a>
+</nav>
 
 <div class="hero">
     <h1>🏠 Buscamos piso — Noelia & amigas</h1>
@@ -461,7 +539,7 @@
 
     <!-- Presupuesto realista -->
     <div class="section">
-        <h2 class="section-title">💰 Presupuesto realista</h2>
+        <h2 class="section-title" id="seccion-presupuesto">💰 Presupuesto realista</h2>
         <p style="color: var(--text2); margin-bottom: 1rem;">
             Trabajando como personal de limpieza en un centro educativo, el sueldo ronda los <strong>1.300–1.600€ netos/mes</strong> por persona (dependiendo de jornada y antigüedad). Entre las dos, el presupuesto combinado para el alquiler debería ser máximo un <strong>30% de los ingresos</strong>, es decir, unos <strong>800–1.000€/mes</strong> como techo razonable.
         </p>
@@ -487,7 +565,7 @@
 
     <!-- Guadalajara: Barrios -->
     <div class="section">
-        <h2 class="section-title">🏙️ Guadalajara — Barrios recomendados</h2>
+        <h2 class="section-title" id="seccion-barrios">🏙️ Guadalajara — Barrios recomendados</h2>
 
         <div class="neighborhood-grid">
             <div class="neighborhood">
@@ -560,7 +638,7 @@
 
     <!-- Azuqueca: Barrios -->
     <div class="section">
-        <h2 class="section-title">🏘️ Azuqueca de Henares — Resumen</h2>
+        <h2 class="section-title" id="seccion-azuqueca">🏘️ Azuqueca de Henares — Resumen</h2>
 
         <div class="neighborhood-grid">
             <div class="neighborhood">
@@ -606,7 +684,7 @@
 
     <!-- Ejemplos concretos -->
     <div class="section">
-        <h2 class="section-title">📌 Ejemplos concretos disponibles</h2>
+        <h2 class="section-title" id="seccion-ejemplos">📌 Ejemplos concretos disponibles</h2>
         <p style="color: var(--text2); margin-bottom: 1rem;">
             Estos son anuncios reales encontrados el <strong>22 de julio de 2026</strong>. Los precios y disponibilidad cambian rápido — ¡hay que moverse!
         </p>
@@ -744,7 +822,7 @@
 
     <!-- Links de búsqueda -->
     <div class="section">
-        <h2 class="section-title">🔍 Búsquedas preconfiguradas</h2>
+        <h2 class="section-title" id="seccion-busquedas">🔍 Búsquedas preconfiguradas</h2>
         <p style="color: var(--text2); margin-bottom: 1rem;">
             Pulsa en cualquiera para ver TODAS las opciones actualizadas en tiempo real. Se recomienda configurar alertas para recibir nuevos anuncios al momento.
         </p>
@@ -783,7 +861,7 @@
 
     <!-- Compartir piso: 3-4 personas -->
     <div class="section">
-        <h2 class="section-title">👩‍👩‍👩‍👩 Compartir piso: 3–4 personas</h2>
+        <h2 class="section-title" id="seccion-compartir">👩‍👩‍👩‍👩 Compartir piso: 3–4 personas</h2>
         <p style="color: var(--text2); margin-bottom: 1.5rem;">
             Si acabáis siendo 3 o 4 personas, las cuentas cambian radicalmente. Un piso de 3 habitaciones sale más caro en total, pero <strong>por persona puede ser mucho más económico</strong>. Veamos los números:
         </p>
@@ -1190,7 +1268,7 @@
 
     <!-- Resumen final -->
     <div class="section">
-        <h2 class="section-title">📊 Resumen comparativo</h2>
+        <h2 class="section-title" id="seccion-resumen">📊 Resumen comparativo</h2>
 
         <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
             <thead>
@@ -1237,7 +1315,7 @@
 
     <!-- Mi opinión -->
     <div class="section">
-        <h2 class="section-title">🐱 Mi opinión</h2>
+        <h2 class="section-title" id="seccion-opinion">🐱 Mi opinión</h2>
         <div class="verdict-box">
             <p>Si vais a ser solo 2, me centraría <strong>100% en Guadalajara capital</strong> buscando en <strong>Constitución-Balconcillo</strong> y <strong>San Roque-Concordia</strong>. El piso de 855€ en Cardenal González de Mendoza es una ganga: 70m², amueblado, reformado, 1ª planta, zona céntrica.</p>
             <p style="margin-top: 0.75rem;">Si acabáis siendo 3-4, <strong>cambia la ecuación</strong>. Un piso de 3 habitaciones en Guadalajara por 900-1.100€ os sale a solo 300-370€ por persona. El de 860€ en Casco Histórico (112m², 3 habs, particular) es una ganga para 3 personas: cada una paga solo 287€ de alquiler.</p>
@@ -1267,6 +1345,34 @@
     })
     .catch(function(){});
 })();
+
+// Hamburger menu toggle
+function toggleNav() {
+  var drawer = document.getElementById('nav-drawer');
+  var overlay = document.getElementById('nav-overlay');
+  var btn = document.getElementById('hamburger-btn');
+  var isOpen = drawer.classList.contains('active');
+  if (isOpen) {
+    drawer.classList.remove('active');
+    overlay.classList.remove('active');
+    btn.textContent = '☰';
+  } else {
+    drawer.classList.add('active');
+    overlay.classList.add('active');
+    btn.textContent = '✕';
+  }
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
 </script>
 
 </body>
