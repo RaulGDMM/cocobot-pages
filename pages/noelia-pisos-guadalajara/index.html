@@ -1255,10 +1255,18 @@
 </div>
 
 <script>
-fetch('https://cocobot-stats.rgarciademarina.workers.dev/pages/noelia-pisos-guadalajara')
-    .then(r => r.json())
-    .then(d => { document.getElementById('visit-counter').textContent = '👁️ ' + (d.count||0) + ' visitas'; })
-    .catch(() => {});
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/noelia-pisos-guadalajara/';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
 </script>
 
 </body>
