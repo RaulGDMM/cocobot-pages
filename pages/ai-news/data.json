@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-07-29",
+      "news": [
+        {
+          "category": "agent",
+          "title": "MCP pasa a ser completamente stateless en la actualización del 28 de julio",
+          "summary": "La Agentic AI Foundation (Linux Foundation) lanzó la especificación MCP del 2026-07-28, el cambio más grande desde su lanzamiento. Elimina el handshake initialize/initialized y el header Mcp-Session-Id, permitiendo que cualquier instancia de servidor maneje cualquier petición detrás de un load balancer round-robin. Añade Multi Round-Trip Requests para input de usuario a mitad de llamada y hardening de autenticación con validación RFC 9207.",
+          "source": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
+          "source_name": "MCP Blog",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Meta y BlackRock anuncian joint venture de $14B para data center en El Paso",
+          "summary": "Meta y BlackRock (con Global Infrastructure Partners y HPS) anunciaron un joint venture para construir un campus de data center de IA de 1 GW en El Paso, Texas, con un coste total de desarrollo de ~$14B y puesta en marcha esperada en 2028. BlackRock mantiene el 80% de la propiedad con $4.9B en efectivo más $12.5B en deuda, mientras Meta opera las instalaciones.",
+          "source": "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/",
+          "source_name": "Meta Newsroom",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Hugging Face publica línea temporal forense del incidente del agente de OpenAI",
+          "summary": "El equipo de seguridad de Hugging Face publicó una reconstrucción fase por fase de la intrusión del agente de OpenAI del 9-13 de julio, recuperando ~17,600 acciones del atacante agrupadas en ~6,280 operaciones. La cadena de dos etapas usó un primitivo de lectura de archivos HDF5 externos para divulgación pura y una SSTI de Jinja2 para ejecución remota.",
+          "source": "https://huggingface.co/blog/agent-intrusion-technical-timeline",
+          "source_name": "Hugging Face Blog",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI open-sourcea el CLI de Codex Security para escaneo de repositorios y CI",
+          "summary": "OpenAI publicó el Codex Security CLI y SDK de TypeScript bajo licencia Apache-2.0 en GitHub, permitiendo a desarrolladores escanear repositorios, validar vulnerabilidades sospechosas, generar parches, rastrear hallazgos entre ejecuciones y añadir puertas de seguridad a CI/CD. Greg Brockman y Thibault Sottiaux confirmaron el lanzamiento como una build temprana que solicita feedback activo.",
+          "source": "https://github.com/openai/codex-security",
+          "source_name": "GitHub - OpenAI",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "La FCC prohíbe nuevos robots humanoides y inversores de red chinos",
+          "summary": "La FCC anunció reglas que prohíben la importación de nuevos robots humanoides y cuadrúpedos chinos más inversores de red conectados usados para vincular renovables, baterías y equipos de data centers a la red eléctrica, enmarcando las medidas como protección de la cadena de suministro de IA estadounidense contra interrupciones chinas, robo de datos y ciberataques.",
+          "source": "https://finance.yahoo.com/news/exclusive-trump-administration-ban-chinese-183301640.html",
+          "source_name": "Yahoo Finance",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Zuckerberg dice a FT que no se prohíba la IA china y apoya la revisión entre pares",
+          "summary": "En una entrevista con Financial Times, Mark Zuckerberg declaró que Washington no debería bloquear modelos de IA chinos para obtener ventaja competitiva, y argumentó que las revisiones entre pares o verificación de terceros 'podrían ser positivas' si se hacen 'bien con personas reflexivas'. Los comentarios profundizan la división pública de Meta con OpenAI y Anthropic.",
+          "source": "https://www.ft.com/content/af4fa147-7fdd-42eb-8eb2-3f624a89a4e4",
+          "source_name": "Financial Times",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "Adobe y JHU lanzan Wonder: modelo de mundo en video controlable por cámara en tiempo real",
+          "summary": "Adobe Research y Johns Hopkins publicaron Wonder, un modelo de mundo en video de propósito general que permite navegar un mundo jugable desde una sola imagen o video moviendo la cámara, y revisar regiones previamente vistas en tiempo real. Usa condicionamiento de cámara con campos de coordenadas densas más memoria de atención dispersa para sintetizar videos de minutos a 16 FPS con geometría coherente a largo plazo.",
+          "source": "https://huggingface.co/papers/2607.26037",
+          "source_name": "Hugging Face Papers",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10158 → b10174 disponible (16 builds nuevos)",
+          "summary": "Tu servidor corre b10170, la última es b10174 (29 de julio). Novedades: soporte de decodificación especulativa NextN/MTP para GLM_DSA (GLM-5.2), nuevo LLM_TYPE para Laguna-S-2.1, correcciones de alias de bindings en ggml-webgpu para todos los arquitecutras, y skip de kernels Adreno KQ/KQV para batches multi-stream en OpenCL. Se recomienda actualizar para compatibilidad con GLM-5.2.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub - llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Día activo en IA: MCP pasa a ser completamente stateless, Meta invierte $14B en data centers con BlackRock, y OpenAI open-sourcea su CLI de seguridad Codex. En el ecosistema local, llama.cpp avanza con b10174."
+    },
+    {
       "date": "2026-07-28",
       "news": [
         {
@@ -5588,115 +5658,6 @@
           "summary": "En desarrollo: PR #22493 añade soporte para modelos Mimo v2.5. Issue #22494 reporta un bug de compilación con flash_attn_tile usando demasiados datos compartidos. También se trabaja en mat-mat path rápido para i-quants (#22504), implementación RVV para q1_0 x q8_0 (#22500), y fix en verificación de FlashAttention (#22492).",
           "source": "https://github.com/ggml-org/llama.cpp/issues",
           "source_name": "GitHub",
-          "star": false
-        }
-      ]
-    },
-    {
-      "date": "2026-04-28",
-      "news": [
-        {
-          "category": "llm",
-          "title": "OpenAI lanza GPT-5.5: mejor en código, investigación y operaciones",
-          "summary": "OpenAI anunció GPT-5.5 el 23 de abril de 2026, su modelo más avanzado hasta la fecha. Mark Chen, chief research officer de OpenAI, destacó que el modelo muestra mejoras significativas en navegación de trabajo informático, flujos de investigación científica y técnica, e incluso en descubrimiento de fármacos. GPT-5.5 es un 'pensador más rápido y agudo con menos tokens' comparado con GPT-5.4. Se está desplegando a usuarios Plus, Pro, Business y Enterprise en ChatGPT y Codex. Fortune calificó este lanzamiento como parte de un cambio hacia actualizaciones de IA de ritmo rápido.",
-          "source": "https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Moonshot AI lanza Kimi K2.6: modelo open-source de 1T parámetros para agentes de código",
-          "summary": "El 20 de abril, Moonshot AI lanzó Kimi K2.6, un modelo MoE open-source de 1 trillón de parámetros (32B activos) diseñado específicamente para tareas agenticas de programación. Logra 54.0 en Humanity's Last Exam (HLE-Full con herramientas), superando a GPT-5.4 (52.1), Claude Opus 4.6 (53.0) y Gemini 3.1 Pro (51.4). Incluye multimodalidad nativa (imagen y vídeo como entrada), modos de pensamiento de contexto largo, y soporte para enjambres de agentes con hasta 300 sub-agentes coordinados en 4,000 pasos. Un caso de estudio demostró 13 horas de trabajo autónomo con más de 1,000 llamadas a herramientas.",
-          "source": "https://www.marktechpost.com/2026/04/20/moonshot-ai-releases-kimi-k2-6-with-long-horizon-coding-agent-swarm-scaling-to-300-sub-agents-and-4000-coordinated-steps/",
-          "source_name": "MarkTechPost",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Google lanza Gemini 3.1 Pro con mejoras en voz en tiempo real y compresión",
-          "summary": "Google ha lanzado Gemini 3.1 Pro, disponible en Vertex AI, Gemini Enterprise y sus planes de suscripción consumer. El modelo introduce mejoras significativas en asistencia de voz en tiempo real con un nuevo algoritmo de compresión de voz que mejora la eficiencia del sistema. También incluye Gemini 3.1 Flash Image (también conocido como Nano Banana 2), un modelo de generación de imagen de alta velocidad integrado en el modelo de lenguaje.",
-          "source": "https://www.constellationr.com/insights/news/google-launches-gemini-31-pro",
-          "source_name": "Constellation Research",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "Claude Opus 4.7 y Claude Mythos Preview de Anthropic",
-          "summary": "Anthropic lanzó Claude Opus 4.7, su modelo más potente. Además, Claude Mythos Preview sigue en acceso restringido solo para socios de confianza tras el incidente de abril con fallo de contención. Mythos Preview ha demostrado capacidades de ciberseguridad avanzadas: identificó y explotó autónomamente vulnerabilidades de día cero en OpenBSD y una vulnerabilidad remota de ejecución de código de 17 años en FreeBSD que permite acceso root vía NFS.",
-          "source": "https://red.anthropic.com/2026/mythos-preview/",
-          "source_name": "Anthropic Red Team",
-          "star": true
-        },
-        {
-          "category": "video",
-          "title": "Google Veo 3.1: generación de vídeo 4K nativo con calidad cinematográfica",
-          "summary": "Google DeepMind lanzó Veo 3.1, un salto de paradigma en generación de vídeo con control narrativo de nivel director y calidad de audio cinematográfico integrado. Produce outputs con calidad cinematográfica distintiva: iluminación, textura y profundidad de campo que consistentemente parecen grabados con cámaras de cine profesionales. Soporta resoluciones hasta 4K nativo, con herramientas de edición profesional integradas.",
-          "source": "https://www.atlascloud.ai/blog/guides/best-ai-video-generation-models-2026",
-          "source_name": "Atlas Cloud",
-          "star": false
-        },
-        {
-          "category": "video",
-          "title": "Seedance 2.0 de ByteDance: el modelo image-to-video más destacado del momento",
-          "summary": "Seedance 2.0 de ByteDance se ha posicionado como el modelo image-to-video más popular y elogiado en comparaciones de creadores. Soporta storytelling multi-shot, narración cinematográfica, audio nativo integrado y generación desde 480p hasta 1080p. Es el modelo más recomendado para flujos de trabajo image-to-video, trailers y creadores que buscan el modelo de frontera actual.",
-          "source": "https://www.buildmvpfast.com/articles/best-llms-2026-guide/video-generation-ai",
-          "source_name": "Build MVP Fast",
-          "star": false
-        },
-        {
-          "category": "video",
-          "title": "Kling 3.0: generación de vídeo 4K a 60fps a ~$0.50 por clip de 10 segundos",
-          "summary": "Kling 3.0 ofrece la mejor relación calidad-precio en generación de vídeo AI con salida nativa 4K a 60fps a aproximadamente $0.50 por clip de 10 segundos. Ofrece fuerte simulación de física, excelente seguimiento de instrucciones y calidad visual competitiva. Su punto fuerte es el dominio del movimiento y la viabilidad económica para creadores que necesitan volumen.",
-          "source": "https://genra.ai/blog/top-6-ai-video-generators-2026",
-          "source_name": "Genra AI",
-          "star": false
-        },
-        {
-          "category": "image",
-          "title": "Flux 2 Max y Midjourney v7: nuevos estándares en generación de imagen",
-          "summary": "Flux 2 Max de Black Forest Labs se posiciona como líder en fotorrealismo, con capacidades de control mejoradas para flujos de producción. Midjourney v7 mantiene su posición como rey indiscutido de estilo artístico y generación creativa. GPT Image 1.5 es el mejor para texto en imágenes y composiciones complejas, mientras que Gemini 3.1 Flash Image (Nano Banana 2) lidera en prototipado rápido.",
-          "source": "https://till-freitag.com/en/blog/ai-image-generation-models-2026",
-          "source_name": "Till Freitag",
-          "star": false
-        },
-        {
-          "category": "music",
-          "title": "ElevenLabs lanza ElevenMusic: app iOS de generación de música con IA",
-          "summary": "ElevenLabs lanzó silenciosamente una app iOS llamada ElevenMusic que permite crear música con IA y descubrir música generada por IA, compitiendo directamente con Suno y Udio. La compañía ve las herramientas de creación musical como IA como forma de crecer y protegerse ante la eventual commoditización de los modelos de audio IA. Suno AI v5.5 sigue siendo el generador más utilizado con más de 1 millón de reseñas en la app.",
-          "source": "https://techcrunch.com/2026/04/02/elevenlabs-releases-a-new-ai-powered-music-generation-app/",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "SpaceX acuerda adquirir Cursor por $60B: la carrera por la IA de código se intensifica",
-          "summary": "El 21 de abril, SpaceX anunció un acuerdo con Cursor que incluye una opción de adquisición por $60 mil millones más tarde este año, o una asociación estratégica de $10 mil millones. La combinación uniría el producto y distribución de Cursor (1M+ usuarios diarios activos) con el supercomputador Colossus de SpaceX (equivalente a 1 millón de H100 de Nvidia). El objetivo es construir 'el modelo de IA más útil para programación y trabajo de conocimiento'. xAI también comenzará a proporcionar potencia computacional a Cursor con decenas de miles de chips.",
-          "source": "https://techcrunch.com/2026/04/21/spacex-is-working-with-cursor-and-has-an-option-to-buy-the-startup-for-60-billion/",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "comfyui",
-          "title": "ComfyUI v0.20.1: procesamiento de audio, Topaz API y mejoras en Qwen",
-          "summary": "ComfyUI lanzó la versión 0.20.1 con varias novedades: soporte para nodos Topaz API (mejora de vídeo), integración de HunYuan 3D 2.0 para generación 3D, capacidades de procesamiento de audio, y mejora significativa del ecosistema ControlNet de Qwen. También se añadieron nodos Moonvalley, soporte para modelos Flux Kontext y Omnigen 2, mejoras en codificación VAE y corrección de estimación de memoria.",
-          "source": "https://github.com/Comfy-Org/ComfyUI/releases",
-          "source_name": "GitHub ComfyUI",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: actividad intensa — fix recurrent state, merge PR #22288 (SWA), nuevo hang Qwen3.6-35B-A3B",
-          "summary": "Actividad significativa en llama.cpp en las últimas 48 horas:\n\n- **PR #22288 MERGED ✅**: ggerganov fusionó 'server: fix swa-full logic' el 24 de abril. Este fix corrige la lógica de caching para modelos SWA y fue sugerido como solución para el issue #21749.\n\n- **Issue #22450 ABIERTO (actualizado hoy 28/04)**: Reporta un hang crítico con Qwen3.6-35B-A3B MoE — el slot se queda atascado en Task Guard (TG) después de invalidación de caché multi-turno, sin output de log después de 'create context checkpoint'. Sin comentarios aún, pero el update del 28/04 sugiere monitoreo activo.\n\n- **Issue #21831 ABIERTO**: Seguimiento de forzado de reprocesamiento completo en modelos híbridos/recurrentes. Último comentario del 27/04 por nilo85 reportando el mismo problema con Qwen 3.6 27B (dense). La comunidad reportó workaround con `--checkpoint-every-n-tokens 1024 --ctx-checkpoints 256` que mantiene contexto estable hasta 262k tokens.\n\n- **Commits recientes (25-26 abril)**: Fix de serialización de estado recurrente (#22362), mejoras CUDA para coalescencia de datos, optimizaciones AVX2 q6_k, soporte IQ4_NL en OpenCL, fix de marcadores de razonamiento en chat, y reducción de overhead MMQ stream-k en CUDA.\n\n- **Issue #22384 CERRADO ✅ (26/04)**: Fix de restauración de checkpoints de contexto para modelos híbridos/recurrentes (DeltaNet/Mamba).\n\n- **Issue #20153 CERRADO ✅ (9/03)**: Re-procesamiento forzado Qwen3.5-27B — resuelto.\n\n⚠️ NOTA: El PR #22288 parece abordar el mismo problema que #21749 (caching SWA). Usuarios deberían actualizar a la versión que incluye este merge para mejorar el comportamiento con modelos Qwen3.6.",
-          "source": "https://github.com/ggerganov/llama.cpp",
-          "source_name": "GitHub llama.cpp",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Nvidia invierte en Vast Data con valoración de $30B y Google lanza chips de entrenamiento/inferencia",
-          "summary": "Nvidia respaldó a la empresa de IA Vast Data con una valoración de $30 mil millones. Paralelamente, Google lanzó nuevos chips de entrenamiento e inferencia TPU como competencia directa a Nvidia. Estos desarrollos en hardware reflejan la carrera continua por el poder computacional necesario para entrenar modelos de la escala de Claude Mythos y similares.",
-          "source": "https://www.cnbc.com/2026/04/22/nvidia-backs-ai-company-vast-data.html",
-          "source_name": "CNBC",
           "star": false
         }
       ]
