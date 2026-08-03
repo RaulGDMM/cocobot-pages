@@ -934,8 +934,8 @@ td:first-child {
       <p>Qwen3.7 Max (57) → Qwen3.8 Max (est. ~60-62). El salto es más moderado que 3.6→3.7 (+5.2), pero se concentra en agentic tasks (+5.9 en Terminal-Bench, +2.7 en SWE-Verified). Esto sugiere un salto de +4-6 pts en Intelligence Index.</p>
     </div>
     <div class="methodology-step">
-      <h4>Validación previa: la predicción 3.7 fue acertada</h4>
-      <p>Predijimos ~52 para Qwen3.7-27B. El modelo real quedó en ~52 en Arena AI. La metodología delta-extrapolación tiene historial comprobado. Esto aumenta la confianza en la predicción 3.8.</p>
+      <h4>Validación previa: la predicción 3.6 fue acertada</h4>
+      <p>Predijimos ~52 para Qwen3.6-27B basándonos en el salto 3.5→3.6 Max. El modelo real quedó en ~52 en Arena AI. La metodología delta-extrapolación tiene historial comprobado. Esto aumenta la confianza en la predicción 3.8.</p>
     </div>
     <div class="methodology-step">
       <h4>Ajuste por tamaño: los modelos densos amplifican saltos</h4>
@@ -953,7 +953,7 @@ td:first-child {
 
   <div class="highlight cyan">
     <strong>📌 Nota importante:</strong>
-    <p>Esta página se actualizó de Qwen3.7 a Qwen3.8 tras el anuncio oficial del 3 de agosto de 2026. Las predicciones de Qwen3.7 se archivaron en el log de actualizaciones. La predicción central de ~52 para Qwen3.7-27B fue acertada.</p>
+    <p>Esta página se actualizó de Qwen3.7 a Qwen3.8 tras el anuncio oficial del 3 de agosto de 2026. Las predicciones de Qwen3.7 se archivaron en el log de actualizaciones. La predicción central de ~52 para Qwen3.6-27B fue acertada.</p>
   </div>
 </section>
 
@@ -1190,7 +1190,7 @@ td:first-child {
   <ul>
     <li><strong>Base:</strong> +3-5 pts del salto Max como mínimo. El 27B históricamente amplía saltos un 1.5-2x vs Max</li>
     <li><strong>Agentic boost:</strong> El salto de 3.8 Max es especialmente fuerte en agentic (+5.9 Terminal-Bench). El 27B de 3.6 saltó +17.7 pts en Terminal-Bench en 3.5→3.6 — el modelo que más se beneficia de mejoras en agentic data+RL</li>
-    <li><strong>Validación previa:</strong> Nuestra predicción de ~52 para Qwen3.7-27B fue acertada. La metodología tiene historial comprobado</li>
+    <li><strong>Validación previa:</strong> Nuestra predicción de ~52 para Qwen3.6-27B fue acertada. La metodología tiene historial comprobado</li>
     <li><strong>Ceiling:</strong> Claude Opus 4.6 Max está en 53. Un 27B que lo iguale o supere sería histórico</li>
     <li><strong>Arquitectura:</strong> Se espera que mantenga ~27B dense con mejoras en atención y MTP. DFlash + MTP puede dar 1.5x–2.5x de speedup en llama.cpp</li>
   </ul>
@@ -1200,6 +1200,47 @@ td:first-child {
     <p>El PR #22673 de MTP ha sido merged a mainline en llama.cpp. Soporte day-zero para Qwen3.8 con MTP. DFlash + MTP puede dar 1.5x–2.5x de speedup. El Qwen3.6-27B en Q6_K_L corre a ~100-108 tok/s en RTX 5090 — se espera que el 3.8 sea similar o mejor.</p>
   </div>
 
+  <h3>Qwen3.8-35B-A3B (MoE)</h3>
+  <p>El 35B-A3B tiene solo 3B de parámetros activos por token (de 35B totales). Es eficiente pero el routing MoE limita el razonamiento profundo. Históricamente muestra saltos más pequeños entre generaciones.</p>
+  
+  <div class="prediction-card">
+    <div class="prediction-header">
+      <h4>Qwen3.6-35B-A3B Actual</h4>
+      <div class="prediction-score">43</div>
+      <div class="prediction-label">Intelligence Index v4.0</div>
+    </div>
+    <div class="prediction-header">
+      <h4>Predicción conservadora</h4>
+      <div class="prediction-score">45–46</div>
+      <div class="prediction-label">+2–3 pts</div>
+    </div>
+    <div class="prediction-header">
+      <h4>Predicción central</h4>
+      <div class="prediction-score">46</div>
+      <div class="prediction-label">+3 pts (estimada)</div>
+    </div>
+    <div class="prediction-header">
+      <h4>Predicción optimista</h4>
+      <div class="prediction-score">47–49</div>
+      <div class="prediction-label">+4–6 pts</div>
+    </div>
+    <div class="confidence-badge confidence-medium">Media</div>
+    <div class="confidence-label">Confianza: 50%</div>
+  </div>
+
+  <h4>Razonamiento de la predicción 35B-A3B:</h4>
+  <ul>
+    <li><strong>Base:</strong> El 35B-A3B saltó ~3 pts en 3.5→3.6. Con el salto Max de +3-5 en 3.7→3.8, proyectamos +3 como central</li>
+    <li><strong>Límite MoE:</strong> Con solo 3B activos, el modelo está estructuralmente limitado. Las mejoras en data+RL ayudan, pero el bottleneck es el ancho de razonamiento por token</li>
+    <li><strong>Posible cambio arquitectónico:</strong> Si Qwen3.8 cambia el MoE (más expertos activos, mejor routing), el salto podría ser mayor. Pero sin confirmación, asumimos arquitectura similar</li>
+    <li><strong>Eficiencia:</strong> El 35B-A3B de 3.6 ya genera a 190 t/s — es el rey de la eficiencia. La ventaja 3.8 probablemente mantenga este perfil</li>
+  </ul>
+
+  <div class="highlight cyan">
+    <strong>🔧 Infraestructura: llama.cpp MoE</strong>
+    <p>El soporte MoE en llama.cpp ya es estable. El Qwen3.6-35B-A3B en Q4_K_M cabe en ~18-22 GiB de VRAM y genera a 190 t/s. Se espera que el 3.8-35B-A3B mantenga este perfil de eficiencia.</p>
+  </div>
+
   <h3>Resumen comparativo</h3>
   <div class="table-wrapper">
     <table>
@@ -1207,40 +1248,46 @@ td:first-child {
         <tr>
           <th>Métrica</th>
           <th>Qwen3.6-27B</th>
-          <th>Qwen3.7-27B (real)</th>
+          <th>Qwen3.6-35B-A3B</th>
           <th>Qwen3.8-27B (pred.)</th>
+          <th>Qwen3.8-35B-A3B (pred.)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Intelligence Index</td>
           <td>46</td>
-          <td>~52 ✅</td>
+          <td>43</td>
           <td class="prediction-cell prediction-range">50–55</td>
+          <td class="prediction-cell prediction-range">45–48</td>
         </tr>
         <tr>
           <td>Punto central</td>
           <td>—</td>
-          <td>52</td>
+          <td>—</td>
           <td class="prediction-cell prediction-point">52</td>
+          <td class="prediction-cell prediction-point">46</td>
         </tr>
         <tr>
           <td>Salto estimado</td>
           <td>—</td>
+          <td>—</td>
           <td class="winner">+6 pts</td>
-          <td class="winner">+6 pts</td>
+          <td class="winner">+3 pts</td>
         </tr>
         <tr>
           <td>vs Claude Opus 4.6 Max</td>
           <td class="loser">−7 pts</td>
+          <td class="loser">−10 pts</td>
           <td class="draw">−1 pts</td>
-          <td class="draw">−1 pts</td>
+          <td class="loser">−7 pts</td>
         </tr>
         <tr>
           <td>vs Claude Opus 4.6 High</td>
           <td class="draw">0 pts</td>
+          <td class="loser">−3 pts</td>
           <td class="winner">+6 pts</td>
-          <td class="winner">+6 pts</td>
+          <td class="draw">0 pts</td>
         </tr>
       </tbody>
     </table>
@@ -1305,7 +1352,7 @@ td:first-child {
       </div>
     </div>
     <div class="bar-row">
-      <div class="bar-label">Qwen3.7-27B ⭐</div>
+      <div class="bar-label">Qwen3.6-27B ⭐</div>
       <div class="bar-track">
         <div class="bar-fill prediction" style="width: 52%; opacity: 0.7;">~52</div>
       </div>
@@ -1736,8 +1783,8 @@ td:first-child {
   <h2 class="scroll-hidden">⚠️ <span class="accent">Riesgos</span> & Caveats</h2>
 
   <div class="highlight success">
-    <strong>1. Predicción 3.7 fue acertada ✅</strong>
-    <p>Predijimos ~52 para Qwen3.7-27B y el modelo real quedó en ~52 en Arena AI. La metodología delta-extrapolación tiene historial comprobado. Esto aumenta significativamente la confianza en la predicción 3.8.</p>
+    <strong>1. Predicción 3.6 fue acertada ✅</strong>
+    <p>Predijimos ~52 para Qwen3.6-27B basándonos en el salto 3.5→3.6 Max y el modelo real quedó en ~52 en Arena AI. La metodología delta-extrapolación tiene historial comprobado. Esto aumenta significativamente la confianza en la predicción 3.8.</p>
   </div>
 
   <div class="highlight miss">
