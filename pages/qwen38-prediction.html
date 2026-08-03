@@ -665,7 +665,15 @@ td:first-child {
 .bar-fill.orange { background: linear-gradient(90deg, #f97316, #fb923c); }
 .bar-fill.red { background: linear-gradient(90deg, #ef4444, #f87171); }
 .bar-fill.gray { background: linear-gradient(90deg, #6b7280, #9ca3af); }
-.bar-fill.prediction { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+.bar-fill.prediction {
+  background: repeating-linear-gradient(
+    -45deg,
+    #06b6d4,
+    #06b6d4 6px,
+    #0891b2 6px,
+    #0891b2 12px
+  );
+}
 
 /* Timeline */
 .timeline {
@@ -1322,7 +1330,7 @@ td:first-child {
       </div>
     </div>
     <div class="bar-row">
-      <div class="bar-label">Qwen3.8 Max</div>
+      <div class="bar-label">Qwen3.8 Max (est.)</div>
       <div class="bar-track">
         <div class="bar-fill green" style="width: 60%;">~60</div>
       </div>
@@ -1442,10 +1450,10 @@ td:first-child {
           <td class="loser">−1.1</td>
         </tr>
         <tr style="background: rgba(124, 58, 237, 0.08);">
-          <td><strong>Qwen3.8 Max</strong></td>
+          <td><strong>Qwen3.8 Max (est.)</strong></td>
           <td><strong>~60</strong></td>
           <td>🇨🇳 Alibaba</td>
-          <td><strong>Open weights</strong></td>
+          <td><strong>Open weights*</strong></td>
           <td>—</td>
         </tr>
         <tr>
@@ -1516,6 +1524,7 @@ td:first-child {
   </div>
 
   <p><em>*Kimi K3 (2.8T params) liberó open weights el 27 de julio de 2026 en HuggingFace. Es el modelo open weights más grande hasta la fecha (3T-class), con arquitectura MoE (16/896 expertos activos), 1M de contexto y soporte multimodal nativo. Requiere ~64× H100 para servir en producción — no es para hardware consumer.</em></p>
+  <p><em>*Qwen3.8 Max: open weights prometidos para "la próxima semana" tras el anuncio del 3 de agosto. Score ~60 es estimación basada en benchmarks oficiales publicados por Alibaba (GPQA 93.2%, SWE-Verified 83.1%, Terminal-Bench 75.6%) y el claim de "second only to Fable 5". Sin score independiente de Artificial Analysis aún.</em></p>
 </section>
 
 <!-- Timeline -->
