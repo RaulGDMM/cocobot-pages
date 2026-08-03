@@ -1508,34 +1508,46 @@ td:first-child {
     <p><strong>9-14 agosto 2026.</strong> Alibaba dijo explícitamente "next week" tras el anuncio del 3 de agosto. Confianza: alta (80%).</p>
   </div>
 
-  <h3>💾 Requisitos VRAM estimados (cuantizado)</h3>
+  <h3>💾 Requisitos VRAM estimados</h3>
+  <p><strong>Importante:</strong> Los números incluyen <em>pesos + KV cache + activaciones + overhead</em>, no solo los pesos del modelo. El KV cache escala con el contexto: más tokens = más VRAM.</p>
   <div class="table-wrapper">
     <table>
       <thead>
         <tr>
           <th>Modelo</th>
-          <th>Q4_K_M</th>
-          <th>Q5_K_M</th>
-          <th>Q6_K_L</th>
-          <th>Q8_0</th>
+          <th>Solo pesos</th>
+          <th>+32K ctx</th>
+          <th>+128K ctx</th>
           <th>Tarjeta mínima</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Qwen3.8-27B (Dense)</td>
+          <td><strong>Qwen3.8-27B</strong> Q4_K_M</td>
           <td>~15-16 GiB</td>
-          <td>~18-20 GiB</td>
-          <td>~22-24 GiB</td>
-          <td>~26-28 GiB</td>
+          <td>~18-19 GiB</td>
+          <td>~21-22 GiB</td>
           <td>RTX 3090/4090 (24 GB)</td>
         </tr>
         <tr>
-          <td>Qwen3.8-Max (2.4T/95B MoE)</td>
+          <td><strong>Qwen3.8-27B</strong> Q6_K_L</td>
+          <td>~22-24 GiB</td>
+          <td>~25-26 GiB</td>
+          <td>~28-30 GiB</td>
+          <td>RTX 5090 (32 GB)</td>
+        </tr>
+        <tr>
+          <td><strong>Qwen3.8-27B</strong> Q8_0</td>
+          <td>~26-28 GiB</td>
+          <td>~29-31 GiB</td>
+          <td>~33-35 GiB</td>
+          <td>Multi-GPU (48+ GB)</td>
+        </tr>
+        <tr>
+          <td><strong>Qwen3.8-Max</strong> Q4_K_M</td>
           <td>~50-60 GiB</td>
-          <td>~65-80 GiB</td>
-          <td>~90-110 GiB</td>
-          <td>~130-160 GiB</td>
+          <td>~53-63 GiB</td>
+          <td>~57-67 GiB</td>
           <td>Multi-GPU / A100 cluster</td>
         </tr>
       </tbody>
@@ -1544,7 +1556,7 @@ td:first-child {
 
   <div class="highlight cyan">
     <strong>🔧 GGUF disponible en 24-72h:</strong>
-    <p>Tras el release oficial, los GGUF cuantizados típicamente aparecen en 24-72 horas. Principales fuentes: Bartowski, Unsloth, RDson en Hugging Face. El 27B en Q4_K_M cabe cómodamente en 24 GB de VRAM. El 27B en Q6_K_L cabe en RTX 5090 (32 GB).</p>
+    <p>Tras el release oficial, los GGUF cuantizados típicamente aparecen en 24-72 horas. Principales fuentes: Bartowski, Unsloth, RDson en Hugging Face. El 27B en Q4_K_M cabe en 24 GB con contexto moderado (~32K). El 27B en Q6_K_L cabe en RTX 5090 (32 GB) con contexto moderado, pero con 128K de contexto se queda justo.</p>
   </div>
 </section>
 
