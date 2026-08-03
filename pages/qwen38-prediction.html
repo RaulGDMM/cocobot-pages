@@ -1688,9 +1688,102 @@ td:first-child {
     </table>
   </div>
 
+  <h3>💾 Qwen3.8-35B-A3B (MoE) — Requisitos VRAM</h3>
+  <p>
+    El 35B-A3B es un modelo MoE con 35B de parámetros totales pero solo ~3B activos por token. Esto lo hace extremadamente eficiente en inferencia, pero los 35B totales ocupan espacio en memoria. A diferencia de un modelo denso, <strong>puedes cargar solo las capas que caben en VRAM y dejar el resto en RAM</strong> — y gracias a la arquitectura MoE, las velocidades siguen siendo sorprendentemente buenas porque solo se activan ~3B de parámetros por paso.
+  </p>
+  <p><strong>Tamaño GGUF estimado (Qwen3.8-35B-A3B):</strong></p>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Cuantización</th>
+          <th>Tamaño archivo</th>
+          <th>Tarjeta mínima (full VRAM)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q4_K_M</td>
+          <td>~18-20 GiB</td>
+          <td>RTX 4090 (24 GB)</td>
+        </tr>
+        <tr>
+          <td>Q5_K_M</td>
+          <td>~21-23 GiB</td>
+          <td>RTX 4090 (24 GB) — justo</td>
+        </tr>
+        <tr>
+          <td>Q6_K_L</td>
+          <td>~25-27 GiB</td>
+          <td>RTX 5090 (32 GB)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>⚡ Velocidades reales según hardware (datos Qwen3.6-35B-A3B)</h4>
+  <p>Los datos provienen del Qwen3.6-35B-A3B (arquitectura similar). Se espera que el 3.8 mantenga velocidades comparables o ligeramente mejores gracias a mejoras en el modelo y llama.cpp.</p>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Hardware</th>
+          <th>Configuración</th>
+          <th>Velocidad</th>
+          <th>Fuente</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RTX 5090 (32 GB)</td>
+          <td>Full VRAM, Q4_K_M, MTP</td>
+          <td><strong>~236 tok/s</strong></td>
+          <td>llama.cpp #21112</td>
+        </tr>
+        <tr>
+          <td>RTX 4090 (24 GB)</td>
+          <td>Full VRAM, Q4_K_M</td>
+          <td><strong>~190 tok/s</strong></td>
+          <td>Comunidad</td>
+        </tr>
+        <tr>
+          <td>RTX 4070 Super (12 GB)</td>
+          <td>12 GB VRAM + RAM offload, Q4_K_M, MTP, <code>--n-cpu-moe 28</code></td>
+          <td><strong>~80 tok/s</strong></td>
+          <td>Reddit r/LocalLLaMA</td>
+        </tr>
+        <tr>
+          <td>RTX 4060 (8 GB)</td>
+          <td>8 GB VRAM + RAM offload, Q4_K_M</td>
+          <td><strong>~20 tok/s</strong></td>
+          <td>Reddit r/LocalLLaMA</td>
+        </tr>
+        <tr>
+          <td>RTX 3080 (10 GB)</td>
+          <td>10 GB VRAM + RAM offload, Q4_K_M</td>
+          <td><strong>~46 tok/s</strong></td>
+          <td>Ollama v0.30.5</td>
+        </tr>
+        <tr>
+          <td>GTX 1060 (6 GB)</td>
+          <td>6 GB VRAM + RAM offload, Q4_K_M, DDR4</td>
+          <td><strong>~17 tok/s</strong></td>
+          <td>Codacus (YouTube)</td>
+        </tr>
+        <tr>
+          <td>8 GB VRAM (varios)</td>
+          <td>RAM offload, DDR5, Ryzen 7</td>
+          <td><strong>~30 tok/s</strong></td>
+          <td>Medium (mychen76)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="highlight cyan">
-    <strong>🔧 GGUF disponible en 24-72h:</strong>
-    <p>Tras el release oficial, los GGUF cuantizados típicamente aparecen en 24-72 horas. Principales fuentes: Bartowski, Unsloth, RDson en Hugging Face. El 27B en Q4_K_M cabe en 24 GB con contexto moderado (~32K). El 27B en Q6_K_L cabe en RTX 5090 (32 GB) con contexto moderado, pero con 128K de contexto se queda justo.</p>
+    <strong>🧠 Por qué funciona tan bien con RAM:</strong>
+    <p>En un modelo MoE, solo se activan ~3B de parámetros por token (de 35B totales). Los expertos que están en RAM se cargan bajo demanda. Como la mayoría del cálculo real se hace con los 3B activos (que caben en VRAM), el offloading a RAM tiene un impacto menor que en un modelo denso equivalente. La clave es usar <code>--n-cpu-moe N</code> para controlar cuántas capas MoE se mantienen en CPU/RAM.</p>
   </div>
 </section>
 
