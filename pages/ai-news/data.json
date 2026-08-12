@@ -5,6 +5,52 @@
   },
   "days": [
     {
+      "date": "2026-08-12",
+      "news": [
+        {
+          "category": "llm",
+          "title": "NVIDIA lanza Nemotron 3.5 Lightning: modelo MoE abierto de 30B (3B activos) diseñado para agentes siempre encendidos",
+          "summary": "NVIDIA publica Nemotron 3.5 Lightning, un modelo MoE de 30B parámetros con solo 3B activos por token, optimizado para agentes autónomos de larga duración. Soporta hasta 1M de tokens de contexto, arquitectura híbrida Mamba-2 + MoE + Attention, y se entrega con licencia OpenMDW 1.1. NVIDIA lo posiciona como el modelo más eficiente de su clase para workflows agenticos de alto volumen y baja latencia.",
+          "source": "https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx",
+          "source_name": "NVIDIA Blog",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Meta open-sourcea Muse Glimmer: agente de 30B con Apache 2.0 que corre en una sola GPU de consumo",
+          "summary": "Meta lanza Muse Glimmer, un modelo denso de 29.6B parámetros con encoder de visión de 1.8B, 131K de contexto y soporte para +100 idiomas. Disponible bajo Apache 2.0 en Hugging Face, cuantizaciones a 4-bit caben en GPUs de 24 GB (RTX 4090, M4 Max). Destaca en MCP Atlas (75.5 vs 62.5 de Qwen 3.6) y Gaia 2, posicionándose como el mejor agente open-source para tool-calling.",
+          "source": "https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model",
+          "source_name": "Meta AI Research",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Bad Theory Labs publica BTL-4: modelo agentic de 35B MoE con 78.4% en SWE-bench Verified",
+          "summary": "Bad Theory Labs lanza BTL-4, un modelo de 35B parámetros (MoE con ~2.1B activos) fine-tuneado desde Ornith-1.0-35B con corpus de razonamiento ejecutado: solo se retienen trayectorias cuyo código compiló y pasó tests. Soporta 262K de contexto, Apache 2.0, y bate 73.5% en BFCL v4 y 78.4% en SWE-bench Verified — rendimiento de clase Sonnet en un modelo open-weight.",
+          "source": "https://huggingface.co/badtheorylabs/BTL-4",
+          "source_name": "Hugging Face",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "AMD adquiere Taalas: silicio especializado para inferencia de IA con pesos grabados en chip",
+          "summary": "AMD anuncia acuerdo definitivo para adquirir Taalas, startup canadiense que diseña chips ASIC con los pesos del modelo grabados directamente en el silicio. La tecnología promete eliminar cuellos de botella de memoria y compute en inferencia, con un ciclo de diseño modelo-a-chip de solo dos meses. AMD planea integrarlo con sus GPUs Instinct para soluciones de inferencia a escala.",
+          "source": "https://ir.amd.com/news-events/press-releases/detail/1296/amd-acquires-taalas-to-advance-compute-solutions-for-rapidly-growing-ai-inference-market",
+          "source_name": "AMD Investor Relations",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10357 → b10369 disponible (12 builds nuevos, soporte pocket-tts en mtmd)",
+          "summary": "llama.cpp avanza de b10357 a b10369 con 12 builds intermedios. Lo más relevante: soporte para pocket-tts en el sistema mtmd (multimodal), fix de escape sequences incompletos en common/peg, correcciones CI en ggml-webgpu, y fix para SWA en EXAONE 4.5. Tu servidor local corre b10248 — hay 121 builds por actualizar.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": false
+        }
+      ],
+      "summary": "Día intenso en IA abierta: NVIDIA y Meta lanzan modelos optimizados para agentes, Bad Theory Labs debuta con un coder de 35B, y AMD compra Taalas para dominar la inferencia. llama.cpp avanza a b10369 con soporte para pocket-tts."
+    },
+    {
       "date": "2026-08-11",
       "news": [
         {
@@ -4635,123 +4681,6 @@
           "source": "https://github.com/ggml-org/llama.cpp/releases",
           "source_name": "GitHub — llama.cpp",
           "star": false
-        }
-      ]
-    },
-    {
-      "date": "2026-05-13",
-      "news": [
-        {
-          "category": "general",
-          "title": "Google Android Show: Android 17 con Gemini agentic en la pantalla de bloqueo",
-          "summary": "Google transmitió en vivo su Android Show el 12 de mayo. Android 17 Beta 4 ya está disponible como entorno 'casi final' para desarrolladores, con lanzamiento estable previsto para junio de 2026. Las novedades incluyen app bubbles para multitarea mejorada y, sobre todo, capacidades agenticas de Gemini que permiten ejecución autónoma de tareas directamente desde la pantalla de bloqueo, con integración más profunda de Gemini a nivel del sistema operativo.",
-          "source": "https://aitoolsrecap.com/Blog/ai-news-may-12-2026",
-          "source_name": "AIToolsRecap",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Google I/O 2026 confirmado: Aluminium OS, Android XR y nuevo modelo Gemini",
-          "summary": "Google I/O 2026 se celebrará el 19-20 de mayo en Shoreline Amphitheatre. Google lo ha descrito como su 'I/O más centrado en IA de la historia'. Se esperan anuncios de un nuevo modelo Gemini (posiblemente Gemini 4.0), Aluminium OS (sistema operativo PC basado en Android), Android XR smart glasses (en desarrollo con Samsung, Gentle Monster y Warby Parker), y un kit de herramientas expandido para agentes de IA empresariales con integraciones más profundas en Workspace y Cloud.",
-          "source": "https://aitoolsrecap.com/Blog/ai-news-may-12-2026",
-          "source_name": "AIToolsRecap",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "EE.UU. formaliza acuerdos de evaluación de modelos de IA con Google, Microsoft y xAI",
-          "summary": "El Centro de Estándares e Innovación en IA (CAISI) del Departamento de Comercio de EE.UU. formalizó acuerdos con Google DeepMind, Microsoft y xAI para evaluación pre-lanzamiento de modelos. Las pruebas cubren capacidades de hacking, potencial de uso militar y comportamientos inesperados. Esto formaliza procesos previamente informales y podría significar tiempos más largos entre la finalización del entrenamiento y el lanzamiento público de modelos de IA fronterizos.",
-          "source": "https://aitoolsrecap.com/Blog/ai-news-may-12-2026",
-          "source_name": "AIToolsRecap",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic amplía infraestructura de cómputo: $80B+ en acuerdos con Amazon, Google, Microsoft y Fluidstack",
-          "summary": "Anthropic ha contratado capacidad de cómputo a través de cinco acuerdos mayoristas: SpaceX Colossus 1 (300MW, activo en semanas), Amazon (hasta 5GW total, ~1GW operativo para finales de 2026), Google y Broadcom (5GW desde 2027), Microsoft y NVIDIA ($30B en capacidad Azure), y Fluidstack ($50B invertidos en infraestructura IA en EE.UU.). Esta expansión masiva de más de 10GW y $80B+ señala un escalamiento agresivo para modelos Claude a través de 2027.",
-          "source": "https://aitoolsrecap.com/Blog/ai-news-may-12-2026",
-          "source_name": "AIToolsRecap",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Apple abrirá Apple Intelligence a proveedores de IA de terceros (Google, Anthropic, OpenAI)",
-          "summary": "Apple prepara un cambio de plataforma significativo que permitiría a los usuarios elegir entre proveedores de IA de terceros, incluyendo Google y Anthropic, para alimentar las funciones de Apple Intelligence en iOS 27, iPadOS 27 y macOS 27. El proyecto interno se llama 'Extensions'. Este movimiento marca un cambio mayor respecto al ecosistema de IA históricamente cerrado de Apple, abriendo la puerta a interoperabilidad cruzada entre plataformas.",
-          "source": "https://www.reddit.com/r/AI_importants/comments/1t9uvx9/",
-          "source_name": "Reddit r/AI_importants",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Novo Nordisk y OpenAI: asociación integral para descubrimiento de fármacos con IA",
-          "summary": "Novo Nordisk y OpenAI anunciaron una asociación para integrar IA de extremo a extremo en descubrimiento de fármacos, ensayos clínicos, manufactura y cadenas de suministro. El despliegue completo está previsto para finales de 2026. El objetivo principal es acelerar la identificación y desarrollo de nuevos tratamientos para obesidad y diabetes, estableciendo un precedente para el uso de IA en optimización clínica y de cadena de suministro.",
-          "source": "https://www.reddit.com/r/AI_importants/comments/1t9uvx9/",
-          "source_name": "Reddit r/AI_importants",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Google construye un agente de IA para competir con OpenClaw",
-          "summary": "Google está desarrollando su propio agente de IA personal para competir directamente con OpenClaw, el asistente personal de IA que se volvió viral. Este anuncio refleja la intensificación de la 'guerra de agentes' entre los grandes jugadores de IA, con Meta y Google entrando oficialmente en la carrera catalizada por el éxito de OpenClaw.",
-          "source": "https://medium.com/@annie_7775/ai-updates-for-the-week-of-5-10-26-ec8df421e4d2",
-          "source_name": "Annie Cushing / Medium",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "SAP amenaza a clientes que usen agentes de IA no autorizados como OpenClaw",
-          "summary": "SAP advirtió a sus clientes que podría cortar el acceso si utilizan agentes de IA no autorizados como OpenClaw. Esta postura refleja la creciente preocupación de las empresas sobre la seguridad y gobernanza de agentes autónomos que pueden acceder a sistemas corporativos sensibles, y marca un punto de inflexión en la tensión entre innovación de IA y control empresarial.",
-          "source": "https://medium.com/@annie_7775/ai-updates-for-the-week-of-5-10-26-ec8df421e4d2",
-          "source_name": "Annie Cushing / Medium",
-          "star": false
-        },
-        {
-          "category": "music",
-          "title": "Spotify permite a agentes de IA generar podcasts personalizados",
-          "summary": "Spotify expandió sus capacidades de agentes de IA para que ahora puedan generar podcasts personalizados para cada usuario. Además, el AI DJ se expandió a francés, alemán, italiano y portugués brasileño, ampliando significativamente la disponibilidad de contenido generado por IA en múltiples idiomas.",
-          "source": "https://medium.com/@annie_7775/ai-updates-for-the-week-of-5-10-26-ec8df421e4d2",
-          "source_name": "Annie Cushing / Medium",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Amazon despliega Claude Code y Codex a todos los empleados corporativos",
-          "summary": "Amazon implementó Claude Code (de Anthropic) y Codex (de OpenAI) para todos sus empleados corporativos, marcando un despliegue masivo de herramientas de codificación con IA a nivel empresarial. Esta decisión refleja la adopción acelerada de herramientas de IA para desarrollo de software en grandes empresas tecnológicas.",
-          "source": "https://medium.com/@annie_7775/ai-updates-for-the-week-of-5-10-26-ec8df421e4d2",
-          "source_name": "Annie Cushing / Medium",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Perplexity abre su asistente de IA en PC a todos los usuarios de Mac",
-          "summary": "Perplexity abrió su asistente de IA para computadora personal a todos los usuarios de Mac, permitiendo que el modelo acceda y opere directamente en el sistema del usuario. Esto expande significativamente la disponibilidad de asistentes de IA de escritorio más allá de los usuarios beta.",
-          "source": "https://medium.com/@annie_7775/ai-updates-for-the-week-of-5-10-26-ec8df421e4d2",
-          "source_name": "Annie Cushing / Medium",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "AMD lanza Instinct MI350P PCIe GPUs para inferencia de IA on-premise",
-          "summary": "AMD lanzó las GPU Instinct MI350P PCIe diseñadas específicamente para inferencia de IA en instalaciones locales (on-premise). Estas GPU ofrecen una alternativa a NVIDIA para empresas que necesitan ejecutar modelos de IA sin depender de la nube, con formato PCIe que facilita la integración en servidores existentes.",
-          "source": "https://medium.com/@annie_7775/ai-updates-for-the-week-of-5-10-26-ec8df421e4d2",
-          "source_name": "Annie Cushing / Medium",
-          "star": false
-        },
-        {
-          "category": "comfyui",
-          "title": "ComfyUI v0.21.0: soporte para guardar modelos 3D",
-          "summary": "La versión 0.21.0 de ComfyUI introduce funcionalidad de 'save 3d model' y soporte para '3d/ComfyUI', expandiendo las capacidades de la plataforma más allá de generación de imagen y video hacia flujos de trabajo de modelos 3D. Las versiones recientes también incluyen soporte para ErnieTEModel y mejoras de estabilidad.",
-          "source": "https://github.com/comfy-org/ComfyUI/releases",
-          "source_name": "GitHub ComfyUI",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: releases b9128-b9122 — WebGPU para gpt-oss-20b y mejoras multimodales",
-          "summary": "últimos releases de llama.cpp (12-13 de mayo): b9128 elimina cargas escalares VTCM en hexagon vía helpers HVX splat; b9127 añade GEMM F16xF32 opt-in para Adreno xmem en prefill; b9124 expone modalidades en /v1/models para mtmd, server y common; b9123 habilita ejecución de gpt-oss-20b en WebGPU; b9122 soluciona problemas de precisión en WebGPU para modelos multimodales. Hay 5 CVEs activos (incluyendo 1 CRITICAL de RCE no autenticada y 2 HIGH de heap buffer overflow) sin parches confirmados.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub llama.cpp",
-          "star": true
         }
       ]
     }
