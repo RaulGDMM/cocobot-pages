@@ -5,6 +5,52 @@
   },
   "days": [
     {
+      "date": "2026-08-13",
+      "news": [
+        {
+          "category": "llm",
+          "title": "xAI presenta Grok 4.6: modelo de 1.5T parámetros optimizado para agentes de larga duración",
+          "summary": "SpaceXAI lanzó Grok 4.6 el 12 de agosto, reutilizando la base de 1.5T V9 de Grok 4.5 pero con SFT y RL significativamente mejorados. Se enfoca en agentes que mantienen tareas complejas a través de muchos pasos: investigación, análisis, navegación en codebases y creación de aplicaciones. Contexto de 500k tokens, entrada texto+imagen, salida texto. Precio: $2/$0.50/$6 por millón de tokens (input/cached/output) bajo 200k prompt tokens.",
+          "source": "https://x.ai/news/grok-4-6",
+          "source_name": "xAI Blog",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "NVIDIA cierra alianza de $500.000 millones con Wall Street para financiar infraestructura de IA",
+          "summary": "NVIDIA firmó un acuerdo preliminar con Apollo, BlackRock, Blackstone, Brookfield, Goldman Sachs y KKR para movilizar más de $500B en capital de terceros para financiar infraestructura de cómputo de IA. Jensen Huang presentó el cómputo de IA como una \"clase de activos invertible\" que llamó \"fábricas de IA\". El objetivo es ampliar el acceso a infraestructura NVIDIA para desarrolladores de IA, empresas, gobiernos y proveedores cloud.",
+          "source": "https://www.cnbc.com/2026/08/10/nvidia-wall-street-asset-managers-500-billion-ai-push.html",
+          "source_name": "CNBC",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Anthropic implementa watermarks invisibles en todo el texto generado por Claude",
+          "summary": "Anthropic confirmó que los modelos Claude lanzados desde el 2 de agosto 2026 incrustan marcas de agua invisibles directamente en el texto generado. El watermark viaja con el texto al copiar y pegar, y puede persistir tras edición parcial. Se aplica a nivel de modelo, globalmente, en API, Claude Code y plataformas cloud. La medida responde al Código de Práctica de la UE sobre transparencia de contenido generado por IA, pero Anthropic lo extendió a nivel mundial.",
+          "source": "https://explainx.ai/blog/anthropic-claude-invisible-watermarks-c2pa-august-2026",
+          "source_name": "ExplainX",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Google presenta Pixel 11 con Tensor G6 en evento Made by Google",
+          "summary": "Google lanzó la serie Pixel 11 en su evento Made by Google del 12 de agosto, con el nuevo chip Tensor G6 fabricado en 2nm — el salto más grande en rendimiento del lineup Pixel. También se presentó el Pixel Watch 5. El Tensor G6 representa la apuesta de Google por integrar IA de nivel Gemini directamente en hardware propio, con Gemini Intelligence como diferenciador principal.",
+          "source": "https://www.androidcentral.com/phones/live/made-by-google-2026-launch-live-pixel-11-pixel-11-pro-fold-pixel-watch-5-gemini-and-all-the-news",
+          "source_name": "Android Central",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10369 → b10400 disponible (31 builds nuevos, fix arm builds y parsing Qwen)",
+          "summary": "Se publicaron 31 builds nuevos desde b10369 hasta b10400. Destacan: b10400 con fix de compilación ARM y variable unused en ggml; b10375 con parsing de funciones bare tightening para modelos Qwen; b10373 con mejora en imatrix.cpp (finite check solo en expertos tocados). Tu servidor corre b10248 — vas 152 builds detrás. Las vulnerabilidades de seguridad conocidas (GHSA-j8rj, GHSA-3p4r, GHSA-96jg) siguen sin parche en tu versión.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": false
+        }
+      ],
+      "summary": "Día intenso: xAI lanza Grok 4.6 enfocado en agentes de larga duración, NVIDIA cierra alianza de $500B con Wall Street para infraestructura de IA, Anthropic implementa watermarks invisibles en Claude, y Google presenta el Pixel 11 con Tensor G6."
+    },
+    {
       "date": "2026-08-12",
       "news": [
         {
@@ -4670,19 +4716,6 @@
         }
       ],
       "summary": "Semana intensa en IA: Cerebras debuta en Nasdaq con el IPO más grande de tech en 2026 (+81%), Anthropic negocia ronda de $30B a valoración de $900B y cierra alianza con SpaceX para 300 MW de cómputo. En modelos, OpenAI establece GPT-5.5 Instant como default de ChatGPT, mientras SubQ y ZAYA1-8B rompen paradigmas de arquitectura y eficiencia."
-    },
-    {
-      "date": "2026-05-14",
-      "news": [
-        {
-          "category": "llama",
-          "title": "llama.cpp: 5 releases hoy (b9140–b9144) — fixes webgpu, OpenCL MoE Adreno, compat vLLM",
-          "summary": "Cinco releases de llama.cpp publicadas el 14 de mayo de 2026: b9144 corrige la ruta subgroup-matrix en ggml-webgpu para que solo se active cuando las dimensiones de cabeza son divisibles por sg_mat_k / sg_mat_n; b9143 arregla ambigüedad de operador half+half casteando resultados intermedios a float antes de la adición; b9142 añade soporte q5_0 y q5_1 MoE para Adreno en OpenCL; b9141 acepta el flag continue_final_message para compatibilidad con la API de vLLM; b9140 corrige un crash al calentar MoE en Adreno con OpenCL. El usuario no tiene llama.cpp instalado localmente.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub — llama.cpp",
-          "star": false
-        }
-      ]
     }
   ]
 }
