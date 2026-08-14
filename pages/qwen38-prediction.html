@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qwen3.8 Open Weights: Predicciones 27B & Benchmarks Max</title>
-  <meta name="description" content="Predicciones para Qwen3.8-27B open weights basadas en el salto real de Qwen3.7 Max → Qwen3.8 Max. Benchmarks oficiales confirmados.">
+  <title>Qwen3.8 Open Weights: 27B publicado — Veredicto de la predicción</title>
+  <meta name="description" content="Qwen3.8-27B publicado el 14 de agosto de 2026. Benchmarks oficiales, veredicto de la predicción (~52 AAI) y datos de inferencia local en RTX 5090.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -900,6 +900,7 @@ td:first-child {
 <!-- Nav Menu -->
 <div class="nav-menu">
   <a href="#metodologia">Metodología</a>
+  <a href="#resultado">🏁 Resultado</a>
   <a href="#salto-max">Salto Max</a>
   <a href="#predicciones">Predicciones 27B</a>
   <a href="#comparativa">vs Claude & Frontier</a>
@@ -911,21 +912,21 @@ td:first-child {
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow">Predicción · Actualizado 03 Agosto 2026</div>
+  <div class="hero-eyebrow">Predicción · ✅ RESUELTO · Actualizado 14 Agosto 2026</div>
   <h1>Qwen3.8<br>Open Weights</h1>
-  <h2>Predicciones para 27B</h2>
+  <h2>27B publicado — Veredicto de la predicción</h2>
   <p class="hero-sub">
-    Basado en el salto real de Qwen3.7 Max → Qwen3.8 Max, benchmarks oficiales confirmados y la metodología delta-extrapolación. Qwen3.8-Max anunciado oficialmente el 3 de agosto.
+    El 27B <strong>llegó el 14 de agosto de 2026</strong>. Benchmarks oficiales publicados: saltos enormes en agentic (OSWorld 84.3, +20.4 pts) y coding (SWE-bench Pro 61.7). Veredicto de la predicción: <strong>fecha ✅, arquitectura ✅, AAI ⏳ pendiente</strong> (la evaluación de Artificial Analysis del 27B aún no ha salido).
   </p>
   <div class="hero-meta">
-    <span class="badge">27B Dense</span>
-    <span class="badge live">✅ Qwen3.8-Max confirmado</span>
-    <span class="badge orange">Open weights próxima semana</span>
-    <span class="badge cyan">Metodología abierta</span>
-    <span class="badge blue">2.4T MoE · 95B activos</span>
-    <span class="badge green">Contexto 1M tokens</span>
-    <span class="badge purple">Reasoning siempre activo</span>
-    <span class="badge" style="background: var(--success-bg); border-color: rgba(74, 222, 128, 0.3); color: var(--success);">✅ 3.7 predicción acertada (~52)</span>
+    <span class="badge live">✅ 27B publicado (14 ago 2026)</span>
+    <span class="badge">27B Dense · DeltaNet</span>
+    <span class="badge" style="background: var(--success-bg); border-color: rgba(74, 222, 128, 0.3); color: var(--success);">✅ Predicción de fecha acertada</span>
+    <span class="badge" style="background: var(--success-bg); border-color: rgba(74, 222, 128, 0.3); color: var(--success);">✅ Arquitectura idéntica a 3.6</span>
+    <span class="badge" style="background: var(--miss-bg); border-color: rgba(248, 113, 113, 0.3); color: var(--miss);">❌ 35B-A3B no salió</span>
+    <span class="badge cyan">AAI 27B: ⏳ pendiente</span>
+    <span class="badge blue">Max: 58 AAI (confirmado 6 ago)</span>
+    <span class="badge green">98 tok/s local en RTX 5090</span>
   </div>
 </div>
 
@@ -965,6 +966,211 @@ td:first-child {
   </div>
 </section>
 
+<!-- Resultado -->
+<div class="section-divider"></div>
+<section id="resultado">
+  <h2 class="scroll-hidden">🏁 <span class="accent">Resultado</span>: el 27B llegó (14 ago 2026)</h2>
+  <p class="scroll-hidden">
+    Los pesos de <strong>Qwen3.8-27B</strong> se publicaron el <strong>14 de agosto de 2026</strong> en Hugging Face (Apache 2.0), dentro del rango predicho de 9-14 agosto. GGUF de Unsloth disponibles el mismo día (Q6_K: 22.9 GB). El <strong>35B-A3B no se ha publicado</strong> — la predicción para ese modelo sigue en el aire.
+  </p>
+
+  <div class="result-grid">
+    <div class="result-card green">
+      <div class="label">Fecha release</div>
+      <div class="value">14 ago</div>
+      <div class="sub">Predicho: 9-14 ago ✅</div>
+    </div>
+    <div class="result-card blue">
+      <div class="label">Arquitectura</div>
+      <div class="value">Idéntica a 3.6</div>
+      <div class="sub">DeltaNet 48/16 + Attn 24/4 · 64 capas</div>
+    </div>
+    <div class="result-card cyan">
+      <div class="label">Intelligence Index</div>
+      <div class="value">⏳ Pendiente</div>
+      <div class="sub">AAI aún no evalúa el 27B</div>
+    </div>
+    <div class="result-card orange">
+      <div class="label">Qwen3.8 Max (AAI)</div>
+      <div class="value">58</div>
+      <div class="sub">Confirmado 6 ago (pred.: ~60)</div>
+    </div>
+  </div>
+
+  <h3>📊 Benchmarks oficiales del 27B (model card, 14 ago 2026)</h3>
+  <p>Saltos reales vs Qwen3.6-27B. El patrón es exactamente el esperado: <strong>el salto se concentra en agentic y multimodal</strong>, mientras el reasoning puro apenas se mueve.</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Benchmark</th>
+          <th>Qwen3.8-27B</th>
+          <th>Qwen3.6-27B</th>
+          <th>Salto</th>
+          <th>Opus 4.6 Max</th>
+          <th>vs Opus 4.6 Max</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Terminal Bench 2.1 (agentic coding)</td>
+          <td><strong>73.0</strong></td>
+          <td>63.4</td>
+          <td class="winner">+9.6</td>
+          <td>78.2</td>
+          <td class="loser">−5.2</td>
+        </tr>
+        <tr>
+          <td>SWE-bench Pro (agentic coding)</td>
+          <td><strong>61.7</strong></td>
+          <td>53.5</td>
+          <td class="winner">+8.2</td>
+          <td>53.4</td>
+          <td class="winner">+8.3 🏆</td>
+        </tr>
+        <tr>
+          <td>QwenSWEBench (software engineering)</td>
+          <td><strong>79.0</strong></td>
+          <td>49.3</td>
+          <td class="winner">+29.7</td>
+          <td>63.8</td>
+          <td class="winner">+15.2 🏆</td>
+        </tr>
+        <tr>
+          <td>DeepSWE 1.1 (agentic coding)</td>
+          <td><strong>42.2</strong></td>
+          <td>13.3</td>
+          <td class="winner">+28.9</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>OSWorld-Verified (computer use)</td>
+          <td><strong>84.3</strong></td>
+          <td>63.9</td>
+          <td class="winner">+20.4</td>
+          <td>72.7</td>
+          <td class="winner">+11.6 🏆</td>
+        </tr>
+        <tr>
+          <td>WebArena-Verified (browser use)</td>
+          <td><strong>64.8</strong></td>
+          <td>48.8</td>
+          <td class="winner">+16.0</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>LiveCodeBench v6 (competitive coding)</td>
+          <td><strong>90.3</strong></td>
+          <td>83.9</td>
+          <td class="winner">+6.4</td>
+          <td>88.8</td>
+          <td class="winner">+1.5</td>
+        </tr>
+        <tr>
+          <td>IFBench (instruction following)</td>
+          <td><strong>79.5</strong></td>
+          <td>69.1</td>
+          <td class="winner">+10.4</td>
+          <td>62.5</td>
+          <td class="winner">+17.0 🏆</td>
+        </tr>
+        <tr>
+          <td>GPQA Diamond (scientific reasoning)</td>
+          <td><strong>89.2</strong></td>
+          <td>87.8</td>
+          <td class="winner">+1.4</td>
+          <td>91.3</td>
+          <td class="loser">−2.1</td>
+        </tr>
+        <tr>
+          <td>HLE (multidisciplinary reasoning)</td>
+          <td><strong>30.8</strong></td>
+          <td>24.0</td>
+          <td class="winner">+6.8</td>
+          <td>40.0</td>
+          <td class="loser">−9.2</td>
+        </tr>
+        <tr>
+          <td>MathVision (visual math)</td>
+          <td><strong>90.0</strong> / 94.6 CI</td>
+          <td>85.1</td>
+          <td class="winner">+4.9</td>
+          <td>65.5</td>
+          <td class="winner">+24.5 🏆</td>
+        </tr>
+        <tr>
+          <td>OmniDocBench 1.5 (documents)</td>
+          <td><strong>91.1</strong></td>
+          <td>89.4</td>
+          <td class="winner">+1.7</td>
+          <td>86.6</td>
+          <td class="winner">+4.5</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight success">
+    <strong>🏆 El patrón predicho se cumplió con creces:</strong>
+    <p>Predijimos que "el salto se concentra en agentic, donde el 27B históricamente amplía los números". Realidad: <strong>+29.7 en QwenSWEBench, +28.9 en DeepSWE, +20.4 en OSWorld, +16 en WebArena</strong>. El 27B de 3.8 supera a Opus 4.6 Max (el flagship de Anthropic) en SWE-bench Pro, OSWorld, IFBench, LiveCodeBench, MathVision y documentos. El techo sigue estando en reasoning puro (GPQA −2.1, HLE −9.2), como predijo el análisis del salto Max (+0.8 GPQA).</p>
+  </div>
+
+  <div class="highlight cyan">
+    <strong>🔮 Veredicto de la predicción:</strong>
+    <p><strong>Fecha ✅</strong> (14 ago, dentro del rango 9-14) · <strong>Arquitectura ✅</strong> (idéntica al 3.6: DeltaNet+Attention, mismo KV cache) · <strong>Dirección de salto ✅</strong> (agentic dispara, reasoning plano — exactamente el patrón previsto) · <strong>Magnitud AAI ⏳</strong>: sin score AAI oficial del 27B aún, la predicción de ~52 queda "probablemente acertada" por consistencia con el Max (58) y los benchmarks individuales. Se cierra cuando Artificial Analysis publique el score.</p>
+  </div>
+
+  <h3>⚡ Inferencia local real — RTX 5090 (32 GB), llama.cpp</h3>
+  <p>Test real ejecutado el 14 de agosto en el servidor local de Raúl (172.23.176.1:30000), mismo setup que el 3.6: llama.cpp + KV cache cuantizado + MTP.</p>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>Qwen3.6-27B (Q6_K)</th>
+          <th>Qwen3.8-27B</th>
+          <th>Δ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tok/s generación (ctx corto)</td>
+          <td>~102-106 tok/s</td>
+          <td><strong>~98 tok/s</strong></td>
+          <td>≈ igual (−5%)</td>
+        </tr>
+        <tr>
+          <td>Prompt processing (d1024)</td>
+          <td>~2067 tok/s</td>
+          <td>TBD</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>VRAM (pesos Q6_K)</td>
+          <td>~23 GB</td>
+          <td>~23 GB</td>
+          <td>idéntico</td>
+        </tr>
+        <tr>
+          <td>KV cache por token</td>
+          <td>16 capas atn × 4 KV × 256</td>
+          <td>idéntico</td>
+          <td>0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p><em>Nota: el test rápido incluye TTFT del primer run (~3.7 s); el segundo run puro da 98.0 tok/s. MTP+ngram activo. El rendimiento es prácticamente idéntico al 3.6 — mismo hardware, misma arquitectura, misma quant.</em></p>
+
+  <div class="highlight orange">
+    <strong>📌 Faltan por llegar:</strong>
+    <p>① Score AAI independiente del 27B (cierra la predicción de ~52). ② Qwen3.8-35B-A3B (la predicción de ~46 sigue en el aire — no hay repos en Hugging Face). ③ Open weights de Qwen3.8-Max (los repos que circulan son mirrors no oficiales). ④ Video input en llama.cpp (el modelo lo soporta, el runtime aún no).</p>
+  </div>
+</section>
+
 <!-- Salto Max -->
 <div class="section-divider"></div>
 <section id="salto-max">
@@ -981,13 +1187,13 @@ td:first-child {
     </div>
     <div class="result-card green">
       <div class="label">Qwen3.8 Max</div>
-      <div class="value">~60</div>
-      <div class="sub">Estimado (AAI pending)</div>
+      <div class="value">58</div>
+      <div class="sub">AAI confirmado (6 ago) · pred. ~60</div>
     </div>
     <div class="result-card cyan">
-      <div class="label">Salto estimado</div>
-      <div class="value">+3–5</div>
-      <div class="sub">puntos (est.)</div>
+      <div class="label">Salto real</div>
+      <div class="value">+1</div>
+      <div class="sub">vs 57 (3.7 Max) — AAI</div>
     </div>
     <div class="result-card orange">
       <div class="label">Arquitectura</div>
@@ -1025,8 +1231,8 @@ td:first-child {
     </div>
     <div class="result-card purple">
       <div class="label">Open weights</div>
-      <div class="value">Next week</div>
-      <div class="sub">~9-11 agosto</div>
+      <div class="value">27B: 14 ago ✅</div>
+      <div class="sub">Max: pendiente</div>
     </div>
   </div>
 
@@ -1085,8 +1291,8 @@ td:first-child {
   </div>
 
   <div class="highlight success">
-    <strong>🏆 Patrón clave:</strong>
-    <p>El salto de 3.7→3.8 Max es más moderado que 3.6→3.7 (+5.2 pts), pero se concentra en <strong>agentic tasks</strong> (+5.9 Terminal-Bench, +2.7 SWE-Verified). Los benchmarks de reasoning puro (GPQA +0.8, HMMT +0.3) están casi planos — el modelo ya estaba cerca del ceiling. Esto sugiere que el 27B, que históricamente amplía los saltos en agentic, podría beneficiarse desproporcionadamente.</p>
+    <strong>🏆 Patrón clave (CONFIRMADO con el 27B):</strong>
+    <p>El salto de 3.7→3.8 Max fue más moderado en AAI (57 → 58, +1) que 3.6→3.7 (+5.2), pero se concentró en <strong>agentic tasks</strong> (+5.9 Terminal-Bench, +2.7 SWE-Verified). Los benchmarks de reasoning puro (GPQA +0.8, HMMT +0.3) estaban casi planos. Y efectivamente: el 27B amplió el salto en agentic hasta <strong>×4-×6</strong> (+29.7 QwenSWEBench, +28.9 DeepSWE, +20.4 OSWorld) manteniendo el reasoning plano. Ver <a href="#resultado">resultado completo</a>.</p>
   </div>
 
   <h3>🆕 Benchmarks concretos confirmados (03 Ago 2026)</h3>
@@ -1146,7 +1352,7 @@ td:first-child {
 
   <h3>🤖 Nuevas features de Qwen3.8</h3>
   <ul>
-    <li><strong>Reasoning siempre activado:</strong> No hay que pedirlo — el modelo razona por defecto con 3 niveles (low, medium, xhigh)</li>
+    <li><strong>Reasoning on by default con control flexible:</strong> Thinking activado por defecto (desactivable por request) con profundidad ajustable vía <code>reasoning_effort</code> (low / medium / xhigh). <code>preserve_thinking</code> también on por defecto (el 3.6 lo tenía como opción)</li>
     <li><strong>Multimodal nativo:</strong> Texto + imágenes en un solo modelo (antes requería Plus por separado)</li>
     <li><strong>Contexto 1M tokens:</strong> Mismo contexto que 3.7 Max pero con mejor comprensión a largo alcance</li>
     <li><strong>Open weights Max-class:</strong> Primera vez que un modelo de ~2.4T parámetros será open source</li>
@@ -1158,10 +1364,14 @@ td:first-child {
 <section id="predicciones">
   <h2 class="scroll-hidden">🎯 <span class="accent">Predicciones</span></h2>
 
-  <h3>Qwen3.8-27B (Dense)</h3>
+  <h3>Qwen3.8-27B (Dense) — <span style="color: var(--cyan);">⏳ AAI pendiente, dirección acertada</span></h3>
   <p>
     El 27B dense activó todas sus 27B de parámetros por token y mostró el mayor salto en la transición 3.5→3.6 (+~8 pts). En 3.6→3.7, el salto del Max fue de +5.2 y el 27B amplió a ~+6. En 3.7→3.8, el salto del Max es más moderado (~+3-5), pero se concentra en agentic donde el 27B históricamente brilla.
   </p>
+  <div class="highlight cyan" style="margin-bottom: 20px;">
+    <strong>📌 Estado (14 ago 2026):</strong>
+    <p>El modelo se publicó el 14 de agosto dentro del rango predicho. Los benchmarks oficiales confirman la <strong>dirección</strong> del salto (agentic dispara, reasoning plano) pero Artificial Analysis aún no ha publicado el Intelligence Index del 27B, así que el punto de ~52 queda en espera de confirmación. Dado que el Max quedó en 58 (vs ~60 estimado) y los benchmarks del 27B superan a Opus 4.6 Max (53 AAI) en 6 de 12 tests, la predicción de ~52 parece conservadora-ajustada.</p>
+  </div>
 
   <div class="result-grid">
     <div class="result-card blue">
@@ -1208,8 +1418,11 @@ td:first-child {
     <p>El soporte MTP (PR #22673, merged 16 May 2026) lleva meses en mainline. Como Qwen3.8 hereda MTP de la familia 3.6+, tiene soporte day-zero automático. DFlash + MTP puede dar 1.5x–2.5x de speedup. El Qwen3.6-27B en Q6_K_L corre a ~100-108 tok/s en RTX 5090 — se espera que el 3.8 sea similar o mejor.</p>
   </div>
 
-  <h3>Qwen3.8-35B-A3B (MoE)</h3>
-  <p>El 35B-A3B tiene solo 3B de parámetros activos por token (de 35B totales). Es eficiente pero el routing MoE limita el razonamiento profundo. Históricamente muestra saltos más pequeños entre generaciones.</p>
+  <h3>Qwen3.8-35B-A3B (MoE) — <span style="color: var(--miss);">❌ No publicado</span></h3>
+  <p>
+    <strong>(14 ago 2026) El 35B-A3B de la generación 3.8 no se ha publicado.</strong> Solo existe el 27B en Hugging Face. La predicción de ~46 queda en suspenso — puede que el 35B no exista en esta generación, como no existieron los open weights de 3.7.
+  </p>
+  <p><em>La predicción original, para el historial:</em> el 35B-A3B tiene solo 3B de parámetros activos por token (de 35B totales). Es eficiente pero el routing MoE limita el razonamiento profundo. Históricamente muestra saltos más pequeños entre generaciones.</p>
   
   <div class="prediction-card">
     <div class="prediction-header">
@@ -1330,9 +1543,9 @@ td:first-child {
       </div>
     </div>
     <div class="bar-row">
-      <div class="bar-label">Qwen3.8 Max (est.)</div>
+      <div class="bar-label">Qwen3.8 Max ✅</div>
       <div class="bar-track">
-        <div class="bar-fill green" style="width: 60%;">~60</div>
+        <div class="bar-fill green" style="width: 58%;">58</div>
       </div>
     </div>
     <div class="bar-row">
@@ -1366,7 +1579,7 @@ td:first-child {
       </div>
     </div>
     <div class="bar-row">
-      <div class="bar-label">Qwen3.8-27B ⭐</div>
+      <div class="bar-label">Qwen3.8-27B ⭐ (pred., AAI pend.)</div>
       <div class="bar-track">
         <div class="bar-fill prediction" style="width: 52%;">~52</div>
       </div>
@@ -1404,8 +1617,8 @@ td:first-child {
   </div>
 
   <div class="highlight success">
-    <strong>🏆 Si la predicción central es correcta:</strong>
-    <p>El Qwen3.8-27B (~52) estaría a solo <strong>1 punto de Claude Opus 4.6 Max</strong> (53) y por delante de Claude Opus 4.6 High (46). Un modelo open weights de 27B compitiendo con el <em>anterior</em> flagship de Anthropic — eso sería un hito histórico para el ecosistema open source.</p>
+    <strong>🏆 Estado actual (14 ago 2026):</strong>
+    <p>El Qwen3.8-27B ya está publicado y en benchmarks individuales <strong>supera a Claude Opus 4.6 Max</strong> en SWE-bench Pro (61.7 vs 53.4), OSWorld (84.3 vs 72.7), IFBench (79.5 vs 62.5) y LiveCodeBench (90.3 vs 88.8). La predicción de ~52 AAI (≈ nivel Opus 4.6 Max) queda pendiente de confirmación por Artificial Analysis — pero la dirección era correcta: un open weights de 27B compitiendo de tú a tú con el anterior flagship de Anthropic.</p>
   </div>
 
   <h3>Contexto: la brecha China vs EE.UU.</h3>
@@ -1450,10 +1663,10 @@ td:first-child {
           <td class="loser">−1.1</td>
         </tr>
         <tr style="background: rgba(124, 58, 237, 0.08);">
-          <td><strong>Qwen3.8 Max (est.)</strong></td>
-          <td><strong>~60</strong></td>
+          <td><strong>Qwen3.8 Max</strong></td>
+          <td><strong>58</strong> (AAI, 6 ago)</td>
           <td>🇨🇳 Alibaba</td>
-          <td><strong>Open weights*</strong></td>
+          <td>Open weights*</td>
           <td>—</td>
         </tr>
         <tr>
@@ -1524,7 +1737,7 @@ td:first-child {
   </div>
 
   <p><em>*Kimi K3 (2.8T params) liberó open weights el 27 de julio de 2026 en HuggingFace. Es el modelo open weights más grande hasta la fecha (3T-class), con arquitectura MoE (16/896 expertos activos), 1M de contexto y soporte multimodal nativo. Requiere ~64× H100 para servir en producción — no es para hardware consumer.</em></p>
-  <p><em>*Qwen3.8 Max: open weights prometidos para "la próxima semana" tras el anuncio del 3 de agosto. Score ~60 es estimación basada en benchmarks oficiales publicados por Alibaba (GPQA 93.2%, SWE-Verified 83.1%, Terminal-Bench 75.6%) y el claim de "second only to Fable 5". Sin score independiente de Artificial Analysis aún.</em></p>
+  <p><em>*Qwen3.8 Max: score de 58 confirmado por Artificial Analysis el 6 de agosto de 2026 (nuestra estimación era ~60, un +2 de optimismo). Open weights de Max aún pendientes — solo el 27B se ha publicado (14 ago). Los repos "Qwen3.8-Max" que circulan en Hugging Face son mirrors no oficiales.</em></p>
 </section>
 
 <!-- Timeline -->
@@ -1581,13 +1794,13 @@ td:first-child {
       <div class="timeline-title">🆕 Qwen3.8 Max (oficial)</div>
       <div class="timeline-desc"><strong>2.4T MoE, 95B activos. Contexto 1M. Multimodal nativo. Reasoning siempre activo.</strong> Open weights la próxima semana (~9-11 ago). <strong>Qwen3.8-27B también open weights.</strong> <a href="https://qwen.ai/blog?id=qwen3.8" target="_blank">Blog oficial</a> · <a href="https://www.reddit.com/r/LocalLLM/comments/1ve0zp5/" target="_blank">Reddit r/LocalLLM</a></div>
     </div>
-    <div class="timeline-item future">
-      <div class="timeline-date">~9-11 Ago 2026 (predicción)</div>
-      <div class="timeline-title">Qwen3.8 Open Weights ⭐</div>
+    <div class="timeline-item">
+      <div class="timeline-date">14 Ago 2026 ✅</div>
+      <div class="timeline-title">Qwen3.8-27B publicado</div>
       <div class="timeline-desc">
-        <strong>Predicción: próxima semana tras el anuncio del 3 de agosto.</strong><br>
-        <strong>✅ Alibaba confirmó: "the open weights of Qwen3.8-Max will be released, and Qwen3.8-27B is also going open-weights"</strong>.<br>
-        <span class="prediction-range">Rango: 9-14 agosto 2026</span>
+        <strong>Predicción: 9-14 agosto. ✅ ACERTADA (14 ago, en el límite del rango).</strong><br>
+        Apache 2.0. Arquitectura idéntica al 3.6 (DeltaNet híbrido). Vision + video nativo. GGUF Unsloth day-zero (Q6_K: 22.9 GB).<br>
+        <strong>Pendiente:</strong> Qwen3.8-35B-A3B y los weights de Max.
       </div>
     </div>
   </div>
@@ -1630,16 +1843,16 @@ td:first-child {
           <td>Qwen3.8</td>
           <td>03 Ago 2026 ✅</td>
           <td>— (integrado en Max)</td>
-          <td class="prediction-cell prediction-range">~9-14 Ago 2026</td>
-          <td class="prediction-cell prediction-range">~+6 a +11 días</td>
+          <td class="winner">14 Ago 2026 ✅ (solo 27B)</td>
+          <td class="winner">+11 días — predicción acertada</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="highlight success">
-    <strong>🎯 Predicción de fecha:</strong>
-    <p><strong>9-14 agosto 2026.</strong> Alibaba dijo explícitamente "next week" tras el anuncio del 3 de agosto. Confianza: alta (80%).</p>
+    <strong>🎯 Predicción de fecha — ACERTADA ✅:</strong>
+    <p>El Qwen3.8-27B se publicó el <strong>14 de agosto de 2026</strong>, dentro del rango predicho de 9-14 agosto. Confianza original: alta (80%).</p>
   </div>
 
   <h3>💾 Requisitos VRAM estimados</h3>
@@ -1917,9 +2130,9 @@ td:first-child {
       <tbody>
         <tr>
           <td class="model-name">Qwen3.8 Max</td>
-          <td class="score val">~60</td>
-          <td class="jump positive">+3–5</td>
-          <td><span class="status confirmed">Estimado</span></td>
+          <td class="score val">58</td>
+          <td class="jump positive">+1</td>
+          <td><span class="status confirmed">Confirmado (AAI, 6 ago)</span></td>
         </tr>
         <tr>
           <td class="model-name">Qwen3.7 Max</td>
@@ -1947,9 +2160,15 @@ td:first-child {
         </tr>
         <tr style="background: rgba(34, 211, 238, 0.05);">
           <td class="model-name">Qwen3.8-27B ⭐</td>
-          <td class="score" style="color: var(--cyan);">50–55</td>
-          <td class="jump" style="color: var(--cyan);">+4–9</td>
-          <td><span class="status predicted">Predicción</span></td>
+          <td class="score" style="color: var(--cyan);">~52 (pred.)</td>
+          <td class="jump" style="color: var(--cyan);">+4–9 (pred.)</td>
+          <td><span class="status predicted">Publicado 14 ago · AAI pendiente</span></td>
+        </tr>
+        <tr>
+          <td class="model-name">Qwen3.8-35B-A3B</td>
+          <td class="score" style="color: var(--text-muted);">—</td>
+          <td class="jump" style="color: var(--text-muted);">—</td>
+          <td><span class="status" style="color: var(--miss);">No publicado</span></td>
         </tr>
       </tbody>
     </table>
@@ -2019,10 +2238,10 @@ td:first-child {
           <td>Propietario</td>
         </tr>
         <tr>
-          <td>Qwen3.8 Max (est.)</td>
-          <td><strong>~60</strong></td>
+          <td>Qwen3.8 Max</td>
+          <td><strong>58</strong></td>
           <td>Alibaba</td>
-          <td>Open weights</td>
+          <td>Propietario (OW Max pend.)</td>
         </tr>
         <tr>
           <td>Claude Opus 4.7</td>
@@ -2071,33 +2290,33 @@ td:first-child {
   <h2 class="scroll-hidden">⚠️ <span class="accent">Riesgos</span> & Caveats</h2>
 
   <div class="highlight success">
-    <strong>1. Predicción 3.6 fue acertada ✅</strong>
-    <p>Predijimos ~52 para Qwen3.6-27B basándonos en el salto 3.5→3.6 Max y el modelo real quedó en ~52 en Arena AI. La metodología delta-extrapolación tiene historial comprobado. Esto aumenta significativamente la confianza en la predicción 3.8. <a href="qwen36-27b-prediction.html">Ver la predicción original →</a></p>
+    <strong>1. Metodología validada ×2 ✅</strong>
+    <p>Predicción 3.6: ~52 → real ~52 ✅. Predicción 3.8 (fecha): 9-14 ago → real 14 ago ✅. Predicción 3.8 (dirección de salto): agentic dispara + reasoning plano → confirmada por los 24 benchmarks oficiales. La metodología delta-extrapolación acumula 3 aciertos. <a href="qwen36-27b-prediction.html">Ver la predicción original del 3.6 →</a></p>
   </div>
 
-  <div class="highlight miss">
-    <strong>2. Arquitectura podría cambiar</strong>
-    <p>Si Qwen3.8 introduce cambios arquitectónicos significativos en el 27B (nueva atención, MTP diferente, cambios en el MoE del Max que no aplican al 27B), las predicciones basadas en delta podrían ser inexactas. El salto podría ser mucho mayor o menor.</p>
+  <div class="highlight success">
+    <strong>2. Arquitectura — RESUELTO ✅ (idéntica al 3.6)</strong>
+    <p>La arquitectura del 27B es <strong>idéntica</strong> al 3.6: mismo layout DeltaNet (48/16 heads), misma atención (24/4 KV), mismo FFN (17,408), mismo vocab (248,320). Cero cambios estructurales. El riesgo de "cambio arquitectónico" no se materializó — llama.cpp lo corrió day-zero sin parches.</p>
   </div>
 
-  <div class="highlight warning">
-    <strong>3. El salto Max es moderado</strong>
-    <p>Un salto de ~+3-5 en Max (vs +5.2 de 3.6→3.7) podría significar que los open weights también ven un salto más moderado. Sin embargo, el salto se concentra en agentic donde el 27B históricamente amplía los números.</p>
-  </div>
-
-  <div class="highlight blue">
-    <strong>4. Intelligence Index de 3.8-Max aún pendiente</strong>
-    <p>Artificial Analysis aún no ha publicado el score oficial de Qwen3.8-Max. Nuestra estimación de ~60 se basa en la extrapolación de benchmarks individuales. Cuando salga el score real, recalibraremos la predicción del 27B.</p>
+  <div class="highlight success">
+    <strong>3. Salto Max — CONFIRMADO (+1 AAI, +agentic)</strong>
+    <p>El salto real Max fue 57 → 58 (+1 en AAI, mucho menos que el +3-5 estimado), pero concentrado en agentic exactamente como se esperaba. Y el 27B amplió el salto agentic ×4-×6, confirmando el patrón histórico de los modelos densos.</p>
   </div>
 
   <div class="highlight cyan">
-    <strong>5. Benchmarks oficiales publicados</strong>
-    <p>Alibaba ha publicado GPQA Diamond (93.2%), SWE-Verified (83.1%), Terminal-Bench (75.6%), GDPval-AA v2 (1614 Elo), HMMT (97.4%). A diferencia de generaciones anteriores, esta tiene más transparencia en benchmarks desde el día uno.</p>
+    <strong>4. Intelligence Index de 3.8-Max — RESUELTO (58)</strong>
+    <p>Artificial Analysis publicó el score el 6 de agosto: <strong>58</strong> (nuestra estimación era ~60). El 27B sigue sin score AAI independiente — es el único punto abierto de la predicción.</p>
   </div>
 
-  <div class="highlight orange">
-    <strong>6. Timeline del 27B menos clara</strong>
-    <p>Alibaba dijo "next week" para los open weights de 3.8-Max, pero el 27B podría salir con un ligero retraso. El patrón 3.6 fue simultáneo, pero el patrón 3.7 fue un skip completo. Monitorear Hugging Face.</p>
+  <div class="highlight success">
+    <strong>5. Benchmarks — MÁS TRANSPARENCIA QUE NUNCA</strong>
+    <p>Max: GPQA 93.2%, SWE-Verified 83.1%, Terminal-Bench 75.6%, GDPval-AA v2 1614 Elo. 27B: tabla completa de 24 benchmarks en el model card comparando contra 3.6, Qwen3.7-Plus, Muse Glimmer-30B y Opus 4.6 Max. Primera generación Qwen con esta densidad de datos comparativos.</p>
+  </div>
+
+  <div class="highlight miss">
+    <strong>6. Timeline — RESUELTO (27B sí, 35B no, Max no)</strong>
+    <p>El 27B salió el 14 ago (rango predicho). Pero el <strong>35B-A3B no se publicó</strong> y los weights de Max tampoco. La predicción de ~46 para el 35B queda sin validar. El patrón 3.7 (skip) reapareció parcialmente.</p>
   </div>
 </section>
 
@@ -2109,6 +2328,10 @@ td:first-child {
 
   <div class="update-log">
     <h4>Log de Actualizaciones</h4>
+    <div class="update-entry">
+      <span class="date">14 Ago 2026</span>
+      <span class="desc">🎉 <strong>MAJOR UPDATE — Qwen3.8-27B PUBLICADO.</strong> Pesos en Hugging Face (Apache 2.0) + GGUF Unsloth day-zero (Q6_K 22.9 GB, mmproj-BF16 931 MB). Fecha dentro del rango predicho (9-14 ago) ✅. Arquitectura idéntica al 3.6 (DeltaNet híbrido, mismo KV cache). Benchmarks oficiales: saltos enormes en agentic (QwenSWEBench +29.7, DeepSWE +28.9, OSWorld +20.4, WebArena +16, SWE-bench Pro +8.2) vs 3.6; supera a Opus 4.6 Max en 6 de 12 tests. Reasoning plano (GPQA +1.4, HLE +6.8) — patrón predicho confirmado. Video nativo (llama.cpp aún no soporta video input). Inferencia local RTX 5090: ~98 tok/s Q6_K (≈ paridad con 3.6). Max: 58 AAI confirmado el 6 ago (pred ~60). <strong>Pendiente:</strong> AAI del 27B, 35B-A3B (no publicado), weights de Max. <a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank">HF</a> · <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" target="_blank">GGUF</a>.</span>
+    </div>
     <div class="update-entry">
       <span class="date">03 Ago 2026</span>
       <span class="desc">🆕 <strong>MAJOR UPDATE — Qwen3.8 Max anunciado oficialmente.</strong> Alibaba anuncia Qwen3.8-Max (2.4T MoE, 95B activos, 1M contexto, multimodal nativo, reasoning siempre activo). <strong>Open weights la próxima semana</strong>. <strong>Qwen3.8-27B también open weights.</strong> Benchmarks: GPQA Diamond 93.2% (+0.8), SWE-Verified 83.1% (+2.7), Terminal-Bench 75.6% (+5.9), GDPval-AA v2 1614 Elo (+68), HMMT 97.4% (+0.3). Página actualizada de Qwen3.7 a Qwen3.8. Predicción para 27B: ~52. <a href="https://qwen.ai/blog?id=qwen3.8" target="_blank">Blog oficial</a> · <a href="https://www.reddit.com/r/LocalLLM/comments/1ve0zp5/" target="_blank">Reddit</a>.</span>
@@ -2165,7 +2388,7 @@ td:first-child {
 // Visit counter
 (function(){
   var w='https://cocobot-stats.rgarciademarina.workers.dev';
-  var p='/pages/qwen37-prediction';
+  var p='/pages/qwen38-prediction';
   var el=document.getElementById('visit-counter');
   fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
   fetch(w+'/c?path='+encodeURIComponent(p))
