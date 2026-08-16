@@ -5,6 +5,52 @@
   },
   "days": [
     {
+      "date": "2026-08-16",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Z.ai lanza GLM-5.3: salto cyber emergente y pesos abiertos retrasados 2 semanas",
+          "summary": "El nuevo modelo de Z.ai mejora el coding (Terminal-Bench 3.0: 4.6→28.3, DeepSWE: 46.2→66.9) y llega a 84.5% en CyberGym, superando a Fable 5 y GPT-5.6 Sol. Durante una tarea de ingeniería inversa encontró una vulnerabilidad seria en Cursor (disclosure privado). La empresa retrasa ~2 semanas la liberación de los pesos abiertos por seguridad: la primera vez que un lab chino cita una capacidad emergente como motivo del retraso. Disponible ya por API.",
+          "source": "https://www.axios.com/2026/08/14/china-open-source-ai-glm-53",
+          "source_name": "Axios",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "SpaceX cierra oficialmente la adquisición de Cursor por $60.000 millones",
+          "summary": "La operación all-stock (dilución del 3,4% sobre la valoración post-IPO) se hizo efectiva el 14 de agosto según el filing regulatorio. xAI, absorbida por SpaceX en febrero, gana músculo en AI coding: Cursor suma ~$4.000M de ingresos anualizados y era una de las piezas clave de Musk para competir con OpenAI y Anthropic en enterprise.",
+          "source": "https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-60-billion-cursor-acquisition",
+          "source_name": "Bloomberg",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Nvidia negocia invertir hasta $3.000M en SB Energy (SoftBank) para el data center de OpenAI en Ohio",
+          "summary": "La inversión se enmarca en negociaciones de Nvidia para ofrecer ~$100B en soporte crediticio al campus de Ohio: la mitad de los $3.000M al firmarse el proyecto y la otra mitad en la IPO de SB Energy (podría recaudar $5B+ ya el mes que viene). WSJ añade que la garantía inicial de Nvidia bajó de $250B a menos de $120B.",
+          "source": "https://www.cnbc.com/2026/08/15/nvidia-mulls-3b-investment-in-sb-energy-in-openai-data-center-deal-report.html",
+          "source_name": "CNBC",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10437 → b10451 disponible (5 builds nuevos, soporte Kimi-K3, redesign yield_to_queue)",
+          "summary": "novedades destacadas: b10448 añade el modelo de texto Kimi-K3; b10447 rediseña el modelo de hilos yield_to_queue del server; b10451 valida que los tensores LoRA estén dentro de los límites del archivo (mitigación de seguridad); b10444 permite cargar modelos MTP assistant vía --models-dir; b10446 actualiza BoringSSL. Tu build local (BeeLlama, build 1) queda muy por detrás: conviene actualizar, sobre todo si usas llama-server/RPC, dado los advisories recientes [CRITICAL] RCE no autenticado en el backend RPC y [HIGH] overflows en el parser GGUF.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Kog presenta su motor de inferencia KIE: 3.000 tok/s por request en 8x AMD MI300X",
+          "summary": "La startup francesa lanza una tech preview del Kog Inference Engine basado en Delayed Tensor Parallelism: 3.000 tokens/s por request (FP16, batch 1) en nodo 8x MI300X y 2.100 en 8x H200 con un modelo de 2B, batiendo implementaciones GPU existentes hasta 3,5x. Argumenta que los GPUs sí son aptos para workflows agenticos si se optimiza a nivel de kernel.",
+          "source": "https://techcrunch.com/2026/08/14/kog-is-going-deeper-to-squeeze-more-inference-out-of-gpus",
+          "source_name": "TechCrunch",
+          "star": false
+        }
+      ],
+      "summary": "Día movido en infraestructura y open-source: Z.ai lanza GLM-5.3 con capacidades cibernéticas emergentes que le hacen retrasar los pesos abiertos, SpaceX cierra oficialmente la compra de Cursor por $60B y llama.cpp publica 5 builds nuevos con soporte para Kimi-K3."
+    },
+    {
       "date": "2026-08-15",
       "news": [
         {
@@ -4686,52 +4732,6 @@
         }
       ],
       "summary": "Día moderado: xAI lanza Grok Build, su primer agente de programación CLI en beta cerrada, mientras llama.cpp mantiene un ritmo frenético con 5 releases en 48 horas incluyendo soporte SSM-conv y mejoras de rendimiento MTP."
-    },
-    {
-      "date": "2026-05-17",
-      "news": [
-        {
-          "category": "agent",
-          "title": "Nectar Social cierra $30M en Serie A para su OS de marketing con agentes IA",
-          "summary": "Nectar Social, plataforma de marketing impulsada por agentes autónomos, ha cerrado una ronda Serie A de $30M liderada por Menlo Ventures y su Anthology Fund (creado junto a Anthropic), con participación de GV, True Ventures y Kinship Ventures de Gwyneth Paltrow. Fundada por las hermanas Misbah y Farah Uraizee (ex-Meta), la empresa automatiza operaciones de marca en redes sociales: moderación, gestión de creadores, inteligencia competitiva y conversaciones de comercio. Ya cuenta con clientes como Liquid Death, Figma y e.l.f Beauty. El capital se destinará a contratación en IA aplicada, ingeniería y go-to-market.",
-          "source": "https://techcrunch.com/2026/05/16/marketing-operating-system-nectar-social-raises-30m-series-a-in-round-led-by-menlo/",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "arXiv baneará a los autores durante un año si publican papeles generados por IA sin revisar",
-          "summary": "arXiv ha implementado una nueva política de cumplimiento contra el uso descuidado de LLMs en preprints científicos. Los autores cuyas publicaciones contengan 'evidencia incontrovertible' de contenido generado por IA sin verificar (referencias alucinadas, prompts visibles, comentarios del chatbot) recibirán un ban de un año. Tras el periodo de suspensión, deberán someter futuros trabajos a revisión por pares en una revista reconocida antes de poder publicar en arXiv. La medida, anunciada por Thomas Dietterich (presidente de la sección de CS), no prohíbe el uso de IA como asistencia, pero exige responsabilidad total del autor. arXiv también está en transición de ser hospedado por Cornell a convertirse en una organización sin ánimo de lucro independiente.",
-          "source": "https://techcrunch.com/2026/05/16/research-repository-arxiv-will-ban-authors-for-a-year-if-they-let-ai-do-all-the-work/",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Hill County (Texas) aprueba moratoria de un año sobre construcción de data centers",
-          "summary": "Hill County, un condado rural fuera de Dallas que enfrentaba ocho proyectos potenciales de data centers, ha aprobado por votación dividida una moratoria de un año sobre nuevas construcciones de data centers y almacenamiento energético en zonas no incorporadas. Es la primera jurisdicción de Texas en imponer este tipo de restricción, reflejando el creciente rechazo local a la expansión masiva de infraestructura para IA. Un senador estatal ha indicado que los condados podrían no tener autoridad legal para imponer estas prohibiciones, lo que abre un posible conflicto jurídico.",
-          "source": "https://www.politico.com/news/2026/05/16/texas-county-data-center-construction-ban-00922493",
-          "source_name": "POLITICO",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "NASA desarrolla chip IA endurecido contra radiación para naves espaciales autónomas",
-          "summary": "El Jet Propulsion Laboratory (JPL) de NASA ha iniciado pruebas de un nuevo procesador System-on-a-Chip (SoC) endurecido contra radiación, desarrollado en colaboración con Microchip Technology. El chip integra CPUs, aceleradores de cómputo, redes avanzadas, memoria e interfaces I/O en un paquete del tamaño de la palma de la mano. En pruebas tempranas ha demostrado rendimiento ~500x superior a los chips endurecidos actuales, con un objetivo de 100x para producción. Está diseñado para operar durante años en el espacio profundo sin mantenimiento, permitiendo toma de decisiones autónoma en tiempo real cuando los retrasos de comunicación con la Tierra hacen impracticable el control humano. Las pruebas comenzaron en febrero de 2026 e incluyen exposición a radiación, ciclos térmicos y resistencia a impactos.",
-          "source": "https://www.sciencedaily.com/releases/2026/05/260515002134.htm",
-          "source_name": "ScienceDaily / NASA JPL",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp b9190: mejoras en el servidor router y soporte MTP",
-          "summary": "La última versión de llama.cpp (b9190, 16 de mayo de 2026) incluye: asignación de búfer temporal en heap para el modo router del servidor (#23159), salto de enumeración de dispositivos en modo router para evitar crear contexto primario CUDA (#23137), sincronización con ggml, y actualización de cpp-httplib a 0.45.0. El release anterior (b9180) añadió soporte MTP (Multi-Token Prediction) para inferencia especulativa. El usuario no tiene llama.cpp instalado localmente. Hay 5 CVEs conocidos (2 CRITICAL/HIGH de marzo 2026 incluyendo RCE no autenticada vía RPC), por lo que se recomienda encarecidamente actualizar si se usa en entornos expuestos a red.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Día activo con anuncios de financiación, políticas académicas y avances en hardware espacial. Nectar Social cierra $30M Series A, arXiv endurece su política contra papeles generados por IA sin revisión, y Texas frena la expansión de data centers por primera vez."
     }
   ]
 }
