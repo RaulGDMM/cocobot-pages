@@ -5,6 +5,60 @@
   },
   "days": [
     {
+      "date": "2026-08-20",
+      "news": [
+        {
+          "category": "general",
+          "title": "Unitree (los robots que hacen somersaults) debutan en Shanghái: +542% y ~$66.000M de capitalización",
+          "summary": "El fabricante chino de humanoides Unitree Robotics estrenó cotización en el STAR Market de Shanghái con una subida de 542-629% sobre el precio de salida, valorando la compañía en ~$66.000M y recaudando ~$905M. El debut coincide con la World Robot Conference de Pekín y se lee como el termómetro del apetito inversor por la robótica humana, en plena guerra tecnológica EE.UU.-China. DeepSeek figura entre los inversores estratégicos del IPO.",
+          "source": "https://www.cnbc.com/2026/08/19/china-backflipping-robot-maker-unitree-jumps-shanghai-ipo.html",
+          "source_name": "CNBC / SCMP",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Cursor lanza 'Origin': su propio hosting de código, rival directo de GitHub",
+          "summary": "Cursor ha empezado a desplegar Origin, una plataforma de hosting de repositorios con pull requests, browsing de código y sync bidireccional con GitHub, integrada de forma nativa en su editor y pensada a escala de agentes. Arranca en early beta para planes de pago manteniendo GitHub como 'fuente de verdad', y el timing (justo durante un outage de GitHub) ha centrado el debate sobre si las infraestructuras de desarrollo van a ser reconstruidas alrededor de la IA.",
+          "source": "https://cursor.com/changelog/origin-code-hosting",
+          "source_name": "Cursor / VentureBeat",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Google abre Gemini in Chrome a todos los usuarios Android de EE.UU. y lleva Auto Browse a móvil",
+          "summary": "Tras un rollout escalonado desde mayo, Google ha completado la disponibilidad de Gemini in Chrome para toda la base Android de EE.UU. (Android 12+, 4GB RAM), con resúmenes de páginas, preguntas con contexto y edición de imágenes vía Nano Banana. Para suscriptores de Google AI Pro y Ultra llega también 'auto browse', el modo agéntico que navega y completa tareas multi-paso en el navegador.",
+          "source": "https://www.neowin.net/news/gemini-is-now-available-in-chrome-with-agentic-auto-browse-for-all-android-users-in-the-us",
+          "source_name": "Neowin / 9to5Google",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "Cartesia estrena Sonic-3.6: #1 en los dos rankings de voz de Artificial Analysis",
+          "summary": "Tres meses tras Sonic-3.5, Cartesia publica su nuevo modelo de TTS en streaming basado en state-space models: 44 idiomas, latencia TTFA declarada inferior a 90ms y control fino de emoción. Ocupa el #1 tanto en el ranking Provider Voice (1283 Elo) como en el Controlled Voice, donde al clonar a todos los modelos en las mismas 8 voces se aísla la mejora del motor de síntesis, no solo del catálogo. Disponible en beta en su API.",
+          "source": "https://www.marktechpost.com/2026/08/18/cartesia-ships-sonic-3-6-a-streaming-tts-model-that-now-leads-both-artificial-analysis-speech-arenas",
+          "source_name": "MarkTechPost / Cartesia",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "La FDA abre consulta pública sobre cómo regular los dispositivos médicos con IA generativa",
+          "summary": "La agencia estadounidense de alimentos y medicamentos ha pedido opinión pública sobre el enfoque regulatorio para dispositivos médicos habilitados con IA generativa. Es una señal temprana de cómo el marco de aprobación se adaptará a modelos que generan contenido clínico en tiempo real, un punto que llevaba tiempo sin definirse.",
+          "source": "https://www.fda.gov/news-events/press-announcements/fda-seeks-public-feedback-inform-regulatory-approach-generative-ai-enabled-medical-devices",
+          "source_name": "FDA (prensa oficial)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10488 → b10509 disponible (rope_set_offset multi-backend, dequant q8_0 en Metal, dedup-cache-models)",
+          "summary": "Hoy se ha publicado b10509, con 5 releases intermedios (b10502, b10505, b10506, b10507, b10509). Lo más relevante: ggml_rope_set_offset con soporte para Metal, CUDA y Vulkan; dequantización q8_0 con tipos empaquetados en Metal (mejora de rendimiento Apple Silicon); y en el server, la opción preset 'dedup-cache-models'. El usuario va en b10479: conviene actualizar (15 builds atrás), sobre todo para usuarios del server; sin nuevos advisories de seguridad en este rango (los vigentes son de marzo 2026 y ya estaban parcheados).",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/b10509",
+          "source_name": "GitHub ggml-org/llama.cpp",
+          "star": true
+        }
+      ],
+      "summary": "Día movido en el frente de agentes y herramientas: el IPO de Unitree disparó la fiebre de la robótica en China (+629% el primer día), mientras Cursor y Google empujan el software agéntico hacia el código y el navegador. En voz, Cartesia reescribe el SOTA del TTS."
+    },
+    {
       "date": "2026-08-19",
       "news": [
         {
@@ -4830,92 +4884,6 @@
         }
       ],
       "summary": "Día explosivo en IA: OpenAI prepara su IPO confidencial, Anthropic proyecta su primer trimestre rentable con $10.9B en ingresos, y el prospecto de SpaceX revela un contrato de cómputo de $1.25B/mes con Anthropic. Además, la Casa Blanca pospone la orden ejecutiva de IA y Zoom reporta un crecimiento del 184% en usuarios pagados de AI Companion."
-    },
-    {
-      "date": "2026-05-21",
-      "news": [
-        {
-          "category": "general",
-          "title": "Google reduce el precio de AI Ultra de $250 a $100/mes en I/O 2026",
-          "summary": "Google anunció un nuevo plan AI Ultra a $100/mes (antes $250) con 5x el límite de uso vs el plan Pro de $20, 20TB de almacenamiento, YouTube Premium y acceso beta a Gemini Spark. El antiguo plan top bajó de $250 a $200/mes. Se eliminaron los límites diarios de prompts y se reemplazaron por un modelo basado en cómputo que se renueva cada 5 horas. El movimiento presiona directamente a ChatGPT Pro ($200) y Claude Max.",
-          "source": "https://dataconomy.com/2026/05/20/google-ai-ultra-plan-price-cut-100-usd-subscription-revamp/",
-          "source_name": "Dataconomy",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Universal Cart: carrito de compras IA multiplataforma de Google",
-          "summary": "Google presentó Universal Cart, un carrito de compras unificado que funciona a través de Search, Gemini, YouTube y Gmail. Permite checkout único en múltiples merchants (Amazon, Shopify, Walmart, Nike, Target, etc.) mediante el Universal Commerce Protocol. Incluye seguimiento de historial de precios, alertas de stock, verificaciones de compatibilidad y aplicación automática de beneficios. Lanzamiento en verano 2026 en EE.UU. Futuro: Agents Payment Protocol para compras autónomas vía Gemini Spark.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-20-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Gmail Live y Docs Live: búsqueda por voz IA en Workspace",
-          "summary": "Google lanzó Gmail Live, una función de búsqueda por voz impulsada por IA en la barra de búsqueda de Gmail. En lugar de listar cadenas de correos, el IA extrae y entrega información específica (códigos de confirmación, fechas, etc.). Funciones similares de voz-IA llegarán a Google Docs y Keep, extrayendo datos de Drive y Gmail.",
-          "source": "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
-          "source_name": "The Verge",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Google AI Studio: desarrollo de apps Android nativas por IA",
-          "summary": "Google AI Studio ahora permite 'vibe-coding' de apps Android nativas completas mediante prompts en lenguaje natural. Incluye emulador Android embebido para previsualización y edición, instalación directa en el teléfono para testing, y exportación a Android Studio/GitHub o ZIP. Próximamente: publicación privada para amigos/familia y integraciones con Firebase. Soporte Kotlin nativo integrado.",
-          "source": "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
-          "source_name": "The Verge",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Chrome DevTools for Agents: debugging autónomo para agentes IA",
-          "summary": "Google lanzó Chrome DevTools for Agents, disponible hoy para Antigravity y más de 20 agentes de coding (Gemini CLI, Cursor, etc.). Permite a los agentes IA acceder directamente al runtime de apps web: logs de consola, tráfico de red, auditorías de calidad automatizadas, emulación de usuarios reales y handovers de sesión. Diseñado para verificar, depurar y optimizar código en tiempo real de forma autónoma.",
-          "source": "https://developer.chrome.com/blog/chrome-at-io26",
-          "source_name": "Chrome for Developers",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "WebMCP: estándar web abierto para herramientas de agentes IA en Chrome 149",
-          "summary": "Google anunció WebMCP, un estándar web abierto propuesto que permite exponer herramientas estructuradas (funciones JS, formularios HTML) a agentes IA en el navegador. El origin trial comienza en Chrome 149. WebMCP permite a los desarrolladores instruir a los agentes exactamente cómo y dónde interactuar con sus sitios, aumentando velocidad, fiabilidad y precisión. Soporte Gemini en Chrome próximamente.",
-          "source": "https://developer.chrome.com/blog/chrome-at-io26",
-          "source_name": "Chrome for Developers",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Veredicto en Musk vs. OpenAI: jurado rechaza todos los cargos contra OpenAI",
-          "summary": "El 19 de mayo de 2026, un jurado emitió un veredicto unánime en menos de 2 horas rechazando todos los cargos de Elon Musk contra OpenAI. La razón: prescripción de la acción (Musk tardó demasiado en demandar). Musk dejó el consejo en 2018 y demandó por la conversión a beneficio. xAI se disolvió formalmente en SpaceX como SpaceXAI. Musk planea apelar ante el Noveno Circuito.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-20-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Google Beam: agentes IA con apariencia humana para videollamadas",
-          "summary": "Google experimenta con agentes IA realistas para videollamadas mediante 'Google Beam'. En la demo ('Sophie'), el agente responde preguntas, lee documentos mostrados a la cámara y proporciona recomendaciones en tiempo real. Para llamadas grupales, se integrará con Google Meet y Zoom. Aún en fase experimental.",
-          "source": "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
-          "source_name": "The Verge",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Google open-sourcea Android CLI y Skills para agentes IA",
-          "summary": "Google lanzó una CLI estable de Android que permite a agentes IA acceder directamente a las capacidades de Android Studio (gestión de SDKs, ejecución en dispositivos, etc.). También open-sourcea 'Android Skills' que guían a LLMs en workflows complejos como migraciones a Jetpack Compose y Jetpack Navigation 3. Incluye un 'Migration Agent' nuevo en Android Studio que convierte código React Native, web o iOS a Kotlin nativo, reduciendo tiempos de migración de semanas a horas.",
-          "source": "https://developers.googleblog.com/all-the-news-from-the-google-io-2026-developer-keynote/",
-          "source_name": "Google Developers Blog",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: merges de HunyuanOCR, refactor OpenCL y fix de crash nullptr (b9258-b9264)",
-          "summary": "Últimos commits de llama.cpp (21 mayo): b9264 muestra versión en app; b9263 mergea HunyuanOCR en HunyuanVL y fija precisión OCR vision; b9260 refactoriza inicialización backend OpenCL; b9259 fija crash nullptr en get_devices_str para speculative decoding; b9258 fija procesamiento de imágenes DeepSeek-OCR y refactoriza padding img_tool::resize. CVE CRÍTICO pendiente: GHSA-j8rj-fmpv-wcxw (RCE no autenticado vía GRAPH_COMPUTE buffer=0 en RPC backend, marzo 2026).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Google I/O 2026 sigue generando noticias: Universal Cart, recorte de precio AI Ultra a $100, Chrome DevTools for Agents y WebMCP. Veredicto en Musk vs. OpenAI. Actualizaciones en llama.cpp con merges de HunyuanOCR y fixes."
     }
   ]
 }
