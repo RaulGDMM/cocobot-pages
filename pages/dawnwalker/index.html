@@ -285,6 +285,8 @@ section p strong{color:var(--txt)}
   border-radius:var(--radius);padding:1.3rem 1.5rem;transition:all .3s;
 }
 .news-item:hover{border-left-color:var(--red-bright);background:var(--bg-card-hover);transform:translateX(4px)}
+.news-body h3 a:hover{color:var(--gold-soft)}
+#trailer-4k,#trailer-bruja{scroll-margin-top:80px}
 .news-item.hot{border-left-color:var(--gold);background:linear-gradient(135deg, rgba(212,168,67,.05), var(--bg-card) 40%)}
 .news-date{
   font-family:'Cinzel',serif;font-weight:700;font-size:1rem;color:var(--gold);line-height:1.3;
@@ -648,9 +650,9 @@ footer a:hover{text-decoration:underline}
     <div class="news-item hot fade-in fade-in-delay-1">
       <div class="news-date">13 Aug <small>2026</small></div>
       <div class="news-body">
-        <h3>"Everything You Need to Know" trailer [4K]</h3>
+        <h3><a href="#trailer-4k" style="color:inherit;text-decoration:none">"Everything You Need to Know" trailer [4K] <span style="color:var(--gold);font-size:.8em">↗</span></a></h3>
         <p>The definitive features trailer: the Vrakhiri, Coen's duality, time as a resource, and combat in detail. For the first time it shows the <strong>omniattack and omniblock</strong> systems — adaptive dodges and blocks with a single button, or a directional tactical mode with parries and ripostes.</p>
-        <div class="news-tags"><span class="news-tag video">Video</span><span class="news-tag">Official</span></div>
+        <div class="news-tags"><span class="news-tag video">Video</span><span class="news-tag">Official</span><a href="#trailer-4k" class="news-tag" style="text-decoration:none;cursor:pointer;border-color:var(--gold-dim);color:var(--gold);transition:all .2s" onmouseover="this.style.background='rgba(212,168,67,.12)'" onmouseout="this.style.background=''">▶ Watch the trailer</a></div>
       </div>
     </div>
 
@@ -675,9 +677,9 @@ footer a:hover{text-decoration:underline}
     <div class="news-item fade-in fade-in-delay-2">
       <div class="news-date">21 Jul <small>2026</small></div>
       <div class="news-body">
-        <h3>Exclusive gameplay: The Witch's Adventure (IGN First)</h3>
+        <h3><a href="#trailer-bruja" style="color:inherit;text-decoration:none">Exclusive gameplay: The Witch's Adventure (IGN First) <span style="color:var(--gold);font-size:.8em">↗</span></a></h3>
         <p>IGN debuts 8 minutes of gameplay from an exclusive quest, recorded on the latest build, as Coen chases a witch through the swamps of Vale Sangora. The video showcases the notoriety system and NPCs' dynamic reactions.</p>
-        <div class="news-tags"><span class="news-tag video">Video</span><span class="news-tag">IGN</span></div>
+        <div class="news-tags"><span class="news-tag video">Video</span><span class="news-tag">IGN</span><a href="#trailer-bruja" class="news-tag" style="text-decoration:none;cursor:pointer;border-color:var(--gold-dim);color:var(--gold);transition:all .2s" onmouseover="this.style.background='rgba(212,168,67,.12)'" onmouseout="this.style.background=''">▶ Watch the gameplay</a></div>
       </div>
     </div>
   </div>
@@ -1155,7 +1157,7 @@ footer a:hover{text-decoration:underline}
     <h3 class="video-group-title">🎬 Official Trailers</h3>
 
     <!-- NEW: Everything You Need to Know 4K -->
-    <div class="video-card featured fade-in">
+    <div class="video-card featured fade-in" id="trailer-4k">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/Lyqm6Y5pBms" title="Everything You Need to Know [4K]" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -1183,7 +1185,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- NEW: IGN First exclusive quest -->
-    <div class="video-card fade-in fade-in-delay-2">
+    <div class="video-card fade-in fade-in-delay-2" id="trailer-bruja">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/UaERmm1DQpM" title="IGN First — Exclusive Quest Gameplay" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>

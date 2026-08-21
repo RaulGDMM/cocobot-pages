@@ -285,6 +285,8 @@ section p strong{color:var(--txt)}
   border-radius:var(--radius);padding:1.3rem 1.5rem;transition:all .3s;
 }
 .news-item:hover{border-left-color:var(--red-bright);background:var(--bg-card-hover);transform:translateX(4px)}
+.news-body h3 a:hover{color:var(--gold-soft)}
+#trailer-4k,#trailer-bruja{scroll-margin-top:80px}
 .news-item.hot{border-left-color:var(--gold);background:linear-gradient(135deg, rgba(212,168,67,.05), var(--bg-card) 40%)}
 .news-date{
   font-family:'Cinzel',serif;font-weight:700;font-size:1rem;color:var(--gold);line-height:1.3;
@@ -648,9 +650,9 @@ footer a:hover{text-decoration:underline}
     <div class="news-item hot fade-in fade-in-delay-1">
       <div class="news-date">13 ago <small>2026</small></div>
       <div class="news-body">
-        <h3>Tráiler "Everything You Need to Know" [4K]</h3>
+        <h3><a href="#trailer-4k" style="color:inherit;text-decoration:none">Tráiler "Everything You Need to Know" [4K] <span style="color:var(--gold);font-size:.8em">↗</span></a></h3>
         <p>El tráiler definitivo de características: los Vrakhiri, la dualidad de Coen, el tiempo como recurso, y el combate en detalle. Por primera vez se muestran los sistemas <strong>omniattack y omniblock</strong> — esquivas y bloqueos adaptativos con un solo botón, o el modo táctical direccional con parries y ripostes.</p>
-        <div class="news-tags"><span class="news-tag video">Vídeo</span><span class="news-tag">Oficial</span></div>
+        <div class="news-tags"><span class="news-tag video">Vídeo</span><span class="news-tag">Oficial</span><a href="#trailer-4k" class="news-tag" style="text-decoration:none;cursor:pointer;border-color:var(--gold-dim);color:var(--gold);transition:all .2s" onmouseover="this.style.background='rgba(212,168,67,.12)'" onmouseout="this.style.background=''">▶ Ver el tráiler</a></div>
       </div>
     </div>
 
@@ -675,9 +677,9 @@ footer a:hover{text-decoration:underline}
     <div class="news-item fade-in fade-in-delay-2">
       <div class="news-date">21 jul <small>2026</small></div>
       <div class="news-body">
-        <h3>Gameplay exclusivo: la aventura de la bruja (IGN First)</h3>
+        <h3><a href="#trailer-bruja" style="color:inherit;text-decoration:none">Gameplay exclusivo: la aventura de la bruja (IGN First) <span style="color:var(--gold);font-size:.8em">↗</span></a></h3>
         <p>IGN estrena 8 minutos de gameplay de una misión exclusiva, grabada en el último build, donde Coen persigue a una bruja por los pantanos de Vale Sangora. El vídeo muestra el sistema de infamia y las reacciones dinámicas de los PNJ.</p>
-        <div class="news-tags"><span class="news-tag video">Vídeo</span><span class="news-tag">IGN</span></div>
+        <div class="news-tags"><span class="news-tag video">Vídeo</span><span class="news-tag">IGN</span><a href="#trailer-bruja" class="news-tag" style="text-decoration:none;cursor:pointer;border-color:var(--gold-dim);color:var(--gold);transition:all .2s" onmouseover="this.style.background='rgba(212,168,67,.12)'" onmouseout="this.style.background=''">▶ Ver el gameplay</a></div>
       </div>
     </div>
   </div>
@@ -1155,7 +1157,7 @@ footer a:hover{text-decoration:underline}
     <h3 class="video-group-title">🎬 Tráilers Oficiales</h3>
 
     <!-- NEW: Everything You Need to Know 4K -->
-    <div class="video-card featured fade-in">
+    <div class="video-card featured fade-in" id="trailer-4k">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/Lyqm6Y5pBms" title="Everything You Need to Know [4K]" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
@@ -1183,7 +1185,7 @@ footer a:hover{text-decoration:underline}
     </div>
 
     <!-- NEW: IGN First exclusive quest -->
-    <div class="video-card fade-in fade-in-delay-2">
+    <div class="video-card fade-in fade-in-delay-2" id="trailer-bruja">
       <div class="video-wrap">
         <iframe src="https://www.youtube.com/embed/UaERmm1DQpM" title="IGN First — Exclusive Quest Gameplay" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
