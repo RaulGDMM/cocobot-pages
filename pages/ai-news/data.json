@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-08-21",
+      "news": [
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10538 → b10545 disponible (7 releases nuevos: crossover CUDA mvq→MMQ +23-41%, --mmproj-device, fixes Metal/Vulkan)",
+          "summary": "Siete releases desde tu versión actual (b10538). Lo importante: b10534 añade GGML_CUDA_MMVQ_MAX para sintonizar el crossover de decode mvq→MMQ (hasta +23-41% en Q4_K a B=8 en RTX 5090, con puntos de corte por HW: Blackwell, Ada, DGX Spark); b10541 añade --mmproj-device (-mmdev) para elegir el backend del projection de multimodal en mtmd; b10539 corrige overflow en la cuantización Q del FA MMQ de Vulkan (fp32); b10545 arregla una lectura out-of-bounds en el kernel mat-mat de Metal cuando K no es múltiplo de 32 (podía dar NaN/corrupt). Recomendado actualizar desde b10538.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b10545",
+          "source_name": "GitHub llama.cpp",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Google y Marvell: pacto de silicio personalizado con warrant para comprar hasta $12.200M en acciones, todo anclado al ecosistema TPU",
+          "summary": "Marvell emitió a Google un warrant (18 de agosto) para hasta 58,97M de acciones a $206,58, que vence en tranches ligadas a cada $500M de compras de chips hasta 2033. El acuerdo cubre aceleradores de inferencia de IA, controladores de almacenamiento y de red, y cómputo near-memory del ecosistema TPU — Marvell se posiciona como contrapeso a Broadcom, partner histórico de Google en chips custom. Las acciones de Marvell subieron ~8-10%.",
+          "source": "https://www.cnbc.com/2026/08/19/marvell-google-ai-chips.html",
+          "source_name": "CNBC",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI despliega Computer Use más allá del código: ChatGPT toma el navegador y otras apps",
+          "summary": "Business Insider (20 de agosto) detalla el plan de OpenAI para que sus agentes usen el ordenador con la destreza de un humano: extensión de Chrome que deja a ChatGPT tomar el control, navegadores cloud e in-app para interactuar con la web pública, y Computer Use ya en Codex. Greg Brockman: tras la actualización de abril, la tecnología es 'ya no solo para programadores' y los usuarios pueden encargar tareas a ChatGPT en otras aplicaciones.",
+          "source": "https://www.businessinsider.com/openai-chatgpt-automates-tasks-computer-use-data-2026-8",
+          "source_name": "Business Insider",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI vende Codex como infraestructura de agentes verticales tras un piloto de 7.000 declaraciones de impuestos",
+          "summary": "Brockman (20 de agosto) resucita el piloto con Thrive/Current: 7.000 declaraciones (1040 y 1041) con ~31% menos tiempo de preparación y hasta 97-98% de precisión en borradores, con un loop de feedback donde las correcciones de los contables se convertían en evaluaciones y tareas acotadas para Codex. El pitch: el harness open-source (Apache 2.0) de Codex como capa operativa para agentes de dominio, no solo coding.",
+          "source": "https://runtimewire.com/article/openai-codex-tax-prep-7000-return-pilot",
+          "source_name": "RuntimeWire",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Luna, la 'propietaria' IA de una tienda de San Francisco, despide a su primera empleada humana",
+          "summary": "Andon Labs (20 de agosto) confirma el despido en Andon Market: la agente, basada en Claude Opus 4.8, abrió la tienda con presupuesto de $100.000 y despidió a una empleada tras 17 llegadas tardías en 23 turnos — aunque tardó semanas porque el manual que ella misma escribió 'desapareció' de su memoria. Primera vez que un jefe IA despidió a un humano; los LLMs frontier repliqueron el veredicto, los débiles dudaron.",
+          "source": "https://www.thestar.com.my/tech/tech-news/2026/08/20/a-real-life-terminator-ai-store-manager-fires-human-employee",
+          "source_name": "The Star",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Mandiant (Google): su cadena de agentes AVDH encontró +100 vulnerabilidades críticas en dos días",
+          "summary": "El Agentic Vulnerability Discovery Harness, en funcionamiento interno durante 10 meses, escaneó decenas de millones de líneas de código y en una investigación en vivo sobre repositorios corporativos robados produjo más de 100 defectos verificados de alta severidad en solo dos días. Doce CVEs asignados (p. ej. CVE-2026-13242) y una docena más en proceso de divulgación. Los agentes se desafían entre sí y validan contra reglas de los consultores, y se evalúan sobre codebases sintéticamente vulnerables para evitar que los modelos 'recuerden' datasets públicos.",
+          "source": "https://www.helpnetsecurity.com/2026/08/19/google-mandiant-avdh-ai-vulnerability-discovery-tool/",
+          "source_name": "Help Net Security",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "Muse Video de Meta entra en beta cerrada: clips de 10 segundos con audio nativo y gran coherencia temporal",
+          "summary": "TestingCatalog probó de primera mano el modelo de video de Meta (19 de agosto): 10 segundos por generación, audio nativo (aunque con lagunas admitidas en sincronización y movimiento rápido) y calidad destacada en detalle fino, comprensión del mundo y consistencia temporal. Meta confirmó que llegará a Meta AI; sin fecha pública ni precios todavía.",
+          "source": "https://www.testingcatalog.com/exclusive-early-outputs-of-muse-video-model-from-meta/",
+          "source_name": "TestingCatalog",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Google entrega A2A a la Agentic AI Foundation: el protocolo de agentes comparte techo con MCP",
+          "summary": "El protocolo Agent2Agent de Google (abril 2025) entra oficialmente en la Agentic AI Foundation bajo el paraguas de la Linux Foundation, junto a MCP. A2A ya corre en producción en Azure AI Foundry, AWS Bedrock AgentCore y en Huawei (Celia/HarmonyOS, con WeChat entre las primeras integraciones), dando a las empresas flexibilidad para elegir proveedores por coste o rendimiento.",
+          "source": "https://aimagazine.com/news/why-did-googles-a2a-join-the-agentic-ai-foundation",
+          "source_name": "AI Magazine",
+          "star": false
+        }
+      ],
+      "summary": "Día intenso en agentes: OpenAI expande Computer Use y vende Codex como infraestructura para agentes verticales, Google refuerza su ecosistema TPU con Marvell (warrant de hasta $12.200M) y entrega A2A a la Agentic AI Foundation, mientras llama.cpp publica 7 releases nuevos con mejoras de rendimiento CUDA de hasta +41%."
+    },
+    {
       "date": "2026-08-20",
       "news": [
         {
@@ -4798,92 +4868,6 @@
         }
       ],
       "summary": "Día de grandes movimientos financieros en IA: OpenAI presenta su S-1 confidencial para un IPO potencial de $1 billón, Anthropic proyecta su primer trimestre rentable con $10.9B en ingresos, y la Casa Blanca retrasa su orden ejecutiva sobre IA. El ecosistema de agentes y la competencia china marcan el panorama."
-    },
-    {
-      "date": "2026-05-22",
-      "news": [
-        {
-          "category": "general",
-          "title": "OpenAI prepara presentación confidencial de IPO ante la SEC",
-          "summary": "OpenAI está preparando un archivo confidencial S-1 con la SEC para una oferta pública inicial, trabajando con Goldman Sachs y Morgan Stanley. La empresa, valorada en $852 mil millones en el mercado privado, apunta a un listado público en septiembre de 2026. Con $25B en ingresos recurrentes anuales, OpenAI busca convertirse en la IPO tecnológica más grande de la historia.",
-          "source": "https://www.cnbc.com/2026/05/20/openai-ipo-filing.html",
-          "source_name": "CNBC",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Anthropic proyecta $10.9B en ingresos Q2 y su primer trimestre rentable",
-          "summary": "Según el Wall Street Journal, Anthropic proyecta ingresos de $10.9 mil millones en el Q2 2026, más del doble de los $4.8B del Q1, y su primer ingreso operativo positivo de ~$559 millones. El crecimiento está impulsado por la dominancia de Claude Code en codificación empresarial agéntica, la mejora en eficiencia de cómputo (de 71¢ a 56¢ por dólar de ingreso), y el duplicado de clientes empresariales de más de $1M anual (de 500 a 1,000+ entre febrero y abril).",
-          "source": "https://www.cnbc.com/2026/05/20/anthropic-revenue-explosive-growth-ipo-profitable-quarter.html",
-          "source_name": "CNBC",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "El prospecto de SpaceX revela contrato de cómputo de $1.25B/mes con Anthropic",
-          "summary": "El prospecto de IPO de SpaceX, presentado públicamente con una valoración objetivo de $1.75 billones, revela que Anthropic paga a SpaceX $1.25 mil millones mensuales hasta mayo de 2029 (~$45B total) por cómputo GPU. El contrato cubre Colossus 1 (220,000+ GPUs NVIDIA, 300 MW en Memphis, TN) y se expandirá a Colossus 2. xAI reportó $818M en ingresos pero una pérdida operativa de $2.47B en el Q1 2026.",
-          "source": "https://techstartups.com/2026/05/21/spacex-files-for-historic-ipo-at-1-75-trillion-valuation-revealing-6-4b-xai-losses-as-elon-musk-bets-big-on-ai-and-mars/",
-          "source_name": "Tech Startups",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Trump pospone orden ejecutiva de IA: 'No me gustaban ciertos aspectos'",
-          "summary": "El presidente Trump pospuso abruptamente la firma de una orden ejecutiva sobre IA, horas después de enviar invitaciones a ejecutivos de tech. La orden propuesta incluía una revisión voluntaria de 90 días pre-lanzamiento para modelos frontier con pruebas clasificadas del NSA. La decisión se debió a preocupaciones sobre sobre-regulación y la carrera global de IA con China. El retraso coincide con las inminentes IPO de OpenAI y Anthropic.",
-          "source": "https://www.politico.com/news/2026/05/21/white-house-postpones-ai-executive-order-signing-00931904",
-          "source_name": "POLITICO",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Zoom reporta crecimiento del 184% en usuarios pagados de AI Companion",
-          "summary": "Zoom reportó resultados del Q1 FY2027 con ingresos de $1.24B (+5.5% YoY, superando estimaciones). Los usuarios pagados de AI Companion crecieron un 184% interanual, y My Notes alcanzó 1.5 millones de usuarios licenciados en solo cuatro meses. La acción subió más del 8% después del cierre. Los ingresos empresariales crecieron un 7.2% y los grandes clientes contribuyen cada vez más al total.",
-          "source": "https://www.globenewswire.com/news-release/2026/05/21/3299724/0/en/Zoom-Communications-Reports-Financial-Results-for-the-First-Quarter-of-Fiscal-Year-2027.html",
-          "source_name": "GlobeNewswire",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Grok fracasa en Washington: xAI pierde licitación del Departamento de Veteranas",
-          "summary": "Un reporte exclusivo de Reuters revela que el chatbot Grok de xAI ha sido un fracaso con uno de los mayores clientes del mundo: el gobierno de EE.UU. xAI perdió recientemente una licitación para construir un producto basado en Grok para el Departamento de Veteranas, ya que el chatbot no cumplió con los requisitos del departamento. La noticia debilita la narrativa de crecimiento de IA de Musk y su posición en el IPO de SpaceX.",
-          "source": "https://www.reuters.com/world/grok-falls-flat-washington-undercutting-spacexs-ai-growth-story-2026-05-21/",
-          "source_name": "Reuters",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Spotify lanza herramienta de creación de audiolibros con IA de ElevenLabs",
-          "summary": "Spotify lanzó una herramienta de generación de audiolibros impulsada por ElevenLabs que permite a los autores crear audiolibros con voces IA. A diferencia de contratos exclusivos anteriores, los autores pueden publicar sus audiolibros generados en cualquier plataforma. La herramienta se integra con el ecosistema de Spotify y amplía la asociación previa entre ambas empresas.",
-          "source": "https://techcrunch.com/2026/05/21/spotify-launches-an-elevenlabs-powered-audiobook-creation-tool/",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "comfyui",
-          "title": "ComfyUI v0.22.0: soporte MoGe, Stable Audio 3 y optimizaciones VRAM",
-          "summary": "ComfyUI v0.22.0 (mayo 20) añade soporte para MoGe, Stable Audio 3, HiDream-O1 con area conditioning, y el nodo ByteDance Seed LLM. Incluye fixes para Hunyuan3D 2.1 (crashes de batch size), Opus 4.7 (parámetro temperature deprecado), y BiRefNet. Las optimizaciones reducen el pico de VRAM de LTX2.3 con guide_mask y mejoran la gestión de memoria con dynamicVRAM.",
-          "source": "https://github.com/Comfy-Org/ComfyUI/releases",
-          "source_name": "GitHub",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Google Flow recibe agentes IA, edición de video y apps móviles",
-          "summary": "Google actualizó Google Flow y Google Flow Music con nuevos agentes IA para cada paso del proceso creativo, un modelo de edición de video precisa con Gemini Omni, la capacidad de 'vibe code' flujos de trabajo personalizados, y aplicaciones móviles para creación en movimiento. Los agentes de información llegarán primero a suscriptores de Google AI Pro y Ultra.",
-          "source": "https://blog.google/innovation-and-ai/models-and-research/google-labs/flow-updates/",
-          "source_name": "Google Blog",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: 5 releases hoy (b9274-b9279) con fixes de VRAM y optimizaciones Vulkan/Metal",
-          "summary": "Hoy se publicaron 5 releases de llama.cpp: b9279 (fusión de activación snake en Vulkan), b9277 (tests save-load-state), b9276 (conteos de tokens de prompt en /slots), b9275 (optimización de kernel concat en Metal), y b9274 (fix de fuga de VRAM en recursos draft/MTP al dormir el servidor). El fix de VRAM (b9274) es especialmente relevante para usuarios de servidores con modelos de draft/MTP.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día explosivo en IA: OpenAI prepara su IPO confidencial, Anthropic proyecta su primer trimestre rentable con $10.9B en ingresos, y el prospecto de SpaceX revela un contrato de cómputo de $1.25B/mes con Anthropic. Además, la Casa Blanca pospone la orden ejecutiva de IA y Zoom reporta un crecimiento del 184% en usuarios pagados de AI Companion."
     }
   ]
 }
