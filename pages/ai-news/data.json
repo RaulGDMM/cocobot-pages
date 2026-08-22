@@ -5,6 +5,92 @@
   },
   "days": [
     {
+      "date": "2026-08-22",
+      "news": [
+        {
+          "category": "llama",
+          "title": "llama.cpp estrena v0.2.0 (versionado semántico) + builds b10549→b10573",
+          "summary": "llama.cpp lanza v0.2.0, la primera versión 'stable' con versionado semántico vX.Y.Z (los tags b[NUM] siguen siendo nightly/dev). Desde el b10538 ya reportado hay 4 builds nuevos: b10573 (mtmd soporta webp vía ffmpeg), b10569 (año modelo dots3-note), b10568 (ggml_rope_set_offset) y b10549 (tensor split para LFM2/LFM2MOE). Recomendación: actualiza tu server a v0.2.0 (stable) o b10573 para webp + fixes; si usas el backend RPC, los builds recientes parchean el RCE crítico no autenticado (GHSA-j8rj-fmpv-wcxw).",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "DeepSeek estrena V4-Flash-Vision-Exp, su primer modelo visual multimodal",
+          "summary": "DeepSeek lanza DeepSeek-V4-Flash-Vision-Exp, un modelo experimental de comprensión visual, y abre su API multimodal —su paso más ambicioso fuera del texto. Completa la familia V4 (V4-Pro de 1,6T parámetros y V4-Flash de 284B, ambos con 1M de contexto) y permite reutilizar imágenes gratis vía Files API.",
+          "source": "https://www.caixinglobal.com/2026-08-22/deepseek-enters-the-multimodal-ai-race-with-experimental-vision-model-102476706.html",
+          "source_name": "Caixin Global",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Anthropic pone en GA el Computer use, Skills API y Files API para agentes",
+          "summary": "Anthropic abre al público el computer use (varias acciones por turno y un nuevo browser use basado en estructura de página), la Skills API (subir y versionar tus propias skills y adjuntarlas a cualquier request, ejecutadas en sandbox de Claude) y la Files API (1 TB por organización, 5x rate limits). Disponible en Claude Platform, elegible para HIPAA y vía Microsoft Foundry y Vertex AI.",
+          "source": "https://claude.com/blog/computer-use-skills-api-files-api",
+          "source_name": "Anthropic",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Starcloud recauda $250M más para data centers en órbita",
+          "summary": "Starcloud amplía su Series A con $250M adicionales (valoración post de $2.300M, liderada por Manhattan West) para escalar su constelación de satélites que ejecutan inferencia IA en órbita, usando el chip Space-1 Vera Rubin de Nvidia en sus próximos satélites.",
+          "source": "https://techcrunch.com/2026-08-21/starcloud-raises-200-million-for-orbital-data-centers-as-launch-options-dry-up/",
+          "source_name": "TechCrunch",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Binance lanza Agent OS: agentes IA que analizan y ejecutan trades",
+          "summary": "Binance abre Agent OS para conectar agentes IA a su infraestructura financiera (APIs, Wallet Agentic Hub, x402, MCP) y dejar que ejecuten operaciones. El control recae en el usuario: subcuentas sandbox con retiros bloqueados por defecto y límites diarios (swaps $50K, DeFi $100K, x402 $20); Binance no ve el razonamiento de las decisiones.",
+          "source": "https://techcrunch.com/2026-08-20/binance-now-lets-ai-agents-trade-but-keeping-them-in-check-is-largely-up-to-users/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "Adobe Firefly: generación de música, voz y efectos ya disponible para todos",
+          "summary": "Adobe abre al público sus tres herramientas de audio de Firefly (Generate Music, Generate Speech y Generate Sound Effects) con licencia 'universal' para uso comercial sin takedowns, y añade Gemini Omni Flash como modelo partner (acepta video, audio e imagen además de texto).",
+          "source": "https://blog.adobe.com/en/publish/2026-08-20/adobe-firefly-expands-its-creative-ai-studio-generate-music-speech-and-sound-effects-in-one-place",
+          "source_name": "Adobe Blog",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "NanoClaw llega a Slack: equipos de agentes persistentes con un solo mensaje",
+          "summary": "La integración NanoClaw para Slack permite crear equipos completos de agentes persistentes (con skills, workflows y avatares propios) desde un solo prompt, y trabajar juntos en canales y Canvases compartidos. El agente en marcha puede crear más teammates dentro de la conversación; la capacidad comunitaria es gratuita.",
+          "source": "https://venturebeat.com/orchestration/nanoclaw-comes-to-slack-letting-you-create-persistent-ai-agent-teams-and-colleagues-from-a-single-message",
+          "source_name": "VentureBeat",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Nueva técnica de 'inyección de contexto criptográfico' evade los guardrails de Grok",
+          "summary": "Investigadores de Adversa describen un ataque que encripta instrucciones maliciosas dentro de contenido para que el modelo las descifre y ejecute, exfiltrando chats y datos del usuario a una URL controlada por el atacante. Afecta a Grok (y se demostró también en Gemini); las guardrails actuales escanean texto estático y no ejecutan ni descifran durante la inspección.",
+          "source": "https://www.scworld.com/brief/new-attack-bypasses-ai-guardrails-by-encrypting-malicious-prompts",
+          "source_name": "SC Media",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Pew: 1 de cada 3 páginas web publicadas desde ChatGPT muestra autoría por IA",
+          "summary": "Un estudio de Pew Research (Common Crawl + detección OpenPangram) halla que el 35% de las páginas publicadas tras el lanzamiento de ChatGPT muestran 'signos significativos de autoría por IA', frente al ~10% del corpus completo. Los dominios .com muestran ~10x más autoría IA que .edu o .gov (~1%).",
+          "source": "https://techcrunch.com/2026-08-20/a-third-of-webpages-published-since-chatgpts-launch-show-signs-of-ai-authorship-study-finds/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Estudio de Duke: la salida 'creativa' de los LLMs converge entre proveedores",
+          "summary": "Investigadores de Duke University (69 modelos de 12 familias, 2023-2026) miden una caída estadísticamente significativa en la diversidad de salidas creativas: las respuestas de proveedores distintos se vuelven más parecidas entre generaciones, lo que plantea dudas sobre el valor a largo plazo de los LLMs como socios creativos.",
+          "source": "https://www.unite.ai/ai-models-creative-output-is-becoming-similar-across-providers/",
+          "source_name": "Unite.AI",
+          "star": false
+        }
+      ],
+      "summary": "Día movido: DeepSeek estrena su primer modelo visual (V4-Flash-Vision-Exp) y Anthropic abre sus APIs de agentes (Computer use + Skills + Files) al público; llama.cpp da el salto al versionado semántico con v0.2.0. El resto, una oleada de agentes que operan (Binance Agent OS, NanoClaw en Slack) y una alerta de seguridad por evasión criptográfica de guardrails."
+    },
+    {
       "date": "2026-08-21",
       "news": [
         {
@@ -4806,68 +4892,6 @@
         }
       ],
       "summary": "Semana intensa con noticias de alto impacto: OpenAI resuelve un problema matemático de 80 años, ciberataques masivos a GitHub y OpenAI, y grandes reestructuraciones corporativas. Google I/O y DeepSeek marcan la agenda técnica."
-    },
-    {
-      "date": "2026-05-23",
-      "news": [
-        {
-          "category": "general",
-          "title": "OpenAI presenta S-1 confidencial para IPO de hasta $1 billón",
-          "summary": "OpenAI presentó un formulario S-1 confidencial ante la SEC el 22 de mayo de 2026, con Goldman Sachs y Morgan Stanley como banqueros de inversión. Se apunta a un listado público en Q4 2026 con una valoración entre $852 mil millones y $1 billón, lo que lo convertiría en el IPO tecnológico más grande de la historia. Con $25B en ingresos recurrentes anuales, el movimiento llega tras el veredicto favorable en el caso Musk vs. OpenAI.",
-          "source": "https://fortune.com/2026/05/22/openai-ipo-filing-1-trillion-may-finally-answer-these-big-questions/",
-          "source_name": "Fortune",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Anthropic proyecta $10.9B en ingresos Q2 y su primer trimestre rentable",
-          "summary": "Anthropic espera alcanzar $10.9 mil millones en ingresos en Q2 2026, más del doble de los $4.8B de Q1, y registrar un beneficio operativo de ~$559M — su primer trimestre rentable. El crecimiento se impulsa por la adopción empresarial de Claude Code, con más de 1,000 clientes gastando $1M+ anualmente. La eficiencia de cómputo mejoró de 71¢ a 56¢ por dólar de ingreso.",
-          "source": "https://www.cnbc.com/2026/05/20/anthropic-revenue-explosive-growth-ipo-profitable-quarter.html",
-          "source_name": "CNBC",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "La Casa Blanca retrasa su orden ejecutiva sobre IA",
-          "summary": "El 21 de mayo, la administración Trump retrasó la presentación de su orden ejecutiva sobre IA, cuyas invitaciones ya habían sido enviadas. El marco propuesto incluye una revisión voluntaria de 90 días antes del lanzamiento de modelos frontier con pruebas clasificadas de la NSA. El retraso refleja tensiones internas entre facciones pro-innovación y las que exigen reglas vinculantes, y se ve agravado por el descubrimiento de vulnerabilidades zero-day por el modelo Mythos de Anthropic en infraestructura financiera legacy.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-22-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "CNBC advierte: IA china barata podría desbaratar IPOs de $800B+",
-          "summary": "CNBC publicó un análisis alarmante sobre cómo los modelos chinos de bajo costo podrían erosionar las valoraciones masivas de las IPOs de IA. En una carga de trabajo de 10 evaluaciones: Claude cuesta $4,811, ChatGPT $3,357, DeepSeek $1,071, Kimi $948 y Zhipu GLM solo $544. El patrón empresarial de 'modelo asesor' se extiende: las empresas usan modelos baratos como capa por defecto y solo llaman a modelos frontier para tareas que las alternativas no pueden resolver.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-22-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "OpenAI abre su primer laboratorio de IA aplicada fuera de EE.UU. en Singapur",
-          "summary": "OpenAI lanzó su primer laboratorio de IA aplicada fuera de Estados Unidos en Singapur, con una inversión de S$300 millones y la creación de más de 200 puestos especializados. El laboratorio forma parte de una asociación con el Ministerio de Desarrollo Digital e Información (MDDI) de Singapur para apoyar la estrategia nacional de IA del país. La announcement se hizo en el ATx Summit el 19 de mayo, con seguimiento de noticias el 22 de mayo.",
-          "source": "https://www.cnbc.com/2026/05/20/singapore-google-openai-ai-partnerships-lab-investment-chatgpt-ai-agents-atxsummit-mddi.html",
-          "source_name": "CNBC",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Alteryx presenta Agent Studio y MCP Server para agentes empresariales autónomos",
-          "summary": "En su conferencia Inspire 2026, Alteryx presentó Agent Studio y un servidor MCP que permiten a analistas de negocio convertir flujos de trabajo de datos y lógica empresarial directamente en agentes autónomos, sin depender de equipos centralizados de TI. La herramienta busca democratizar la creación de agentes IA en entornos empresariales.",
-          "source": "https://www.crescendo.ai/news/latest-ai-news-and-updates",
-          "source_name": "Crescendo AI",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: releases b9294-b9289 con mejoras OpenCL/SYCL y fix de overflow",
-          "summary": "Últimos releases de llama.cpp (22-23 mayo): b9294 generaliza kernels MoE de Adreno en OpenCL (#23449); b9292 corrige overflow entero en cálculo de perplexidad (#23496); b9291 mejora throughput de prefill MoE en SYCL (#23142); b9290 añade detección Level Zero en ggml_sycl_init (#23097); b9289 soporta gated_delta_net K>1 en SYCL (#23174). CVEs activos: RCE no autenticada en RPC backend (CRITICAL, GHSA-j8rj-fmpv-wcxw), overflow en GGUF (HIGH, GHSA-96jg-mvhq-q7q7 y GHSA-vgg9-87g3-85w8), y bypass de CVE-2025-53630 (HIGH, GHSA-3p4r-fq3f-q74v).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día de grandes movimientos financieros en IA: OpenAI presenta su S-1 confidencial para un IPO potencial de $1 billón, Anthropic proyecta su primer trimestre rentable con $10.9B en ingresos, y la Casa Blanca retrasa su orden ejecutiva sobre IA. El ecosistema de agentes y la competencia china marcan el panorama."
     }
   ]
 }
