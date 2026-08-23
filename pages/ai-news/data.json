@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-08-23",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Liquid AI lanza LFM2.5-DSpark: drafters de decodificación especulativa hasta 3.18x más rápidos",
+          "summary": "Checkpoints DSpark para LFM2.5-1.2B-Instruct, 2.6B y 8B-A1B: un drafter de ~300M parámetros propone bloques de 9 tokens que el modelo objetivo verifica en un solo forward. Salida idéntica en greedy (los benchmarks no cambian), hasta 3.18x en H100 y 2.87x en M4 Max MacBook Pro vía llama.cpp/Metal. Soporte día uno en llama.cpp y SGLang; la mayor ganía práctica es en function-calling multi-herramienta (−57% latencia).",
+          "source": "https://metaailabs.com/liquid-ai-releases-lfm2-5-dspark-draft-models-that-deliver-up-to-3-18x-faster-decoding-without-changing-model-outputs/",
+          "source_name": "Meta Ai Labs",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "NVIDIA AVO: su sistema de agentes saca 100% en el set público de ARC-AGI-3",
+          "summary": "El sistema AVO (Agentic Variation Operators) completó los 25 entornos y 183 niveles de ARC-AGI-3 con 100.00 RHAE usando Claude Opus 5, que en solitario rondaba el 30%. La clave: memoria persistente + supervisor que redirige al agente cuando se estanca. El mismo harness, usado 7 días en optimización de kernels GPU, superó a cuDNN hasta un 3.5% y a FlashAttention-4 hasta un 10.5% en DGX B200. Código solo para investigación.",
+          "source": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+          "source_name": "NVIDIA Technical Blog",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "OpenAI rebaja más de un 20% los precios API de GPT-5.6 Sol durante 3 meses",
+          "summary": "Promoción hasta el 21 de noviembre: input de $5 a $4/M tokens, cache de $0.50 a $0.40 y output de $30 a $20/M (−33%). Los output tokens son donde más gastan los loops de agentes. Sin cambios en precios de suscripciones.",
+          "source": "https://ai-tldr.dev/releases/openai-gpt-5-6-sol-price-cut",
+          "source_name": "AI/TLDR (OpenAI)",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Anthropic abre Claude Security en beta pública: escaneos con Claude Mythos 5 + fondo de $35M para defensores open source",
+          "summary": "Los escaneos de Claude Security corren ya sobre Claude Mythos 5, su familia de modelos ciber de acceso vetado, para todos los clientes Claude Enterprise: devuelve cada vulnerabilidad con CWE, severidad, confianza y parche propuesto. Junto a la beta, el Defender Advantage Fund de $35M financia el parcheo de proyectos open source ampliamente usados.",
+          "source": "https://ai-tldr.dev/releases/anthropic-claude-security-mythos-5",
+          "source_name": "AI/TLDR (Anthropic)",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Ox Alpha: un modelo 'stealth' sin fabricante aparece gratis en OpenRouter y OpenCode",
+          "summary": "Surgido el 21 de agosto en OpenRouter bajo el proveedor 'stealth' sin confirmar quién lo ha hecho. Razonamiento orientado a coding y trabajo agéntico de largo horizonte: contexto de 1M tokens, output de 128K, entrada texto/imagen/vídeo. Gratis una semana con retención de datos cero y límites 'casi ilimitados' (afirman 100 billones de tokens/día).",
+          "source": "https://officechai.com/ai/stealth-model-ox-alpha-available-for-free-for-a-week-on-openrouter-and-opencode/",
+          "source_name": "OfficeChai AI",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "GitLab 19.3: AI Gateway en GitLab Dedicated y flujos de automatización por lenguaje natural",
+          "summary": "La GA del AI Gateway dentro de GitLab Dedicated permite corer el Duo Agent Platform en infraestructura single-tenant con la región AWS elegida (Bedrock u otros backends), manteniendo los datos en la frontera de seguridad del cliente. También: Flow Creator Agent en GA (flujos ejecutables desde lenguaje natural), detección masiva de falsos positivos SAST y corrección agéntica de vulnerabilidades (beta) y Secrets Manager en disponibilidad limitada.",
+          "source": "https://business-news-today.com/gitlab-brings-agentic-ai-to-enterprise-environments-for-regulated-teams/",
+          "source_name": "Business News Today",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10582 → b10588 disponible (6 builds nuevos)",
+          "summary": "Respecto a tu build actual (b10582): b10584 corrige el contexto del draft model (seguía al target, evita fallos 500 en batches de draft con KV no unificado — relevante para setups MTP/draft), b10585 introduce la abstracción json.h en common (server, jinja, tests), b10586 migra mtmd a ggml_rope_set_offset, b10587 añade PAD_REFLECT_1D en Vulkan y b10588 arregla el LTO de clang en json.h. Sin cambios de rendimiento relevantes: actualización opcional, el fix de draft es el único con impacto funcional.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b10588",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Rillet: la startup de contabilidad con agentes IA recauda $100M a $1B de valoración en 48 horas",
+          "summary": "Sin buscar capital: tras duplicar el ARR en un trimestre, el acuerdo con EY y 600 clientes, el cierre llegó en 48h. Rillet está diseñado 'para agentes, no para humanos': bookkeeping donde los agentes hacen el trabajo y los contables auditan cada decisión (feature de gobernanza lanzada hace ~3 meses). Iconiq lidera; ya es unicornio.",
+          "source": "https://techcrunch.com/2026/08/21/how-ai-accounting-startup-rillet-raised-100m-and-became-a-unicorn-in-48-hours/",
+          "source_name": "TechCrunch",
+          "star": false
+        }
+      ],
+      "summary": "Día movido en agentes: NVIDIA demuestra que el harness importa más que el modelo con un 100% en ARC-AGI-3, OpenAI rebaja un 20%+ el GPT-5.6 Sol y Anthropic abre Claude Security en beta pública. En local, Liquid AI saca drafters para LFM2.5 con hasta 3.18x de velocidad en llama.cpp."
+    },
+    {
       "date": "2026-08-22",
       "news": [
         {
@@ -4782,116 +4852,6 @@
         }
       ],
       "summary": "Día con noticias destacadas: el Papa publica una encíclica histórica sobre IA y dignidad humana, OpenAI refuerza su presencia empresarial con Codex en Virgin Atlantic y AdventHealth, y ComfyUI lanza v0.22.0 con soporte para nuevos modelos de audio y video."
-    },
-    {
-      "date": "2026-05-24",
-      "news": [
-        {
-          "category": "llm",
-          "title": "🧮 OpenAI resuelve conjetura matemática de 80 años de forma autónoma",
-          "summary": "El modelo de razonamiento interno de OpenAI produjo una prueba de 125 páginas para la conjetura de distancia unitaria de Erdős (1946), conectando geometría discreta con teoría algebraica de números usando el criterio de Golod-Shafarevich. El Fields medalist Tim Gowers lo llamó 'un hito en matemáticas con IA'. Fue la primera solución autónoma a un problema matemático abierto prominente.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "📉 DeepSeek hace permanente el descuento del 75% en V4-Pro",
-          "summary": "DeepSeek confirma que el descuento del 75% en su modelo V4-Pro es permanente. Con un precio de $0.435 por millón de tokens de entrada, es al menos 11.5 veces más barato que GPT-5.5 en entrada y 34 veces más barato en salida. El modelo soporta contexto de 1M tokens y funciona con NPUs de Huawei Ascend.",
-          "source": "https://llm-stats.com/ai-news",
-          "source_name": "LLM Stats",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "🔥 TeamPCP: gusano de cadena de suministro ataca GitHub y OpenAI",
-          "summary": "Un troyano en la extensión Nx Console de VS Code (2.2M instalaciones) estuvo activo 18 minutos el 18 de mayo, robando bóvedas de 1Password, configuraciones de Claude Code, y tokens de npm/GitHub/AWS. Se exfiltraron ~3,800 repositorios internos de GitHub. OpenAI perdió credenciales en 2 dispositivos y revocará su certificado de firma macOS el 12 de junio. Tracked como 'Mini Shai-Hulud worm, Wave 4'.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "🏢 Meta rastrea empleados para entrenar IA mientras despide a 8,000",
-          "summary": "Audio filtrado de reunión interna de Meta (30 abril) revela el 'Model Capability Initiative' (MCI), que monitorea Gmail, Google Chat, Metamate y VS Code de empleados para entrenar IA en flujos de trabajo expertos. Zuckerberg defendió el programa como 'únicamente para alimentar contenido al modelo'. El audio salió el mismo día que 8,000 empleados recibieron notificaciones de despido.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "🏛️ Trump cancela orden ejecutiva de seguridad de IA",
-          "summary": "Trump canceló horas antes de firmar una orden ejecutiva que establecía un marco voluntario de revisión de 90 días para lanzamientos de IA con participación de la NSA. Musk, Zuckerberg y David Sacks llamaron directamente al presidente advirtiendo que ralentizaría el desarrollo. Trump declaró: 'No quiero hacer nada que obstruya nuestra ventaja sobre China'.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "💼 Intuit despide a 3,000 empleados para financiar estrategia de agentes IA",
-          "summary": "Intuit reduce ~8% de su plantilla para pivotar hacia agentes IA, automatización de QuickBooks/TurboTax y servicios para mercados medianos. Se esperan ahorros anualizados de $500M+ para H2 2026. La acción subió tras el anuncio, reflejando la tendencia de reasignar presupuestos de personal a infraestructura de IA.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "image",
-          "title": "🎨 Gemini se integra con Adobe, Canva y CapCut como estudio creativo",
-          "summary": "Google anuncia integraciones de Gemini con Adobe (Firefly AI Assistant en Photoshop/Premiere), Canva (Magic Layers para activos editables generados por IA) y CapCut (edición móvil de video/imagen). Los usuarios pueden generar en Gemini y editar en herramientas profesionales sin cambiar de app. La integración con Canva ya está activa para suscriptores Gemini AI Ultra.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "📱 OpenAI lleva Codex a ChatGPT Mobile",
-          "summary": "OpenAI extiende las capacidades de codificación autónoma de Codex a smartphones. Los usuarios pueden monitorear remotamente, aprobar comandos y lanzar tareas para agentes de codificación IA que operan en segundo plano de forma persistente.",
-          "source": "https://medium.com/@davidakpovi/ai-news-week-of-may-18-to-may-24-2026-6cb451ecb766",
-          "source_name": "Medium (David Akpovi)",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "🤖 Anthropic predice 'explosión de inteligencia' para 2028",
-          "summary": "Jack Clark de Anthropic (conferencia Oxford, 20 mayo) predice descubrimiento Nobel con IA en 12 meses, empresas operadas por IA generando millones en 18 meses, y robots bípedos asistiendo a trabajadores en 2 años. Anthropic asigna ahora una probabilidad del 60%+ de que una IA entrene completamente a su sucesora para finales de 2028. El modelo más capaz de Anthropic, Claude Mythos, ya descubrió vulnerabilidades zero-day a escala.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-may-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "💚 Anthropic y Fundación Gates: $200M para IA en regiones desfavorecidas",
-          "summary": "Anthropic y la Fundación Bill & Melinda Gates anuncian una asociación de $200 millones durante 4 años para desplegar IA en salud, educación, agricultura y desarrollo económico en regiones desfavorecidas. Marca un giro estratégico de la industria hacia IA como infraestructura pública.",
-          "source": "https://medium.com/@davidakpovi/ai-news-week-of-may-18-to-may-24-2026-6cb451ecb766",
-          "source_name": "Medium (David Akpovi)",
-          "star": false
-        },
-        {
-          "category": "music",
-          "title": "🎧 ElevenLabs licencia 200K audiolibros para ElevenReader",
-          "summary": "ElevenLabs, que busca construir una app de voz IA todo-en-uno, licenció 200,000 audiolibros con voz humana de grandes editoriales, disponibles en ElevenReader por $11/mes. Mueve la compañía más allá de la síntesis de voz hacia distribución de contenido.",
-          "source": "https://llm-stats.com/ai-news",
-          "source_name": "LLM Stats",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "⚡ 'Tokenmaxxing': nueva cultura entre desarrolladores IA",
-          "summary": "Los desarrolladores están maximizando el trabajo delegado a IA, con el consumo de tokens convirtiéndose en métrica de rendimiento. Herramientas como Clawdmeter (rastrea uso de Claude Code en tiempo real) reflejan el cambio hacia agentes IA de fondo continuamente supervisados en lugar de prompting manual línea por línea.",
-          "source": "https://medium.com/@davidakpovi/ai-news-week-of-may-18-to-may-24-2026-6cb451ecb766",
-          "source_name": "Medium (David Akpovi)",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "⚙️ llama.cpp: 5 releases recientes (b9292–b9297) del 22-23 mayo",
-          "summary": "Última versión: b9297 (23 mayo). Cambios destacados: soporte NVFP4 MTP scale tensors (#23563), fix de desbordamiento entero en perplexity (#23496), kernels MoE Adreno generalizados (#23449), fix Vulkan SPIRV-Headers en Windows (#23215). Sin nuevos CVEs desde marzo. El usuario no tiene llama.cpp instalado localmente.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Semana intensa con noticias de alto impacto: OpenAI resuelve un problema matemático de 80 años, ciberataques masivos a GitHub y OpenAI, y grandes reestructuraciones corporativas. Google I/O y DeepSeek marcan la agenda técnica."
     }
   ]
 }
