@@ -5,6 +5,36 @@
   },
   "days": [
     {
+      "date": "2026-08-24",
+      "news": [
+        {
+          "category": "general",
+          "title": "Hugging Face explora una venta que podría valorarla en 13.000M$ o más",
+          "summary": "Business Insider y Reuters informan que Hugging Face está trabajando con un banco para medir el interés de posibles compradores. En 2023 estaba valorada en 4.500M$ tras una ronda de 235M$ con inversores como Google, Amazon, Nvidia e Intel. Sin acuerdo cerrado todavía, pero la distancia entre 4.5B y 13B en tres años refleja el salto del ecosistema de modelos abiertos.",
+          "source": "https://www.reuters.com/business/hugging-face-exploring-sale-valuing-it-13-billion-business-insider-says-2026-08-23/",
+          "source_name": "Reuters",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Pinecone Nexus llega a GA y gana τ-Knowledge por delante de agentes de OpenAI, Anthropic y Google",
+          "summary": "Pinecone anunció general availability de Nexus, su 'knowledge engine' que convierte datos empresariales en conocimiento gobernado listo para agentes. En el benchmark τ-Knowledge (tareas difíciles de conocimiento empresarial), un agente usando Nexus como capa de retrieval obtuvo la puntuación más alta, superando a agentes construidos sobre modelos frontier de OpenAI, Anthropic y Google. La lección: con el mismo modelo, la capa de retrieval decidió el resultado. Nexus se puede desplegar en la nube del propio cliente.",
+          "source": "https://aitoolsrecap.com/Blog/ai-news-august-23-2026",
+          "source_name": "AIToolsRecap",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10603 → b10604 disponible (DeepSeek 4: soporte -sm tensor)",
+          "summary": "Nuevo build b10604 publicado hoy. El cambio principal: soporte para DeepSeek 4 con la flag '-sm tensor'. Estás en b10603, así que es un solo build de distancia. No hay fixes críticos ni CVEs nuevos, así que no es urgente, pero si usas DeepSeek 4 puede valer la pena actualizar.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b10604",
+          "source_name": "GitHub (llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Día tranquilo en modelos pero con movimiento importante en infraestructura: Hugging Face explora una venta a 13.000M$ y Pinecone Nexus llega a GA ganando el benchmark τ-Knowledge a agentes de OpenAI, Anthropic y Google."
+    },
+    {
       "date": "2026-08-23",
       "news": [
         {
@@ -4806,52 +4836,6 @@
         }
       ],
       "summary": "Día relevante: la Santa Sede emite su primera encíclica sobre IA, Anthropic cierra ronda de $30B a una valoración de $900B+, y ComfyUI 0.22.0 añade soporte para Stable Audio 3.0 y MoGe."
-    },
-    {
-      "date": "2026-05-25",
-      "news": [
-        {
-          "category": "general",
-          "title": "🕊️ El Papa León XIV publica encíclica «Magnifica Humanitas» sobre IA y dignidad humana",
-          "summary": "El Papa León XIV lanzó hoy su encíclica «Magnifica Humanitas», el primer documento papal dedicado exclusivamente a la inteligencia artificial. El documento establece que el principal riesgo de la IA no es la productividad sino la dignidad humana, enmarcando el desafío como «no tecnológico, sino antropológico». Se espera que el documento impulse mayor escrutinio sobre el uso de IA en contratación, evaluación de empleados y toma de decisiones corporativas.",
-          "source": "https://asanify.com/blog/news/ai-safety-executive-order-may-25-2026/",
-          "source_name": "Asanify",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "🛫 Virgin Atlantic usa Codex para lanzar su app móvil renovada con cero defectos críticos",
-          "summary": "Virgin Atlantic utilizó Codex de OpenAI para renovar y lanzar su aplicación móvil a tiempo para la temporada navideña, alcanzando cobertura de pruebas unitarias casi total y cero defectos P1. El caso demuestra la efectividad de Codex para acelerar el desarrollo y garantizar la calidad en entornos de alto riesgo.",
-          "source": "https://openai.com/index/virgin-atlantic/",
-          "source_name": "OpenAI Blog",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "🏥 AdventHealth implementa ChatGPT para Healthcare para optimizar flujos de trabajo médicos",
-          "summary": "AdventHealth está aprovechando ChatGPT para Healthcare para agilizar flujos de trabajo clínicos, reducir la carga administrativa y dedicar más tiempo al cuidado de pacientes. La integración busca mejorar la eficiencia general y la calidad de los servicios de salud.",
-          "source": "https://openai.com/index/adventhealth",
-          "source_name": "OpenAI Blog",
-          "star": false
-        },
-        {
-          "category": "comfyui",
-          "title": "🎨 ComfyUI v0.22.0: soporte para Stable Audio 3, MoGe, HiDream-O1 y LTXV",
-          "summary": "ComfyUI lanzó la versión 0.22.0 con soporte para múltiples modelos nuevos: Stable Audio 3.0, MoGe, HiDream-O1 (con condicionamiento por área), LTXV (IC-LoRA y attention_mask), y LTX2.3 (optimización VRAM con guide_mask). También incluye el nodo StringFormat, soporte para downscale temporal de latentes de audio, integración con Seed2.0 de ByteDance, y correcciones para Qwen3.5 con prompts multi-imagen y Hunyuan3D 2.1.",
-          "source": "https://github.com/Comfy-Org/ComfyUI/releases",
-          "source_name": "GitHub",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "⚙️ llama.cpp b9305: corrección de build de UI con CMake",
-          "summary": "Último release de llama.cpp (b9305, 24 de mayo): fix en el build de la UI con CMake (#23592). Releases recientes de la semana incluyen soporte para tensores NVFP4 MTP (b9297), corrección de interfaz ggml 2D (b9296), fix de SPIRV-Headers en Windows con Vulkan (b9295), y kernels MoE generalizados para Adreno en OpenCL (b9294). No hay CVEs nuevos desde marzo.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día con noticias destacadas: el Papa publica una encíclica histórica sobre IA y dignidad humana, OpenAI refuerza su presencia empresarial con Codex en Virgin Atlantic y AdventHealth, y ComfyUI lanza v0.22.0 con soporte para nuevos modelos de audio y video."
     }
   ]
 }
