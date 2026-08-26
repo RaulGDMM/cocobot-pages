@@ -135,7 +135,9 @@ main { position: relative; z-index: 1; }
 /* Hero */
 .hero {
   max-width: 1100px; margin: 0 auto;
-  padding: 120px 24px 60px;
+  padding: 120px 24px 50px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; position: relative; z-index: 1;
 }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
@@ -145,7 +147,8 @@ main { position: relative; z-index: 1; }
   background: var(--warning-bg);
   border: 1px solid rgba(251, 191, 36, 0.25);
   padding: 7px 16px; border-radius: 999px;
-  margin-bottom: 28px;
+  margin-bottom: 30px;
+  opacity: 0; animation: fadeInUp .8s .15s forwards;
 }
 .hero-eyebrow .dot {
   width: 8px; height: 8px; border-radius: 50%;
@@ -157,22 +160,57 @@ main { position: relative; z-index: 1; }
   50% { opacity: .6; box-shadow: 0 0 0 6px rgba(251,191,36,0); }
 }
 .hero h1 {
-  font-size: clamp(44px, 7.5vw, 76px);
+  font-size: clamp(58px, 11vw, 104px);
   font-weight: 900; line-height: 1.02;
-  letter-spacing: -0.03em;
-  background: linear-gradient(120deg, #f1f5f9 20%, var(--primary-light) 55%, var(--cyan) 90%);
+  letter-spacing: -0.035em;
+  margin-bottom: 22px; position: relative;
+  opacity: 0; animation: fadeInUp .8s .35s forwards;
+}
+.hero h1 .l1 {
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 45%, #c4b5fd 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
+}
+.hero h1 .l2 {
+  display: block;
+  font-size: 0.42em; font-weight: 800; letter-spacing: -0.02em;
+  margin-top: 10px;
+  background: linear-gradient(120deg, var(--cyan) 0%, #22d3ee 40%, var(--primary-light) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero h1::after {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 130%; height: 160%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(34, 211, 238, 0.08) 45%, transparent 70%);
+  animation: heroGlow 4s ease-in-out infinite;
+  pointer-events: none; z-index: -1;
+}
+@keyframes heroGlow {
+  0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
 }
 .hero h2 {
-  font-size: clamp(17px, 2.4vw, 22px);
+  font-size: clamp(19px, 3vw, 27px);
   font-weight: 600; color: var(--text-secondary);
-  max-width: 820px; margin-bottom: 26px;
+  max-width: 760px; margin-bottom: 18px; letter-spacing: -0.01em;
+  opacity: 0; animation: fadeInUp .8s .55s forwards;
 }
 .hero h2 strong { color: var(--text-primary); }
+.hero-sub {
+  font-size: 15px; color: var(--text-muted);
+  max-width: 680px; line-height: 1.7;
+  opacity: 0; animation: fadeInUp .8s .75s forwards;
+}
+.hero-sub strong { color: var(--text-secondary); }
 .hero-meta {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px;
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; justify-content: center;
+  opacity: 0; animation: fadeInUp .8s .95s forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .badge {
   font-size: 12px; font-weight: 600;
@@ -595,10 +633,13 @@ td.bad { color: var(--miss); font-weight: 700; }
 <!-- Hero -->
 <div class="hero">
   <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 26 agosto 2026</div>
-  <h1>Qwen4<br>La familia completa</h1>
-  <h2>
-    El <strong>26 de agosto de 2026</strong> Qwen publicó <strong>Qwen3.8-Flash-Next</strong>, el primer open-weight bajo la nueva arquitectura Qwen4: <strong>125B con solo 6B activos + 51B de n-gram embedding</strong>. Esta página predice la familia que vendrá detrás: el <strong>denso ~27B</strong> (la estrella para hardware local), un MoE intermedio y el Max.
-  </h2>
+  <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
+  <h2>Canary: <strong>Qwen3.8-Flash-Next</strong> · 125B-A6B + 51B n-gram</h2>
+  <p class="hero-sub">
+    El <strong>26 de agosto de 2026</strong> Qwen publicó el primer open-weight bajo la nueva arquitectura Qwen4.
+    Esta página predice la familia que vendrá detrás: el <strong>denso ~27B</strong> (la estrella para hardware local),
+    un MoE intermedio y el Max — con fechas, AAI y viabilidad en RTX 5090.
+  </p>
   <div class="hero-meta">
     <span class="badge live">⏳ EN CURSO — nada publicado aún</span>
     <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
