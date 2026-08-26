@@ -347,6 +347,7 @@ td.num, th.num { font-family: var(--mono); font-weight: 600; }
 td.hl { color: var(--cyan); font-weight: 700; }
 td.good { color: var(--success); font-weight: 700; }
 td.bad { color: var(--miss); font-weight: 700; }
+td.warn { color: var(--warning); font-weight: 700; }
 
 /* Prediction cards */
 .pred-card {
@@ -780,15 +781,15 @@ td.bad { color: var(--miss); font-weight: 700; }
       <table>
         <thead><tr><th>Predicción</th><th>Resultado</th><th>Lección</th></tr></thead>
         <tbody>
-          <tr><td>Qwen3.6-27B ≈ 52 AAI</td><td class="good">✓ ACERTADA al punto (52)</td><td>La delta-extrapolación densos funciona</td></tr>
+          <tr><td>Qwen3.6-27B (abr 2026): benchmarks crudos</td><td class="warn">⚠ 4/5 en rango — sin predicción AAI</td><td>AAI aún no puntuaba 27B; comparar entre escalas no es válido (46→38 en el rescore v4.1.1)</td></tr>
           <tr><td>Qwen3.7-27B saldría (jun–jul 2026)</td><td class="bad">✗ FALLÓ — skip a 3.8</td><td>Con cambios de arquitectura, Qwen salta versiones: el timing es lo más frágil</td></tr>
-          <tr><td>Qwen3.8-27B ≈ 52 AAI (14 ago)</td><td class="good">✓ ACERTADA al punto (52)</td><td>Método validado dos veces en densos</td></tr>
+          <tr><td>Qwen3.8-27B ≈ 52 AAI (14 ago)</td><td class="good">✓ ACERTADA al punto (52, misma escala)</td><td>La única validación limpia AAI→AAI de la serie</td></tr>
           <tr><td>Qwen3.8-35B-A3B saldría</td><td class="bad">✗ no publicado</td><td>Los MoE pequeños son opcionales para Qwen — predicciones MoE con confianza baja</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:12px;">
-      Conclusión: <strong>la inteligencia predicha en densos es fiable (2/2 al punto); el timing es lo débil</strong> (1/2). Por eso las predicciones de AAI van con rangos de ±4 pts y las de fecha con tres escenarios explícitos.
+      Conclusión: <strong>la única validación limpia AAI→AAI (3.8) acertó al punto, pero es una sola muestra</strong>; el timing es lo débil (1/2). Por eso las predicciones de AAI van con rangos de ±4 pts, las de fecha con tres escenarios explícitos, y ninguna predicción se toma como "método probado" con una sola acierto.
     </p>
   </div>
 
@@ -1094,7 +1095,7 @@ td.bad { color: var(--miss); font-weight: 700; }
     <a class="ref-link" href="qwen36-27b-prediction.html">
       <div class="r-tag">Serie 1 · archivada</div>
       <h4>Qwen3.6 27B Prediction</h4>
-      <p>La predicción original de la serie. El ~52 AAI predicho para el 3.6-27B se validó tras su publicación.</p>
+      <p>La predicción original de la serie: 5 benchmarks crudos (4/5 en rango). Sin predicción AAI — la página se escribió antes de que AAI puntuara 27B. Score final en la escala actual (v4.1.1): 38.</p>
     </a>
     <a class="ref-link" href="qwen38-prediction.html">
       <div class="r-tag">Serie 2 · resuelta ✅</div>

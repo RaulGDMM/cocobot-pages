@@ -943,8 +943,8 @@ td:first-child {
       <p>Qwen3.7 Max (57) → Qwen3.8 Max (est. ~60-62). El salto es más moderado que 3.6→3.7 (+5.2), pero se concentra en agentic tasks (+5.9 en Terminal-Bench, +2.7 en SWE-Verified). Esto sugiere un salto de +4-6 pts en Intelligence Index.</p>
     </div>
     <div class="methodology-step">
-      <h4>Validación previa: la predicción 3.6 fue acertada</h4>
-      <p>Predijimos ~52 para Qwen3.6-27B basándonos en el salto 3.5→3.6 Max. El modelo real quedó en ~52 en Arena AI. La metodología delta-extrapolación tiene historial comprobado. Esto aumenta la confianza en la predicción 3.8.</p>
+      <h4>Validación previa: la predicción 3.6</h4>
+      <p>Para el 3.6-27B predijimos 5 benchmarks crudos en abril de 2026 (4/5 en rango; no había predicción AAI — AAI aún no puntuaba 27B). Su score final en la escala actual es 38 (v4.1.1; antes 46 en v4.0). Cuidado: el "52" que circuló de ese modelo era un valor de la escala anterior — comparar 46/52 de v4.0 con 38/52 de v4.1.1 no es válido. La validación limpia AAI→AAI de la serie es solo esta del 3.8.</p>
     </div>
     <div class="methodology-step">
       <h4>Ajuste por tamaño: los modelos densos amplifican saltos</h4>
@@ -962,7 +962,7 @@ td:first-child {
 
   <div class="highlight cyan">
     <strong>📌 Nota importante:</strong>
-    <p>Esta página se actualizó de Qwen3.7 a Qwen3.8 tras el anuncio oficial del 3 de agosto de 2026. Las predicciones de Qwen3.7 se archivaron en el log de actualizaciones. La predicción central de ~52 para Qwen3.6-27B fue acertada.</p>
+    <p>Esta página se actualizó de Qwen3.7 a Qwen3.8 tras el anuncio oficial del 3 de agosto de 2026. Las predicciones de Qwen3.7 se archivaron en el log de actualizaciones. La predicción de ~52 para el 3.8-27B se ha validado contra AAI v4.1.1 (la misma escala).</p>
   </div>
 </section>
 
@@ -1408,10 +1408,10 @@ td:first-child {
   <ul>
     <li><strong>Base:</strong> +3-5 pts del salto Max como mínimo. El 27B históricamente amplía saltos un 1.5-2x vs Max</li>
     <li><strong>Agentic boost:</strong> El salto de 3.8 Max es especialmente fuerte en agentic (+5.9 Terminal-Bench). El 27B de 3.6 saltó +17.7 pts en Terminal-Bench en 3.5→3.6 — el modelo que más se beneficia de mejoras en agentic data+RL</li>
-    <li><strong>Validación previa:</strong> Nuestra predicción de ~52 para Qwen3.6-27B fue acertada. La metodología tiene historial comprobado</li>
+    <li><strong>Validación previa:</strong> Para el 3.6-27B predijimos 5 benchmarks crudos en abril (4/5 en rango; sin predicción AAI). La validación AAI→AAI de la serie es esta misma, del 3.8: una sola muestra</li>
     <li><strong>Ceiling:</strong> Claude Opus 4.6 Max está en 53. Un 27B que lo iguale o supere sería histórico</li>
     <li><strong>Arquitectura:</strong> Se espera que mantenga ~27B dense con mejoras en atención y MTP. DFlash + MTP puede dar 1.5x–2.5x de speedup en llama.cpp</li>
-    <li><strong>Resultado (18 ago):</strong> AAI real = <strong>52</strong> → predicción central acertada al punto. El salto real vs 3.6-27B (46 v4.0) fue +6, dentro del rango +4-9 previsto.</li>
+    <li><strong>Resultado (18 ago):</strong> AAI real = <strong>52</strong> → predicción central acertada al punto. El salto real vs 3.6-27B en la misma escala (38 → 52, v4.1.1) fue +14: los densos amplifican los saltos más de lo previsto (rango esperado +4-9 contra el 46 de v4.0 era una comparación entre escalas, inválida).</li>
   </ul>
 
   <div class="highlight blue">
