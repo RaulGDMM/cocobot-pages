@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, MoE intermedio y Max) tras el canary Qwen3.8-Flash-Next del 26 de agosto de 2026. Ancla: 125B-A6B + 51B n-gram embedding. Viabilidad local en RTX 5090.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-dark: #06060b;
+  --bg-card: rgba(18, 18, 30, 0.8);
+  --border: rgba(124, 58, 237, 0.2);
+  --border-soft: rgba(124, 58, 237, 0.1);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --primary: #7c3aed;
+  --primary-light: #a78bfa;
+  --primary-soft: rgba(124, 58, 237, 0.12);
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.08);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.08);
+  --miss: #f87171;
+  --miss-bg: rgba(248, 113, 113, 0.08);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96, 165, 250, 0.08);
+  --cyan: #22d3ee;
+  --cyan-bg: rgba(34, 211, 238, 0.08);
+  --orange: #fb923c;
+  --orange-bg: rgba(251, 146, 60, 0.08);
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* Background: grid + glows */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(124, 58, 237, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 30%, rgba(34, 211, 238, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 95%, rgba(96, 165, 250, 0.05) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
+/* Progress bar */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--primary), var(--cyan));
+  z-index: 10000;
+}
+
+/* Back link + hamburger */
+.back-link {
+  position: fixed; top: 18px; left: 20px; z-index: 9000;
+}
+.back-link a {
+  display: inline-block;
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px; font-weight: 600;
+  background: rgba(10, 10, 18, 0.75);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  transition: all .25s;
+}
+.back-link a:hover { color: var(--text-primary); border-color: var(--primary); }
+
+.hamburger {
+  position: fixed; top: 18px; right: 20px; z-index: 9001;
+  width: 42px; height: 42px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+  cursor: pointer;
+  background: rgba(10, 10, 18, 0.75);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+.hamburger span {
+  display: block; width: 18px; height: 2px;
+  background: var(--text-secondary); border-radius: 2px;
+  transition: all .3s;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.nav-menu {
+  position: fixed; top: 0; right: -320px; width: 300px; height: 100vh;
+  z-index: 9000;
+  background: rgba(10, 10, 18, 0.97);
+  border-left: 1px solid var(--border);
+  padding: 90px 28px 30px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: right .35s cubic-bezier(.4,0,.2,1);
+  backdrop-filter: blur(14px);
+}
+.nav-menu.active { right: 0; }
+.nav-menu a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  padding: 10px 12px; border-radius: 8px;
+  transition: all .2s;
+}
+.nav-menu a:hover { background: var(--primary-soft); color: var(--text-primary); }
+
+/* Hero */
+.hero {
+  max-width: 1100px; margin: 0 auto;
+  padding: 120px 24px 60px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  padding: 7px 16px; border-radius: 999px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--warning);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(251,191,36,.5); }
+  50% { opacity: .6; box-shadow: 0 0 0 6px rgba(251,191,36,0); }
+}
+.hero h1 {
+  font-size: clamp(44px, 7.5vw, 76px);
+  font-weight: 900; line-height: 1.02;
+  letter-spacing: -0.03em;
+  background: linear-gradient(120deg, #f1f5f9 20%, var(--primary-light) 55%, var(--cyan) 90%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+.hero h2 {
+  font-size: clamp(17px, 2.4vw, 22px);
+  font-weight: 600; color: var(--text-secondary);
+  max-width: 820px; margin-bottom: 26px;
+}
+.hero h2 strong { color: var(--text-primary); }
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px;
+}
+.badge {
+  font-size: 12px; font-weight: 600;
+  padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+.badge.live {
+  background: var(--warning-bg); border-color: rgba(251,191,36,.35); color: var(--warning);
+}
+.badge.blue { background: var(--blue-bg); border-color: rgba(96,165,250,.3); color: var(--blue); }
+.badge.cyan { background: var(--cyan-bg); border-color: rgba(34,211,238,.3); color: var(--cyan); }
+.badge.green { background: var(--success-bg); border-color: rgba(74,222,128,.3); color: var(--success); }
+
+/* Signal tracker */
+.signals {
+  max-width: 1100px; margin: 10px auto 0; padding: 0 24px 30px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;
+}
+.signal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex; gap: 14px; align-items: flex-start;
+  transition: border-color .3s;
+}
+.signal:hover { border-color: var(--border); }
+.signal .s-dot {
+  flex-shrink: 0;
+  width: 10px; height: 10px; border-radius: 50%;
+  margin-top: 7px;
+}
+.signal.open .s-dot { background: var(--warning); animation: pulse 2s infinite; }
+.signal.pending .s-dot { background: var(--text-muted); }
+.signal.done .s-dot { background: var(--success); }
+.signal h4 {
+  font-size: 13px; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 3px; letter-spacing: .01em;
+}
+.signal p { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+.signal .s-state {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.signal.open .s-state { color: var(--warning); }
+.signal.pending .s-state { color: var(--text-muted); }
+.signal.done .s-state { color: var(--success); }
+
+/* Sections */
+.section {
+  max-width: 1100px; margin: 0 auto;
+  padding: 54px 24px;
+}
+.section-title {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800; letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.section-title .num {
+  font-family: var(--mono); font-size: 0.55em; font-weight: 700;
+  color: var(--primary-light); vertical-align: super; margin-right: 8px;
+}
+.section-lead {
+  color: var(--text-secondary); font-size: 16px;
+  max-width: 850px; margin-bottom: 34px;
+}
+.section-lead strong { color: var(--text-primary); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  padding: 26px 28px;
+  margin-bottom: 20px;
+}
+.card h3 {
+  font-size: 18px; font-weight: 700; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card p { color: var(--text-secondary); font-size: 14.5px; }
+.card p + p { margin-top: 10px; }
+.card p strong { color: var(--text-primary); }
+.mono { font-family: var(--mono); }
+
+/* Spec grid */
+.spec-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px; margin: 20px 0;
+}
+.spec {
+  background: rgba(124, 58, 237, 0.05);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.spec .k {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.spec .v {
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--text-primary);
+}
+.spec .v small { display: block; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 2px; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border-soft); }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13.5px;
+}
+thead th {
+  text-align: left;
+  font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 12px 14px;
+  background: rgba(124, 58, 237, 0.06);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.07);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr { transition: background .15s; }
+tbody tr:hover { background: rgba(124, 58, 237, 0.05); }
+td.num, th.num { font-family: var(--mono); font-weight: 600; }
+td.hl { color: var(--cyan); font-weight: 700; }
+td.good { color: var(--success); font-weight: 700; }
+td.bad { color: var(--miss); font-weight: 700; }
+
+/* Prediction cards */
+.pred-card {
+  background: linear-gradient(160deg, rgba(124, 58, 237, 0.09), rgba(34, 211, 238, 0.04));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.pred-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), transparent);
+}
+.pred-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 14px;
+  margin-bottom: 8px;
+}
+.pred-head h3 {
+  font-size: 21px; font-weight: 800; letter-spacing: -0.01em;
+}
+.pred-tag {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--cyan-bg); border: 1px solid rgba(34,211,238,.3); color: var(--cyan);
+}
+.pred-sub { color: var(--text-muted); font-size: 13.5px; margin-bottom: 22px; }
+.pred-body { display: flex; flex-wrap: wrap; gap: 34px; align-items: flex-start; }
+.pred-score { min-width: 220px; }
+.pred-score .label {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 6px;
+}
+.pred-score .big {
+  font-family: var(--mono); font-size: 64px; font-weight: 800; line-height: 1;
+  background: linear-gradient(120deg, var(--primary-light), var(--cyan));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pred-score .range {
+  font-family: var(--mono); font-size: 14px; font-weight: 600;
+  color: var(--text-secondary); margin-top: 8px;
+}
+/* Thermometer */
+.thermo {
+  margin-top: 18px; margin-bottom: 4px;
+  height: 10px; border-radius: 999px;
+  background: linear-gradient(90deg, #334155, #7c3aed 40%, #22d3ee 75%, #4ade80);
+  position: relative;
+}
+.thermo .marker {
+  position: absolute; top: -5px;
+  width: 4px; height: 20px; border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,.7);
+  transition: left 1s cubic-bezier(.4,0,.2,1);
+}
+.thermo-scale {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10.5px; color: var(--text-muted);
+  margin-top: 6px;
+}
+.pred-detail { flex: 1; min-width: 280px; }
+.pred-detail ul { list-style: none; }
+.pred-detail li {
+  font-size: 14px; color: var(--text-secondary);
+  padding: 8px 0 8px 22px; position: relative;
+  border-bottom: 1px dashed rgba(124,58,237,.1);
+}
+.pred-detail li:last-child { border-bottom: none; }
+.pred-detail li::before {
+  content: '▸'; position: absolute; left: 2px; color: var(--primary-light);
+}
+.pred-detail li strong { color: var(--text-primary); }
+.conf {
+  display: inline-block; margin-top: 14px;
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  color: var(--warning);
+  background: var(--warning-bg);
+  border: 1px solid rgba(251,191,36,.25);
+  padding: 6px 12px; border-radius: 8px;
+}
+
+/* Callout */
+.callout {
+  border-radius: 14px; padding: 20px 24px;
+  margin: 20px 0; font-size: 14.5px;
+  border: 1px solid;
+}
+.callout.info { background: var(--blue-bg); border-color: rgba(96,165,250,.25); color: var(--text-secondary); }
+.callout.warn { background: var(--warning-bg); border-color: rgba(251,191,36,.25); color: var(--text-secondary); }
+.callout.ok { background: var(--success-bg); border-color: rgba(74,222,128,.25); color: var(--text-secondary); }
+.callout strong { color: var(--text-primary); }
+.callout .callout-title {
+  display: block; font-weight: 800; margin-bottom: 6px; font-size: 14px;
+}
+.callout.info .callout-title { color: var(--blue); }
+.callout.warn .callout-title { color: var(--warning); }
+.callout.ok .callout-title { color: var(--success); }
+
+/* Bar chart */
+.chart { margin: 26px 0; }
+.chart-row {
+  display: grid; grid-template-columns: 190px 1fr 54px;
+  align-items: center; gap: 14px;
+  margin-bottom: 10px;
+}
+.chart-label {
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.chart-label .sub { display: block; font-size: 10.5px; color: var(--text-muted); font-weight: 500; }
+.chart-track {
+  height: 30px; border-radius: 8px;
+  background: rgba(124, 58, 237, 0.05);
+  border: 1px solid rgba(124,58,237,.08);
+  overflow: hidden;
+}
+.chart-fill {
+  height: 100%; width: 0;
+  border-radius: 7px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+  display: flex; align-items: center;
+}
+.chart-fill.qwen-actual { background: linear-gradient(90deg, #4f46e5, #22d3ee); }
+.chart-fill.us { background: linear-gradient(90deg, #7f1d1d, #ef4444); }
+.chart-fill.cn { background: linear-gradient(90deg, #7c2d12, #fb923c); }
+.chart-fill.prediction {
+  background: repeating-linear-gradient(-45deg, #06b6d4, #06b6d4 8px, #164e63 8px, #164e63 16px);
+  border: 1px dashed rgba(34,211,238,.5);
+}
+.chart-val {
+  font-family: var(--mono); font-size: 15px; font-weight: 800;
+  color: var(--text-primary);
+}
+.chart-val.pred { color: var(--cyan); }
+.chart-legend {
+  display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px;
+  font-size: 12px; color: var(--text-muted);
+}
+.chart-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.lg { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+.lg.q { background: linear-gradient(90deg, #4f46e5, #22d3ee); }
+.lg.u { background: linear-gradient(90deg, #7f1d1d, #ef4444); }
+.lg.c { background: linear-gradient(90deg, #7c2d12, #fb923c); }
+.lg.p { background: repeating-linear-gradient(-45deg, #06b6d4, #06b6d4 4px, #164e63 4px, #164e63 8px); }
+
+/* Timeline */
+.timeline {
+  position: relative; margin: 26px 0; padding-left: 40px;
+}
+.timeline::before {
+  content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--cyan));
+}
+.timeline-item {
+  position: relative; margin-bottom: 20px;
+  padding: 18px 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  transition: all .3s;
+}
+.timeline-item:hover { border-color: var(--border); transform: translateX(4px); }
+.timeline-item::before {
+  content: ''; position: absolute; left: -30px; top: 24px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--primary); border: 2px solid var(--bg-dark);
+}
+.timeline-item.future { border-style: dashed; border-color: rgba(34,211,238,.35); }
+.timeline-item.future::before { background: var(--cyan); }
+.timeline-item .t-date {
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  color: var(--cyan); letter-spacing: .06em; margin-bottom: 5px;
+}
+.timeline-item.future .t-date { color: var(--primary-light); }
+.timeline-item p { font-size: 14px; color: var(--text-secondary); }
+.timeline-item p strong { color: var(--text-primary); }
+
+/* Log */
+.log-item {
+  border-left: 2px solid var(--border);
+  padding: 4px 0 4px 20px; margin-bottom: 22px;
+  position: relative;
+}
+.log-item::before {
+  content: ''; position: absolute; left: -5px; top: 10px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--primary-light);
+}
+.log-item .l-date {
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  color: var(--primary-light); margin-bottom: 4px;
+}
+.log-item p { font-size: 14px; color: var(--text-secondary); }
+.log-item p strong { color: var(--text-primary); }
+
+/* Ref links */
+.ref-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 18px; }
+.ref-link {
+  display: block; text-decoration: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: all .25s;
+}
+.ref-link:hover { border-color: var(--primary); transform: translateY(-2px); }
+.ref-link .r-tag {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 6px;
+}
+.ref-link h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.ref-link p { font-size: 12.5px; color: var(--text-muted); }
+
+/* Footer */
+.page-footer {
+  position: relative; z-index: 1;
+  margin-top: 60px;
+  border-top: 1px solid var(--border-soft);
+  padding: 28px 24px;
+  display: flex; justify-content: center;
+}
+.footer-inner {
+  display: flex; align-items: center; gap: 18px;
+  font-size: 13px; color: var(--text-muted);
+}
+.footer-brand { font-weight: 700; color: var(--text-secondary); }
+.visit-counter-badge {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  padding: 6px 14px; border-radius: 999px;
+}
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(26px); transition: all .7s cubic-bezier(.4,0,.2,1); }
+.reveal.visible { opacity: 1; transform: none; }
+
+@media (max-width: 720px) {
+  .hero { padding-top: 100px; }
+  .chart-row { grid-template-columns: 110px 1fr 44px; gap: 8px; }
+  .chart-label { font-size: 11px; }
+  .pred-body { gap: 22px; }
+  .pred-score .big { font-size: 52px; }
+  .back-link a { font-size: 11px; padding: 6px 12px; }
+}
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<!-- Back link -->
+<div class="back-link">
+  <a href="../index.html">← Cocobot</a>
+</div>
+
+<!-- Hamburger -->
+<div class="hamburger" id="hamburger" role="button" aria-label="Menú">
+  <span></span><span></span><span></span>
+</div>
+
+<!-- Nav Menu -->
+<div class="nav-menu" id="nav-menu">
+  <a href="#sabemos">1 · Qué sabemos ya</a>
+  <a href="#metodologia">2 · Metodología</a>
+  <a href="#denso">3 · El denso ~27B</a>
+  <a href="#moe">4 · MoE intermedio</a>
+  <a href="#max">5 · El Max</a>
+  <a href="#frontier">6 · vs Frontier</a>
+  <a href="#timeline">7 · Timeline & Fechas</a>
+  <a href="#riesgos">8 · Riesgos & Caveats</a>
+  <a href="#historico">9 · Predicciones anteriores</a>
+  <a href="#actualizaciones">10 · Actualizaciones</a>
+</div>
+
+<main>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 26 agosto 2026</div>
+  <h1>Qwen4<br>La familia completa</h1>
+  <h2>
+    El <strong>26 de agosto de 2026</strong> Qwen publicó <strong>Qwen3.8-Flash-Next</strong>, el primer open-weight bajo la nueva arquitectura Qwen4: <strong>125B con solo 6B activos + 51B de n-gram embedding</strong>. Esta página predice la familia que vendrá detrás: el <strong>denso ~27B</strong> (la estrella para hardware local), un MoE intermedio y el Max.
+  </h2>
+  <div class="hero-meta">
+    <span class="badge live">⏳ EN CURSO — nada publicado aún</span>
+    <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
+    <span class="badge">Ventana base: feb–abr 2027</span>
+    <span class="badge blue">Ancla AAI v4.1.1</span>
+  </div>
+</div>
+
+<!-- Signal tracker -->
+<div class="signals">
+  <div class="signal open">
+    <div class="s-dot"></div>
+    <div>
+      <h4>llama.cpp PR #27742</h4>
+      <p>Soporte de la arquitectura <span class="mono">qwen4exp</span> (GDN + QSA + n-gram). Abierto, sin mergear a main.</p>
+      <div class="s-state">⏳ abierto</div>
+    </div>
+  </div>
+  <div class="signal pending">
+    <div class="s-dot"></div>
+    <div>
+      <h4>AAI de Flash-Next</h4>
+      <p>El score del Artificial Analysis Intelligence Index del canary. Es el ancla que falta para calibrar los AAI predichos.</p>
+      <div class="s-state">⏳ pendiente</div>
+    </div>
+  </div>
+  <div class="signal pending">
+    <div class="s-dot"></div>
+    <div>
+      <h4>Primer "Qwen4" en la API</h4>
+      <p>Cualquier modelo <span class="mono">qwen4*</span> o preview en Qwen Cloud / DashScope. Históricamente, el Max llega a la API antes que los pesos.</p>
+      <div class="s-state">⏳ no detectado</div>
+    </div>
+  </div>
+</div>
+
+<!-- 1. Qué sabemos -->
+<div class="section" id="sabemos">
+  <h2 class="section-title reveal"><span class="num">01</span>Qué sabemos ya: el canary</h2>
+  <p class="section-lead reveal">
+    <strong>Qwen3.8-Flash-Next</strong> (modelo <span class="mono">qwen4exp</span>) salió el 26 de agosto a las 23:00 hora de Beijing, con model card completo, benchmarks y GGUF de Unsloth en día cero. No es una broma de abril: es el avance de lo que será la familia Qwen4.
+  </p>
+
+  <div class="card reveal">
+    <h3>📐 Especificaciones confirmadas (model card oficial)</h3>
+    <div class="spec-grid">
+      <div class="spec"><div class="k">Parámetros</div><div class="v">125B<small>6B activos por token</small></div></div>
+      <div class="spec"><div class="k">N-gram embedding</div><div class="v">51B<small>20M entradas · bigramas+trigramas · capa 2</small></div></div>
+      <div class="spec"><div class="k">MTP</div><div class="v">4B<small>1 capa · multi-step</small></div></div>
+      <div class="spec"><div class="k">Capas</div><div class="v">48<small>12× (3 GDN→MoE + 1 QSA→MoE)</small></div></div>
+      <div class="spec"><div class="k">MoE</div><div class="v">512 exp.<small>10 routed + 1 shared · inter 640</small></div></div>
+      <div class="spec"><div class="k">QSA</div><div class="v">micro-bloques<small>presupuesto 512 bloques / 2048 tokens · indexer MQA</small></div></div>
+      <div class="spec"><div class="k">Gated DeltaNet</div><div class="v">48/16 heads<small>dim 128</small></div></div>
+      <div class="spec"><div class="k">Gated Residual</div><div class="v">4 ramas<small>bottleneck rank 320</small></div></div>
+      <div class="spec"><div class="k">Contexto</div><div class="v">262K<small>extendible a 1M (YaRN)</small></div></div>
+      <div class="spec"><div class="k">Modalidad</div><div class="v">multimodal<small>texto + imagen + vídeo · thinking (reasoning_effort)</small></div></div>
+      <div class="spec"><div class="k">Licencia</div><div class="v">qwen-community-1.0<small>condiciones por verificar</small></div></div>
+    </div>
+    <p>
+      Las tres novedades de arquitectura: <strong>QSA</strong> (Qwen Sparse Attention) opera en micro-bloques con un indexer MQA en vez de atención densa — corte de latencia en contexto largo; <strong>Gated Residual</strong> (lectura/escritura con gates por rama) — estabilidad y expresividad; y la <strong>tabla de n-gram embedding</strong> — 20 millones de entradas de bigramas/trigramas que Qwen describe literalmente como *"un eje de escalado de parámetros que requiere menos cómputo y es más apto para offloading que el MoE"*. Es una tabla de lookup, no cómputo.
+    </p>
+  </div>
+
+  <div class="card reveal">
+    <h3>📊 Benchmarks oficiales del canary (auto-reportados)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Benchmark</th><th class="num">Flash-Next</th><th class="num">Qwen3.8-27B</th><th class="num">Qwen3.7-Plus</th><th class="num">Opus 4.6 Max</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td>DeepSWE 1.1 <em>(agentic coding)</em></td><td class="num hl">58.7</td><td class="num">42.2</td><td class="num">16.5</td><td class="num">—</td><td>salto del canary: +16.5 vs 27B</td></tr>
+          <tr><td>SWE-bench Pro</td><td class="num hl">62.5</td><td class="num">61.7</td><td class="num">55.8</td><td class="num">53.4</td><td></td></tr>
+          <tr><td>SWE-bench Multilingual</td><td class="num hl">81.0</td><td class="num">73.8</td><td class="num">75.8</td><td class="num">77.5</td><td>supera a Opus 4.6</td></tr>
+          <tr><td>NL2Repo-Bench <em>(repo-level)</em></td><td class="num">48.1</td><td class="num">42.3</td><td class="num">41.1</td><td class="num">47.6</td><td></td></tr>
+          <tr><td>CoWorkBench <em>(office long-horizon)</em></td><td class="num hl">73.9</td><td class="num">70.7</td><td class="num">65.1</td><td class="num">68.2</td><td>supera a Opus 4.6</td></tr>
+          <tr><td>JobBench <em>(professional tasks)</em></td><td class="num hl">55.7</td><td class="num">33.4</td><td class="num">27.6</td><td class="num">36.6</td><td>salto mayor: +22.3 vs 27B</td></tr>
+          <tr><td>Agents' Last Exam <em>(score)</em></td><td class="num hl">51.2</td><td class="num">42.9</td><td class="num">33.6</td><td class="num">—</td><td></td></tr>
+          <tr><td>Toolathlon Verified</td><td class="num hl">73.5</td><td class="num">67.1</td><td class="num">50.6</td><td class="num">—</td><td></td></tr>
+          <tr><td>IFBench <em>(instr. following)</em></td><td class="num hl">81.3</td><td class="num">79.5</td><td class="num">79.1</td><td class="num">62.5</td><td></td></tr>
+          <tr><td>GPQA Diamond</td><td class="num hl">91.7</td><td class="num">89.2</td><td class="num">90.3</td><td class="num">91.3</td><td></td></tr>
+          <tr><td>HLE</td><td class="num">35.9</td><td class="num">30.8</td><td class="num">34.7</td><td class="num">40.0</td><td>sigue por debajo de Opus</td></tr>
+          <tr><td>LiveCodeBench v6</td><td class="num hl">91.9</td><td class="num">90.3</td><td class="num">89.6</td><td class="num">88.8</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h3>🖥️ Viabilidad local del canary (datos Unsloth, día 0)</h3>
+    <p>
+      Unsloth publicó los GGUF el mismo día (colección <span class="mono">unsloth/Qwen3.8-Flash-Next-GGUF</span>, 177B params totales) con requisitos de <strong>75 GB mínimos</strong>. Puntos clave: la tabla n-gram <strong>tiene un floor de 4-bit</strong> (acceso aleatorio): cuantizarla más hondo daña el modelo, por eso el quant mínimo (IQ1_S) ya son 72.5 GB.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Quant (Unsloth Dynamic)</th><th class="num">Tamaño</th><th class="num">Top-1% accuracy (KLD)</th><th>En 32 GB VRAM + 64 GB RAM</th></tr></thead>
+        <tbody>
+          <tr><td>UD-IQ1_S (1-bit)</td><td class="num">72.5 GB</td><td class="num">80.2%</td><td class="good">✓ cabe</td></tr>
+          <tr><td>UD-IQ2_XXS (2-bit)</td><td class="num">~79 GB</td><td class="num">85.2%</td><td class="good">✓ cabe</td></tr>
+          <tr><td>UD-Q3_K_XL (3-bit)</td><td class="num">~90 GB</td><td class="num">90.4%</td><td class="bad">al límite</td></tr>
+          <tr><td>UD-Q4_K_XL (4-bit)</td><td class="num">~112 GB</td><td class="num">93.5%</td><td class="bad">✗ no cabe</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Unsloth afirma que la arquitectura permite inferir desde RAM con rendimiento "más cercano a VRAM de lo típico" (la tabla es lookup, no cómputo). Requiere llama.cpp con el <strong>PR #27742</strong>. Estimación conservadora en el setup de referencia (RTX 5090 + 64 GB DDR5): <strong>~15–25 tok/s</strong> de generación con quant 2-bit. La velocidad real se medirá cuando alguien con hardware similar lo corra.
+    </p>
+  </div>
+
+  <div class="callout info reveal">
+    <span class="callout-title">🔭 Lo que el canary dice sobre la familia</span>
+    El salto del canary sobre el 27B se concentra en <strong>tareas agénticas y de office</strong> (DeepSWE +16.5, JobBench +22.3), no en reasoning puro (GPQA +2.5, HLE +5.1). Si el denso 27B hereda la tabla n-gram, la mejora esperada vendrá sobre todo de <strong>recall literal de conocimiento</strong> (código, repos, APIs, idioma) y no de "poder de razonamiento" — que depende del cómputo por token, donde el MoE de 125B tiene una ventaja estructural que ningún denso 27B iguala.
+  </div>
+</div>
+
+<!-- 2. Metodología -->
+<div class="section" id="metodologia">
+  <h2 class="section-title reveal"><span class="num">02</span>Metodología</h2>
+  <p class="section-lead reveal">
+    Mismo enfoque que en las predicciones anteriores: <strong>delta-extrapolación multi-fuente</strong>, pero ahora con dos anclas y un historial que calibra la confianza.
+  </p>
+
+  <div class="card reveal">
+    <h3>🎯 Señal 1: el canary como piso de la familia</h3>
+    <p>
+      A diferencia de 3.8 (donde solo existía el Max como ancla), ahora tenemos un <strong>modelo real de la nueva arquitectura</strong>. Flash-Next domina al 27B en prácticamente todos los benchmarks del model card, así que cualquier miembro de la familia Qwen4 con el mismo o más cómputo por token debe estar en o por encima de su nivel. El canary es, literalmente, el piso de la familia — no el techo.
+    </p>
+  </div>
+
+  <div class="card reveal">
+    <h3>🎯 Señal 2: el patrón canary → familia de Qwen</h3>
+    <p>
+      Qwen3-Next (canary de Gated DeltaNet, finales de 2025) → familia Qwen3.5: <strong>~6 meses</strong>. El model card de Flash-Next lo define como *"experimental preview of the architecture that will underpin Qwen4"* — el aviso público sirve para que runtimes (llama.cpp, vLLM, SGLang) y cuantizaciones (Unsloth) estén listos antes de la familia. Si Qwen4 saliera en 6 semanas, no tendría sentido dar meses de aviso.
+    </p>
+  </div>
+
+  <div class="card reveal">
+    <h3>📏 Calibración con historial propio</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Predicción</th><th>Resultado</th><th>Lección</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3.6-27B ≈ 52 AAI</td><td class="good">✓ ACERTADA al punto (52)</td><td>La delta-extrapolación densos funciona</td></tr>
+          <tr><td>Qwen3.7-27B saldría (jun–jul 2026)</td><td class="bad">✗ FALLÓ — skip a 3.8</td><td>Con cambios de arquitectura, Qwen salta versiones: el timing es lo más frágil</td></tr>
+          <tr><td>Qwen3.8-27B ≈ 52 AAI (14 ago)</td><td class="good">✓ ACERTADA al punto (52)</td><td>Método validado dos veces en densos</td></tr>
+          <tr><td>Qwen3.8-35B-A3B saldría</td><td class="bad">✗ no publicado</td><td>Los MoE pequeños son opcionales para Qwen — predicciones MoE con confianza baja</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;">
+      Conclusión: <strong>la inteligencia predicha en densos es fiable (2/2 al punto); el timing es lo débil</strong> (1/2). Por eso las predicciones de AAI van con rangos de ±4 pts y las de fecha con tres escenarios explícitos.
+    </p>
+  </div>
+
+  <div class="callout warn reveal">
+    <span class="callout-title">⚠️ El ancla AAI de Flash-Next aún no existe</span>
+    Artificial Analysis todavía no ha puntuado al canary (v4.1.1). Los AAI de la familia Qwen4 aquí son <strong>provisionales</strong>: se derivan de los benchmarks crudos del model card + el patrón de amplificación de los densos. En cuanto AAI publique el score de Flash-Next, la sección 3–5 se recalibrará en el log de actualizaciones. La estimación provisional del propio canary: <strong>~55 (rango 53–57)</strong>.
+  </div>
+</div>
+
+<!-- 3. Denso -->
+<div class="section" id="denso">
+  <h2 class="section-title reveal"><span class="num">03</span>El denso ~27B — la estrella</h2>
+  <p class="section-lead reveal">
+    El patrón histórico es inquebrantable: cada familia Qwen tiene un denso ~27B (3.5→27B, 3.6→27B, 3.8→27B). Para un usuario con una RTX 5090, <strong>será el modelo más importante de Qwen4</strong> — y probablemente el más valioso para hardware local de toda la familia.
+  </p>
+
+  <div class="pred-card reveal">
+    <div class="pred-head">
+      <h3>Qwen4-27B (denso + tabla n-gram)</h3>
+      <span class="pred-tag">Predicción central</span>
+    </div>
+    <p class="pred-sub">Dense ~27B · arquitectura Qwen4 (GDN + QSA + n-gram) · Apache 2.0 esperado</p>
+    <div class="pred-body">
+      <div class="pred-score">
+        <div class="label">AAI predicho (v4.1.1, provisional)</div>
+        <div class="big" data-count="57">0</div>
+        <div class="range">rango 54 – 60</div>
+        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="61"></div></div>
+        <div class="thermo-scale"><span>50</span><span>54</span><span>57</span><span>60</span><span>65</span></div>
+      </div>
+      <div class="pred-detail">
+        <ul>
+          <li><strong>Base 52</strong> (Qwen3.8-27B, AAI v4.1.1) + salto por nueva arquitectura.</li>
+          <li><strong>La tabla n-gram es el eje nuevo</strong>: si hereda 10–20B de entradas (escala a cuerpo, no hace falta 51B), gana recall literal de código/repos/idiomas sin coste de cómputo. Es un eje que ningún denso actual tiene.</li>
+          <li><strong>QSA + Gated Residual + MTP multi-step</strong>: mejora de eficiencia en contexto largo y de decodificación (el MTP multi-step debería mejorar el speculative decoding).</li>
+          <li><strong>Salto esperado por benchmark</strong>: agentic +10–15% sobre 3.8-27B (SWE Pro → ~65–68, DeepSWE → ~55–60), reasoning +3–5% (GPQA → ~90–92, HLE → ~33–36).</li>
+          <li><strong>Confianza reducida</strong> porque el ancla AAI del canary no existe aún y no se sabe el tamaño exacto de la tabla.</li>
+        </ul>
+        <span class="conf">Confianza: 55% · recalibrar al salir AAI de Flash-Next</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h3>💻 Viabilidad local — RTX 5090 (32 GB) + 64 GB DDR5</h3>
+    <p>
+      Este es el escenario donde la nueva arquitectura más favorece al hardware doméstico, y es la diferencia clave con el canary: en Flash-Next se paga la inteligencia en velocidad (offload de expertos); <strong>en el denso no se paga nada</strong>.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Componente</th><th class="num">Tamaño est. (Q6_K / 4-bit)</th><th>Vive en</th><th>Impacto en velocidad</th></tr></thead>
+        <tbody>
+          <tr><td>Cuerpo denso ~27B (Q6_K)</td><td class="num">~20 GB</td><td>VRAM 5090</td><td>nulo — igual que hoy</td></tr>
+          <tr><td>Tabla n-gram 10–20B (4-bit, floor)</td><td class="num">~5–10 GB</td><td>DDR5</td><td>~1 ms/token (lookup)</td></tr>
+          <tr><td>KV cache (GDN: estado fijo) + MTP</td><td class="num">~2–4 GB</td><td>VRAM 5090</td><td>nulo</td></tr>
+          <tr><td><strong>Total</strong></td><td class="num"><strong>~27–34 GB</strong></td><td>VRAM + RAM</td><td><strong>≈ velocidad actual del 27B Q6_K (~90–100 tok/s)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;">
+      El cuerpo domina el tiempo por token; la tabla añade unas pocas lecturas aleatorias de KB que la DDR5 resuelve en microsegundos. Resultado: <strong>un modelo más inteligente a la misma velocidad que el 27B actual</strong>. El estado recurrente de GDN mantiene el KV cache diminuto (el contexto largo sigue siendo casi gratis, como en 3.6/3.8). Pendiente: que llama.cpp soporte el offload eficiente de la tabla a RAM (el PR #27742 lo incluye para el canary; el denso debería heredarlo).
+    </p>
+    <div class="callout ok" style="margin-bottom:0;">
+      <span class="callout-title">✅ Veredicto para hardware local</span>
+      Si la predicción de arquitectura se cumple, Qwen4-27B será <strong>el mejor modelo por token de segundos</strong> que un 5090 + 64 GB haya ejecutado: más inteligencia que el 27B actual a la misma velocidad, sin offload de cómputo, sin perder VRAM en expertos inactivos.
+    </div>
+  </div>
+</div>
+
+<!-- 4. MoE -->
+<div class="section" id="moe">
+  <h2 class="section-title reveal"><span class="num">04</span>MoE intermedio (~60–80B-A8B)</h2>
+  <p class="section-lead reveal">
+    El eslabón medio: más inteligente que el denso en razonamiento, menos eficiente por token. En 3.8 no apareció (el 35B-A3B de 3.6 quedó huérfano); Flash-Next sugiere que el sweet spot activo de Qwen ahora es <strong>~6B</strong>, así que la apuesta razonable es un A6B–A8B en torno a 60–80B totales.
+  </p>
+
+  <div class="pred-card reveal">
+    <div class="pred-head">
+      <h3>Qwen4-MoE (~60–80B, A6B–A8B)</h3>
+      <span class="pred-tag">Predicción central</span>
+    </div>
+    <p class="pred-sub">MoE intermedio · arquitectura Qwen4 · posible tablas n-gram reducidas</p>
+    <div class="pred-body">
+      <div class="pred-score">
+        <div class="label">AAI predicho (v4.1.1, provisional)</div>
+        <div class="big" data-count="44">0</div>
+        <div class="range">rango 40 – 48</div>
+        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="48"></div></div>
+        <div class="thermo-scale"><span>35</span><span>40</span><span>44</span><span>48</span><span>55</span></div>
+      </div>
+      <div class="pred-detail">
+        <ul>
+          <li><strong>Patrón histórico</strong>: los MoE saltan menos que los densos entre generaciones (3.6-35B-A3B: 32 en v4.1.1, muy por debajo del 27B en 52).</li>
+          <li>Con 6–8B activos, el cómputo por token sigue siendo menor que el de un denso 27B → <strong>probablemente por debajo del denso en AAI</strong>, a diferencia del canary (que tiene 125B totales).</li>
+          <li>La tabla n-gram compensa parcialmente: con acceso a lookup, un A8B con 20–30B de tabla podría empatar o superar al denso en tareas de recall.</li>
+          <li><strong>Viabilidad local</strong>: Q4 → ~35–45 GB totales; cabe con VRAM + RAM, y al tener pocos activos, la velocidad con offload es buena (~40–70 tok/s estimados).</li>
+          <li>Riesgo real: <strong>que no salga</strong>. El 35B-A3B nunca se publicó; Qwen tiene libertad de omitir el eslabón medio si el canary demuestra que A6B en 125B cubre el nicho.</li>
+        </ul>
+        <span class="conf">Confianza: 40% · riesgo de no publicación ~30%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Max -->
+<div class="section" id="max">
+  <h2 class="section-title reveal"><span class="num">05</span>El Max (flagship)</h2>
+  <p class="section-lead reveal">
+    Históricamente el Max va primero (API y pesos), y el denso llega semanas después. En 3.8: Max OW el 13 ago, 27B el 14 ago (una semana). En una familia nueva con arquitectura inédita, el desfase puede alargarse a 2–6 semanas.
+  </p>
+
+  <div class="pred-card reveal">
+    <div class="pred-head">
+      <h3>Qwen4-Max</h3>
+      <span class="pred-tag">Predicción central</span>
+    </div>
+    <p class="pred-sub">Flagship · MoE 2T+ totales · nuevo record de parámetros</p>
+    <div class="pred-body">
+      <div class="pred-score">
+        <div class="label">AAI predicho (v4.1.1, provisional)</div>
+        <div class="big" data-count="62">0</div>
+        <div class="range">rango 58 – 65</div>
+        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="80"></div></div>
+        <div class="thermo-scale"><span>55</span><span>58</span><span>62</span><span>65</span><span>70</span></div>
+      </div>
+      <div class="pred-detail">
+        <ul>
+          <li><strong>Base 58</strong> (Qwen3.8 Max, AAI v4.1.1) + salto de arquitectura (QSA + n-gram + Gated Residual).</li>
+          <li>El canary ya supera a Opus 4.6 en tareas agénticas con 125B totales; el Max de Qwen4 con varios teras de parámetros apunta a <strong>competer directamente con el top mundial</strong> (Opus 5: 63, GPT-5.6 Sol: 61, Kimi K3: 60).</li>
+          <li><strong>Desconocido clave</strong>: el 3.8-Max era text-only; el canary es multimodal. Si el Max de Qwen4 integra visión nativa (probable, dado el canary), sube el techo en benchmarks multimodales.</li>
+          <li>El salto Max→Max suele ser moderado en reasoning puro (+1–2 GPQA) y grande en agentic; la nueva arquitectura amplifica sobre todo lo segundo.</li>
+          <li>Licencia: se espera el mismo esquema "Max License" (no Apache) que en 3.8 — el Max es el producto comercial, los densos son el canal de adopción.</li>
+        </ul>
+        <span class="conf">Confianza: 45% · el techo depende del re-scoring de AAI</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Frontier -->
+<div class="section" id="frontier">
+  <h2 class="section-title reveal"><span class="num">06</span>vs Frontier</h2>
+  <p class="section-lead reveal">
+    Todos los scores reales son del <strong>Artificial Analysis Intelligence Index v4.1.1</strong> (re-scoreo de agosto 2026). Las barras rayadas son <strong>predicciones provisionales</strong> de esta página — se recalibrarán cuando AAI publique el canary.
+  </p>
+
+  <div class="card reveal">
+    <div class="chart" id="chart">
+      <div class="chart-row">
+        <div class="chart-label">Claude Opus 5<span class="sub">Anthropic · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="96.9"></div></div>
+        <div class="chart-val">63</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Claude Fable 5<span class="sub">Anthropic · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="95.4"></div></div>
+        <div class="chart-val">62</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">GPT-5.6 Sol<span class="sub">OpenAI · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="93.8"></div></div>
+        <div class="chart-val">61</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Kimi K3 (max)<span class="sub">Moonshot · open weights (jul 2026)</span></div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="92.3"></div></div>
+        <div class="chart-val">60</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen4-Max<span class="sub">PREDICCIÓN · feb–abr 2027</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="95.4"></div></div>
+        <div class="chart-val pred">~62</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen3.8 Max<span class="sub">Qwen · OW 13 ago 2026</span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="89.2"></div></div>
+        <div class="chart-val">58</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">GLM-5.2 (max)<span class="sub">Zhipu · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="81.5"></div></div>
+        <div class="chart-val">53</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN · denso local</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="87.7"></div></div>
+        <div class="chart-val pred">~57</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen3.8-27B<span class="sub">Qwen · Apache 2.0 · 14 ago 2026</span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="80"></div></div>
+        <div class="chart-val">52</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen4-MoE<span class="sub">PREDICCIÓN · A6B–A8B</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="67.7"></div></div>
+        <div class="chart-val pred">~44</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen3.7 Max<span class="sub">Qwen · re-scoreo v4.1.1 (57→47)</span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="72.3"></div></div>
+        <div class="chart-val">47</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen3.6-27B<span class="sub">Qwen · re-scoreo v4.1.1 (46→38)</span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="58.5"></div></div>
+        <div class="chart-val">38</div>
+      </div>
+      <div class="chart-legend">
+        <span><i class="lg q"></i> Qwen (real)</span>
+        <span><i class="lg u"></i> EE.UU. (Anthropic / OpenAI)</span>
+        <span><i class="lg c"></i> China (otros)</span>
+        <span><i class="lg p"></i> Predicción Qwen4 (provisional)</span>
+      </div>
+    </div>
+    <p>
+      Lectura: la familia Qwen4 predicha <strong>mantendría a Qwen en el top-3 mundial</strong> (Max emparejado con el top mundial, denso 27B emparejado con el Max actual) y — dato relevante para la comunidad local — el <strong>denso 27B seguiría siendo el mejor open-weight denso por distancia</strong> al resto: el MoE de Kimi K3 (60) no es comparable en hardware doméstico, y ningún competidor tiene un denso local con esta arquitectura.
+    </p>
+  </div>
+</div>
+
+<!-- 7. Timeline -->
+<div class="section" id="timeline">
+  <h2 class="section-title reveal"><span class="num">07</span>Timeline & Fechas</h2>
+  <p class="section-lead reveal">
+    Estimación central: <strong>primavera de 2027</strong> para la familia, con el Max primero y el denso 1–6 semanas después.
+  </p>
+
+  <div class="card reveal">
+    <h3>🎲 Escenarios de lanzamiento</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Escenario</th><th>Ventana</th><th class="num">Prob.</th><th>Señales</th></tr></thead>
+        <tbody>
+          <tr><td>Rápido (ciclo corto tipo 3.7→3.8)</td><td>nov–dic 2026</td><td class="num">~15%</td><td>API con "qwen4" antes de navidad; PR mergearse pronto</td></tr>
+          <tr><td><strong>Base (patrón canary→familia ~6 meses)</strong></td><td><strong>feb–abr 2027</strong></td><td class="num"><strong>~60%</strong></td><td>Patrón Qwen3-Next→3.5; ecosistema estabilizado</td></tr>
+          <tr><td>Lento (refinan la arquitectura)</td><td>verano 2027</td><td class="num">~25%</td><td>Patch de QSA, bugs de runtime, competencia</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h3>📡 Señales para recalibrar (y cuánto mueven la aguja)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Señal</th><th>Implicación si ocurre</th><th>Ajuste</th></tr></thead>
+        <tbody>
+          <tr><td>PR #27742 mergado a llama.cpp main</td><td>La arquitectura se considera "final" — Qwen deja de moverla</td><td class="good">−4 a −8 semanas</td></tr>
+          <tr><td>AAI publica score de Flash-Next</td><td>Ancla real para recalibrar los AAI predichos (secciones 3–5)</td><td>recalibración de scores</td></tr>
+          <tr><td>Modelo "qwen4*" o preview en Qwen API</td><td>El Max ya está corriendo internamente</td><td class="good">familia a semanas</td></tr>
+          <tr><td>Unsloth anuncia fine-tuning de Flash-Next</td><td>Ecosistema maduro → la familia no tarda</td><td class="good">−2 a −4 semanas</td></tr>
+          <tr><td>QSA "corregido" o nueva variante en un teaser</td><td>La arquitectura aún no está cerrada</td><td class="bad">+1 a +3 meses</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="t-date">26 AGO 2026 · HOY</div>
+      <p><strong>Canary publicado</strong> — Qwen3.8-Flash-Next: 125B-A6B + 51B n-gram + 4B MTP, model card completo, GGUF de Unsloth día 0, PR #27742 de llama.cpp.</p>
+    </div>
+    <div class="timeline-item future">
+      <div class="t-date">SEPT–OCT 2026 · PROBABLE</div>
+      <p><strong>Flash-Next se convierte en producto API</strong> — "Qwen3.8-Flash" en Qwen Cloud con contexto 1M, mientras el PR de llama.cpp madura y la comunidad genera benchmarks independientes.</p>
+    </div>
+    <div class="timeline-item future">
+      <div class="t-date">EST 2026 · INCERTO</div>
+      <p><strong>Possibles previews</strong> — "Qwen3.9-Flash" o "Qwen4-preview" en la API como prueba intermedia (el ritmo 3.6→3.7→3.8 de ~2 meses hace plausible un intermedio).</p>
+    </div>
+    <div class="timeline-item future">
+      <div class="t-date">FEB–ABR 2027 · ESCENARIO BASE</div>
+      <p><strong>Familia Qwen4</strong> — Max primero (API + OW con licencia propia), denso ~27B+tabla 1–6 semanas después (Apache 2.0 esperado), MoE intermedio opcional.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Riesgos -->
+<div class="section" id="riesgos">
+  <h2 class="section-title reveal"><span class="num">08</span>Riesgos & Caveats</h2>
+  <div class="card reveal">
+    <ul class="pred-detail">
+      <li><strong>Benchmarks auto-reportados.</strong> Todo lo del canary proviene del model card de Qwen. No hay evaluación independiente todavía; los números reales suelen moverse ±2–3 pts (a veces más en agentic).</li>
+      <li><strong>El ancla AAI no existe.</strong> Los tres AAI predichos (57 / 44 / 62) son provisionales hasta que AAI puntúe a Flash-Next. Si el canary queda en 53 (piso) en vez de 55–57, los predichos bajan 2 pts; si queda en 58+, suben.</li>
+      <li><strong>El re-scoring de AAI es un riesgo estructural.</strong> La versión v4.1.1 hundió al 3.7 Max de 57→47 y al 3.6-27B de 46→38. Un futuro v5 re-puntuaría a la familia Qwen4 entera — las comparaciones entre generaciones solo valen dentro de la misma versión.</li>
+      <li><strong>Licencia del canary: qwen-community-1.0.</strong> No es Apache 2.0. Las condiciones comerciales no están verificadas en esta página; el denso debería salir Apache (patrón histórico), pero no es garantía.</li>
+      <li><strong>El denso puede no heredar los 51B.</strong> La predicción asume una tabla de 10–20B. Si Qwen decide que el denso no lleva tabla n-gram, el salto de AAI cae a +2–4 pts sobre el 27B actual (solo QSA + Gated Residual) y la ventaja de hardware local desaparece.</li>
+      <li><strong>El denso puede no existir.</strong> Precedente 3.7: Max y Plus, sin open weights. La probabilidad de que Qwen4 omita el denso es baja (~15%) pero real: el canary demuestra que el MoE A6B en 125B cubre el nicho "eficiente".</li>
+      <li><strong>Soporte llama.cpp.</strong> El PR #27742 no está mergado; el offload eficiente de la tabla n-gram a RAM (la clave del escenario local) puede tardar semanas extra, como tardó el soporte de DeltaNet en su día.</li>
+      <li><strong>"~27B" no es un tamaño garantizado.</strong> Podría ser 30–32B. La predicción asume mismo tamaño de cuerpo; si crece, sube el AAI y baja la velocidad local.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 9. Historico -->
+<div class="section" id="historico">
+  <h2 class="section-title reveal"><span class="num">09</span>Predicciones anteriores</h2>
+  <p class="section-lead reveal">
+    Esta página es la tercera de la serie. Las dos anteriores — con sus aciertos y sus fallos — son la referencia metodológica y están publicadas:
+  </p>
+  <div class="ref-links reveal">
+    <a class="ref-link" href="qwen36-27b-prediction.html">
+      <div class="r-tag">Serie 1 · archivada</div>
+      <h4>Qwen3.6 27B Prediction</h4>
+      <p>La predicción original de la serie. El ~52 AAI predicho para el 3.6-27B se validó tras su publicación.</p>
+    </a>
+    <a class="ref-link" href="qwen38-prediction.html">
+      <div class="r-tag">Serie 2 · resuelta ✅</div>
+      <h4>Qwen3.8 Open Weights Prediction</h4>
+      <p>Cerrada: el 27B llegó el 14 ago y puntuó 52 AAI — predicción acertada al punto en fecha, arquitectura e inteligencia.</p>
+    </a>
+  </div>
+</div>
+
+<!-- 10. Log -->
+<div class="section" id="actualizaciones">
+  <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
+  <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">26 AGO 2026</div>
+      <p><strong>Página creada.</strong> Publicación del canary Qwen3.8-Flash-Next (23:00 Beijing). Datos: model card oficial (125B-A6B, 51B n-gram 20M entradas, QSA, Gated Residual, MTP 4B, 262K→1M ctx, licencia qwen-community-1.0), GGUF de Unsloth (IQ1_S 72.5 GB, floor 4-bit en tabla, mínimos 75 GB), PR llama.cpp #27742 abierto. Predicciones: <strong>denso 27B: 57 (54–60, conf. 55%) · MoE: 44 (40–48, conf. 40%) · Max: 62 (58–65, conf. 45%)</strong>. Ancla AAI del canary provisional: ~55 (53–57). Ventana base: feb–abr 2027.</p>
+    </div>
+  </div>
+  <div class="callout info reveal" style="margin-bottom:0;">
+    <span class="callout-title">📌 Cómo se actualizará</span>
+    Con cada señal relevante (AAI del canary, merge del PR, modelo en API, teasers) se añadirá una entrada al log, se recalibrarán los rangos y se moverán los markers de las tarjetas de predicción. Al publicarse cada miembro de la familia, su tarjeta pasará de "predicción" a "confirmado" con el veredicto, igual que en la página de 3.8.
+  </div>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+
+<script>
+// Visit counter
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/qwen4-prediction';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
+
+<script>
+// Progress bar
+var pb = document.getElementById('progress-bar');
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  pb.style.width = pct + '%';
+}, {passive: true});
+
+// Hamburger
+var ham = document.getElementById('hamburger');
+var menu = document.getElementById('nav-menu');
+ham.addEventListener('click', function(){
+  ham.classList.toggle('active');
+  menu.classList.toggle('active');
+});
+menu.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click', function(){
+    ham.classList.remove('active');
+    menu.classList.remove('active');
+  });
+});
+
+// Scroll reveal
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.08});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+// Safety net: if JS observers fail or content loads off-screen, reveal all after 3.5s
+setTimeout(function(){
+  document.querySelectorAll('.reveal:not(.visible)').forEach(function(el){ el.classList.add('visible'); });
+}, 3500);
+
+// Chart bars + count-up when visible
+var chartDone = false;
+var chartIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting && !chartDone){
+      chartDone = true;
+      document.querySelectorAll('.chart-fill').forEach(function(f){
+        f.style.width = f.getAttribute('data-w') + '%';
+      });
+      chartIO.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.25});
+var chartEl = document.getElementById('chart');
+if(chartEl) chartIO.observe(chartEl);
+
+// Big number count-up
+var bigIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var el = e.target;
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var start = null;
+      function step(ts){
+        if(!start) start = ts;
+        var t = Math.min((ts - start) / 1100, 1);
+        var eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(target * eased);
+        if(t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      bigIO.unobserve(el);
+    }
+  });
+}, {threshold: 0.5});
+document.querySelectorAll('.pred-score .big').forEach(function(el){ bigIO.observe(el); });
+
+// Thermometer markers
+var thermIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var m = e.target.querySelector('.marker');
+      if(m) m.style.left = m.getAttribute('data-pos') + '%';
+      thermIO.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.5});
+document.querySelectorAll('.thermo').forEach(function(el){ thermIO.observe(el); });
+</script>
+
+</body>
+</html>
