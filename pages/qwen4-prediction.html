@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, MoE intermedio y Max) tras el canary Qwen3.8-Flash-Next del 26 de agosto de 2026. Ancla: 125B-A6B + 51B n-gram embedding. Viabilidad local en RTX 5090.">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, MoE intermedio y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI confirmada: Flash-Next = 56 (v4.1.1). Viabilidad local en RTX 5090.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -645,7 +645,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     <span class="badge live">⏳ EN CURSO — nada publicado aún</span>
     <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
     <span class="badge">Ventana base: feb–abr 2027</span>
-    <span class="badge blue">Ancla AAI v4.1.1</span>
+    <span class="badge blue">Ancla AAI: 56 (v4.1.1)</span>
   </div>
 </div>
 
@@ -663,8 +663,8 @@ td.warn { color: var(--warning); font-weight: 700; }
     <div class="s-dot"></div>
     <div>
       <h4>AAI de Flash-Next</h4>
-      <p>El score del Artificial Analysis Intelligence Index del canary. Es el ancla que falta para calibrar los AAI predichos.</p>
-      <div class="s-state">⏳ pendiente</div>
+      <p>Score del Artificial Analysis Intelligence Index del canary: <strong>56</strong> (v4.1.1, #4 de 110 open weights). Ancla confirmada — secciones 3–5 recalibradas.</p>
+      <div class="s-state">✅ 56</div>
     </div>
   </div>
   <div class="signal pending">
@@ -696,6 +696,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       <div class="spec"><div class="k">Gated DeltaNet</div><div class="v">48/16 heads<small>dim 128</small></div></div>
       <div class="spec"><div class="k">Gated Residual</div><div class="v">4 ramas<small>bottleneck rank 320</small></div></div>
       <div class="spec"><div class="k">Contexto</div><div class="v">262K<small>extendible a 1M (YaRN)</small></div></div>
+      <div class="spec"><div class="k">AAI</div><div class="v">56<small>v4.1.1 · #4 open weights · 27 ago</small></div></div>
       <div class="spec"><div class="k">Modalidad</div><div class="v">multimodal<small>texto + imagen + vídeo · thinking (reasoning_effort)</small></div></div>
       <div class="spec"><div class="k">Licencia</div><div class="v">qwen-community-1.0<small>condiciones por verificar</small></div></div>
     </div>
@@ -783,19 +784,20 @@ td.warn { color: var(--warning); font-weight: 700; }
         <tbody>
           <tr><td>Qwen3.6-27B (abr 2026): benchmarks crudos</td><td class="warn">⚠ 4/5 en rango — sin predicción AAI</td><td>AAI aún no puntuaba 27B; comparar entre escalas no es válido (46→38 en el rescore v4.1.1)</td></tr>
           <tr><td>Qwen3.7-27B saldría (jun–jul 2026)</td><td class="bad">✗ FALLÓ — skip a 3.8</td><td>Con cambios de arquitectura, Qwen salta versiones: el timing es lo más frágil</td></tr>
-          <tr><td>Qwen3.8-27B ≈ 52 AAI (14 ago)</td><td class="good">✓ ACERTADA al punto (52, misma escala)</td><td>La única validación limpia AAI→AAI de la serie</td></tr>
+          <tr><td>Qwen3.8-27B ≈ 52 AAI (14 ago)</td><td class="good">✓ ACERTADA al punto (52, misma escala)</td><td>Validación limpia AAI→AAI #1 de la serie</td></tr>
+          <tr><td>Ancla Flash-Next ≈ 55 (rango 53–57) (26 ago)</td><td class="good">✓ EN RANGO — real: 56</td><td>La extrapolación crudos→AAI vuelve a funcionar: +1 sobre el centro del rango</td></tr>
           <tr><td>Qwen3.8-35B-A3B saldría</td><td class="bad">✗ no publicado</td><td>Los MoE pequeños son opcionales para Qwen — predicciones MoE con confianza baja</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:12px;">
-      Conclusión: <strong>la única validación limpia AAI→AAI (3.8) acertó al punto, pero es una sola muestra</strong>; el timing es lo débil (1/2). Por eso las predicciones de AAI van con rangos de ±4 pts, las de fecha con tres escenarios explícitos, y ninguna predicción se toma como "método probado" con una sola acierto.
+      Conclusión: <strong>dos estimaciones AAI, dos aciertos (3.8 al punto; ancla del canary en rango)</strong>; el timing sigue siendo lo débil (1/2). Por eso las predicciones de AAI van con rangos de ±4 pts, las de fecha con tres escenarios explícitos, y ninguna predicción se toma como "método probado" con una sola acierto.
     </p>
   </div>
 
   <div class="callout warn reveal">
-    <span class="callout-title">⚠️ El ancla AAI de Flash-Next aún no existe</span>
-    Artificial Analysis todavía no ha puntuado al canary (v4.1.1). Los AAI de la familia Qwen4 aquí son <strong>provisionales</strong>: se derivan de los benchmarks crudos del model card + el patrón de amplificación de los densos. En cuanto AAI publique el score de Flash-Next, la sección 3–5 se recalibrará en el log de actualizaciones. La estimación provisional del propio canary: <strong>~55 (rango 53–57)</strong>.
+    <span class="callout-title">✅ Ancla confirmada: Flash-Next = 56 (AAI v4.1.1)</span>
+    Artificial Analysis ha puntuado ya al canary: <strong>56</strong> (#4 de 110 open weights; 73.5 tok/s; muy verboso: 200M tokens de output). La estimación provisional de esta página (~55, rango 53–57) la cubre, así que la extrapolación crudos→AAI vuelve a validar. Predicciones recalibradas: <strong>denso 58 (55–61) · MoE 45 (40–49) · Max 63 (59–66)</strong> — detalles en el log. Dato clave: 56 es solo <strong>+4 sobre el denso 27B (52)</strong> pese a 125B totales — el salto del canary se reparte entre eficiencia y agentic, no es un colapso de la escala.
   </div>
 </div>
 
@@ -814,21 +816,21 @@ td.warn { color: var(--warning); font-weight: 700; }
     <p class="pred-sub">Dense ~27B · arquitectura Qwen4 (GDN + QSA + n-gram) · Apache 2.0 esperado</p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI predicho (v4.1.1, provisional)</div>
-        <div class="big" data-count="57">0</div>
-        <div class="range">rango 54 – 60</div>
-        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="61"></div></div>
-        <div class="thermo-scale"><span>50</span><span>54</span><span>57</span><span>60</span><span>65</span></div>
+        <div class="label">AAI predicho (v4.1.1, recalibrado)</div>
+        <div class="big" data-count="58">0</div>
+        <div class="range">rango 55 – 61</div>
+        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="53"></div></div>
+        <div class="thermo-scale"><span>50</span><span>55</span><span>58</span><span>61</span><span>65</span></div>
       </div>
       <div class="pred-detail">
         <ul>
-          <li><strong>Base 52</strong> (Qwen3.8-27B, AAI v4.1.1) + salto por nueva arquitectura.</li>
+          <li><strong>Base 52</strong> (Qwen3.8-27B, AAI v4.1.1) + salto por nueva arquitectura. El ancla del canary (56, +4 sobre el 27B) valida que la arquitectura sube AAI, pero el composite no premia el salto agéntico tanto como los benchmarks crudos.</li>
           <li><strong>La tabla n-gram es el eje nuevo</strong>: si hereda 10–20B de entradas (escala a cuerpo, no hace falta 51B), gana recall literal de código/repos/idiomas sin coste de cómputo. Es un eje que ningún denso actual tiene.</li>
           <li><strong>QSA + Gated Residual + MTP multi-step</strong>: mejora de eficiencia en contexto largo y de decodificación (el MTP multi-step debería mejorar el speculative decoding).</li>
           <li><strong>Salto esperado por benchmark</strong>: agentic +10–15% sobre 3.8-27B (SWE Pro → ~65–68, DeepSWE → ~55–60), reasoning +3–5% (GPQA → ~90–92, HLE → ~33–36).</li>
-          <li><strong>Confianza reducida</strong> porque el ancla AAI del canary no existe aún y no se sabe el tamaño exacto de la tabla.</li>
+          <li><strong>Confianza sube</strong> con el ancla confirmada (56, en rango); queda el desconocido del tamaño exacto de la tabla n-gram.</li>
         </ul>
-        <span class="conf">Confianza: 55% · recalibrar al salir AAI de Flash-Next</span>
+        <span class="conf">Confianza: 60% · ancla AAI confirmada (56)</span>
       </div>
     </div>
   </div>
@@ -874,11 +876,11 @@ td.warn { color: var(--warning); font-weight: 700; }
     <p class="pred-sub">MoE intermedio · arquitectura Qwen4 · posible tablas n-gram reducidas</p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI predicho (v4.1.1, provisional)</div>
-        <div class="big" data-count="44">0</div>
-        <div class="range">rango 40 – 48</div>
-        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="48"></div></div>
-        <div class="thermo-scale"><span>35</span><span>40</span><span>44</span><span>48</span><span>55</span></div>
+        <div class="label">AAI predicho (v4.1.1, recalibrado)</div>
+        <div class="big" data-count="45">0</div>
+        <div class="range">rango 41 – 49</div>
+        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="50"></div></div>
+        <div class="thermo-scale"><span>35</span><span>41</span><span>45</span><span>49</span><span>55</span></div>
       </div>
       <div class="pred-detail">
         <ul>
@@ -909,11 +911,11 @@ td.warn { color: var(--warning); font-weight: 700; }
     <p class="pred-sub">Flagship · MoE 2T+ totales · nuevo record de parámetros</p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI predicho (v4.1.1, provisional)</div>
-        <div class="big" data-count="62">0</div>
-        <div class="range">rango 58 – 65</div>
-        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="80"></div></div>
-        <div class="thermo-scale"><span>55</span><span>58</span><span>62</span><span>65</span><span>70</span></div>
+        <div class="label">AAI predicho (v4.1.1, recalibrado)</div>
+        <div class="big" data-count="63">0</div>
+        <div class="range">rango 59 – 66</div>
+        <div class="thermo"><div class="marker" style="left: 0%;" data-pos="53"></div></div>
+        <div class="thermo-scale"><span>55</span><span>59</span><span>63</span><span>66</span><span>70</span></div>
       </div>
       <div class="pred-detail">
         <ul>
@@ -933,7 +935,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="frontier">
   <h2 class="section-title reveal"><span class="num">06</span>vs Frontier</h2>
   <p class="section-lead reveal">
-    Todos los scores reales son del <strong>Artificial Analysis Intelligence Index v4.1.1</strong> (re-scoreo de agosto 2026). Las barras rayadas son <strong>predicciones provisionales</strong> de esta página — se recalibrarán cuando AAI publique el canary.
+    Todos los scores son del <strong>Artificial Analysis Intelligence Index v4.1.1</strong> (re-scoreo de agosto 2026), incluido el canary (56). Las barras rayadas son <strong>predicciones recalibradas</strong> de esta página.
   </p>
 
   <div class="card reveal">
@@ -960,8 +962,8 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen4-Max<span class="sub">PREDICCIÓN · feb–abr 2027</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="95.4"></div></div>
-        <div class="chart-val pred">~62</div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="96.9"></div></div>
+        <div class="chart-val pred">~63</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen3.8 Max<span class="sub">Qwen · OW 13 ago 2026</span></div>
@@ -975,8 +977,8 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN · denso local</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="87.7"></div></div>
-        <div class="chart-val pred">~57</div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="89.2"></div></div>
+        <div class="chart-val pred">~58</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen3.8-27B<span class="sub">Qwen · Apache 2.0 · 14 ago 2026</span></div>
@@ -985,8 +987,8 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen4-MoE<span class="sub">PREDICCIÓN · A6B–A8B</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="67.7"></div></div>
-        <div class="chart-val pred">~44</div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="69.2"></div></div>
+        <div class="chart-val pred">~45</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen3.7 Max<span class="sub">Qwen · re-scoreo v4.1.1 (57→47)</span></div>
@@ -1039,7 +1041,7 @@ td.warn { color: var(--warning); font-weight: 700; }
         <thead><tr><th>Señal</th><th>Implicación si ocurre</th><th>Ajuste</th></tr></thead>
         <tbody>
           <tr><td>PR #27742 mergado a llama.cpp main</td><td>La arquitectura se considera "final" — Qwen deja de moverla</td><td class="good">−4 a −8 semanas</td></tr>
-          <tr><td>AAI publica score de Flash-Next</td><td>Ancla real para recalibrar los AAI predichos (secciones 3–5)</td><td>recalibración de scores</td></tr>
+          <tr><td>AAI publica score de Flash-Next</td><td><strong>✓ OCURRIDO (27 ago)</strong> — 56, en rango provisional. Secciones 3–5 recalibradas (+1).</td><td class="good">ancla fijada</td></tr>
           <tr><td>Modelo "qwen4*" o preview en Qwen API</td><td>El Max ya está corriendo internamente</td><td class="good">familia a semanas</td></tr>
           <tr><td>Unsloth anuncia fine-tuning de Flash-Next</td><td>Ecosistema maduro → la familia no tarda</td><td class="good">−2 a −4 semanas</td></tr>
           <tr><td>QSA "corregido" o nueva variante en un teaser</td><td>La arquitectura aún no está cerrada</td><td class="bad">+1 a +3 meses</td></tr>
@@ -1074,7 +1076,7 @@ td.warn { color: var(--warning); font-weight: 700; }
   <div class="card reveal">
     <ul class="pred-detail">
       <li><strong>Benchmarks auto-reportados.</strong> Todo lo del canary proviene del model card de Qwen. No hay evaluación independiente todavía; los números reales suelen moverse ±2–3 pts (a veces más en agentic).</li>
-      <li><strong>El ancla AAI no existe.</strong> Los tres AAI predichos (57 / 44 / 62) son provisionales hasta que AAI puntúe a Flash-Next. Si el canary queda en 53 (piso) en vez de 55–57, los predichos bajan 2 pts; si queda en 58+, suben.</li>
+      <li><strong>El ancla AAI ya existe: 56 (confirmado 27 ago).</strong> La estimación provisional (53–57) la cubrió, así que la recalibración (+1) es pequeña. Riesgo residual: que el denso no herede la tabla n-gram completa — en ese caso el salto cae a +2–4 pts y el 27B predicho bajaría a ~54–55.</li>
       <li><strong>El re-scoring de AAI es un riesgo estructural.</strong> La versión v4.1.1 hundió al 3.7 Max de 57→47 y al 3.6-27B de 46→38. Un futuro v5 re-puntuaría a la familia Qwen4 entera — las comparaciones entre generaciones solo valen dentro de la misma versión.</li>
       <li><strong>Licencia del canary: qwen-community-1.0.</strong> No es Apache 2.0. Las condiciones comerciales no están verificadas en esta página; el denso debería salir Apache (patrón histórico), pero no es garantía.</li>
       <li><strong>El denso puede no heredar los 51B.</strong> La predicción asume una tabla de 10–20B. Si Qwen decide que el denso no lleva tabla n-gram, el salto de AAI cae a +2–4 pts sobre el 27B actual (solo QSA + Gated Residual) y la ventaja de hardware local desaparece.</li>
@@ -1109,6 +1111,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">27 AGO 2026</div>
+      <p><strong>Señal 2 recibida: AAI puntuó a Flash-Next — 56 (v4.1.1)</strong>. #4 de 110 open weights; 73.5 tok/s; 200M tokens de output (muy verboso). La estimación provisional de la página (~55, rango 53–57) la cubre → la extrapolación crudos→AAI vuelve a validar (2/2). <strong>Recalibración (+1 sobre el centro): denso 57→58 (55–61, conf. 55→60%) · MoE 44→45 (41–49) · Max 62→63 (59–66)</strong>. Lectura clave: 56 = solo +4 sobre el denso 27B (52) pese a 125B totales — el salto del canary se reparte entre eficiencia y agentic; el composite no premia el salto agéntico bruto. Riesgo residual destacado: si el denso no hereda la tabla n-gram completa, su AAI bajaría a ~54–55.</p>
+    </div>
     <div class="log-item">
       <div class="l-date">26 AGO 2026</div>
       <p><strong>Página creada.</strong> Publicación del canary Qwen3.8-Flash-Next (23:00 Beijing). Datos: model card oficial (125B-A6B, 51B n-gram 20M entradas, QSA, Gated Residual, MTP 4B, 262K→1M ctx, licencia qwen-community-1.0), GGUF de Unsloth (IQ1_S 72.5 GB, floor 4-bit en tabla, mínimos 75 GB), PR llama.cpp #27742 abierto. Predicciones: <strong>denso 27B: 57 (54–60, conf. 55%) · MoE: 44 (40–48, conf. 40%) · Max: 62 (58–65, conf. 45%)</strong>. Ancla AAI del canary provisional: ~55 (53–57). Ventana base: feb–abr 2027.</p>
