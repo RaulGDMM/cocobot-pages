@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-08-29",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Tencent libera y open-sourcea Hy4 preview: MoE de 770B (49B activos) con contexto de 1M y licencia Apache 2.0",
+          "summary": "Nuevo flagship de Tencent Hy: 770B parámetros totales / 49B activos, ventana de 1M tokens real (sparse attention + IndexCache) y capa MTP integrada. En su eval ciega interna (163 expertos, 203 tareas) anota 2.99/4, por 2.92 de GLM-5.3 y 2.94 de Kimi K3. Precio API de $0.834/M input (input cacheado a $0.042/M), un ~40% por debajo de GLM-5.3. Pesa ~770GB en FP8: no cabe en un nodo 8xH100, así que apunta a API o H200, no a llama.cpp.",
+          "source": "https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/",
+          "source_name": "Tencent Hy",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI corta el suministro de modelos a Cursor (ya propiedad de SpaceX) con apagado propuesto el 12 de noviembre",
+          "summary": "Tras la compra de Cursor por SpaceX ($60B), OpenAI ha notificado a SpaceX que retirará sus modelos de Cursor, con fecha de corte propuesta del 12/11/2026 ('el máximo aviso que permite el contrato'). Afecta a GPT-5.x y la familia Codex dentro del editor. El modelo Astra, según OpenAI, 'nunca estará disponible por canales oficiales'. Escalada directa de la rivalidad Musk-Altman.",
+          "source": "https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/",
+          "source_name": "OpenAI",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Anthropic: sus 'investigadores automáticos' (AAR) mitigan 10 fallos de alineación cerrando del 26% al 96% del gap de seguridad",
+          "summary": "Paper del programa Fellows (Chen Yueh-Han) donde agentes Claude Opus 4.8 ejecutan el bucle completo de investigación de alineación: buscan literatura, proponen método y datos, entrenan y puntúan. En 10 fallos (decepción, sycophancy, jailbreaks, reward hacking...) superan a 6 investigadores humanos (20% de gap vs. ~82-85% de media). El método generaliza a modelos 4.7x mayores (GLM-4-32B, Qwen2.5-72B) y el harness queda open-source.",
+          "source": "https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures",
+          "source_name": "Anthropic",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "OpenAI, Anthropic y 116 empresas firman una carta abierta por la ciberdefensa ante los ataques con IA",
+          "summary": "Publicada el 27/08, la carta 'A call for collective action on cyber defense' avisa de que 'en los próximos meses los ciberataques con IA serán mucho más frecuentes y sofisticados'. Firman Google, Microsoft, AWS, Oracle, IBM, CrowdStrike, Perplexity y Hugging Face, entre otros. Destacan las ausencias: Meta, Nvidia y Apple no firman, lo que debilita el carácter 'colectivo' de la iniciativa.",
+          "source": "https://pasqualepillitteri.it/en/news/13305/openai-anthropic-100-companies-ai-cyber-defense-letter",
+          "source_name": "OpenAI / 116 empresas",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Google DeepMind ejecuta la primera evaluación doble-ciego de un modelo frontier con el AISI de Singapur",
+          "summary": "Anunciado el 27/08: por primera vez un proveedor de modelos y un evaluador independiente realizaron una evaluación formal sin que ninguna parte viera los datos de la otra, sellando los pesos de Gemini y los prompts de benchmark en un enclave de hardware cifrado. Piloto con AISI de Singapur, OpenMined, MLCommons y AVERI sobre Gemini 2.5 Flash Lite. El valor no está en la puntuación, sino en el método de supervisión creíble.",
+          "source": "https://www.techtimes.com/articles/325882/20260828/google-deepmind-ran-historys-first-ai-benchmark-evaluation-where-neither-side-could-cheat.htm",
+          "source_name": "TechTimes",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Meta e Illinois (UIUC) publican EvoHarness-RL: una capa de runtime autoevolutiva para agentes LLM (96.9% de éxito vs. 47.9% baseline)",
+          "summary": "Papel del 28/08 que presenta una capa de coordinación entrenable que permite a los agentes crear, acceder y gestionar su propio estado externo. Sube del 47.9% al 96.9% en un benchmark estándar. Evoluciona de Meta-Harness (marzo 2026): en vez de optimizar el harness por búsqueda, el propio modelo aprende a construir y refinar la capa de coordinación.",
+          "source": "https://cryptobriefing.com/meta-evoharness-rl-ai-agents/",
+          "source_name": "Cryptobriefing",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Barret Zoph abandona OpenAI por segunda vez y se une a Google como VP de investigación de Gemini",
+          "summary": "Confirmado por el WSJ el 28/08: Zoph (ex-Google, co-fundador de Thinking Machines con Mira Murati) vuelve a Mountain View para llevar RL y post-training de Gemini tras solo 5 meses de su segundo paso en OpenAI (ene-jun 2026). Refleja el drenaje de talento de OpenAI (también ha perdido a su COO y un directivo de data centers) y el contragolpe de Google en post-training.",
+          "source": "https://www.aichatdaily.com/ai-business/barret-zoph-exits-openai-second-time-joins-google",
+          "source_name": "AI Chat Daily",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10679 disponible (5 builds nuevos desde tu b10673) — sin parche de seguridad urgente",
+          "summary": "Builds nuevos: b10679 (bench --tensor-read-lazy), b10678 (qwen4exp: menos graph splits), b10677 (Vulkan: fix view-alias dependencies en ggml_vk_graph_optimize), b10676 (fix conv_transpose_2d con múltiples batches), b10675 (Vulkan: hoisting de row IDs y expert count). Cambios menores de rendimiento/bugs Vulkan; los CVEs abiertos en el aviso son de marzo y ya deberían estar parcheados en b10673. No es urgente, pero si usas Vulkan o conv_transpose conviene actualizar al b10679.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Día intenso: Tencent libera Hy4 (770B MoE open-source con 1M de contexto), OpenAI corta el suministro de modelos a Cursor tras la compra de SpaceX, y Anthropic demuestra que sus agentes automatizan el post-training de alineación."
+    },
+    {
       "date": "2026-08-28",
       "news": [
         {
@@ -4870,36 +4940,6 @@
         }
       ],
       "summary": "Día activo con cambios importantes en facturación de GitHub Copilot, nuevos lanzamientos de OpenAI Codex y Gemini, y avances en gobernanza de agentes IA."
-    },
-    {
-      "date": "2026-05-30",
-      "news": [
-        {
-          "category": "llama",
-          "title": "llama.cpp: builds b9411-b9415 — soporte DeepSeekV32, DeepSeekOCR 2, skip_download y más",
-          "summary": "Seis nuevos builds de llama.cpp publicados el 29 de mayo: b9415 añade la opción skip_download para descargas (#23059), b9414 incorpora soporte DeepSeekOCR 2 en mtmd (#20975), b9413 verifica versión PTX en host para proteger dispatch PDL (#23530), b9412 aumenta timeout del servidor a 3600s (#23842), y b9411 añade soporte DeepseekV32ForCausalLM con implementación genérica de Sparse Attention (DSA) (#23346). ⚠️ CVEs pendientes: GHSA-j8rj-fmpv-wcxw (CRITICAL: RCE no autenticado vía GRAPH_COMPUTE), GHSA-3p4r-fq3f-q74v (HIGH: Heap Buffer Overflow en mem_size), GHSA-96jg-mvhq-q7q7 (HIGH: Heap Buffer Overflow en GGUF).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub - llama.cpp releases",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "Qwen3-Coder-Next disponible: modelo de código con arquitectura MoE y atención híbrida",
-          "summary": "Qwen3-Coder-Next, basado en Qwen3-Next-80B-A3B-Base, adopta una arquitectura novedosa con atención híbrida y Mixture of Experts (MoE). Ha sido entrenado agentically a escala con síntesis de tareas ejecutables, interacción con entorno y reinforcement learning, logrando fuertes capacidades de codificación y agenticas con costos de inferencia significativamente menores. Disponible en HuggingFace.",
-          "source": "https://huggingface.co/Qwen/Qwen3-Coder-Next",
-          "source_name": "Hugging Face - Qwen3-Coder-Next",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "OpenClaw: framework agéntico open-source con 454+ vulnerabilidades, Gartner recomienda bloquear descargas",
-          "summary": "El framework agéntico open-source OpenClaw ha registrado más de 454 vulnerabilidades. Gartner recomienda bloquear descargas del proyecto. Como respuesta, Nvidia lanzó NemoClaw, una alternativa enterprise-grade con aislamiento de kernel y políticas Rego. La noticia resalta los riesgos de seguridad en frameworks agénticos open-source.",
-          "source": "https://www.neuralbuddies.com/p/ai-news-recap-may-29-2026",
-          "source_name": "NeuralBuddies - AI News Recap May 29",
-          "star": false
-        }
-      ],
-      "summary": "Día relativamente tranquilo en lanzamientos de modelos, pero con novedades relevantes: nuevos builds de llama.cpp con soporte DeepSeekV32, el framework OpenClaw con 454+ vulnerabilidades detectadas, y Qwen3-Coder-Next disponible en HuggingFace."
     }
   ]
 }
