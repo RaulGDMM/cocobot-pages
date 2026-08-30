@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menorca en septiembre 2026 — Guía interactiva · Cocobot</title>
+<meta name="description" content="Guía interactiva de Menorca: itinerario de 7 días (5-11 septiembre), mapa con calas y pueblos, eventos, gastronomía y checklist.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root{
+  --bg:#f6f1e7; --surface:#fffdf8; --surface2:#fbf7ee;
+  --ink:#1d2b36; --muted:#5d6c78; --line:#e4dac6;
+  --sea:#0e6e94; --sea-deep:#0a4a66; --sea-soft:#e3f0f5;
+  --terra:#d4693c; --terra-soft:#f9e8de;
+  --sand:#e9ddc5; --green:#3d7a4f; --green-soft:#e4efe2;
+  --gold:#e8a33d; --gold-soft:#fbf0d9;
+  --shadow:0 6px 24px rgba(29,43,54,.08);
+  --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;line-height:1.2}
+img{max-width:100%}
+a{color:var(--sea)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* ===== BACK BUTTON (mandatory) ===== */
+.back-link{position:fixed;top:14px;left:14px;z-index:1200;background:rgba(255,253,248,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:8px 16px;text-decoration:none;color:var(--ink);font-size:.85rem;font-weight:600;box-shadow:var(--shadow);transition:all .2s}
+.back-link:hover{border-color:var(--sea);color:var(--sea);transform:translateY(-1px)}
+
+/* ===== HERO ===== */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#0a4a66 0%,#15678c 34%,#3f8fae 58%,#8fc0cf 76%,#f0b47c 92%,#f4c98d 100%);color:#fff;padding:84px 0 96px}
+.hero .wave{position:absolute;bottom:-2px;left:0;width:100%;pointer-events:none}
+.hero .wrap{position:relative;z-index:2}
+.hero .kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:6px 14px;border-radius:999px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;backdrop-filter:blur(4px)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);font-weight:900;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(10,30,45,.35)}
+.hero h1 em{font-style:normal;color:#ffd9a8}
+.hero .sub{margin-top:14px;font-size:1.08rem;max-width:640px;color:#f3f7f9;text-shadow:0 1px 8px rgba(10,30,45,.3)}
+.hero .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.hero .chip{background:rgba(255,255,255,.94);color:var(--sea-deep);border-radius:999px;padding:8px 16px;font-size:.88rem;font-weight:600;box-shadow:0 4px 14px rgba(10,40,60,.18);display:inline-flex;align-items:center;gap:8px}
+.hero .chip b{font-weight:700}
+.sun{position:absolute;top:64px;right:8%;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#fff3d6 0%,#ffd9a0 40%,rgba(255,217,160,0) 72%);filter:blur(2px);animation:pulse 6s ease-in-out infinite;z-index:1}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.08);opacity:1}}
+
+/* ===== NAV ===== */
+.nav{position:sticky;top:0;z-index:1000;background:rgba(255,253,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:10px;height:58px}
+.nav .brand{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;color:var(--sea-deep);text-decoration:none;white-space:nowrap;margin-right:6px}
+.nav-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.86rem;font-weight:600;padding:7px 12px;border-radius:999px;white-space:nowrap;transition:all .15s}
+.nav-links a:hover{background:var(--sea-soft);color:var(--sea-deep)}
+.nav-links a.active{background:var(--sea);color:#fff}
+.hamburger{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:10px;width:40px;height:38px;font-size:1.1rem;cursor:pointer;color:var(--ink)}
+@media(max-width:860px){
+  .hamburger{display:block}
+  .nav-links{display:none;position:absolute;top:58px;left:0;right:0;background:var(--surface);flex-direction:column;padding:10px 16px 16px;border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+  .nav-links.open{display:flex}
+}
+
+/* ===== SECTIONS ===== */
+section{padding:56px 0 8px}
+.section-head{margin-bottom:26px}
+.section-head .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);margin-bottom:8px}
+.section-head h2{font-size:clamp(1.8rem,3.6vw,2.5rem);font-weight:700;color:var(--sea-deep)}
+.section-head p{color:var(--muted);margin-top:8px;max-width:720px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+.b-beach{background:var(--sea-soft);color:var(--sea-deep)}
+.b-town{background:var(--green-soft);color:var(--green)}
+.b-culture{background:var(--gold-soft);color:#9a6a12}
+.b-activity{background:var(--terra-soft);color:#a4471f}
+.b-food{background:#f3e3f0;color:#8d3f77}
+.b-event{background:#e8e6f5;color:#4d4390}
+.b-verify{background:#fdecec;color:#b03030}
+
+/* ===== ITINERARY ===== */
+.day-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 4px 14px;scrollbar-width:thin}
+.day-tab{flex:0 0 auto;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:10px 16px;cursor:pointer;text-align:left;transition:all .15s;min-width:150px}
+.day-tab .d1{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.day-tab .d2{font-family:'Fraunces',serif;font-weight:700;font-size:1rem;color:var(--ink)}
+.day-tab:hover{border-color:var(--sea)}
+.day-tab.active{background:var(--sea);border-color:var(--sea)}
+.day-tab.active .d1,.day-tab.active .d2{color:#fff}
+.day-panel{display:none}
+.day-panel.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.day-title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.day-title h3{font-size:1.6rem;color:var(--sea-deep)}
+.day-title .route{font-size:.9rem;color:var(--muted);font-weight:500}
+.day-note{background:var(--gold-soft);border:1px solid #f0dcae;border-radius:12px;padding:10px 14px;font-size:.9rem;margin:14px 0;color:#7a5a12}
+.slot{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:18px 0;border-top:1px dashed var(--line)}
+.slot:first-of-type{border-top:none}
+.slot .when{font-weight:700;font-size:.9rem;color:var(--terra);display:flex;align-items:flex-start;gap:6px}
+.slot .what h4{font-size:1.08rem;margin-bottom:4px}
+.slot .what p{font-size:.93rem;color:var(--muted)}
+.place-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pchip{background:var(--sea-soft);color:var(--sea-deep);border:1px solid #c8e2ec;border-radius:999px;padding:5px 12px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
+.pchip:hover{background:var(--sea);color:#fff;border-color:var(--sea)}
+@media(max-width:640px){.slot{grid-template-columns:1fr;gap:4px}}
+
+/* ===== MAP ===== */
+.map-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.mfilter{background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
+.mfilter .dot{width:10px;height:10px;border-radius:50%}
+.mfilter.active{border-color:var(--ink);background:var(--ink);color:#fff}
+#map{height:520px;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);z-index:1;background:#cfe5ec}
+.map-tip{font-size:.82rem;color:var(--muted);margin-top:10px}
+.leaflet-popup-content-wrapper{border-radius:12px}
+.leaflet-popup-content{font-family:'Inter',sans-serif;font-size:.86rem;margin:12px 16px}
+.pp-name{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:700;margin-bottom:2px}
+.pp-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.pp-desc{color:#44525d;margin-bottom:6px}
+.pp-tip{color:#5d6c78;font-size:.8rem;border-top:1px solid #eee;padding-top:6px}
+.pp-link{display:inline-block;margin-top:8px;font-size:.8rem;font-weight:700;color:var(--sea);text-decoration:none}
+.pp-link:hover{text-decoration:underline}
+
+/* ===== PLACES GRID ===== */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.fbtn{background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s}
+.fbtn:hover{border-color:var(--sea)}
+.fbtn.active{background:var(--sea);border-color:var(--sea);color:#fff}
+.place-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.place-card{padding:18px;display:flex;flex-direction:column;gap:8px;transition:transform .15s,box-shadow .15s}
+.place-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(29,43,54,.13)}
+.place-card h4{font-size:1.12rem;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.place-card .area{font-size:.78rem;font-weight:600;color:var(--muted);margin-top:-6px}
+.place-card p{font-size:.88rem;color:var(--muted);flex:1}
+.place-card .ptip{font-size:.8rem;background:var(--surface2);border-radius:10px;padding:8px 10px;color:#5d6c78}
+.place-card .ptip b{color:var(--terra)}
+.map-btn{align-self:flex-start;background:none;border:none;color:var(--sea);font-weight:700;font-size:.84rem;cursor:pointer;padding:4px 0}
+.map-btn:hover{text-decoration:underline}
+.hidden{display:none!important}
+
+/* ===== EVENTS ===== */
+.timeline{position:relative;margin-left:8px;padding-left:26px;border-left:3px solid var(--sand)}
+.tl-item{position:relative;margin-bottom:18px;padding:16px 18px}
+.tl-item::before{content:'';position:absolute;left:-35px;top:20px;width:14px;height:14px;border-radius:50%;background:var(--sea);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--sea)}
+.tl-item.hot::before{background:var(--terra);box-shadow:0 0 0 2px var(--terra)}
+.tl-date{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--terra)}
+.tl-item h4{font-size:1.05rem;margin:2px 0}
+.tl-item p{font-size:.88rem;color:var(--muted)}
+.tl-item .loc{font-size:.8rem;color:var(--sea-deep);font-weight:600}
+
+/* ===== FOOD ===== */
+.dish-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:26px}
+.dish{padding:16px}
+.dish .ico{font-size:1.5rem}
+.dish h4{font-size:1rem;margin:6px 0 4px}
+.dish p{font-size:.85rem;color:var(--muted)}
+.eat-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.eat-card{padding:20px}
+.eat-card h4{color:var(--sea-deep);font-size:1.1rem;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.eat-card ul{list-style:none}
+.eat-card li{font-size:.88rem;color:var(--muted);padding:6px 0;border-top:1px dashed var(--line)}
+.eat-card li b{color:var(--ink)}
+table.budget{width:100%;border-collapse:collapse;margin-top:14px;background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:.9rem}
+table.budget th{background:var(--sea-deep);color:#fff;text-align:left;padding:11px 14px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase}
+table.budget td{padding:10px 14px;border-top:1px solid var(--line)}
+table.budget tr:nth-child(even) td{background:var(--surface2)}
+
+/* ===== PRACTICAL ===== */
+.prac-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.prac-card{padding:20px}
+.prac-card h4{display:flex;gap:8px;align-items:center;color:var(--sea-deep);font-size:1.08rem;margin-bottom:10px}
+.prac-card ul{list-style:none}
+.prac-card li{font-size:.88rem;color:var(--muted);padding:5px 0 5px 18px;position:relative}
+.prac-card li::before{content:'▸';position:absolute;left:0;color:var(--terra)}
+.prac-card li b{color:var(--ink)}
+
+/* ===== CHECKLIST ===== */
+.check-progress{height:10px;background:var(--sand);border-radius:999px;overflow:hidden;margin:10px 0 22px;max-width:340px}
+.check-progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--green),#7bbf8b);transition:width .3s}
+.check-count{font-size:.85rem;color:var(--muted);font-weight:600}
+.check-group{margin-bottom:26px}
+.check-group h4{font-size:1.05rem;color:var(--sea-deep);margin-bottom:12px;display:flex;gap:8px;align-items:center}
+.check-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px}
+.check-item{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 14px;cursor:pointer;transition:all .15s;font-size:.9rem}
+.check-item:hover{border-color:var(--sea)}
+.check-item input{margin-top:3px;accent-color:var(--green);width:16px;height:16px;cursor:pointer}
+.check-item.done{background:var(--green-soft);border-color:#bcd8c2}
+.check-item.done span{text-decoration:line-through;color:var(--muted)}
+
+/* ===== FOOTER ===== */
+.page-footer{text-align:center;padding:34px 20px 26px;margin-top:50px;border-top:1px solid var(--line)}
+.footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+.footer-brand{color:var(--muted);font-size:.9rem;font-weight:600}
+.visit-counter-badge{color:var(--muted);font-size:.8rem;background:rgba(14,110,148,.07);padding:4px 12px;border-radius:6px;border:1px solid var(--line)}
+.footer-note{font-size:.78rem;color:#9aa7b0;margin-top:10px}
+</style>
+</head>
+<body>
+<a href="../../index.html" class="back-link">← Cocobot</a>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="sun"></div>
+  <div class="wrap">
+    <span class="kicker">🌊 Guía interactiva · 2 viajeros · con coche de alquiler</span>
+    <h1>Menorca <em>en septiembre</em></h1>
+    <p class="sub">Siete días entre calas de aguas turquesas, pueblos de piedra, fortalezas y puestas de sol. La isla más tranquila de las Baleares, con el agua todavía a 25&nbsp;°C y sin la afluencia de agosto.</p>
+    <div class="chips">
+      <span class="chip">📅 <b>5 – 11 de septiembre 2026</b></span>
+      <span class="chip">🌡️ Aire <b>18–26 °C</b></span>
+      <span class="chip">🏊 Mar <b>25,5 °C</b></span>
+      <span class="chip">🌅 Atardecer <b>~19:40</b></span>
+      <span class="chip">🌍 Reserva de la Biosfera UNESCO</span>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" height="90"><path d="M0,50 C240,90 480,10 720,40 C960,70 1200,20 1440,55 L1440,90 L0,90 Z" fill="#f6f1e7" opacity="0.55"></path><path d="M0,60 C260,95 520,35 780,58 C1040,80 1260,45 1440,66 L1440,90 L0,90 Z" fill="#f6f1e7"></path></svg>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="wrap">
+    <a href="#" class="brand">🌊 Menorca</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menú">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#itinerario">Itinerario</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#lugares">Lugares</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#gastronomia">Gastronomía</a>
+      <a href="#practica">Práctico</a>
+      <a href="#checklist">Checklist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ ITINERARIO ============ -->
+<section id="itinerario">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Plan a 7 días</div>
+      <h2>Itinerario día a día</h2>
+      <p>Organizado por zonas (noreste → este → norte → noroeste → suroeste → sur) para no dar rodeos. Cada bloque indica la franja horaria; las etiquetas llevan al mapa. El plan es flexible: si un día llueve, intercambiadlo por un día de pueblo/fortaleza.</p>
+    </div>
+    <div class="day-tabs" id="dayTabs"></div>
+    <div id="dayPanels"></div>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section id="mapa">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Todo en un mapa</div>
+      <h2>Mapa interactivo</h2>
+      <p>Calas, pueblos, cultura y eventos de la isla. Filtra por categoría, toca un marcador para ver detalles y abrílo directo en Google Maps para la navegación del coche.</p>
+    </div>
+    <div class="map-filters" id="mapFilters"></div>
+    <div id="map"></div>
+    <p class="map-tip">💡 Los puntos son aproximados (±100 m). Para la navegación exacta usad el enlace «Ruta en Google Maps» del marcador.</p>
+  </div>
+</section>
+
+<!-- ============ LUGARES ============ -->
+<section id="lugares">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Explora</div>
+      <h2>Lugares imprescindibles</h2>
+      <p>Cada lugar con su truco de viajero: horarios de luz, aparcamiento, afluencia real en septiembre y cómo llegar.</p>
+    </div>
+    <div class="filters" id="placeFilters"></div>
+    <div class="place-grid" id="placeGrid"></div>
+  </div>
+</section>
+
+<!-- ============ EVENTOS ============ -->
+<section id="eventos">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Agenda 5–11 septiembre</div>
+      <h2>Eventos y fiestas vuestros días</h2>
+      <p>Menorca en septiembre tiene las fiestas del fin de verano: caballos, música en las calles y los mejores mercados artesanos del año. Verificad el programa local el día antes (ayuntamientos y <a href="https://fiestasmenorca.es" target="_blank" rel="noopener">fiestasmenorca.es</a>).</p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ GASTRONOMIA ============ -->
+<section id="gastronomia">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">De comer</div>
+      <h2>Gastronomía menorquina</h2>
+      <p>Menorca es la isla de la comida de mar y la carne de cordero. Cocina honesta, de producto, sin pretensiones — y septiembre es el mejor momento: temporada de atún, cangrejo y vino local.</p>
+    </div>
+    <div class="dish-grid" id="dishGrid"></div>
+    <div class="eat-cols" id="eatCols"></div>
+    <table class="budget">
+      <tr><th>Gasto</th><th>Presupuesto orientativo (por persona)</th></tr>
+      <tr><td>Desayuno / cafés</td><td>3–6 €</td></tr>
+      <tr><td>Comida en chiringuito (paella, pescado, bebida)</td><td>18–28 €</td></tr>
+      <tr><td>Cena típica (fuente de pescado o carne + postre)</td><td>25–40 €</td></tr>
+      <tr><td>Tapas / ración de sobrasada + caña</td><td>12–18 €</td></tr>
+      <tr><td>Merienda + helado</td><td>5–8 €</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============ PRACTICO ============ -->
+<section id="practica">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Sin sorpresas</div>
+      <h2>Información práctica</h2>
+      <p>Lo que hay que saber sobre conducir, aparcar, clima y números de emergencia en Menorca.</p>
+    </div>
+    <div class="prac-grid" id="pracGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CHECKLIST ============ -->
+<section id="checklist">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">No olvides</div>
+      <h2>Checklist del viaje</h2>
+      <p>Marcad cosas a medida que las resuelvais. El progreso se guarda en este dispositivo.</p>
+    </div>
+    <div class="check-count" id="checkCount">0 / 0 comprobados</div>
+    <div class="check-progress"><div class="bar" id="checkBar"></div></div>
+    <div id="checkGroups"></div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="page-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">🐱 Cocobot</span>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+  <p class="footer-note">Guía elaborada en agosto 2026 · Verificad horarios y eventos en fuentes oficiales antes de viajar</p>
+</footer>
+
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/menorca-sept-2026/';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){ if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';} })
+    .catch(function(){});
+})();
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/* ==================== DATA ==================== */
+var CATS = {
+  beach:   {label:'Playas y calas', color:'#0e6e94'},
+  town:    {label:'Ciudades y pueblos', color:'#3d7a4f'},
+  culture: {label:'Cultura y historia', color:'#b07a1a'},
+  activity:{label:'Experiencias', color:'#d4693c'},
+  food:    {label:'Mercados y comida', color:'#a34e83'}
+};
+
+var PLACES = [
+// ---- EAST (MAÓ) ----
+{id:'mao', name:'Maó', cat:'town', area:'Este', coords:[39.8897,4.2704],
+ desc:'Puerto natural más profundo de Europa, centro histórico de casas coloridas, fortalezas y los mejores mercados de la isla.',
+ tip:'El aeropuerto está a 2 km. Aparcamiento: Parking Es Molar (junto al puerto). El casco antiguo es peatonal.'},
+{id:'lamola', name:'Fortalesa de La Mola', cat:'culture', area:'Este', coords:[39.8919,4.2854],
+ desc:'Una de las mayores fortalezas del s. XIX de Europa: 2 km de galerías subterráneas, miradores sobre el puerto y zona de protección de aves.',
+ tip:'Reservad 2–3 h. En verano hay observación astronómica los miércoles y visitas al atardecer: mirad su web. A 10 min del aeropuerto.'},
+{id:'santfelip', name:'Castell de Sant Felip', cat:'culture', area:'Este', coords:[39.8908,4.2754],
+ desc:'Fortaleza de 1757 en la bocana del puerto de Maó, de la época de las guerras de Sucesión con británicos y franceses.',
+ tip:'Visita guiada de ~40 min. Combina con el paseo por el Moll de Llevant.'},
+{id:'carames', name:'Cala d’en Carames', cat:'beach', area:'Este', coords:[39.8996,4.3608],
+ desc:'Playa urbana de la bahía de Maó: agua muy tranquila, chiringuitos y puesta de sol mirando a la isla.',
+ tip:'A mediodía casi vacía; las 17–19 h sube la gente local. La opción fácil para bañarse sin salir de Maó.'},
+{id:'foradada', name:'Foradada y Cala de Sant Esteve', cat:'activity', area:'Este', coords:[39.8864,4.3100],
+ desc:'La roca foradada que da nombre al pueblo: cueva marítima con arco natural, playa de grava y el fort Marlborough británico de 1756 en la punta.',
+ tip:'A 15 min del aeropuerto. El paseo hasta la punta con el faro y el fort: 30 min ida y vuelta. Último baño antes de volar.'},
+// ---- NORTHEAST ----
+{id:'mesquida', name:'Playa de Cala Mesquida', cat:'beach', area:'Noreste', coords:[39.9010,4.3984],
+ desc:'800 m de arena dorada, pinos a la espalda y aguas poco profundas. Una de las más bonitas del este.',
+ tip:'Parking oficial (2,5 €/h): llegad antes de las 11 h o después de las 19 h. Chiringuito con buena relación calidad-precio.'},
+{id:'favaritx', name:'Faro de Favàritx (Es Grau)', cat:'activity', area:'Noreste', coords:[39.8778,4.4248],
+ desc:'El punto más oriental de España: aquí sale el primer sol. Península de acantilados con vistas de toda la bahía de Maó.',
+ tip:'El faro no se puede subir, pero la punta lo compensa. Es Grau, el pueblo al lado, es de los más bonitos del este: merienda en la plaza.'},
+{id:'portitxol', name:'S’Escala (Es Portitxol)', cat:'beach', area:'Noreste', coords:[39.8765,4.4232],
+ desc:'Playa de piedra y aguas cristalinas junto a Favàritx. Menos concurrida que sus vecinas: la versión serena del noreste.',
+ tip:'Suelo de grava: calzado de agua. Snorkel excelente en la roca de s’Escala.'},
+// ---- NORTH ----
+{id:'santcliment', name:'Sant Climent', cat:'town', area:'Norte', coords:[39.9036,4.0556],
+ desc:'Pueblecito costero de la bahía de Sant Climent: playa, puerto deportivo y ambiente de pueblo pesquero.',
+ tip:'Desayuno en la plaza o en el puerto. A 20 min de Maó por la MA-10.'},
+{id:'esverger', name:'Es Verger', cat:'beach', area:'Norte', coords:[39.9437,3.9103],
+ desc:'Pequeña playa de arena de Es Mercadal, en una bahía protegida del norte. Aguas siempre calmadas.',
+ tip:'La alternativa si el levante (viento del este) levanta oleaje en la costa este. Chiringuito y aparcamiento fácil.'},
+// ---- CENTER ----
+{id:'esmercadal', name:'Es Mercadal', cat:'town', area:'Centro', coords:[39.9155,4.0310],
+ desc:'El pueblo del interior, en el centro de la isla: tiendas de queso y miel, cafés con historia y el mercado nocturno más emblemático de Menorca.',
+ tip:'Su mercado nocturno (jueves, 19–23 h, con música desde las 20:30) es el más famoso de la isla. Vuestro jueves 10: toca.'},
+// ---- NORTHWEST / WEST ----
+{id:'binimelilla', name:'Cala Binimel·lá', cat:'beach', area:'Noroeste', coords:[39.9435,3.7791],
+ desc:'La playa más grande de la bahía de Ciutadella: 1,5 km de arena, pinos y aguas de colores imposibles.',
+ tip:'A 10 min de Ciutadella. En septiembre, la mejor hora: 10–14 h. Parking amplio y chiringuitos.'},
+{id:'calamorell', name:'Cala Morell', cat:'beach', area:'Noroeste', coords:[39.9180,3.6791],
+ desc:'La joya del noroeste: cala de arena blanca entre acantilados, con el faro de Cala Morell al fondo. Acceso por sendero con rampa final.',
+ tip:'Parking pequeño: llegad pronto. La rampa final es empinada: mochilas ligeras. Camí de Cavalls hasta Calespiques: 30 min.'},
+{id:'caulespiques', name:'Cala Calespiques', cat:'beach', area:'Noroeste', coords:[39.9133,3.6430],
+ desc:'La vecina salvaje de Cala Morell: acantilados, arena dorada y aguas profundas. Unida a Morell por el Camí de Cavalls.',
+ tip:'Sin servicios: lleva agua y comida. Combina las dos calas caminando (~30 min por el camí).'},
+{id:'puntanati', name:'Punta Nati y Punta de Cavalleria', cat:'activity', area:'Noroeste', coords:[39.9067,3.5676],
+ desc:'El atardecer más famoso de Menorca: acantilados, torres vigías del s. XVI y el faro al final de la península. Vistas de toda la costa noroeste.',
+ tip:'Aparcamiento en la entrada del camí (1–2 €). Llegad 30 min antes del sol (~19:30 los primeros días de septiembre).'},
+{id:'ciutadella', name:'Ciutadella', cat:'town', area:'Noroeste', coords:[39.8765,4.0315],
+ desc:'La ciudad vieja de Menorca: casco amurallado, catedral gótica de Sant Joan, fortaleza de Sant Daniel, palacetes señoriales y la mejor escena gastronómica.',
+ tip:'Casco peatonal: aparca en el Parking de la Milla o Plaza de España. Mercados: Born (lun y vie, 9–15 h), agrario (mié y sáb, 8–13:30 h), artesanos Capllonc/Costa Marina (noches, jun–sep).'},
+{id:'santlluis', name:'Sant Lluís y Fort Saint-Philippe', cat:'culture', area:'Oeste', coords:[39.8730,4.0160],
+ desc:'La única ciudad amurallada de las Baleares, fundada por los franceses en 1757. El fort Saint-Philippe domina la bahía: uno de los conjuntos fortificados mejor conservados de Europa.',
+ tip:'A 12 min de Ciutadella. Visita al fort: ~1 h (visita guiada o libre con audioguía). La ciudad es un laberinto de calles en cuesta: las mejores fotos de la isla.'},
+// ---- SOUTHWEST ----
+{id:'turqueta', name:'Cala en Turqueta', cat:'beach', area:'Suroeste', coords:[39.8752,3.9066],
+ desc:'La cala más fotografiada de Menorca: agua turquesa, rocas doradas y la cala des Algaiarens al fondo. Corazón del Camí de Cavalls.',
+ tip:'Aparcamiento a 400 m: llegad antes de las 11 h. En septiembre hay espacio, pero 10–12 h es la mejor luz para el agua.'},
+{id:'algaiarens', name:'Cala des Algaiarens', cat:'beach', area:'Suroeste', coords:[39.8740,3.8991],
+ desc:'La vecina de Turqueta: más amplia y más calma. Unida a Turqueta por el Camí de Cavalls (10 min).',
+ tip:'Snorkel en las rocas de la punta. Sin chiringuito: lleva bebida y comida.'},
+{id:'morell2', name:'Cala Macarella y Macarelleta', cat:'beach', area:'Suroeste', coords:[39.8627,3.8479],
+ desc:'Las calas de postal de Menorca: arena blanca, rocas de colores y el faro de Macarella. La visita que todo el mundo quiere hacer.',
+ tip:'En septiembre: antes de las 11 h o después de las 17 h para parking (2,5 €/h). Caminar entre Macarella y Macarelleta: 20 min por el bosque de pinos.'},
+{id:'sonxoriguer', name:'Mirador de Son Xoriguer', cat:'activity', area:'Suroeste', coords:[39.8610,3.8460],
+ desc:'El pinar sobre Macarella: senderos señalizados de 1–2 h con vistas de toda la bahía. La mejor excursión a pie de la isla.',
+ tip:'Subid al mirador al atardecer: Macarella + Macarelleta + la bahía completa. 30 min a pie, llano, a la sombra de los pinos.'},
+{id:'felanitx', name:'Felanitx', cat:'town', area:'Suroeste', coords:[39.8536,3.8820],
+ desc:'Pueblo de mercado y casonas señoriales: plaza de toros del s. XVIII, iglesia de Santa Maria y el mejor ambiente de pueblo de la costa sur.',
+ tip:'Su mercado es los JUEVES (9–14 h): vuestro jueves 10 toca. Pasead por la Plaça des Born y la calle Colom.'},
+// ---- SOUTH ----
+{id:'esbosc', name:'Cala en Bosc', cat:'beach', area:'Sur', coords:[39.8390,3.9930],
+ desc:'Playa grande de arena fina con pinos, en una bahía protegida del sur. La alternativa serena a Macarella.',
+ tip:'Chiringuitos hasta ~20 h. A 15 min de Felanitx. En septiembre, la opción tranquila del sur.'},
+{id:'margineda', name:'Cala Galdana', cat:'beach', area:'Sur', coords:[39.8477,3.9680],
+ desc:'Playa urbana de la bahía, muy tranquila, con chiringuitos y ambiente de pueblo. A 5 min de Ferreries.',
+ tip:'Ideal para la comida: pescado o paella en el chiringuito. Parking fácil y se llena de locales por la tarde.'}
+];
+
+var DAYS = [
+{d:'SÁBADO', date:'5 septiembre', title:'Llegada: el puerto de Maó', route:'Aeropuerto → Maó → paseo por el puerto',
+ slots:[
+  {w:'18:35', t:'Aterrizaje en el aeropuerto de Maó (MAH)', p:'Recoged el coche (hora de recogida según vuestra reserva, ~19:30). Aeropuerto pequeño: con 15 min ya estáis en el centro de Maó.'},
+  {w:'20:00', t:'Cena tranquila en Maó', p:'Con el hambre de vuelo: una fuente de pescado en el casco antiguo o algo sencillo junto al Moll de Llevant. Sin prisas: mañana hay playa.'},
+  {w:'21:30', t:'Paseo nocturno por la bahía', p:'La bahía al anochecer con La Mola a oscuras y Sant Felip iluminado. Buen momento para coger el mapa mental de la isla. Ojo: hoy arrancan las fiestas de Gràcia en Maó (caballos y música por el centro) — si salta la chispa, caed al centro.'}
+ ], places:['mao','carames','santfelip']},
+{d:'DOMINGO', date:'6 septiembre', title:'Noreste: calas de la bahía de Maó', route:'AgroMaó → Cala Mesquida → S’Escala + Faro de Favàritx → Es Grau → Maó',
+ slots:[
+  {w:'9:30', t:'Mercado AgroMaó', p:'El mercado de producto local de Maó (S’Arravaleta y C/ Nou, 9–14 h): queso, miel, cordero, repostería.Comprad para la cena de esta noche.'},
+  {w:'11:00', t:'Cala Mesquida: la playa grande', p:'Arena dorada, pinos, agua poco profunda: la mejor playa del este para nadar. Parking oficial (2,5 €/h).'},
+  {w:'13:30', t:'S’Escala (Es Portitxol) + Faro de Favàritx', p:'Caminad los 10 min hasta el faro: el punto más oriental de España. Baño de piedra en S’Escala si lleváis calzado de agua.'},
+  {w:'16:00', t:'Merienda en Es Grau', p:'Pueblecito pesquero a 10 min, de los más bonitos del este. Unos churros o pescado en la plaza, y paseo por el pequeño puerto.'},
+  {w:'19:00', t:'Atardecer en Cala d’en Carames', p:'De vuelta al este: la playa urbana de Maó, agua tranquila y chiringuitos. Cena cerca. (Hoy el mercado nocturno de Calesfonts de Es Castell está hasta la 1 h, si se os da la hora.)'}
+ ], places:['mao','mesquida','portitxol','favaritx','carames']},
+{d:'LUNES', date:'7 septiembre', title:'Norte y centro: pueblos de Menorca', route:'Sant Climent → Es Verger → Es Mercadal → Maó (Gràcia)',
+ slots:[
+  {w:'10:00', t:'Sant Climent: pueblo costero', p:'Playa, puerto deportivo y ambiente de pueblo pesquero. Café en la plaza o baño rápido en la bahía.'},
+  {w:'12:30', t:'Es Verger: baño tranquilo', p:'Pequeña playa de arena en la bahía protegida del norte: aguas siempre calmadas, la opción segura si sopla el levante.'},
+  {w:'16:00', t:'Es Mercadal: el pueblo del interior', p:'En el centro de la isla: tiendas de queso Mahón y miel, cafés con historia, y el casco antiguo de los sesers (graneros). El pueblo más Menorca de Menorca.'},
+  {w:'20:00', t:'Maó: Segona Festa de Gràcia', p:'La fiesta que cierra el verano en la capital: caballos, música en las calles y ambiente de pueblo hasta tarde. Pasead por el centro y el puerto. Es gratis y no hace falta reserva.'}
+ ], places:['santcliment','esverger','esmercadal','mao']},
+{d:'MARTES', date:'8 septiembre', title:'Noroeste: fortalezas y la joya de Ciutadella', route:'Sant Lluís (fort) → Ciutadella → Cala Binimel·lá → Cala Morell → Punta Nati (atardecer)',
+ slots:[
+  {w:'9:30', t:'Sant Lluís y Fort Saint-Philippe', p:'La ciudad amurallada francesa de 1757 y su fortaleza sobre la bahía: ~1 h de visita. Las calles en cuesta de la ciudad: las mejores fotos de la isla.'},
+  {w:'11:30', t:'Ciutadella: casco histórico', p:'El corazón de Menorca: catedral de Sant Joan, fortaleza de Sant Daniel, palacetes. Hoy martes: mercado artesano en el Carme (10–13 h) y mercado ambulante en la Esplanada (9–14 h).'},
+  {w:'13:30', t:'Comida en Ciutadella', p:'La mejor escena gastronómica de la isla: fuente de pescado, cordero asado, sobrasada y crema catalana. Callejead por el Born (noches de mercado artesano en Capllonc y Portal de Mar).'},
+  {w:'16:00', t:'Cala Binimel·lá', p:'A 10 min: 1,5 km de arena, pinos y agua de colores. La mejor playa del noroeste para una tarde.'},
+  {w:'18:15', t:'Cala Morell + Calespiques', p:'La joya del noroeste: cala de postal con acantilados. Si va el tiempo, 30 min por el Camí de Cavalls hasta Calespiques.'},
+  {w:'19:30', t:'Atardecer en Punta Nati', p:'El atardecer más famoso de la isla: acantilados, torres vigías y el faro de Cavalleria. Vistas de toda la costa noroeste. El broche del día.'}
+ ], places:['santlluis','ciutadella','binimelilla','calamorell','caulespiques','puntanati']},
+{d:'MIÉRCOLES', date:'9 septiembre', title:'Suroeste: las calas de postal', route:'Mercado agrario (Ciutadella) → Cala en Turqueta → Cala Galdana → Macarella → Son Xoriguer (atardecer)',
+ slots:[
+  {w:'9:00', t:'Mercado agrario de Ciutadella', p:'Hoy miércoles, 8–13:30, en la Pl. de la Llibertat: el mercado de producto local con más personalidad de la isla. Queso, miel, cordero, repostería. Comprad para la cena.'},
+  {w:'11:00', t:'Cala en Turqueta + des Algaiarens', p:'Las dos calas de postal del suroeste, unidas por el Camí de Cavalls (10 min): agua turquesa, rocas doradas. La mejor oportunidad del viaje para nadar en aguas cristalinas.'},
+  {w:'14:00', t:'Comida en Cala Galdana', p:'La playa urbana más tranquila de la bahía: chiringuitos con buena relación calidad-precio. Pescado o paella, y siesta bajo los pinos.'},
+  {w:'17:00', t:'Cala Macarella y Macarelleta', p:'La visita de postal: arena blanca, rocas de colores, faro. Llegad antes de las 17 h para parking. Caminad entre las dos calas: 20 min por el pinar.'},
+  {w:'19:15', t:'Mirador de Son Xoriguer', p:'Subid 30 min al pinar sobre Macarella: la mejor vista de la bahía al atardecer. Llano, a la sombra, con pinos. La mejor foto del viaje.'}
+ ], places:['ciutadella','turqueta','algaiarens','margineda','morell2','sonxoriguer']},
+{d:'JUEVES', date:'10 septiembre', title:'Sur y centro: mercados con música', route:'Felanitx (mercado) → Cala en Bosc → Es Mercadal (mercado nocturno)',
+ slots:[
+  {w:'10:00', t:'Felanitx: el día de su mercado', p:'Hoy jueves toca mercado en Felanitx (9–14 h): uno de los mejores de la isla. Pasead por la Plaça des Born, las casonas señoriales y la plaza de toros del s. XVIII.'},
+  {w:'13:00', t:'Comida en Felanitx', p:'Cordero asado o pescado en la plaza, con la música del mercado de fondo. El mejor ambiente de pueblo de la costa sur.'},
+  {w:'15:30', t:'Cala en Bosc', p:'A 15 min: la playa grande de arena fina del sur, con pinos y bahía protegida. Baño de tarde en la alternativa serena a Macarella.'},
+  {w:'19:30', t:'Es Mercadal: el mercado nocturno emblemático', p:'El mercado más famoso de la isla: artesanos, agroalimentario y actuaciones musicales desde las 20:30 hasta las 23 h. En pleno pueblo, con las luces encendidas. El plan del jueves por la noche.'}
+ ], places:['felanitx','esbosc','esmercadal']},
+{d:'VIERNES', date:'11 septiembre', title:'Despedida: la fortaleza de La Mola', route:'La Mola → Sant Felip → Maó → Foradada → Aeropuerto (15:30)',
+ slots:[
+  {w:'9:00', t:'Fortalesa de La Mola', p:'Las galerías subterráneas, los miradores y la historia de la guerra de Sucesión: 2 h de visita en una de las mayores fortalezas del s. XIX de Europa. A 10 min del aeropuerto.'},
+  {w:'11:30', t:'Castell de Sant Felip', p:'La fortaleza de la bocana del puerto, visita de ~40 min. El contraste británico-francés de Maó en una mañana.'},
+  {w:'13:00', t:'Última comida en Maó', p:'Fuente de pescado, cordero o paella en el casco antiguo. Sobaos y crema catalana de postre. Si vais rápidos, el Mercado del Born de Ciutadella es hoy viernes (9–15 h), pero queda lejos del aeropuerto.'},
+  {w:'14:00', t:'Foradada: la roca foradada', p:'Cueva marítima con arco natural y paseo por la bahía, a 15 min del aeropuerto. El último baño de Menorca antes de volar.'},
+  {w:'14:30', t:'Devolución del coche', p:'Devolved el coche ~14:30: 2 h antes del vuelo de las 15:30. Margen de sobra. Comprad queso Mahón y sobaos en el aeropuerto o en Maó para el viaje de vuelta.'}
+ ], places:['lamola','santfelip','foradada','mao']}
+];
+
+var EVENTS = [
+{date:'SÁB 5 SEP', title:'Fiestas de Gràcia — arrancan en Maó', loc:'Maó, centro y puerto · por la tarde-noche', hot:true,
+ desc:'La fiesta que cierra el verano en la capital: caballos (caixers), música en las calles y jaleo. Arrancan hoy y se alargan hasta el lunes 9. Gratis, sin reserva.'},
+{date:'DOM 6 SEP', title:'Mercado AgroMaó', loc:'Maó, C/ S’Arravaleta y C/ Nou · 9–14 h', hot:true,
+ desc:'El mercado de producto local de Maó: queso Mahón, miel, cordero, repostería, fruta. Comprad para la cena.'},
+{date:'DOM 6 SEP', title:'Mercado nocturno de Calesfonts (Es Castell)', loc:'Es Castell, muelle y pont de Calesfonts · 19:30–1 h', hot:true,
+ desc:'Uno de los mercados nocturnos más bonitos de la isla: artesanos, joyería, antigüedades, a pie de puerto. Cada noche hasta el 15 de septiembre. Si se os da la hora: 20 min de Maó.'},
+{date:'LUN 7 SEP', title:'Segona Festa de Gràcia', loc:'Maó · por la tarde-noche', hot:true,
+ desc:'Segundo día de las fiestas de la capital: caballos, música y ambiente de fin de verano. El plan de vuestro lunes por la noche.'},
+{date:'MAR 8 SEP', title:'Dia de Gràcia + mercados de Maó', loc:'Maó · Carme 10–13 h y Esplanada 9–14 h', hot:true,
+ desc:'Último día grande de Gràcia. Y hoy martes: mercado artesano en la Plaça del Carme y mercado ambulante en la Esplanada. (Vuestro plan está en el noroeste: solo si podéis pasar por Maó antes.)'},
+{date:'MAR 8 SEP', title:'Ciutadella: mercados de tarde', loc:'Capllonc y Portal de Mar · 19–24 h', hot:false,
+ desc:'Mercados artesanos nocturnos del casco histórico (cada noche de junio a septiembre). Vuestro martes por la noche, de vuelta de Punta Nati, pasa por el Born.'},
+{date:'MIÉ 9 SEP', title:'Mercado agrario de Ciutadella', loc:'Pl. de la Llibertat · 8–13:30 h', hot:true,
+ desc:'El mercado de producto local con más personalidad de la isla. Vuestro miércoles: empezad el día aquí y luego a las calas.'},
+{date:'JUE 10 SEP', title:'Mercado de Felanitx + Mercado nocturno de Es Mercadal', loc:'Felanitx 9–14 h · Es Mercadal 19–23 h', hot:true,
+ desc:'El doblete del jueves: de día, el mercado de Felanitx (uno de los mejores de la isla); por la noche, el mercado nocturno más emblemático de Menorca, en Es Mercadal, con música en directo desde las 20:30.'},
+{date:'VIE 11 SEP', title:'Born de Ciutadella + revetlla de Sant Nicolau', loc:'Ciutadella 9–15 h · El Toro (Es Mercadal) por la noche', hot:false,
+ desc:'Hoy viernes toca el Mercado del Born en Ciutadella (por la mañana, lejos del aeropuerto). Y en el interior arranca la revetlla de Sant Nicolau con caballos y jaleo — solo si os da tiempo antes de volar.'},
+{date:'SI OS QUEDÁIS', title:'Cranc Festival y fiestas de Cala’n Porter', loc:'Maó · 17–19 sep', hot:false,
+ desc:'Si alargaís el viaje: el Cranc Illa de Menorca Festival (17–19 sep, 10ª edición, en el Claustre del Carme de Maó) y las fiestas de Cala’n Porter en la playa (19–20 sep).'}
+];
+
+var DISHES = [
+{ico:'🦪', name:'Ostras de la bahía', desc:'Ostras de la ría de Maó, de las mejores de España. En temporada (nov–abr) son top de mundo; en septiembre, frescas y baratas en la lonja y chiringuitos.'},
+{ico:'🐟', name:'Pescado de roca y atún', desc:'Sardinas, bogavante, cangrejo y atún rojo. Septiembre es temporada de atún y cangrejo: pedid la fuente de pescado del día.'},
+{ico:'🐑', name:'Cordero asado', desc:'El cordero menorquino: carne de pastoreo, jugosa y con sabor. El plato estrella de los restaurantes serios de la isla.'},
+{ico:'🧀', name:'Queso Mahón IGP', desc:'Queso de cabra curado 2–6 meses, con sabor a monte y a mar. Probadlo encurtidos con membrillo o solo, con pan de paya.'},
+{ico:'🥓', name:'Sobrasada y longaniza', desc:'Salchichón de cerdo curado, en tacos con pan o como guarnición. La tapa más menorquina: pedidla con una caña.'},
+{ico:'🍰', name:'Sobaos y repostería', desc:'Bizcochos de almendra y azúcar, típicos de Menorca. En cualquier cafetería de pueblo: el souvenir que se come.'},
+{ico:'🍷', name:'Vino de Menorca DO', desc:'Blanco y tinto con denominación de origen. Pedid el local de la bodega: en septiembre, con la comida de mar, vuela.'},
+{ico:'🐚', name:'Marisco de la bahía', desc:'Almejas, mejillones y gamba de Menorca. En cualquier chiringuito de la costa: el plan perfecto de mediodía.'}
+];
+
+var EAT = [
+{title:'🌅 Dónde desayunar', items:[
+  '<b>Maó:</b> Café de la Marina (junto al puerto) o cualquier panadería del casco: café + brioche + tostada.',
+  '<b>Pueblo:</b> En Es Mercadal, Ferreries o Felanitx, la cafetería de la plaza: sobaos, café con leche y tostada de sobrasada.',
+  '<b>Playa:</b> Desayuno en el chiringuito de la cala (si hay): tostada + zumo + café. El lujo menorquín.']},
+{title:'🍽️ Dónde comer', items:[
+  '<b>Maó:</b> Casa Sa Riera (clásico de pescado, reserva), Can Mateu (casual, buen precio) o el mercado del puerto.',
+  '<b>Ciutadella:</b> Sa Posada (alta cocina, reserva con antelación) o Can Joan (casual, junto al Born).',
+  '<b>Playa:</b> Paella o pescado en el chiringuito de la cala: Macarella, Binimel·lá, Carames o Galdana.',
+  '<b>Pueblo:</b> En Es Mercadal o Felanitx, cualquier restaurante de la plaza: cordero asado + vino local.']},
+{title:'🌙 Dónde cenar', items:[
+  '<b>Cena tranquila:</b> En el pueblo donde os alojéis: fuente de pescado, cordero, sobrasada + postre.',
+  '<b>Cena especial:</b> Sa Posada (Ciutadella) o Casa Sa Riera (Maó). Reserva con 1–2 semanas.',
+  '<b>Cena en la playa:</b> En el chiringuito de la cala, al atardecer: el plan perfecto de fin de semana.']},
+{title:'🛒 Dónde comprar (souvenirs comibles)', items:[
+  '<b>Queso Mahón:</b> En cualquier supermercado (Eroski, Dia, Mercadona) o en la tienda de la quesería.',
+  '<b>Sobaos y vino:</b> En el aeropuerto de Maó hay tienda de producto local: el último momento para comprar.',
+  '<b>Miel y licores:</b> En Es Mercadal: las tiendas de miel y licor de hierbas son buenas parada obligada.']}
+];
+
+var PRACTICAL = [
+{title:'🚗 Conducir y aparcar', items:[
+  '<b>Red:</b> La carretera insular (MA-10) rodea toda la isla en ~2,5 h. Carreteras de 2 carriles, bien señalizadas.',
+  '<b>Velocidad:</b> 90 km/h en carretera, 50 en pueblo. Radares fijos en las curvas: no corráis.',
+  '<b>Playas:</b> Parking oficial 2,5 €/h (en septiembre a veces gratis fuera de hora punta). Llenad antes de las 11 h en las calas famosas.',
+  '<b>Pueblos:</b> Parking público en la plaza o en calle, gratis en muchos. En Ciutadella y Maó, el casco es peatonal: aparca en la periferia.',
+  '<b>Gasolina:</b> Gasolinera en cada pueblo. Llenad antes de salir: no hay en la costa norte ni en las calas.']},
+{title:'🌤️ Clima en septiembre', items:[
+  '<b>Aire:</b> 18–26 °C de media: mañanas frescas (18–20), tardes cálidas (24–26).',
+  '<b>Mar:</b> 25,5 °C — la temperatura más alta del año: ideal para nadar toda la semana.',
+  '<b>Lluvia:</b> Rara, pero posible. Llevad una chaqueta ligera por la noche.',
+  '<b>Viento:</b> El levante (del este) puede levantar oleaje en la costa este/norte. En el sur y suroeste, más calma.',
+  '<b>Sol:</b> Atardecer ~19:40–19:50. Protector 50 + gorra: el sol de septiembre sigue fuerte.']},
+{title:'📱 Prácticos', items:[
+  '<b>Red móvil:</b> Movistar, Vodafone y Orange cubren toda la isla. En las calas más remotas, poca señal: descarga mapas offline.',
+  '<b>Pago:</b> Casi todo con tarjeta (incluido el chiringuito). Llevad algo de efectivo para parking y meriendas.',
+  '<b>Agua:</b> En calas sin servicios, 1–2 L por persona. Fuentes en los pueblos.',
+  '<b>Sanidad:</b> 112 emergencias. Hospital Mateu Orfila (Maó) y Hospital Dr. Joan Rafel Pons (Ciutadella).',
+  '<b>Supermercados:</b> Eroski, Dia, Mercadona en cada pueblo. En las calas, nada: lleva lo necesario.']},
+{title:'🎒 Qué llevar', items:[
+  '<b>Ropa:</b> Camisetas, pantalón corto, bañador, toalla de microfibra (seca rápido).',
+  '<b>Calzado:</b> Calzado de agua (calas de piedra), zapatillas de caminar (Camí de Cavalls), chanclas.',
+  '<b>Protección:</b> Protector 50, gorra, gafas de sol.',
+  '<b>Extra:</b> Chaqueta ligera (noches de 18 °C), bolsa de merma, cámara + memoria, adaptador español (220 V).']}
+];
+
+var CHECKLIST = [
+{title:'✈️ Antes de volar', items:[
+  'Confirmar reserva del alojamiento (¿Maó, Ciutadella o el sur?)',
+  'Comprobar el coche: seguro todo riesgo + conductor adicional (ambos carnets)',
+  'Hacer check-in online (24 h antes)',
+  'Descargar mapas offline de Menorca (Google Maps)',
+  'Reservar cena especial (Sa Posada o Casa Sa Riera) con 1–2 semanas',
+  'Mirar la agenda exacta de Gràcia y mercados (fiestasmenorca.es) el día antes',
+  'Maleta: protector, gorra, bañador, calzado de agua, chaqueta ligera']},
+{title:'🏨 Al llegar (sábado)', items:[
+  'Recoger el coche (fotografiad cualquier roce antes de marcharos)',
+  'Llenar el depósito',
+  'Cena tranquila en Maó',
+  'Paseo por la bahía (y a ver los caballos de Gràcia si hay energía)',
+  'Mercado AgroMaó mañana a las 9:30 (no lo saltéis)']},
+{title:'📍 Durante la semana', items:[
+  'Cada día: 1 cala + 1 pueblo (o al revés)',
+  'Cordero asado al menos una vez',
+  'Queso Mahón + sobrasada (tapa o en el mercado)',
+  'Ver el atardecer desde Punta Nati (martes 8)',
+  'Hacer un tramo del Camí de Cavalls (Turqueta↔Algaiarens o Son Xoriguer)',
+  'Ir a un evento: Gràcia (sáb–lun), mercado nocturno Es Mercadal (jue) o Calesfonts (cualquier noche)',
+  'Visitar La Mola (viernes 9:00, 2 h) — no la dejéis para el final sin margen',
+  'Sant Lluís + fort Saint-Philippe (martes 9:30)',
+  'Felanitx el jueves (día de mercado)',
+  'Comprar souvenirs comibles: queso, sobaos, vino (aeropuerto o Maó)']},
+{title:'🧳 Para volver (viernes)', items:[
+  'La Mola a las 9:00 (2 h de visita)',
+  'Sant Felip (40 min) + comida en Maó',
+  'Foradada: último baño',
+  'Devolución del coche 14:30 (llenad el depósito antes)',
+  'Foto final en el aeropuerto (bahía de Maó de fondo)']}
+];
+
+/* ==================== RENDER: ITINERARY ==================== */
+var tabsEl = document.getElementById('dayTabs');
+var panelsEl = document.getElementById('dayPanels');
+DAYS.forEach(function(day, i){
+  var tab = document.createElement('button');
+  tab.className = 'day-tab' + (i===0?' active':'');
+  tab.innerHTML = '<div class="d1">'+day.d+' · '+day.date+'</div><div class="d2">'+day.title.split(':')[0]+'</div>';
+  tab.onclick = function(){
+    document.querySelectorAll('.day-tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.day-panel').forEach(function(p){p.classList.remove('active');});
+    tab.classList.add('active');
+    document.getElementById('day-panel-'+i).classList.add('active');
+  };
+  tabsEl.appendChild(tab);
+
+  var panel = document.createElement('div');
+  panel.className = 'card day-panel' + (i===0?' active':'');
+  panel.id = 'day-panel-'+i;
+  var html = '<div style="padding:22px"><div class="day-title"><h3>'+day.title+'</h3><span class="route">🚗 '+day.route+'</span></div>';
+  day.slots.forEach(function(s){
+    html += '<div class="slot"><div class="when">🕐 '+s.w+'</div><div class="what"><h4>'+s.t+'</h4><p>'+s.p+'</p></div></div>';
+  });
+  var chips = day.places.map(function(pid){
+    var p = PLACES.find(function(x){return x.id===pid;});
+    if(!p) return '';
+    return '<button class="pchip" onclick="focusPlace(\''+p.id+'\')">'+p.name+'</button>';
+  }).join('');
+  html += '<div class="place-chips" style="border-top:1px dashed var(--line);padding-top:14px"><span style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;align-self:center;margin-right:6px">En el mapa:</span>'+chips+'</div>';
+  html += '</div>';
+  panel.innerHTML = html;
+  panelsEl.appendChild(panel);
+});
+
+/* ==================== RENDER: MAP ==================== */
+var mapEl = document.getElementById('map');
+var map = L.map('map', {scrollWheelZoom:false}).setView([39.885, 4.02], 10);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  maxZoom:17
+}).addTo(map);
+
+var markers = {};
+function iconFor(cat){
+  var c = CATS[cat].color;
+  return L.divIcon({
+    className:'',
+    html:'<div style="width:26px;height:26px;border-radius:50%;background:'+c+';border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">'+
+      {beach:'🏖️',town:'🏘️',culture:'🏛️',activity:'🥾',food:'🍽️'}[cat]+'</div>',
+    iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-14]
+  });
+}
+PLACES.forEach(function(p){
+  var m = L.marker(p.coords, {icon:iconFor(p.cat)}).addTo(map);
+  var gmaps = 'https://www.google.com/maps/dir/?api=1&destination='+p.coords[0]+','+p.coords[1];
+  var html = '<div class="pp-name">'+p.name+'</div>'+
+    '<div class="pp-cat" style="color:'+CATS[p.cat].color+'">'+CATS[p.cat].label+'</div>'+
+    '<div class="pp-desc">'+p.desc+'</div>'+
+    '<div class="pp-tip">💡 '+p.tip+'</div>'+
+    '<a class="pp-link" href="'+gmaps+'" target="_blank" rel="noopener">Ruta en Google Maps →</a>';
+  m.bindPopup(html);
+  markers[p.id] = m;
+});
+
+var mfEl = document.getElementById('mapFilters');
+function addMFilter(key, label, color){
+  var b = document.createElement('button');
+  b.className = 'mfilter' + (key==='all'?' active':'');
+  b.innerHTML = (key!=='all'?'<span class="dot" style="background:'+color+'"></span>':'') + label;
+  b.onclick = function(){
+    document.querySelectorAll('.mfilter').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    PLACES.forEach(function(p){
+      var show = (key==='all' || p.cat===key);
+      if(show){ if(!map.hasLayer(markers[p.id])) markers[p.id].addTo(map); }
+      else { if(map.hasLayer(markers[p.id])) map.removeLayer(markers[p.id]); }
+    });
+  };
+  mfEl.appendChild(b);
+}
+addMFilter('all','Todos');
+Object.keys(CATS).forEach(function(k){ addMFilter(k, CATS[k].label, CATS[k].color); });
+
+window.focusPlace = function(id){
+  document.getElementById('mapa').scrollIntoView({behavior:'smooth'});
+  setTimeout(function(){
+    var m = markers[id];
+    if(!m) return;
+    map.setView(m.getLatLng(), 13, {animate:true});
+    m.openPopup();
+  }, 600);
+};
+
+/* ==================== RENDER: PLACES GRID ==================== */
+var pfEl = document.getElementById('placeFilters');
+var gridEl = document.getElementById('placeGrid');
+function addPFilter(key, label){
+  var b = document.createElement('button');
+  b.className = 'fbtn' + (key==='all'?' active':'');
+  b.textContent = label;
+  b.onclick = function(){
+    document.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    document.querySelectorAll('.place-card').forEach(function(c){
+      c.classList.toggle('hidden', key!=='all' && c.dataset.cat!==key);
+    });
+  };
+  pfEl.appendChild(b);
+}
+addPFilter('all','Todos');
+Object.keys(CATS).forEach(function(k){ addPFilter(k, CATS[k].label); });
+
+PLACES.forEach(function(p){
+  var card = document.createElement('div');
+  card.className = 'card place-card';
+  card.dataset.cat = p.cat;
+  card.innerHTML = '<h4>'+p.name+' <span class="badge b-'+p.cat+'">'+CATS[p.cat].label+'</span></h4>'+
+    '<div class="area">📍 '+p.area+'</div>'+
+    '<p>'+p.desc+'</p>'+
+    '<div class="ptip">💡 <b>Truco:</b> '+p.tip+'</div>'+
+    '<button class="map-btn" onclick="focusPlace(\''+p.id+'\')">Ver en el mapa →</button>';
+  gridEl.appendChild(card);
+});
+
+/* ==================== RENDER: EVENTS ==================== */
+var tlEl = document.getElementById('timeline');
+EVENTS.forEach(function(ev){
+  var d = document.createElement('div');
+  d.className = 'card tl-item' + (ev.hot?' hot':'');
+  d.innerHTML = '<div class="tl-date">'+ev.date+(ev.hot?' 🔥':'')+'</div><h4>'+ev.title+'</h4>'+
+    '<div class="loc">📍 '+ev.loc+'</div>'+
+    '<p>'+ev.desc+'</p>';
+  tlEl.appendChild(d);
+});
+
+/* ==================== RENDER: FOOD ==================== */
+var dgEl = document.getElementById('dishGrid');
+DISHES.forEach(function(d){
+  var card = document.createElement('div');
+  card.className = 'card dish';
+  card.innerHTML = '<div class="ico">'+d.ico+'</div><h4>'+d.name+'</h4><p>'+d.desc+'</p>';
+  dgEl.appendChild(card);
+});
+var ecEl = document.getElementById('eatCols');
+EAT.forEach(function(e){
+  var card = document.createElement('div');
+  card.className = 'card eat-card';
+  card.innerHTML = '<h4>'+e.title+'</h4><ul>'+e.items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';
+  ecEl.appendChild(card);
+});
+
+/* ==================== RENDER: PRACTICAL ==================== */
+var pgEl = document.getElementById('pracGrid');
+PRACTICAL.forEach(function(p){
+  var card = document.createElement('div');
+  card.className = 'card prac-card';
+  card.innerHTML = '<h4>'+p.title+'</h4><ul>'+p.items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';
+  pgEl.appendChild(card);
+});
+
+/* ==================== CHECKLIST ==================== */
+var CHECK_KEY = 'menorca-sept-2026-checks';
+var saved = {};
+try{ saved = JSON.parse(localStorage.getItem(CHECK_KEY)||'{}'); }catch(e){}
+var cgEl = document.getElementById('checkGroups');
+var totalChecks = 0;
+CHECKLIST.forEach(function(group, gi){
+  var sec = document.createElement('div');
+  sec.className = 'check-group';
+  var html = '<h4>'+group.title+'</h4><div class="check-list">';
+  group.items.forEach(function(item, ii){
+    var id = 'chk-'+gi+'-'+ii;
+    var done = !!saved[id];
+    totalChecks++;
+    html += '<label class="check-item'+(done?' done':'')+'" data-id="'+id+'">'+
+      '<input type="checkbox" '+(done?'checked':'')+' data-id="'+id+'"><span>'+item+'</span></label>';
+  });
+  html += '</div>';
+  sec.innerHTML = html;
+  cgEl.appendChild(sec);
+});
+function updateCheckUI(){
+  var done = Object.keys(saved).filter(function(k){return saved[k];}).length;
+  document.getElementById('checkCount').textContent = done+' / '+totalChecks+' comprobados';
+  document.getElementById('checkBar').style.width = (done/totalChecks*100)+'%';
+}
+cgEl.addEventListener('change', function(e){
+  if(e.target.type!=='checkbox') return;
+  saved[e.target.dataset.id] = e.target.checked;
+  e.target.closest('.check-item').classList.toggle('done', e.target.checked);
+  localStorage.setItem(CHECK_KEY, JSON.stringify(saved));
+  updateCheckUI();
+});
+updateCheckUI();
+
+/* ==================== NAV ==================== */
+var ham = document.getElementById('hamburgerBtn');
+var navLinks = document.getElementById('navLinks');
+ham.onclick = function(){ navLinks.classList.toggle('open'); };
+navLinks.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click', function(){
+    navLinks.classList.remove('open');
+    navLinks.querySelectorAll('a').forEach(function(x){x.classList.remove('active');});
+    a.classList.add('active');
+  });
+});
+var sections = document.querySelectorAll('section[id]');
+var navAs = navLinks.querySelectorAll('a');
+window.addEventListener('scroll', function(){
+  var y = window.scrollY + 100;
+  sections.forEach(function(s){
+    if(y >= s.offsetTop && y < s.offsetTop + s.offsetHeight){
+      navAs.forEach(function(a){a.classList.remove('active');});
+      var link = null;
+      navAs.forEach(function(a){ if(a.getAttribute('href')==='#'+s.id) link = a; });
+      if(link) link.classList.add('active');
+    }
+  });
+}, {passive:true});
+
+mapEl.addEventListener('click', function(){ map.scrollWheelZoom.enable(); });
+mapEl.addEventListener('mouseleave', function(){ map.scrollWheelZoom.disable(); });
+</script>
+
+</body>
+</html>
