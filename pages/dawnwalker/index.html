@@ -502,6 +502,35 @@ footer a:hover{text-decoration:underline}
 /* ═══════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════ */
+/* ════════════════════════════════════
+   REVIEW SCORES + GFX
+   ════════════════════════════════════ */
+.score-hero{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin:1.8rem 0 .5rem}
+.score-pill{flex:1;min-width:200px;text-align:center;background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--gold);border-radius:var(--radius);padding:1.2rem 1rem;transition:all .3s}
+.score-pill:hover{border-top-color:var(--red-glow);transform:translateY(-2px)}
+.score-pill .score-val{font-family:'Cinzel',serif;font-size:2.4rem;font-weight:900;color:var(--gold);line-height:1}
+.score-pill .score-out{font-family:'Inter',sans-serif;font-size:.8rem;color:var(--txt-dim)}
+.score-pill .score-name{display:block;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-mid);margin-top:.5rem}
+.score-pill .score-sub{display:block;font-family:'Inter',sans-serif;font-size:.7rem;color:var(--txt-dim);margin-top:.2rem}
+.score-pill.hot{border-top-color:var(--red-glow)}
+.score-pill.hot .score-val{color:var(--red-bright)}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.review-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem}
+.review-panel h3{font-family:'Cinzel',serif;font-size:1.15rem;font-weight:700;margin-bottom:1rem}
+.review-panel.good h3{color:var(--gold)}
+.review-panel.crit h3{color:var(--red-glow)}
+.review-panel ul{list-style:none;padding:0}
+.review-panel li{padding:7px 0 7px 22px;position:relative;font-size:.93rem;color:var(--txt-mid);line-height:1.55}
+.review-panel.good li::before{content:'✚';position:absolute;left:0;color:var(--gold)}
+.review-panel.crit li::before{content:'✗';position:absolute;left:0;color:var(--red-glow)}
+.review-quote{border-left-color:var(--gold)}
+.gfx-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1.6rem}
+.gfx-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;font-family:'Inter',sans-serif;font-size:.85rem;color:var(--txt-mid);line-height:1.5}
+.gfx-item .g-ico{font-size:1.1rem}
+.gfx-item .g-name{display:block;font-weight:600;color:var(--txt);margin:.2rem 0 .1rem}
+.gfx-item.yes{border-left:3px solid #7fc98a}
+.gfx-item.no{border-left:3px solid var(--red-dim)}
+@media(max-width:768px){.review-grid{grid-template-columns:1fr}}
 @media(max-width:768px){
   .combat-dual{grid-template-columns:1fr}
   .videos-grid{grid-template-columns:1fr}
@@ -551,6 +580,7 @@ footer a:hover{text-decoration:underline}
   <a href="#gameplay" data-close>Gameplay &amp; Mechanics</a>
   <a href="#combat" data-close>Combat System</a>
   <a href="#impressions" data-close>Hands-On Impressions</a>
+  <a href="#reviews" class="menu-hot" data-close>🩋 Reviews (83/84)</a>
   <a href="#features" data-close>Key Features</a>
   <a href="#editions" data-close>Editions &amp; Pre-Order</a>
   <a href="#specs" data-close>PC System Requirements</a>
@@ -584,6 +614,7 @@ footer a:hover{text-decoration:underline}
       <span class="launch-pill">📅 September 3, 2026</span>
       <span>🖥 PC · PS5 · Xbox Series X|S</span>
       <span>⚙ Unreal Engine 5</span>
+      <span>⭐ Metacritic 83 · OpenCritic 84</span>
     </div>
     <a href="#story" class="btn-primary">⚔ Enter the Dark World</a>
     <div class="countdown" id="countdown">
@@ -617,15 +648,24 @@ footer a:hover{text-decoration:underline}
 <section class="wrap fade-in" id="news">
   <p class="label">From the chronicle</p>
   <h2>Latest News</h2>
-  <p>Everything fresh on the road to September 3. Last updated <strong>August 20, 2026</strong>.</p>
+  <p>Everything fresh on the road to September 3. Last updated <strong>August 31, 2026</strong>.</p>
 
   <div class="news-list">
-    <div class="news-item fade-in">
+    <div class="news-item hot fade-in">
       <div class="news-date">31 Aug <small>2026</small></div>
       <div class="news-body">
-        <h3>Review embargo lifts: August 31, 5 PM CEST</h3>
-        <p>Per the official community, reviews unlock <strong>two days before launch</strong> — a full weekend to gauge critical consensus before you buy. Rebel Wolves shows confidence by letting the game speak for itself. If you don't want spoilers: that date is when you should start muting keywords.</p>
-        <div class="news-tags"><span class="news-tag reviews">Reviews</span><span class="news-tag community">Community</span></div>
+        <h3><a href="#reviews" style="color:inherit;text-decoration:none">Review embargo is lifted: it lands at 83/84 <span style="color:var(--gold);font-size:.8em">↗</span></a></h3>
+        <p>Reviews dropped today, August 31 at 5 PM CEST — two days before launch, exactly as the community promised. The consensus is <strong>strongly positive</strong>: <strong>Metacritic 83</strong> and <strong>OpenCritic 84</strong> (“Mighty”, 90% recommend). Unanimous praise for the world, story and time system; the criticism centers on some polish and technical jank. <a href="#reviews" style="color:var(--gold)">See the full breakdown ↓</a></p>
+        <div class="news-tags"><span class="news-tag reviews">Reviews</span><span class="news-tag">83 MC · 84 OC</span></div>
+      </div>
+    </div>
+
+    <div class="news-item fade-in fade-in-delay-3">
+      <div class="news-date">31 Aug <small>2026</small></div>
+      <div class="news-body">
+        <h3>PC benchmarks: no ray tracing, but DLSS 4 and FSR handle it</h3>
+        <p>First independent benchmarks (RTX 5070 Ti, 1440p) confirm: <strong>no ray tracing or path tracing</strong>, yet the game runs without drama. At Ultra, native rendering is ~54 fps and <strong>DLSS Quality + frame generation</strong> pushes it to ~102 fps. An upscaler (DLSS/FSR/XeSS) is required to hit the official targets — the new 4K/60 Ultra goal with upscaling is an <strong>RTX 4070 Ti</strong>, not the old native RTX 5090.</p>
+        <div class="news-tags"><span class="news-tag">Technical</span><span class="news-tag">PC</span></div>
       </div>
     </div>
 
@@ -737,11 +777,11 @@ footer a:hover{text-decoration:underline}
       <div class="timeline-desc">The definitive mechanics summary (omniattack/omniblock) and the official edition comparison.</div>
       <span class="timeline-tag done">Done</span>
     </div>
-    <div class="timeline-item future">
+    <div class="timeline-item">
       <div class="timeline-date">31 Aug 2026 · 5 PM CEST</div>
       <div class="timeline-title">Review embargo lifts</div>
-      <div class="timeline-desc">Reviews reach the public two days before launch, with a weekend to form your own opinion.</div>
-      <span class="timeline-tag next">Next</span>
+      <div class="timeline-desc">Reviews are out: Metacritic 83 and OpenCritic 84. Strongly positive consensus two days before launch.</div>
+      <span class="timeline-tag done">Done</span>
     </div>
     <div class="timeline-item future">
       <div class="timeline-date">3 Sep 2026</div>
@@ -992,6 +1032,66 @@ footer a:hover{text-decoration:underline}
 
 <div class="orn-divider"><span class="orn">✦ ☠ ✦</span></div>
 
+<!-- ──────────── REVIEWS ──────────── -->
+<section class="wrap fade-in" id="reviews">
+  <p class="label">The press verdict</p>
+  <h2>Reviews — The Embargo Is Lifted</h2>
+  <p>Reviews went live on <strong>August 31 at 5 PM CEST</strong>, two days before launch. Reception is <strong>clearly positive</strong>: Rebel Wolves opens with one of the most well-received debuts of the generation.</p>
+
+  <div class="score-hero">
+    <div class="score-pill">
+      <span class="score-val">83</span><span class="score-out">/100</span>
+      <span class="score-name">Metacritic</span>
+      <span class="score-sub">PC · PS5 · Xbox Series X|S</span>
+    </div>
+    <div class="score-pill hot">
+      <span class="score-val">84</span><span class="score-out">/100</span>
+      <span class="score-name">OpenCritic · “Mighty”</span>
+      <span class="score-sub">90% recommend · 59 reviews</span>
+    </div>
+  </div>
+
+  <div class="review-grid">
+    <div class="review-panel good fade-in">
+      <h3>👍 What Critics Praise</h3>
+      <ul>
+        <li><strong>World &amp; atmosphere</strong> — Vale Sangora is the standout: dark, alive and memorable</li>
+        <li><strong>Story &amp; characters</strong> — Coen's duality and the vampire lore hook you from the start</li>
+        <li><strong>Time system</strong> — 30 days as a resource is celebrated as the most original part of the game</li>
+        <li><strong>Meaningful choices</strong> — the consequences of your actions truly land</li>
+        <li><strong>Deep combat</strong> — HEMA-inspired and satisfying, if a little rough</li>
+        <li><strong>Voice acting</strong> — unanimous praise for Coen's performance</li>
+      </ul>
+    </div>
+    <div class="review-panel crit fade-in fade-in-delay-1">
+      <h3>⚠️ What Critics Criticize</h3>
+      <ul>
+        <li><strong>Polish &amp; technical jank</strong> — bugs, enemy AI and combat inconsistencies</li>
+        <li><strong>Repetitive design</strong> — some call the gameplay “serviceable but stunted” (GameRant 6/10)</li>
+        <li><strong>Post-launch patch</strong> — Rebel Wolves will work on balance, performance and QoL</li>
+        <li><strong>Difficulty curve</strong> — some encounters feel hard or unfair</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quote review-quote">
+    <blockquote>“Easily one of my favourite RPGs in years. Well worth a taste.”</blockquote>
+    <cite>— Press Start (9/10)</cite>
+  </div>
+  <div class="quote">
+    <blockquote>“One of the most impressive games I've played this generation.”</blockquote>
+    <cite>— Monster Vine (5/5)</cite>
+  </div>
+  <div class="quote">
+    <blockquote>“Strong ideas and a compelling story, but repetitive design and constant jank hold it back.”</blockquote>
+    <cite>— GameRant (6/10)</cite>
+  </div>
+
+  <p class="src-note"><strong>Sources:</strong> Metacritic (83) · OpenCritic (84, 59 reviews) · Press Start · Monster Vine · TheSixthAxis · Push Square · GameRant · Outerhaven · ResetEra (Aug 31, 2026)</p>
+</section>
+
+<div class="orn-divider"><span class="orn">✦ ☠ ✦</span></div>
+
 <!-- ──────────── FEATURES ──────────── -->
 <section class="wrap fade-in" id="features">
   <p class="label">At a Glance</p>
@@ -1007,7 +1107,7 @@ footer a:hover{text-decoration:underline}
     <li><span class="fi">💀</span> Kill off NPCs — even important ones — with lasting world impact</li>
     <li><span class="fi">❤️</span> Romance system with meaningful relationship building</li>
     <li><span class="fi">⚡</span> Unreal Engine 5 with next-gen visuals and performance</li>
-    <li><span class="fi">🔧</span> NVIDIA DLSS, AMD FSR and Intel XeSS support</li>
+    <li><span class="fi">🔧</span> DLSS 4 (with frame generation), AMD FSR and Intel XeSS — no ray tracing</li>
     <li><span class="fi">🏰</span> Authentic medieval sword combat with HEMA consultants and motion capture</li>
     <li><span class="fi">🔮</span> Deep skill trees for human, vampire and shared abilities</li>
   </ul>
@@ -1076,71 +1176,75 @@ footer a:hover{text-decoration:underline}
   <p class="label">Technical</p>
   <h2>PC System Requirements</h2>
 
-  <p>Official specs revealed by Rebel Wolves during the <strong>Road to Launch</strong> event (April 2026). <strong>These benchmarks were established without the use of upscaling or frame generation</strong> — meaning tools like NVIDIA DLSS or AMD FSR can significantly improve performance beyond these targets.</p>
+  <p>Rebel Wolves published the <strong>final PC requirements</strong> (August 18, 2026) and they dropped significantly from <em>Road to Launch</em>: the 4K/60 Ultra target with upscaling is an <strong>RTX 4070 Ti</strong> (was: RTX 5090 native). The reason: <strong>every target assumes the upscaler is active</strong> (DLSS, FSR or XeSS on the Balanced preset).</p>
 
   <div class="specs-wrap">
-    <table class="specs">
+        <table class="specs">
       <thead>
         <tr>
           <th>Component</th>
-          <th>Minimum</th>
-          <th>Recommended</th>
-          <th>4K Ultra</th>
+          <th>1080p/30 (Low)</th>
+          <th>1080p/60 (Med)</th>
+          <th>1440p/60 (High)</th>
+          <th>4K/60 (Ultra)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Target</td>
-          <td>1080p / 30fps (Low)</td>
-          <td>1080p / 60fps (High)</td>
-          <td>Native 4K / 60fps (Ultra)</td>
+          <td>GPU</td>
+          <td>GTX 1060<br>AMD RX 580</td>
+          <td>RTX 2060 Super · GTX 1070 Ti<br>AMD RX 5700 · Arc A750</td>
+          <td>RTX 4060<br>AMD RX 7600 XT · Arc B580</td>
+          <td>RTX 4070 Ti<br>AMD RX 9070</td>
         </tr>
         <tr>
           <td>CPU</td>
-          <td>Intel Core i7-8700K<br>AMD Ryzen 7 3700X</td>
-          <td>Intel Core i5-13600<br>AMD Ryzen 9 7900X</td>
-          <td>Intel Core i7-14700K+<br>AMD Ryzen 9 7950X+</td>
-        </tr>
-        <tr>
-          <td>GPU</td>
-          <td>NVIDIA RTX 3050 / GTX 1070<br>AMD RX Vega 56<br>Intel Arc A580</td>
-          <td>NVIDIA RTX 5060<br>AMD RX 6800 XT</td>
-          <td>NVIDIA RTX 5090</td>
-        </tr>
-        <tr>
-          <td>VRAM</td>
-          <td>6 GB</td>
-          <td>12 GB</td>
-          <td>32 GB</td>
+          <td>Core i5-11400F<br>Ryzen 7 2700X</td>
+          <td>Core i7-11700K<br>Ryzen 7 5700X</td>
+          <td>Core i7-11700K<br>Ryzen 7 5700X</td>
+          <td>Core i7-12700K<br>Ryzen 7 7800X3D</td>
         </tr>
         <tr>
           <td>RAM</td>
-          <td>16 GB</td>
-          <td>16 GB</td>
-          <td>32 GB</td>
+          <td colspan="4">16 GB (all targets)</td>
         </tr>
         <tr>
           <td>Storage</td>
-          <td colspan="3">SSD — ~50 GB on PS5 (community info); 60 GB recommended on PC</td>
+          <td colspan="4">SSD — 60 GB</td>
         </tr>
         <tr>
           <td>OS</td>
-          <td colspan="3">Windows 10 (DirectX 12)</td>
+          <td colspan="4">Windows 10 / 11 (DirectX 12)</td>
         </tr>
         <tr>
           <td>Upscaling</td>
-          <td colspan="3">NVIDIA DLSS · AMD FSR · Intel XeSS — <strong>recommended</strong> to hit the fps targets (VideoCardz, Aug 2026)</td>
+          <td colspan="4">NVIDIA DLSS · AMD FSR · Intel XeSS — <strong>active and assumed</strong> in every target (Balanced preset as baseline)</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="quote">
-    <blockquote>"These benchmarks were established without the use of upscaling or frame generation technologies, meaning tools like DLSS or FSR can help improve performance beyond these baseline targets."</blockquote>
-    <cite>— Rebel Wolves, Official PC Requirements Statement</cite>
+    <blockquote>"[The targets] assume upscaling is enabled: DLSS, FSR or XeSS on the Balanced preset."</blockquote>
+    <cite>— Rebel Wolves, Final PC Requirements (Aug 18, 2026)</cite>
   </div>
 
-  <p class="src-note"><strong>Note:</strong> Ray tracing / path tracing has not been officially confirmed by the developer as of the last update. <strong>Steam Deck:</strong> Steam Deck HQ reports (Aug 2026) are cautious — with FSR active, internal resolution drops well below native 800p and the image suffers. Best to try it at launch or check out the gamescom demo.</p>
+  <h3 style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--txt);margin-top:2rem">💤 PC Graphics &amp; Performance</h3>
+  <p>The big technical question: ray tracing? <strong>Short answer: no.</strong> Despite running on Unreal Engine 5, <strong>The Blood of Dawnwalker has no ray tracing or path tracing</strong> — and therefore no ray reconstruction either (an RT-specific technology). Lighting is achieved with classic techniques and still looks very good.</p>
+  <div class="gfx-list">
+    <div class="gfx-item no"><span class="g-ico">🔦</span><span class="g-name">Ray Tracing / Path Tracing</span>No. There is no ray tracing in the game.</div>
+    <div class="gfx-item no"><span class="g-ico">🌀</span><span class="g-name">Ray Reconstruction</span>Not applicable — a DLSS feature that only exists alongside ray tracing.</div>
+    <div class="gfx-item yes"><span class="g-ico">⚡</span><span class="g-name">NVIDIA DLSS 4</span>Yes, with <strong>frame generation</strong> (FG). The bundled library points to DLSS 4.</div>
+    <div class="gfx-item yes"><span class="g-ico">🧠</span><span class="g-name">AMD FSR</span>Yes. Per the community, FSR 4 Balanced performs very well; FSR 2/3 Balanced not so much.</div>
+    <div class="gfx-item yes"><span class="g-ico">🎮</span><span class="g-name">Intel XeSS</span>Yes, supported.</div>
+  </div>
+
+  <div class="quote" style="margin-top:1.6rem">
+    <blockquote>"At the Ultra preset, the RTX 5070 Ti hits ~54 fps native at 1440p and jumps to ~102 fps with DLSS Quality + frame generation. No ray tracing, but the image and performance look very good."</blockquote>
+    <cite>— Sportskeeda, PC benchmarks on RTX 5070 Ti (Aug 31, 2026)</cite>
+  </div>
+
+  <p class="src-note"><strong>Steam Deck:</strong> Steam Deck HQ reports (Aug 2026) are cautious — with FSR active, internal resolution drops well below native 800p and the image suffers. <strong>Sources:</strong> Rebel Wolves (final requirements, Aug 18) · VideoCardz · PC Gamer · DSO Gaming · Sportskeeda · PCGamesHardware · r/nvidia.</p>
 </section>
 
 <div class="orn-divider"><span class="orn">✦ ☠ ✦</span></div>
@@ -1434,7 +1538,7 @@ footer a:hover{text-decoration:underline}
 <!-- ──────────── FOOTER ──────────── -->
 <footer>
   <p>Fan-made informational page. All game trademarks belong to <a href="https://dawnwalkergame.com" target="_blank" rel="noopener">Rebel Wolves Sp. z o.o.</a> and <a href="https://www.bandainamcoent.com" target="_blank" rel="noopener">Bandai Namco Entertainment</a>.</p>
-  <p style="margin-top:.5rem">The Blood of Dawnwalker © 2026 Rebel Wolves · Built by Cocobot 🐱 · Updated Aug 20, 2026</p>
+  <p style="margin-top:.5rem">The Blood of Dawnwalker © 2026 Rebel Wolves · Built by Cocobot 🐱 · Updated Aug 31, 2026</p>
 </footer>
 
 <!-- ──────────── JS ──────────── -->
