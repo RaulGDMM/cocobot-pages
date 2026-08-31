@@ -530,6 +530,8 @@ footer a:hover{text-decoration:underline}
 .gfx-item .g-name{display:block;font-weight:600;color:var(--txt);margin:.2rem 0 .1rem}
 .gfx-item.yes{border-left:3px solid #7fc98a}
 .gfx-item.no{border-left:3px solid var(--red-dim)}
+.gfx-item.partial{border-left:3px solid #d8a93f}
+.gfx-item.partial .g-name{color:#e6c26a}
 @media(max-width:768px){.review-grid{grid-template-columns:1fr}}
 @media(max-width:768px){
   .combat-dual{grid-template-columns:1fr}
@@ -663,8 +665,8 @@ footer a:hover{text-decoration:underline}
     <div class="news-item fade-in fade-in-delay-3">
       <div class="news-date">31 ago <small>2026</small></div>
       <div class="news-body">
-        <h3>Benchmarks PC: sin ray tracing, pero DLSS 4 y FSR lo resuelven</h3>
-        <p>Los primeros benchmarks independientes (RTX 5070 Ti, 1440p) confirman: <strong>no hay ray tracing ni path tracing</strong>, pero el juego se deja llevar sin problemas. En Ultra, el render nativo hace ~54 fps y con <strong>DLSS Quality + frame generation</strong> sube a ~102 fps. Se necesita upscaler (DLSS/FSR/XeSS) para alcanzar los objetivos oficiales — el nuevo objetivo de 4K/60 Ultra con upscaling es una <strong>RTX 4070 Ti</strong>, no la 5090 nativa de antes.</p>
+        <h3>Benchmarks PC: ray tracing oficial, pero sin path tracing — y DLSS 4 lo resuelve</h3>
+        <p>Los primeros benchmarks independientes (RTX 5070 Ti, 1440p) confirman que <strong>no hay path tracing ni ray reconstruction</strong> en PC, y el juego se deja llevar sin problemas. En Ultra, el render nativo hace ~54 fps y con <strong>DLSS Quality + frame generation</strong> sube a ~102 fps. Se necesita upscaler (DLSS/FSR/XeSS) para alcanzar los objetivos oficiales — el nuevo objetivo de 4K/60 Ultra con upscaling es una <strong>RTX 4070 Ti</strong>, no la 5090 nativa de antes.</p>
         <div class="news-tags"><span class="news-tag">Técnico</span><span class="news-tag">PC</span></div>
       </div>
     </div>
@@ -1107,7 +1109,7 @@ footer a:hover{text-decoration:underline}
     <li><span class="fi">💀</span> Mata a PNJs — incluso a los importantes — con impacto duradero en el mundo</li>
     <li><span class="fi">❤️</span> Sistema de romance con construcción de relaciones significativa</li>
     <li><span class="fi">⚡</span> Unreal Engine 5 con gráficos y rendimiento de última generación</li>
-    <li><span class="fi">🔧</span> DLSS 4 (con frame generation), AMD FSR e Intel XeSS — sin ray tracing</li>
+    <li><span class="fi">🔧</span> DLSS 4 (con frame generation), AMD FSR e Intel XeSS — y ray tracing oficial (Lumen + Nanite)</li>
     <li><span class="fi">🏰</span> Combate con espada medieval auténtico con consultores HEMA y captura de movimiento</li>
     <li><span class="fi">🔮</span> Árboles de habilidad profundos para habilidades humanas, vampíricas y compartidas</li>
   </ul>
@@ -1230,21 +1232,23 @@ footer a:hover{text-decoration:underline}
   </div>
 
   <h3 style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--txt);margin-top:2rem">💤 Gráficos y rendimiento en PC</h3>
-  <p>La gran pregunta técnica: ¿ray tracing? <strong>Respuesta corta: no.</strong> A pesar de correr en Unreal Engine 5, <strong>The Blood de Dawnwalker no tiene ray tracing ni path tracing</strong> — y por tanto tampoco hay ray reconstruction (que es una tecnología específica de RT). La iluminación se logra con técnicas clásicas y aún así se ve muy bien.</p>
+  <p>La gran pregunta técnica: ¿ray tracing? <strong>Respuesta matizada: depende de dónde mires.</strong> La <strong>ficha oficial de Microsoft Store / Xbox lista «ray tracing» y «4K Ultra HD»</strong> como capacidades del juego. En la práctica, el pipeline gráfico se apoya en <strong>Lumen</strong> (iluminación global y reflejos en tiempo real) y <strong>Nanite</strong> de Unreal Engine 5, y los benchmarks independientes en PC <strong>no detectan path tracing</strong> ni <strong>ray reconstruction</strong> (que exigiría trazado de rayos por hardware). Es decir: hay etiqueta oficial de RT — con más peso en Xbox —, pero <strong>no es un juego RT pesado</strong> tipo Cyberpunk 2077.</p>
   <div class="gfx-list">
-    <div class="gfx-item no"><span class="g-ico">🔦</span><span class="g-name">Ray Tracing / Path Tracing</span>No. No hay trazado de rayos en el juego.</div>
-    <div class="gfx-item no"><span class="g-ico">🌀</span><span class="g-name">Ray Reconstruction</span>No aplica — es una tecnología de DLSS que solo existe junto a ray tracing.</div>
+    <div class="gfx-item partial"><span class="g-ico">🔦</span><span class="g-name">Ray Tracing</span>Listado como <strong>capacidad oficial</strong> en la ficha de Xbox / Microsoft Store (junto a 4K Ultra HD). En PC el pipeline es Lumen + Nanite, no un RT pesado.</div>
+    <div class="gfx-item no"><span class="g-ico">🌌</span><span class="g-name">Path Tracing</span>No. No aparece en los requisitos finales ni se detecta en los benchmarks independientes de PC.</div>
+    <div class="gfx-item no"><span class="g-ico">🌀</span><span class="g-name">Ray Reconstruction</span>No aplica — es una función de DLSS que requiere trazado de rayos por hardware, y el juego no lo usa en PC.</div>
+    <div class="gfx-item yes"><span class="g-ico">💡</span><span class="g-name">Lumen + Nanite</span>Sí: iluminación global, reflejos en tiempo real y geometría virtualizada de Unreal Engine 5. Es el motor visual real del juego.</div>
     <div class="gfx-item yes"><span class="g-ico">⚡</span><span class="g-name">NVIDIA DLSS 4</span>Sí, con <strong>frame generation</strong> (FG). La librería integrada apunta a DLSS 4.</div>
     <div class="gfx-item yes"><span class="g-ico">🧠</span><span class="g-name">AMD FSR</span>Sí. Según la comunidad, FSR 4 Balanced rinde muy bien; FSR 2/3 Balanced, no tanto.</div>
     <div class="gfx-item yes"><span class="g-ico">🎮</span><span class="g-name">Intel XeSS</span>Sí, soportado.</div>
   </div>
 
   <div class="quote" style="margin-top:1.6rem">
-    <blockquote>"En el preset Ultra, la RTX 5070 Ti hace ~54 fps nativos en 1440p y salta a ~102 fps con DLSS Quality + frame generation. Sin ray tracing, pero la imagen y el rendimiento se ven muy bien."</blockquote>
+    <blockquote>"En el preset Ultra, la RTX 5070 Ti hace ~54 fps nativos en 1440p y salta a ~102 fps con DLSS Quality + frame generation. La imagen y el rendimiento se ven muy bien."</blockquote>
     <cite>— Sportskeeda, benchmarks PC con RTX 5070 Ti (31 ago 2026)</cite>
   </div>
 
-  <p class="src-note"><strong>Steam Deck:</strong> los informes de Steam Deck HQ (ago 2026) son cautos — con FSR activo, la resolución interna cae muy por debajo de 800p nativo y la imagen sufre. <strong>Fuentes:</strong> Rebel Wolves (requisitos finales, 18 ago) · VideoCardz · PC Gamer · DSO Gaming · Sportskeeda · PCGamesHardware · r/nvidia.</p>
+  <p class="src-note"><strong>Steam Deck:</strong> los informes de Steam Deck HQ (ago 2026) son cautos — con FSR activo, la resolución interna cae muy por debajo de 800p nativo y la imagen sufre. <strong>Fuentes:</strong> Ficha oficial Microsoft Store / Xbox · Rebel Wolves (requisitos finales, 18 ago) · VideoCardz · PC Gamer · GameGPU (benchmarks, 31 ago) · DSO Gaming · Sportskeeda · PCGamesHardware · r/nvidia.</p>
 </section>
 
 <div class="orn-divider"><span class="orn">✦ ☠ ✦</span></div>
