@@ -438,7 +438,23 @@ var PLACES = [
  tip:'Chiringuitos hasta ~20 h. En septiembre, la opción tranquila del sur, a 10 min de Macarella.'},
 {id:'margineda', name:'Cala Galdana', cat:'beach', area:'Sur', coords:[39.9389,3.9624],
  desc:'Playa urbana de la bahía, muy tranquila, con chiringuitos y ambiente de pueblo. A 5 min de Ferreries.',
- tip:'Ideal para la comida: pescado o paella en el chiringuito. Parking fácil y se llena de locales por la tarde.'}
+ tip:'Ideal para la comida: pescado o paella en el chiringuito. Parking fácil y se llena de locales por la tarde.'},
+// ---- MERCADOS Y COMIDA ----
+{id:'agro_mao', name:'Mercado AgroMaó', cat:'food', area:'Este', coords:[39.8895,4.2670],
+ desc:'El mercado de producto local de Maó (C/ S’Arravaleta y C/ Nou): queso Mahón, miel, cordero, repostería y flores. Cada DOMINGO de 9 a 14 h.',
+ tip:'Vuestro domingo 6 por la mañana: comprad aquí para la cena de esa noche. Pequeño, de pueblo, sin aglomeraciones.'},
+{id:'born_ciutadella', name:'Mercado del Born (Ciutadella)', cat:'food', area:'Noroeste', coords:[40.0015,3.8410],
+ desc:'El mercado interior histórico de Ciutadella (Caseta del Born): pescado del puerto, queso, embutidos y fruta de temporada. LUNES y VIERNES de 9 a 15 h.',
+ tip:'El martes 8, el mercado artesano de la isla ocupa el Carme (10–13 h) y el Born se llena de puestos ambulantes (9–14 h): doble cita si pasáis por la ciudad.'},
+{id:'mkt_agrario', name:'Mercado agrario de Ciutadella', cat:'food', area:'Noroeste', coords:[39.9990,3.8300],
+ desc:'El mercado de producto local con más personalidad de la isla (Pl. de la Llibertat): cordero, sobrasada, repostería, pan y vino de la tierra. MIÉRCOLES y SÁBADO de 8 a 13:30 h.',
+ tip:'Vuestro miércoles 9: empezad el día aquí, comprad para la comida de tarde y luego directos a las calas. Es el plan que hace la gente del pueblo.'},
+{id:'mkt_esmercadal', name:'Mercado nocturno de Es Mercadal', cat:'food', area:'Norte', coords:[39.9915,4.0926],
+ desc:'El mercado nocturno más famoso de Menorca: artesanos, agroalimentario, música en directo desde las 20:30 y luces en pleno pueblo. JUEVES de 19 a 23 h.',
+ tip:'Vuestro jueves 10: el broche de la semana. Comida de siesta en el sur, y a las 19:30 directo aquí. Quedaos hasta la música.'},
+{id:'port_mao', name:'Mercado del puerto de Maó', cat:'food', area:'Este', coords:[39.8930,4.2700],
+ desc:'Pescado y marisco fresco de la lonja a pocos pasos del Moll de Llevant: almejas, gamba, cazón y todo lo que traen los barcos ese día.',
+ tip:'Plan de mediodía fácil: comprad y pedid que os lo preparen en el mercado, o llevadlo a vuestra casa. El jueves por la mañana, antes de ir al sur, es un buen paréntesis.'}
 ];
 
 var DAYS = [
@@ -455,7 +471,7 @@ var DAYS = [
   {w:'13:30', t:'S’Escala (Es Portitxol) + Faro de Favàritx', p:'Caminad los 10 min hasta el faro: el punto más oriental de España. Baño de piedra en S’Escala si lleváis calzado de agua.'},
   {w:'16:00', t:'Merienda en Es Grau', p:'Pueblecito pesquero a 10 min, de los más bonitos del este. Unos churros o pescado en la plaza, y paseo por el pequeño puerto.'},
   {w:'19:00', t:'Atardecer en Cala d’en Carames', p:'De vuelta al este: la playa urbana de Maó, agua tranquila y chiringuitos. Cena cerca. (Hoy el mercado nocturno de Calesfonts de Es Castell está hasta la 1 h, si se os da la hora.)'}
- ], places:['mao','mesquida','portitxol','favaritx','carames']},
+ ], places:['agro_mao','mao','mesquida','portitxol','favaritx','carames']},
 {d:'LUNES', date:'7 septiembre', title:'Norte y centro: pueblos de Menorca', route:'Sant Climent → Es Verger → Es Mercadal → Maó (Gràcia)',
  slots:[
   {w:'10:00', t:'Sant Climent: pueblo costero', p:'Playa, puerto deportivo y ambiente de pueblo pesquero. Café en la plaza o baño rápido en la bahía.'},
@@ -471,7 +487,7 @@ var DAYS = [
   {w:'16:00', t:'Cala Binimel·lá', p:'A 10 min: 1,5 km de arena, pinos y agua de colores. La mejor playa del noroeste para una tarde.'},
   {w:'18:15', t:'Cala Morell + Calespiques', p:'La joya del noroeste: cala de postal con acantilados. Si va el tiempo, 30 min por el Camí de Cavalls hasta Calespiques.'},
   {w:'19:30', t:'Atardecer en Punta Nati', p:'El atardecer más famoso de la isla: acantilados, torres vigías y el faro de Cavalleria. Vistas de toda la costa noroeste. El broche del día.'}
- ], places:['santlluis','ciutadella','binimelilla','calamorell','caulespiques','puntanati']},
+ ], places:['santlluis','ciutadella','born_ciutadella','binimelilla','calamorell','caulespiques','puntanati']},
 {d:'MIÉRCOLES', date:'9 septiembre', title:'Suroeste: las calas de postal', route:'Mercado agrario (Ciutadella) → Cala en Turqueta → Cala Galdana → Macarella → Son Xoriguer (atardecer)',
  slots:[
   {w:'9:00', t:'Mercado agrario de Ciutadella', p:'Hoy miércoles, 8–13:30, en la Pl. de la Llibertat: el mercado de producto local con más personalidad de la isla. Queso, miel, cordero, repostería. Comprad para la cena.'},
@@ -479,13 +495,13 @@ var DAYS = [
   {w:'14:00', t:'Comida en Cala Galdana', p:'La playa urbana más tranquila de la bahía: chiringuitos con buena relación calidad-precio. Pescado o paella, y siesta bajo los pinos.'},
   {w:'17:00', t:'Cala Macarella y Macarelleta', p:'La visita de postal: arena blanca, rocas de colores, faro. Llegad antes de las 17 h para parking. Caminad entre las dos calas: 20 min por el pinar.'},
   {w:'19:15', t:'Mirador de Son Xoriguer', p:'Subid 30 min al pinar sobre Macarella: la mejor vista de la bahía al atardecer. Llano, a la sombra, con pinos. La mejor foto del viaje.'}
- ], places:['ciutadella','turqueta','algaiarens','margineda','morell2','sonxoriguer']},
+ ], places:['mkt_agrario','ciutadella','turqueta','algaiarens','margineda','morell2','sonxoriguer']},
 {d:'JUEVES', date:'10 septiembre', title:'Sur y centro: mercados con música', route:'Cala en Bosc → comida en la playa → Es Mercadal (mercado nocturno)',
  slots:[
   {w:'10:00', t:'Cala en Bosc', p:'La playa grande de arena fina del sur, con pinos y bahía protegida. La alternativa serena a Macarella: baño y paseo sin prisas.'},
   {w:'14:00', t:'Comida en la playa', p:'Pescado o paella en el chiringuito de Cala en Bosc (o Macarella, si prefierís). Con las luces de la siesta a favor.'},
   {w:'19:30', t:'Es Mercadal: el mercado nocturno emblemático', p:'El mercado más famoso de la isla: artesanos, agroalimentario y actuaciones musicales desde las 20:30 hasta las 23 h. En pleno pueblo, con las luces encendidas. El plan del jueves por la noche.'}
- ], places:['esbosc','esmercadal']},
+ ], places:['port_mao','esbosc','esmercadal','mkt_esmercadal']},
 {d:'VIERNES', date:'11 septiembre', title:'Despedida: la fortaleza de La Mola', route:'La Mola → Sant Felip → Maó → Foradada → Aeropuerto (15:30)',
  slots:[
   {w:'9:00', t:'Fortalesa de La Mola', p:'Las galerías subterráneas, los miradores y la historia de la guerra de Sucesión: 2 h de visita en una de las mayores fortalezas del s. XIX de Europa. A 10 min del aeropuerto.'},
@@ -499,7 +515,7 @@ var DAYS = [
 var EVENTS = [
 {date:'SÁB 5 SEP', title:'Fiestas de Gràcia — arrancan en Maó', loc:'Maó, centro y puerto · por la tarde-noche', hot:true, place:'mao',
  desc:'La fiesta que cierra el verano en la capital: caballos (caixers), música en las calles y jaleo. Arrancan hoy y se alargan hasta el lunes 9. Gratis, sin reserva.'},
-{date:'DOM 6 SEP', title:'Mercado AgroMaó', loc:'Maó, C/ S’Arravaleta y C/ Nou · 9–14 h', hot:true, place:'mao',
+{date:'DOM 6 SEP', title:'Mercado AgroMaó', loc:'Maó, C/ S’Arravaleta y C/ Nou · 9–14 h', hot:true, place:'agro_mao',
  desc:'El mercado de producto local de Maó: queso Mahón, miel, cordero, repostería, fruta. Comprad para la cena.'},
 {date:'DOM 6 SEP', title:'Mercado nocturno de Calesfonts (Es Castell)', loc:'Es Castell, muelle y pont de Calesfonts · 19:30–1 h', hot:true, coords:[39.9105,4.0868],
  desc:'Uno de los mercados nocturnos más bonitos de la isla: artesanos, joyería, antigüedades, a pie de puerto. Cada noche hasta el 15 de septiembre. Si se os da la hora: 20 min de Maó.'},
@@ -511,7 +527,7 @@ var EVENTS = [
  desc:'Mercados artesanos nocturnos del casco histórico (cada noche de junio a septiembre). Vuestro martes por la noche, de vuelta de Punta Nati, pasa por el Born.'},
 {date:'MIÉ 9 SEP', title:'Mercado agrario de Ciutadella', loc:'Pl. de la Llibertat · 8–13:30 h', hot:true, place:'ciutadella',
  desc:'El mercado de producto local con más personalidad de la isla. Vuestro miércoles: empezad el día aquí y luego a las calas.'},
-{date:'JUE 10 SEP', title:'Mercado nocturno de Es Mercadal', loc:'Es Mercadal · 19–23 h', hot:true, place:'esmercadal',
+{date:'JUE 10 SEP', title:'Mercado nocturno de Es Mercadal', loc:'Es Mercadal · 19–23 h', hot:true, place:'mkt_esmercadal',
  desc:'El jueves es el día del mercado nocturno más emblemático de Menorca: artesanos, agroalimentario y música en directo desde las 20:30. Después de vuestro día de playa en el sur, vais directos.'},
 {date:'VIE 11 SEP', title:'Born de Ciutadella + revetlla de Sant Nicolau', loc:'Ciutadella 9–15 h · El Toro (Es Mercadal) por la noche', hot:false, place:'ciutadella',
  desc:'Hoy viernes toca el Mercado del Born en Ciutadella (por la mañana, lejos del aeropuerto). Y en el interior arranca la revetlla de Sant Nicolau con caballos y jaleo — solo si os da tiempo antes de volar.'},
