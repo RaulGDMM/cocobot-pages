@@ -75,6 +75,7 @@ section{padding:56px 0 8px}
 .b-culture{background:var(--gold-soft);color:#9a6a12}
 .b-activity{background:var(--terra-soft);color:#a4471f}
 .b-food{background:#f3e3f0;color:#8d3f77}
+.b-restaurant{background:#d9f0ec;color:#0a6b5d}
 .b-event{background:#e8e6f5;color:#4d4390}
 .b-verify{background:#fdecec;color:#b03030}
 
@@ -359,7 +360,8 @@ var CATS = {
   town:    {label:'Ciudades y pueblos', color:'#3d7a4f'},
   culture: {label:'Cultura y historia', color:'#b07a1a'},
   activity:{label:'Experiencias', color:'#d4693c'},
-  food:    {label:'Mercados y comida', color:'#a34e83'}
+  food:    {label:'Mercados y comida', color:'#a34e83'},
+  restaurant:{label:'Restaurantes y chiringuitos', color:'#0d8a78'}
 };
 
 var PLACES = [
@@ -454,7 +456,28 @@ var PLACES = [
  tip:'Vuestro jueves 10: el broche de la semana. Comida de siesta en el sur, y a las 19:30 directo aquí. Quedaos hasta la música.'},
 {id:'port_mao', name:'Mercado del puerto de Maó', cat:'food', area:'Este', coords:[39.8930,4.2700],
  desc:'Pescado y marisco fresco de la lonja a pocos pasos del Moll de Llevant: almejas, gamba, cazón y todo lo que traen los barcos ese día.',
- tip:'Plan de mediodía fácil: comprad y pedid que os lo preparen en el mercado, o llevadlo a vuestra casa. El jueves por la mañana, antes de ir al sur, es un buen paréntesis.'}
+ tip:'Plan de mediodía fácil: comprad y pedid que os lo preparen en el mercado, o llevadlo a vuestra casa. El jueves por la mañana, antes de ir al sur, es un buen paréntesis.'},
+{id:'sa_riera', name:'Casa Sa Riera', cat:'restaurant', area:'Este', coords:[39.8940,4.2665],
+ desc:'El clásico de Maó: pescado de lonja, poulpe a la brasa y cordero, con terraza en el centro. La cena especial del viaje.',
+ tip:'RESERVA CON 1–2 SEMANAS (se llena). Ideal para la cena del domingo 6 o del sábado 5. Precio: medio-alto, lo vale.'},
+{id:'can_mateu', name:'Can Mateu', cat:'restaurant', area:'Este', coords:[39.8860,4.2690],
+ desc:'Restaurante familiar de Maó, a pasos del puerto: buena relación calidad-precio, carta de pescado y carne, ambiente relajado.',
+ tip:'La alternativa sin reserva (o con poca antelación) en Maó. Perfecto para la cena del lunes 7 si no llegáis a Gràcia a comer.'},
+{id:'sa_posada', name:'Sa Posada', cat:'restaurant', area:'Noroeste', coords:[40.0038,3.8378],
+ desc:'Alta cocina en el casco antiguo de Ciutadella (estrella Michelin): cocina de mercado balear de altísimo nivel. La experiencia gastronómica de la isla.',
+ tip:'Reservad con 2 semanas o más. Si no os atrevéis, su barra es una opción menos formal. El martes 8 por la noche, de vuelta de Punta Nati, es el hueco natural… si llegáis con tiempo.'},
+{id:'can_joan', name:'Can Joan', cat:'restaurant', area:'Noroeste', coords:[40.0048,3.8435],
+ desc:'El restaurante de barrio de Ciutadella, junto al Born: cocina casera, buen precio y sin pretensiones. El plan del martes por la tarde-noche.',
+ tip:'Comeréis la cena del martes 8 después de merendar en el mercado nocturno del Born. Pedid el cordero y el vino de la tierra.'},
+{id:'chiring_macarella', name:'Chiringuito de Macarella', cat:'restaurant', area:'Sur', coords:[39.9248,3.8710],
+ desc:'Comer mirando la cala de postal: paella, pescado y arroces al sol, con la arena a los pies. El chiringuito de Cala Macarella.',
+ tip:'El miércoles 9, a las 15 h, si pasáis de Galdana a Macarella: parar aquí a comer en lugar de Galdana es la experiencia más "Menorca" del viaje. Llega temprano.'},
+{id:'chiring_galdana', name:'Chiringuito de Cala Galdana', cat:'restaurant', area:'Sur', coords:[39.9385,3.9635],
+ desc:'La comida de pueblo del sur: paella, pescado fresco y sobaos en la playa urbana más tranquila de la bahía, a 5 min de Ferreries.',
+ tip:'Vuestro miércoles 9 a las 14 h: la opción con parking fácil y buen precio. Si va el tiempo, pedid mesa al sol.'},
+{id:'chiring_esbosc', name:'Chiringuito de Cala en Bosc', cat:'restaurant', area:'Sur', coords:[39.9158,3.8505],
+ desc:'El chiringuito de la cala grande del sur: paella y pescado con baño a los pies y pinos a la espalda. Menos famoso que Macarella, más tranquilo.',
+ tip:'La comida del jueves 10: os bañáis a las 10, merendáis, y a las 14 h paella mirando la bahía. Luego a las 19:30, el mercado nocturno de Es Mercadal.'}
 ];
 
 var DAYS = [
@@ -471,14 +494,14 @@ var DAYS = [
   {w:'13:30', t:'S’Escala (Es Portitxol) + Faro de Favàritx', p:'Caminad los 10 min hasta el faro: el punto más oriental de España. Baño de piedra en S’Escala si lleváis calzado de agua.'},
   {w:'16:00', t:'Merienda en Es Grau', p:'Pueblecito pesquero a 10 min, de los más bonitos del este. Unos churros o pescado en la plaza, y paseo por el pequeño puerto.'},
   {w:'19:00', t:'Atardecer en Cala d’en Carames', p:'De vuelta al este: la playa urbana de Maó, agua tranquila y chiringuitos. Cena cerca. (Hoy el mercado nocturno de Calesfonts de Es Castell está hasta la 1 h, si se os da la hora.)'}
- ], places:['agro_mao','mao','mesquida','portitxol','favaritx','carames']},
+ ], places:['agro_mao','sa_riera','mao','mesquida','portitxol','favaritx','carames']},
 {d:'LUNES', date:'7 septiembre', title:'Norte y centro: pueblos de Menorca', route:'Sant Climent → Es Verger → Es Mercadal → Maó (Gràcia)',
  slots:[
   {w:'10:00', t:'Sant Climent: pueblo costero', p:'Playa, puerto deportivo y ambiente de pueblo pesquero. Café en la plaza o baño rápido en la bahía.'},
   {w:'12:30', t:'Es Verger: baño tranquilo', p:'Pequeña playa de arena en la bahía protegida del norte: aguas siempre calmadas, la opción segura si sopla el levante.'},
   {w:'16:00', t:'Es Mercadal: el pueblo del interior', p:'En el centro de la isla: tiendas de queso Mahón y miel, cafés con historia, y el casco antiguo de los sesers (graneros). El pueblo más Menorca de Menorca.'},
   {w:'20:00', t:'Maó: Segona Festa de Gràcia', p:'La fiesta que cierra el verano en la capital: caballos, música en las calles y ambiente de pueblo hasta tarde. Pasead por el centro y el puerto. Es gratis y no hace falta reserva.'}
- ], places:['santcliment','esverger','esmercadal','mao']},
+ ], places:['santcliment','esverger','esmercadal','mao','can_mateu']},
 {d:'MARTES', date:'8 septiembre', title:'Noroeste: fortalezas y la joya de Ciutadella', route:'Sant Lluís (fort) → Ciutadella → Cala Binimel·lá → Cala Morell → Punta Nati (atardecer)',
  slots:[
   {w:'9:30', t:'Sant Lluís y Fort Saint-Philippe', p:'La ciudad amurallada francesa de 1757 y su fortaleza sobre la bahía: ~1 h de visita. Las calles en cuesta de la ciudad: las mejores fotos de la isla.'},
@@ -487,7 +510,7 @@ var DAYS = [
   {w:'16:00', t:'Cala Binimel·lá', p:'A 10 min: 1,5 km de arena, pinos y agua de colores. La mejor playa del noroeste para una tarde.'},
   {w:'18:15', t:'Cala Morell + Calespiques', p:'La joya del noroeste: cala de postal con acantilados. Si va el tiempo, 30 min por el Camí de Cavalls hasta Calespiques.'},
   {w:'19:30', t:'Atardecer en Punta Nati', p:'El atardecer más famoso de la isla: acantilados, torres vigías y el faro de Cavalleria. Vistas de toda la costa noroeste. El broche del día.'}
- ], places:['santlluis','ciutadella','born_ciutadella','binimelilla','calamorell','caulespiques','puntanati']},
+ ], places:['santlluis','ciutadella','born_ciutadella','can_joan','binimelilla','calamorell','caulespiques','puntanati','sa_posada']},
 {d:'MIÉRCOLES', date:'9 septiembre', title:'Suroeste: las calas de postal', route:'Mercado agrario (Ciutadella) → Cala en Turqueta → Cala Galdana → Macarella → Son Xoriguer (atardecer)',
  slots:[
   {w:'9:00', t:'Mercado agrario de Ciutadella', p:'Hoy miércoles, 8–13:30, en la Pl. de la Llibertat: el mercado de producto local con más personalidad de la isla. Queso, miel, cordero, repostería. Comprad para la cena.'},
@@ -495,13 +518,13 @@ var DAYS = [
   {w:'14:00', t:'Comida en Cala Galdana', p:'La playa urbana más tranquila de la bahía: chiringuitos con buena relación calidad-precio. Pescado o paella, y siesta bajo los pinos.'},
   {w:'17:00', t:'Cala Macarella y Macarelleta', p:'La visita de postal: arena blanca, rocas de colores, faro. Llegad antes de las 17 h para parking. Caminad entre las dos calas: 20 min por el pinar.'},
   {w:'19:15', t:'Mirador de Son Xoriguer', p:'Subid 30 min al pinar sobre Macarella: la mejor vista de la bahía al atardecer. Llano, a la sombra, con pinos. La mejor foto del viaje.'}
- ], places:['mkt_agrario','ciutadella','turqueta','algaiarens','margineda','morell2','sonxoriguer']},
+ ], places:['mkt_agrario','ciutadella','turqueta','algaiarens','margineda','chiring_galdana','chiring_macarella','morell2','sonxoriguer']},
 {d:'JUEVES', date:'10 septiembre', title:'Sur y centro: mercados con música', route:'Cala en Bosc → comida en la playa → Es Mercadal (mercado nocturno)',
  slots:[
   {w:'10:00', t:'Cala en Bosc', p:'La playa grande de arena fina del sur, con pinos y bahía protegida. La alternativa serena a Macarella: baño y paseo sin prisas.'},
   {w:'14:00', t:'Comida en la playa', p:'Pescado o paella en el chiringuito de Cala en Bosc (o Macarella, si prefierís). Con las luces de la siesta a favor.'},
   {w:'19:30', t:'Es Mercadal: el mercado nocturno emblemático', p:'El mercado más famoso de la isla: artesanos, agroalimentario y actuaciones musicales desde las 20:30 hasta las 23 h. En pleno pueblo, con las luces encendidas. El plan del jueves por la noche.'}
- ], places:['port_mao','esbosc','esmercadal','mkt_esmercadal']},
+ ], places:['port_mao','esbosc','chiring_esbosc','esmercadal','mkt_esmercadal']},
 {d:'VIERNES', date:'11 septiembre', title:'Despedida: la fortaleza de La Mola', route:'La Mola → Sant Felip → Maó → Foradada → Aeropuerto (15:30)',
  slots:[
   {w:'9:00', t:'Fortalesa de La Mola', p:'Las galerías subterráneas, los miradores y la historia de la guerra de Sucesión: 2 h de visita en una de las mayores fortalezas del s. XIX de Europa. A 10 min del aeropuerto.'},
@@ -560,6 +583,15 @@ var EAT = [
   '<b>Cena tranquila:</b> En el pueblo donde os alojéis: fuente de pescado, cordero, sobrasada + postre.',
   '<b>Cena especial:</b> Sa Posada (Ciutadella) o Casa Sa Riera (Maó). Reserva con 1–2 semanas.',
   '<b>Cena en la playa:</b> En el chiringuito de la cala, al atardecer: el plan perfecto de fin de semana.']},
+{title:'🍷 Nuestras recomendaciones', items:[
+  '<b>Casa Sa Riera</b> (Maó) — el clásico de pescado y poulpe. Reserva con 1–2 semanas. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'sa_riera\')">Ver en el mapa →</button>',
+  '<b>Can Mateu</b> (Maó) — versión relajada, buen precio, sin reserva. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'can_mateu\')">Ver en el mapa →</button>',
+  '<b>Sa Posada</b> (Ciutadella) — alta cocina con estrella. La cena especial del viaje. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'sa_posada\')">Ver en el mapa →</button>',
+  '<b>Can Joan</b> (Ciutadella) — cocina casera junto al Born, buen precio. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'can_joan\')">Ver en el mapa →</button>',
+  '<b>Chiringuito de Macarella</b> — paella mirando la cala de postal. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'chiring_macarella\')">Ver en el mapa →</button>',
+  '<b>Chiringuito de Cala Galdana</b> — la comida de pueblo del sur, parking fácil. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'chiring_galdana\')">Ver en el mapa →</button>',
+  '<b>Chiringuito de Cala en Bosc</b> — el plan sereno del jueves. <button class="map-btn" style="margin-left:6px" onclick="focusPlace(\'chiring_esbosc\')">Ver en el mapa →</button>'
+]},
 {title:'🛒 Dónde comprar (souvenirs comibles)', items:[
   '<b>Queso Mahón:</b> En cualquier supermercado (Eroski, Dia, Mercadona) o en la tienda de la quesería.',
   '<b>Sobaos y vino:</b> En el aeropuerto de Maó hay tienda de producto local: el último momento para comprar.',
@@ -673,7 +705,7 @@ function iconFor(cat){
   return L.divIcon({
     className:'',
     html:'<div style="width:26px;height:26px;border-radius:50%;background:'+c+';border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">'+
-      {beach:'🏖️',town:'🏘️',culture:'🏛️',activity:'🥾',food:'🍽️'}[cat]+'</div>',
+      {beach:'🏖️',town:'🏘️',culture:'🏛️',activity:'🥾',food:'🍽️',restaurant:'🍷'}[cat]+'</div>',
     iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-14]
   });
 }
