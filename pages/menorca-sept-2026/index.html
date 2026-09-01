@@ -432,13 +432,10 @@ var PLACES = [
 {id:'sonxoriguer', name:'Mirador de Son Xoriguer', cat:'activity', area:'Suroeste', coords:[39.9276,3.8440],
  desc:'El pinar sobre Macarella: senderos señalizados de 1–2 h con vistas de toda la bahía. La mejor excursión a pie de la isla.',
  tip:'Subid al mirador al atardecer: Macarella + Macarelleta + la bahía completa. 30 min a pie, llano, a la sombra de los pinos.'},
-{id:'felanitx', name:'Felanitx', cat:'town', area:'Suroeste', coords:[39.8536,3.8820],
- desc:'Pueblo de mercado y casonas señoriales: plaza de toros del s. XVIII, iglesia de Santa Maria y el mejor ambiente de pueblo de la costa sur.',
- tip:'Su mercado es los JUEVES (9–14 h): vuestro jueves 10 toca. Pasead por la Plaça des Born y la calle Colom.'},
 // ---- SOUTH ----
 {id:'esbosc', name:'Cala en Bosc', cat:'beach', area:'Sur', coords:[39.9265,3.8375],
  desc:'Playa grande de arena fina con pinos, en una bahía protegida del sur. La alternativa serena a Macarella.',
- tip:'Chiringuitos hasta ~20 h. A 15 min de Felanitx. En septiembre, la opción tranquila del sur.'},
+ tip:'Chiringuitos hasta ~20 h. En septiembre, la opción tranquila del sur, a 10 min de Macarella.'},
 {id:'margineda', name:'Cala Galdana', cat:'beach', area:'Sur', coords:[39.9389,3.9624],
  desc:'Playa urbana de la bahía, muy tranquila, con chiringuitos y ambiente de pueblo. A 5 min de Ferreries.',
  tip:'Ideal para la comida: pescado o paella en el chiringuito. Parking fácil y se llena de locales por la tarde.'}
@@ -483,13 +480,12 @@ var DAYS = [
   {w:'17:00', t:'Cala Macarella y Macarelleta', p:'La visita de postal: arena blanca, rocas de colores, faro. Llegad antes de las 17 h para parking. Caminad entre las dos calas: 20 min por el pinar.'},
   {w:'19:15', t:'Mirador de Son Xoriguer', p:'Subid 30 min al pinar sobre Macarella: la mejor vista de la bahía al atardecer. Llano, a la sombra, con pinos. La mejor foto del viaje.'}
  ], places:['ciutadella','turqueta','algaiarens','margineda','morell2','sonxoriguer']},
-{d:'JUEVES', date:'10 septiembre', title:'Sur y centro: mercados con música', route:'Felanitx (mercado) → Cala en Bosc → Es Mercadal (mercado nocturno)',
+{d:'JUEVES', date:'10 septiembre', title:'Sur y centro: mercados con música', route:'Cala en Bosc → comida en la playa → Es Mercadal (mercado nocturno)',
  slots:[
-  {w:'10:00', t:'Felanitx: el día de su mercado', p:'Hoy jueves toca mercado en Felanitx (9–14 h): uno de los mejores de la isla. Pasead por la Plaça des Born, las casonas señoriales y la plaza de toros del s. XVIII.'},
-  {w:'13:00', t:'Comida en Felanitx', p:'Cordero asado o pescado en la plaza, con la música del mercado de fondo. El mejor ambiente de pueblo de la costa sur.'},
-  {w:'15:30', t:'Cala en Bosc', p:'A 15 min: la playa grande de arena fina del sur, con pinos y bahía protegida. Baño de tarde en la alternativa serena a Macarella.'},
+  {w:'10:00', t:'Cala en Bosc', p:'La playa grande de arena fina del sur, con pinos y bahía protegida. La alternativa serena a Macarella: baño y paseo sin prisas.'},
+  {w:'14:00', t:'Comida en la playa', p:'Pescado o paella en el chiringuito de Cala en Bosc (o Macarella, si prefierís). Con las luces de la siesta a favor.'},
   {w:'19:30', t:'Es Mercadal: el mercado nocturno emblemático', p:'El mercado más famoso de la isla: artesanos, agroalimentario y actuaciones musicales desde las 20:30 hasta las 23 h. En pleno pueblo, con las luces encendidas. El plan del jueves por la noche.'}
- ], places:['felanitx','esbosc','esmercadal']},
+ ], places:['esbosc','esmercadal']},
 {d:'VIERNES', date:'11 septiembre', title:'Despedida: la fortaleza de La Mola', route:'La Mola → Sant Felip → Maó → Foradada → Aeropuerto (15:30)',
  slots:[
   {w:'9:00', t:'Fortalesa de La Mola', p:'Las galerías subterráneas, los miradores y la historia de la guerra de Sucesión: 2 h de visita en una de las mayores fortalezas del s. XIX de Europa. A 10 min del aeropuerto.'},
@@ -515,8 +511,8 @@ var EVENTS = [
  desc:'Mercados artesanos nocturnos del casco histórico (cada noche de junio a septiembre). Vuestro martes por la noche, de vuelta de Punta Nati, pasa por el Born.'},
 {date:'MIÉ 9 SEP', title:'Mercado agrario de Ciutadella', loc:'Pl. de la Llibertat · 8–13:30 h', hot:true, place:'ciutadella',
  desc:'El mercado de producto local con más personalidad de la isla. Vuestro miércoles: empezad el día aquí y luego a las calas.'},
-{date:'JUE 10 SEP', title:'Mercado de Felanitx + Mercado nocturno de Es Mercadal', loc:'Felanitx 9–14 h · Es Mercadal 19–23 h', hot:true, place:'esmercadal',
- desc:'El doblete del jueves: de día, el mercado de Felanitx (uno de los mejores de la isla); por la noche, el mercado nocturno más emblemático de Menorca, en Es Mercadal, con música en directo desde las 20:30.'},
+{date:'JUE 10 SEP', title:'Mercado nocturno de Es Mercadal', loc:'Es Mercadal · 19–23 h', hot:true, place:'esmercadal',
+ desc:'El jueves es el día del mercado nocturno más emblemático de Menorca: artesanos, agroalimentario y música en directo desde las 20:30. Después de vuestro día de playa en el sur, vais directos.'},
 {date:'VIE 11 SEP', title:'Born de Ciutadella + revetlla de Sant Nicolau', loc:'Ciutadella 9–15 h · El Toro (Es Mercadal) por la noche', hot:false, place:'ciutadella',
  desc:'Hoy viernes toca el Mercado del Born en Ciutadella (por la mañana, lejos del aeropuerto). Y en el interior arranca la revetlla de Sant Nicolau con caballos y jaleo — solo si os da tiempo antes de volar.'},
 {date:'SI OS QUEDÁIS', title:'Cranc Festival y fiestas de Cala’n Porter', loc:'Maó · 17–19 sep', hot:false, place:'mao',
@@ -537,13 +533,13 @@ var DISHES = [
 var EAT = [
 {title:'🌅 Dónde desayunar', items:[
   '<b>Maó:</b> Café de la Marina (junto al puerto) o cualquier panadería del casco: café + brioche + tostada.',
-  '<b>Pueblo:</b> En Es Mercadal, Ferreries o Felanitx, la cafetería de la plaza: sobaos, café con leche y tostada de sobrasada.',
+  '<b>Pueblo:</b> En Es Mercadal o Ferreries, la cafetería de la plaza: sobaos, café con leche y tostada de sobrasada.',
   '<b>Playa:</b> Desayuno en el chiringuito de la cala (si hay): tostada + zumo + café. El lujo menorquín.']},
 {title:'🍽️ Dónde comer', items:[
   '<b>Maó:</b> Casa Sa Riera (clásico de pescado, reserva), Can Mateu (casual, buen precio) o el mercado del puerto.',
   '<b>Ciutadella:</b> Sa Posada (alta cocina, reserva con antelación) o Can Joan (casual, junto al Born).',
   '<b>Playa:</b> Paella o pescado en el chiringuito de la cala: Macarella, Binimel·lá, Carames o Galdana.',
-  '<b>Pueblo:</b> En Es Mercadal o Felanitx, cualquier restaurante de la plaza: cordero asado + vino local.']},
+  '<b>Pueblo:</b> En Es Mercadal o Ferreries, cualquier restaurante de la plaza: cordero asado + vino local.'},
 {title:'🌙 Dónde cenar', items:[
   '<b>Cena tranquila:</b> En el pueblo donde os alojéis: fuente de pescado, cordero, sobrasada + postre.',
   '<b>Cena especial:</b> Sa Posada (Ciutadella) o Casa Sa Riera (Maó). Reserva con 1–2 semanas.',
@@ -604,7 +600,7 @@ var CHECKLIST = [
   'Ir a un evento: Gràcia (sáb–lun), mercado nocturno Es Mercadal (jue) o Calesfonts (cualquier noche)',
   'Visitar La Mola (viernes 9:00, 2 h) — no la dejéis para el final sin margen',
   'Sant Lluís + fort Saint-Philippe (martes 9:30)',
-  'Felanitx el jueves (día de mercado)',
+  'Baño en Cala en Bosc (jueves, día sereno)',
   'Comprar souvenirs comibles: queso, sobaos, vino (aeropuerto o Maó)']},
 {title:'🧳 Para volver (viernes)', items:[
   'La Mola a las 9:00 (2 h de visita)',
