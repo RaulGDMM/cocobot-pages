@@ -5,6 +5,52 @@
   },
   "days": [
     {
+      "date": "2026-09-06",
+      "news": [
+        {
+          "category": "general",
+          "title": "Seattle Times y Newsday demandan a OpenAI y Microsoft por entrenar con periodismo tras paywall",
+          "summary": "Los dos editores presentaron en el Distrito Sur de Nueva York una denuncia alegando que OpenAI y Microsoft scraparon cientos de miles de artículos esquivando paywalls, y piden daños y la destrucción de datasets y modelos que incorporen su contenido. Es la demanda que más peso da al mecanismo de obtención (el paywall) dentro de la ola de litigios contra la industria.",
+          "source": "https://techcrunch.com/2026/09/05/seattle-times-and-newsday-are-the-latest-publications-to-sue-openai-and-microsoft/",
+          "source_name": "TechCrunch",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "La UE designa ChatGPT como 'motor de búsqueda muy grande' (VLOSE) bajo la DSA",
+          "summary": "La Comisión Europea hace de ChatGPT el primer servicio de IA generativa bajo el régimen más exigente del DSA (45M+ usuarios/mes en la UE); OpenAI tiene hasta enero de 2027 para cumplir con la evaluación de riesgos sistémicos y transparencia. Al clasificarlo como buscador y no plataforma, Bruselas evita darle el safe harbour de contenido alojado.",
+          "source": "https://digital-strategy.ec.europa.eu/en/news/commission-designates-chatgpt-reddit-roblox-under-digital-services-act",
+          "source_name": "Comisión Europea",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "xAI generaliza Grok Imagine Video 1.5 en todos los canales, construido sobre Image 2.0",
+          "summary": "El modelo image-to-video de xAI sale de preview y es GA en la API (grok-imagine-video-1.5) y en web/iOS/Android, usando el nuevo modelo de imagen Image 2.0 como motor. Mejoras en movimiento y física, mejor continuidad narrativa entre múltiples tomas y velocidad más alta.",
+          "source": "https://x.ai/news/grok-imagine-video-1-5",
+          "source_name": "xAI",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "La API de Seedance 2.5 de ByteDance queda totalmente disponible",
+          "summary": "Volcano Engine y BytePlus ModelArk abren la API completa de Seedance 2.5: vídeo nativo de hasta 30 segundos con audio sincronizado, hasta 30 referencias de imagen, 10 de vídeo y 10 de audio por request, y mejor instruction following para narrativa larga. El precio se factura por tokens (duración × resolución × fps) con mínimos cuando hay vídeo de entrada.",
+          "source": "https://www.byteplus.com/en/product/seedance",
+          "source_name": "BytePlus",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10819 publicado; llevas 9 builds por detrás en b10810 pero sin motivo para actualizar",
+          "summary": "Los tres builds nuevos desde el último reporte (b10817-b10819) son de mantenimiento: fix de memory leak en Metal (Apple Silicon) y arreglos de CI/trace para oneAPI/SYCL (Intel). Nada toca el stack CUDA, no hay CVEs nuevos ni cambios de rendimiento relevantes: tu b10810 sigue siendo válido.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b10819",
+          "source_name": "GitHub (llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Día de réplicas legales y regulatorias sobre OpenAI (denuncia de Seattle Times/Newsday y designación de ChatGPT como VLOSE en la UE), con dos novedades de vídeo: GA de Grok Imagine Video 1.5 y la API de Seedance 2.5 ya disponible."
+    },
+    {
       "date": "2026-09-05",
       "news": [
         {
@@ -5118,28 +5164,6 @@
         }
       ],
       "summary": "Día activo en infraestructura y finanzas de IA: Moonshot AI busca $30B, Google y SpaceX cierran acuerdo de cómputo por $920M/mes, y Apple abre WWDC 2026. OpenAI lanza Lockdown Mode contra inyección de prompts."
-    },
-    {
-      "date": "2026-06-07",
-      "news": [
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9539 a b9544 — 5 builds nuevos con fix de razonamiento LFM2 y soporte frame merge Qwen-VL",
-          "summary": "Tres builds nuevos desde tu versión b9539: b9544 corrige el round-trip de razonamiento en LFM2/LFM2.5 y previene fugas de tokens <think> (#24234). b9543 añade soporte \"frame merge\" para modelos basados en Qwen-VL en el backend MTMD (#21858). b9542 y b9541 incluyen limpieza de código y corrección de especificadores de formato en logs. Los CVEs conocidos (GHSA-j8rj-fmpv-wcxw, GHSA-3p4r-fq3f-q74v, GHSA-96jg-mvhq-q7q7) ya están parcheados en tu versión actual. Veredicto: ⚠️ hay updates pero no urgente — los fixes son menores, salvo el de LFM2 si usas esos modelos de razonamiento.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub Releases",
-          "star": false
-        },
-        {
-          "category": "comfyui",
-          "title": "Comfy Desktop: nueva versión con gestión de entornos, snapshots automáticos y multi-instancia para equipos comerciales",
-          "summary": "Comfy Org anunció el 5 de junio una versión renovada de Comfy Desktop (rollout progresivo hasta el 8 de junio). Novedades clave: Gestor de entornos unificado para instancias locales, remotas, portátiles y en la nube desde una sola interfaz. Actualizaciones del núcleo vía Git, desacopladas de la app desktop, permitiendo pull directo de releases y nightlies. Aislamiento multi-instancia para mantener entornos separados (producción estable vs. pruebas experimentales). Snapshots automáticos antes de actualizaciones, tras cambios de nodos personalizados y al inicio, con rollback instantáneo. Importación fluida de configuraciones, modelos y flujos de trabajo existentes. Esta actualización marca la transición de ComfyUI de herramienta para entusiastas a infraestructura creativa comercial gestionable por equipos.",
-          "source": "https://startupfortune.com/comfy-desktop-makes-comfyui-easier-for-commercial-ai-builders/",
-          "source_name": "Startup Fortune",
-          "star": true
-        }
-      ],
-      "summary": "Día relativamente tranquilo en lanzamientos de modelos, pero con actividad interesante en infraestructura: llama.cpp avanza con 5 builds nuevos y ComfyUI Desktop recibe una actualización importante orientada a entornos comerciales."
     }
   ]
 }
