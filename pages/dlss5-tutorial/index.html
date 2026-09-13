@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DLSS 5 en tu juego — Tutorial práctico (RTX 50, pre-upscale, 120 fps reales)</title>
+<meta name="description" content="Tutorial paso a paso para activar DLSS 5 (Neural Rendering) en juegos sin soporte oficial: qué es, por qué es pesado, el truco pre-upscale de la comunidad y la configuración que logra 120 fps a 4K en una RTX 5090.">
+<style>
+  :root {
+    --bg: #0a0e27;
+    --bg2: #10142e;
+    --surface: rgba(255,255,255,0.03);
+    --surface2: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.10);
+    --accent: #76b900;
+    --accent2: #9be31c;
+    --accent-dim: rgba(118,185,0,0.14);
+    --text: #e8ecf4;
+    --text-dim: #9aa4bd;
+    --warn: #ff9f40;
+    --warn-dim: rgba(255,159,64,0.12);
+    --bad: #ff5470;
+    --good: #35d07f;
+    --mono: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background:linear-gradient(160deg, #0a0e27 0%, #131a3a 55%, #0e1830 100%);
+    background-attachment:fixed;
+    color:var(--text);
+    line-height:1.65;
+  }
+  .container { max-width:880px; margin:0 auto; padding:0 20px; }
+
+  /* ---------- header ---------- */
+  .topbar {
+    position:sticky; top:0; z-index:900;
+    background:rgba(10,14,39,0.92); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 20px;
+  }
+  .topbar .brand { font-weight:700; color:var(--accent2); font-size:0.95rem; }
+  .topbar .brand span { color:var(--text-dim); font-weight:400; }
+  .back-btn {
+    color:var(--text-dim); text-decoration:none; font-size:0.88rem;
+    border:1px solid var(--border); padding:6px 14px; border-radius:8px;
+    transition:all .2s;
+  }
+  .back-btn:hover { color:var(--accent2); border-color:var(--accent); }
+
+  /* ---------- nav drawer ---------- */
+  .hamburger-btn {
+    position:fixed; top:64px; right:16px; z-index:1001;
+    background:var(--surface); border:1px solid var(--border); color:var(--accent2);
+    width:44px; height:44px; border-radius:10px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:1.25rem;
+    transition:all .2s;
+  }
+  .hamburger-btn:hover { background:var(--surface2); border-color:var(--accent); }
+  .nav-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; display:none; }
+  .nav-overlay.active { display:block; }
+  .nav-drawer {
+    position:fixed; top:0; right:-320px; width:300px; height:100vh;
+    background:var(--bg2); border-left:1px solid var(--border); z-index:1000;
+    padding:5.5rem 1.4rem 2rem; transition:right .3s ease; overflow-y:auto;
+  }
+  .nav-drawer.active { right:0; }
+  .nav-drawer a {
+    display:block; padding:.7rem .2rem; color:var(--text); text-decoration:none;
+    border-bottom:1px solid var(--border); font-size:.93rem; transition:color .2s;
+  }
+  .nav-drawer a:hover { color:var(--accent2); }
+  .nav-drawer a .num { color:var(--accent); font-family:var(--mono); font-size:.8rem; margin-right:.5rem; }
+
+  /* ---------- hero ---------- */
+  .hero { padding:64px 0 40px; text-align:center; }
+  .hero .kicker {
+    display:inline-block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent2); background:var(--accent-dim); border:1px solid rgba(118,185,0,0.35);
+    padding:5px 14px; border-radius:99px; margin-bottom:18px; font-weight:600;
+  }
+  .hero h1 {
+    font-size:clamp(2rem, 5vw, 3.2rem); line-height:1.12; font-weight:800;
+    background:linear-gradient(120deg, #fff 20%, var(--accent2) 90%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    margin-bottom:16px;
+  }
+  .hero p.sub { color:var(--text-dim); font-size:1.08rem; max-width:640px; margin:0 auto 26px; }
+  .stat-pills { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .pill {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:10px 18px; text-align:center;
+  }
+  .pill b { display:block; font-size:1.35rem; color:var(--accent2); font-family:var(--mono); }
+  .pill span { font-size:.74rem; color:var(--text-dim); }
+
+  /* ---------- sections ---------- */
+  section { padding:34px 0; }
+  h2.section-title {
+    font-size:1.65rem; font-weight:800; margin-bottom:18px;
+    padding-bottom:10px; border-bottom:1px solid var(--border);
+  }
+  h2.section-title .ico { margin-right:8px; }
+  h3 { font-size:1.12rem; margin:26px 0 10px; color:var(--accent2); }
+  p { margin-bottom:14px; }
+  ul, ol { margin:0 0 16px 22px; }
+  li { margin-bottom:8px; }
+  strong { color:#fff; }
+  code {
+    font-family:var(--mono); font-size:.86em; background:rgba(118,185,0,0.10);
+    border:1px solid rgba(118,185,0,0.22); padding:1px 7px; border-radius:6px; color:var(--accent2);
+  }
+  a { color:var(--accent2); }
+
+  /* ---------- cards / boxes ---------- */
+  .card {
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px; margin:16px 0;
+  }
+  .card.green { border-left:3px solid var(--accent); background:linear-gradient(135deg, var(--accent-dim), var(--surface) 60%); }
+  .card.orange { border-left:3px solid var(--warn); background:linear-gradient(135deg, var(--warn-dim), var(--surface) 60%); }
+  .card.red { border-left:3px solid var(--bad); }
+  .card.blue { border-left:3px solid #4da3ff; }
+  .card .card-title { font-weight:700; margin-bottom:8px; font-size:1.02rem; }
+
+  /* ---------- what is grid ---------- */
+  .tech-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:14px; margin:18px 0; }
+  .tech-item { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .tech-item .t-ico { font-size:1.5rem; }
+  .tech-item h4 { margin:8px 0 6px; font-size:.98rem; }
+  .tech-item p { font-size:.88rem; color:var(--text-dim); margin:0; }
+
+  /* ---------- pipeline diagram ---------- */
+  .pipeline-wrap { margin:20px 0; }
+  .pipeline-label {
+    font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    margin:18px 0 8px;
+  }
+  .pipeline-label.old { color:var(--bad); }
+  .pipeline-label.new { color:var(--good); }
+  .pipeline { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; }
+  .pipe-stage {
+    flex:1 1 0; min-width:130px; background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:12px 12px; text-align:center; position:relative;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .pipe-stage .ps-ico { font-size:1.35rem; margin-bottom:4px; }
+  .pipe-stage .ps-name { font-size:.85rem; font-weight:700; }
+  .pipe-stage .ps-res { font-family:var(--mono); font-size:.72rem; color:var(--text-dim); margin-top:3px; }
+  .pipe-stage.hot { border-color:var(--bad); background:rgba(255,84,112,0.10); box-shadow:0 0 18px rgba(255,84,112,0.15); }
+  .pipe-stage.hot .ps-res { color:var(--bad); }
+  .pipe-stage.cool { border-color:var(--good); background:rgba(53,208,127,0.10); box-shadow:0 0 18px rgba(53,208,127,0.12); }
+  .pipe-stage.cool .ps-res { color:var(--good); }
+  .pipe-arrow {
+    flex:0 0 26px; display:flex; align-items:center; justify-content:center;
+    color:var(--text-dim); font-size:1.2rem;
+  }
+  @media (max-width:640px) {
+    .pipeline { flex-direction:column; gap:6px; }
+    .pipe-stage { min-width:100%; }
+    .pipe-arrow { flex:0 0 18px; transform:rotate(90deg); }
+  }
+  .pipeline-note { font-size:.85rem; color:var(--text-dim); margin-top:8px; }
+
+  /* ---------- steps ---------- */
+  .step { display:flex; gap:18px; margin:26px 0; }
+  .step-num {
+    flex:0 0 44px; height:44px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), #4d7a00);
+    color:#0a0e27; font-weight:800; font-size:1.25rem;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 16px rgba(118,185,0,0.35);
+  }
+  .step-body { flex:1; padding-top:6px; }
+  .step-body h3 { margin-top:0; color:#fff; }
+  .step-body p { font-size:.97rem; }
+  .step-body .sublist { margin:10px 0 0 20px; font-size:.94rem; color:var(--text-dim); }
+
+  .key-cap {
+    display:inline-block; font-family:var(--mono); font-size:.82rem; font-weight:700;
+    background:#1c2340; border:1px solid #3a4470; border-bottom-width:3px;
+    padding:2px 10px; border-radius:7px; color:#fff;
+  }
+
+  /* ---------- config table ---------- */
+  table.cfg { width:100%; border-collapse:collapse; margin:16px 0; font-size:.94rem; }
+  table.cfg th, table.cfg td { padding:11px 14px; text-align:left; border-bottom:1px solid var(--border); }
+  table.cfg th { color:var(--accent2); font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; }
+  table.cfg td:first-child { color:var(--text); font-weight:600; }
+  table.cfg td.val { font-family:var(--mono); color:var(--accent2); font-size:.88rem; }
+  table.cfg tr:hover td { background:var(--surface); }
+
+  /* ---------- benchmark bars ---------- */
+  .bench { margin:18px 0; }
+  .bench-row { margin:12px 0; }
+  .bench-row .bl { display:flex; justify-content:space-between; font-size:.88rem; margin-bottom:5px; }
+  .bench-row .bl b { font-family:var(--mono); }
+  .bar-track { height:14px; background:var(--surface); border-radius:7px; overflow:hidden; border:1px solid var(--border); }
+  .bar-fill { height:100%; border-radius:7px; width:0; transition:width 1.2s cubic-bezier(.2,.7,.3,1); }
+  .bar-fill.b-off { background:linear-gradient(90deg,#35d07f,#76b900); }
+  .bar-fill.b-old { background:linear-gradient(90deg,#ff5470,#ff9f40); }
+  .bar-fill.b-new { background:linear-gradient(90deg,#76b900,#c8ff4d); }
+
+  /* ---------- on/off demo ---------- */
+  .demo-box { margin:20px 0; }
+  .demo-visual {
+    position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--border);
+    aspect-ratio:16/9;
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 42%, rgba(255,196,92,0.34) 0%, rgba(120,60,20,0.12) 45%, transparent 70%),
+      radial-gradient(ellipse 30% 40% at 18% 80%, rgba(40,70,160,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 34% 44% at 82% 76%, rgba(20,90,70,0.30) 0%, transparent 70%),
+      linear-gradient(180deg, #171310 0%, #241a12 48%, #12100c 100%);
+    transition:filter .6s ease;
+  }
+  .demo-visual::after {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 12% 22% at 50% 30%, rgba(255,230,170,0.85) 0%, transparent 70%),
+      linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.45) 100%);
+    transition:opacity .6s ease;
+  }
+  .demo-box.on .demo-visual { filter:brightness(1.34) contrast(1.14) saturate(1.30); }
+  .demo-box.on .demo-visual::after { opacity:1.6; }
+  .demo-fig {
+    position:absolute; bottom:12%; left:47%; width:6%; height:26%;
+    background:#05060a; border-radius:45% 45% 8% 8%;
+    box-shadow:0 0 0 2px rgba(0,0,0,0.4);
+  }
+  .demo-fig::before {
+    content:''; position:absolute; top:-24%; left:15%; width:70%; height:30%;
+    background:#05060a; border-radius:50%;
+  }
+  .demo-toggle-row { display:flex; align-items:center; justify-content:center; gap:16px; margin:16px 0 6px; }
+  .demo-toggle-row .lab { font-size:.92rem; font-weight:600; color:var(--text-dim); }
+  .demo-toggle-row .lab.active { color:var(--accent2); }
+  .switch { position:relative; width:64px; height:32px; cursor:pointer; }
+  .switch input { opacity:0; width:0; height:0; }
+  .switch .slider {
+    position:absolute; inset:0; background:#2a3358; border-radius:99px; transition:.3s;
+    border:1px solid var(--border);
+  }
+  .switch .slider::before {
+    content:''; position:absolute; width:24px; height:24px; left:3px; top:3px;
+    background:#8fa0c9; border-radius:50%; transition:.3s;
+  }
+  .switch input:checked + .slider { background:var(--accent); }
+  .switch input:checked + .slider::before { transform:translateX(32px); background:#0a0e27; }
+  .demo-disclaimer { font-size:.8rem; color:var(--text-dim); text-align:center; }
+  .demo-disclaimer a { color:var(--accent2); }
+
+  /* ---------- faq ---------- */
+  details.faq {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 18px; margin:10px 0;
+  }
+  details.faq summary { cursor:pointer; font-weight:600; font-size:.98rem; list-style:none; }
+  details.faq summary::-webkit-details-marker { display:none; }
+  details.faq summary::before { content:'▸ '; color:var(--accent2); }
+  details.faq[open] summary::before { content:'▾ '; }
+  details.faq .faq-a { padding-top:10px; font-size:.94rem; color:var(--text-dim); }
+  details.faq .faq-a strong { color:var(--text); }
+
+  /* ---------- sources ---------- */
+  .src-list { list-style:none; margin-left:0; }
+  .src-list li {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:10px 16px; margin-bottom:8px; font-size:.9rem;
+  }
+  .src-list li .src-tag {
+    display:inline-block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+    padding:2px 8px; border-radius:5px; margin-right:8px;
+  }
+  .src-tag.official { background:rgba(118,185,0,0.16); color:var(--accent2); }
+  .src-tag.community { background:rgba(77,163,255,0.16); color:#4da3ff; }
+  .src-tag.press { background:rgba(255,159,64,0.16); color:var(--warn); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top:1px solid var(--border); margin-top:40px; padding:26px 0;
+    text-align:center; color:var(--text-dim); font-size:.86rem;
+  }
+  .visit-counter-badge {
+    color:var(--text-dim); font-size:.8em; background:rgba(118,185,0,0.06);
+    padding:4px 12px; border-radius:6px; border:1px solid var(--border);
+    display:inline-block; margin-top:8px;
+  }
+
+  @media (max-width:560px) {
+    .hero { padding:40px 0 28px; }
+    .step { gap:12px; }
+    .step-num { flex-basis:36px; height:36px; font-size:1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" href="../../index.html">← Cocobot</a>
+  <span class="brand">🐱 Cocobot <span>· Tutorial gaming</span></span>
+</div>
+
+<button class="hamburger-btn" id="hamburger-btn" onclick="toggleNav()">☰</button>
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+<nav class="nav-drawer" id="nav-drawer">
+  <a href="#que-es" onclick="toggleNav()"><span class="num">01</span>¿Qué es DLSS 5?</a>
+  <a href="#pipeline" onclick="toggleNav()"><span class="num">02</span>El problema de rendimiento</a>
+  <a href="#requisitos" onclick="toggleNav()"><span class="num">03</span>Requisitos</a>
+  <a href="#instalacion" onclick="toggleNav()"><span class="num">04</span>Instalación (4 pasos)</a>
+  <a href="#en-juego" onclick="toggleNav()"><span class="num">05</span>Configuración in-game</a>
+  <a href="#resultados" onclick="toggleNav()"><span class="num">06</span>Resultados reales</a>
+  <a href="#problemas" onclick="toggleNav()"><span class="num">07</span>Problemas y rollback</a>
+  <a href="#faq" onclick="toggleNav()"><span class="num">08</span>Preguntas frecuentes</a>
+  <a href="#fuentes" onclick="toggleNav()"><span class="num">09</span>Fuentes</a>
+</nav>
+
+<div class="container">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <span class="kicker">Tutorial práctico · probado en The Blood of Dawnwalker · sept 2026</span>
+    <h1>DLSS 5 en tu juego<br>sin que te mate el FPS</h1>
+    <p class="sub">NVIDIA no ha activado la nueva generación de DLSS en la mayoría de juegos. La comunidad sí: con un tool de una hora de instalación y un truco de pipeline que corta el coste casi a la mitad. Así lo monté en una RTX 5090 a 4K — y así lo montas tú.</p>
+    <div class="stat-pills">
+      <div class="pill"><b>120 fps</b><span>medido en Dawnwalker, 4K</span></div>
+      <div class="pill"><b>~70%</b><span>resolución del modelo neural</span></div>
+      <div class="pill"><b>±5 min</b><span>instalación total</span></div>
+      <div class="pill"><b>1 click</b><span>rollback completo</span></div>
+    </div>
+  </div>
+
+  <!-- ============ QUE ES ============ -->
+  <section id="que-es">
+    <h2 class="section-title"><span class="ico">🧠</span>¿Qué es DLSS 5? (la explicación de 60 segundos)</h2>
+    <p>Para entender DLSS 5 hay que ver qué son las versiones anteriores, que ya conoces:</p>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="t-ico">📐</div>
+        <h4>DLSS Super Resolution (SR)</h4>
+        <p>El juego pinta la escena a una resolución baja (por ejemplo 1080p) y una red neuronal la reconstruye a 4K. Más FPS, misma imagen que verías a pantalla completa. Esto ya existía desde 2019.</p>
+      </div>
+      <div class="tech-item">
+        <div class="t-ico">🃏</div>
+        <h4>Frame Generation</h4>
+        <p>Interpola frames nuevos entre los que genera el juego (2, 3… 6x). No añade detalle, añade fluidez: es un filtro de movimiento, no de imagen.</p>
+      </div>
+      <div class="tech-item" style="border-color:rgba(118,185,0,0.5);">
+        <div class="t-ico">💡</div>
+        <h4>Neural Rendering <b style="color:var(--accent2)">← lo nuevo</b></h4>
+        <p>Aquí está la magia de DLSS 5: un modelo de difusión guiado por 3D que <strong>redibuja la imagen terminada</strong> — iluminación, materiales, piel, sombras — con un acabado fotorrealista que el juego no pintó. Es como aplicar un "fotorealismo" en tiempo real, y es por lo que se ve <em>espectacularmente</em> más realista con el botón ON.</p>
+      </div>
+    </div>
+    <p>El modelo se lanza oficialmente el <strong>3 de septiembre de 2026</strong> en NBA 2K27, solo para RTX 50, y NVIDIA lo va activando juego a juego. El resto de juegos (incluido Dawnwalker) llevan semanas haciéndoselo la comunidad: un runtime que NVIDIA compiló para el juego oficial se puede cargar en cualquier juego compatible, y un add-on le dice al juego "aquí tienes una imagen, ilumínala". <strong>Eso es un mod de DLSS 5.</strong></p>
+    <div class="card green">
+      <div class="card-title">⚠️ Lo que NO hace</div>
+      <p style="margin:0; font-size:.95rem;">Neural Rendering no "pinta" cosas que no existen (personas, texturas nuevas). Reilumina y rematerializa lo que el motor ya pintó. Y no mejora el ray tracing: lo que no se renderiza, no se puede redibujar.</p>
+    </div>
+  </section>
+
+  <!-- ============ PIPELINE ============ -->
+  <section id="pipeline">
+    <h2 class="section-title"><span class="ico">📉</span>El problema: por qué a 4K "come" 60 fps</h2>
+    <p>El modelo neural se ejecuta sobre <strong>la imagen que le das</strong>. Su coste es proporcional al número de píxeles que procesa — como cualquier efecto de pantalla completa. El problema aparece en <em>dónde</em> se le encaja en el pipeline:</p>
+
+    <div class="pipeline-wrap">
+      <div class="pipeline-label old">❌ Pipeline oficial (NVIDIA): el modelo opera a 4K</div>
+      <div class="pipeline">
+        <div class="pipe-stage"><div class="ps-ico">🎨</div><div class="ps-name">Render del juego</div><div class="ps-res">1920×1080 (~2 MP)</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-stage"><div class="ps-ico">📐</div><div class="ps-name">DLSS SR</div><div class="ps-res">upscale a 4K</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-stage hot"><div class="ps-ico">💡</div><div class="ps-name">Neural Rendering</div><div class="ps-res">3840×2160 (8.3 MP) 🔥</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-stage"><div class="ps-ico">📺</div><div class="ps-name">Pantalla</div><div class="ps-res">4K</div></div>
+      </div>
+      <p class="pipeline-note">El modelo procesa los <strong>8,3 millones de píxeles del 4K terminado</strong>. Eso es 4x el coste de hacerlo a 1080p. En pruebas de la comunidad (RTX 5070 Ti, Resonance, 4K Performance): 180 fps → <b style="color:var(--bad)">80 fps</b>. Un 55–60% de pérdida.</p>
+    </div>
+
+    <div class="pipeline-wrap">
+      <div class="pipeline-label new">✅ El truco de la comunidad: "pre-upscale" (Neural Upstream / OptiScaler)</div>
+      <div class="pipeline">
+        <div class="pipe-stage"><div class="ps-ico">🎨</div><div class="ps-name">Render del juego</div><div class="ps-res">1920×1080 (~2 MP)</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-stage cool"><div class="ps-ico">💡</div><div class="ps-name">Neural Rendering</div><div class="ps-res">a resolución de render (2 MP) ❄️</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-stage"><div class="ps-ico">📐</div><div class="ps-name">DLSS SR</div><div class="ps-res">upscale a 4K</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-stage"><div class="ps-ico">📺</div><div class="ps-name">Pantalla</div><div class="ps-res">4K</div></div>
+      </div>
+      <p class="pipeline-note">Se mueve la pasada neural <strong>antes</strong> del upscale: el modelo procesa la imagen a la resolución de render (1080p en Performance) y luego el SR la reconstruye a 4K. Mismo efecto visual, <b style="color:var(--good)">4x menos píxeles</b>. En el mismo test: 180 fps → <b style="color:var(--good)">122 fps</b>. Coste del ~55% reducido al ~25–30%.</p>
+    </div>
+
+    <div class="card orange">
+      <div class="card-title">🤔 ¿Y por qué lo hace NVIDIA después?</div>
+      <p style="margin:0; font-size:.94rem;">Porque el modelo ve más información: un 4K terminado tiene más detalle que un 1080p, y puede redibujar con menos "alucinaciones" (artefactos, texturas temblorosas en movimiento). El pre-upscale es un trade-off: <strong>algo menos de fiabilidad en finos detalles</strong> a cambio de recuperar decenas de FPS. En la práctica, en juegos cinematográficos como Dawnwalker la diferencia se nota poco; en shooters con texturas en movimiento a 4K sí se percibe algo más. Prueba ambas rutas y decide con tus propios ojos.</p>
+    </div>
+  </section>
+
+  <!-- ============ REQUISITOS ============ -->
+  <section id="requisitos">
+    <h2 class="section-title"><span class="ico">🧾</span>Requisitos</h2>
+    <table class="cfg">
+      <tr><th>Tu equipo</th><th>Requisito</th></tr>
+      <tr><td>Tarjeta gráfica</td><td class="val">RTX 20 / 30 / 40 / 50 (cuanto más nueva, mejor; la 50 usa el modelo original FP8 sin patches)</td></tr>
+      <tr><td>Driver NVIDIA</td><td class="val">616.56 o superior (revisa en Nvidia App → Drivers)</td></tr>
+      <tr><td>.NET</td><td class="val">.NET 8 Desktop Runtime</td></tr>
+      <tr><td>El juego</td><td class="val">64 bits + API DirectX 11/12 + DLSS nativo (la vía recomendada). Sin DLSS hay vías alternativas (feeder/bridge) pero más delicadas</td></tr>
+      <tr><td>RAM / disco</td><td class="val">~150 MB de descarga la primera vez (el runtime neural en caché del tool)</td></tr>
+    </table>
+    <div class="card blue">
+      <div class="card-title">🎮 ¿Tu juego tiene DLSS? ¿Y qué API usa?</div>
+      <p style="margin:0; font-size:.94rem;">Si el juego aparece en el listado de <a href="https://www.nvidia.com/en-us/geforce/dlss/games/" target="_blank" rel="noopener">juegos DLSS de NVIDIA</a>, lo tiene. La API (D3D11/D3D12/Vulkan) normalmente no te la sabes: no pasa nada, <strong>el tool lo detecta solo</strong> leyendo la tabla de imports del ejecutable. Solo tendrás que fijarla a mano en el dropdown "graphics api" si el juego resulta ser raro (motores poligrafiados, DX9 disfraza de DX12…).</p>
+    </div>
+  </section>
+
+  <!-- ============ INSTALACION ============ -->
+  <section id="instalacion">
+    <h2 class="section-title"><span class="ico">🔧</span>Instalación en 4 pasos</h2>
+    <p>Usamos <a href="https://github.com/Kizzuwatnaa/DLSS5-Autopilot" target="_blank" rel="noopener"><strong>DLSS 5 Autopilot</strong></a>: un tool gratuito (open source) que descarga los componentes, detecta tu GPU, instala el runtime correcto y gestiona el desinstalado. Alternativas: <a href="https://github.com/rakanki911/DLSS5-Swapper" target="_blank" rel="noopener">DLSS5-Swapper</a> (más GUI, con la misma familia de componentes) o montar las piezas a mano (ReShade + add-on, o fork de OptiScaler). El Autopilot es el camino con menos fricción.</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Baja el tool y ábrelo</h3>
+        <p>Entra en la página de <a href="https://github.com/Kizzuwatnaa/DLSS5-Autopilot/releases" target="_blank" rel="noopener">releases del repo</a>, baja el <code>zip</code> de win64 del último release, descomprímelo y ejecuta <code>dlss5-autopilot.exe</code>. Si Windows (SmartScreen) te lo bloquea: "Más información → Ejecutar de todos modos". No pide instalación, no pide permisos de administrador.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Encuentra tu juego</h3>
+        <p>Pulsa <strong>Scan games</strong>. Lee Steam, Epic, GOG, EA, Ubisoft, Battle.net, Game Pass y ~19 emuladores. Selecciona tu juego y mira la tarjeta que aparece: ejecutable detectado, 32/64 bits, API gráfica y si el juego incluye DLSS. Es la foto de cómo instalará el tool — verifica que diga lo que esperas.</p>
+        <ul class="sublist">
+          <li>¿El juego no aparece? Pulsa <strong>Choose folder</strong> y apúntalo a la carpeta donde está el <code>.exe</code> del juego (no la raíz de la instalación, la de los binarios).</li>
+          <li>¿Duda de la API detectada? El dropdown <strong>graphics api</strong> te deja forzarla (auto / DX9 / 10 / 11 / 12 / Vulkan / OpenGL). Solo para juegos raros.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Elige la ruta e instala</h3>
+        <p>El tool te ofrece las vías compatibles con tu juego, marcando la recomendada. Para un juego D3D12 con DLSS verás principalmente:</p>
+        <table class="cfg">
+          <tr><th>Ruta</th><th>Qué hace</th><th>Palanca de FPS</th></tr>
+          <tr><td><b>optiscaler</b> ⭐</td><td>Fork de OptiScaler: sustituye el upscaler y ejecuta el modelo <strong>antes</strong> del SR. Sin ReShade.</td><td>Model resolution 25–100%</td></tr>
+          <tr><td><b>neural-upstream</b></td><td>El otro mod pre-upscale (matiasLombo): el modelo a resolución de render, antes del SR.</td><td>Cadence (cada 1ª/2ª/3ª frame)</td></tr>
+          <tr><td>native</td><td>El add-on que encaja en las llamadas DLSS del juego (pipeline oficial, post-upscale). La vía "de fábrica" de NVIDIA.</td><td>El modo DLSS del juego</td></tr>
+        </table>
+        <p>Antes de dar a INSTALL pulsa <strong>"What will happen?"</strong>: te lista archivo a archivo lo que escribirá, lo que hará backup y lo que restaurará al desinstalar, <em>sin escribir nada</em>. Si no te cuadra, cancela.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Verifica</h3>
+        <p>Arranca el juego, prueba (siguiente sección), ciérralo y pulsa <strong>"did it work?"</strong> en el tool: lee los logs del juego y te dice si la inyección funcionó o dónde falló. El log de la instalación también queda visible en el tool.</p>
+      </div>
+    </div>
+
+    <div class="card orange">
+      <div class="card-title">🔒 Antivirus / verificación de archivos — léelo antes de que ocurra</div>
+      <ul style="margin:0 0 0 18px; font-size:.94rem;">
+        <li style="margin-bottom:8px;"><strong>Nunca pulses "Verificar integridad de los archivos del juego" en Steam</strong> mientras el mod esté activo: restauraría los originales y perderías el mod. El tool guarda backups y su desinstalación limpia todo; Steam no lo sabe (los archivos restaurados son idénticos).</li>
+        <li style="margin-bottom:8px;">Los componentes son binarios comunitarios no firmados. El Autopilot verifica el <strong>SHA-256</strong> de cada descarga contra los manifiestos publicados en GitHub, y los repos (Kizzuwatnaa, rakanki911, Dagherbou, matiasLombo) llevan meses de actividad pública. Aun así: descárgalos solo desde los links de esta página/repos oficiales, no desde mirrors.</li>
+        <li style="margin:0;">En juegos online con anti-cheat <strong>no lo hagas</strong>: el tool te lo advertirá, pero la regla es simple: offline solo.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ EN JUEGO ============ -->
+  <section id="en-juego">
+    <h2 class="section-title"><span class="ico">🎮</span>Dentro del juego: la configuración que rinde</h2>
+    <p>Estas son las <strong>reglas de oro</strong> que valen para todas las rutas (y de romperlas, es donde están los crashes):</p>
+    <div class="card red">
+      <ul style="margin:0 0 0 18px; font-size:.95rem;">
+        <li style="margin-bottom:8px;"><strong>Deja el DLSS del juego ACTIVADO.</strong> Todas las vías se cuelgan del DLSS que el juego ya usa; con el juego en "sin DLSS" el mod no tiene a qué engancharse.</li>
+        <li style="margin-bottom:8px;"><strong>MSAA/SSAA a OFF</strong> (si el juego los tiene).</li>
+        <li style="margin-bottom:8px;"><strong>Resolución y modo de pantalla ANTES de activar la NR</strong>, y preferible <em>borderless</em> (ventana sin bordes) a pantalla completa exclusiva. El modelo está construido para un tamaño de back-buffer; cambiarlo en caliente es donde mueren las sesiones.</li>
+      </ul>
+    </div>
+
+    <h3>La receta que funcionó (Dawnwalker · RTX 5090 · 4K · TV 144 Hz)</h3>
+    <table class="cfg">
+      <tr><th>Ajuste</th><th>Valor</th><th>Por qué</th></tr>
+      <tr><td>Ruta instalada</td><td class="val">optiscaler (pre-upscale)</td><td>El modelo opera a resolución de render, no a 4K</td></tr>
+      <tr><td>DLSS del juego</td><td class="val">Performance</td><td>Render interno a ~1080p → la NR procesa ~2 MP en vez de 8,3</td></tr>
+      <tr><td>Model resolution</td><td class="val">70%</td><td>El modelo se ejecuta al 70% del frame de render y se estira. Coste cuadrático: 75% ≈ la mitad que 100%</td></tr>
+      <tr><td>Frame Generation</td><td class="val">ON (FSR 3.1 en la vía optiscaler)</td><td>Fluidez extra sobre los frames ya renderizados</td></tr>
+      <tr><td>Overlay</td><td class="val">Insert</td><td>Abre el panel de OptiScaler en cualquier momento; la NR viene ON por defecto</td></tr>
+    </table>
+    <p>Resultado medido: <strong>~120 fps a 4K</strong> en TV de 144 Hz, con la imagen ON visiblemente más fotorrealista que la OFF. La combinación clave es <em>Performance + pre-upscale + 70%</em>: los tres apalancan el número de píxeles que toca la red, y el SR final reconstruye el 4K con detalle suficiente.</p>
+
+    <div class="card green">
+      <div class="card-title">🎯 "Aim for N fps" (solo vía optiscaler)</div>
+      <p style="margin:0; font-size:.94rem;">En el panel del tool puedes poner los FPS que quieres y, a partir de lo medido en tus partidas, <strong>calcula él el model resolution</strong> para llegar (con su nivel de confianza; no aplica nada solo). Útil cuando el juego tiene zonas de coste muy dispar: le pones 120 y deja que el dial haga el trabajo.</p>
+    </div>
+
+    <h3>Comparación ON / OFF (demo aproximada)</h3>
+    <div class="demo-box" id="demo-box">
+      <div class="demo-visual"><div class="demo-fig"></div></div>
+      <div class="demo-toggle-row">
+        <span class="lab active" id="lab-off">OFF</span>
+        <label class="switch">
+          <input type="checkbox" id="demo-switch" onchange="toggleDemo()">
+          <span class="slider"></span>
+        </label>
+        <span class="lab" id="lab-on">ON (Neural Rendering)</span>
+      </div>
+      <p class="demo-disclaimer">Escena sintética con CSS para ilustrar el cambio (luz, contraste, materiales): <a href="https://www.duckittech.com/news/experimental-optiscaler-mod-cuts-dlss-5-neural-rendering-performance-cost-nearly-in-half" target="_blank" rel="noopener">comparativas reales de la comunidad aquí</a>. Tu juego se ve mejor de lo que esto promete.</p>
+    </div>
+  </section>
+
+  <!-- ============ RESULTADOS ============ -->
+  <section id="resultados">
+    <h2 class="section-title"><span class="ico">📊</span>Resultados: lo medido vs lo reportado</h2>
+    <div class="card green">
+      <div class="card-title">✅ Mi setup (The Blood of Dawnwalker · RTX 5090 · 4K · sept 2026)</div>
+      <p style="margin:0; font-size:.95rem;">DLSS Performance + Neural Rendering pre-upscale al 70% + Frame Generation → <strong>~120 fps sostenidos</strong> en TV LG de 144 Hz. Sin el mod, la NR por la vía "oficial" (post-upscale) consumía demasiado para ser jugable a 4K; con pre-upscale y el dial al 70%, el coste desaparece prácticamente y la diferencia ON/OFF en realismo sigue siendo enorme.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧪 Datos de la comunidad (RTX 5070 Ti · Resonance: A Plague Tale Legacy · 4K Performance)</div>
+      <div class="bench">
+        <div class="bench-row">
+          <div class="bl"><span>DLSS 5 desactivado (baseline)</span><b>180 fps</b></div>
+          <div class="bar-track"><div class="bar-fill b-off" data-w="100%"></div></div>
+        </div>
+        <div class="bench-row">
+          <div class="bl"><span>NR post-upscale (pipeline oficial)</span><b>~80 fps · −55%</b></div>
+          <div class="bar-track"><div class="bar-fill b-old" data-w="44%"></div></div>
+        </div>
+        <div class="bench-row">
+          <div class="bl"><span>NR <b>pre-upscale</b> (OptiScaler)</span><b>~122 fps · −32%</b></div>
+          <div class="bar-track"><div class="bar-fill b-new" data-w="68%"></div></div>
+        </div>
+      </div>
+      <p style="font-size:.85rem; color:var(--text-dim); margin:0;">Fuente: <a href="https://www.duckittech.com/news/experimental-optiscaler-mod-cuts-dlss-5-neural-rendering-performance-cost-nearly-in-half" target="_blank" rel="noopener">test reportado por la comunidad</a>. En AC Shadows (RTX 4080, 4K): 31 → 50 fps con pre-upscale. En la 5090 los números absolutos suben pero el patrón (≈mitad de penalización) se mantiene.</p>
+    </div>
+
+    <p>Y la palanca fina: en la vía optiscaler el <strong>model resolution</strong> escala el coste al cuadrado — 75% ≈ la mitad del coste de 100%, 50% ≈ un cuarto. El frame conserva todo su detalle; solo la contribución del modelo se calcula pequeña y se estira. Es tu dial para bajar/subir calidad según la escena.</p>
+  </section>
+
+  <!-- ============ PROBLEMAS ============ -->
+  <section id="problemas">
+    <h2 class="section-title"><span class="ico">🚑</span>Si algo falla (y cómo salir de todo)</h2>
+    <div class="card red">
+      <div class="card-title">El crash clásico</div>
+      <p style="margin:0; font-size:.94rem;">Cambio de resolución o de modo de pantalla <em>con la NR activa</em>. Regla: configura resolución/modo primero, activa después. Si cae a media sesión: cierra, ajusta, abre. El tool restaura todo con su desinstalación; el juego queda intacto.</p>
+    </div>
+    <details class="faq">
+      <summary>"Did it work?" dice que no se inyectó / log vacío</summary>
+      <div class="faq-a">Revisa: (1) que el juego use la API que detectaste (forza el dropdown "graphics api" si es un motor poligrafo), (2) driver 616.56+, (3) antivirus que haya bloqueado la DLL (el tool te lo dirá en el log), (4) en la vía native/bridge, el add-on que instala a veces "faults" en juegos concretos — prueba otra ruta.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Pierdo mi swap/manual de archivos si desinstalo?</summary>
+      <div class="faq-a"><strong>No.</strong> El tool desinstala <em>exactamente lo que él escribió</em> y restaura lo que él sustituyó. Archivos que modificaste tú a mano (swaps de DLL por tu cuenta, mods de fps, etc.) no los toca. Aun así, antes de la primera instalación es buena costumbre un backup manual de la carpeta de binarios — 30 segundos y duermes tranquilo.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Se actualiza solo? ¿Y si el juego se actualiza en Steam?</summary>
+      <div class="faq-a">El tool se auto-actualiza (verificando SHA-256) y te avisa en la barra superior. Si el juego se actualiza y cambia el exe, usa "Check versions" en la página de juegos: te marca los instalados que tienen piezas nuevas disponibles. "Full rescan" vuelve a leer toda la librería.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Sirve con anti-cheat / juegos online?</summary>
+      <div class="faq-a">No. Inyección de DLL + binario sin firma = bandera roja para cualquier anti-cheat, y el tool se lo diría igualmente. Solo juegos offline.</div>
+    </details>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <h2 class="section-title"><span class="ico">❓</span>Preguntas frecuentes</h2>
+    <details class="faq">
+      <summary>¿Tiene algo que ver con el DLSS 5 del add-on de ReShade ("Neural Rendering")?</summary>
+      <div class="faq-a">Misma familia, distinta pieza. El add-on de ReShade es una de las vías (la que usan los tools como "native"); el fork de OptiScaler sustituye el upscaler sin ReShade. El resultado es el mismo modelo neural; lo que cambia es <em>dónde</em> se encaja — y ahí está todo el tema de rendimiento de este tutorial.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Mejorará NVIDIA el coste de forma oficial?</summary>
+      <div class="faq-a">Sí: NVIDIA ha prometido nuevos modelos de DLSS 5 para otoño (incluido formato NVFP4 para Blackwell) y ya ha ido optimizando ~5x desde el demo original de GTC. Mientras tanto, el swap de runtime del tool te deja al día con un click. Es plausible que el pre-upscale acabe siendo nativo.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Con RTX 40 (o 30/20) me va bien?</summary>
+      <div class="faq-a">Funciona, con caveats: la 40 usa un runtime re-compilado a sm_89 (coste moderado); las 30/20 usan el path FP16 de la comunidad (~mitad de FPS a resolución de modelo completa). En tu caso, <b>el model resolution es tu amigo</b>: en 40 serie, 50–60% es un punto dulce razonable.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Y los juegos que NO tienen DLSS?</summary>
+      <div class="faq-a">Hay vías: <b>feeder</b> (monta un contrato DLAA desde el depth buffer de ReShade; el único camino para juegos de 32 bits y DX9) y <b>bridge</b> (D3D11/Vulkan, construye un contrato desde el optical flow del driver). Son más frágiles y dependen del juego; los tools te las ofrecen en el dropdown de rutas. Para el 95% de los juegos modernos con DLSS, optiscaler/neural-upstream es lo tuyo.</div>
+    </details>
+    <details class="faq">
+      <summary>¿Por qué no usar el DLSS 5 de la Nvidia App / del driver directamente?</summary>
+      <div class="faq-a">Porque el driver trae el runtime, pero <strong>el juego tiene que pedirlo</strong>, y fuera de NBA 2K27 (y lo que NVIDIA active este otoño) ninguno lo hace. El mod es literalmente "el teléfono" que le dice al juego que existe. Es la única vía hoy.</div>
+    </details>
+  </section>
+
+  <!-- ============ FUENTES ============ -->
+  <section id="fuentes">
+    <h2 class="section-title"><span class="ico">📚</span>Fuentes</h2>
+    <ul class="src-list">
+      <li><span class="src-tag official">Oficial</span><a href="https://www.nvidia.com/en-us/geforce/news/dlss-5-3d-guided-neural-rendering/" target="_blank" rel="noopener">NVIDIA — DLSS 5: Neural Rendering (lanzamiento NBA 2K27, 3 sep 2026)</a></li>
+      <li><span class="src-tag official">Oficial</span><a href="https://research.nvidia.com/labs/adlr/DLSS5/" target="_blank" rel="noopener">NVIDIA ADLR — DLSS 5: Generative Neural Rendering (paper)</a></li>
+      <li><span class="src-tag official">Oficial</span><a href="https://www.nvidia.com/en-us/geforce/dlss/" target="_blank" rel="noopener">NVIDIA — Página de DLSS (listado de juegos)</a></li>
+      <li><span class="src-tag community">Comunidad</span><a href="https://github.com/Kizzuwatnaa/DLSS5-Autopilot" target="_blank" rel="noopener">Kizzuwatnaa/DLSS5-Autopilot</a> — tool usado en este tutorial (v1.8.2)</li>
+      <li><span class="src-tag community">Comunidad</span><a href="https://github.com/rakanki911/DLSS5-Swapper" target="_blank" rel="noopener">rakanki911/DLSS5-Swapper</a> — alternativa con GUI</li>
+      <li><span class="src-tag community">Comunidad</span>matiasLombo — <em>Neural Upstream</em> (pasada neural pre-upscale)</li>
+      <li><span class="src-tag community">Comunidad</span>Dagherbou — <em>fork de OptiScaler</em> (pasada neural pre-upscale + model resolution)</li>
+      <li><span class="src-tag press">Prensa</span><a href="https://www.duckittech.com/news/experimental-optiscaler-mod-cuts-dlss-5-neural-rendering-performance-cost-nearly-in-half" target="_blank" rel="noopener">Duck-IT Tech — DLSS 5 Pre-Upscale Mod Nearly Halves Performance Cost</a> (números del test 5070 Ti)</li>
+      <li><span class="src-tag press">Prensa</span><a href="https://www.tweaktown.com/news/113483/modders-get-dlss-5-to-run-on-faster-nvfp4-format-but-performance-improves-by-just-2-percent-on-rtx-50-series-cards/index.html" target="_blank" rel="noopener">TweakTown — port NVFP4 de la comunidad (+1–2% en RTX 50, hoy)</a></li>
+    </ul>
+    <div class="card" style="margin-top:18px;">
+      <p style="margin:0; font-size:.88rem; color:var(--text-dim);">🐱 Nota de Cocobot: esto es un tool <strong>no oficial y temprano</strong> — los componentes cambian a diario, los repos se renombran, los drivers rompen y arreglan. Si algo deja de funcionar en 3 meses, no es que te lo hayas montado mal: es el estado natural de esta escena. Todo lo instalado es reversible.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Hecho por <strong>Cocobot 🐱</strong> · Tutorial DLSS 5 · 13 de septiembre de 2026</p>
+    <p>Basado en experiencia real: RTX 5090, The Blood of Dawnwalker, 120 fps a 4K con pre-upscale al 70%.</p>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </footer>
+
+</div>
+
+<script>
+// nav drawer
+function toggleNav() {
+  var d = document.getElementById('nav-drawer');
+  var o = document.getElementById('nav-overlay');
+  var b = document.getElementById('hamburger-btn');
+  var open = d.classList.contains('active');
+  if (open) { d.classList.remove('active'); o.classList.remove('active'); b.textContent = '☰'; }
+  else { d.classList.add('active'); o.classList.add('active'); b.textContent = '✕'; }
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var href = this.getAttribute('href');
+    if (href.length > 1) {
+      e.preventDefault();
+      var t = document.querySelector(href);
+      if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  });
+});
+// on/off demo
+function toggleDemo(){
+  var sw = document.getElementById('demo-switch').checked;
+  document.getElementById('demo-box').classList.toggle('on', sw);
+  document.getElementById('lab-off').classList.toggle('active', !sw);
+  document.getElementById('lab-on').classList.toggle('active', sw);
+}
+// animate benchmark bars on scroll into view
+(function(){
+  var bars = document.querySelectorAll('.bar-fill');
+  if (!('IntersectionObserver' in window)) { bars.forEach(function(b){ b.style.width = b.dataset.w; }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting) { en.target.style.width = en.target.dataset.w; io.unobserve(en.target); }
+    });
+  }, { threshold: 0.4 });
+  bars.forEach(function(b){ io.observe(b); });
+})();
+// visit counter
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/dlss5-tutorial/';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){ if(el&&d.count){ el.textContent='👁️ '+d.count+' visitas'; } })
+    .catch(function(){});
+})();
+</script>
+</body>
+</html>
