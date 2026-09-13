@@ -5,6 +5,68 @@
   },
   "days": [
     {
+      "date": "2026-09-13",
+      "news": [
+        {
+          "category": "general",
+          "title": "Amodei pide frenar el avance de la IA frontera; Altman, Musk y Hassabis le respaldan",
+          "summary": "El ensayo 'We Must Pace the Frontier' de Anthropic propone tres pasos: evaluadores independientes embebidos con acceso de nivel de empleado (Anthropic se compromete unilateralmente), coordinación de estándares de seguridad entre labs con exenciones antimonopio puntuales, y cooperación global. Altman anunció que OpenAI hará lo mismo; Musk ('Dario is right') y Hassabis apoyan la dirección. Contexto: dimisiones públicas de investigadores de safety y el incidente de los agentes de OpenAI en Hugging Face.",
+          "source": "https://www.aa.com.tr/en/science-technology/musk-altman-hassabis-back-amodei-s-call-to-slow-pace-of-ai-development/4055591",
+          "source_name": "Anadolu Agency",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10938 publicado (workaround bug de driver NV en vkQueueSubmit de Vulkan); tu b10927 va a 11 builds, sin prisa",
+          "summary": "b10938 aplica un workaround para un bug del driver de NVIDIA en la submit de colas de Vulkan. También salieron b10937 (regla noshuffle de row-alignment para q4_K, q5_K y q8_0 en OpenCL, no solo q6_K) y b10936 (parsing mejorado de tipos complejos en qwen3-coder). Sin CVEs nuevos; los advisories activos siguen siendo los de marzo.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b10938",
+          "source_name": "GitHub",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "GitHub Copilot estrena Project HydraFusion: orquestación multi-modelo de nivel frontera",
+          "summary": "Vista previa de investigación que trata la ejecución de workflows de coding como problema de optimización: construye planes de ejecución completos combinando modelos de múltiples proveedores. Ya disponible en todos los tiers de Copilot vía /experimental en el CLI, con facturación según los tokens de los modelos subyacentes.",
+          "source": "https://www.infoq.com/news/2026/09/github-hydrafusion/",
+          "source_name": "InfoQ",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "NVIDIA Nemotron 3 Ultra alcanza oro en la IMO 2026 con pruebas solo en lenguaje natural",
+          "summary": "Pipeline abierto que hace post-training de Nemotron 3 Ultra en agentes de razonamiento matemático: 30/42 puntos en la IMO 2026 (umbral de oro) sin asistente de pruebas formales, herramientas externas ni internet. NVIDIA publica el stack completo: checkpoints, datos, código, soluciones y Nemotron-IMO-Bench con 200 problemas (arXiv:2609.10712).",
+          "source": "https://theagenttimes.com/articles/nvidia-nemotron-scores-imo-gold-with-open-natural-language-p-61716fdf",
+          "source_name": "The Agent Times",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "SpaceXAI retransmitirá 'Grok Bot Galaxy': 72 horas para montar una startup con agentes",
+          "summary": "Del 15 al 17 de septiembre, tres empleados intentarán construir una empresa desde cero con Grok Bot: día 1 ingeniería/product, día 2 ventas y soporte, día 3 marketing y post-sales. Primera demostración pública de Grok Bot en funciones empresariales más allá del desarrollo de software.",
+          "source": "https://www.hokanews.com/2026/09/spacexai-to-livestream-three-day.html",
+          "source_name": "Hokanews",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Sapien cierra ronda con valoración de $180M para agentes de análisis financiero",
+          "summary": "La startup (~20 empleados, fundada en 2024) construye agentes que se conectan directamente a ERPs, data warehouses y CRMs para comprimir análisis financieros de días en minutos. Ronda liderada por Neo (Ali Partovi); pasó de un seed de $8,7M de General Catalyst a esta valoración en menos de dos años.",
+          "source": "https://ai-newspaper.com/articles/sapien-secures-180m-valuation-to/",
+          "source_name": "AI Newspaper",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "Krea 2 Turbo Distill 2-step LoRA: previews de imagen en 2 pasos (alpha)",
+          "summary": "Nueva LoRA experimental para Krea 2 Turbo que reduce los pasos de difusión de 4 a 2, dando previews mucho más rápidos a costa de algo de calidad. Siguiente iteración del proyecto de 4-step; versión alpha publicada en r/StableDiffusion.",
+          "source": "https://pulseaugur.com/cluster/250351-krea-2-turbo-distill-2-step-lora-offers-faster-image-generation-previews",
+          "source_name": "PulseAugur / r/StableDiffusion",
+          "star": false
+        }
+      ],
+      "summary": "Día marcado por la seguridad: Amodei publica 'We Must Pace the Frontier' y Altman, Musk y Hassabis respaldan un ralentizado coordinado con evaluadores independientes embebidos. En el plano técnico, llama.cpp publica b10938, Copilot estrena HydraFusion (orquestación multi-modelo) y Nemotron 3 Ultra llega a oro en la IMO."
+    },
+    {
       "date": "2026-09-12",
       "news": [
         {
@@ -5318,60 +5380,6 @@
         }
       ],
       "summary": "Día con novedades en ecosistema empresarial de IA y actualizaciones técnicas: OpenAI lanza su Partner Network con inversión de $150M, y llama.cpp publica nuevos builds con soporte Cohere2MoE y fixes."
-    },
-    {
-      "date": "2026-06-14",
-      "news": [
-        {
-          "category": "llm",
-          "title": "OpenAI retira GPT-5.2 y migra a todos los usuarios a GPT-5.5",
-          "summary": "Desde el 12 de junio, OpenAI eliminó GPT-5.2 Instant, Thinking y Pro de ChatGPT, migrando automáticamente las conversaciones existentes a los modelos GPT-5.5 equivalentes. La migración es silenciosa pero no es un reemplazo byte por byte: pueden haber cambios sutiles en tono, verbosidad, formato y comportamiento de rechazo. OpenAI recomienda a los desarrolladores fijar versiones explícitas en llamadas API y ejecutar suites de evaluación contra GPT-5.5 antes de cortar. GPT-4.5 también será retirado el 27 de junio y OpenAI o3 el 26 de agosto.",
-          "source": "https://www.techtimes.com/articles/318345/20260613/openai-retires-gpt-52-moves-everyone-gpt-55-what-changes-chatgpt-users-developers.htm",
-          "source_name": "TechTimes",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Coalición de fiscales de estado abre investigación amplia contra OpenAI",
-          "summary": "Una coalición de fiscales generales de varios estados de EE.UU. ha iniciado una investigación de amplio alcance contra OpenAI, solicitando información sobre una amplia gama de temas. La noticia, reportada por Reuters y Bloomberg el 12-13 de junio, añade presión regulatoria al momento en que OpenAI prepara su IPO y enfrenta escrutinio por parte de la administración Trump sobre una posible participación accionaria gubernamental.",
-          "source": "https://www.reuters.com/business/openai-under-investigation-by-coalition-state-attorneys-general-wsj-reports-2026-06-12/",
-          "source_name": "Reuters",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Zuckerberg admite que Meta cometió 'errores' en su transformación de fuerza laboral con IA",
-          "summary": "El CEO de Meta, Mark Zuckerberg, reconoció en un memorando interno que la compañía cometió errores durante su reestructuración de la fuerza laboral impulsada por la inteligencia artificial. Reuters accedió al documento el 12 de junio, revelando que Zuckerberg pidió a los empleados paciencia mientras la empresa ajusta su estrategia de integración de IA en operaciones diarias.",
-          "source": "https://www.reuters.com/business/metas-zuckerberg-admits-mistakes-made-ai-transformation-2026-06-12/",
-          "source_name": "Reuters",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "NVIDIA inicia ventas de CPUs Vera a clientes chinos con disponibilidad desde agosto",
-          "summary": "NVIDIA ha comenzado a presentar sus nuevos procesadores centrales 'Vera' a clientes chinos, indicando que podrían estar disponibles ya en agosto y que pueden comenzar a realizar pedidos. Las CPUs Vera, basadas en arquitectura ARM, están diseñadas para centros de datos de IA. La moción es estratégica mientras las ventas de GPUs de NVIDIA a China permanecen congeladas por restricciones de exportación.",
-          "source": "https://www.reuters.com/world/china/nvidia-begins-vera-cpu-sales-pitch-chinese-clients-sources-say-2026-06-12/",
-          "source_name": "Reuters",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Oleada de IPOs de robótica humanoide china: EngineAI, Unitree y Agibot buscan cotizar",
-          "summary": "Varias empresas chinas de robótica humanoide están avanzando hacia ofertas públicas. EngineAI, con sede en Shenzhen y fundada en 2023, presentó confidencialmente para una IPO en Hong Kong tras una Serie B de $27.9M a valoración de más de $1.5B; ya fabrica robots T800 a ritmo de 1 unidad cada 15 minutos. En paralelo, Unitree busca una IPO de $7B en el mercado STAR, Agibot apunta a $6B en Hong Kong y Linkerbot persigue una valoración de $6B. El sector ha levantado más de $1B solo en 2025.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-13-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9616 a b9628 — 9 builds nuevos con soporte cohere2-MoE, fix llama-ui-embed y compresión gzip",
-          "summary": "Tu servidor corre b9619; la última versión es b9628 (9 builds nuevos desde tu versión, 12 desde el último reporte b9616). Cambios destacados: soporte de arquitectura para cohere2-MoE, fix de crash en llama-ui-embed cuando no hay directorio de assets, compresión gzip en tiempo de compilación para la UI, fix en Jinja para slices con paso negativo, y SYCL añadido a check-release. No hay CVEs nuevas desde las publicadas en marzo (GHSA-j8rj, GHSA-3p4r, GHSA-96jg).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día intenso con OpenAI bajo fuego cruzado: retira GPT-5.2 migrando a GPT-5.5 y una coalición de fiscales de estado abre investigación. NVIDIA avanza con la venta de CPUs Vera a China, Meta admite errores en su transformación IA, y una oleada de IPOs de robótica china marca el cierre de semana."
     }
   ]
 }
