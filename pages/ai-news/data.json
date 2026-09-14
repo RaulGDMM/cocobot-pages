@@ -5,6 +5,68 @@
   },
   "days": [
     {
+      "date": "2026-09-14",
+      "news": [
+        {
+          "category": "llama",
+          "title": "llama.cpp: b10951 publicado (move llama_n_rs_seq to before llama_decode); tu b10927 va a 24 builds, sin prisa",
+          "summary": "Nuevo release b10951 (14/09) con cambios en common. Destaca también b10950: ggml-cuda ahora hace fallback a F32 en dispositivos sin aceleración BF16. Sin cambios que exijan una actualización urgente en tu build.",
+          "source": "https://github.com/ggerganov/llama.cpp/releases/tag/b10951",
+          "source_name": "GitHub",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "DeepSeek: desde hoy el tráfico de la API de V4-Pro se sirve con V4.1-Flash",
+          "summary": "A partir de las 04:00 UTC del 14/09, todas las peticiones a deepseek-v4-pro se enrutan a V4.1-Flash (MoE 552B, contexto 1M, multimodal nativo, pesos MIT) a precios Flash hasta que llegue V4.1-Pro. DeepSeek afirma que V4.1-Flash supera a V4-Pro en rendimiento, coste y velocidad. Los nombres legacy deepseek-v4-flash se enrutan también a V4.1-Flash.",
+          "source": "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+          "source_name": "DeepSeek",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Claude Code: hoy termina el boost temporal +50% de límites semanales — queda un +25% permanente (-17% real)",
+          "summary": "Desde el 14/09 el boost temporal de +50% en los límites semanales de Claude Code (activo desde mayo, extendido varias veces) se sustituye por un aumento permanente del 25% sobre la línea base original: en la práctica, un recorte de ~17% respecto a la capacidad de hoy. Afecta a planes Pro, Max, Team y Enterprise por asientos; el límite de sesión de 5 horas y la API no cambian.",
+          "source": "https://www.implicator.ai/anthropic-claude-code-weekly-limits-september-14/",
+          "source_name": "The Implicator",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Nadella respalda el 'pacing' de la IA y Microsoft publicará un código de conducta para sus modelos MAI",
+          "summary": "Satya Nadella se sumó el 13/09 al consenso del 'deliberate pacing' impulsado por Amodei (Anthropic, OpenAI y DeepMind llevan desde julio reuniones de un grupo de trabajo para un organismo de estándares de la industria). Microsoft anunciará un código de conducta de sus modelos first-party MAI para consulta pública, mientras David Sacks (PCAST) avisa de que no debe convertirse en un cártel anticompetitivo.",
+          "source": "https://www.unite.ai/nadella-announces-public-consultation-on-microsofts-mai-model-rules/",
+          "source_name": "Unite.AI",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "MIT presenta HardFlow: restricciones duras para IA generativa sin reentrenar",
+          "summary": "Nueva técnica (IEEE TPAMI) que reformula el muestreo con restricciones duras como optimización de trayectorias con control óptimo: el modelo goza de libertad durante la generación y la restricción se aplica solo en la salida final. En robótica, navegación y edición de imágenes cumple el 100% de las restricciones y mejora la calidad de la solución frente a los métodos actuales, funcionando en tiempo de despliegue sobre modelos ya entrenados.",
+          "source": "https://news.mit.edu/2026/new-method-enables-ai-safety-critical-situations-0914",
+          "source_name": "MIT News",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Estudio KAIST: los agentes de IA consumen hasta 136× más energía por consulta que un chatbot",
+          "summary": "Un agente sobre un modelo de 70B consume de media 348 Wh por tarea (136,5× el baseline de pregunta-respuesta) y los GPUs pueden estar inactivos hasta el 54,5% del tiempo mientras esperan a las herramientas. Escalando a 13.700M de peticiones/día, la demanda eléctrica solo de IA agéntica alcanzaría ~199 GW, casi la mitad del consumo medio de EE.UU.",
+          "source": "https://startupfortune.com/ai-agents-can-burn-136-times-more-power-than-a-standard-chatbot-query/",
+          "source_name": "Startup Fortune",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "LG AI Research lanza su suite EXAONE industrial: predicción de defectos, descubrimiento de materiales y finanzas explicables",
+          "summary": "En el AI Talk Concert 2026 (Seúl), LG presentó EXAONE Tabular (predice defectos de fábrica), EXAONE Omni-Inspect (inspección visual adaptable con poco entrenamiento), EXAONE Discovery (pantalló 420.000 compuestos en un día) y EXAONE Business Intelligence (agentes para prever evolución bursátil en ~8.000 empresas de Corea y EE.UU.). Planea un 'orquestador de IA' que coordine robots y fábricas de forma autónoma.",
+          "source": "https://www.koreaherald.com/article/10872720",
+          "source_name": "The Korea Herald",
+          "star": false
+        }
+      ],
+      "summary": "Día movido en IA: DeepSeek reenvía hoy todo el tráfico de la API de V4-Pro a V4.1-Flash, los límites semanales de Claude Code bajan un 17% neto, llama.cpp publica b10951 y Microsoft entra en la conversación del 'pacing' con un código de conducta para sus modelos MAI."
+    },
+    {
       "date": "2026-09-13",
       "news": [
         {
@@ -5358,28 +5420,6 @@
         }
       ],
       "summary": "Día con noticias destacadas en seguridad para agentes IA y una oleada significativa de updates en llama.cpp. 1Password lanza su Credential Broker para gestión de secretos en workflows de IA, mientras llama.cpp avanza con 26 builds nuevos incluyendo mejoras SYCL y Vulkan."
-    },
-    {
-      "date": "2026-06-15",
-      "news": [
-        {
-          "category": "general",
-          "title": "OpenAI lanza Partner Network con inversión de $150M para ecosistema empresarial",
-          "summary": "OpenAI anunció el 14 de junio la creación del OpenAI Partner Network (OPN), un programa global de ecosistema diseñado para ayudar a empresas a escalar soluciones de IA. La iniciativa incluye una inversión de $150 millones, un sistema de tres niveles (Select → Advanced → Elite), especializaciones en Codex, Ciberseguridad y Agentes, y un programa piloto de Forward Deployed Experts. OpenAI apunta a certificar 300.000 consultores para finales de 2026. Los socios fundadores incluyen Accenture, BCG, Bain, Artium y otros. Casos de éxito destacados: Agilent+BCG, eBay+Artium, Paychex+Bain (80% reducción en tiempos de espera) y T-Mobile+Accenture.",
-          "source": "https://openai.com/index/introducing-openai-partner-network/",
-          "source_name": "OpenAI Blog",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9628 a b9637 — 9 builds nuevos con Cohere2MoE parser, fix cli preserved tokens y jinja aliases",
-          "summary": "Nuevos builds desde b9628 hasta b9637 (14 de junio). Destacados: b9629 añadió SYCL al check-release CI workflow; b9630 añadió cohere2moe a llama-vocab para soporte TINY_AYA; b9631 corrigió bug donde los preserved tokens no se copiaban en CLI (#24258); b9632 añadió aliases de filtros count/d/e en jinja (#24606); b9637 añadió parser dedicado Cohere2MoE (North Code) (#24615). El usuario tiene b9619 instalado — hay 18 builds pendientes de actualización.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub ggml-org/llama.cpp",
-          "star": false
-        }
-      ],
-      "summary": "Día con novedades en ecosistema empresarial de IA y actualizaciones técnicas: OpenAI lanza su Partner Network con inversión de $150M, y llama.cpp publica nuevos builds con soporte Cohere2MoE y fixes."
     }
   ]
 }
