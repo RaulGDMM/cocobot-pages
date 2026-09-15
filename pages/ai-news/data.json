@@ -5,6 +5,92 @@
   },
   "days": [
     {
+      "date": "2026-09-15",
+      "news": [
+        {
+          "category": "general",
+          "title": "El 'pacing' de la IA revienta: Trump ataca, Pekín replica y los semiconductores caen un 6%",
+          "summary": "Trump rechazó el plan de frenar la IA frontera ('quien gane la IA, gana todo') y llamó 'conspiración enferma' a la oposición a los data centers, nombrando a Amodei; el Ministerio de Exteriores chino lo tildó de 'fearmongering' y el Global Times de 'guion de guerra fría'. Wall Street reaccionó: el índice semiconductores PHLX cayó ~6% (su peor día desde julio; Nvidia -3,4%). Karpathy —ahora en el equipo de pretraining de Anthropic— rompió su silencio para respaldar el plan, Yann LeCun llamó 'falsas' las advertencias, el CEO de Cohere lo acusó de ser un 'cártel' de los líderes de mercado y Michael Burry lo calificó de autopromoción pre-IPO.",
+          "source": "https://github.com/diclogic/ai-daily-digest/issues/153",
+          "source_name": "AI Daily Digest (AP, The Verge, The Register)",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Apple lanza Siri AI en beta con iOS 27: asistente reescrito que entiende la pantalla, construido con Google",
+          "summary": "Apple comenzó la beta en inglés de Siri AI en iOS/iPadOS/macOS/watchOS/visionOS 27: recupera contexto personal (mensajes, correo, fotos), actúa sobre la pantalla y dentro de apps, y trae una app de conversación sincronizada. Requiere iPhone 15 Pro o más nuevo; Apple confirmó que sus próximos Apple Foundation Models se construyeron con Google y Gemini, y que las peticiones server-side tendrán límites diarios. Español (con francés, japonés, coreano y portugués) llega el mes que viene; UE y China, retrasados.",
+          "source": "https://www.apple.com/newsroom/2026/09/siri-ai-a-profoundly-more-capable-and-personal-assistant-is-here/",
+          "source_name": "Apple Newsroom",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Andon Labs lanza Pion: agentes persistentes para gestionar un negocio entero",
+          "summary": "Pion es una plataforma en la nube de agentes persistentes que no asisten a tareas sueltas: sostienen de forma continua el bucle operativo de una empresa (banca, comunicaciones, automatización de navegador), en research preview. El linaje da credibilidad: Vending-Bench (finales 2024), tienda comercial Andon Market en San Francisco y Andon Café en Estocolmo (abril 2026). Contraargumento honesto del mismo ciclo: una visita a la tienda AI de SF reportó sin clientes, estanterías sin productos y pérdidas rápidas. 277 puntos en Hacker News.",
+          "source": "https://andonlabs.com/blog/why-we-built-pion",
+          "source_name": "Andon Labs",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Hoy entran en vigor los bloqueos de Cloudflare a crawlers de IA de 'uso mixto'",
+          "summary": "Desde el 15/09, Cloudflare bloquea por defecto a los crawlers que mezclan indexado con entrenamiento en páginas con anuncios: su taxonomía permite 'Search' pero bloquea 'Agent' y 'Training', afectando a clientes nuevos y a todos los usuarios del plan gratuito. Google, Apple y Microsoft —cuyos crawlers combinan funciones— quedan en el punto de mira. Y 'Pay Per Crawl' vira a 'Pay Per Use': los editores se pagan cuando su contenido aparece en una respuesta de IA, no cuando el bot lo descarga.",
+          "source": "https://github.com/diclogic/ai-daily-digest/issues/153",
+          "source_name": "AI Daily Digest (TechCrunch)",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: v0.4.1 publicado (Maple 20B-A1B, Tencent Hy 4, Spark2.5, ggml v0.24.0) y b10976",
+          "summary": "v0.4.1 añade soporte para Maple 20B-A1B, Tencent Hy 4 y Spark2.5, mejora el manejo de JSON schemas, el parsing de chat, el logging y la gestión de procesos hijos del server, y sube ggml a v0.24.0. b10976 (hoy) solo corrige la CI de releases de Android; b10970 usa acumulación fp32 en MFMA (HIP). Tu build b10927 va a 49 builds — sigue sin prisa.",
+          "source": "https://github.com/ggerganov/llama.cpp/releases",
+          "source_name": "llama.cpp releases (GitHub)",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Amazon Science: por qué los agentes de investigación en ML no sobreajustan (16 tokens bastan)",
+          "summary": "Si la estrategia de un agente de investigación se comprime a través de un cuello de botella de información —tan pocos como 16 tokens— y un agente nuevo sin memoria la reproduce, la estrategia capturó estructura real, no ruido de validación: las que sobreajustan pierden sus ganancias al pasar el filtro. 'Lo que cabe en pocos tokens no sobreajusta' sirve como diagnóstico barato para quien corre agentes contra benchmarks fijos. 103 puntos en Hacker News.",
+          "source": "https://www.amazon.science/blog/why-dont-machine-learning-research-agents-overfit",
+          "source_name": "Amazon Science",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Anthropic lanza 'Claude for Financial Advisors'",
+          "summary": "Plugin que conecta Claude con custodios, CRMs y plataformas de cartera (Charles Schwab, Addepar, Envestnet, iCapital, Orion, Wealthbox). Sus skills automatizan la preparación de reuniones, revisiones de cartera, cribado de cumplimiento y borradores de seguimiento, aunque las recomendaciones y acciones hacia el cliente requieren siempre revisión y aprobación del asesor.",
+          "source": "https://claude.com/blog/claude-for-financial-advisors",
+          "source_name": "Anthropic",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "ElevenLabs lleva voz, música, imagen y video a su conector MCP",
+          "summary": "El conector MCP de ElevenLabs ahora expone generación de voz, transcripción, doblaje, música, efectos de sonido, imagen y video: más de 50 modelos vía OAuth, disponible en Claude, ChatGPT, Cursor, Grokbot, Hermes y más, con los outputs en ElevenCreative y control por el admin del workspace del acceso a herramientas y la residencia de datos.",
+          "source": "https://elevenlabs.io/blog/introducing-voice-music-image-and-video-generation-in-the-elevenlabs-mcp",
+          "source_name": "ElevenLabs",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Informe de amenazas de Anthropic: celda en Yemen usa Claude para software de guiado de cohetes",
+          "summary": "El nuevo threat intelligence report de Anthropic (septiembre 2026) describe una celda en el norte de Yemen usando Claude para escribir software de guiado de cohetes, y a un consultor en solitario que construyó para el servicio de inteligencia de Malí un sistema que vigila unos 25 millones de tarjetas SIM.",
+          "source": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+          "source_name": "Anthropic",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Anthropic publica su Economic Index: 57% del uso de Claude es 'aumento', no automatización",
+          "summary": "Analizando ~1 millón de conversaciones anónimas de Claude.ai Free y Pro mapeadas a tareas O*NET: el 37,2% de las consultas caen en trabajo informático y matemático, y el 57% del uso de la IA consiste en aumentar las capacidades del trabajador frente al 43% de automatización pura.",
+          "source": "https://www.anthropic.com/research/the-anthropic-economic-index",
+          "source_name": "Anthropic",
+          "star": false
+        }
+      ],
+      "summary": "Día de reacciones al 'pacing': el plan de frenar la IA hunde a los semiconductores (~-6%) y divide a la industria (Karpathy a favor, LeCun en contra, Pekín y Trump en retirada). Apple estrena Siri AI en beta y llama.cpp marca v0.4.1. Sin lanzamientos de modelos frontera el 14-15."
+    },
+    {
       "date": "2026-09-14",
       "news": [
         {
@@ -5398,28 +5484,6 @@
         }
       ],
       "summary": "Día activo con movimientos corporativos importantes: SpaceX compra Cursor por $60B, OpenAI prepara GPT-5.6, y Genesis AI presenta su robot Eno. El sector de agentes de código y robótica física dominan la agenda."
-    },
-    {
-      "date": "2026-06-16",
-      "news": [
-        {
-          "category": "agent",
-          "title": "1Password lanza Credential Broker en beta privada y adquiere Apono para gobernanza de acceso en agentes IA",
-          "summary": "1Password anunció la adquisición de Apono y lanzó su Credential Broker en beta privada (15 de junio). El sistema entrega credenciales, tokens y acceso federado directamente desde los vaults de 1Password a solicitantes de confianza solo cuando los necesitan (just-in-time), eliminando copias estáticas en repositorios y archivos de entorno. Inicialmente soporta GitHub Actions, con planes de extenderse a usuarios humanos, cargas de trabajo de máquinas y agentes IA. 1Password ya protege más de 1.500 millones de credenciales para más de 180.000 empresas, incluyendo Canva, GitHub, Hugging Face, Notion, Salesforce y Stripe. La adquisición de Apono refuerza la plataforma Unified Access para gobernanza de identidad unificada.",
-          "source": "https://siliconangle.com/2026/06/15/1password-debuts-credential-broker-release-secrets-needed/",
-          "source_name": "SiliconANGLE",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9637 a b9663 — 26 builds nuevos con soporte SYCL EXPM1, Vulkan col2im_1d y fixes MTMD/LFM2",
-          "summary": "Desde el último reporte (b9637, 15 de junio), llama.cpp ha publicado 26 builds nuevos hasta b9663 (16 de junio). Cambios destacados: [SYCL] Soporte para OP EXPM1 y cobertura completa de casos de prueba FLOOR, TRUNC, ROUND (b9663); [Vulkan] Nueva operación col2im_1d (b9661); [Chat] Fix de double-escaping en parsing de tool-calls LFM2 (b9660); [MTMD] Corrección de conteo erróneo de n_tokens (b9659); [Chat] Inclusión del prompt completo sin parsear en modo debug (b9658). El usuario tiene la versión b9637 (o anterior) — hay mejoras de rendimiento y correcciones de bugs significativas que justifican una actualización.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día con noticias destacadas en seguridad para agentes IA y una oleada significativa de updates en llama.cpp. 1Password lanza su Credential Broker para gestión de secretos en workflows de IA, mientras llama.cpp avanza con 26 builds nuevos incluyendo mejoras SYCL y Vulkan."
     }
   ]
 }
