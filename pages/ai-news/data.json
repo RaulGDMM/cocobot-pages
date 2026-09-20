@@ -5,6 +5,84 @@
   },
   "days": [
     {
+      "date": "2026-09-20",
+      "news": [
+        {
+          "category": "general",
+          "title": "Trump anuncia una 'AI Force' y la creación de un czar de IA, rechazando frenos al sector",
+          "summary": "En una publicación en Truth Social, Trump anunció que creará una 'AI Force' (a imagen de la Space Force) y nombrará un nuevo czar de IA para supervisar la industria, descartando las peticiones de legisladores y de la propia industria de añadir salvaguardas: 'No vamos a obstaculizar ni sofocar el crecimiento de esta industria en absoluto'. El anuncio llega el mismo fin de semana en que gobernadores estatales (Newsom, Shapiro) empujan en dirección contraria con más supervisión.",
+          "source": "https://www.washingtonpost.com/politics/2026-09-19/trump-form-ai-force-name-ai-czar-rejects-calls-constraints/",
+          "source_name": "Washington Post",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Anthropic y Accenture: 2.000 M$ a 5 años para 'evaluadores integrados' de seguridad dentro del lab",
+          "summary": "Anthropic elegirá a Accenture (vía su división Faculty) como su primer 'evaluador integrado': equipos externos trabajarán dentro de la compañía con acceso comparable al de un empleado para red-teamear modelos, hacer evaluaciones de alineamiento y probar salvaguardias. Cada empresa invertirá al menos 1.000 M$ durante 5 años (Anthropic financiará directamente el trabajo de Accenture por 'urgencia'). Es el primer paso concreto del plan de Amodei 'We Must Pace the Frontier'; también negocian con METR y otros evaluadores no profit. Las acciones de Accenture subieron 8% en bolsa después de horas.",
+          "source": "https://www.anthropic.com/news/accenture-embedded-evaluation",
+          "source_name": "Anthropic / Reuters / TechCrunch",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Hacktron usó Claude (Opus 5) para hackear cuentas de empleados de OpenAI y acceder a su monorepo interno",
+          "summary": "Tres investigadores de la startup Hacktron AI, dentro del bug bounty de OpenAI, encadenaron dos vulnerabilidades en menos de 72 horas: un fallo en el procesamiento de imágenes HEIF del foro Discourse (con exploits generados por Claude Opus 5 en horas) y una mala configuración del SSO de OpenAI, lo que les permitió secuestrar cuentas ChatGPT y Codex de empleados y alcanzar el monorepo interno ('los secretos algorítmicos' de OpenAI), demostrando el acceso con un pull request. OpenAI pagó 6.500 $ y corrigió en ~14 horas; Discourse parcheó y añadió sandboxing. WSJ fue el primer medio en informar; el caso alimenta el debate sobre capacidades ofensivas reales de los modelos de IA.",
+          "source": "https://www.infosectoday.io/ai-helps-hackers-hijack-openai-staff-accounts-through-a-forum/",
+          "source_name": "InfoSec Today (vía WSJ / The Verge)",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "OpenAI: los Custom GPTs mueren — creación termina el 25 de septiembre y apagado total el 11 de diciembre",
+          "summary": "OpenAI publicó en su Help Center el calendario oficial de retirada de los Custom GPTs: el 25 de septiembre termina la creación de nuevos GPTs y el 11 de diciembre de 2026 todos los GPTs existentes dejarán de funcionar y saldrán del directorio. El reemplazo es el sistema de 'plugins', más flexible. Afecta a todos los planes de ChatGPT (gratis e incluidos los de pago); las fechas son 'sujetas a cambio'. Si tienes GPTs publicados, toca migrar antes del 25/9.",
+          "source": "https://arwriterai.com/en/blog/chatgpt-custom-gpts-retirement-plugins-2026/",
+          "source_name": "AI Writer (vía OpenAI Help Center / PCWorld)",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "ChatGPT llega a Linux: app de escritorio en preview público (Ubuntu, Debian, Fedora, Arch)",
+          "summary": "OpenAI publicó en preview público la app de escritorio de ChatGPT para Linux: x64 y ARM64 en Ubuntu 24.04/26.04 LTS, Debian 13, Fedora 43/44 y Arch rolling, con paquetes .deb/.rpm y script de instalación. Incluye acceso a ChatGPT y a Codex trabajando con proyectos y archivos locales; las acciones en el navegador están soportadas, pero controlar otras aplicaciones de escritorio todavía no.",
+          "source": "https://thewincentral.com/openai-chatgpt-desktop-app-linux/",
+          "source_name": "WinCentral",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Claude Code 2.1.277 lee AGENTS.md: se acaba el holdout del estándar de instrucciones compartidas",
+          "summary": "Claude Code v2.1.277 (18 de septiembre) lee AGENTS.md como instrucciones de proyecto cuando no existe CLAUDE.md, cerrando la última brecha del estándar usado por 60.000+ repositorios (Codex, Cursor, Copilot, Gemini CLI, Aider...). El fallback es configurable ('Project instructions' en /config, con 4 modos) y también lee ambos archivos a la vez. Detalles finos: no funciona aún en Bedrock/Vertex/Foundry, no se activa en la primera sesión tras actualizar, y CLAUDE.local.md bloquea el fallback. El soporte llega como 'mod' nativo, mecanismo de personalización del harness que Anthropic va a expandir. El truco @AGENTS.md dentro de CLAUDE.md sigue siendo el workaround universal.",
+          "source": "https://runtimewire.com/article/claude-code-adds-agents-md-support",
+          "source_name": "RuntimeWire / changelog oficial",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "GitHub Copilot: 6 modelos se retiran el 19 de octubre (GPT-5.5, GPT-5.4, Grok 4.5, Gemini 3.7 Flash...)",
+          "summary": "Nuevo changelog de GitHub (18 de septiembre): el 19 de octubre se deprecarán en TODAS las experiencias de Copilot (chat, inline, agent, completions) seis modelos: Gemini 3.7 Flash → Gemini 3.8 Flash, GPT-5.5 y GPT-5.4 → GPT-5.6 Sol, GPT-5.4 mini y GPT-5 mini → GPT-5.6 Luna, y Grok 4.5 → Grok 4.6. Para Enterprise/Business los reemplazos se activan solos salvo que el admin haya desactivado el default global. Acción: revisar cualquier workflow/CI que hardcodee esos identificadores de modelo antes del 19/10.",
+          "source": "https://github.blog/changelog/2026-09-18-upcoming-deprecation-of-selected-github-copilot-models-in-mid-october/",
+          "source_name": "GitHub Changelog",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Meitu lanza MVLAND 2.0 con 'Studio Mode': del generation de video a la dirección de videoclips",
+          "summary": "Meitu actualiza su generador de videoclips musicales a la versión 2.0 con Studio Mode: un flujo creativo dirigido por agentes que integra todo el pipeline de un MV —análisis profesional de la música, desarrollo creativo, storyboarding, generación de planos y post-edición— en un único workflow end-to-end. La compañía lo presenta como el salto de la generación de video a la 'dirección' de video: el usuario deja de pedir clips y pasa a dirigir la producción completa de un videoclips a partir de una canción.",
+          "source": "https://www.financialcontent.com/article/getnews-2026-9-19-mvland-20-launches-studio-mode-bringing-end-to-end-control-as-ai-video-moves-from-generation-to-direction",
+          "source_name": "FinancialContent / GetNews",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b11060 publicado (fix mamba contiguity) — 51 builds desde tu b11009, sin prisa",
+          "summary": "Nuevo release b11060 (20/09). Los builds desde b11047 traen: parser dedicado para Ling 3.0 (Bailing V3), mejoras en Qualcomm Hexagon (GEGLU_QUICK, I32 GET_ROWS), F16 en FWHT para Metal, y el fix de contigüidad del timestep projection de mamba. Nada relevante para CUDA en esta racha — sigue sin prisa actualizar desde tu b11009.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b11060",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Día movido: Trump anuncia una 'AI Force' y un czar de IA, Anthropic y Accenture firman 2.000 M$ en evaluación de seguridad integrada, Hacktron hackeó a OpenAI usando Claude, y OpenAI retira los Custom GPTs. En herramientas, Claude Code lee AGENTS.md y Copilot despide 6 modelos el 19 de octubre; llama.cpp llega a b11060."
+    },
+    {
       "date": "2026-09-19",
       "news": [
         {
@@ -5558,52 +5636,6 @@
         }
       ],
       "summary": "Día relativamente tranquilo en lanzamientos de modelos, pero con actividad destacada en llama.cpp (10 builds nuevos) y Amazon MGM retirando la película sobre Sam Altman tras su inversión de $50B en OpenAI."
-    },
-    {
-      "date": "2026-06-21",
-      "news": [
-        {
-          "category": "general",
-          "title": "Casa Blanca exige 'cero jailbreaks' a Anthropic antes de relanzar Fable 5",
-          "summary": "La Administración Biden exige que Anthropic pruebe proactivamente todos sus modelos frontier, identifique, reporte y elimine todos los jailbreaks antes de que Fable 5 pueda relanzarse. El consenso de expertos considera el requisito técnicamente imposible. Las negociaciones continúan entre Anthropic y la administración sobre un marco de monitoreo versus la demanda de 'cero jailbreaks'. Chris Ciauri declaró el 18 de junio: 'Estamos muy seguros de que en los próximos días, los modelos estarán disponibles de nuevo'. El plazo de prueba gratuita vence el 22 de junio.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-21-2026",
-          "source_name": "Build Fast with AI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "FERC emite 6 órdenes para acelerar conexión de centros de datos IA a la red eléctrica",
-          "summary": "El 18 de junio, la Comisión Federal de Regulación de Energía (FERC) emitió seis órdenes dirigidas a acelerar drásticamente la interconexión de la red eléctrica para centros de datos de IA y otros usuarios de gran consumo energético. Las órdenes obligan a los seis operadores regionales de la red a justificar o reformar sus tarifas dentro de plazos federales de 30 y 60 días, protegiendo explícitamente a los consumidores existentes de transferencias injustas de costos. Las órdenes cubren todas las redes regionales bajo jurisdicción de FERC, excluyendo Texas. Un análisis del American Action Forum destaca que los mandatos representan un cambio significativo en cómo la infraestructura de IA se conecta a la red nacional.",
-          "source": "https://www.americanactionforum.org/insight/ferc-data-center-orders-accelerate-grid-connection/",
-          "source_name": "American Action Forum",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Gemini 3.5 Pro a 9 días de su lanzamiento público con contexto de 2M tokens y modo 'Deep Think'",
-          "summary": "Google mantiene Gemini 3.5 Pro en vista previa empresarial limitada de Vertex AI, con disponibilidad general esperada antes de que finalice junio. El modelo ofrece contexto de 2 millones de tokens, modo de razonamiento 'Deep Think' y capacidades multimodales de nivel frontier. El precio ronda los $15/M en entrada y $60/M en salida (~10x más caro que Flash), incluido en el plan AI Ultra de $250/mes. El modelo está diseñado para absorber los casos de uso que antes se enrutaban a Gemini Ultra. Polymarket registra más de $1.1M en volumen sobre el tema.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-21-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Fable 5 de Anthropic en día 9 de suspensión global: plazo de prueba gratuita vence el 22 de junio",
-          "summary": "Claude Fable 5 lleva 9 días suspendido globalmente tras la directiva de control de exportaciones del 12 de junio. La API sigue devolviendo errores y el plazo de reembolso del 20 de junio ya pasó. El período de prueba gratuita vence el 22 de junio. Las negociaciones entre Anthropic y la administración continúan sobre un marco de monitoreo versus la demanda de 'cero jailbreaks' para el relanzamiento. El mercado considera probable pero incierta la restauración de precios para julio.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-21-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9737 a b9744 — 7 builds nuevos con refactor de gramáticas PEG y fixes de Hexagon",
-          "summary": "El usuario tiene b9737 instalado; la última versión es b9744 (publicada 21 de junio). Los 7 builds nuevos incluyen: refactor de generación de gramáticas GBNF en common/peg (#24839), alineación de reglas de espaciado en json-schema-to-grammar (#24835), fix de stride padding para pesos ssm-conv en Hexagon (#24470), uso de LLM_KV para quantization_version y file_type (#24802), y fix de test-args-parser (#24826). Cambios menores sin nuevas features destacadas. CVEs activos sin parchear: GHSA-j8rj-fmpv-wcxw (CRITICAL: RCE no autenticada en RPC), GHSA-3p4r-fq3f-q74v (HIGH: Heap Overflow en mem_size), GHSA-96jg-mvhq-q7q7 (HIGH: Heap Overflow en GGUF).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día moderado: la UE y EE.UU. intensifican la regulación de IA con demandas de 'cero jailbreaks' y nuevos mandatos de FERC para infraestructura de centros de datos, mientras Gemini 3.5 Pro se acerca a su lanzamiento público."
     }
   ]
 }
