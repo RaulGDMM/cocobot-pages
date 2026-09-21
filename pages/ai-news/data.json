@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-09-21",
+      "news": [
+        {
+          "category": "general",
+          "title": "OpenAI en la rampa: su cookie __obi vincula tu cuenta de ChatGPT con tu navegación en 1.000+ webs de terceros",
+          "summary": "El investigador Buchodi desmonta el mecanismo 'bazaar' de ads: ChatGPT genera un identificador que se firma como JWT, lo convierte en cookie __obi (SameSite=None, 1 año) y los pixels publicitarios de sitios como Chewy, Wayfair, HelloFresh o Coursera lo devuelven a OpenAI junto con páginas vistas, búsquedas de producto, email, teléfono y código postal (sin cifrar). OpenAI lo clasifica como 'analytics' (se activa aunque rechaces el marketing) y funciona también sin login (identificador estable ≥27 días). Solo Safari/iOS lo bloquea; Android Chrome no. Top de Hacker News hoy.",
+          "source": "https://www.buchodi.com/chatgpt-now-knows-what-you-do-on-other-websites-via-ad-collector/",
+          "source_name": "Buchodi (investigación independiente)",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Cuatro suscriptores demandan a Anthropic, OpenAI, xAI y Google: presunta conspiración antitrust para frenar el desarrollo de IA",
+          "summary": "La class action (Buist v. Anthropic, N.D. Cal., viernes 18-sep) acusa a los cuatro labs de acuerdo horizontal para desarrollar más lento bajo bandera de seguridad — Sherman Act §1 — tras el ensayo de Amodei del 12-sep y las adhesiones públicas de Altman, Musk y Hassabis. Pide daños triplicados e injuntiva; los demandantes son usuarios de pago de ChatGPT/Claude/Grok/Gemini. Coincide con el rechazo de Trump (ya reportado ayer) a cualquier freno: el caso testea si la advocacia pública de seguridad es un acuerdo ilegal.",
+          "source": "https://www.cbsnews.com/news/ai-slowdown-lawsuit-openai-anthropic-google/",
+          "source_name": "CBS News / AP",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Newsom firma EO de California: supervisión independiente acelerada y estudio de un 'kill switch' para IA avanzada",
+          "summary": "La orden ejecutiva (viernes 18-sep, dominó el fin de semana) acelera la nueva ley de supervisión independiente de IA de California y convoca a expertos a un plan que incluiría exigir a las empresas un mecanismo de apagado de emergencia para sus modelos más avanzados. Llega el mismo fin de semana que Trump crea su 'AI Force' en la dirección contraria: la pugna federal-estatal por gobernar el frontier se formaliza.",
+          "source": "https://www.cnbc.com/2026/09/18/california-newsom-executive-order-ai.html",
+          "source_name": "CNBC",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Anthropic pesa lanzar un modelo nuevo para frenar a GPT-6 Astra; su IPO se retrasa a noviembre y OpenAI descarta salir a bolsa en 2026",
+          "summary": "Reuters (18-sep, 3 fuentes): Anthropic debate el lanzamiento de su próximo modelo pese al 'slowdown' de Amodei, porque Astra ya supone ~13% del gasto empresarial en IA frente a ~8% de Claude Fable (Ramp) y OpenAI lidera por primera vez en 2,5 años en OpenRouter. WSJ: la S-1 confidencial apunta a noviembre. Altman confirmó el sábado que OpenAI no hará IPO en 2026, citando seguridad. El choque entre la retórica de frenos y la presión comercial es la historia de la semana.",
+          "source": "https://www.androidheadlines.com/2026/09/anthropic-weighs-new-ai-model-to-counter-gpt-6-astra.html",
+          "source_name": "Reuters (vía Android Headlines)",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "Alibaba lanza Qwen-Image-2.1: 7B con transparencia RGBA nativa, hasta 10 imágenes de referencia y licencia endurecida",
+          "summary": "Publicado el 20-sep en HF y ModelScope: DiT single-stream de 7B + encoder Qwen3-VL 8B + VAE RGBA de 64 canales; genera y edita 2048×2048 con fondo transparente sin matting separado, y admite hasta 10 referencias a la vez (group portraits, try-on, diseño de habitación). Lo gordo es la licencia: Alibaba abandona Apache y pasa a pesos research-only — uso comercial requiere concesión aparte. ComfyUI ya publica soporte oficial del modelo; la combinación transparencia+ComfyUI va directo a tus workflows.",
+          "source": "https://blog.comfy.org/p/qwen-image-21-in-comfyui-open-weight",
+          "source_name": "Comfy Blog / Alibaba",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Google publica AX v0.3.0: su orquestador de agentes (Apache-2.0) se convierte en el 'Kubernetes de los agentes'",
+          "summary": "Agent Executor v0.3.0 (top de HN hoy, 214 pts) divide AX en tres servicios — frontend API, reconciler y runner sandboxed — y mueve el estado de tarea de los CRs de Kubernetes a Redis Streams, porque etcd no aguantaba la rotación de millones de tareas efímeras. Corre sobre Agent Substrate (ya disponible en GKE). La tesis explícita: la ejecución de agentes necesita capa de scheduler+runtime, no una librería.",
+          "source": "https://github.com/google/ax",
+          "source_name": "GitHub (google/ax) / Google Cloud",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Naive AI (Beijing) llega a $1.420M de valoración con $400M levantados antes de haber lanzado nada",
+          "summary": "The Information: la startup del profesor de Tsinghua Jifeng Dai (febr-2026) cerró 3 rondas (100/180/120 M$) con Tencent, IDG, MPCi y HSG, y su primer LLM open-weights llegaría este mes — construido sobre pesos abiertos chinos existentes, sin pre-entrenamiento propio, apostando a mid/post-training e incluso auto-mejora recursiva. Contaminante: el ex-lab MiroMind dice que su IP sigue siendo suya y mantiene la disputa sin resolver. Termómetro de cuánto paga el capital chino por 'acceso' a pesos abiertos.",
+          "source": "https://www.gate.com/news/detail/naive-ai-raises-400m-in-three-rounds-valuation-hits-14b-llm-debut-this-24375529",
+          "source_name": "The Information (vía Gate News)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b11065 publicado (CUDA: tune FA for Gemma 4 on Ampere or newer) — 56 builds desde tu b11009, sin prisa",
+          "summary": "El build del 20-sep 21:52 UTC solo trae el tuning de Flash Attention para Gemma 4 en Ampere+ (#29152). Desde tu b11009: 56 builds, sin fixes relevantes para tu Qwen3.6-27B Q6_K_L en 5090 ni CVEs nuevos pendientes. Sin prisa; el siguiente update puede esperar a uno que traiga algo que te afecte.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b11065",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Día de gobernanza: OpenAI destapada por su cookie de rastreo cross-site __obi, una demanda antitrust de clase contra Anthropic, OpenAI, xAI y Google por 'frenar' la IA, y Newsom firma una EO con 'kill switch' en California. En técnica, Alibaba lanza Qwen-Image-2.1 (RGBA nativo, licencia endurecida) y Google publica AX v0.3.0."
+    },
+    {
       "date": "2026-09-20",
       "news": [
         {
@@ -5614,28 +5684,6 @@
         }
       ],
       "summary": "Día con movimiento corporativo: Anthropic presenta su IPO con valoración de $965B, OpenAI lanza Daybreak para ciberseguridad, y Qualcomm compra Modular por ~$4B. En el lado técnico, Agentjacking expone vulnerabilidades en agentes de código y Android 17 integra IA nativa."
-    },
-    {
-      "date": "2026-06-22",
-      "news": [
-        {
-          "category": "general",
-          "title": "Amazon MGM retira 'Artificial', la película de Sam Altman, tras invertir $50B en OpenAI",
-          "summary": "Amazon MGM Studios confirmó que no distribuirá 'Artificial', el biopic casi terminado de Luca Guadagnino sobre el CEO de OpenAI Sam Altman (interpretado por Andrew Garfield). La decisión llega cuatro meses después de que Amazon anunciara una inversión de $50B en OpenAI en febrero de 2026. Amazon declaró que 'Artificial será mejor servida si es lanzada por un estudio diferente'. La película, escrita por Simon Rich y con Monica Barbaro en el reparto, ya pasó pruebas de audiencia con resultados positivos. CAA ahora busca otro estudio para su distribución. La película retrataba a Altman de forma poco favorable, cubriendo su despido y readmisión en 2023.",
-          "source": "https://variety.com/2026/film/global/luca-guadagnino-sam-altman-movie-artificial-dropped-amazon-1236785830/",
-          "source_name": "Variety",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9744 a b9754 — 10 builds nuevos con soporte Step3.5/3.7, tracking SSE y parser AC",
-          "summary": "Nueve builds nuevos desde el último reporte (b9744 → b9754, publicados el 21 de junio). Destacados: b9745 añadió soporte para Step3.5/3.7 flash mtp3 (modelos de predicción especulativa). b9747 implementó tracking en tiempo real del progreso de carga de modelos vía /models/sse (streaming Server-Sent Events). b9748 añadió campo 'verbose' al esquema del servidor. b9750 implementó la sentencia 'call' en Jinja templates. b9751 corrigió mtmd_get_memory_usage. b9752 refactorizó la construcción de batches en el servidor. b9753 arregló el report de progreso para modelos spec y añadió lista de 'stages'. b9754 implementó el parser AC para generación de gramáticas más estrictas. El usuario tiene b9737 instalado — hay 17 builds pendientes de actualización.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día relativamente tranquilo en lanzamientos de modelos, pero con actividad destacada en llama.cpp (10 builds nuevos) y Amazon MGM retirando la película sobre Sam Altman tras su inversión de $50B en OpenAI."
     }
   ]
 }
