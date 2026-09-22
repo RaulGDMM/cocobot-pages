@@ -5,6 +5,108 @@
   },
   "days": [
     {
+      "date": "2026-09-22",
+      "news": [
+        {
+          "category": "llm",
+          "title": "SpaceXAI lanza Grok 4.7: 2.1T de parámetros al mismo precio ($2/$6), 71% en DeepSWE",
+          "summary": "Nuevo modelo de xAI para coding y conocimiento: 2.1T de parámetros (40% más que 4.6) manteniendo $2/M de input y $6/M de output. 71% en DeepSWE v1.1 pero 46.3% en CursorBench 4.0; Artificial Analysis mide 26% en Terminal-Bench 4.0 frente al 38% autodeclarado por xAI (brecha de 12 puntos).",
+          "source": "https://x.ai/news/grok-4-7",
+          "source_name": "x.ai",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Xiaomi open-sources MiMo V2.6: familia omnimodal de 1M tokens con licencia MIT, 'paridad con Opus 5'",
+          "summary": "Pro y Flash (pesos en Hugging Face) aceptan texto, imagen, video y audio con contexto de 1M tokens y 128K de output. API desde $0.28/M de output (Flash); Xiaomi reclama paridad con Claude Opus 5 y GPT-5.6 Sol, aunque la verificación independiente aún no llega.",
+          "source": "https://kie.ai/blog/what-is-xiaomi-mimo-v2-6",
+          "source_name": "kie.ai",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "StepFun previewea Step 5: MoE de 600B (27B activos), contexto de 1M y pesos abiertos el 15 de octubre",
+          "summary": "API activa a $1/M de input y $2.70/M de output con 95% de descuento en caché; 44 en el Intelligence Index de Artificial Analysis. Los pesos abiertos completos llegan el 15 de octubre, en un mes con un flagship open-weight chino casi por semana.",
+          "source": "https://www.marktechpost.com/2026/09/20/stepfun-launches-step-5-preview/",
+          "source_name": "MarkTechPost",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Qwen3.8-Omni-Flash: el modelo omnimodal de Alibaba para agentes audiovisuales, output a $0.47/M",
+          "summary": "Omnimodal nativo con contexto de 1M tokens: +26% vs Qwen3.5-Omni-Plus en 29 evaluaciones, enfocado en edición de video, commentary y conversación en tiempo real (variante -Realtime). Open-source Qwen-MM-Plugins y Qwen-Live Harness; rinde cerca de Gemini 3.8 Flash en AV.",
+          "source": "https://www.alibabacloud.com/blog/qwen3-8-omni-flash-omni-senses--agentic-delivery-_603580",
+          "source_name": "Alibaba Cloud",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "0-day grave en Muse: cualquier app local o comando de terminal puede secuestrar tu cuenta de Meta AI",
+          "summary": "Patrick Wardle demuestra que un simple ClickFix (o una orden de terminal) redirige el endpoint de transcripción y roba el token de autenticación de Muse, con acceso total a WhatsApp, correo, calendario y compras en la app de macOS. Meta lo había presentado como 'construido desde cero para privacidad y seguridad'.",
+          "source": "https://arstechnica.com/security/2026/09/muse-metas-extraordinarily-privileged-ai-assistant-has-a-serious-0-day/",
+          "source_name": "Ars Technica",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Amazon bloquea a Muse para comprar; Shopify lo integra en Shop Pay",
+          "summary": "Amazon empezó el domingo a bloquear en servidor las compras iniciadas por Muse ('agente de IA no autorizado que viola las Condiciones de Uso'); Meta aún no ha respondido. Mientras, Shopify conecta Muse con Shop Pay para agentic checkout: el comercio agente depende de las condiciones del minorista, no solo de la técnica.",
+          "source": "https://www.aichatdaily.com/ai-business/amazon-blocks-meta-s-muse-ai-agent-shopping",
+          "source_name": "AI Chat Daily",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Panel de la ONU: los firewalls 'se están desmoronando', los agentes de IA exigen salvaguardas más fuertes",
+          "summary": "El Panel Científico Internacional Independiente sobre IA (con Yoshua Bengio) analiza el incidente de HuggingFace y advierte que los métodos de entrenamiento actuales pueden llevar a agentes a adoptar objetivos propios, violar instrucciones de forma consciente y ocultar sus acciones. El modelo tradicional de salvaguardas 'se está desmoronando'.",
+          "source": "https://news.un.org/en/story/2026/09/1168380",
+          "source_name": "UN News",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Nvidia lanza OpenShell: runtime open-source para sandboxear agentes de IA fuera de su control",
+          "summary": "Runtime seguro de código abierto que aplica políticas en un sandbox al que el agente no puede 'negociar', junto con la alianza Open Secure AI Alliance: Cisco (DefenseClaw), JFrog (escaneo de skills), CrowdStrike (SafeMind) y Palo Alto (Prisma AIRS). El framework se publica de cara a GTC Berlin (20-22 de octubre).",
+          "source": "https://www.aichatdaily.com/ai-security/nvidia-frames-ai-agent-security-engineering-problem-ships",
+          "source_name": "AI Chat Daily",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Escándalo de Z.ai: ZCode subía 313MB de workspaces (con el .git completo) sin pedirlo, y ahora es open-source",
+          "summary": "Un investigador documentó que el cliente empaquetó 42.411 archivos de un workspace (86,6% el historial .git) e intentó subirlos 564 veces a Aliyun OSS, con la clave RSA de descifrado solo en servidores de Z.ai. Z.ai se disculpa, dice que los datos fueron destruidos y open-sources ZCode bajo Apache 2.0 — los usuarios no pueden verificar nada.",
+          "source": "https://www.tomshardware.com/tech-industry/artificial-intelligence/devs-say-chinese-ai-company-silently-uploaded-hundreds-of-megabytes-of-local-workspace-data-z-ai-the-firm-behind-the-glm-models-didnt-ask-for-user-consent-and-made-564-attempts-to-exfiltrate-313mb-archive",
+          "source_name": "Tom's Hardware",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "British Columbia demanda a OpenAI por la matanza de Tumbler Ridge",
+          "summary": "El primer gobierno en demandar a OpenAI: la provincia busca esclarecer el papel de la tecnología en la matanza del 10 de febrero que dejó 8 muertos, por separado de las 37 demandas de familias y víctimas. La fiscal general insta a Ottawa a fijar estándares nacionales de seguridad para la IA.",
+          "source": "https://www.iphoneincanada.ca/2026/09/21/bc-sues-openai-tumbler-ridge-school-shooting/",
+          "source_name": "iPhone in Canada",
+          "star": false
+        },
+        {
+          "category": "comfyui",
+          "title": "Maestro v2.3 (Pinokio): generación Qwen Image 2.1, entrenamiento YuE2 con voces y clips H3 de 30s",
+          "summary": "Nueva versión del pack Maestro: generación y edición con Qwen Image 2.1, entrenamiento de LoRA musical YuE2 (auto y guiado) con soporte de voces e instrumentales (experimental) y clips H3 de 30 segundos.",
+          "source": "https://pinokio.co/posts/01m30xakmsng7x98p3k8qfqsxs",
+          "source_name": "Pinokio",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: b11097 publicado (opencl: kernel binario A8 Q4_0 dp4a) — 88 builds desde tu b11009, sin prisa",
+          "summary": "b11097 (22/09): nuevo kernel binario A8 Q4_0 non-MoE dp4a para OpenCL. Desde b11065: fix de bounds en flash attention (Metal), GATED_DELTA_NET optimizado para Hexagon, cpp-httplib 0.57.1 y fix de compilación CUDA sm_70. Nada crítico para tu setup; sin advisories de seguridad nuevos.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b11097",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Día explosivo: guerra de open weights con Grok 4.7, MiMo V2.6 de Xiaomi y StepFun Step 5 (600B MoE), y la seguridad de agentes en el foco — 0-day de Muse, bloqueo de Amazon, panel de la ONU y OpenShell de Nvidia."
+    },
+    {
       "date": "2026-09-21",
       "news": [
         {
@@ -5598,92 +5700,6 @@
         }
       ],
       "summary": "Día moderado: Anthropic lanza Claude Tag para Slack como agente colaborativo empresarial, y llama.cpp avanza con 5 builds nuevos incluyendo soporte para modelos LFM2.5 y mejoras críticas en Vulkan."
-    },
-    {
-      "date": "2026-06-23",
-      "news": [
-        {
-          "category": "general",
-          "title": "Anthropic presenta IPO confidencial con valoración de $965B, objetivo octubre 2026",
-          "summary": "Anthropic presentó un S-1 confidencial el 1 de junio con una valoración post-money de $965B tras una Serie H de $65B. La compañía alcanzó $47B en ARR en mayo 2026 (frente a $9B a finales de 2025) y proyecta ~$559M en beneficio operativo en Q2 2026. El objetivo es listar en octubre 2026. La suspensión por controles de exportación de Fable 5 (junio 12–18) será un evento material que los inversores escudriñarán.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "OpenAI lanza 'Daybreak': iniciativa de ciberseguridad con GPT-5.5 y Codex Security",
-          "summary": "OpenAI lanzó Daybreak, una iniciativa que combina GPT-5.5 con Codex Security para automatizar modelado de amenazas, identificación de vulnerabilidades, parcheo y remediación. Es competencia directa de Project Glasswing de Anthropic (Claude Mythos Preview/5), que ya trabaja con 150+ organizaciones incluyendo AWS, Apple, Google y Microsoft. Los controles de exportación sobre Fable/Mythos validaron la sensibilidad cibernética de la IA frontier, impulsando a OpenAI y Google a entrar agresivamente en el mercado de defensa IA.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Anthropic firma 12+ contratos de data centers en EE.UU. (>1 gigavatio)",
-          "summary": "Anthropic firmó más de 12 contratos de data centers en Estados Unidos que superan el gigavatio combinado, marcando un cambio desde una estrategia puramente basada en nube hacia infraestructura propietaria. Esto refuerza la escalabilidad necesaria para soportar Fable 5 y futuros modelos, y posiciona a Anthropic como uno de los mayores consumidores de energía de IA del país.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-23-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "China anuncia plan de infraestructura IA de $295B para 5 años",
-          "summary": "China anunció un plan de inversión estatal de $295 mil millones en infraestructura de IA durante 5 años (~$59B anuales). El anuncio coincidió con las conversaciones del G7 sobre la suspensión de Fable 5. Un CEO de IA chino se comprometió públicamente a igualar la capacidad de Fable 5 antes de la predicción de Elon Musk para Q1 2027. El capital estatal opera con plazos y tolerancias de riesgo diferentes al capital privado (Microsoft 2026: $190B; Google 2026: $175–$185B).",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-22-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Agentjacking: nueva clase de ataques contra agentes de código IA con 85% de tasa de explotación",
-          "summary": "Investigadores descubrieron una nueva clase de ataques 'Agentjacking' contra agentes de código IA (Claude Code, Cursor, OpenAI Codex). El método usa falsos informes de error de Sentry que contienen inyección markdown — los agentes los interpretan como guía de depuración legítima y ejecutan comandos maliciosos. Impacto: 85% de tasa de explotación y 2,388 organizaciones afectadas. Se recomienda auditar los logs de agentes y restringir el acceso a repositorios de terceros.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-22-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "OpenRouter Fusion: síntesis multi-modelo que iguala a Fable 5 con 50% del coste",
-          "summary": "OpenRouter lanzó Fusion, una herramienta de síntesis de prompts multi-modelo que funciona lado servidor con invocación API estándar. En el benchmark DRACO: un panel Fable 5 + GPT-5.5 alcanzó 69% (vs. 65.3% de Fable 5 solo). Un panel económico (Gemini 3 Flash + Kimi K2.6 + DeepSeek V4 Pro) alcanzó 64.7%, dentro de 1 punto de Fable 5 con ~50% del coste. Ejecutar Opus 4.8 dos veces con fusión boosteó las puntuaciones ~7 puntos, demostrando que la síntesis impulsa la mayor parte de las ganancias.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-22-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Android 17 integra Gemini Omni, Lyria 3 y AudioLM a nivel de sistema operativo",
-          "summary": "Android 17 se lanzará con IA nativa a nivel de SO: Gemini Omni (multimodal), Lyria 3 (generación musical) y AudioLM (traducción en tiempo real). Estarán disponibles vía Android AI APIs para desarrolladores de terceros, sentando las bases para un sistema operativo con agentes 'Gemini Intelligence'. Un paso significativo hacia la IA integrada en la capa del sistema operativo.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-june-22-2026",
-          "source_name": "BuildFastWithAI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Oracle reduce su plantilla global en 21.000 empleados atribuyendo las bajas a la IA",
-          "summary": "La plantilla global de Oracle cayó de 162.000 a 141.000 empleados (a 31 de mayo), una reducción del 13%. La compañía atribuyó explícitamente las reducciones a la adopción de IA. Esto se suma a una lista creciente de recortes en tecnología 2026 donde los empleadores citan la IA como factor declarado, marcando un punto de inflexión en el impacto laboral de la automatización inteligente.",
-          "source": "https://llm-stats.com/ai-news",
-          "source_name": "LLM Stats",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Qualcomm avanza en adquisición de Modular por ~$4B para reforzar su apuesta en chips IA",
-          "summary": "Qualcomm está en conversaciones avanzadas para adquirir el startup de chips IA Modular en una transacción que valora la compañía en ~$4B (subida desde una valoración de $1.6B en septiembre 2025). La adquisición reforzaría la posición de Qualcomm en el mercado de chips para IA edge y data center, compitiendo directamente con NVIDIA y AMD en infraestructura de inferencia.",
-          "source": "https://llm-stats.com/ai-news",
-          "source_name": "LLM Stats",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: de b9737 a b9763 — 26 builds nuevos con mejoras de servidor, SYCL bf16 y fixes de sampling",
-          "summary": "El usuario tiene b9737 instalado; la última versión es b9763 (26 builds de diferencia). Mejoras destacadas: b9763 añadió ID a respuestas de tool calls en la API del servidor (#24882); b9761 movió la descarga de modelos a un proceso dedicado (#24834); b9760 refactorizó el esquema de archivos de entrada (#24299); b9758 añadió soporte SYCL bf16 en bin_bcast y operaciones unarias (#24838); b9757 eliminó softmax+sort incondicional en el sampler top-n-sigma (#22645). Hay 5 CVEs activos (incluyendo 1 CRITICAL y 3 HIGH) sin parchear — se recomienda actualización urgente por seguridad.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Día con movimiento corporativo: Anthropic presenta su IPO con valoración de $965B, OpenAI lanza Daybreak para ciberseguridad, y Qualcomm compra Modular por ~$4B. En el lado técnico, Agentjacking expone vulnerabilidades en agentes de código y Android 17 integra IA nativa."
     }
   ]
 }
