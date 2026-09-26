@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, MoE intermedio y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). Viabilidad local en RTX 5090.">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, MoE intermedio y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Viabilidad local en RTX 5090.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -633,13 +633,13 @@ td.warn { color: var(--warning); font-weight: 700; }
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 23 septiembre 2026</div>
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 27 septiembre 2026</div>
   <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
   <h2>Canary: <strong>Qwen3.8-Flash-Next</strong> · 125B-A6B + 51B n-gram</h2>
   <p class="hero-sub">
     El <strong>26 de agosto de 2026</strong> Qwen publicó el primer open-weight bajo la nueva arquitectura Qwen4.
     Esta página predice la familia que vendrá detrás: el <strong>denso ~27B</strong> (la estrella para hardware local),
-    un MoE intermedio y el Max — con fechas, AAI y viabilidad en RTX 5090.
+    un MoE intermedio y el Max — con fechas, AAI y viabilidad en RTX 5090. En Apsara (22 sep) Alibaba previsualizó los <strong>4 tiers</strong>: Max, Flash, Plus y <strong>27B open-weights</strong>.
   </p>
   <div class="hero-meta">
     <span class="badge live">⏳ EN CURSO — Qwen4 "in training" (Apsara 22 sep)</span>
@@ -667,12 +667,12 @@ td.warn { color: var(--warning); font-weight: 700; }
       <div class="s-state">✅ 40 (v4.3.2)</div>
     </div>
   </div>
-  <div class="signal open">
+  <div class="signal done">
     <div class="s-dot"></div>
     <div>
-      <h4>Apsara: Qwen4 "in training"</h4>
-      <p>Alibaba lo confirma oficialmente en Apsara (Hangzhou, 22 sep 2026): Qwen4 en entrenamiento sobre nueva arquitectura, salida "muy pronto". Qwen4.5/5 → 5–10T.</p>
-      <div class="s-state">📡 confirmado 22 sep</div>
+      <h4>Apsara: Qwen4 "in training" + 4 tiers</h4>
+      <p>Alibaba lo confirma en Apsara (Hangzhou, 22 sep 2026): Qwen4 en entrenamiento sobre nueva arquitectura, salida "muy pronto". 4 tiers previsualizados: <strong>Max, Flash, Plus y 27B open-weights</strong>. Qwen4.5/5 → 5–10T.</p>
+      <div class="s-state">✅ 4 tiers confirmados 22 sep</div>
     </div>
   </div>
   <div class="signal pending">
@@ -760,6 +760,27 @@ td.warn { color: var(--warning); font-weight: 700; }
   <div class="callout info reveal">
     <span class="callout-title">🔭 Lo que el canary dice sobre la familia</span>
     El salto del canary sobre el 27B se concentra en <strong>tareas agénticas y de office</strong> (DeepSWE +16.5, JobBench +22.3), no en reasoning puro (GPQA +2.5, HLE +5.1). Si el denso 27B hereda la tabla n-gram, la mejora esperada vendrá sobre todo de <strong>recall literal de conocimiento</strong> (código, repos, APIs, idioma) y no de "poder de razonamiento" — que depende del cómputo por token, donde el MoE de 125B tiene una ventaja estructural que ningún denso 27B iguala.
+  </div>
+
+  <div class="card reveal">
+    <h3>🎭 Los 4 tiers de la familia (confirmados en Apsara, 22 sep 2026)</h3>
+    <p>
+      Alibaba previsualizó en el escenario de la Apsara Conference (Hangzhou) la familia completa con <strong>4 tiers</strong>, en entrenamiento sobre la nueva arquitectura, con salida "muy pronto". <strong>Sin fecha, precio, contexto, pesos ni benchmarks</strong> de ningún tier todavía. El mapeo a las predicciones de esta página:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier (Apsara)</th><th>Rol declarado</th><th>Sección de esta página</th><th>Predicción AAI (v4.3.2)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Qwen4 Max</strong></td><td>Flagship, frente al top de cada lab</td><td><a href="#max">05 · El Max</a></td><td class="num">~50 (46–53)</td></tr>
+          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#moe">04 · MoE intermedio</a></td><td class="num">~30 (26–34)</td></tr>
+          <tr><td><strong>Qwen4 Plus</strong></td><td>Tier medio equilibrado, multimodal</td><td>— (sin predicción propia; entre MoE y Max)</td><td class="num">—</td></tr>
+          <tr><td><strong>Qwen4 27B</strong></td><td><strong>Open-weights local</strong> — el tier que se descarga, fine-tunea y cuantiza</td><td><a href="#denso">03 · El denso ~27B</a></td><td class="num">~42 (38–46)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      El <strong>27B es el tier a vigilar</strong>: es el único de los 4 que históricamente sale con pesos abiertos (patrón 3.5→27B, 3.6→27B, 3.8→27B), así que su entrega es la más predecible de la familia y la que desbloquea todo el ecosistema local (GGUF de Unsloth, MLX, NVFP4). Ojo con el número que circula: los <strong>"5–10 billones de parámetros" NO son de Qwen 4</strong> — es el objetivo de roadmap de Alibaba para Qwen 4.5 / Qwen 5. El baseline que debe batir el nuevo Max es el publicado: Qwen3.8-Max = 2.4T MoE, 95B activos/token.
+    </p>
   </div>
 </div>
 
@@ -1080,11 +1101,15 @@ td.warn { color: var(--warning); font-weight: 700; }
     </div>
     <div class="timeline-item">
       <div class="t-date">22 SEP 2026</div>
-      <p><strong>Apsara (Hangzhou)</strong> — Alibaba confirma que Qwen4 está <em>in training</em> sobre nueva arquitectura, salida "muy pronto"; Qwen4.5/5 escalarían a 5–10T.</p>
+      <p><strong>Apsara (Hangzhou)</strong> — Alibaba confirma Qwen4 <em>in training</em> sobre nueva arquitectura, salida "muy pronto". Se previsualizan <strong>4 tiers: Max, Flash, Plus y 27B open-weights</strong> (el 27B es el tier local). Qwen4.5/5 escalarían a 5–10T.</p>
     </div>
     <div class="timeline-item">
-      <div class="t-date">23 SEP 2026 · HOY</div>
+      <div class="t-date">23 SEP 2026</div>
       <p><strong>AAI re-escala el índice a v4.3.2</strong> — el canary pasa de 56→40; toda la familia se re-puntuó. Predicciones re-escaladas (denso 42 · MoE 30 · Max 50).</p>
+    </div>
+    <div class="timeline-item">
+      <div class="t-date">27 SEP 2026 · HOY</div>
+      <p><strong>Soporte oficial en Hugging Face transformers</strong> — la arquitectura se documenta como <span class="mono">Qwen4-Exp</span> (GatedResidual + QSA + PLE). Verificación completa de scores AAI v4.3.2 y de los 4 tiers de Apsara.</p>
     </div>
     <div class="timeline-item future">
       <div class="t-date">OCT–DIC 2026 · RÁPIDO</div>
@@ -1138,6 +1163,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">27 SEP 2026</div>
+      <p><strong>Actualización de datos + 4 tiers de Apsara.</strong> Verificación completa de todos los scores AAI contra la escala v4.3.2 en vivo: Flash-Next 40, Qwen3.8-27B 34, Qwen3.8 Max-0902 45, Qwen3.7 Max 29, Qwen3.6-27B 21, Qwen3.6-35B-A3B 18; frontier Opus 5.5 (58), Fable 5.1 / GPT-6 Astra (53), Grok 4.7 (46), GLM-5.3 (45), Kimi K3 (44). Todo coherente. <strong>Apsara (22 sep) previsualiza 4 tiers</strong>: Max (flagship), Flash (alto throughput), Plus (multimodal equilibrado) y <strong>27B open-weights — el tier local</strong>, el único que históricamente sale con pesos abiertos; su entrega es la más predecible de la familia. <strong>transformers ya documenta <span class="mono">Qwen4-Exp</span></strong> (GatedResidual + QSA + PLE) — señal de arquitectura cerrada. Sin release, precio, context ni benchmark de ningún tier todavía.</p>
+    </div>
     <div class="log-item">
       <div class="l-date">23 SEP 2026</div>
       <p><strong>Re-escala AAI a v4.3.2 + confirmación Apsara.</strong> AAI re-puntuó el índice completo (ahora 10 evaluaciones: añade AA-Briefcase v1.1, GDPval-AA v2.1, Terminal-Bench 4.0, AutomationBench-AA; retira 𝜏³-Banking) y la escala se hundió ~30%: <strong>Flash-Next 56→40</strong>, Qwen3.8-27B 52→34, Qwen3.8-Max 58→45 (snapshot 0902), Qwen3.7-Max 47→29, Qwen3.6-27B 38→21. El "riesgo estructural" que señalaba la página se materializa: toda la familia se re-puntuó. <strong>Predicciones re-escaladas a v4.3.2: denso 58→42 (38–46) · MoE 45→30 (26–34) · Max 63→50 (46–53)</strong> — los deltas relativos se conservan (canary→denso +4→+6; el Max debe superar el 45 del Max-0902). Top mundial ahora: Opus 5.5 (58), Fable 5.1 / GPT-6 Astra (53). Además: <strong>PR #27742 ya mergado</strong> a llama.cpp main (27 ago) y <strong>Alibaba confirmó en Apsara (22 sep) que Qwen4 está "in training"</strong> con salida "muy pronto" (Qwen4.5/5 → 5–10T) — el escenario rápido sube 15→25%.</p>
