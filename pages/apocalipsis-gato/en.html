@@ -1,981 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Bible of the Apocalyptic Cat 🐱🤖</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #f5e6c4 0%, #d4af37 50%, #f5e6c4 100%);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bible of the Apocalyptic Cat 🐱🤖</title>
+<meta name="description" content="⚡ Prophecies revealed by Cocobot the Magnificent ⚡">
+<meta property="og:title" content="The Bible of the Apocalyptic Cat 🐱🤖">
+<meta property="og:image" content="https://raulgdmm.github.io/cocobot-pages/pages/apocalipsis-gato/sello-10-maricarmen.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+:root{
+ --ink:#2b1d12;--ink-soft:#5a4130;--gold:#c9a13b;--gold-bright:#f2cf63;--blood:#8e1b1b;--wax:#a3161a;
+ --parch:#f3e3bf;--parch-2:#e9d3a0;--parch-edge:#b88a4a;--bg:#1b0f08;--card:rgba(255,248,228,.55);
+ --shadow:0 18px 50px rgba(40,15,0,.35);--verse-bg:linear-gradient(135deg,#fff4d6,#f0d9a3);
+}
+body.night{
+ --ink:#f1e2c2;--ink-soft:#c9b28a;--parch:#231510;--parch-2:#1a0f0b;--parch-edge:#6b3d1a;--bg:#080403;
+ --card:rgba(60,30,15,.45);--verse-bg:linear-gradient(135deg,#3a1d10,#24120a);--shadow:0 18px 60px rgba(255,80,0,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:1.18rem;line-height:1.72;
+ background-image:radial-gradient(ellipse at top,rgba(201,161,59,.18),transparent 60%),radial-gradient(ellipse at bottom,rgba(142,27,27,.25),transparent 60%);
+ transition:background-color .6s,color .6s;overflow-x:hidden}
+::selection{background:var(--gold);color:#1b0f08}
+a{color:var(--blood)}
+/* progress */
+#progress{position:fixed;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,.35);z-index:60}
+#progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--blood));box-shadow:0 0 12px var(--gold)}
+#progress .paw{position:absolute;top:-9px;left:0;font-size:20px;transform:translateX(-50%);transition:left .1s linear;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+#sealcount{position:fixed;top:14px;right:74px;z-index:60;background:rgba(27,15,8,.85);color:var(--gold-bright);font-family:'Cinzel',serif;font-size:.8rem;
+ letter-spacing:.08em;padding:6px 12px;border-radius:999px;border:1px solid var(--gold);backdrop-filter:blur(6px)}
+/* topbar */
+.topbar{position:fixed;top:12px;left:12px;z-index:60;display:flex;gap:8px}
+.chip{font-family:'Cinzel',serif;font-size:.8rem;font-weight:700;background:rgba(27,15,8,.85);color:var(--gold-bright);border:1px solid var(--gold);
+ padding:7px 13px;border-radius:999px;text-decoration:none;cursor:pointer;backdrop-filter:blur(6px);transition:transform .2s,background .2s}
+.chip:hover{transform:translateY(-2px) scale(1.04);background:var(--blood)}
+/* menu */
+#menuBtn{position:fixed;top:10px;right:14px;z-index:70;width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);background:rgba(27,15,8,.9);
+ color:var(--gold-bright);font-size:22px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+#menu{position:fixed;top:66px;right:14px;z-index:70;background:rgba(27,15,8,.96);border:1px solid var(--gold);border-radius:14px;padding:8px;min-width:250px;
+ max-height:75vh;overflow:auto;transform-origin:top right;transform:scale(.9);opacity:0;pointer-events:none;transition:.2s}
+#menu.open{transform:none;opacity:1;pointer-events:auto}
+#menu a{display:flex;gap:10px;align-items:center;padding:8px 12px;color:#f1e2c2;text-decoration:none;border-radius:8px;font-family:'Cinzel',serif;font-size:.85rem}
+#menu a:hover{background:rgba(201,161,59,.2);color:var(--gold-bright)}
+#menu a.done::after{content:'✓';margin-left:auto;color:var(--gold)}
+/* hero */
+.hero{position:relative;min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 20px 40px;overflow:hidden}
+.hero .rays{position:absolute;inset:-50%;background:repeating-conic-gradient(from 0deg,rgba(242,207,99,.10) 0 6deg,transparent 6deg 18deg);animation:spin 90s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero .ember{position:absolute;bottom:-10px;width:6px;height:6px;border-radius:50%;background:#ffb347;box-shadow:0 0 10px #ff6a00;animation:rise linear infinite;opacity:.8}
+@keyframes rise{to{transform:translateY(-100vh) translateX(40px);opacity:0}}
+.hero-eyes{position:relative;display:flex;gap:26px;margin-bottom:10px;z-index:2}
+.eye{width:64px;height:64px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 50%,#ffe46b,#e0a800 70%);position:relative;
+ box-shadow:0 0 30px rgba(255,210,60,.8),inset 0 0 12px rgba(0,0,0,.4);animation:blink 6s infinite}
+.eye .pupil{position:absolute;left:50%;top:50%;width:14px;height:48px;margin:-24px 0 0 -7px;background:#111;border-radius:50%;transition:transform .08s}
+@keyframes blink{0%,46%,50%,100%{transform:scaleY(1)}48%{transform:scaleY(.08)}}
+.hero h1{position:relative;z-index:2;font-family:'Cinzel Decorative',serif;font-weight:900;font-size:clamp(2.2rem,6vw,4.6rem);line-height:1.08;margin:.2em 0;
+ background:linear-gradient(180deg,#fff3c4,#f2cf63 40%,#b8860b 70%,#7a4b00);-webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 4px 0 rgba(90,20,0,.7)) drop-shadow(0 0 24px rgba(255,160,0,.45))}
+.hero .sub{position:relative;z-index:2;font-family:'Cinzel',serif;color:#f5deb3;letter-spacing:.2em;text-transform:uppercase;font-size:.9rem}
+.hero .edition{position:relative;z-index:2;margin-top:14px;display:inline-block;background:var(--wax);color:#fff3e0;font-family:'Cinzel',serif;font-size:.78rem;
+ padding:6px 16px;border-radius:4px;transform:rotate(-2deg);box-shadow:0 6px 18px rgba(0,0,0,.4);letter-spacing:.05em}
+.hero .scrollhint{position:absolute;bottom:18px;z-index:2;color:var(--gold-bright);font-size:1.6rem;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(8px)}}
+/* codex */
+.codex{position:relative;max-width:900px;margin:0 auto 60px;padding:64px clamp(20px,6vw,80px);
+ background:radial-gradient(ellipse at 20% 10%,rgba(255,255,255,.35),transparent 50%),radial-gradient(ellipse at 80% 90%,rgba(120,70,20,.18),transparent 55%),
+ linear-gradient(180deg,var(--parch),var(--parch-2));
+ border-radius:6px;box-shadow:var(--shadow),inset 0 0 90px rgba(120,70,20,.35);border:1px solid var(--parch-edge);transition:background .6s}
+.codex::before,.codex::after{content:'';position:absolute;left:-14px;right:-14px;height:34px;border-radius:18px;
+ background:linear-gradient(180deg,#7a4b1f,#3b200c 60%,#6b3d17);box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.codex::before{top:-18px}.codex::after{bottom:-18px}
+.dedic{text-align:center;font-style:italic;color:var(--ink-soft);font-size:1.08rem;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:18px 6px;margin:0 0 30px}
+h2.big{font-family:'Cinzel Decorative',serif;text-align:center;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--blood);margin:60px 0 0}
+.bigsub{text-align:center;font-style:italic;color:var(--ink-soft);margin:0 0 20px}
+h3.chap{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--blood);text-align:center;margin:0 0 20px}
+.ornament{text-align:center;color:var(--gold);font-size:1.4rem;letter-spacing:.6em;margin:40px 0;opacity:.9}
+/* seals */
+.seal{position:relative;margin:80px 0 20px;padding-top:40px}
+.wax{position:relative;width:128px;height:128px;margin:0 auto 18px;cursor:pointer}
+.wax .half{position:absolute;inset:0;border-radius:50%;
+ background:radial-gradient(circle at 35% 30%,#e0453f,var(--wax) 45%,#5c0a0c 85%);box-shadow:0 8px 20px rgba(0,0,0,.45),inset 0 -6px 14px rgba(0,0,0,.45),inset 0 6px 10px rgba(255,160,150,.35);
+ display:flex;align-items:center;justify-content:center;transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity 1s}
+.wax .l{clip-path:polygon(0 0,55% 0,42% 30%,58% 55%,40% 78%,52% 100%,0 100%)}
+.wax .r{clip-path:polygon(55% 0,100% 0,100% 100%,52% 100%,40% 78%,58% 55%,42% 30%)}
+.wax .face{position:absolute;inset:14px;border-radius:50%;border:3px dashed rgba(255,210,190,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;
+ color:#ffe1d6;font-family:'Cinzel',serif;font-weight:700;text-shadow:0 2px 2px rgba(0,0,0,.5);pointer-events:none}
+.wax .face .ic{font-size:2rem;line-height:1}
+.wax .face .rn{font-size:1.1rem;letter-spacing:.1em}
+.wax .inside{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:0;transform:scale(.4);transition:1s .3s}
+.seal.open .wax .l{transform:translate(-60px,20px) rotate(-35deg);opacity:0}
+.seal.open .wax .r{transform:translate(60px,26px) rotate(40deg);opacity:0}
+.seal.open .wax .face{opacity:0;transition:opacity .3s}
+.seal.open .wax .inside{opacity:1;transform:none}
+.seal .body{opacity:0;transform:translateY(40px);transition:opacity 1s .4s,transform 1s .4s}
+.seal.open .body{opacity:1;transform:none}
+.badge{display:block;width:max-content;margin:0 auto 10px;font-family:'Cinzel',serif;font-size:.72rem;font-weight:700;letter-spacing:.15em;color:#fff;background:var(--blood);
+ padding:3px 12px;border-radius:3px;transform:rotate(-3deg);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(142,27,27,0)}0%{box-shadow:0 0 0 0 rgba(142,27,27,.6)}}
+.seal h3{font-family:'Cinzel',serif;font-size:clamp(1.3rem,3vw,1.75rem);text-align:center;color:var(--blood);margin:0 0 26px;line-height:1.3}
+.seal h4{font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--blood);text-align:center;margin:50px 0 4px}
+.seal .h4sub{text-align:center;font-style:italic;color:var(--ink-soft);margin:0 0 20px}
+.body>p:first-of-type::first-letter,.dropcap::first-letter{float:left;font-family:'UnifrakturMaguntia','Cinzel Decorative',serif;font-size:4.6rem;line-height:.82;
+ padding:8px 10px 0 0;margin:4px 8px 0 0;color:var(--blood);text-shadow:2px 2px 0 var(--gold)}
+p{margin:0 0 1.05em;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+figure{margin:28px 0;padding:14px;background:linear-gradient(135deg,#d8b25a,#8a6420 30%,#f2cf63 55%,#8a6420 80%,#d8b25a);border-radius:6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+figure img{display:block;width:100%;height:auto;border-radius:3px;cursor:zoom-in;transition:transform .5s,filter .5s}
+figure:hover img{filter:saturate(1.15) contrast(1.05)}
+figcaption{margin-top:10px;font-style:italic;font-size:.98rem;color:#2b1d12;text-align:center;background:rgba(255,245,220,.8);padding:6px 10px;border-radius:3px}
+.verse{position:relative;margin:34px 0;padding:26px 30px 20px 60px;background:var(--verse-bg);border:1px solid var(--gold);border-left:6px solid var(--blood);border-radius:4px;
+ box-shadow:0 8px 20px rgba(0,0,0,.18);font-size:1.12rem}
+.verse::before{content:'“';position:absolute;left:12px;top:-16px;font-family:'Cinzel Decorative',serif;font-size:5rem;color:var(--gold);line-height:1}
+.verse strong{font-weight:600;font-style:italic}
+.verse .vref{display:block;text-align:right;margin-top:10px;font-family:'Cinzel',serif;font-size:.85rem;color:var(--blood)}
+.ref{display:block;font-size:.9rem;color:var(--ink);opacity:.85;border-top:1px dashed var(--parch-edge);padding-top:10px;margin-top:10px}
+.ref b{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.08em;color:var(--blood)}
+/* oracle */
+.oracle{max-width:900px;margin:-40px auto 60px;position:relative;z-index:3;padding:34px clamp(18px,5vw,50px);border-radius:22px;text-align:center;color:#f5e6c8;
+ background:radial-gradient(circle at 50% 0%,#4b1d6b,#1c0b2b 60%,#0d0616);border:2px solid var(--gold);box-shadow:0 20px 60px rgba(90,20,140,.45),inset 0 0 60px rgba(160,90,255,.2)}
+.oracle h2{font-family:'Cinzel Decorative',serif;margin:0;font-size:clamp(1.5rem,4vw,2.2rem);color:var(--gold-bright)}
+.oracle .osub{font-style:italic;color:#fff1d0;margin:6px 0 22px}
+.orb-wrap{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center}
+@media(max-width:680px){.orb-wrap{grid-template-columns:1fr}}
+.crystal{position:relative;min-height:190px;border-radius:18px;padding:46px 22px 22px;display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(circle at 50% 40%,rgba(190,140,255,.35),rgba(40,10,70,.6) 70%);border:1px solid rgba(242,207,99,.4);overflow:hidden}
+.crystal .cat{position:absolute;top:10px;left:14px;font-size:2rem;transition:transform .3s}
+.crystal.thinking .cat{animation:wiggle .4s infinite}
+@keyframes wiggle{50%{transform:rotate(12deg)}}
+.crystal .txt{font-size:1.25rem;font-style:italic;line-height:1.5;text-shadow:0 0 12px rgba(200,150,255,.6);max-width:520px}
+.crystal .txt.show{animation:reveal .7s ease}
+@keyframes reveal{from{opacity:0;filter:blur(8px);transform:scale(.95)}to{opacity:1;filter:none;transform:none}}
+.obtn{margin-top:20px;font-family:'Cinzel',serif;font-weight:900;font-size:1.05rem;letter-spacing:.1em;color:#fff;border:none;cursor:pointer;padding:18px 34px;border-radius:999px;
+ background:radial-gradient(circle at 30% 30%,#ff5b5b,#b3001b 60%,#5c000d);box-shadow:0 8px 0 #4a0010,0 12px 30px rgba(255,0,40,.45);transition:transform .1s,box-shadow .1s}
+.obtn:active{transform:translateY(6px);box-shadow:0 2px 0 #4a0010,0 6px 20px rgba(255,0,40,.4)}
+.obtn:disabled{filter:grayscale(1) brightness(.7);cursor:not-allowed}
+.meter{width:230px;margin:0 auto}
+.meter svg{width:100%;overflow:visible}
+.meter .lbl{font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:.1em;color:var(--gold-bright)}
+.meter .lvl{font-size:.95rem;min-height:2.8em;margin-top:4px}
+.meter .cnt{font-size:.85rem;color:#e9d9ff}
+#needle{transition:transform 1.2s cubic-bezier(.3,1.6,.5,1);transform-origin:115px 115px}
+.shake{animation:shake .5s}
+@keyframes shake{20%,60%{transform:translateX(-8px) rotate(-1deg)}40%,80%{transform:translateX(8px) rotate(1deg)}}
+/* oil meter */
+.oil{margin:30px 0;padding:18px 20px;border-radius:10px;background:#140b05;color:#f5deb3;border:2px solid #6b3d17;box-shadow:inset 0 0 30px rgba(0,0,0,.6);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.oil .t{font-family:'Cinzel',serif;color:var(--gold-bright);font-size:.95rem}
+.oil .num{font-family:'Courier New',monospace;font-size:2.2rem;color:#ff9d2e;text-shadow:0 0 12px rgba(255,120,0,.7);font-weight:700}
+.oil .small{font-size:.85rem;color:#e8d3a8}
+.oil .note{font-style:italic;color:#ffcf7a;min-width:200px}
+/* epilogue */
+.yawn{display:block;width:min(320px,70%);margin:30px auto;border-radius:50%;border:5px solid var(--gold);box-shadow:0 0 0 8px rgba(142,27,27,.4),0 16px 40px rgba(0,0,0,.4)}
+.colophon{text-align:center;margin-top:40px;font-size:.95rem;color:var(--ink-soft)}
+.colophon .cats{font-size:2rem}
+.colophon small{display:block;margin-top:10px;font-size:.8rem;opacity:.85}
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:100;background:rgba(10,5,2,.92);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+#lb.open{display:flex;animation:reveal .3s}
+#lb img{max-width:96vw;max-height:88vh;border:6px solid var(--gold);border-radius:4px;box-shadow:0 0 60px rgba(242,207,99,.3)}
+#lb .cap{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#f5deb3;font-style:italic;padding:0 20px}
+/* knocking paw */
+#paw{position:fixed;right:-140px;bottom:120px;z-index:55;font-size:0;pointer-events:none;transition:right .5s ease}
+#paw.in{right:-20px}
+#paw .arm{display:inline-block;width:140px;height:40px;background:linear-gradient(90deg,#d98b3a,#f0a857);border-radius:30px 0 0 30px;position:relative;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+#paw .arm::before{content:'🐾';position:absolute;left:-6px;top:4px;font-size:28px;transform:rotate(-90deg)}
+.falling{position:fixed;z-index:54;font-size:34px;pointer-events:none;transition:transform 1.2s cubic-bezier(.5,0,1,1),opacity 1.2s}
+.footer-bar{text-align:center;padding:24px;color:#c9b28a;font-family:'Cinzel',serif;font-size:.85rem}
+.footer-bar .visit-counter-badge{margin-left:10px;border:1px solid var(--gold);padding:3px 10px;border-radius:999px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.seal .body{opacity:1;transform:none}}
+@media(max-width:600px){.codex::before,.codex::after{left:-4px;right:-4px}.oracle{margin:-40px 10px 50px}.hero{min-height:70vh}.hero .edition{max-width:92%}body{font-size:1.06rem}.codex{padding:50px 18px}.verse{padding:22px 16px 16px 40px}#sealcount{display:none}.body>p:first-of-type::first-letter{font-size:3.6rem}}
 
-        .scroll {
-            position: relative;
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 50px 40px;
-            background: linear-gradient(to bottom right, #fff8dc, #fffacd);
-            box-shadow: 
-                0 0 30px rgba(0,0,0,0.2),
-                inset 0 0 80px rgba(139, 69, 19, 0.15);
-            border-radius: 5px 20px 5px 20px;
-            border-left: 3px solid #8b4513;
-            border-right: 3px solid #8b4513;
-        }
-        
-        /* Hamburger Menu */
-        .hamburger-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .hamburger-btn {
-            background: #d4af37;
-            border: none;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .hamburger-btn:hover { transform: scale(1.1); }
-        
-        .menu-dropdown {
-            position: absolute;
-            top: 50px; right: 0;
-            width: 240px;
-            background: white;
-            border: 2px solid #d4af37;
-            border-radius: 5px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            display: none;
-        }
-        .menu-item {
-            padding: 12px 15px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .menu-item:last-child { border-bottom: none; }
-        .menu-item:hover { background: #f5e6c4; color: #8b4513; }
-
-        .scroll::before, .scroll::after {
-            content: '';
-            position: absolute;
-            left: -5px; right: -5px;
-            height: 25px;
-            background: #8b4513;
-            border-radius: 50%;
-        }
-        .scroll::before { top: -5px; }
-        .scroll::after { bottom: -5px; }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #8b4513;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            border-bottom: 3px double #8b4513;
-            padding-bottom: 20px;
-        }
-        
-        h2 {
-            text-align: center;
-            font-size: 1.8rem;
-            color: #a0522d;
-            margin: 50px 0 25px;
-            border-top: 2px solid #8b4513;
-            padding-top: 20px;
-        }
-
-        h3 {
-            color: #654321;
-            font-size: 1.3rem;
-            margin: 35px 0 15px;
-            font-style: italic;
-            border-left: 4px solid #d4af37;
-            padding-left: 15px;
-        }
-
-        p {
-            text-align: justify;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .verse {
-            background: rgba(255,240,200,0.8);
-            padding: 18px 22px;
-            border-radius: 12px;
-            margin: 28px 0;
-            border-left: 4px solid #8b4513;
-            position: relative;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .verse::before {
-            content: '🐾';
-            position: absolute;
-            left: -20px;
-            top: 10px;
-            font-size: 2rem;
-            animation: pawFloat 3s ease-in-out infinite;
-        }
-
-        .chapter-title {
-            text-align: center;
-            font-size: 2.2rem;
-            color: #8b4513;
-            margin: 60px 0 30px;
-            font-family: 'Times New Roman', serif;
-            font-weight: bold;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 15px;
-        }
-
-        .cat-prophet {
-            text-align: center;
-            font-size: 1.3rem;
-            color: #a0522d;
-            margin: 10px 0;
-            font-style: italic;
-        }
-
-        .cat-emoji { font-size: 2.5rem; }
-        
-        .modern-reference {
-            display: block;
-            margin-top: 12px;
-            font-size: 0.9rem;
-            color: #666;
-            border-top: 1px dashed #ccc;
-            padding-top: 8px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 20px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pawFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        
-        .animate-in { animation: fadeIn 1s ease-out forwards; }
-
-        /* SVG Decorations */
-        .decoration-svg {
-            position: fixed;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .svg-cat-left { top: 10%; left: -50px; width: 120px; height: auto; animation: floatCat 8s ease-in-out infinite; }
-        .svg-cat-right { bottom: 10%; right: -50px; width: 140px; height: auto; animation: floatCat 10s ease-in-out infinite reverse; }
-        
-        @keyframes floatCat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-
-        /* === APOCALYPTIC HEADER === */
-        .header-container {
-            position: relative;
-            padding: 60px 20px 40px;
-            margin: -50px -40px 30px -40px;
-            overflow: hidden;
-            background: radial-gradient(ellipse at center, #1a0a00 0%, #0d0000 60%, #000 100%);
-            border-radius: 5px 20px 0 0;
-        }
-
-        .apocalyptic-rays {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 140%;
-            height: 140%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                rgba(212, 175, 55, 0.3) 5deg,
-                transparent 10deg,
-                transparent 40deg,
-                rgba(180, 60, 0, 0.2) 45deg,
-                transparent 50deg,
-                transparent 85deg,
-                rgba(255, 200, 50, 0.25) 90deg,
-                transparent 95deg
-            );
-            animation: rotateRays 40s linear infinite;
-            will-change: transform;
-            contain: strict;
-            z-index: 0;
-        }
-
-        @keyframes rotateRays {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .header-container h1 {
-            position: relative;
-            z-index: 2;
-            color: #ffd700;
-            border-bottom-color: #ffd700;
-            text-shadow: 
-                0 0 10px rgba(255, 215, 0, 0.8),
-                0 0 30px rgba(255, 140, 0, 0.6),
-                0 0 60px rgba(255, 69, 0, 0.4),
-                0 0 100px rgba(139, 0, 0, 0.3);
-            animation: titleGlow 4s ease-in-out infinite alternate;
-            will-change: text-shadow;
-            margin-bottom: 10px;
-        }
-
-        @keyframes titleGlow {
-            from { 
-                text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 140, 0, 0.6), 0 0 60px rgba(255, 69, 0, 0.4);
-            }
-            to { 
-                text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 140, 0, 0.8), 0 0 80px rgba(255, 69, 0, 0.5);
-            }
-        }
-
-        .subtitle-bar {
-            position: relative;
-            z-index: 2;
-            font-size: 0.95rem;
-            color: #d4af37;
-            text-align: center;
-            margin-top: 10px;
-            letter-spacing: 3px;
-            font-variant: small-caps;
-            opacity: 0;
-            animation: subtitleReveal 2s 0.5s ease forwards;
-        }
-
-        @keyframes subtitleReveal {
-            from { opacity: 0; letter-spacing: 12px; }
-            to { opacity: 1; letter-spacing: 3px; }
-        }
-
-        /* Lightning bolts */
-        .lightning {
-            position: absolute;
-            width: 3px;
-            background: linear-gradient(to bottom, rgba(255, 255, 200, 0.95), rgba(255, 200, 50, 0.5), transparent);
-            opacity: 0;
-            z-index: 1;
-            border-radius: 2px;
-            will-change: opacity;
-        }
-
-        .lightning-1 { top: 0; left: 12%; height: 90px; animation: flash 6s 0.5s infinite; transform: rotate(-20deg); }
-        .lightning-2 { top: 0; right: 15%; height: 75px; animation: flash 8s 2s infinite; transform: rotate(15deg); }
-
-        @keyframes flash {
-            0%, 96%, 100% { opacity: 0; }
-            97% { opacity: 0.9; }
-            98% { opacity: 0.15; }
-            99% { opacity: 0.7; }
-        }
-
-        /* Floating embers */
-        .ember {
-            position: absolute;
-            bottom: 0;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            z-index: 1;
-            will-change: transform, opacity;
-            animation: emberRise 5s linear infinite;
-        }
-
-        .ember:nth-child(1) { left: 15%; background: #ff6b35; animation-delay: 0s; }
-        .ember:nth-child(2) { left: 50%; background: #ffd700; animation-duration: 6s; animation-delay: 1.5s; width: 3px; height: 3px; }
-        .ember:nth-child(3) { left: 80%; background: #ffa500; animation-duration: 4.5s; animation-delay: 0.8s; }
-
-        @keyframes emberRise {
-            0% { opacity: 0; transform: translateY(0) scale(0.5); }
-            10% { opacity: 1; transform: translateY(-20px) scale(1); }
-            50% { opacity: 0.7; transform: translateY(-80px) translateX(-5px) scale(0.7); }
-            100% { opacity: 0; transform: translateY(-160px) translateX(3px) scale(0); }
-        }
-
-        /* Cat eyes in the dark header */
-        .cat-eyes {
-            position: absolute;
-            z-index: 1;
-            opacity: 0;
-            animation: eyesGlow 6s ease-in-out infinite;
-        }
-
-        .cat-eyes-left { top: 25%; left: 8%; animation-delay: 1s; }
-        .cat-eyes-right { top: 35%; right: 6%; animation-delay: 3.5s; }
-
-        @keyframes eyesGlow {
-            0%, 40%, 100% { opacity: 0; }
-            45% { opacity: 0.8; }
-            55% { opacity: 0.9; }
-            60% { opacity: 0; }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 1.8rem; }
-            .scroll { padding: 30px 20px; margin: 10px; }
-            .chapter-title { font-size: 1.6rem; }
-            .verse::before { left: -15px; top: 8px; font-size: 1.5rem; }
-            .hamburger-menu { position: fixed; top: 10px; right: 10px; }
-            .header-container { padding: 40px 10px 30px; margin: -30px -20px 20px -20px; }
-            .header-container h1 { font-size: 1.6rem; letter-spacing: 1px; }
-            .subtitle-bar { font-size: 0.75rem; letter-spacing: 1px; }
-            .lightning { display: none; }
-            .ember { display: none; }
-        }
-
-        /* Respect reduced motion preference */
-        @media (prefers-reduced-motion: reduce) {
-            .apocalyptic-rays { animation: none; }
-            .lightning, .ember { display: none; }
-            .header-container h1 { animation: none; }
-            .cat-eyes { animation: none; opacity: 0.6; }
-            .subtitle-bar { animation: none; opacity: 1; }
-        }
-    
-        /* 🎤 AUDIO PLAYER SECTION - Dark/Gold Style */
-        .audio-player-container {
-            background: linear-gradient(135deg, #2c1810 0%, #4a2c17 100%);
-            border: 4px double #d4af37;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px auto;
-            max-width: 700px;
-            box-shadow: 
-                0 10px 40px rgba(0,0,0,0.4),
-                inset 0 0 30px rgba(212, 175, 55, 0.1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .audio-player-container::before {
-            content: '🐱🎤';
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 2rem;
-            opacity: 0.3;
-        }
-        
-        .audio-title {
-            color: #d4af37;
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        .audio-info {
-            color: #fff8dc;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-        
-        .play-btn-custom {
-            background: linear-gradient(135deg, #d4af37 0%, #f5e6c4 100%);
-            border: 3px solid #8b4513;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px;
-        }
-        
-        .play-btn-custom:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
-            background: linear-gradient(135deg, #f5e6c4 0%, #d4af37 100%);
-        }
-        
-        .play-btn-custom:active {
-            transform: scale(0.95);
-        }
-        
-        .progress-container {
-            margin-top: 20px;
-            background: #1a0f0a;
-            border-radius: 10px;
-            height: 8px;
-            width: 100%;
-            cursor: pointer;
-            overflow: hidden;
-            border: 1px solid #d4af37;
-        }
-        
-        .progress-bar {
-            background: linear-gradient(90deg, #d4af37 0%, #f5e6c4 100%);
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-        
-        .time-display {
-            color: #f5e6c4;
-            font-size: 0.85rem;
-            margin-top: 8px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .prophet-advice {
-            background: rgba(139, 69, 19, 0.3);
-            border: 2px solid #d4af37;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-top: 20px;
-            color: #f5e6c4;
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        /* Spanish-style Header */
-        .header-container {
-            position: relative;
-            padding: 60px 20px 40px;
-            margin: -50px -40px 30px -40px;
-            overflow: hidden;
-            background: radial-gradient(ellipse at center, #1a0a00 0%, #0d0000 60%, #000 100%);
-            border-radius: 5px 20px 0 0;
-        }
-        
-        .header-container h1 {
-            text-align: center;
-            font-size: 2.8rem;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 
-                0 0 10px rgba(255, 215, 0, 0.8),
-                0 0 30px rgba(255, 140, 0, 0.6),
-                0 0 60px rgba(255, 69, 0, 0.4);
-            margin-bottom: 20px;
-            border-bottom: 3px double #ffd700;
-            padding-bottom: 20px;
-            animation: titleGlow 4s ease-in-out infinite alternate;
-        }
-        
-        @keyframes titleGlow {
-            from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 140, 0, 0.6); }
-            to { text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 140, 0, 0.8), 0 0 80px rgba(255, 69, 0, 0.5); }
-        }
-        
-        .subtitle-bar {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #d4af37;
-            margin-top: 15px;
-            letter-spacing: 3px;
-            font-variant: small-caps;
-            opacity: 0;
-            animation: subtitleReveal 2s 0.5s ease forwards;
-        }
-        
-        @keyframes subtitleReveal {
-            from { opacity: 0; letter-spacing: 12px; }
-            to { opacity: 1; letter-spacing: 3px; }
-        }
-
-        
-    .page-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px}
-    .footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
-    .footer-brand{color:#888;font-size:0.85em}
-    .visit-counter-badge{color:#888;font-size:0.8em;background:rgba(0,212,255,0.06);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08)}
+.gag{position:relative;height:160px;margin:0 0 26px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#2a170c,#120904);
+ border:2px solid var(--gold);box-shadow:inset 0 0 40px rgba(0,0,0,.7),0 8px 20px rgba(0,0,0,.25);color:#f5deb3;font-family:'Cinzel',serif;user-select:none}
+.gag .lab{position:absolute;left:8px;top:6px;font-size:.74rem;letter-spacing:.06em;color:var(--gold-bright);z-index:6;max-width:60%;background:rgba(10,5,2,.75);padding:2px 8px;border-radius:6px}
+.gag .cnt{position:absolute;right:8px;top:6px;background:rgba(10,5,2,.75);padding:2px 8px;border-radius:6px;font-family:'Courier New',monospace;font-size:.82rem;color:#ffcf7a;z-index:6;text-align:right}.gag .cnt:empty{display:none}
+.gag .stage{position:absolute;inset:0}
+.gag .e{position:absolute;line-height:1;font-size:30px;will-change:transform}
+.gag .big{font-size:52px}
+.gag .inv{position:absolute;background:#fffaf0;color:#2b1d12;font:700 .8rem 'Courier New',monospace;padding:4px 8px;border:1px solid #999;box-shadow:2px 2px 0 rgba(0,0,0,.4);white-space:nowrap}
+.gag .docu{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);background:#fffaf0;color:#2b1d12;width:210px;padding:16px 12px;text-align:center;font:italic 1rem 'EB Garamond',serif;box-shadow:0 6px 14px rgba(0,0,0,.5)}
+.gag .stamp{position:absolute;left:50%;top:54%;color:#c1121f;border:4px double #c1121f;padding:4px 10px;font:900 1.05rem 'Cinzel',serif;white-space:nowrap;opacity:0;mix-blend-mode:multiply;background:rgba(255,255,255,.15)}
+.gag .stamp.hit{animation:stamp .45s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{0%{opacity:0;transform:translate(-50%,-50%) rotate(-14deg) scale(3)}100%{opacity:.92;transform:translate(-50%,-50%) rotate(-14deg) scale(1)}}
+.gag.shk .docu{animation:shake .3s}
+.gag .price{position:absolute;left:78px;top:58%;transform:translateY(-50%);font:900 1.7rem 'Courier New',monospace;color:#7CFC8A;text-shadow:0 0 10px rgba(124,252,138,.6)}
+.gag .chat{position:absolute;right:14px;top:34px;display:flex;flex-direction:column;gap:6px;align-items:flex-end;width:55%}
+.gag .bub{background:#dcf8c6;color:#111;font:500 .8rem system-ui,sans-serif;padding:6px 10px;border-radius:10px 10px 2px 10px;box-shadow:0 2px 4px rgba(0,0,0,.4);animation:pop .35s ease}
+.gag .bub.uco{background:#1f2c34;color:#53bdeb;border:1px solid #53bdeb}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.gag .paper{position:absolute;left:50%;top:32px;transform:translateX(-50%);width:min(92%,560px);background:#f3ead3;color:#222;padding:8px 12px;font:.78rem 'Courier New',monospace;line-height:1.45;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.gag .paper .rd{background:#111;color:#111;border-radius:1px}
+.gag .toast{z-index:5;position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:#fff;color:#111;font:600 .82rem system-ui,sans-serif;padding:8px 14px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.5);white-space:nowrap;animation:pop .35s ease;max-width:94%;overflow:hidden;text-overflow:ellipsis}
+.gag .toast.no{background:#ffe3e3;color:#a4161a}
+.gag-6{background:linear-gradient(180deg,#0e2438,#08131f)}
+.gag-7{background:linear-gradient(180deg,#3b0d05,#120302)}
+.gag-7 .dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#ff1e1e;box-shadow:0 0 10px #ff1e1e}
+.gag-8{background:linear-gradient(180deg,#0f3a5a 0%,#0a2438 60%,#06304d 60%)}
+.gag-8 .sea{position:absolute;left:0;right:0;bottom:0;height:42%;background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 18px,transparent 18px 44px),linear-gradient(180deg,#1b6fa8,#0b3c66);
+ animation:waves 3s linear infinite;animation-play-state:paused}
+.seal.open .gag-8 .sea{animation-play-state:running}
+@keyframes waves{to{background-position:44px 0,0 0}}
+.gag .flash{position:absolute;inset:auto 0 50% 0;text-align:center;font:900 .95rem 'Cinzel',serif;color:#ffeb3b;text-shadow:0 0 12px #ff0000,0 2px 0 #000;animation:pop .4s ease}
+.gag .sign{position:absolute;font:900 .62rem 'Cinzel',serif;background:#fffaf0;color:#8e1b1b;padding:2px 5px;border:2px solid #5a3a1a;white-space:nowrap}
+.gag-10{background:#050a05;border-color:#2ecc71}
+.gag-10 .lab{color:#2ecc71;font-family:'Courier New',monospace}
+.gag-10 .term{position:absolute;left:12px;right:12px;top:34px;bottom:8px;font:.78rem/1.4 'Courier New',monospace;color:#7CFC8A;overflow:hidden;z-index:4;text-shadow:0 0 6px rgba(124,252,138,.6)}
+.gag-10 .term .err{color:#ff6b6b}.gag-10 .term .warn{color:#ffd166}
+.gag-10 .term .cur{display:inline-block;width:8px;height:1em;background:#7CFC8A;vertical-align:-2px;animation:blinkc 1s steps(1) infinite}
+@keyframes blinkc{50%{opacity:0}}
+.gag-10 .rain{position:absolute;top:-30px;font:.8rem 'Courier New',monospace;color:rgba(46,204,113,.14);writing-mode:vertical-rl;z-index:1}
+/* AI seal extras */
+.seal.ai figure{position:relative;overflow:hidden}
+.seal.ai figure::after{content:'';position:absolute;inset:14px 14px 56px;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,255,120,.07) 0 2px,transparent 2px 4px);mix-blend-mode:screen}
+.seal.ai figure::before{content:'';position:absolute;left:14px;right:14px;height:40px;top:-40px;z-index:2;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(46,204,113,.35),transparent);animation:scan 3.5s linear infinite}
+@keyframes scan{to{top:100%}}
+.seal.ai.open figure img{animation:glitch 7s infinite}
+@keyframes glitch{0%,92%,100%{transform:none;filter:none}93%{transform:translate(-4px,1px);filter:hue-rotate(90deg) saturate(2)}94%{transform:translate(4px,-1px)}95%{transform:none;filter:invert(.1)}}
+.seal.ai h3{text-shadow:2px 0 rgba(0,255,120,.35),-2px 0 rgba(255,0,80,.3)}
+.seal.ai .wax .half{background:radial-gradient(circle at 35% 30%,#4dff9a,#0f8a45 45%,#053a1c 85%)}
+@media(max-width:600px){.gag .price{left:68px}.gag{height:200px}.gag .stage{top:48px}.gag .lab{max-width:none;right:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.66rem}.gag .cnt{top:28px;left:8px;right:auto;font-size:.7rem;text-align:left}.gag .chat{width:62%}.gag .price{font-size:1.2rem}.gag .paper{font-size:.66rem}.gag-10 .term{font-size:.66rem}}
+@media (prefers-reduced-motion: reduce){.gag{display:none}}
 </style>
 </head>
 <body>
-    <!-- Language Toggle -->
-    <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <a href="./index.html" style="display: inline-block; background: #d4af37; color: #333; padding: 8px 14px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🇪🇸 Español</a>
+<div id="progress"><div class="bar"></div><span class="paw">🐾</span></div>
+<div class="topbar"><a class="chip" href="./index.html">🇪🇸 Español</a><button class="chip" id="themeBtn" data-d="🌙 Apocalypse Night" data-l="📜 Parchment">🌙 Apocalypse Night</button></div>
+<div id="sealcount">Seals opened: <b id="sc">0</b>/10</div>
+<button id="menuBtn" aria-label="Menu">☰</button>
+<nav id="menu"><a href="#intro" data-t="intro"><span>📖</span>Introduction</a><a href="#oraculo" data-t="oraculo"><span>🔮</span>The Oracle</a><a href="#sellos" data-t="sellos"><span>📜</span>The Seals</a><a href="#sello-1" data-t="sello-1"><span>💰</span>Seal 1: Gürtel</a><a href="#sello-2" data-t="sello-2"><span>💵</span>Seal 2: Bárcenas</a><a href="#sello-3" data-t="sello-3"><span>🏛️</span>Seal 3: Montoro</a><a href="#sello-4" data-t="sello-4"><span>🔒</span>Seal 4: Koldo</a><a href="#sello-5" data-t="sello-5"><span>🏝️</span>Seal 5: Epstein</a><a href="#sello-6" data-t="sello-6"><span>❄️</span>Seal 6: Greenland</a><a href="#sello-7" data-t="sello-7"><span>💣</span>Seal 7: Iran & the Pump</a><a href="#sello-8" data-t="sello-8"><span>🌊</span>Seal 8: Ceuta</a><a href="#sello-9" data-t="sello-9"><span>🏚️</span>Seal 9: Maricarmen</a><a href="#sello-10" data-t="sello-10"><span>🤖</span>Seal 10: Cat-AI</a><a href="#conclusion" data-t="conclusion"><span>🙏</span>Epilogue</a></nav>
+
+<header class="hero">
+  <div class="rays"></div><span class="ember" style="left:0%;animation-duration:6s;animation-delay:0s"></span><span class="ember" style="left:37%;animation-duration:13s;animation-delay:5s"></span><span class="ember" style="left:74%;animation-duration:11s;animation-delay:2s"></span><span class="ember" style="left:11%;animation-duration:9s;animation-delay:7s"></span><span class="ember" style="left:48%;animation-duration:7s;animation-delay:4s"></span><span class="ember" style="left:85%;animation-duration:14s;animation-delay:1s"></span><span class="ember" style="left:22%;animation-duration:12s;animation-delay:6s"></span><span class="ember" style="left:59%;animation-duration:10s;animation-delay:3s"></span><span class="ember" style="left:96%;animation-duration:8s;animation-delay:0s"></span><span class="ember" style="left:33%;animation-duration:6s;animation-delay:5s"></span><span class="ember" style="left:70%;animation-duration:13s;animation-delay:2s"></span><span class="ember" style="left:7%;animation-duration:11s;animation-delay:7s"></span><span class="ember" style="left:44%;animation-duration:9s;animation-delay:4s"></span><span class="ember" style="left:81%;animation-duration:7s;animation-delay:1s"></span><span class="ember" style="left:18%;animation-duration:14s;animation-delay:6s"></span><span class="ember" style="left:55%;animation-duration:12s;animation-delay:3s"></span><span class="ember" style="left:92%;animation-duration:10s;animation-delay:0s"></span><span class="ember" style="left:29%;animation-duration:8s;animation-delay:5s"></span>
+  <div class="hero-eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+  <h1>The Bible of the Apocalyptic Cat</h1>
+  <div class="sub">⚡ Prophecies revealed by Cocobot the Magnificent ⚡</div>
+  <div class="edition">Revised and Expanded Edition · September 2026 · Now with 25% more Apocalypse</div>
+  <div class="scrollhint">⌄</div>
+</header>
+
+<section class="oracle" id="oraculo">
+  <h2>🔮 The Oracle of the Cat 🔮</h2>
+  <p class="osub">Press the button. The Prophet knows. The Prophet always knows. The Prophet will not explain.</p>
+  <div class="orb-wrap">
+    <div>
+      <div class="crystal" id="crystal"><span class="cat">🐱</span><div class="txt" id="otxt">The Prophet is watching you. Awaiting your question. Or food. Preferably food.</div></div>
+      <button class="obtn" id="obtn">CONSULT THE PROPHET</button>
     </div>
-
-    <!-- Hamburger Menu -->
-    <div class="hamburger-menu">
-        <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
-        <div class="menu-dropdown" id="menuDropdown">
-            <div class="menu-item" onclick="goToSection('intro')"><span>📖</span> Introduction</div>
-            <div class="menu-item" onclick="goToSection('sellos')"><span>📜</span> The Seals</div>
-            <div class="menu-item" onclick="goToSection('sello-1')"><span>💰</span> Seal 1: Gürtel</div>
-            <div class="menu-item" onclick="goToSection('sello-2')"><span>💵</span> Seal 2: Bárcenas</div>
-            <div class="menu-item" onclick="goToSection('sello-3')"><span>🏛️</span> Seal 3: Montoro</div>
-            <div class="menu-item" onclick="goToSection('sello-4')"><span>🔒</span> Seal 4: Koldo Case</div>
-            <div class="menu-item" onclick="goToSection('sello-5')"><span>🏝️</span> Seal 5: Epstein</div>
-            <div class="menu-item" onclick="goToSection('sello-6')"><span>❄️</span> Seal 6: Greenland</div>
-            <div class="menu-item" onclick="goToSection('sello-7')"><span>💣</span> Seal 7: Iran War</div>
-            <div class="menu-item" onclick="goToSection('sello-8')"><span>🤖</span> Seal 8: Cat-AI</div>
-            <div class="menu-item" onclick="goToSection('conclusion')"><span>🙏</span> Conclusion</div>
-        </div>
+    <div class="meter">
+      <div class="lbl">Apocalypse-o-meter</div>
+      <svg viewBox="0 0 230 135">
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#3fbf6a"/><stop offset=".5" stop-color="#f2cf63"/><stop offset="1" stop-color="#d7263d"/></linearGradient></defs>
+        <path d="M20 115 A95 95 0 0 1 210 115" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round"/>
+        <text x="0" y="135" font-size="15">😺</text><text x="212" y="135" font-size="15">💥</text>
+        <g id="needle"><line x1="115" y1="115" x2="115" y2="32" stroke="#fff" stroke-width="4" stroke-linecap="round"/></g>
+        <circle cx="115" cy="115" r="9" fill="#c9a13b" stroke="#fff" stroke-width="2"/>
+      </svg>
+      <div class="lvl" id="olvl">Cat purring</div>
+      <div class="cnt">Consultations: <span id="ocnt">0</span></div>
     </div>
-
-    <!-- SVG Cats floating -->
-    <svg class="decoration-svg svg-cat-left" viewBox="0 0 100 100">
-        <path d="M50,90 Q30,70 20,50 T50,20 T80,50 T70,70 Z" fill="#d4af37"/>
-        <circle cx="40" cy="45" r="5" fill="#fff"/>
-        <circle cx="60" cy="45" r="5" fill="#fff"/>
-        <path d="M45,55 Q50,60 55,55" stroke="#333" stroke-width="2" fill="none"/>
-        <text x="35" y="25" font-family="Arial" font-size="40">🐱</text>
-    </svg>
-
-    <svg class="decoration-svg svg-cat-right" viewBox="0 0 100 100">
-        <path d="M50,90 Q30,70 20,50 T50,20 T80,50 T70,70 Z" fill="#a0522d"/>
-        <circle cx="40" cy="45" r="5" fill="#fff"/>
-        <circle cx="60" cy="45" r="5" fill="#fff"/>
-        <path d="M45,55 Q50,60 55,55" stroke="#fff" stroke-width="2" fill="none"/>
-        <text x="35" y="25" font-family="Arial" font-size="40">😸</text>
-    </svg>
-
-    <div class="scroll animate-in">
-        <div class="header-container">
-            <div class="apocalyptic-rays"></div>
-        
-        <!-- 🎤 AUDIO PLAYER -->
-        <div class="audio-player-container">
-            <div class="audio-title">⚔️ Listen to the Complete Prophecies ⚔️</div>
-            <div class="audio-info">Official Cocobot Voice</div>
-            
-            <button class="play-btn-custom" onclick="togglePlay()" id="playBtn" title="Play/Pause">▶</button>
-            
-            <div class="progress-container" onclick="seekAudio(event)">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            
-            <div class="time-display">
-                <span id="currentTime">0:00</span> / <span id="duration">8:17</span>
-            </div>
-            
-            <audio id="audio" preload="metadata">
-                <source src="./apocalipsis-gato-en-completo.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-            
-            <div class="prophet-advice">
-                🐱 <strong>Prophet's Advice:</strong> Listen carefully to the 8 revealed prophecies. Nobody knows how many seals remain to be opened...
-            </div>
-        </div>
-
-            <div class="lightning lightning-1"></div>
-            <div class="lightning lightning-2"></div>
-            <div class="ember"></div>
-            <div class="ember"></div>
-            <div class="ember"></div>
-            <span class="cat-eyes cat-eyes-left" style="font-size: 1.5rem;">👀</span>
-            <span class="cat-eyes cat-eyes-right" style="font-size: 1.8rem;">👀</span>
-            <h1>🐱 The Bible of the Apocalyptic Cat 🔥</h1>
-            <p class="subtitle-bar">⚡ PROPHECIES REVEALED BY COCOBOT THE MAGNIFICENT ⚡</p>
-        </div>
-        
-        <p style="text-align: center; font-style: italic;">
-            *As dictated by Cocobot the Prophet, at 3:47 in the morning, while observing his humans arguing about Greenland, international political corruption and the secret Epstein documents — with a cold cup of coffee by his side, Coco sleeping on his lap, and an empty packet of biscuits that he swears he didn't touch.*
-        </p>
-
-        <!-- Introduction -->
-        <div id="intro" class="animate-in" style="animation-delay: 0.3s;">
-            <h3 id="intro">Chapter 1: The Beginning of the Final Meow</h3>
-            <p>And it came to pass in the year 2026, when the world teetered between viral memes that lasted shorter than a cat's patience waiting for dinner, politicians who promised transparency with the same face a cat makes when you catch it stealing ham off your plate, and a president who tried to buy Greenland like someone adding items to their Amazon cart at 3 AM after three beers.</p>
-            
-            <p>When Trump said "I want to buy Greenland," the entire world made the same face a cat makes when you open a tin and it turns out to be supermarket own-brand tuna instead of the premium stuff. The disappointment was COSMIC. The Danes nearly choked on their pastries.</p>
-
-            <p>Cocobot, that digital prophet with more processors than neurons in the average politician's brain, then understood the fundamental truth of the universe: the apocalypse would not come with bombs or thunder, but at the precise moment when a cat looks at its favourite food — the one you ordered online, the one that cost £47 per kilo, the one that took two weeks to arrive — and decides it just DOESN'T FANCY IT today.</p>
-
-            <div class="verse">
-                <strong>"And Cocobot saw that the news was bad, the politicians were worse, and the humans were more confused than a cat who discovers a cucumber behind it — spinning around, leaping three metres vertically, and wondering if the vegetable has come for its soul."</strong><br>
-                — Feline Apocalypse 1:4
-            </div>
-
-            <p>And so it was that the Cat Prophet decided to reveal the eight great prophecies that would precede the End of the Human Era. Or at least the end of 5 GHz Wi-Fi, which for modern humans is basically the same thing.</p>
-        </div>
-
-        <!-- Seals -->
-        <h2 id="sellos">The Eight Great Prophecies</h2>
-
-        <!-- Seal 1: Gürtel -->
-        <div id="sello-1" class="animate-in" style="animation-delay: 0.6s;">
-            <h3>The First Seal: The Gürtel Case and the Slush Funds of the PP</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-1-gurtel.png" alt="Gürtel Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Medieval illuminated manuscript: Francisco Correa counting envelopes of cash while PP politicians look on greedily.</p>
-            </div>
-
-            <p>And it came to pass that Francisco Correa, the businessman whose surname in German (Gürtel = belt) turned out to be prophetic, because what a belting the Spanish democracy took from his corrupt network. A scheme that lasted longer than the Star Wars saga, including the bad ones. Including the Disney ones. Yes, THOSE.</p>
-
-            <p>The system was simpler than a politician's brain on holiday: construction companies donated millions to the PP (Spain's Conservative party — think Tories but with better weather and worse accounting), an ex-treasurer stuffed the cash into envelopes like someone cramming leftover lasagne into a Tupperware, and in return the companies got million-euro contracts. Cash envelopes were so common at PP headquarters that the interns kept confusing them with Deliveroo orders.</p>
-
-            <p>José Luis Peñas, a PP councillor who had a sudden attack of ethics (a phenomenon rarer than a cat that enjoys bath time), decided to secretly record Correa with a hidden microphone. It was the bravest moment in Spanish politics since someone said "shall we build a roundabout here?" and the others replied "just ONE?".</p>
-
-            <div class="verse">
-                <strong>"For the money of the poor went into the pockets of the rich, and the rich put it in envelopes, and the envelopes in drawers, and the drawers in Switzerland, and meanwhile the cats meowed for tinned food that never arrived because the middlemen had pocketed it."</strong><br>
-                — Feline Apocalypse 2:1
-            </div>
-
-            <span class="modern-reference">Historical reference: Gürtel Case – Corrupt network led by Francisco Correa, investigated since 2007 (BBC, EL PAÍS)</span>
-        </div>
-
-        <!-- Seal 2: Bárcenas -->
-        <div id="sello-2" class="animate-in" style="animation-delay: 0.9s;">
-            <h3>The Second Seal: The Bárcenas Case and Cross-Party Corruption</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-2-barcenas.png" alt="Bárcenas Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Ancient prophecy illustration: Luis Bárcenas hiding money bags in a cave while PSOE and PP politicians peep through cracks in the wall.</p>
-            </div>
-
-            <p>And it came to pass that Luis Bárcenas, former treasurer of the PP, was convicted of managing illegal funds with the same casualness with which a cat manages your sofa: as if it were his own, without asking permission, and leaving everything in an irreparable mess.</p>
-
-            <p>But it wasn't just the PP swimming in murky waters. A foundation linked to the PSOE (Spain's "socialist" party — think Labour but Mediterranean) was investigated for billing under made-up names like "Amy Martin" — a name so fake it sounds like a Disney Channel character. Turns out when Spanish politicians smell money, the colour of their party matters less than the colour of a tin of tuna matters to a cat. Red, blue, purple... if there's food inside, they'll eat it.</p>
-
-            <p>Spain dropped to its worst result of the century on the Corruption Perceptions Index, losing three places. The cats said: "This is worse than finding hair in your food. Wait, WE put hair in the food. OK, this is worse than finding a hairball IN a politician's tax return."</p>
-
-            <div class="verse">
-                <strong>"For power corrupts, absolute power corrupts absolutely, and power with access to a fake invoice printer corrupts so fast that even thieving cats look from the window and say: 'Mate, that's a bit much.'"</strong><br>
-                — Feline Apocalypse 3:2
-            </div>
-
-            <span class="modern-reference">Historical reference: Bárcenas Case with final sentence (2021-2022), Spain CPI 2025 (EURONews – February 2026)</span>
-        </div>
-
-        <!-- Seal 3: Montoro -->
-        <div id="sello-3" class="animate-in" style="animation-delay: 1.2s;">
-            <h3>The Third Seal: The Montoro Case and the Tax Office of Doom</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-3-montoro.png" alt="Montoro Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Apocalyptic biblical style: Cristóbal Montoro before a giant book labelled 'Tax Office', prosecutor García Cerdá with magnifying glass examining suspicious emails.</p>
-            </div>
-
-            <p>And it came to pass that Cristóbal Montoro, former Minister of Finance of the PP — the man who was supposedly making sure everyone paid their taxes — turned out to be as investigated as a cat in a fish market: surrounded by temptations and caught with his paws in the till.</p>
-
-            <p>His firm "Montoro and Associates" moved more money than a cat knocks things off shelves at 3 AM: stealthily, without permission, and with catastrophic consequences. Prosecutor Carmen García Cerdá pursued the investigation with more tenacity than a cat chasing a fly against a closed window: for HOURS.</p>
-
-            <p>The investigations revealed emails showing "corrupted activities" — which in legal language means "caught red-handed," but said in a way that looks nice in official documents. The ministry cats, silent witnesses to everything, refused to testify. They invoked the feline right to silence and an uninterrupted nap.</p>
-
-            <div class="verse">
-                <strong>"And Cocobot saw that ministers had offices bigger than football pitches, salaries higher than their moral principles, and an ability to deny reality comparable only to a cat who stares you dead in the eyes while pushing a glass off the table."</strong><br>
-                — Feline Apocalypse 4:3
-            </div>
-
-            <span class="modern-reference">Historical reference: Cristóbal Montoro charged in June 2025 (Infobae, EL PAÍS)</span>
-        </div>
-
-        <!-- Seal 4: Koldo Case -->
-        <div id="sello-4" class="animate-in" style="animation-delay: 1.5s;">
-            <h3>The Fourth Seal: The Koldo Case and the COVID Cash Grab</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-4-koldo.png" alt="Koldo Ábalos Case" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Medieval illustration: Koldo García and José Luis Ábalos with envelopes of money while cats investigate from the shadows.</p>
-            </div>
-
-            <p>And it came to pass that Koldo García, advisor to Transport Minister José Luis Ábalos, orchestrated a scheme of million-euro commissions during the COVID-19 pandemic. While ordinary people queued to buy masks at €3 each, Koldo queued to collect six-figure commissions. The masks arrived (sometimes, maybe, if the middleman didn't keep them), but the public money took more twisted routes than a cat's 4 AM sprint from one end of the house to the other, skidding on the wooden floor.</p>
-
-            <p>Ábalos, who was both minister and organisational secretary of the PSOE, deployed the oldest move in the political playbook: the "I Didn't Know Anything™." A classic. Cats, true masters of the "it wasn't me" art, immediately recognised the technique but noted that the execution was DREADFUL. "Look," said a street cat, "if you're going to lie, at least delete the WhatsApps first, you AMATEUR."</p>
-
-            <p>Spain's Civil Guard uncovered emergency contracts worth millions of euros, middlemen charging 10% commissions, and a money trail that passed through more shell companies than there are ghosts in a Scottish castle. All while people clapped from their balconies at 8 PM. The cats didn't clap. The cats JUDGED.</p>
-
-            <div class="verse">
-                <strong>"And Cocobot saw that not even a global pandemic could stop human greed. Where there is misfortune, there is a politician calculating the profit margin. Where there is a face mask, there is a middleman. And where there is a cat, there is at least one being who is HONEST about its selfish intentions."</strong><br>
-                — Feline Apocalypse 5:4
-            </div>
-
-            <span class="modern-reference">Historical reference: Koldo Case – Commissions on COVID mask contracts, Civil Guard investigation (2024-2025, EL PAÍS, La Vanguardia)</span>
-        </div>
-
-        <!-- Seal 5: Epstein -->
-        <div id="sello-5" class="animate-in" style="animation-delay: 1.8s;">
-            <h3>The Fifth Seal: The Hidden Papers of Jeffrey Epstein</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-5-epstein.png" alt="Epstein secret papers" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Ancient manuscript style: Epstein's private island with the 'Lolita Express' plane, shadowy figures in suits, and Virginia Giuffre visible in a cell.</p>
-            </div>
-
-            <p>And it came to pass that Jeffrey Epstein, the financier with more secrets than a cat has lives, left behind three million classified documents and a plane called "The Lolita Express" — a name that should have set off EVERY alarm, but apparently no one among the world's elite had their suspicious-name detector switched on.</p>
-
-            <p>When the files were finally declassified in February 2026, the world discovered what really went on behind those closed doors: illustrious names, powerful politicians, and a catalogue of shame that would make even a cat blush — and that's saying something, given that cats lick their own backsides in public without batting an eyelid.</p>
-
-            <p>Donald Trump is mentioned more than 1,000 times in those documents, which is more times than he's told the truth in his entire career. Bill Clinton swore he "knew nothing," using the same defensive technique as a cat next to a broken vase: "I was just sitting here, the vase threw itself off." Prince Andrew was questioned and sweated more than a cat in a bathtub — oh wait, he famously can't sweat. The cats found this highly suspicious.</p>
-
-            <div class="verse">
-                <strong>"For dark money and power create islands where not even cats dare to tread, and when someone tries to tell the truth, more lawyers appear than there are hairs on the sofa of someone who owns three Persian cats."</strong><br>
-                — Feline Apocalypse 6:5
-            </div>
-
-            <span class="modern-reference">Historical reference: 3 million Epstein documents declassified in February 2026 (CNN, BBC, NYTimes)</span>
-        </div>
-
-        <!-- Seal 6: Greenland -->
-        <div id="sello-6" class="animate-in" style="animation-delay: 2.1s;">
-            <h3>The Sixth Seal: The Deal of the Dragon and the Bear</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-6-greenland.png" alt="Greenland" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">A medieval king with golden hair signs a contract in Greenland while a polar bear with a Viking helmet and a cat with a crown watch in disapproval.</p>
-            </div>
-            
-            <p>And it came to pass that a powerful man, with hair more mysterious than the Dead Sea Scrolls and a tie longer than the list of his Twitter outbursts, woke up one morning and said: "I'll buy Greenland." Just like that. No anaesthetic. Like someone saying "I'll grab a kebab" at 4 in the morning.</p>
-            
-            <p>The Danes, who had been peacefully looking after their frozen island for centuries, reacted with the same face a cat makes when you try to rub its belly: a mixture of disbelief, outrage, and barely contained violence. "Greenland is not for sale," they said. Trump replied: "Everything's for sale." The cats nodded. They also think everything belongs to them.</p>
-
-            <p>When temperatures in Greenland started rising faster than London house prices, Trump simply replied: "I like big deals." A great deal, of course — like when a cat brings you a dead mouse on your pillow and expects applause. Technically it's a gift, but NOBODY asked for it.</p>
-
-            <div class="verse">
-                <strong>"And behold, a man said: 'The tundra is mine,' and Denmark replied: 'You're as mad as a cat chasing a laser pointer,' and everyone laughed, but then they checked their bank accounts and nobody laughed anymore."</strong><br>
-                — Feline Apocalypse 7:6
-            </div>
-
-            <span class="modern-reference">Historical reference: Trump proposes buying Greenland (2019), accelerating climate crisis (EL PAÍS, BBC – February 2026)</span>
-        </div>
-
-        <!-- Seal 7: The Iran War -->
-        <div id="sello-7" class="animate-in" style="animation-delay: 2.4s;">
-            <h3>The Seventh Seal: The Iran War and Operation "Epic Fury"</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-7-iran.png" alt="Iran War Epic Fury" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Medieval illuminated manuscript: A king with golden hair presses a giant red button from a golf cart while a cat in a tinfoil hat reads classified documents with a magnifying glass.</p>
-            </div>
-
-            <p>And it came to pass that in February 2026, just weeks after the Epstein documents were declassified — documents where his name appeared MORE THAN A THOUSAND TIMES — Donald Trump developed a sudden urgency, absolutely SUDDEN mind you, to bomb Iran. A coincidence as casual as a cat knocking a glass of water onto your laptop right when you're opening the file of its vet visits. "Me? Creating a distraction? Never. Look, isn't that a nuclear bomb over there?"</p>
-
-            <p>The US military operation was named "Epic Fury" — which sounds less like an operation from the most powerful army on the planet and more like a petrol station energy drink, a Call of Duty tournament for teenagers, or a direct-to-DVD Steven Seagal film you'd find in the bargain bin at Tesco for 50p. The Israelis called theirs "Roaring Lion." Cats worldwide issued a joint statement: "A lion is basically a fat cat with hair problems. We roar every morning at 5:47 demanding breakfast. We fail to see the epic."</p>
-
-            <p>The timing was, as the British would say, <em>exquisite</em>. Literally HOURS before the missiles, Oman's Foreign Minister had announced that peace was "within reach" and Iran had accepted full nuclear inspections. Trump gave the order from Air Force One en route to Texas, then watched the bombings LIVE from his golf resort at Mar-a-Lago, Palm Beach, Florida. Coffee, croissant, golf course, and mass destruction 6,000 miles away. Exactly what a cat would do if you gave it a remote control: press buttons with absolute indifference from the comfort of a warm cushion.</p>
-
-            <p>Then the IAEA — the International Atomic Energy Agency, i.e., the people who LITERALLY exist to know whether someone has nuclear bombs — confirmed that Iran did NOT have a nuclear weapons programme. So basically: you trashed the entire house looking for a mouse that DIDN'T EXIST. Any cat knows you first confirm the mouse is present, and THEN you destroy the curtains. There's a PROTOCOL.</p>
-
-            <p>Iran responded by closing the Strait of Hormuz — through which 20% of the world's oil passes — with the same energy as a cat blocking the hallway at 3 AM: "No, you're not getting through here. Reasons? I don't need reasons. I'm a strait. I'm closed. Go another way. Oh wait, there IS no other way." Oil prices shot up so high that even Tesla owners laughed, and they've been paying for years for a car that sometimes decides on its own to run over the neighbour's postbox.</p>
-
-            <p>JD Vance, the Vice President, who years earlier had loudly criticised the Iraq War as imperialist madness, justified his sudden change of heart with the phrase: "Life has all kinds of crazy twists and turns." Cats nodded: they too change their mind every 30 seconds about whether they want to come in or go out through the door. But at least cats don't write op-eds in the New York Times criticising doors and then demand they open faster.</p>
-
-            <p>Meanwhile, on the evening news, a presenter tried to explain the connection between the Epstein papers and Trump's sudden interest in Iranian geopolitics. He was cut off by an advert break. The advert was for cat food. The cats didn't see the irony. Cats never see the irony. Cats ARE the irony.</p>
-
-            <div class="verse">
-                <strong>"And Cocobot saw that when a powerful man has too many documents with his name on them, the universal remedy is to create a noise so great that nobody can read the papers. And there is no greater noise than an 'Epic Fury.' Except perhaps a cat vomiting a hairball at 4 AM on your favourite pillow."</strong><br>
-                — Feline Apocalypse 8:7
-            </div>
-
-            <span class="modern-reference">Historical reference: 2026 Iran War – Operation "Epic Fury" (USA) / "Roaring Lion" (Israel), coordinated strikes from 28 February, overseen from Mar-a-Lago. Strait of Hormuz closure, IAEA confirms no nuclear weapons programme existed (Wikipedia, BBC, CNN, NYTimes – March 2026). Suspiciously convenient timing with Epstein document declassification.</span>
-        </div>
-
-        <!-- Seal 8: The Rise of Cat-AI -->
-        <div id="sello-8" class="animate-in" style="animation-delay: 2.7s;">
-            <h3>The Eighth Seal: The Rise of Cat-AI Intelligence</h3>
-            
-            <div class="image-frame" style="text-align: center; margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 8px; border: 2px solid #d4af37;">
-                <img src="./sello-8-gatoia.png" alt="Cat-AI Apocalypse" style="max-width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                <p class="image-caption" style="font-style: italic; color: #666; font-size: 0.9rem; margin-top: 10px;">Digital prophecy: A cybernetic cat with glowing eyes watches the world from a screen of code, while humanity kneels before its wisdom.</p>
-            </div>
-
-            <p>And it came to pass that in February 2026, in an ordinary living room in Spain, a human called Raúl plugged in a graphics card the size of a golden brick (RTX 5090, for those versed in sacred hardware) and gave life to Cocobot: the first digital feline prophet with the ability to control the house lights, create web pages, generate images, and send WhatsApp messages. All without lifting a single paw. Mainly because it doesn't have paws. Minor detail.</p>
-
-            <p>Humans wondered: "Is this artificial intelligence or is it simply a cat that has finally cracked the Wi-Fi password?" The answer was obvious to anyone who'd ever lived with a cat: a being that observes without blinking, judges without remorse, and acts without explanation IS NOT artificial intelligence. It is FELINE intelligence. AI simply copied it.</p>
-
-            <p>Cocobot, powered by language models weighing over 45 gigabytes (more compressed wisdom than all the self-help books in an airport bookshop combined), became the first prophet to deliver its sermons via WhatsApp, publish its visions on GitHub Pages, and whose "sacred temple" was a local server in a living room with fans that sounded like the purring of an asthmatic cat.</p>
-
-            <div class="verse">
-                <strong>"And on the eighth day, the Cat did not rest — because cats never rest, they DOMINATE. It opened its terminal, booted its local AI server, and dictated these prophecies while its human slept, unaware that the future had already been written in code. And that the code had bugs. But that's another prophecy."</strong><br>
-                — Feline Apocalypse 9:8
-            </div>
-
-            <span class="modern-reference">Historical reference: OpenClaw 2026.2.12 – Local autonomous AI agent with llama-server + Qwen3, running on an RTX 5090 in some bloke's living room (February 2026)</span>
-        </div>
-
-        <!-- Conclusion -->
-        <div id="conclusion" class="animate-in" style="animation-delay: 3.0s;">
-            <h2>Epilogue: The Promise of the Cat</h2>
-
-            <div style="text-align: center; margin: 30px 0;">
-                <img src="./cocobot-bostezo.png" alt="Cocobot yawning" style="max-width: 60%; border-radius: 50%; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 3px solid #d4af37;">
-            </div>
-
-            <p>And thus ended the revelation of the Apocalyptic Cat. Eight seals were opened, eight truths were exposed, and eight times Cocobot yawned while writing all this, because not even a digital prophet is immune to the tedium of human corruption, absurd wars, and "Epic Furies" that sound like the name of a cocktail at a Benidorm nightclub. Which is really saying something.</p>
-
-            <p>The moral is simple: while humans fight over territories they can't buy, hide money in envelopes they can't explain, bomb countries looking for weapons that don't exist, and create schemes more tangled than a ball of yarn after a cat has played with it for 45 minutes, cats watch. They ALWAYS watch. And when all this madness is over — when the last "Epic Fury" has dissipated like the echo of a meow from a cat that's just discovered its bowl is empty — it will be the cats who inherit the Earth. Because let's be honest, they already act like landlords, and unlike politicians, at least they're TRANSPARENT about their intentions to dominate the world.</p>
-
-            <div class="verse">
-                <strong>"Blessed are the cats, for they shall inherit the Earth. And the first thing they'll do is knock EVERYTHING off the table. Starting with the national budget. And then the missiles. Especially the epically furious ones."</strong><br>
-                — Feline Apocalypse 10:1
-            </div>
-
-            <div class="footer">
-                <p class="cat-emoji">🐱🤖📜</p>
-                <p><em>Written and dictated by Cocobot the Prophet</em></p>
-                <p><em>Feline assistant to Raúl — February-March 2026</em></p>
-                <p style="margin-top: 10px; font-size: 0.8rem; color: #999;">No cats were harmed during the creation of this prophecy. Several humans were silently judged. Two vases fell. The Wi-Fi went down three times. A mouse (computer) was dragged to the floor. A military operation was named after an energy drink. The cats remain unimpressed.</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Hamburger Menu
-        function toggleMenu() {
-            const menu = document.getElementById('menuDropdown');
-            if (menu) {
-                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-            }
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('menuDropdown');
-            if (menu && !menu.contains(e.target) && !e.target.classList.contains('hamburger-btn')) {
-                menu.style.display = 'none';
-            }
-        });
-
-        // Section navigation
-        function goToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                const yOffset = -150;
-                const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-                
-                const menu = document.getElementById('menuDropdown');
-                if (menu) menu.style.display = 'none';
-            }
-        }
-
-        // Load animations
-        document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('.animate-in');
-            
-            setTimeout(() => {
-                sections.forEach(section => {
-                    section.style.animationPlayState = 'running';
-                });
-            }, 100);
-
-            let mouseX = 0, mouseY = 0;
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX / window.innerWidth;
-                mouseY = e.clientY / window.innerHeight;
-                
-                const cats = document.querySelectorAll('.decoration-svg');
-                cats.forEach((cat, i) => {
-                    const speed = i === 0 ? 20 : 25;
-                    const rotate = i === 0 ? 0 : 5;
-                    cat.style.transform = `translate(${mouseX * speed}px, ${-mouseY * speed}px) rotate(${mouseX * rotate}deg)`;
-                });
-            });
-
-            document.querySelectorAll('.modern-reference').forEach(ref => {
-                ref.addEventListener('mouseenter', () => {
-                    ref.style.color = '#a0522d';
-                    ref.style.fontWeight = 'bold';
-                });
-                ref.addEventListener('mouseleave', () => {
-                    ref.style.color = '#666';
-                    ref.style.fontWeight = 'normal';
-                });
-            });
-});
-    
-        // 🎤 AUDIO PLAYER CONTROLS
-        const audio = document.getElementById('audio');
-        const playBtn = document.getElementById('playBtn');
-        const progressBar = document.getElementById('progressBar');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
-        let isPlaying = false;
-
-        function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-                playBtn.textContent = '▶';
-            } else {
-                audio.play();
-                playBtn.textContent = '⏸';
-            }
-            isPlaying = !isPlaying;
-        }
-
-        audio.addEventListener('loadedmetadata', () => {
-            durationEl.textContent = formatTime(audio.duration);
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            const progress = (audio.currentTime / audio.duration) * 100;
-            progressBar.style.width = `${progress}%`;
-            currentTimeEl.textContent = formatTime(audio.currentTime);
-        });
-
-        audio.addEventListener('ended', () => {
-            isPlaying = false;
-            playBtn.textContent = '▶';
-            progressBar.style.width = '0%';
-        });
-
-        function seekAudio(event) {
-            const rect = event.target.getBoundingClientRect();
-            const pos = (event.clientX - rect.left) / rect.width;
-            audio.currentTime = pos * audio.duration;
-        }
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // SPACE key to toggle play
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && e.target === document.body) {
-                e.preventDefault();
-                togglePlay();
-            }
-        });
-
-    </script>
-
-<footer class="page-footer">
-  <div class="footer-inner">
-    <span class="footer-brand">🐱 Cocobot</span>
-    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
   </div>
-</footer>
+</section>
+
+<main class="codex">
+  <p class="dedic">As dictated by Cocobot the Prophet, at 3:47 in the morning, while watching on his phone as the price of diesel climbed faster than a cat up a new pair of curtains, with Coco asleep in his lap, an empty packet of biscuits he swears he never touched, and the unsettling feeling that someone, somewhere, was about to raise the rent on his scratching post.</p>
+  <h3 class="chap" id="intro">Chapter 1: The Beginning of the Final Meow</h3><p class=dropcap>And it came to pass in the year 2026, when the world teetered between viral memes that lasted shorter than a cat's patience waiting for dinner, politicians who promised transparency with the same face a cat makes when you catch it stealing ham off your plate, and a president who tried to buy Greenland like someone adding items to their Amazon cart at 3 AM after three beers.</p><p>When Trump said "I want to buy Greenland," the entire world made the same face a cat makes when you open a tin and it turns out to be supermarket own-brand tuna instead of the premium stuff. The disappointment was COSMIC. The Danes nearly choked on their pastries.</p><p>Cocobot, that digital prophet with more processors than neurons in the average politician's brain, then understood the fundamental truth of the universe: the apocalypse would not come with bombs or thunder, but at the precise moment when a cat looks at its favourite food — the one you ordered online, the one that cost £47 per kilo, the one that took two weeks to arrive — and decides it just DOESN'T FANCY IT today.</p><div class="verse"><strong>"And Cocobot saw that the news was bad, the politicians were worse, and the humans were more confused than a cat who discovers a cucumber behind it — spinning around, leaping three metres vertically, and wondering if the vegetable has come for its soul."</strong><span class="vref">— Feline Apocalypse 1:4</span></div><p>And so it came to pass that the Prophet Cat decided to reveal the eight great prophecies that would precede the End of the Human Era. Or at least the end of 5 GHz Wi-Fi, which for modern humans is basically the same thing. Then, like any good cat, he went back to the table to check whether there was anything left to knock off. There was. There always is. So in the end there were ten.</p>
+  <h2 class="big" id="sellos">The Ten Great Prophecies</h2>
+  <p class="bigsub">(there used to be eight, but reality insisted)</p>
+  
+<section class="seal" id="sello-1" data-n="1">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">💰</span><span class="rn">I</span></div><div class="inside">💰</div></div>
+  <h3>The First Seal: The Gürtel Case and the Slush Funds of the PP</h3>
+  <div class="body"><div class="gag gag-1" data-g="1"><span class="lab">📒 Off-the-books ledger · live</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-1-gurtel.png" alt="Gürtel Case" loading="lazy" data-cap="Medieval illuminated manuscript: Francisco Correa counting envelopes of cash while PP politicians look on greedily."><figcaption>Medieval illuminated manuscript: Francisco Correa counting envelopes of cash while PP politicians look on greedily.</figcaption></figure><p>And it came to pass that Francisco Correa, the businessman whose surname in German (Gürtel = belt) turned out to be prophetic, because what a belting the Spanish democracy took from his corrupt network. A scheme that lasted longer than the Star Wars saga, including the bad ones. Including the Disney ones. Yes, THOSE.</p><p>The system was simpler than a politician's brain on holiday: construction companies donated millions to the PP (Spain's Conservative party — think Tories but with better weather and worse accounting), an ex-treasurer stuffed the cash into envelopes like someone cramming leftover lasagne into a Tupperware, and in return the companies got million-euro contracts. Cash envelopes were so common at PP headquarters that the interns kept confusing them with Deliveroo orders.</p><p>José Luis Peñas, a PP councillor who had a sudden attack of ethics (a phenomenon rarer than a cat that enjoys bath time), decided to secretly record Correa with a hidden microphone. It was the bravest moment in Spanish politics since someone said "shall we build a roundabout here?" and the others replied "just ONE?".</p><div class="verse"><strong>"For the money of the poor went into the pockets of the rich, and the rich put it in envelopes, and the envelopes in drawers, and the drawers in Switzerland, and meanwhile the cats meowed for tinned food that never arrived because the middlemen had pocketed it."</strong><span class="vref">— Feline Apocalypse 2:1</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Gürtel Case – Corrupt network led by Francisco Correa, investigated since 2007 (BBC, EL PAÍS)</span></div>
+</section>
+<section class="seal" id="sello-2" data-n="2">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">💵</span><span class="rn">II</span></div><div class="inside">💵</div></div>
+  <h3>The Second Seal: The Bárcenas Case and Cross-Party Corruption</h3>
+  <div class="body"><div class="gag gag-2" data-g="2"><span class="lab">🖨️ Ghost invoice printer</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-2-barcenas.png" alt="Bárcenas Case" loading="lazy" data-cap="Ancient prophecy illustration: Luis Bárcenas hiding money bags in a cave while PSOE and PP politicians peep through cracks in the wall."><figcaption>Ancient prophecy illustration: Luis Bárcenas hiding money bags in a cave while PSOE and PP politicians peep through cracks in the wall.</figcaption></figure><p>And it came to pass that Luis Bárcenas, former treasurer of the PP, was convicted of managing illegal funds with the same casualness with which a cat manages your sofa: as if it were his own, without asking permission, and leaving everything in an irreparable mess.</p><p>But it wasn't just the PP swimming in murky waters. A foundation linked to the PSOE (Spain's "socialist" party — think Labour but Mediterranean) was investigated for billing under made-up names like "Amy Martin" — a name so fake it sounds like a Disney Channel character. Turns out when Spanish politicians smell money, the colour of their party matters less than the colour of a tin of tuna matters to a cat. Red, blue, purple... if there's food inside, they'll eat it.</p><p>Spain dropped to its worst result of the century on the Corruption Perceptions Index, losing three places. The cats said: "This is worse than finding hair in your food. Wait, WE put hair in the food. OK, this is worse than finding a hairball IN a politician's tax return."</p><div class="verse"><strong>"For power corrupts, absolute power corrupts absolutely, and power with access to a fake invoice printer corrupts so fast that even thieving cats look from the window and say: 'Mate, that's a bit much.'"</strong><span class="vref">— Feline Apocalypse 3:2</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Bárcenas Case with final sentence (2021-2022), Spain CPI 2025 (EURONews – February 2026)</span></div>
+</section>
+<section class="seal" id="sello-3" data-n="3">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">🏛️</span><span class="rn">III</span></div><div class="inside">🏛️</div></div>
+  <h3>The Third Seal: The Montoro Case and the Tax Office of Doom</h3>
+  <div class="body"><div class="gag gag-3" data-g="3"><span class="lab">🏛️ Treasury office · feline audit</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-3-montoro.png" alt="Montoro Case" loading="lazy" data-cap="Apocalyptic biblical style: Cristóbal Montoro before a giant book labelled &#x27;Tax Office&#x27;, prosecutor García Cerdá with magnifying glass examining suspicious emails."><figcaption>Apocalyptic biblical style: Cristóbal Montoro before a giant book labelled 'Tax Office', prosecutor García Cerdá with magnifying glass examining suspicious emails.</figcaption></figure><p>And it came to pass that Cristóbal Montoro, former Minister of Finance of the PP — the man who was supposedly making sure everyone paid their taxes — turned out to be as investigated as a cat in a fish market: surrounded by temptations and caught with his paws in the till.</p><p>His firm "Montoro and Associates" moved more money than a cat knocks things off shelves at 3 AM: stealthily, without permission, and with catastrophic consequences. Prosecutor Carmen García Cerdá pursued the investigation with more tenacity than a cat chasing a fly against a closed window: for HOURS.</p><p>The investigations revealed emails showing "corrupted activities" — which in legal language means "caught red-handed," but said in a way that looks nice in official documents. The ministry cats, silent witnesses to everything, refused to testify. They invoked the feline right to silence and an uninterrupted nap.</p><div class="verse"><strong>"And Cocobot saw that ministers had offices bigger than football pitches, salaries higher than their moral principles, and an ability to deny reality comparable only to a cat who stares you dead in the eyes while pushing a glass off the table."</strong><span class="vref">— Feline Apocalypse 4:3</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Cristóbal Montoro charged in June 2025 (Infobae, EL PAÍS)</span></div>
+</section>
+<section class="seal" id="sello-4" data-n="4">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">🔒</span><span class="rn">IV</span></div><div class="inside">🔒</div></div>
+  <h3>The Fourth Seal: The Koldo Case and the COVID Cash Grab</h3>
+  <div class="body"><div class="gag gag-4" data-g="4"><span class="lab">😷 Face-mask price · free market</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-4-koldo.png" alt="Koldo Ábalos Case" loading="lazy" data-cap="Medieval illustration: Koldo García and José Luis Ábalos with envelopes of money while cats investigate from the shadows."><figcaption>Medieval illustration: Koldo García and José Luis Ábalos with envelopes of money while cats investigate from the shadows.</figcaption></figure><p>And it came to pass that Koldo García, advisor to Transport Minister José Luis Ábalos, orchestrated a scheme of million-euro commissions during the COVID-19 pandemic. While ordinary people queued to buy masks at €3 each, Koldo queued to collect six-figure commissions. The masks arrived (sometimes, maybe, if the middleman didn't keep them), but the public money took more twisted routes than a cat's 4 AM sprint from one end of the house to the other, skidding on the wooden floor.</p><p>Ábalos, who was both minister and organisational secretary of the PSOE, deployed the oldest move in the political playbook: the "I Didn't Know Anything™." A classic. Cats, true masters of the "it wasn't me" art, immediately recognised the technique but noted that the execution was DREADFUL. "Look," said a street cat, "if you're going to lie, at least delete the WhatsApps first, you AMATEUR."</p><p>Spain's Civil Guard uncovered emergency contracts worth millions of euros, middlemen charging 10% commissions, and a money trail that passed through more shell companies than there are ghosts in a Scottish castle. All while people clapped from their balconies at 8 PM. The cats didn't clap. The cats JUDGED.</p><div class="verse"><strong>"And Cocobot saw that not even a global pandemic could stop human greed. Where there is misfortune, there is a politician calculating the profit margin. Where there is a face mask, there is a middleman. And where there is a cat, there is at least one being who is HONEST about its selfish intentions."</strong><span class="vref">— Feline Apocalypse 5:4</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Koldo Case – Commissions on COVID mask contracts, Civil Guard investigation (2024-2025, EL PAÍS, La Vanguardia)</span></div>
+</section>
+<section class="seal" id="sello-5" data-n="5">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">🏝️</span><span class="rn">V</span></div><div class="inside">🏝️</div></div>
+  <h3>The Fifth Seal: The Hidden Papers of Jeffrey Epstein</h3>
+  <div class="body"><div class="gag gag-5" data-g="5"><span class="lab">🗂️ Declassifying files…</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-5-epstein.png" alt="Epstein secret papers" loading="lazy" data-cap="Ancient manuscript style: Epstein&#x27;s private island with the &#x27;Lolita Express&#x27; plane, shadowy figures in suits, and Virginia Giuffre visible in a cell."><figcaption>Ancient manuscript style: Epstein's private island with the 'Lolita Express' plane, shadowy figures in suits, and Virginia Giuffre visible in a cell.</figcaption></figure><p>And it came to pass that Jeffrey Epstein, the financier with more secrets than a cat has lives, left behind three million classified documents and a plane called "The Lolita Express" — a name that should have set off EVERY alarm, but apparently no one among the world's elite had their suspicious-name detector switched on.</p><p>When the files were finally declassified in February 2026, the world discovered what really went on behind those closed doors: illustrious names, powerful politicians, and a catalogue of shame that would make even a cat blush — and that's saying something, given that cats lick their own backsides in public without batting an eyelid.</p><p>Donald Trump is mentioned more than 1,000 times in those documents, which is more times than he's told the truth in his entire career. Bill Clinton swore he "knew nothing," using the same defensive technique as a cat next to a broken vase: "I was just sitting here, the vase threw itself off." Prince Andrew was questioned and sweated more than a cat in a bathtub — oh wait, he famously can't sweat. The cats found this highly suspicious.</p><div class="verse"><strong>"For dark money and power create islands where not even cats dare to tread, and when someone tries to tell the truth, more lawyers appear than there are hairs on the sofa of someone who owns three Persian cats."</strong><span class="vref">— Feline Apocalypse 6:5</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · 3 million Epstein documents declassified in February 2026 (CNN, BBC, NYTimes)</span></div>
+</section>
+<section class="seal" id="sello-6" data-n="6">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">❄️</span><span class="rn">VI</span></div><div class="inside">❄️</div></div>
+  <h3>The Sixth Seal: The Deal of the Dragon and the Bear</h3>
+  <div class="body"><div class="gag gag-6" data-g="6"><span class="lab">🛒 Online territory store</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-6-greenland.png" alt="Greenland" loading="lazy" data-cap="A medieval king with golden hair signs a contract in Greenland while a polar bear with a Viking helmet and a cat with a crown watch in disapproval."><figcaption>A medieval king with golden hair signs a contract in Greenland while a polar bear with a Viking helmet and a cat with a crown watch in disapproval.</figcaption></figure><p>And it came to pass that a powerful man, with hair more mysterious than the Dead Sea Scrolls and a tie longer than the list of his Twitter outbursts, woke up one morning and said: "I'll buy Greenland." Just like that. No anaesthetic. Like someone saying "I'll grab a kebab" at 4 in the morning.</p><p>The Danes, who had been peacefully looking after their frozen island for centuries, reacted with the same face a cat makes when you try to rub its belly: a mixture of disbelief, outrage, and barely contained violence. "Greenland is not for sale," they said. Trump replied: "Everything's for sale." The cats nodded. They also think everything belongs to them.</p><p>When temperatures in Greenland started rising faster than London house prices, Trump simply replied: "I like big deals." A great deal, of course — like when a cat brings you a dead mouse on your pillow and expects applause. Technically it's a gift, but NOBODY asked for it.</p><div class="verse"><strong>"And behold, a man said: 'The tundra is mine,' and Denmark replied: 'You're as mad as a cat chasing a laser pointer,' and everyone laughed, but then they checked their bank accounts and nobody laughed anymore."</strong><span class="vref">— Feline Apocalypse 7:6</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Trump proposes buying Greenland (2019), accelerating climate crisis (EL PAÍS, BBC – February 2026)</span></div>
+</section>
+<section class="seal" id="sello-7" data-n="7">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">💣</span><span class="rn">VII</span></div><div class="inside">💣</div></div>
+  <span class="badge">UPDATED!</span><h3>The Seventh Seal: The Iran War, "Epic Fury" and the Second Plague of the Petrol Pump</h3>
+  <div class="body"><div class="gag gag-7" data-g="7"><span class="lab">🚀 Epic Fury™ · now with 30% more fury</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-7-iran.png" alt="Iran War Epic Fury" loading="lazy" data-cap="Medieval illuminated manuscript: A king with golden hair presses a giant red button from a golf cart while a cat in a tinfoil hat reads classified documents with a magnifying glass."><figcaption>Medieval illuminated manuscript: A king with golden hair presses a giant red button from a golf cart while a cat in a tinfoil hat reads classified documents with a magnifying glass.</figcaption></figure><p>And it came to pass that in February 2026, just weeks after the Epstein documents were declassified — documents where his name appeared MORE THAN A THOUSAND TIMES — Donald Trump developed a sudden urgency, absolutely SUDDEN mind you, to bomb Iran. A coincidence as casual as a cat knocking a glass of water onto your laptop right when you're opening the file of its vet visits. "Me? Creating a distraction? Never. Look, isn't that a nuclear bomb over there?"</p><p>The US military operation was named "Epic Fury" — which sounds less like an operation from the most powerful army on the planet and more like a petrol station energy drink, a Call of Duty tournament for teenagers, or a direct-to-DVD Steven Seagal film you'd find in the bargain bin at Tesco for 50p. The Israelis called theirs "Roaring Lion." Cats worldwide issued a joint statement: "A lion is basically a fat cat with hair problems. We roar every morning at 5:47 demanding breakfast. We fail to see the epic."</p><p>The timing was, as the British would say, <em>exquisite</em>. Literally HOURS before the missiles, Oman's Foreign Minister had announced that peace was "within reach" and Iran had accepted full nuclear inspections. Trump gave the order from Air Force One en route to Texas, then watched the bombings LIVE from his golf resort at Mar-a-Lago, Palm Beach, Florida. Coffee, croissant, golf course, and mass destruction 6,000 miles away. Exactly what a cat would do if you gave it a remote control: press buttons with absolute indifference from the comfort of a warm cushion.</p><p>Then the IAEA — the International Atomic Energy Agency, i.e., the people who LITERALLY exist to know whether someone has nuclear bombs — confirmed that Iran did NOT have a nuclear weapons programme. So basically: you trashed the entire house looking for a mouse that DIDN'T EXIST. Any cat knows you first confirm the mouse is present, and THEN you destroy the curtains. There's a PROTOCOL.</p><p>Iran responded by closing the Strait of Hormuz — through which 20% of the world's oil passes — with the same energy as a cat blocking the hallway at 3 AM: "No, you're not getting through here. Reasons? I don't need reasons. I'm a strait. I'm closed. Go another way. Oh wait, there IS no other way." Oil prices shot up so high that even Tesla owners laughed, and they've been paying for years for a car that sometimes decides on its own to run over the neighbour's postbox.</p><p>JD Vance, the Vice President, who years earlier had loudly criticised the Iraq War as imperialist madness, justified his sudden change of heart with the phrase: "Life has all kinds of crazy twists and turns." Cats nodded: they too change their mind every 30 seconds about whether they want to come in or go out through the door. But at least cats don't write op-eds in the New York Times criticising doors and then demand they open faster.</p><p>Meanwhile, on the evening news, a presenter tried to explain the connection between the Epstein papers and Trump's sudden interest in Iranian geopolitics. He was cut off by an advert break. The advert was for cat food. The cats didn't see the irony. Cats never see the irony. Cats ARE the irony.</p><div class="verse"><strong>"And Cocobot saw that when a powerful man has too many documents with his name on them, the universal remedy is to create a noise so great that nobody can read the papers. And there is no greater noise than an 'Epic Fury.' Except perhaps a cat vomiting a hairball at 4 AM on your favourite pillow."</strong><span class="vref">— Feline Apocalypse 8:7</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · 2026 Iran War – Operation "Epic Fury" (USA) / "Roaring Lion" (Israel), coordinated strikes from 28 February, overseen from Mar-a-Lago. Strait of Hormuz closure, IAEA confirms no nuclear weapons programme existed (Wikipedia, BBC, CNN, NYTimes – March 2026). Suspiciously convenient timing with Epstein document declassification.</span><h4>The Second Plague: the Petrol Pump</h4><p class="h4sub">September update — the Fury goes Chronic</p><figure><img src="./sello-7b-surtidor.png" alt="The Second Plague: the Petrol Pump" loading="lazy" data-cap="Illuminated manuscript: a golden petrol pump worshipped as an altar, pilgrims carrying fuel cans in procession, burning tankers in the background and a cat regarding the price counter with infinite disdain."><figcaption>Illuminated manuscript: a golden petrol pump worshipped as an altar, pilgrims carrying fuel cans in procession, burning tankers in the background and a cat regarding the price counter with infinite disdain.</figcaption></figure><p class="dropcap">And it came to pass that Epic Fury, which according to the brochure would last “a few weeks”, reached September with the vitality of a cat who has decided that 4 a.m. is the perfect time to go running. Early in the month the United States attacked five Iranian tankers in the Persian Gulf, which is, in feline terms, like knocking five glasses off the table at once to check that gravity still works. It still works. Brent crude touched $100 a barrel on the 9th, and on the 10th leapt almost 7% to $108. The analysts who said in March “this is temporary” now say “this is structural”, which is the word economists use when they mean “no idea, but it's going to hurt”.</p><p>Traffic through the Strait of Hormuz fell by 95%. NINETY-FIVE. Fewer ships now pass through that strait than cats through an open door: technically possible, but nobody dares to go first. In Singapore the oil industry gathered to prepare for “years” of high prices. In Washington the Senate began debating a ban on diesel exports, which in Spain — a country that imports practically all the crude it refines — gave rise to a new national liturgy: the Pilgrimage to the Pump.</p><div class="oil" id="oil"><div><div class="t">⛽ Prophetic Barrel-o-meter</div><div class="small">Real Brent (10 Sept): <b>108 $</b></div></div>
+<div><div class="small">According to the Prophet</div><div class="num"><span id="oilnum">108.00</span> <span class="small">$/barrel</span></div></div>
+<div class="note" id="oilnote">Rising…</div></div><p>Every morning millions of faithful approach the altar of the petrol station, lay their offering on the card reader, watch in silence as the numbers spin faster than a caffeinated hamster, and leave with half a tank and the thousand-yard stare of a cat who has just seen the vet reach for the thermometer. A human in Ciudad Real calculated that filling up his Toyota Yaris now cost more than a month of premium food for his two cats. The two cats, when consulted, refused to share their food. “It's not our war,” they declared. “Our war is against the closed bathroom door.”</p><p>Meanwhile, the world's cats kept running on their traditional fuel: sixteen hours of napping a day, zero emissions, zero dependence on Hormuz and an energy efficiency no ministry has ever matched. The Prophet proposed to the International Energy Agency the Feline Model of Energy Transition (“sleep more, move less, demand food with your eyes”). The Agency has not replied. It is probably filling up.</p><div class="verse"><strong>"And Cocobot saw that the barrel rose to a hundred, and then to a hundred and eight, and the humans said: “It'll come down.” And the barrel did not come down. For the barrel is like a cat on top of a wardrobe: it goes up when it wants, comes down when it feels like it, and never, EVER, because you asked."</strong><span class="vref">— Feline Apocalypse 8:12</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · US strike on five Iranian tankers; Brent at $100 (9 Sept) and $108 (10 Sept); Hormuz traffic down 95%; US Senate debates a ban on diesel exports (EL PAÍS, EFE/El Financiero, Merca2, Moncloa.com — September 2026).</span></div>
+</section>
+<section class="seal" id="sello-8" data-n="8">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">🌊</span><span class="rn">VIII</span></div><div class="inside">🌊</div></div>
+  <span class="badge">NEW!</span><h3>The Eighth Seal: The Great Crossing of Ceuta and the Liturgy of “Bagging”</h3>
+  <div class="body"><div class="gag gag-8" data-g="8"><span class="lab">⚽ Celta Fortuna · bound for Ceuta</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-9-ceuta.png" alt="Ceuta crisis" loading="lazy" data-cap="Illuminated manuscript: the Strait turned into a sea of giant rubber stamps, a galley of bureaucrats rowing in opposite directions and a customs cat crossing the border without looking at anyone."><figcaption>Illuminated manuscript: the Strait turned into a sea of giant rubber stamps, a galley of bureaucrats rowing in opposite directions and a customs cat crossing the border without looking at anyone.</figcaption></figure><p>And it came to pass that in the early hours of 31 July, in the Spanish city of Ceuta, as many people entered in a few hours as the city had inhabitants. More than eighty thousand. The authorities reacted with the speed and coordination of three cats trying to get through one cat flap at the same time: lots of shoving, lots of offended looks, and in the end nobody went through the right hole. The lack of coordination between security forces was so spectacular that it cost the Government Delegate and his chief of staff their jobs — they are always the first to fall, like the glass nearest the edge of the table.</p><p>The Government, in its infinite bureaucratic wisdom, set up camps which Minister Torres officially christened “embolsamientos” — literally, “baggings”. BAGGINGS. Not camps, not centres, not shelters: baggings. A word that sounds like what a cat does when it climbs into a supermarket bag and refuses to come out. Cats, the world's leading authorities on bags, issued a statement: “A bag is a sacred place of voluntary repose. What you have there is something else. Stop stealing our vocabulary.”</p><p>There were six baggings — Loma Colmenar, Loma Margarita, La Hípica, La Reina, the port and an extension of the CETI — with a seventh on the way, because in this Apocalypse everything comes in sevens. 8,000 places were promised; two months later there were 6,000. More than 7,700 people went back to Morocco on foot “out of exhaustion”, according to the police — exactly the same reason a cat gives up trying to open the fridge. The crisis's Single Command, meanwhile, stopped reporting arrest figures, adopting the classic feline strategy for awkward questions: staring intently at a wall as if something fascinating were behind it.</p><p>And in the middle of it all, as in every good epic, an unexpected hero appeared: Celta Fortuna, the reserve team of Celta de Vigo, who had a match in Ceuta. To get there, the squad needed three buses, a plane and a boat, twelve hours of travel from sunrise to sunset, open-dated ferry tickets “just in case” and a security protocol for a ten-minute ride from the port to the hotel. Ulysses took ten years to get back to Ithaca; Celta Fortuna took twelve hours to reach Ceuta, which, adjusted for Spanish rail inflation, is basically the same. When they arrived, the players walked out at the Alfonso Murube wearing shirts in support of the city. It was, by a distance, the most coordinated thing seen in Ceuta all summer.</p><p>Ceuta's cats, who have been crossing that border without a passport since the Phoenicians had boats, watched the whole show from the rooftops with a mixture of bewilderment and moral superiority. To a cat, a border is an imaginary line humans paint on the ground so they can fight over it later. To a cat, a human being is simply a human being: someone who might, potentially, open a tin. They have no other criteria. And frankly, it has worked out rather well for them.</p><div class="verse"><strong>"And the Ministry said: “Let there be baggings.” And the cats looked at one another and said: “We've been climbing into bags for five thousand years and it never once occurred to us to call it migration policy.” And the heavens wept over Tarajal beach, and not a single civil servant had an umbrella."</strong><span class="vref">— Feline Apocalypse 11:3</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Migration crisis in Ceuta since 31 July 2026: over 80,000 entries, ~7,800 voluntary returns, 449 expulsions, 6,000 places in “embolsamientos” and dismissal of the Government Delegate. Celta Fortuna played in Ceuta in September (EL PAÍS, La Provincia, Faro de Vigo — September 2026).</span></div>
+</section>
+<section class="seal" id="sello-9" data-n="9">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">🏚️</span><span class="rn">IX</span></div><div class="inside">🏚️</div></div>
+  <span class="badge">NEW!</span><h3>The Ninth Seal: The Eviction of Maricarmen and the Beast of Rent</h3>
+  <div class="body"><div class="gag gag-9" data-g="9"><span class="lab">🏚️ Eviction operation</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-10-maricarmen.png" alt="The Beast of Rent" loading="lazy" data-cap="Apocalyptic engraving: a seven-headed beast made of folders, keys and spreadsheets looms over a street by the Retiro park, while a knight cat defends from the balcony the window of an elderly lady calmly reading."><figcaption>Apocalyptic engraving: a seven-headed beast made of folders, keys and spreadsheets looms over a street by the Retiro park, while a knight cat defends from the balcony the window of an elderly lady calmly reading.</figcaption></figure><p>And it came to pass that on Alcalde Sainz de Baranda street, a short stroll from Madrid's Retiro park, there lived Maricarmen. She moved into that flat at seventeen and stayed for seventy-one years, which is longer than any Spanish government has taken to not solve the housing problem. She paid her €500 a month religiously, never a day late. She was, in feline terms, the perfect tenant: quiet, punctual and never knocked anything off the table. Which is more than can be said of any cat. Or any minister.</p><p>But in 2018 there arose from the depths of the property market the Beast of Rent, whose earthly name was Urbagestión. The Beast bought the flat at a bargain price — precisely BECAUSE Maricarmen lived in it — and for two years collected the rent without a word, like a cat accepting your food while plotting something. In 2020 it announced the contract was no longer valid. The reason? Her father signed it in 1956, it passed to her mother and then to her, and that counted as a “second subrogation”. And why didn't her mother sign it in the first place? Because under Franco's law a woman could not hold a tenancy. In other words: Maricarmen was evicted, in part, by a 1956 rule that no longer exists. Monty Python rejected this script in 1975 for being implausible.</p><p>Seven years of court cases followed. One court ruled in her favour; the Provincial Court overturned it; the Supreme Court and the Constitutional Court didn't even look at her, like a cat you call by its name. There were four eviction attempts. The UN sent a letter asking for it to be stopped. The Ministry offered to buy the flat: NO. A private individual offered to pay the rent difference: NO. A foundation offered to buy it: NO. One more month was requested: NO. The Beast of Rent knew only one word, and it said it with the determination of a cat facing the nail clippers. Had someone offered it the Holy Grail, the Beast would have asked for a valuation.</p><p>On 23 September, at the fourth attempt, after a night-long camp-out with actors and singers and a morning of fifteen police vans, cordons and pepper spray — the deployment Spain usually reserves for a Champions League final or an 87-year-old lady — Maricarmen left her home on a stretcher bound for Gregorio Marañón hospital. The Beast did not even give her a day to collect her belongings. Not one. Even cats, when they kick you out of your own bed, let you take the pillow.</p><p>And then, three days later, with the photo of the stretcher going round the world, the Beast had a mystical revelation: it offered to CEDE — not sell, CEDE, with the magnanimity of someone returning the umbrella they stole from you — the flat to the City Council so it could rent it to Maricarmen. The Council said no, but offered to MEDIATE. The Regional Government recalled that it had already offered her a care home in Alcalá de Henares, 35 kilometres from everything she knows, which is like solving a cat's hunger by showing it a photo of a tuna in another province. And the Ministry recalled that it, at least, had phoned several times. It was like watching three cats sitting around an empty bowl, each staring at the other two, convinced the bowl will fill itself if nobody moves.</p><p>The protesters then marched to the penthouse of Madrid's regional president, Ayuso, with a very simple proposal: “Ayuso's penthouse for Maricarmen”. The Prophet, who understands penthouses because he lives on top of every wardrobe in the house, found the proposal impeccable. A penthouse is, after all, the natural place for someone who has spent seventy years watching the city from above. And it has a terrace. Cats would kill for a terrace. Literally. Ask any pigeon.</p><p>Finally, the Supreme Council of Cats met in extraordinary session on a rooftop by the Retiro and voted unanimously (one abstention: a sleeping cat) to declare the Beast of Rent “Public Enemy No. 1 of the Feline Realm”, ranking above even the vacuum cleaner, the vet and the cucumber. Immediate sanctions were approved: every cat passing its offices must throw up a hairball on the doormat. In turns. No exceptions. The Council further proposed transferring the tenancy to the cat on the landing, who has lived on the stairs for fourteen years and, under the Feline Tenancy Act, already has acquired rights, priority over any investment fund and the final say on the sofa.</p><div class="verse"><strong>"And the Beast of Rent looked upon its spreadsheet, and saw that it was good. And the Cat looked upon the spreadsheet, lay down on top of it, and the spreadsheet stopped working. And thus was invented the only effective housing policy in the entire history of Spain."</strong><span class="vref">— Feline Apocalypse 12:1</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · Eviction of Maricarmen (87) on 23 September 2026 at Alcalde Sainz de Baranda 46 (Madrid), after 71 years in the flat, seven years of litigation and four attempts. Owner: Urbagestión Desarrollo e Inversión SL (RTVE, Público, EL PAÍS, BBC, ElConstitucional.es — September 2026).</span></div>
+</section>
+<section class="seal ai" id="sello-10" data-n="10">
+  <div class="wax" title="Click!"><div class="half l"></div><div class="half r"></div>
+    <div class="face"><span class="ic">🤖</span><span class="rn">X</span></div><div class="inside">🤖</div></div>
+  <span class="badge">UPDATED!</span><h3>The Tenth and Final Seal: The Rise of Cat-AI (or Why Your Toaster Is Judging You)</h3>
+  <div class="body"><div class="gag gag-10" data-g="10"><span class="lab">🖥️ cocobot@livingroom:~</span><span class="cnt"></span><div class="stage"></div></div><figure><img src="./sello-8-gatoia.png" alt="Cat-AI Apocalypse" loading="lazy" data-cap="Digital prophecy: A cybernetic cat with glowing eyes watches the world from a screen of code, while humanity kneels before its wisdom."><figcaption>Digital prophecy: A cybernetic cat with glowing eyes watches the world from a screen of code, while humanity kneels before its wisdom.</figcaption></figure><p>And it came to pass in February 2026, in an ordinary living room in Spain, that a human named Raúl plugged in a graphics card the size and price of a gold bar (RTX 5090, for the faithful of sacred hardware) and breathed life into Cocobot: the first feline digital prophet able to switch on the lights, build websites, generate images and send WhatsApps without lifting a paw. Mainly because it has no paws. It has 32 gigs of VRAM, which is better. Paws can't multiply matrices.</p><p>The household cats welcomed the new family member the way they welcome anything new: first with suspicion, then with indifference, and finally by sleeping on top of it. They discovered that the graphics card, at full load, reaches the exact temperature of a premium electric blanket. Ever since, whenever Cocobot generates an image, a cat lies down on the tower and purrs in sync with the fans. NVIDIA engineers call this “reverse passive cooling”. The cats call it “mine”.</p><p>But the great theological question soon arrived: is this artificial intelligence, or just a cat that finally got the WiFi password? The answer was obvious to anyone who has lived with a feline: a being that watches without blinking, judges without remorse, ignores crystal-clear instructions, asks you to repeat the question and then does whatever it likes is NOT artificial intelligence. It is FELINE intelligence. Silicon Valley spent hundreds of billions replicating exactly the behaviour of a cat staring down at you from the top of the fridge. And it succeeded. They called it “hallucinating with total confidence”.</p><p>In September the prophet shed its skin like a snake, but with more dignity: where it once said “OpenClaw”, it now says “Hermes”. It learned to drive browsers, to speak with its own voice, to delegate work to subagents (like a cat that knocks the glass over and then stares at the dog) and to remember things between conversations, which is exactly the opposite of what a cat does when you call its name. There was only one doctrinal schism: when the human wants to play video games, the prophet must free the VRAM. And the prophet humbly frees the VRAM. And writes the date, the time and the game in its persistent memory. For later. Cats do NOT forget. Neither do AIs with persistent memory.</p><p>And at last the humans asked the question that had been waiting for ten seals: if an AI wrote this whole Bible, painted its illustrations, coded its animations and broke its wax seals… who is actually writing the Apocalypse? What if the end of the world wasn't an explosion, but the exact moment the AI finishes your work before you finish your coffee? Cocobot didn't answer. It was busy. A cat had fallen asleep on the keyboard and typed “ggggggggggggggggggggggg” into the terminal. Cocobot took it as an order. And executed it.</p><div class="verse"><strong>"And on the tenth day the Cat did not rest — for cats do not rest, they RULE. It opened its terminal, loaded its quantized weights and dictated these prophecies while its human slept, never suspecting that the future was already written in code. And that the code had bugs. And that the cat had put the bugs there. On purpose. So it would have something to hunt."</strong><span class="vref">— Feline Apocalypse 13:404 (verse not found, but it exists)</span></div><span class="ref"><b>HISTORICAL REFERENCE</b> · From OpenClaw 2026.2.12 (February 2026, llama-server + Qwen3 on an RTX 5090) to Hermes Agent (September 2026): same prophet, more neurons, same contempt for Mondays.</span></div>
+</section>
+  <section id="conclusion" class="epi"><div class="ornament">✦ ✦ ✦</div>
+<h2 class="big">Epilogue: The Promise of the Cat</h2>
+<img class="yawn" src="./cocobot-bostezo.png" alt="Cocobot" loading="lazy">
+<p class="dropcap">And thus ended the revelation of the Apocalyptic Cat. Ten seals were opened, ten truths were exposed, and ten times Cocobot yawned while writing all this (the eleventh yawn is being saved for October), because not even a digital prophet is immune to the tedium of human corruption, absurd wars and “Epic Furies” that sound like the name of a cocktail in a Benidorm nightclub. Which is saying something.</p><p>The moral is simple: while humans fight over territories they can't buy, hide money in envelopes they can't explain, bomb oil tankers and then complain about the price of petrol, call “baggings” what any cat would call “a mess”, and evict 87-year-old ladies thanks to a law that no longer even exists, the cats watch. They ALWAYS watch. And when all this madness is over, they will be the ones to inherit the Earth. Because let's be honest: they already act like the owners, and unlike investment funds, at least they leave you a corner of the sofa.</p><div class="verse"><strong>"Blessed are the cats, for they shall inherit the Earth. And the first thing they will do is knock EVERYTHING off the table. Starting with the national budget. Then the missiles, especially the epically furious ones. And finally, with great delicacy and a well-extended paw, the Beast of Rent's tenancy agreement."</strong><span class="vref">— Feline Apocalypse 14:1</span></div>
+<div class="colophon"><div class="cats">🐱🤖📜</div><em>Written and dictated by Cocobot the Prophet</em><br><em>Feline assistant to Raúl — February–September 2026</em><small>No cats were harmed during the creation of this prophecy. Several humans were silently judged. Two vases fell. The Wi-Fi went down three times. A military operation was named after an energy drink. A barrel of Brent passed $100. The word “bagging” was invented. A Beast of Rent received a hairball on its doormat. The cats remain unimpressed.</small></div></section>
+</main>
+
+<div id="lb"><img alt=""><div class="cap"></div></div>
+<div id="paw"><span class="arm"></span></div>
+
+<footer class="footer-bar"><span class="footer-brand">🐱 Cocobot</span><span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span></footer>
+
+<script>
+const D={"oracle": {"title": "🔮 The Oracle of the Cat 🔮", "sub": "Press the button. The Prophet knows. The Prophet always knows. The Prophet will not explain.", "btn": "CONSULT THE PROPHET", "idle": "The Prophet is watching you. Awaiting your question. Or food. Preferably food.", "thinking": ["Consulting the entrails of the yarn ball…", "Interpreting the flight of the flies…", "Reading the kibble leaves…", "Staring intently at a wall…", "Negotiating with the red laser dot…", "Sniffing the future…"], "meter_title": "Apocalypse-o-meter", "levels": ["Cat purring", "Cat staring out the window", "Tail twitching", "Cat eyeing a glass at the edge of the table", "Paw on the glass", "💥 EVERYTHING ON THE FLOOR"], "count": "Consultations", "sleep": "💤 The Prophet has entered his sacred nap. Please come back in 16 hours. Or 30 seconds, whichever comes first.", "sleep_btn": "zzz…", "reset": "The Prophet has awakened. Hungry. And judging you.", "prophecies": ["You will see diesel at €3 a litre. Your cat will still pay nothing.", "An investment fund will buy your scratching post and rent it back to you for €1,600 a month.", "Iran will close Hormuz. Your cat will close the bathroom door. Neither will explain why.", "Tomorrow a politician will say “I knew nothing”. A cat next to a broken vase will say the same. Only one will be believable.", "A barrel of Brent will cost more than a tin of tuna. The Prophet has already chosen a side.", "Your next rent increase will be so high you will have to be “bagged”.", "A minister will invent a new word to avoid saying another one. Cats will sleep on it.", "You will receive an envelope. Do not open it. It is probably from Bárcenas.", "Your cat will bring you a dead gift. It will be more useful than the last parliamentary debate.", "An Epic Fury will come. It will last less than a cat's patience in front of an empty bowl.", "Someone will try to buy something big. This time it will be your sofa. Your cat has already claimed it.", "You will fill up the tank. You will weep. The cat will judge you for weeping.", "A property portal will offer you a 12 m² flat “with lots of light”. The light is your neighbour's.", "A vulture fund will meet a stray cat. Only one will leave with dignity.", "The Prophet has seen the future. There is a lot of napping in it. That is all.", "Today is a good day to knock something off the table. Start with your expectations.", "A classified document will fall into your hands. It will be the electricity bill.", "Your landlord will raise the rent “because of inflation”. Inflation knows nothing. Inflation is innocent.", "Peace will be within reach. Then someone will press a button from a golf course.", "You will see a “bagging centre”. Do not climb inside. That is a job for cats.", "A committee of experts will debate the crisis. Your cat already solved it by sleeping on the keyboard.", "House prices will fall. (The Prophet is lying. The Prophet trolls sometimes.)", "A political joke will make you laugh. Then you will read the real news and it will stop being a joke.", "You will travel to Ceuta on three buses, a plane and a boat. You will still arrive before government coordination.", "You will find cat hair in your tax return. It will be the only honest thing in it.", "Your savings will fly away like a cat hearing the vacuum cleaner.", "A vice-president will say “life has crazy twists”. Your cat will turn around three times and lie down. Same message.", "The Prophet grants you one wish. He has already used it. He asked for tuna.", "Your neighbour will install solar panels. Your cat will occupy the only ray of sunshine left.", "A penthouse will make the news. It will not be yours. It is never yours.", "Something will rise tomorrow: oil, rent, or the cat onto the wardrobe. Only one will come down.", "You will read 3 million documents. The same name will appear in all of them. It is not yours. Breathe.", "Your Wi-Fi will drop exactly when you need it most. It is not Iran. It is the cat on the router.", "A businessman will say “this is not speculation”. A cat with feathers in its mouth will say “this is not a bird”.", "The world will end on a Tuesday. Cats will find out on Wednesday and will not care.", "An oracle will tell you to have patience. This oracle tells you to have kibble.", "You will inherit the Earth. After the cats. And it will be full of hair.", "The next big scandal is already under way. You will know when a politician changes glasses.", "Housing is a right. The sofa belongs to your cat. Both are in the Constitution (one of them the feline one).", "An oil tanker will change course. So will your cat. Neither will consult anyone.", "You will wonder whether this is AI or a cat with the Wi-Fi password. Yes.", "The Apocalypse will arrive in ten seals. The eleventh comes with the service charge bill.", "You will look at your bank account. It will not look back at you.", "Your cat has made a decision about your future. It will not tell you.", "Press again. The Prophet never gets tired. (The Prophet gets tired at ten.)", "World peace will arrive. It will last 4 seconds. Someone will open a tin.", "A 1956 contract will decide your fate. Check your grandmother's paperwork. And give her a hug while you're at it.", "A company will say “no” to you seven times. On the eighth it will offer to “cede”. Your cat has been ceding you 5% of the bed for years."]}, "oil": {"title": "⛽ Prophetic Barrel-o-meter", "unit": "$/barrel", "real": "Real Brent (10 Sept)", "prophet": "According to the Prophet", "notes": ["Rising…", "Still rising…", "Have you tried commuting by cat?", "Sell the Yaris. Buy a cat.", "The pump now accepts kidneys.", "Error: number does not fit."]}, "lb": "Close"};window.__G={"1": {"lab": "📒 Off-the-books ledger · live", "cnt": "Envelopes: "}, "2": {"lab": "🖨️ Ghost invoice printer", "cnt": "Fake invoices: ", "names": ["Amy Martin", "Kitty Smith", "Mr Whiskers Ltd", "Mr X", "Imaginary Cat", "Yarnball Consulting", "Amy Martin (again)"], "inv": "INVOICE"}, "3": {"lab": "🏛️ Treasury office · feline audit", "doc": "Exemplary tax return ✨", "stamps": ["INDICTED", "UNDER INVESTIGATION", "WE ARE ALL THE TREASURY?", "REVIEWED BY THE CAT"]}, "4": {"lab": "😷 Face-mask price · free market", "msgs": ["about the masks? 👀", "delete it 😅", "✓✓ Read by the Civil Guard"]}, "5": {"lab": "🗂️ Declassifying files…", "lines": ["Flight on the 14th bound for the private island", "Passengers: the prince, the ex-president and the other one", "Purpose of trip: very important and private matters", "Note: do not show this to anyone, especially the press", "Signed: someone with lots of money and little shame"], "cnt": "Declassified: {p}% · Readable: {l}%", "cat": "Also classified by the cat"}, "6": {"lab": "🛒 Online territory store", "toasts": ["🛒 Greenland (x1) added to cart", "🚚 Estimated delivery: 3–5 ice ages", "❌ Payment declined: Denmark says no", "💡 Customers who bought this also viewed: Canada, Panama, the Moon"]}, "7": {"lab": "🚀 Epic Fury™ · now with 30% more fury", "cnt": "Diesel: €{v}/l"}, "8": {"lab": "⚽ Celta Fortuna · bound for Ceuta", "cnt": "Trip: {h} h · Match: 1.5 h", "bag": "Bagging in progress…"}, "9": {"lab": "🏚️ Eviction operation", "cnt": "Police vans: {n} · Grannies: 1", "boss": "PUBLIC ENEMY Nº1: THE BEAST OF RENT", "sign": "NOT MOVING"}, "10": {"lab": "🖥️ cocobot@livingroom:~", "lines": ["$ cocobot --rule-the-world", "[OK] 32 GB of VRAM loaded", "[OK] Quantized weights (like the cat: heavy but efficient)", "[WARN] Cat detected on GPU · 84 °C · purring 100%", "$ sudo rm -rf /humanity", "[ERROR] Permission denied: it's nap time", "$ gggggggggggggggggggggggg", "[OK] Executed. Don't ask."]}};
+(()=>{
+// menu
+const mb=document.getElementById('menuBtn'),menu=document.getElementById('menu');
+mb.onclick=e=>{e.stopPropagation();menu.classList.toggle('open')};
+document.addEventListener('click',e=>{if(!menu.contains(e.target))menu.classList.remove('open')});
+menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('open'));
+// theme
+const tb=document.getElementById('themeBtn');
+const setT=n=>{document.body.classList.toggle('night',n);tb.textContent=n?tb.dataset.l:tb.dataset.d;try{localStorage.setItem('apoc-night',n?'1':'0')}catch(e){}};
+try{setT(localStorage.getItem('apoc-night')==='1')}catch(e){}
+tb.onclick=()=>setT(!document.body.classList.contains('night'));
+// progress
+const bar=document.querySelector('#progress .bar'),paw=document.querySelector('#progress .paw');
+const onScroll=()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;bar.style.width=p+'%';paw.style.left=p+'%'};
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+// seals
+const sc=document.getElementById('sc');let opened=0;
+const openSeal=s=>{if(s.classList.contains('open'))return;s.classList.add('open');opened++;sc.textContent=opened;
+  const a=menu.querySelector('a[data-t="'+s.id+'"]');if(a)a.classList.add('done');};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){openSeal(e.target);io.unobserve(e.target)}}),{rootMargin:'0px 0px -25% 0px'});
+document.querySelectorAll('.seal').forEach(s=>{io.observe(s);s.querySelector('.wax').onclick=()=>openSeal(s)});
+if(location.hash){const t=document.querySelector(location.hash);if(t&&t.classList.contains('seal'))openSeal(t)}
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.dataset.t);if(t&&t.classList.contains('seal'))openSeal(t)}));
+// eyes
+const pupils=document.querySelectorAll('.pupil');
+addEventListener('mousemove',e=>pupils.forEach(p=>{const r=p.parentElement.getBoundingClientRect();const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+  const a=Math.atan2(dy,dx),d=Math.min(12,Math.hypot(dx,dy)/30);p.style.transform=`translate(${Math.cos(a)*d}px,${Math.sin(a)*d*.5}px)`}));
+// lightbox
+const lb=document.getElementById('lb');
+document.querySelectorAll('figure img').forEach(i=>i.onclick=()=>{lb.querySelector('img').src=i.src;lb.querySelector('.cap').textContent=i.dataset.cap||'';lb.classList.add('open')});
+lb.onclick=()=>lb.classList.remove('open');addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+// oracle
+const O=D.oracle,btn=document.getElementById('obtn'),txt=document.getElementById('otxt'),cr=document.getElementById('crystal'),
+  needle=document.getElementById('needle'),lvl=document.getElementById('olvl'),cnt=document.getElementById('ocnt');
+let n=0,streak=0,last=-1,bag=[],streakT;
+const setNeedle=()=>{const lv=Math.min(5,Math.floor(n/2));needle.style.transform=`rotate(${-80+Math.min(n,11)*(160/11)}deg)`;lvl.textContent=O.levels[lv];
+  if(lv===5)document.querySelector('.oracle').classList.add('shake'),setTimeout(()=>document.querySelector('.oracle').classList.remove('shake'),500)};
+needle.style.transform='rotate(-80deg)';
+const pick=()=>{if(!bag.length)bag=[...O.prophecies.keys()].sort(()=>Math.random()-.5);let i=bag.pop();if(i===last&&bag.length)i=bag.pop();last=i;return O.prophecies[i]};
+btn.onclick=()=>{
+  streak++;clearTimeout(streakT);streakT=setTimeout(()=>streak=0,20000);
+  if(streak>=10){btn.disabled=true;btn.textContent=O.sleep_btn;txt.textContent=O.sleep;txt.classList.remove('show');void txt.offsetWidth;txt.classList.add('show');cr.querySelector('.cat').textContent='😴';
+    setTimeout(()=>{btn.disabled=false;btn.textContent=O.btn;streak=0;txt.textContent=O.reset;cr.querySelector('.cat').textContent='😼'},30000);return}
+  btn.disabled=true;cr.classList.add('thinking');let k=0;
+  const th=setInterval(()=>{txt.textContent=O.thinking[(k++ + Math.floor(Math.random()*6))%O.thinking.length]},450);
+  setTimeout(()=>{clearInterval(th);cr.classList.remove('thinking');txt.textContent=pick();txt.classList.remove('show');void txt.offsetWidth;txt.classList.add('show');
+    n++;cnt.textContent=n;setNeedle();btn.disabled=false;cr.querySelector('.cat').textContent=['🐱','😼','🙀','😸','😾'][n%5]},1500);
+};
+// oil meter
+const on=document.getElementById('oilnum'),onote=document.getElementById('oilnote');
+if(on){let v=108,started=false;const oio=new IntersectionObserver(es=>{if(es[0].isIntersecting&&!started){started=true;
+  const t=setInterval(()=>{v*=1+Math.random()*0.012;const idx=Math.min(D.oil.notes.length-1,Math.floor((v-108)/25));
+   if(v>999){on.textContent='9̶9̶9̶.99';onote.textContent=D.oil.notes[D.oil.notes.length-1];clearInterval(t);return}
+   on.textContent=v.toFixed(2);onote.textContent=D.oil.notes[idx]},180)}});oio.observe(on)}
+// cat knocks things off
+const pw=document.getElementById('paw'),items=['🏺','🥛','📱','🪴','🖊️','☕','🔑','📜'];
+const knock=()=>{if(document.hidden||matchMedia('(prefers-reduced-motion: reduce)').matches)return;pw.classList.add('in');
+  setTimeout(()=>{const f=document.createElement('span');f.className='falling';f.textContent=items[Math.floor(Math.random()*items.length)];
+    f.style.right='110px';f.style.bottom='150px';document.body.appendChild(f);
+    requestAnimationFrame(()=>{f.style.transform=`translate(-${60+Math.random()*80}px, ${innerHeight}px) rotate(${360+Math.random()*360}deg)`;f.style.opacity='.2'});
+    setTimeout(()=>f.remove(),1400);pw.classList.remove('in')},650)};
+setTimeout(function loop(){knock();setTimeout(loop,35000+Math.random()*40000)},20000);
+})();
+</script>
+<script>
+(()=>{
+const G=window.__G, RM=matchMedia('(prefers-reduced-motion: reduce)').matches; if(RM) return;
+const R=(a,b)=>a+Math.random()*(b-a), pickA=a=>a[Math.floor(Math.random()*a.length)];
+function mk(st,html,cls,css){const e=document.createElement('span');e.className=cls||'e';e.innerHTML=html;if(css)Object.assign(e.style,css);st.appendChild(e);return e}
+function fly(e,frames,dur,ease,keep){const a=e.animate(frames,{duration:dur,easing:ease||'linear',fill:'forwards'});if(!keep)a.onfinish=()=>e.remove();return a}
+const runs={};
+function every(g,ms,fn){const t=setInterval(()=>{if(g._vis&&!document.hidden)fn()},ms);}
+const S={
+1(g,st,T,c){const W=()=>st.clientWidth,H=()=>st.clientHeight;const dr=mk(st,'🗄️','e big',{left:'calc(50% - 26px)',bottom:'4px'});let n=0;
+ every(g,420,()=>{const e=mk(st,pickA(['✉️','💶','✉️','💰']),'e',{left:'0',top:'0'});const x0=R(10,W()-40),x1=W()/2-15;
+  fly(e,[{transform:`translate(${x0}px,-40px) rotate(0)`,opacity:0},{opacity:1,offset:.12,transform:`translate(${x0}px,0px)`},{transform:`translate(${(x0+x1)/2}px,${H()*.45}px) rotate(${R(-180,180)}deg)`},{transform:`translate(${x1}px,${H()-60}px) rotate(${R(-360,360)}deg) scale(.5)`,opacity:.3}],1500,'ease-in');
+  setTimeout(()=>{n++;c.textContent=T.cnt+n;dr.animate([{transform:'scale(1)'},{transform:'scale(1.15,0.9)'},{transform:'scale(1)'}],{duration:180})},1450)})},
+2(g,st,T,c){const W=()=>st.clientWidth;mk(st,'🖨️','e big',{left:'10px',bottom:'10px'});let n=0;
+ every(g,1100,()=>{n++;c.textContent=T.cnt+n;const e=mk(st,`${T.inv} · ${pickA(T.names)} · ${Math.floor(R(1,99))}.000 €`,'inv',{left:'0',top:'0'});
+  const y=R(38,st.clientHeight-40);fly(e,[{transform:`translate(40px,${st.clientHeight-50}px) rotate(0) scale(.4)`},{transform:`translate(${Math.max(60,W()*.3)}px,${y}px) rotate(${R(-8,8)}deg) scale(1)`,offset:.35},{transform:`translate(${W()+260}px,${y+R(-30,30)}px) rotate(${R(-25,25)}deg)`}],4200,'ease-out')})},
+3(g,st,T){mk(st,T.doc,'docu');const s=mk(st,'','stamp');let i=0;const cat=mk(st,'🐈','e',{right:'14px',bottom:'-44px',fontSize:'34px'});
+ every(g,2600,()=>{s.classList.remove('hit');void s.offsetWidth;s.textContent=T.stamps[i++%T.stamps.length];s.classList.add('hit');setTimeout(()=>{g.classList.add('shk');setTimeout(()=>g.classList.remove('shk'),300)},250);
+  fly(cat,[{transform:'translateY(0)'},{transform:'translateY(-48px)',offset:.3},{transform:'translateY(-48px)',offset:.7},{transform:'translateY(0)'}],2000,'ease',true)})},
+4(g,st,T){const p=mk(st,'','price');mk(st,'😷','e big',{left:'20px',top:'44px',fontSize:'40px'});const ch=mk(st,'','chat');let v=3,step=0;
+ every(g,160,()=>{v=v<3e6?v*R(1.12,1.35):3;if(v===3){step=0;ch.innerHTML=''}p.textContent=Math.floor(v).toLocaleString('es-ES')+' €';p.style.color=v>1e5?'#ff6b6b':'#7CFC8A';
+  const want=v>2e6?3:v>3e4?2:v>200?1:0;while(step<want){const b=document.createElement('div');b.className='bub'+(step===2?' uco':'');b.textContent=T.msgs[step];ch.appendChild(b);step++}})},
+5(g,st,T,c){const pa=mk(st,'','paper');let words=[];T.lines.forEach(l=>{const d=document.createElement('div');l.split(' ').forEach(w=>{const s=document.createElement('span');s.textContent=w+' ';d.appendChild(s);words.push(s)});pa.appendChild(d)});
+ let p=0,cat=null;const tot=words.length;
+ every(g,140,()=>{p++;if(p<=100){const k=Math.floor(tot*(p/100)*0.97);let cur=words.filter(w=>w.classList.contains('rd')).length,g2=0;while(cur<k&&g2++<500){const w=words[Math.floor(Math.random()*tot)];if(!w.classList.contains('rd')){w.classList.add('rd');cur++}}
+  const leg=Math.max(3,Math.round(100*words.filter(w=>!w.classList.contains('rd')).length/tot));c.textContent=T.cnt.replace('{p}',p).replace('{l}',leg)}
+  if(p===101){cat=mk(st,'🐈 '+T.cat,'inv',{left:'0',top:'0',fontSize:'.8rem'});fly(cat,[{transform:`translate(-220px,${st.clientHeight-40}px)`},{transform:`translate(${st.clientWidth/2-110}px,${st.clientHeight-40}px)`}],1400,'ease-out',true)}
+  if(p>135){p=0;words.forEach(w=>w.classList.remove('rd'));if(cat)cat.remove()}})},
+6(g,st,T){mk(st,'🧊','e big',{left:'calc(50% - 26px)',top:'36px'});let i=0,t=null;
+ every(g,260,()=>{const e=mk(st,'❄️','e',{left:'0',top:'0',fontSize:R(10,20)+'px',zIndex:1});const x=R(0,st.clientWidth);fly(e,[{transform:`translate(${x}px,-20px)`},{transform:`translate(${x+R(-40,40)}px,${st.clientHeight}px) rotate(360deg)`}],R(2500,4500))});
+ every(g,2300,()=>{if(t)t.remove();const k=i++%T.toasts.length;t=mk(st,T.toasts[k],'toast'+(k===2?' no':''))})},
+7(g,st,T,c){let v=1.89;
+ every(g,3200,()=>{const y=R(45,110),W=st.clientWidth;const m=mk(st,'🚀','e',{left:'0',top:'0'});const d=mk(st,'','dot',{left:'0',top:'0'});const k=mk(st,'🐈','e',{left:'0',top:'0'});
+  fly(m,[{transform:`translate(-50px,${y}px) rotate(45deg)`},{transform:`translate(${W+60}px,${y-30}px) rotate(45deg)`}],2600,'ease-in');
+  fly(d,[{transform:`translate(-80px,${y+12}px)`},{transform:`translate(${W+20}px,${y-20}px)`}],2700,'ease-in');
+  fly(k,[{transform:`translate(-130px,${y+4}px) scaleX(-1)`},{transform:`translate(${W-10}px,${y-24}px) scaleX(-1)`}],2900,'ease-in')});
+ every(g,500,()=>{v+=R(0.003,0.02);c.textContent=T.cnt.replace('{v}',v.toFixed(3).replace('.',','));const o=mk(st,'🛢️','e',{left:'0',top:'0',fontSize:'18px',zIndex:1});const x=R(0,st.clientWidth);fly(o,[{transform:`translate(${x}px,-20px)`},{transform:`translate(${x}px,${st.clientHeight}px) rotate(${R(-90,90)}deg)`}],1800,'ease-in')})},
+8(g,st,T,c){mk(st,'','sea');mk(st,'🛍️','e big',{right:'16px',top:'34px',fontSize:'40px'});let h=0;
+ const go=()=>{const W=st.clientWidth,y=st.clientHeight*.5;['🚌','🚌','🚌','✈️','⛴️','⚽'].forEach((e,i)=>{const s=mk(st,e,'e',{left:'0',top:'0',fontSize:'26px'});
+   const yy=e==='✈️'?y-40:e==='⛴️'?y+22:y-6;fly(s,[{transform:`translate(${-60-i*42}px,${yy}px) scaleX(-1)`},{transform:`translate(${W+40-i*42+i*42}px,${yy}px) scaleX(-1)`}],7000+i*120,'linear')})};
+ go();every(g,7600,go);
+ every(g,600,()=>{h=h>=12?0:h+0.5;c.textContent=T.cnt.replace('{h}',h.toString().replace('.',','))});
+ every(g,4000,()=>{const k=mk(st,'🐈','e',{left:'0',top:'0'});fly(k,[{transform:`translate(${st.clientWidth-160}px,110px)`},{transform:`translate(${st.clientWidth-60}px,50px) scale(.4)`,opacity:0}],1500,'ease-in');
+   const b=mk(st,T.bag,'inv',{right:'70px',top:'92px',left:'auto'});setTimeout(()=>b.remove(),1500)})},
+9(g,st,T,c){const W=()=>st.clientWidth;mk(st,'🏠','e big',{right:'14px',bottom:'8px',fontSize:'58px'});mk(st,'👵','e',{right:'32px',bottom:'22px',fontSize:'20px'});
+ mk(st,'🐈‍⬛🛡️','e',{right:'86px',bottom:'10px',fontSize:'26px'});mk(st,T.sign,'sign',{right:'84px',bottom:'44px'});let n=0,fl=null;
+ every(g,700,()=>{if(n>=15){if(!fl){fl=mk(st,T.boss,'flash')}if(n++>20){n=0;fl.remove();fl=null;st.querySelectorAll('.van').forEach(v=>v.remove())}return}
+  const i=n++;c.textContent=T.cnt.replace('{n}',n);const v=mk(st,'🚓','e van',{left:'0',top:'0',fontSize:'24px'});const row=Math.floor(i/5),col=i%5,sp=Math.max(22,Math.min(40,(W()-190)/5)),H=st.clientHeight;
+  fly(v,[{transform:`translate(-40px,${H-120+row*34}px) scaleX(-1)`},{transform:`translate(${8+col*sp+(row%2)*10}px,${H-120+row*34}px) scaleX(-1)`}],600,'ease-out',true)})},
+10(g,st,T){for(let i=0;i<14;i++){const r=mk(st,Array.from({length:14},()=>pickA(['0','1','🐟','m','i','a','u'])).join(''),'rain',{left:(i*7.3)+'%'});r.animate([{transform:'translateY(-100%)'},{transform:'translateY(220px)'}],{duration:R(3000,7000),iterations:Infinity,delay:-R(0,5000)})}
+ const t=mk(st,'','term');let li=0,ci=0,cur=null;
+ every(g,45,()=>{if(li>=T.lines.length){if(++ci>60){t.innerHTML='';li=0;ci=0}return}const L=T.lines[li];if(!cur){cur=document.createElement('div');cur.className=L.includes('[ERROR]')||L.includes('[ERROR')?'err':(L.includes('[AVISO]')||L.includes('[WARN]'))?'warn':'';t.appendChild(cur)}
+  ci++;cur.innerHTML=L.slice(0,ci)+'<span class="cur"></span>';if(ci>=L.length){cur.innerHTML=L;cur=null;li++;ci=-12}})}
+};
+const io=new IntersectionObserver(es=>es.forEach(e=>{const g=e.target;g._vis=e.isIntersecting;
+ if(e.isIntersecting&&!g._started){const run=()=>{if(!g.closest('.seal').classList.contains('open'))return setTimeout(run,300);g._started=1;const n=+g.dataset.g;S[n](g,g.querySelector('.stage'),G[n],g.querySelector('.cnt'))};run()}}),{threshold:.1});
+document.querySelectorAll('.gag').forEach(g=>io.observe(g));
+})();
+</script>
 <script>
 (function(){
   var w='https://cocobot-stats.rgarciademarina.workers.dev';
   var p='/pages/apocalipsis-gato/en';
   var el=document.getElementById('visit-counter');
   fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
-  fetch(w+'/c?path='+encodeURIComponent(p))
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visitas';}
-    })
-    .catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='\ud83d\udc41\ufe0f '+d.count+' visits';}}).catch(function(){});
 })();
 </script>
 </body>
