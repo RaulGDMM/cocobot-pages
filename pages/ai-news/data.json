@@ -5,6 +5,92 @@
   },
   "days": [
     {
+      "date": "2026-10-04",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Meta Muse Spark coautora 6 papers de matemáticas; 5 resuelven problemas abiertos",
+          "summary": "Meta AI ha publicado seis papers matemáticos coescritos con matemáticos humanos usando Muse Spark 1.1 y 1.2 en Thinking Mode, sin andamiaje de investigación custom (solo la interfaz normal de meta.ai). Cinco resuelven problemas previamente abiertos (umbral estricto para fitting de elipsoides gaussianos, colapso de onda en tiempo finito, contraejemplo a la conjetura de Kida de 2024...). Los papers marcan de forma transparente qué pasajes son de IA y qué de humanos, y un segundo grupo de matemáticos los revisó. Meta reconoce que otros equipos anunciaron soluciones independientes a algunos de los mismos problemas.",
+          "source": "https://research.meta.ai/blog/solving-open-research-problems-together",
+          "source_name": "Meta AI Research",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Google lleva su primer satélite Suncatcher con TPUs Trillium a órbita: primer contacto confirmado",
+          "summary": "El primer prototipo de Project Suncatcher alcanzó órbita el 1 de octubre a bordo de Transporter-18 (SpaceX) desde Vandenberg: una nave del tamaño de un frigorífico construida por Planet con 4 TPUs Trillium y ~1 kW de solar. Google Research ha confirmado el primer contacto y que el satélite responde. Es el primer paso del plan de dos prototipos en 2027 a 650 km para hacer que el compute orbital sea competitivo con los datacenters terrestres.",
+          "source": "https://runtimewire.com/article/google-project-suncatcher-tpu-satellite-orbit",
+          "source_name": "RuntimeWire",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "CVE-2026-61500 (Rejetto HFS, hallada por Mythos) explotada en el mundo real en menos de 24h",
+          "summary": "La vulnerabilidad que un investigador de Horizon3 encontró usando el modelo Mythos de Anthropic —bypass de autenticación en Rejetto HTTP File Server por derivar claves de firma de sesión con Math.random(), permitiendo forjar sesiones de admin (RCE)— ya se explota: VulnCheck detectó a un actor chino explotando hosts estadounidenses vulnerables en menos de 24h tras la divulgación del miércoles. Es la segunda vulnerabilidad vinculada a Anthropic explotada in the wild. Solución: actualizar a Rejetto HFS 3.2.1 o superior.",
+          "source": "https://www.theregister.com/security/2026/10/03/anthropics-super-bug-hunting-model-mythos-is-hardcore-good-at-math-as-latest-vuln-under-attack-shows/5300933",
+          "source_name": "The Register",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Google limita Gemini gratuito a 3.5 Flash-Lite a partir del 9 de octubre",
+          "summary": "Desde el 9 de octubre los usuarios gratuitos de Gemini quedarán limitados al modelo 3.5 Flash-Lite, perdiendo acceso a Flash y Pro. La suscripción AI Plus (4,99$/mes) conserva Flash y Flash-Lite pero pierde Pro, que pasa a requerir AI Pro (19,99$/mes), que además incorpora Deep Think, la función de razonamiento paralelo máximo antes reservada a Ultra (99,99$/mes).",
+          "source": "https://9to5google.com/2026/10/03/gemini-model-limits-oct-26/",
+          "source_name": "9to5Google",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Ingeniería inversa de Jev (TypeSafe): no es frontier, 4-9B parámetros activos",
+          "summary": "Un informe independiente de ingeniería inversa (publicado el 3 de octubre, revisión 5) desafía el marketing de TypeSafe que presenta a Jev como un modelo de decisión 'de frontera': estima 4-9B de parámetros activos bajo cuantización, ~73ms de latencia base + 6ms por 1.000 tokens de entrada, 82,7% en MMLU-Pro, 76,5% en GPQA Diamond y 0,0% en ARC-AGI-2. Los autores concluyen que la afirmación de 'no puede alucinar' solo refleja una API de puntuación probabilística sin generación de texto libre.",
+          "source": "https://jevresearch.github.io/Jev-Research/",
+          "source_name": "Jev Research",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Un tribunal de apelaciones de EE. UU. pausa la ley anti-nudify de Minnesota en el caso de xAI",
+          "summary": "El Octavo Circuito concedió el 2 de octubre la solicitud de emergencia de xAI para pausar la ley de Minnesota del 1 de agosto que prohíbe los modelos de imágenes íntimas generadas por IA ('nudify') mientras avanza el desafío de xAI ante la Primera Enmienda. xAI argumenta que las salvaguardas de Grok Imagine bastan y que la ley cala el discurso protegido; la oficina del fiscal general Ellison la defiende como baluarte contra el CSAM generado por IA.",
+          "source": "https://www.yahoo.com/news/articles/us-appeals-court-blocks-minnesotas-211432956.html",
+          "source_name": "Yahoo News",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "COSMIC de System76 veta el código generado por LLMs en sus pull requests",
+          "summary": "El entorno de escritorio COSMIC de System76 actualizó sus guías de contribución para prohibir código, comentarios y descripciones generados por LLMs en los PRs, convirtiéndose en el primer gran entorno de escritorio Linux en imponer un veto general. Jeremy Soller lo atribuye a la carga de los maintainers: los PRs asistidos por IA de primeros contribuidores eran 'impremeditados y raramente aceptados'. Ahora se exige certificar que no se usó contenido de LLM (la IA no generativa, como el hallazgo de bugs, sigue permitida).",
+          "source": "https://linuxiac.com/cosmic-stops-accepting-llm-generated-content-in-pull-requests",
+          "source_name": "Linuxiac",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Cactus Compute lanza Whistle: STT de 16,9MB para CPU que gana a Whisper Base",
+          "summary": "Whistle es un modelo de reconocimiento de voz de 16,9MB en un solo archivo, sin dependencias, que corre en CPU y se carga en el mismo motor C++ que su modelo Needle. Acepta audio mono 16kHz hasta 30 segundos en 7 idiomas (inglés, alemán, francés, español, italiano, holandés y polaco), con 11,1ms hasta el primer token y 1.319 tokens/seg en decode. Supera a Whisper Base (145,3MB) en LibriSpeech test-clean/test-other, SPGISpeech, Earnings-22 y la media de FLEURS, aunque pierde en TED-LIUM, AMI y MLS.",
+          "source": "https://cactuscompute.com/blog/whistle",
+          "source_name": "Cactus Compute",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Cohere pone en GA Embed 5 Pro y Fast: espacio de embeddings compartido y 128K de contexto",
+          "summary": "Cohere ha generalizado Embed 5 en dos tiers (Pro y Fast) para búsqueda y RAG empresarial multimodal: 128.000 tokens de entrada, más de 100 idiomas, texto+imagen en un solo vector y un espacio de embeddings compartido que permite indexar con Pro y consultar con Fast (2,4x más documentos/seg). Precios: 0,12$/M tokens (Pro) y 0,08$/M (Fast) en texto, 0,40$/M en imagen. Disponible en API, Model Vault, Microsoft Foundry, SageMaker y despliegue privado con vLLM. 85,8 en ViDoRe V3 (Pro) frente a 77,0 de Embed 4.",
+          "source": "https://aiproviderindex.com/news/cohere-embed-5-pro-fast-enterprise-retrieval",
+          "source_name": "AI Provider Index",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: 14 builds desde tu b11374 (ahora b11388) — fix de n-gram spec con temp>0",
+          "summary": "llama.cpp ha publicado 14 builds (b11375→b11388) desde tu b11374. Destacan: fix en spec de drafts n-gram rechazados con temp>0 tras truncación (relevante para tu setup Qwen3.6 con MTP+ngram), estadísticas de imatrix basadas en activaciones (entropía, coseno, L2) para el nuevo formato GGUF, fix de la clave muerta LLAMA_ARG_HF_REPO_FILE en la allow-list del server, f16 en fill/set_rows de WebGPU, soporte de modelos de decisión (clef, nimble) y la API /v1/systemone. Sin nuevos advisories de seguridad (los vigentes siguen siendo los de marzo). Recomendación: vale la pena actualizar, especialmente el fix de b11387 si generas con temp>0 y n-gram.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Día de investigación y seguridad: Muse Spark de Meta coautora 6 papers matemáticos (5 resuelven problemas abiertos), el primer prototipo de Suncatcher de Google ya está en órbita y la vulnerabilidad de Rejetto HFS hallada por Mythos se explota ya en el mundo real. En local, llama.cpp suma 14 builds desde tu b11374 con un fix relevante para n-gram + MTP."
+    },
+    {
       "date": "2026-10-03",
       "news": [
         {
@@ -6086,76 +6172,6 @@
         }
       ],
       "summary": "Samsung dispara sus beneficios x18 en el Q2 por la demanda explosiva de memoria para IA, mientras llama.cpp sigue con fixes críticos de crash en MoE y CuDNN."
-    },
-    {
-      "date": "2026-07-05",
-      "news": [
-        {
-          "category": "llm",
-          "title": "Grok 4.5 entra en beta privada en SpaceX y Tesla con 1.5T parámetros y datos de Cursor",
-          "summary": "Elon Musk anunció el 28 de junio que Grok 4.5, basado en el modelo fundamental V9 de 1.5 billones de parámetros de xAI con datos de Cursor añadidos en entrenamiento suplementario, ya está en beta privada en SpaceX y Tesla. Las evaluaciones internas indican rendimiento cercano o superior a Claude Opus. xAI planea lanzar variantes V9 mensuales durante el resto de 2026, con Grok 5 apuntando a 6-10 billones de parámetros. No hay acceso público ni benchmarks independientes disponibles aún.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-4-2026",
-          "source_name": "Build Fast with AI",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Meta \"Watermelon\" iguala a GPT-5.5 con orden de magnitud más compute en entrenamiento",
-          "summary": "Según reporting de Business Insider fechado el 2 de julio, el modelo en entrenamiento de Meta — internalmente codenombado Watermelon — iguala el rendimiento de GPT-5.5 en evaluaciones actuales. El Chief AI Officer de Meta, Alexandr Wang, confirmó en un briefing cerrado que Watermelon usa un orden de magnitud más de compute que el último modelo frontier de Meta (~1M GPU-equivalentes vs ~100K). El entrenamiento incluye un dataset proprietário significativo de las plataformas sociales de Meta (Facebook, Instagram, WhatsApp, Threads) que ningún otro laboratorio puede replicar. El timeline de lanzamiento no ha sido confirmado.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-4-2026",
-          "source_name": "Build Fast with AI / Business Insider",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Five Eyes advierte: ciberataques con IA son cuestión de meses, no años",
-          "summary": "La alianza de inteligencia Five Eyes (EE.UU., Reino Unido, Canadá, Australia y Nueva Zelanda) publicó el 23 de junio una declaración conjunta — la primera de su tipo sobre tecnología — advirtiendo que los modelos frontier de IA capaces de lanzar ciberataques sofisticados están alcanzando umbrales de capacidad más rápido de lo que la mayoría de equipos de seguridad han planificado. \"El plazo no es años, es meses\", dijeron las agencias. CISA anunció que las agencias federales deben parchear vulnerabilidades explotables por IA en 3 días en vez de los 15 estándar. La advertencia llega tras la suspensión de 19 días de Fable 5, que fue detonada por preocupaciones gubernamentales sobre la capacidad ofensiva cibernética de la IA.",
-          "source": "https://unrot.co/blogs/today-top-10-ai-news-july-4-2026",
-          "source_name": "Unrot",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Tesla limita el gasto en tokens de IA a $200/semana por ingeniero",
-          "summary": "Según un memo interno citado por The Information, Tesla impondrá un límite de $200 por semana en gasto de tokens de IA para todos los ingenieros a partir del 6 de julio, 2026. Los trabajadores que necesiten exceder el tope requieren aprobación explícita de su manager. La medida responde a meses en que algunos ingenieros de software consumían miles de dólares semanales en tokens de IA. Tesla no está solo: Uber quemó su presupuesto de IA de $3.4B en 4 meses por un despliegue sin guardrails de Claude Code. Es la acknowledgment ejecutiva más concreta de que el gasto de tokens de IA es un problema de costes material a escala.",
-          "source": "https://unrot.co/blogs/today-top-10-ai-news-july-4-2026",
-          "source_name": "Unrot / The Information",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Crunchbase: el VC global bate récord con $510B en H1 2026, OpenAI y Anthropic capturan el 43%",
-          "summary": "El reporte H1 2026 de Crunchbase, publicado el 2 de julio, documenta que la financiación VC global alcanzó un récord de $510B en los primeros seis meses de 2026. OpenAI y Anthropic solas representaron $217B, es decir el 43% de todo el capital de startups global. En Q2, los VCs invirtieron $205B en más de 5,000 startups — el total trimestral más alto registrado. La concentración de capital a escala de dos compañías cambia la dinámica del ecosistema de startups: las startups de aplicación de IA más tarde compiten por una fracción decreciente del capital que compite gravitatoriamente con las rondas de OpenAI y Anthropic.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-4-2026",
-          "source_name": "Build Fast with AI / Crunchbase",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Microsoft recorta miles de empleados tras cierre fiscal; productividad IA citada como factor directo",
-          "summary": "Microsoft realizó recortes que afectan a miles de empleados tras el cierre de su año fiscal el 30 de junio, según múltiples reports. Los despidos se extienden por Azure sales, gaming y divisiones de Office. Nadella confirmó públicamente que las herramientas de IA están reduciendo el número de ingenieros y personal de soporte necesarios. Un análisis interno de productividad revelado en mayo mostró que el desarrollo asistido por Copilot cortó el tiempo promedio de coding en proyectos internos entre 30-40% en equipos muestreados. Si la productividad de coding se duplica, una compañía que crece su output de código no necesariamente necesita crecer el headcount de ingeniería proporcionalmente.",
-          "source": "https://unrot.co/blogs/today-top-10-ai-news-july-4-2026",
-          "source_name": "Unrot",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic negocia chip IA personalizado con Samsung; busca ventaja en costes de inferencia",
-          "summary": "The Information reportó esta semana que Anthropic está en conversaciones con Samsung Electronics para manufacturar un chip IA personalizado, añadiendo una tercera relación con fabricantes a la estrategia de infraestructura de Anthropic junto a su acuerdo Colossus/SpaceX y su deal de inferencia con AWS Trainium. El impulso estratégico es claro: los costes de inferencia son la principal restricción para la rentabilidad de Anthropic. Cada proveedora cloud mayor con un producto IA competitivo tiene silicio personalizado propio (Amazon con Trainium, Google con TPUs, Microsoft con Maia, OpenAI con Jalapeño). Un chip co-diseñado para los patrones de inferencia específicos de Fable 5 podría producir la reducción de costes más significativa que Anthropic ha logrado nunca.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-4-2026",
-          "source_name": "Build Fast with AI / The Information",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b9870 → b9873 — 2 builds nuevos con fix de concat CPU y guard de K/V rotation",
-          "summary": "Tres builds nuevos desde tu versión actual (b9870): b9871 (July 4) — ggml: fix de implementación rota de CPU concat para tipos cuantizados (#25247); b9873 (July 4) — llama: guard para rotación de K/V cuando el buffer está no-allocated (#25215). Ambos son fixes de bug sin nuevas features. No urgente, pero recomienda actualizar si usas tipos cuantizados en CPU o tienes buffers no-allocated en K/V rotation.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Fin de semana intenso en IA: Grok 4.5 entra en beta privada con 1.5T parámetros, los Five Eyes advierten que los ciberataques con IA están a meses, y Crunchbase revela que el VC global bate récord con $510B en H1 2026."
     }
   ]
 }
