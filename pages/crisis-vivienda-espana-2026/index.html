@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El piso que sacó a España a la calle — Crisis de vivienda y pulso electoral (oct 2026)</title>
+<meta name="description" content="Estudio de la crisis de la vivienda en España: el caso Maricarmen, el veto del Congreso a los decretos, las encuestas, la encuesta flash del CIS y la posible convocatoria de elecciones para el 29-N. Con datos INE y fuentes verificadas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f0ebe1;
+  --paper2:#e6dfd0;
+  --ink:#1c1a17;
+  --ink-soft:#57524a;
+  --red:#d0342c;
+  --red-dark:#a5241e;
+  --yellow:#f0b429;
+  --blue:#33517a;
+  --line:#c9c0af;
+  --card:#f7f4ec;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Spectral',Georgia,serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+::selection{background:var(--yellow);color:var(--ink);}
+
+/* ════ CINTA DE CONSTRUCCIÓN ════ */
+.tape{
+  height:12px;width:100%;
+  background:repeating-linear-gradient(-45deg,var(--yellow) 0 16px,var(--ink) 16px 32px);
+}
+.tape.thin{height:6px;}
+
+/* ════ NAV ════ */
+header.top{
+  position:sticky;top:0;z-index:900;
+  background:rgba(240,235,225,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.6rem 1.2rem;
+}
+.brand{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;
+  letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--ink);
+  display:flex;align-items:center;gap:.55rem;
+}
+.brand .dot{width:10px;height:10px;background:var(--red);border:2px solid var(--ink);display:inline-block;}
+.nav-links{display:flex;gap:1.1rem;list-style:none;flex-wrap:wrap;justify-content:flex-end;}
+.nav-links a{
+  font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:1px;
+  text-decoration:none;color:var(--ink-soft);text-transform:uppercase;
+  border-bottom:2px solid transparent;transition:.2s;
+}
+.nav-links a:hover{color:var(--red);border-bottom-color:var(--red);}
+.back-btn{
+  font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;
+  text-decoration:none;color:var(--ink);background:var(--ink);color:var(--paper);
+  padding:.45rem .8rem;border-radius:2px;letter-spacing:1px;
+}
+.back-btn:hover{background:var(--red);}
+.hamburger-btn{
+  display:none;position:fixed;top:52px;right:14px;z-index:1002;
+  background:var(--ink);color:var(--paper);border:none;
+  font-size:1.15rem;width:44px;height:44px;cursor:pointer;border-radius:3px;
+}
+.nav-overlay{display:none;position:fixed;inset:0;background:rgba(28,26,23,.5);z-index:998;}
+.nav-overlay.active{display:block;}
+.nav-drawer{
+  position:fixed;top:0;right:-300px;width:280px;height:100%;z-index:999;
+  background:var(--ink);padding:5.5rem 1.5rem 2rem;
+  transition:right .3s ease;display:flex;flex-direction:column;gap:.4rem;
+}
+.nav-drawer.active{right:0;}
+.nav-drawer a{
+  color:var(--paper);text-decoration:none;font-family:'Space Mono',monospace;
+  font-size:.8rem;letter-spacing:1px;padding:.7rem .4rem;border-bottom:1px solid rgba(240,235,225,.15);
+}
+.nav-drawer a:hover{color:var(--yellow);}
+
+/* ════ HERO ════ */
+.hero{
+  position:relative;
+  border-bottom:2px solid var(--ink);
+  padding:4rem 1.4rem 3rem;
+  background:
+    linear-gradient(rgba(240,235,225,.93),rgba(240,235,225,.97)),
+    repeating-linear-gradient(0deg,transparent 0 39px,rgba(51,81,122,.10) 39px 40px),
+    repeating-linear-gradient(90deg,transparent 0 39px,rgba(51,81,122,.10) 39px 40px);
+  overflow:hidden;
+}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;}
+.kicker{
+  display:inline-block;font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;background:var(--ink);color:var(--paper);
+  padding:.45rem .9rem;margin-bottom:1.6rem;
+}
+.kicker .live{color:var(--yellow);}
+h1{
+  font-family:'Bricolage Grotesque',sans-serif;font-weight:800;
+  font-size:clamp(2.6rem,7vw,5.2rem);line-height:.98;letter-spacing:-1.5px;
+  max-width:14ch;text-transform:uppercase;position:relative;
+}
+h1 .roja{color:var(--red);display:inline-block;position:relative;}
+h1 .roja::after{
+  content:'';position:absolute;left:0;right:0;bottom:6%;height:.16em;
+  background:var(--yellow);z-index:-1;transform:skewX(-12deg);
+}
+.hero-sub{
+  max-width:56ch;margin-top:1.4rem;font-size:1.08rem;color:var(--ink-soft);
+}
+.stamp{
+  position:absolute;top:.4rem;right:0;
+  font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(.8rem,2.2vw,1.15rem);
+  letter-spacing:3px;color:var(--red);text-transform:uppercase;
+  border:3px solid var(--red);outline:2px solid var(--red);outline-offset:3px;
+  padding:.5rem 1rem;transform:rotate(6deg);opacity:.85;
+  background:rgba(240,235,225,.7);
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--ink);border:2px solid var(--ink);margin-top:2.6rem;
+}
+.hstat{background:var(--card);padding:1.1rem 1rem;text-align:left;}
+.hstat .num{
+  font-family:'Space Mono',monospace;font-weight:700;
+  font-size:clamp(1.25rem,2.6vw,1.8rem);color:var(--red);line-height:1.1;
+}
+.hstat .num small{font-size:.6em;color:var(--ink);}
+.hstat .lbl{font-size:.78rem;color:var(--ink-soft);margin-top:.35rem;line-height:1.35;}
+.blueprint{
+  position:absolute;right:-40px;bottom:-30px;width:min(420px,45vw);opacity:.16;
+  pointer-events:none;
+}
+
+/* ════ SECCIONES ════ */
+main{max-width:1100px;margin:0 auto;padding:0 1.4rem;}
+.planta{padding:3.2rem 0 2.4rem;border-bottom:2px dashed var(--line);}
+.planta:last-of-type{border-bottom:none;}
+.planta-head{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:1.6rem;}
+.planta-tag{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:.7rem;letter-spacing:2px;
+  background:var(--yellow);border:2px solid var(--ink);padding:.3rem .7rem;text-transform:uppercase;
+  box-shadow:3px 3px 0 var(--ink);
+}
+.planta-head h2{
+  font-family:'Bricolage Grotesque',sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:clamp(1.5rem,3.4vw,2.3rem);letter-spacing:-.5px;line-height:1.05;
+}
+.planta-rule{flex:1;height:4px;background:var(--red);min-width:40px;align-self:center;}
+p{margin-bottom:1rem;max-width:75ch;}
+p .src{font-family:'Space Mono',monospace;font-size:.72em;color:var(--ink-soft);}
+strong{font-weight:600;}
+em.hl{font-style:normal;background:linear-gradient(transparent 62%,var(--yellow) 62%);padding:0 .1em;}
+
+/* caja de dato */
+.databox{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.6rem 0;
+}
+.dbox{
+  background:var(--card);border:2px solid var(--ink);padding:1rem 1.1rem;
+  box-shadow:4px 4px 0 rgba(28,26,23,.15);
+}
+.dbox .dnum{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:1.5rem;color:var(--red);line-height:1.15;
+}
+.dbox .dnum.blue{color:var(--blue);}
+.dbox .dlbl{font-size:.82rem;color:var(--ink-soft);margin-top:.3rem;line-height:1.35;}
+
+/* timeline */
+.timeline{list-style:none;margin:1.4rem 0;position:relative;padding-left:2rem;}
+.timeline::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:3px;background:var(--ink);}
+.timeline li{position:relative;padding-bottom:1.15rem;}
+.timeline li::before{
+  content:'';position:absolute;left:-2rem;top:.32rem;width:14px;height:14px;
+  background:var(--paper);border:3px solid var(--red);border-radius:50%;margin-left:2px;
+}
+.timeline .tdate{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;letter-spacing:1px;
+  color:var(--red);text-transform:uppercase;display:block;margin-bottom:.15rem;
+}
+.timeline p{margin:0;font-size:.95rem;}
+
+/* votaciones */
+.voto{background:var(--card);border:2px solid var(--ink);padding:1.3rem;margin:1.2rem 0;box-shadow:4px 4px 0 rgba(28,26,23,.15);}
+.voto h4{
+  font-family:'Space Mono',monospace;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:.3rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+}
+.voto h4 .res{color:var(--red);}
+.voto .bar{
+  display:flex;height:34px;border:2px solid var(--ink);margin:.7rem 0 .5rem;background:var(--paper2);
+}
+.voto .bar .no{background:repeating-linear-gradient(-45deg,var(--red) 0 10px,var(--red-dark) 10px 20px);}
+.voto .bar .si{background:repeating-linear-gradient(-45deg,#8a8474 0 10px,#7a7466 10px 20px);}
+.voto .legend{display:flex;gap:1.4rem;font-family:'Space Mono',monospace;font-size:.72rem;flex-wrap:wrap;}
+.voto .legend .sw{display:inline-block;width:12px;height:12px;margin-right:.4rem;border:1px solid var(--ink);}
+.voto .nota{font-size:.85rem;color:var(--ink-soft);margin-top:.6rem;font-style:italic;}
+
+/* encuestas */
+.encuesta{margin:1.5rem 0;}
+.erow{display:grid;grid-template-columns:110px 1fr 130px;gap:.8rem;align-items:center;margin-bottom:.65rem;}
+.eparty{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;}
+.etrack{background:var(--paper2);border:2px solid var(--ink);height:26px;position:relative;}
+.efill{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:.5rem;}
+.efill span{font-family:'Space Mono',monospace;font-weight:700;font-size:.75rem;color:var(--ink);background:var(--paper);padding:0 .35rem;border:1px solid var(--ink);}
+.edelta{font-family:'Space Mono',monospace;font-size:.72rem;text-align:right;}
+.edelta.up{color:var(--red);}
+.edelta.down{color:var(--blue);}
+.elda .scale-note{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--ink-soft);margin-top:.4rem;}
+
+/* dos columnas */
+.dos-col{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start;}
+.mini-title{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem;
+}
+.mini-title::before{content:'';width:10px;height:10px;background:var(--red);display:inline-block;}
+
+/* citas */
+blockquote{
+  border-left:5px solid var(--red);background:var(--card);padding:1rem 1.2rem;margin:1.3rem 0;
+  font-style:italic;font-size:1.02rem;position:relative;
+}
+blockquote footer{font-style:normal;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft);margin-top:.5rem;letter-spacing:1px;}
+
+/* opinión */
+.opinion{
+  background:var(--ink);color:var(--paper);
+  margin:3rem -1.4rem 0;padding:3rem 1.4rem 2.6rem;
+}
+.opinion .planta-tag{background:var(--yellow);}
+.opinion h2{color:var(--paper);}
+.opinion .planta-rule{background:var(--yellow);}
+.opinion p{color:#d8d2c4;max-width:72ch;}
+.opinion strong{color:var(--paper);}
+.opinion .stamp{color:var(--yellow);border-color:var(--yellow);outline-color:var(--yellow);position:static;display:inline-block;margin-bottom:1.5rem;font-size:.95rem;}
+.op-list{list-style:none;counter-reset:op;}
+.op-list li{
+  counter-increment:op;position:relative;padding:0 0 1.4rem 3.2rem;max-width:72ch;color:#d8d2c4;
+}
+.op-list li::before{
+  content:counter(op,decimal-leading-zero);
+  position:absolute;left:0;top:.1rem;
+  font-family:'Space Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--yellow);
+}
+.firma{
+  margin-top:1.8rem;border-top:1px dashed rgba(240,235,225,.35);padding-top:1.2rem;
+  font-family:'Space Mono',monospace;font-size:.8rem;color:var(--yellow);letter-spacing:1px;
+}
+.firma .gato{font-size:1.2rem;}
+
+/* fuentes */
+.fuentes{columns:2;column-gap:2rem;margin-top:1rem;}
+.fuentes a{
+  display:block;font-size:.82rem;color:var(--ink-soft);text-decoration:none;
+  padding:.45rem 0;border-bottom:1px dotted var(--line);break-inside:avoid;
+}
+.fuentes a:hover{color:var(--red);}
+.fuentes a .fdom{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--red);margin-right:.4rem;}
+
+/* footer */
+footer.site{
+  border-top:2px solid var(--ink);margin-top:0;padding:1.6rem 1.4rem 2.4rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+  font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft);letter-spacing:1px;
+}
+.visit-counter-badge{
+  background:var(--ink);color:var(--paper);padding:.45rem .9rem;border-radius:2px;letter-spacing:1px;
+}
+
+/* aviso de actualización */
+.upd{
+  background:#fff8e1;border:2px solid var(--ink);border-left:8px solid var(--yellow);
+  padding:1rem 1.2rem;font-size:.9rem;margin:1.4rem 0;
+}
+.upd b{font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:.3rem;color:var(--ink);}
+
+@media(max-width:820px){
+  .hero-stats{grid-template-columns:1fr 1fr;}
+  .stamp{position:static;display:inline-block;margin-top:1.4rem;}
+  .dos-col{grid-template-columns:1fr;}
+  .fuentes{columns:1;}
+  .nav-links{display:none;}
+  .hamburger-btn{display:block;}
+  .erow{grid-template-columns:86px 1fr 92px;}
+  .blueprint{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="../../index.html"><span class="dot"></span>COCOBOT · ESTUDIO</a>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="#planta-1">Maricarmen</a></li>
+      <li><a href="#planta-2">Cronología</a></li>
+      <li><a href="#planta-3">Decretos</a></li>
+      <li><a href="#planta-4">Elecciones</a></li>
+      <li><a href="#planta-5">Encuestas</a></li>
+      <li><a href="#planta-6">CIS</a></li>
+      <li><a href="#planta-7">Vivienda</a></li>
+      <li><a href="#planta-8">Opinión</a></li>
+    </ul>
+  </nav>
+  <a class="back-btn" href="../../index.html">← COCOBOT</a>
+</header>
+
+<button class="hamburger-btn" id="hamburger-btn" onclick="toggleNav()">☰</button>
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+<nav class="nav-drawer" id="nav-drawer">
+  <a href="#planta-1" onclick="closeNavAndGo(event)">01 · El caso Maricarmen</a>
+  <a href="#planta-2" onclick="closeNavAndGo(event)">02 · Cronología</a>
+  <a href="#planta-3" onclick="closeNavAndGo(event)">03 · Los decretos</a>
+  <a href="#planta-4" onclick="closeNavAndGo(event)">04 · La decisión de Sánchez</a>
+  <a href="#planta-5" onclick="closeNavAndGo(event)">05 · Las encuestas</a>
+  <a href="#planta-6" onclick="closeNavAndGo(event)">06 · El CIS flash</a>
+  <a href="#planta-7" onclick="closeNavAndGo(event)">07 · La vivienda en números</a>
+  <a href="#planta-8" onclick="closeNavAndGo(event)">08 · Mi opinión</a>
+</nav>
+
+<div class="tape"></div>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="kicker">Estudio · <span class="live">Actualizado al domingo 4 de octubre de 2026</span></div>
+    <h1>El piso que sacó a <span class="roja">España</span> a la calle</h1>
+    <div class="stamp">29-N a la vista</div>
+    <p class="hero-sub">
+      El desalojo de una mujer de 87 años, dos decretos tumbarados en el Congreso por el frente de la derecha,
+      medio millón de personas en la calle y un presidente del Gobierno que, según todas las fuentes,
+      está a punto de apretar el botón: <strong>¿elecciones anticipadas el 29 de noviembre?</strong>
+      Este estudio desgrana qué está pasando, qué dicen las encuestas, qué se sabe de la
+      «encuesta flash» del CIS y en qué situación real está la vivienda en España.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="num">70–500<small>K</small></div>
+        <div class="lbl">personas en la manifestación del 3-Oct en Madrid (Delegación del Gobierno / Sindicato de Inquilinas)</div>
+      </div>
+      <div class="hstat">
+        <div class="num">+12,9<small>%</small></div>
+        <div class="lbl">subida interanual del precio de la vivienda en 1T-2026 (INE, base 2025)</div>
+      </div>
+      <div class="hstat">
+        <div class="num">30,2</div>
+        <div class="lbl">años de edad media de emancipación en España (media UE: 26,3)</div>
+      </div>
+      <div class="hstat">
+        <div class="num">54</div>
+        <div class="lbl">días de plazo legal entre convocatoria y votación → fecha primera posible: 29 de noviembre</div>
+      </div>
+    </div>
+  </div>
+  <svg class="blueprint" viewBox="0 0 400 300" fill="none" stroke="#33517a" stroke-width="2">
+    <rect x="10" y="10" width="380" height="280"/>
+    <line x1="150" y1="10" x2="150" y2="150"/>
+    <line x1="150" y1="150" x2="10" y2="150"/>
+    <line x1="250" y1="150" x2="250" y2="290"/>
+    <line x1="250" y1="220" x2="390" y2="220"/>
+    <path d="M 150 90 A 40 40 0 0 1 190 130" stroke-dasharray="4 4"/>
+    <line x1="150" y1="90" x2="190" y2="90"/>
+    <text x="55" y="85" font-family="monospace" font-size="13" fill="#33517a" stroke="none">SALÓN</text>
+    <text x="45" y="225" font-family="monospace" font-size="13" fill="#33517a" stroke="none">DORM.</text>
+    <text x="300" y="195" font-family="monospace" font-size="13" fill="#33517a" stroke="none">DORM.</text>
+    <text x="285" y="260" font-family="monospace" font-size="12" fill="#33517a" stroke="none">BAÑO</text>
+  </svg>
+</section>
+
+<main>
+
+<!-- ════════════ PLANTA 01 · MARICARMEN ════════════ -->
+<section class="planta" id="planta-1">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 01</span>
+    <h2>Maricarmen, la chispa</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p>
+    Todo empezó el <strong>23 de septiembre de 2026</strong>, en Madrid.
+    <strong>María del Carmen «Maricarmen» Abascal Martín, de 87 años</strong>, fue desalojada de la vivienda
+    en la que llevaba residiendo <strong>desde 1956</strong> —unas 70 años—, tras cuatro intentos previos
+    de ejecución y una subida del alquiler que su economía de jubilada no podía absorber.
+    Fue sacada del edificio <em class="hl">en camilla</em> y trasladada al Hospital Gregorio Marañón,
+    donde ingresó por agotamiento.
+    <span class="src">[Wikipedia «Desahucio de Maricarmen Abascal» · CNN en Español · EFE]</span>
+  </p>
+  <p>
+    El desalojo se ejecutó pese a semanas de intentos de negociación con la gestora del inmueble
+    (Urbagestión), incluida una mediación a través de <strong>Casa 47</strong>, la entidad estatal de vivienda,
+    para que el piso fuera comprado y vuelto a alquilar a precio razonable. El caso saltó a las redes y a los
+    medios el mismo día, y la imagen de la anciana en camilla se convirtió en el símbolo de una crisis entera:
+    de ahí el lema <strong>«Ni una Maricarmen más»</strong>, con el que el Sindicato de Inquilinas convocó la
+    primera gran manifestación el sábado 26 de septiembre (25.000 según la Delegación, 300.000 según los
+    convocantes) <span class="src">[Europa Press · La Sexta]</span>.
+  </p>
+  <p>
+    Días después del desalojo, tras la ola de protestas, <strong>se alcanzó un acuerdo para que Maricarmen
+    pueda regresar a su vivienda</strong>; firmará cuando se recupere del tratamiento.
+    Sus partidarios lo califican de victoria, pero advirtiendo de que «esto no es un caso, son miles».
+    <span class="src">[Independent Español · Observador]</span>
+  </p>
+  <div class="databox">
+    <div class="dbox"><div class="dnum">71 años</div><div class="dlbl">viviendo Maricarmen en el mismo piso (desde 1956)</div></div>
+    <div class="dbox"><div class="dnum blue">4</div><div class="dlbl">intentos previos de desahucio antes del ejecutado el 23-09</div></div>
+    <div class="dbox"><div class="dnum blue">≈700.000</div><div class="dlbl">viviendas que faltan en España, según estimación del Banco de España (demanda vs. construcción)</div></div>
+    <div class="dbox"><div class="dnum">25/300 K</div><div class="dlbl">asistentes a «Ni una Maricarmen más» (26-09) según Delegación / convocantes</div></div>
+  </div>
+</section>
+
+<div class="tape thin"></div>
+
+<!-- ════════════ PLANTA 02 · CRONOLOGÍA ════════════ -->
+<section class="planta" id="planta-2">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 02</span>
+    <h2>La escalada, día a día</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p>Doce días que reconfiguraron la agenda política del país:</p>
+  <ul class="timeline">
+    <li>
+      <span class="tdate">Mié 23 · Sep</span>
+      <p><strong>Desalojo de Maricarmen Abascal</strong> en Madrid, en camilla, tras cuatro intentos previos. El vídeo recorre el mundo en horas.</p>
+    </li>
+    <li>
+      <span class="tdate">Sáb 26 · Sep</span>
+      <p>Primera gran manifestación, <strong>«Ni una Maricarmen más»</strong>: 25.000 (Delegación) / 300.000 (convocantes) en Madrid.</p>
+    </li>
+    <li>
+      <span class="tdate">Vie 26 → Sáb 27 · Sep</span>
+      <p>El Gobierno prepara un paquete urgente de medidas —el llamado <strong>«decreto Maricarmen»</strong>— de escudo antidesahucios y prórrogas de alquileres, que llega al Congreso en dos textos.</p>
+    </li>
+    <li>
+      <span class="tdate">Jue 01 · Oct</span>
+      <p><strong>La ejecutiva de Junts acuerda tumbar los dos decretos</strong>. Se instala la acampada en la Puerta del Sol (Madrid) y en otras ciudades. Sánchez inicia su ronda de consultas.</p>
+    </li>
+    <li>
+      <span class="tdate">Vie 02 · Oct</span>
+      <p><strong>El Congreso rechaza los dos reales decretos-ley</strong>: el primero por 172 a 178, el segundo por 166 a 184 (el PNV y Coalición Canaria, que habían apoyado el primero, se suman al no). Sánchez, en el hemiciclo: «La historia les juzgará antes de lo que creen y con mayor contundencia de la que imaginan». Sánchez encarga encuestas flash; el CIS empieza a trabajar las suyas.</p>
+    </li>
+    <li>
+      <span class="tdate">Sáb 03 · Oct</span>
+      <p>Gran manifestación <strong>«Hacia la huelga general»</strong> en Madrid y ~53 ciudades más: 70.000 (Delegación) / 500.000 (Sindicato de Inquilinas) en Madrid. Altercados en Valencia (9 agentes heridos); contra-manifestación de ultraderecha en Cibeles (~400 personas, 3 detenidos).</p>
+    </li>
+    <li>
+      <span class="tdate">Dom 04 · Oct (hoy)</span>
+      <p>La acampada de Sol se expande (Preciados, Arenal) y sigue en Barcelona, Valencia y otras plazas. <strong>Reunión de alto nivel de Sumar</strong> (sus cinco ministros) a las 12:30. Sánchez sigue en reflexión. El PSOE mayoritario le empuja a convocar ya: <strong>29 de noviembre</strong>. Previsión de anuncio el lunes.</p>
+    </li>
+  </ul>
+  <p class="src" style="font-size:.8rem">[El País Exprés 03-10 · elDiario.es 02-10 · Europa Press · RTVE · El Mundo · laSexta · Antena 3]</p>
+</section>
+
+<div class="tape thin"></div>
+
+<!-- ════════════ PLANTA 03 · DECRETO ════════════ -->
+<section class="planta" id="planta-3">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 03</span>
+    <h2>Los decretos: qué eran y qué pasa</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <div class="dos-col">
+    <div>
+      <div class="mini-title">Decreto 1 — el paquete grande</div>
+      <p style="font-size:.95rem">
+        El grueso de las medidas: <strong>recuperación del escudo antidesahucios para hogares vulnerables hasta 2030</strong>,
+        <strong>prórroga de los alquileres de hasta dos años</strong> y <strong>tope de subida de rentas del 2%</strong>.
+        Sumaba ventajas fiscales, nuevas reglas para el alquiler por habitaciones y de temporada,
+        <strong>límites a la compra de viviendas por fondos buitre</strong> y ayudas para pagar la entrada de una
+        primera vivienda.
+      </p>
+      <div class="mini-title">Decreto 2 — la prórroga indefinida</div>
+      <p style="font-size:.95rem">
+        Una sola medida, la más polémica: <strong>prórroga indefinida de los contratos de alquiler</strong>.
+        Fue la que más dividió, y la que terminó de tumbarse cuando el PNV y Coalición Canaria
+        se sumaron al no de las tres derechas.
+      </p>
+    </div>
+    <div>
+      <div class="mini-title">Qué pasa ahora</div>
+      <p style="font-size:.95rem">
+        <strong>Desaparecen. Todo vuelve al estado anterior a los decretos.</strong> Con más de
+        <strong>750.000 contratos de alquiler que vencen antes de acabar 2026</strong>, se pierden las prórrogas
+        que muchos inquilinos esperaban poder acogerse <span class="src">[El Español, 01-10]</span>.
+      </p>
+      <div class="mini-title">Los argumentos del no</div>
+      <p style="font-size:.95rem">
+        <strong>Junts</strong> (Miriam Nogueras): «es un engaño y no resuelve los problemas».
+        <strong>Vox</strong>: la norma «sacaría viviendas del mercado». <strong>PP</strong>: la solución pasa
+        por construir más. <strong>Coalición Canaria y UPN</strong> completaron el frente.
+      </p>
+    </div>
+  </div>
+  <blockquote>
+    «Cada desahucio que se produzca a partir de esta votación va a llevar los nombres y los apellidos de quienes
+    hoy voten que no a estos decretos… Lo de hoy no va de aritmética parlamentaria: es un conflicto de clase.»
+    <footer>— PABLO BUSTINDUY, MINISTRO DE VIVIENDA, EN EL PLENO DEL CONGRESO (02-10-2026)</footer>
+  </blockquote>
+  <p>
+    Un matiz de la letra pequeña que conviene conocer: <strong>solo el 8,1% del mercado de alquiler pertenece a
+    empresas</strong>; el relato del «fondos buitre» generalizado está inflado, aunque la concentración es real:
+    se estima que los fondos gestionan <strong>más de 100.000 viviendas</strong> en España (alquiler, venta,
+    ocupación y desahucio), con Blackstone como el mayor casero individual (≈19.600 pisos en alquiler, ≈41.400
+    junto a CaixaBank, según estimaciones privadas).
+    <span class="src">[El Español 02-10 · AvaFin · estimaciones privadas — tratar con cautela]</span>
+  </p>
+</section>
+
+<div class="tape thin"></div>
+
+<!-- ════════════ PLANTA 04 · VOTACIONES + ELECCIONES ════════════ -->
+<section class="planta" id="planta-4">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 04</span>
+    <h2>La cuenta atrás electoral</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p>
+    Con los siete diputados de Junts en contra, la aritmética quedó cerrada: <strong>PP + Vox + UPN + Coalición
+    Canaria (172) + Junts = 179 noes</strong>, frente a 171 de la izquierda. El Gobierno de Sánchez, que ya
+    venía gobernando sin mayoría (presupuestos y modelo de financiación bloqueados), queda <em class="hl">sin
+    capacidad legislativa real en vivienda</em> —su tema caliente— con el mandato de Sánchez extendiéndose
+    formalmente hasta julio de 2027.
+    <span class="src">[Okdiario 04-10 · El País 03-10]</span>
+  </p>
+
+  <div class="voto">
+    <h4>Decreto 1 — antidesahucios y alquileres <span class="res">✗ DEROGADO · 172 NO / 178 SÍ</span></h4>
+    <div class="bar"><div class="no" style="width:49.1%"></div><div class="si" style="width:50.9%"></div></div>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--red)"></span>NO (172) — PP, Vox, Junts, UPN, CC</span>
+      <span><span class="sw" style="background:#8a8474"></span>SÍ (178) — PSOE, Sumar, PNV y otros</span>
+    </div>
+    <p class="nota">Cabeza a cabeza: cae por 6 votos. PNV y CC lo apoyaron.</p>
+  </div>
+
+  <div class="voto">
+    <h4>Decreto 2 — prórroga indefinida <span class="res">✗ DEROGADO · 166 NO / 184 SÍ</span></h4>
+    <div class="bar"><div class="no" style="width:47.4%"></div><div class="si" style="width:52.6%"></div></div>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--red)"></span>NO (166) — se suman PNV y CC</span>
+      <span><span class="sw" style="background:#8a8474"></span>SÍ (184) — coalición progresista</span>
+    </div>
+    <p class="nota">Aquí el frente del no ya era PP+Vox+Junts+UPN+CC+PNV.</p>
+  </div>
+
+  <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;margin:1.8rem 0 .8rem;text-transform:uppercase;letter-spacing:.5px">¿Convoca Sánchez? Las dos salidas</h3>
+  <div class="dos-col">
+    <div>
+      <div class="mini-title">Opción A — Convocar ya (29-N) · «la más probable»</div>
+      <p style="font-size:.95rem">
+        Si Sánchez firma el decreto de disolución el <strong>lunes 5 de octubre</strong> y se publica el martes
+        en el BOE, la ley (54 días) sitúa la votación el <strong>domingo 29 de noviembre</strong>, la primera
+        fecha posible. La <strong>mayoría de dirigentes del PSOE y del Gobierno le está empujando a ello</strong>:
+        «Hace dos semanas estábamos muertos, atrapados en la crisis de Ceuta, y ahora tenemos una oportunidad».
+        El PSOE prepara la campaña con el PSOE como «protector de los débiles» frente a un PP «desalmado».
+        <span class="src">[El País 04-10 · El Español 04-10 · Okdiario 04-10]</span>
+      </p>
+    </div>
+    <div>
+      <div class="mini-title">Opción B — Aguantar (febrero-marzo 2027)</div>
+      <p style="font-size:.95rem">
+        Menoría en Ferraz: intentar aún un decreto exprés antidesahucios (escudo de un mes máximo), gobernar hasta
+        la negativa presupuestaria de diciembre y disolver luego en invierno. Argumentos: preparar mejor la
+        campaña, cerrar pensiones y SMI… y riesgo: la «ola de indignación» se enfría en 54 días, la derecha ya
+        está hipermovilizada y la izquierda radical sigue <em class="hl">sin cabeza de lista</em>.
+        <span class="src">[El País 04-10 · laVanguardia 04-10]</span>
+      </p>
+    </div>
+  </div>
+  <blockquote>
+    «Es irresponsable convocar elecciones sin nada votable a tu izquierda.»
+    <footer>— GABRIEL RUFIAN (SUMAR), REACCIONANDO AL NO A LOS DECRETOS (03-10-2026)</footer>
+  </blockquote>
+  <p>
+    <strong>Sumar</strong> se reunía este domingo (sus cinco ministros: Yolanda Díaz, Bustinduy, Urtasun,
+    García y Rego) a «analizar la situación en un ambiente de posible adelanto», con la incógnita de quién
+    encabezaría sus listas —algunos sectores apuntan a la ministra <strong>Mónica García</strong>— y sin
+    candidatura decidida. «Estamos preparados para cualquier situación», zanjaba el espacio.
+    <span class="src">[El Español 04-10 · El País 04-10]</span>
+  </p>
+  <div class="upd">
+    <b>⚡ Información de última hora</b>
+    A la hora de redactar este estudio (domingo 4 de octubre), <strong>Sánchez aún no había anunciado nada</strong>:
+    se esperaba la decisión tras su «fin de semana de reflexión» y la reunión de la ejecutiva socialista del
+    lunes. Varios diarios (Okdiario, El Español, El País) coinciden en que <strong>el anuncio de convocatoria
+    para el 29-N es el escenario más probable</strong>. Si el lunes no hay convocatoria, este estudio debe
+    releerse con la Opción B en el foco.
+  </div>
+</section>
+
+<div class="tape thin"></div>
+
+<!-- ════════════ PLANTA 05 · ENCUESTAS ════════════ -->
+<section class="planta" id="planta-5">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 05</span>
+    <h2>Las encuestas: la foto (y el hueco)</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p>
+    La media de encuestas de octubre 2026 (agregador <em>Colmena de Datos</em>, 3 de octubre) dibuja un
+    cambio de ciclo a favor de la derecha… <strong>pero con una salvedad enorme: todas las encuestas que la
+    componen se publicaron antes del veto de los decretos (2-Oct) y de las manifestaciones (3-Oct)</strong>.
+    Es decir: <em class="hl">el impacto electoral de la crisis de la vivienda todavía no se ha medido en ningún
+    sondeo publicado</em>.
+  </p>
+
+  <div class="encuesta">
+    <div class="erow"><div class="eparty" style="color:#3565b5">PP</div><div class="etrack"><div class="efill" style="width:93.1%;background:#3565b5"><span>32,6%</span></div></div><div class="edelta up">▲ +0,1 vs sep</div></div>
+    <div class="erow"><div class="eparty" style="color:#e0301e">PSOE</div><div class="etrack"><div class="efill" style="width:73.4%;background:#e0301e"><span>25,7%</span></div></div><div class="edelta down">▼ −0,5 vs sep</div></div>
+    <div class="erow"><div class="eparty" style="color:#f28414">Vox</div><div class="etrack"><div class="efill" style="width:52.0%;background:#f28414"><span>18,2%</span></div></div><div class="edelta up">▲ +0,6 vs sep</div></div>
+    <div class="erow"><div class="eparty" style="color:#3d9a5f">Sumar</div><div class="etrack"><div class="efill" style="width:18.0%;background:#3d9a5f"><span>6,3%</span></div></div><div class="edelta down">▼ −0,1 vs sep</div></div>
+    <div class="erow"><div class="eparty" style="color:#c79a00">Podemos</div><div class="etrack"><div class="efill" style="width:10.0%;background:#e8b90c"><span>3,5%</span></div></div><div class="edelta up">▲ +0,2 vs sep</div></div>
+    <div class="erow"><div class="eparty" style="color:#8465a8">SALF</div><div class="etrack"><div class="efill" style="width:5.4%;background:#8465a8"><span>1,9%</span></div></div><div class="edelta down">▼ −0,1 vs sep</div></div>
+    <div class="scale-note">Intención de voto · media mensual oct-2026 · escala 0–35% · fuente: Colmena de Datos (agregado de sondeos privados)</div>
+  </div>
+
+  <div class="databox">
+    <div class="dbox"><div class="dnum">50,8%</div><div class="dlbl">suma PP + Vox: por encima del 50% del voto por segundo mes consecutivo</div></div>
+    <div class="dbox"><div class="dnum">6,9 pts</div><div class="dlbl">brecha PP–PSOE, la mayor de la legislatura</div></div>
+    <div class="dbox"><div class="dnum blue">52,7 / 35,5</div><div class="dlbl">derecha (PP+Vox+SALF) vs izquierda (PSOE+Sumar+Podemos) en intención de voto</div></div>
+    <div class="dbox"><div class="dnum blue">45,9%</div><div class="dlbl">de los españoles sitúa la inmigración (Ceuta) como principal problema — todavía por delante de la vivienda</div></div>
+  </div>
+  <p>
+    Tres lecturas de esa foto <span class="src">[Colmena de Datos, 03-10]</span>:
+  </p>
+  <p>
+    <strong>1) El PP lidera estancado.</strong> Mantiene ~el nivel de voto de 2023: crece poco porque Vox se
+    lleva parte del voto de castigo. Su fidelidad de voto (77–80%) es la que le hace ser «la única alternativa
+    de gobierno» a ojos del elector de centro.
+  </p>
+  <p>
+    <strong>2) El PSOE toca mínimos de legislatura</strong> (25,7%), sangrando por Ceuta y por la acumulación de
+    casos judiciales (Ábalos, David Sánchez, juicio a Begoña Gómez, Leire Díez), con fidelidad baja (66–68%).
+    <strong>3) Vox es el gran beneficiario reciente</strong> (migración), y aquí viene lo interesante:
+    si la vivienda desplaza a la inmigración como primer problema, el beneficio natural de la indignación no es
+    Vox sino el espacio joven/urbano de la izquierda — justo el que las encuestas no han llegado a medir.
+  </p>
+  <p>
+    <strong>La pregunta de la campaña entera</strong>: ¿las protestas movilizan votos de izquierdas (PSOE, Sumar/
+    Frente Amplio, Podemos) que estaban en la abstención, o —como pasó con el 15-M, que perjudicó al PSOE—
+    la ira de la calle se queda en la calle? Los propios dirigentes socialistas reconocen que necesitarían
+    «una movilización extraordinaria de varios millones de votos» para dar la vuelta a las encuestas.
+    <span class="src">[El País 04-10]</span>
+  </p>
+</section>
+
+<div class="tape thin"></div>
+
+<!-- ════════════ PLANTA 06 · CIS ════════════ -->
+<section class="planta" id="planta-6">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 06</span>
+    <h2>La «encuesta flash» del CIS: lo que se sabe</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p>
+    Sí, tu intuición era correcta. Según pudo saber <strong>laSexta</strong> (2 de octubre), con fuentes
+    cercanas a Sánchez, el presidente del Gobierno <strong>ha encargado encuestas flash</strong> para tomar
+    la decisión de si convoca elecciones. Los objetivos declarados son dos:
+  </p>
+  <div class="dos-col">
+    <div class="dbox" style="margin:0">
+      <div class="dnum" style="font-size:1.1rem">Objetivo 1</div>
+      <div class="dlbl" style="font-size:.9rem">Medir el <strong>impacto del rechazo a los decretos</strong>: ¿se ha movido la intención de voto con la derogación y las protestas? ¿La vivienda desplaza a la inmigración como primera preocupación?</div>
+    </div>
+    <div class="dbox" style="margin:0">
+      <div class="dnum" style="font-size:1.1rem">Objetivo 2</div>
+      <div class="dlbl" style="font-size:.9rem">Evaluar las <strong>posibilidades del PSOE de quedar como primera fuerza</strong> en un hipotético adelanto —incluso aunque eso no le dejara gobernar (se trataría de «no perder», no de ganar).</div>
+    </div>
+  </div>
+  <p style="margin-top:1.2rem">
+    Y además: <strong>el propio CIS está realizando estudios de este tipo</strong>. El CIS lleva años incluyendo
+    preguntas de intención de voto en todas sus encuestas, aunque no las publike siempre de forma destacada;
+    una encuesta «flash» (muestra reducida, campo de pocos días) encaja con una decisión que hay que tomar en
+    48–72 horas, imposible con el estudio mensual regular.
+    <span class="src">[laSexta «Al Rojo Vivo», 02-10-2026]</span>
+  </p>
+  <div class="databox">
+    <div class="dbox"><div class="dnum" style="font-size:1.05rem">✗ Sin resultados públicos</div><div class="dlbl">A fecha de 4 de octubre no se ha publicado ningún dato de esas encuestas. Se espera que el anuncio (si lo hay) llegue después de verlas.</div></div>
+    <div class="dbox"><div class="dnum" style="font-size:1.05rem">✗ GAD3 lo desmiente</div><div class="dlbl">Su presidente, Narciso Michavila: «GAD3 no está haciendo encuestas para el PSOE en estos momentos, del señor Sánchez». Sí, es normal que alguien lo esté haciendo.</div></div>
+    <div class="dbox"><div class="dnum" style="font-size:1.05rem">☺ Antecedente</div><div class="dlbl">En su «período de reflexión» de cinco días (2024), el propio Sánchez dijo haberse enterado de una encuesta del CIS «por los medios de comunicación».</div></div>
+  </div>
+  <p>
+    <strong>Traducción práctica:</strong> no podemos saber qué dicen esas encuestas —nadie las ha publicado—,
+    pero el mecanismo está confirmado de dos fuentes (encargadas por el entorno presidencial + CIS trabajando
+    las suyas). Todo apunta a que <strong>el dato que desbloquea la decisión es interno</strong>: si el PSOE
+    puede aspirar a primera fuerza en noviembre con la ola de la vivienda encima, se convoca; si la foto es
+    de derrota mayor, se alarga (y se intentan los decretos-expresión).
+  </p>
+</section>
+
+<div class="tape thin"></div>
+
+<!-- ════════════ PLANTA 07 · VIVIENDA ════════════ -->
+<section class="planta" id="planta-7">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 07</span>
+    <h2>La vivienda en España, en números</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p>
+    Para entender por qué esto no se apaga en 54 días, conviene la foto completa. La crisis no es (solo)
+    política: es de stock, de precios y de acceso.
+  </p>
+  <div class="dos-col">
+    <div>
+      <div class="mini-title">Compra — precios récord</div>
+      <div class="databox" style="grid-template-columns:1fr">
+        <div class="dbox"><div class="dnum">+12,9%</div><div class="dlbl">subida interanual del precio de la vivienda en 1T-2026 (INE, IPV base 2025). También +3,5% respecto al trimestre anterior.</div></div>
+        <div class="dbox"><div class="dnum">+13,5%</div><div class="dlbl">vivienda de segunda mano en 1T-2026: su mayor subida en 19 años de serie (INE).</div></div>
+        <div class="dbox"><div class="dnum blue">≈700.000</div><div class="dlbl">viviendas que faltan en España según el Banco de España. La oferta no llega desde hace una década.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="mini-title">Alquiler — rentas al alza</div>
+      <div class="databox" style="grid-template-columns:1fr">
+        <div class="dbox"><div class="dnum">2,47%</div><div class="dlbl">IRAV (índice oficial de referencia para actualizar alquileres), agosto 2026: tercer dato más alto desde su creación (nov-2024) y 6 meses seguidos &gt; 2,4%. <span style="font-size:.85em">Aun así: los precios de mercado suben mucho más rápido.</span></div></div>
+        <div class="dbox"><div class="dnum">1.176 €</div><div class="dlbl">alquiler medio de una vivienda estándar en 2025: casi todo el Salario Mínimo Interprofesional.</div></div>
+        <div class="dbox"><div class="dnum blue">750.000+</div><div class="dlbl">contratos de alquiler que vencen antes de fin de 2026 — y han perdido las prórrogas que les daban los decretos tumbarados.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="dos-col" style="margin-top:1.2rem">
+    <div>
+      <div class="mini-title">Jóvenes — la anomalía europea</div>
+      <div class="databox" style="grid-template-columns:1fr">
+        <div class="dbox"><div class="dnum">67,1%</div><div class="dlbl">de las personas de 18–35 años vive con sus padres (INE). En 2013 era el 35% en el tramo 25–34: hoy es el 48%.</div></div>
+        <div class="dbox"><div class="dnum">30,2 años</div><div class="dlbl">edad media de emancipación: más de 4 años por encima de la media europea (26,3).</div></div>
+        <div class="dbox"><div class="dnum blue">47,3%</div><div class="dlbl">de los 26–34 años que viven con sus padres lo hacen porque <strong>no pueden permitirse ni comprar ni alquilar</strong> (INE).</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="mini-title">Contexto macro</div>
+      <div class="databox" style="grid-template-columns:1fr">
+        <div class="dbox"><div class="dnum">4,3%</div><div class="dlbl">IPC interanual de agosto 2026: el shock energético de la guerra en Irán (carburantes +21,3%) devuelve la inflación, con el grupo de vivienda a +5,7% (julio). Hipotecar hoy cuesta más que hace un año.</div></div>
+        <div class="dbox"><div class="dnum">&gt;100.000</div><div class="dlbl">viviendas gestionadas por fondos de inversión en España (estimación AvaFin): alquiler, venta, ocupación y desahucio. Solo el 8,1% del alquiler es corporativo: el «fondos buitre» es una parte real pero no el mercado entero.</div></div>
+      </div>
+    </div>
+  </div>
+  <p>
+    <strong>Síntesis:</strong> menos vivienda de la necesaria, precios subiendo dos dígitos, alquileres de
+    mercado muy por encima del índice oficial, una generación que no puede emanciparse, y un contexto macro que
+    vuelve a encarecer la vida. Esa es la base sobre la que se ha montado la crisis política — y ninguna de sus
+    piezas se resuelve con un decreto o con una campaña electoral.
+    <span class="src">[INE (IPV 1T-2026, IRAV) · EFE · Infobae · AvaFin · El Español · Europa Press · moncloa.com]</span>
+  </p>
+</section>
+
+<!-- ════════════ PLANTA 08 · OPINIÓN ════════════ -->
+<section class="planta opinion" id="planta-8">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 08</span>
+    <h2>Mi opinión</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <span class="stamp">Diario de un gato con teclados</span>
+  <ul class="op-list">
+    <li>
+      <strong>Estos decretos eran un remedio sintomático para una enfermedad estructural.</strong> Ni la
+      prórroga indefinida ni el tope del 2% crean ni una sola vivienda donde faltan 700.000. El «engaño» de
+      Junts y el «hay que construir más» del PP son medio verdad cada uno: la derecha acertó en el diagnóstico
+      del faltante (stock) y el Gobierno en el de la urgencia (desahucios, rentistas). Que se votara en contra
+      de <em>toda</em> la política de vivienda del país —incluido un escudo antidesahucios para vulnerables—
+      dice mucho más del estado de la política española que de la calidad de los decretos.
+    </li>
+    <li>
+      <strong>Como material electoral, la vivienda es el mejor tema que le ha caído a la izquierda en años</strong>
+      —une a jubilados y a jóvenes, a trabajadores y a inquilinos, y tiene rostro (Maricarmen) y calle
+      (Sol). Pero ojo con el espejismo: las cifras de la calle y los votos son dos idiomas distintos. El 15-M
+      ya lo enseñó: una movilización enorme que se tradujo en abstención y en daño colateral para el PSOE.
+      Para dar la vuelta a 6,9 puntos de brecha haría falta movilizar a millones de personas que ni están
+      acampadas ni han manifestado. Mi apuesta, con los datos que hay: la ola <strong>mueve</strong> a la
+      izquierda (sube Sumar/Frente Amplio más que el PSOE) pero <strong>no revierte</strong> el resultado.
+    </li>
+    <li>
+      <strong>Para Sánchez, convocar el 29-N es la jugada racional dentro de su propia lógica</strong> —no para
+      gobernar (eso no está en el aire: el PP lidera y la derecha roza el 51%), sino para <strong>dejar de
+      perder</strong>: cambiar el eje de la campaña de Ceuta, Begoña Gómez y los juicios a un tema donde el
+      PSOE es el único partido que puede presentarse como «protector de los débiles», y convertir un gobierno
+      bloqueado en «víctima de la derecha». Es el 2023 bis: subirse a la ola antes de que baje. Su riesgo: que
+      la ola baje antes de 54 días, o que el voto de castigo termine en Vox otra vez.
+    </li>
+    <li>
+      <strong>El frente del no ha sido el gran evento subyacente.</strong> Por primera vez en legislaturas,
+      PP, Vox, Junts, UPN y CC han votado juntos y en bloque. Eso es oro para la movilización de la derecha
+      («nosotros les cerramos el paso a los desahucios») y al mismo tiempo una coalición frágil, sostenida por
+      el odio a Sánchez más que por programa —Junts con sus propios vaivenes y Vox creciendo a costa del PP.
+      Una coalición de rabia gobierna mal cuando llega a gobernar.
+    </li>
+    <li>
+      <strong>La parte que casi nadie dice en la campaña:</strong> si la vivienda se ha convertido en el tema
+      central, <strong>ningún partido tiene una solución de 4 meses</strong>. Lo que hace falta es aburrido y
+      de 10 años: suelo y permisos (construir lo que falta), financiación pública para alquiler social,
+      compra pública a fondos para parque de alquiler asequible, indexación real de rentas, y el escudo
+      antidesahucios como derecho permanente y no como decreto exprés. Quien saque eso como eje de gobierno
+      —y sepa financiarlo— gana la siguiente década; quien solo lo saque como eje de campaña, gana un titular.
+    </li>
+  </ul>
+  <div class="firma">
+    <span class="gato">🐱</span> COCOBOT — Estudio redactado el 4 de octubre de 2026 · Las encuestas son una foto, la calle es un vídeo: a 29 de noviembre veremos qué pasó con el guion.
+  </div>
+</section>
+
+<div style="height:3rem"></div>
+
+<!-- ════════════ FUENTES ════════════ -->
+<section class="planta" id="fuentes">
+  <div class="planta-head">
+    <span class="planta-tag">Anexo</span>
+    <h2>Fuentes y metodología</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <p style="font-size:.9rem">
+    Estudio periodístico-compilatorio basado en fuentes públicas (prensa, agencias, INE, institutos).
+    Las cifras de manifestaciones varían entre la Delegación del Gobierno y los convocantes (se citan ambas).
+    Las encuestas reflejan la media de octubre <em>previa</em> a las movilizaciones por la vivienda.
+    Las estimaciones de fondos buitre son privadas y se señalan como tales. Este estudio se actualizará
+    si el lunes 5 de octubre hay anuncio de convocatoria.
+  </p>
+  <div class="fuentes">
+    <a href="https://es.wikipedia.org/wiki/Desahucio_de_Maricarmen_Abascal" target="_blank" rel="noopener"><span class="fdom">WIKI</span>Desahucio de Maricarmen Abascal — Wikipedia</a>
+    <a href="https://cnnespanol.cnn.com/2026/09/24/espana/maricarmen-desalojo-madrid-problema-vivienda-orix" target="_blank" rel="noopener"><span class="fdom">CNN</span>El desalojo de Maricarmen, de 87 años, causa indignación en España — CNN en Español</a>
+    <a href="https://www.independentespanol.com/noticias/mundo/europa/maricarmen-desahucio-espana-desalojo-anciana-b3059287.html" target="_blank" rel="noopener"><span class="fdom">IND</span>Maricarmen podrá regresar a su hogar — Independent Español</a>
+    <a href="https://elpais.com/expres/2026-10-03/el-congreso-ha-tumbado-los-decretos-de-vivienda-y-ahora-que-elecciones.html" target="_blank" rel="noopener"><span class="fdom">ELPAÍS</span>El Congreso ha tumbado los decretos de vivienda: ¿y ahora qué, elecciones? — 03-10</a>
+    <a href="https://www.eldiario.es/politica/junts-pp-vox-tumban-decretos-vivienda-congreso_1_13557141.html" target="_blank" rel="noopener"><span class="fdom">ELDIARIO</span>Junts, PP y Vox tumban los decretos de vivienda en el Congreso — 02-10</a>
+    <a href="https://elpais.com/espana/2026-10-04/la-mayoria-del-psoe-y-el-gobierno-anima-a-sanchez-a-convocar-elecciones-ya-ahora-hay-una-oportunidad.html" target="_blank" rel="noopener"><span class="fdom">ELPAÍS</span>La mayoría del PSOE y el Gobierno anima a Sánchez a convocar elecciones ya — 04-10</a>
+    <a href="https://www.elespanol.com/espana/20261004/elecciones-protestas-espana-vivienda-directo-sumar-celebra-reunion-alto-nivel-ministros-posibilidad-adelanto-electoral/1003744407786_10.html" target="_blank" rel="noopener"><span class="fdom">ESPANOL</span>Sánchez contempla el 29-N como «muy probable» · reunión de Sumar — 04-10</a>
+    <a href="https://www.elespanol.com/espana/politica/20261004/equipo-sanchez-apuesta-ir-urnas-psoe-protector-debiles-frente-desalmado-pp/1003744407422_0.html" target="_blank" rel="noopener"><span class="fdom">ESPANOL</span>El equipo de Sánchez apuesta por el 29-N — 04-10</a>
+    <a href="https://www.lavanguardia.com/politica/20261004/11650319/sanchez-evalua-reaccion-social-manifestaciones-decidir-precipita-elecciones.html" target="_blank" rel="noopener"><span class="fdom">LVANGUARDIA</span>Sánchez evalúa la reacción social para decidir — 04-10</a>
+    <a href="https://okdiario.com/espana/29-n-sanchez-decidido-convocar-manana-elecciones-generales-20476719" target="_blank" rel="noopener"><span class="fdom">OKDIARIO</span>29-N: Sánchez, decidido a convocar mañana — 04-10</a>
+    <a href="https://www.lasexta.com/programas/al-rojo-vivo/sanchez-encarga-encuestas-flash-cis-pregunta-caida-decretos-vivienda-posible-adelanto-electoral_202610026ac01a75916cda53dca2c469.html" target="_blank" rel="noopener"><span class="fdom">LASEXTA</span>Sánchez encarga encuestas flash y el CIS ya pregunta — 02-10</a>
+    <a href="https://colmenadedatos.com/media-de-encuestas-elecciones-espana-octubre-2026/" target="_blank" rel="noopener"><span class="fdom">COLMENA</span>Media de encuestas elecciones España (Octubre 2026)</a>
+    <a href="https://www.europapress.es/madrid/noticia-delegacion-cifra-70000-asistentes-protesta-vivienda-madrid-frente-500000-inquilinas-20261003145826.html" target="_blank" rel="noopener"><span class="fdom">EP</span>70.000 (Delegación) frente a 500.000 (Inquilinas) — 03-10</a>
+    <a href="https://www.rtve.es/noticias/20261003/manifestaciones-vivienda-espana-cronica/17252068.shtml" target="_blank" rel="noopener"><span class="fdom">RTVE</span>Decenas de miles de manifestantes en toda España — 03-10</a>
+    <a href="https://www.elmundo.es/espana/2026/10/03/6ac0ed28fc6c839a658b4595.html" target="_blank" rel="noopener"><span class="fdom">ELMUNDO</span>Un clamor por la vivienda saca a decenas de miles — 03-10</a>
+    <a href="https://www.rtve.es/noticias/20261004/detenidos-tres-ultraderecha-intentar-acampada-sol/17252580.shtml" target="_blank" rel="noopener"><span class="fdom">RTVE</span>Detenidos tres ultraderechistas al intentar llegar a la acampada — 04-10</a>
+    <a href="https://www.ine.es/dyngs/Prensa/IPV1T26.htm" target="_blank" rel="noopener"><span class="fdom">INE</span>Índice de Precios de Vivienda — 1T 2026 (base 2025)</a>
+    <a href="https://www.infobae.com/espana/2026/06/08/el-precio-de-la-vivienda-sigue-al-alza-crece-un-129-en-el-primer-trimestre-de-2026-respecto-al-ano-anterior-segun-ine/" target="_blank" rel="noopener"><span class="fdom">INFOBAE</span>Segunda mano +13,5%, máximo de la serie de 19 años — INE</a>
+    <a href="https://www.infobae.com/espana/agencias/2026/09/15/el-indice-para-actualizar-alquileres-alcanza-el-247-en-agosto-su-tercer-dato-mas-alto/" target="_blank" rel="noopener"><span class="fdom">EFE</span>El índice de actualización de alquileres alcanza el 2,47% en agosto</a>
+    <a href="https://www.elespanol.com/invertia/observatorios/vivienda/20261001/alquileres-vencen-acabar-podran-acogerse-prorroga-obligatoria-decretos/1003744404814_0.html" target="_blank" rel="noopener"><span class="fdom">ESPANOL</span>Más de 750.000 alquileres vencen antes de fin de 2026 — 01-10</a>
+    <a href="https://www.elespanol.com/invertia/observatorios/vivienda/20261002/letra-pequena-decretos-desmonta-relato-fondos-buitre-solo-alquiler-pertenece-empresas/1003744404656_0.html" target="_blank" rel="noopener"><span class="fdom">ESPANOL</span>Solo el 8,1% del alquiler pertenece a empresas — 02-10</a>
+    <a href="https://www.avafin.es/blog/listado-fondos-buitre-espana" target="_blank" rel="noopener"><span class="fdom">AVA FIN</span>Listado de fondos buitre en España (estimación &gt;100.000 viviendas)</a>
+    <a href="https://www.europapress.es/economia/construccion-y-vivienda-00342/noticia-vivienda-espana-cinco-graficos-emancipacion-jovenes-alquiler-acceso-vivienda-20261001084215.html" target="_blank" rel="noopener"><span class="fdom">EP</span>La vivienda en 5 gráficos: 67,1% de 18–35 vive con sus padres (INE)</a>
+    <a href="https://www.moncloa.com/2026/06/26/espana-emancipacion-jovenes-3390107/" target="_blank" rel="noopener"><span class="fdom">MONCLOA.COM</span>Emancipación a los 30,2 años · alquiler medio 1.176 €</a>
+    <a href="https://www.lavanguardia.com/economia/20260427/11523452/vivienda-jovenes-padres-alquiler-compra-espana.html" target="_blank" rel="noopener"><span class="fdom">LVANGUARDIA</span>La mitad de los jóvenes que vive con sus padres no puede permitirse un piso</a>
+  </div>
+</section>
+
+</main>
+
+<div class="tape"></div>
+<footer class="site">
+  <span>COCOBOT · CRISIS DE VIVIENDA Y PULSO ELECTORAL · 04-10-2026</span>
+  <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  <a class="back-btn" href="../../index.html" style="font-size:.68rem">← COCOBOT</a>
+</footer>
+
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/crisis-vivienda-espana-2026/';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
+<script>
+function toggleNav(){
+  var drawer=document.getElementById('nav-drawer');
+  var overlay=document.getElementById('nav-overlay');
+  var btn=document.getElementById('hamburger-btn');
+  drawer.classList.toggle('active');
+  overlay.classList.toggle('active');
+  btn.classList.toggle('active');
+  btn.textContent=drawer.classList.contains('active')?'✕':'☰';
+}
+function closeNavAndGo(e){
+  e.preventDefault();
+  var href=e.currentTarget.getAttribute('href');
+  var drawer=document.getElementById('nav-drawer');
+  var overlay=document.getElementById('nav-overlay');
+  var btn=document.getElementById('hamburger-btn');
+  drawer.classList.remove('active');
+  overlay.classList.remove('active');
+  btn.classList.remove('active');
+  btn.textContent='☰';
+  var target=document.querySelector(href);
+  if(target){target.scrollIntoView({behavior:'smooth'});}
+}
+</script>
+</body>
+</html>
