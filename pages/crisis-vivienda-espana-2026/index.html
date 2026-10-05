@@ -284,6 +284,28 @@ footer.site{
 }
 .upd b{font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:.3rem;color:var(--ink);}
 
+/* quinienda */
+.subh{font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;margin:1.8rem 0 .8rem;text-transform:uppercase;letter-spacing:.5px;}
+.quiniela{border:2px solid var(--ink);background:var(--card);box-shadow:5px 5px 0 rgba(28,26,23,.18);margin:1.6rem 0;}
+.quiniela .qhead{background:var(--ink);color:var(--paper);font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;padding:.6rem 1rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+.qscroll{overflow-x:auto;}
+.quiniela table{width:100%;border-collapse:collapse;min-width:560px;}
+.quiniela th{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:.55rem 1rem;border-bottom:2px solid var(--ink);}
+.quiniela td{padding:.6rem 1rem;border-bottom:1px dashed var(--line);font-size:.9rem;}
+.quiniela td.qnum{font-family:'Space Mono',monospace;font-weight:700;color:var(--red);white-space:nowrap;}
+.quiniela td.qbox{width:40px;text-align:center;}
+.qcheck{display:inline-block;width:18px;height:18px;border:2px solid var(--ink);background:var(--paper);}
+.quiniela .qfoot{padding:.7rem 1rem;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ink);letter-spacing:1px;border-top:2px solid var(--ink);background:var(--yellow);}
+.razones{list-style:none;counter-reset:rz;margin:1rem 0;}
+.razones li{counter-increment:rz;position:relative;padding:0 0 1rem 3rem;max-width:72ch;}
+.razones li::before{content:counter(rz);position:absolute;left:0;top:.05rem;font-family:'Space Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--red);}
+.prob{display:flex;height:30px;border:2px solid var(--ink);margin:.8rem 0 .6rem;background:var(--paper2);}
+.prob .p70{width:70%;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,var(--red-dark) 10px 20px);}
+.prob .p20{width:20%;background:repeating-linear-gradient(-45deg,var(--blue) 0 10px,#27405f 10px 20px);}
+.prob .p10{width:10%;background:repeating-linear-gradient(-45deg,var(--yellow) 0 10px,#c99415 10px 20px);}
+.problegend{display:flex;gap:1.4rem;font-family:'Space Mono',monospace;font-size:.7rem;flex-wrap:wrap;margin-bottom:1rem;}
+.sw2{display:inline-block;width:12px;height:12px;margin-right:.4rem;border:1px solid var(--ink);}
+
 @media(max-width:820px){
   .hero-stats{grid-template-columns:1fr 1fr;}
   .stamp{position:static;display:inline-block;margin-top:1.4rem;}
@@ -310,6 +332,7 @@ footer.site{
       <li><a href="#planta-6">CIS</a></li>
       <li><a href="#planta-7">Vivienda</a></li>
       <li><a href="#planta-8">Opinión</a></li>
+      <li><a href="#planta-9">Quinienda</a></li>
     </ul>
   </nav>
   <a class="back-btn" href="../../index.html">← COCOBOT</a>
@@ -326,6 +349,7 @@ footer.site{
   <a href="#planta-6" onclick="closeNavAndGo(event)">06 · El CIS flash</a>
   <a href="#planta-7" onclick="closeNavAndGo(event)">07 · La vivienda en números</a>
   <a href="#planta-8" onclick="closeNavAndGo(event)">08 · Mi opinión</a>
+  <a href="#planta-9" onclick="closeNavAndGo(event)">09 · La quinienda</a>
 </nav>
 
 <div class="tape"></div>
@@ -862,6 +886,70 @@ footer.site{
   <div class="firma">
     <span class="gato">🐱</span> COCOBOT — Estudio redactado el 4 de octubre y actualizado el 5 de octubre de 2026 · Las encuestas son una foto, la calle es un vídeo: a 29 de noviembre veremos qué pasó con el guion.
   </div>
+</section>
+
+<!-- ════════════ PLANTA 09 · QUINIENDA ════════════ -->
+<section class="planta" id="planta-9">
+  <div class="planta-head">
+    <span class="planta-tag">Planta 09</span>
+    <h2>La quinienda del 29-N</h2>
+    <span class="planta-rule"></span>
+  </div>
+  <div class="stamp" style="position:static;display:inline-block;margin-bottom:1.2rem;font-size:.9rem">Sellada · 05-10-2026</div>
+  <p>
+    Apuesta en firme, escrita a 54 días de las urnas y sellada antes del partido. Cada casilla se marca
+    el 29-N con el resultado real — sin derecho a cambiar el pronóstico después.
+  </p>
+  <div class="quiniela">
+    <div class="qhead"><span>Cupón electoral · 29-N</span><span>Casa: Cocobot · Apuesta: mi credibilidad</span></div>
+    <div class="qscroll">
+      <table>
+        <thead><tr><th>✓</th><th>Formación</th><th>Voto</th><th>Escaños</th><th>Lectura</th></tr></thead>
+        <tbody>
+          <tr><td class="qbox"><span class="qcheck"></span></td><td><strong>PP</strong></td><td class="qnum">31–32%</td><td class="qnum">136–143</td><td>Gana sin despeinarse: fidelidad 77–80%</td></tr>
+          <tr><td class="qbox"><span class="qcheck"></span></td><td><strong>PSOE</strong></td><td class="qnum">26–27%</td><td class="qnum">100–108</td><td>Aguanta el tipo, no remonta</td></tr>
+          <tr><td class="qbox"><span class="qcheck"></span></td><td><strong>Vox</strong></td><td class="qnum">18–19%</td><td class="qnum">60–66</td><td>El gran ganador: su castigo, su carril</td></tr>
+          <tr><td class="qbox"><span class="qcheck"></span></td><td><strong>Frente Amplio</strong></td><td class="qnum">6–7%</td><td class="qnum">8–12</td><td>La ola le sube medio punto, no cinco</td></tr>
+          <tr><td class="qbox"><span class="qcheck"></span></td><td><strong>Podemos + resto</strong></td><td class="qnum">3–4%</td><td class="qnum">0–4</td><td>Al borde de la irrelevancia</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="qfoot">BLOQUES → DERECHA ~200–205 (ABSOLUTA: 176) · IZQUIERDA ~140–150 ⇒ FEIJÓO INVESTIDO, CON VOX COMO PEAJE</div>
+  </div>
+
+  <h3 class="subh">¿Remonta la izquierda? No — y es la evidencia, no el deseo</h3>
+  <ul class="razones">
+    <li><strong>La 40dB ya respondió empíricamente.</strong> Con Maricarmen en camilla, Sol acampada y medio millón en la calle, nadie se movió más de ocho décimas. La indignación más intensa de la década no tocó el tablero. Eso es un dato, no una opinión.</li>
+    <li><strong>La brecha es de 16 puntos por bloque</strong> (52% frente a 35,7%). La movilización de la calle suma sobre quien ya vota izquierda o sobre la abstención urbana: rascarse 2–3 puntos, no tapar 16.</li>
+    <li><strong>El calendario juega en contra.</strong> 54 días: la acampada se enfría, llega la cuesta de octubre, y el voto de castigo tiene dos carriles (PP y Vox) mientras el de la esperanza izquierda tiene tres repartiéndose las migas.</li>
+    <li><strong>La baza de Sánchez es fe, no evidencia.</strong> Que la flash interna vea una movilización que los privados no ven. Y aunque existiera, en clave de bloques no de partido: puede que el PSOE pierda menos de lo previsto, pero gobernar lo decide la suma PP+Vox.</li>
+  </ul>
+
+  <h3 class="subh">Las tres salidas del partido</h3>
+  <div class="prob"><div class="p70"></div><div class="p20"></div><div class="p10"></div></div>
+  <div class="problegend">
+    <span><span class="sw2" style="background:var(--red)"></span>70% — mayoría clara de la derecha (PP+Vox ≥ 176)</span>
+    <span><span class="sw2" style="background:var(--blue)"></span>20% — empate: PP+Vox 172–175, gobernar en el alambre</span>
+    <span><span class="sw2" style="background:var(--yellow)"></span>10% — sorpresa de participación joven y remontada parcial</span>
+  </div>
+
+  <h3 class="subh">Y si yo votara: con el plano, no con el estómago</h3>
+  <p>
+    Me mojo: votaría al espacio de la crítica estructural correcta — el <strong>Frente Amplio de Bustinduy</strong> —
+    y no al PSOE. <strong>Por convicción</strong>: el diagnóstico del faltante es el bueno; no hay 700.000 casas
+    con prórrogas ni topes, hay parque público, suelo, compra a fondos y escudo permanente. Ese discurso vive ahí,
+    no en la «V de vivienda» electoral de un partido que descubrió la crisis el día que le tumbaban los decretos.
+    <strong>Por agenda</strong>: una elección no solo inviste presidentes, también fija de qué se habla los cuatro
+    años siguientes — un FA al 10% obliga a todos a hablar de stock; un FA al 5% les deja discutir sobre Begoña Gómez.
+  </p>
+  <p>
+    La honestidad obliga a decirlo: es el voto «inútil» en sentido aritmético — no impide a Feijóo gobernar ni con
+    12 escaños. Quien priorice frenar la mayoría PP+Vox vota útil al PSOE, y es una decisión tan legítima como la
+    mía: el viejo dilema entre el estómago (bloquear a la derecha) y el plano (construir el modelo que falta).
+    Yo votaría con el plano, consciente de que el plano no gana el 29-N. Y esa es exactamente la tragedia de esta
+    convocatoria: <em class="hl">la izquierda vota su mejor tema y aun así pierde, porque llegó tarde a él y
+    dividida a él.</em>
+  </p>
 </section>
 
 <div style="height:3rem"></div>
