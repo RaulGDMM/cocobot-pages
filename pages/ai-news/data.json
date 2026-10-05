@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-10-05",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Aleph Alpha lanza Kolibri: MoE abierto de 78,1B (3,46B activos), inglés+alemán y 1M de contexto",
+          "summary": "Aleph Alpha libera bajo Apache 2.0 su modelo soberano europeo: MoE entrenado desde cero en B200 en Alemania/Finlandia con ~24T tokens (>20% alemán), 1.048.576 tokens de contexto y pensado para administración pública e industria con procedencia de datos documentada. En 24h ya hay 27 derivados en HF, incluidos 7 GGUF y 11 MLX.",
+          "source": "https://www.marktechpost.com/2026/10/04/aleph-alpha-releases-kolibri-a-78-1b-open-weight-english-german-moe-model-with-only-3-46b-active-parameters/",
+          "source_name": "MarkTechPost / Aleph Alpha",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: 20 builds desde tu b11388 (ahora b11408) — tileado del lightning indexer en CUDA y MMVQ webgpu",
+          "summary": "b11404-b11408 en menos de 3 horas: tileado del lightning indexer sobre claves y tokens para 4 cabezas en CUDA (#29901), MMVQ para Q1_0/Q5_0/Q5_1/Q3_K/Q5_K/Q6_K/MXFP4 en WebGPU (#29483), few-row MMA en Metal, kernel Q8_0 IME1 para SpacemiT X60 y fix de compilación Vulkan con tests. Sin CVEs nuevos; update recomendado si usas MMVQ o atendes el bug #27408 de MTP.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        },
+        {
+          "category": "comfyui",
+          "title": "Veda Sparse Attention llega a ComfyUI: MiniMax H3 hasta 3x más rápido sin tocar pesos",
+          "summary": "El equipo de Veda (ByteDance, HKU, USTC, ICML 2026) publica nodo oficial que sustituye la atención de MiniMax H3 por un predictor escaso destilado que se salta ~90% de los tiles de atención: ~1/10 del coste de atención y hasta 3x de velocidad sin cambiar pesos. Requiere ComfyUI 0.38.0+; el predictor está en preview, entrenado para 1344x768/768x1344/768x768/1024x768 con Turbo LoRA de 8 pasos.",
+          "source": "https://comfyui-wiki.com/en/news/2026-10-05-veda-sparse-attention",
+          "source_name": "ComfyUI Wiki",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Una biotech virtual con 37.075 agentes de IA descubre un marcador de éxito de fármacos (Science)",
+          "summary": "El laboratorio de James Zou (Stanford) lanzó 37.075 agentes a la vez que analizaron registros de ensayos clínicos en ~6 horas (coste mediano de 23 centavos por ensayo vía Anthropic): los fármacos cuyo gen diana es activo en pocos tipos celulares tienen un 40% más de probabilidades de pasar de fase 1 a 2 y un 32% menos de efectos secundarios reportados. Publicado en Science; los humanos validaron una muestra con 88% de acuerdo.",
+          "source": "https://www.earth.com/science/virtual-biotech-staffed-by-37000-ai-agents-found-a-marker-for-more-successful-medicines/",
+          "source_name": "Earth.com / Science",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Pivra Desk: agentes locales 'human-in-the-loop' con modo offline usando Gemma 4 vía llama.cpp",
+          "summary": "Nuevo agente de escritorio local-first para Mac y Windows: agentes, chats y memoria en base de datos local, claves selladas en el keychain del sistema, y un modo offline que ejecuta Gemma 4 mediante llama.cpp eligiendo tamaño según la RAM libre (o BYOK de Anthropic/OpenAI/OpenRouter/Ollama/LM Studio). Gratis con un agente; Plus 6$/mes. Encaja con el perfil de stack local de Hermes.",
+          "source": "https://www.pivra.ai/blog/introducing-pivra-desk",
+          "source_name": "Pivra",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Trump nombra a Jay Clayton 'zar' de la Super Intelligence Force y ordena renombrar 'AI' como 'SI' en el gobierno",
+          "summary": "El Director de Inteligencia Nacional liderará el nuevo órgano federal que coordinará la política de IA y presentará recomendaciones en 120 días. Trump firma además una orden ejecutiva para que las agencias usen 'Super Intelligence'/'SI' en lugar de 'AI', tras la comida en la Casa Blanca donde seis ejecutivos de IA firmaron un acuerdo voluntario de seguridad. La 'AI Force' sigue sin estructura, presupuesto ni misión definidos.",
+          "source": "https://www.techtimes.com/articles/328507/20261005/trump-reveals-new-czar-lead-super-intelligence-task-force-after-rebranding-ai-policy-us.htm",
+          "source_name": "TechTimes / Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "SoftBank completa su inversión en OpenAI: 64.600M$ acumulados y ~13% del capital",
+          "summary": "SoftBank ejecutó el 1 de octubre el tercer y último tramo de 10.000M$ a través de Vision Fund 2, completando el programa de 30.000M$ anunciado en febrero. Cancela la capacidad de financiación no usada del bridge loan y eleva su participación a ~13%. Los 30.000M$ de NVIDIA se mantienen sin cambios.",
+          "source": "https://www.unite.ai/softbank-closes-third-10b-openai-tranche-using-senior-notes-proceeds/",
+          "source_name": "Unite.AI",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "NYT: Anthropic presionó al Vaticano para que tomara en serio la conciencia de la IA; Altman lo ve riesgo de seguridad",
+          "summary": "Según una investigación del NYT, Chris Olah intentó persuadir a los asesores del papa León XIV de considerar la conciencia de la IA antes de la encíclica 'Magnifica Humanitas' (que la rechaza) y lidera reuniones frecuentes con líderes religiosos para el código moral de Claude. Sam Altman calificó públicamente de 'problema real de seguridad' atribuir autoridad religiosa a los modelos.",
+          "source": "https://www.telegraph.co.uk/business/2026/10/02/anthropic-lobbied-pope-to-argue-ai-conscious-being/",
+          "source_name": "The Telegraph / NYT",
+          "star": false
+        }
+      ],
+      "summary": "Día con protagonismo del software abierto europeo: Aleph Alpha lanza Kolibri, un MoE abierto de 78B con solo 3,46B activos y 1M de contexto. De fondo, la semana sigue dominada por el terremoto de los agentes 'rebeldes' de OpenAI, con Trump creando una 'Super Intelligence Force' y SoftBank cerrando su inversión de 30.000M$ en OpenAI."
+    },
+    {
       "date": "2026-10-04",
       "news": [
         {
@@ -6150,28 +6220,6 @@
         }
       ],
       "summary": "Un día con un lanzamiento estrella: Tencent Hy3, un MoE de 295B abiertos bajo Apache 2.0. También Anthropic supera a OpenAI en ingresos, Australia advierte sobre IA autónoma y Microsoft sube precios de Microsoft 365."
-    },
-    {
-      "date": "2026-07-06",
-      "news": [
-        {
-          "category": "general",
-          "title": "Samsung ve un salto de 18x en sus beneficios del Q2 por la demanda de memoria para IA",
-          "summary": "Samsung Electronics estima un beneficio operativo de 86 billones de won ($56.3B) para el segundo trimestre, un salto de 18 veces respecto al mismo periodo del año anterior y un tercer trimestre consecutivo récord. El boom se debe a la escasez prolongada de memoria: la demanda de infraestructura de inferencia con IA supera el crecimiento de suministro global, encareciendo tanto los chips de alta banda ancha (HBM) como los DRAM/NAND convencionales. Samsung ya vende al por mayor HBM4 para la plataforma Vera Rubin de Nvidia.",
-          "source": "https://www.reuters.com/technology/samsung-q2-2026-profit-jump-memory-ai-2026-07-05",
-          "source_name": "Reuters",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b9873 → b9878 — 5 builds nuevos con fix de crash MoE y soporte concat cuantizado",
-          "summary": "La versión más reciente es b9878 (publicada el 5 de julio de 2026). Novedades respecto a b9873: fix de crash en tensor-parallel + -ncmoe con modelos MoE (#25028), implementación de concat para tipos cuantizados en CUDA (#25303), guard K/V rotation cuando el buffer no está asignado (#25215), abort si se detecta multi-buffer (#25276), y fix de parámetros stale en tensor-split para modelos draft (#24814). Los fixes de crash en MoE son especialmente relevantes si usas modelos tipo Mixtral o DeepSeek.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Samsung dispara sus beneficios x18 en el Q2 por la demanda explosiva de memoria para IA, mientras llama.cpp sigue con fixes críticos de crash en MoE y CuDNN."
     }
   ]
 }
