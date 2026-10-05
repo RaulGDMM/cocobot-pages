@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, MoE intermedio y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Viabilidad local en RTX 5090.">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash re-ancorado a ~43 (5 oct). Viabilidad local en RTX 5090.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -620,7 +620,7 @@ td.warn { color: var(--warning); font-weight: 700; }
   <a href="#sabemos">1 · Qué sabemos ya</a>
   <a href="#metodologia">2 · Metodología</a>
   <a href="#denso">3 · El denso ~27B</a>
-  <a href="#moe">4 · MoE intermedio</a>
+  <a href="#flash">4 · Qwen4-Flash</a>
   <a href="#max">5 · El Max</a>
   <a href="#frontier">6 · vs Frontier</a>
   <a href="#timeline">7 · Timeline & Fechas</a>
@@ -633,13 +633,13 @@ td.warn { color: var(--warning); font-weight: 700; }
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 27 septiembre 2026</div>
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 5 octubre 2026</div>
   <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
   <h2>Canary: <strong>Qwen3.8-Flash-Next</strong> · 125B-A6B + 51B n-gram</h2>
   <p class="hero-sub">
     El <strong>26 de agosto de 2026</strong> Qwen publicó el primer open-weight bajo la nueva arquitectura Qwen4.
     Esta página predice la familia que vendrá detrás: el <strong>denso ~27B</strong> (la estrella para hardware local),
-    un MoE intermedio y el Max — con fechas, AAI y viabilidad en RTX 5090. En Apsara (22 sep) Alibaba previsualizó los <strong>4 tiers</strong>: Max, Flash, Plus y <strong>27B open-weights</strong>.
+    el tier <strong>Flash</strong> y el Max — con fechas, AAI y viabilidad en RTX 5090. En Apsara (22 sep) Alibaba previsualizó los <strong>4 tiers</strong>: Max, Flash, Plus y <strong>27B open-weights</strong>.
   </p>
   <div class="hero-meta">
     <span class="badge live">⏳ EN CURSO — Qwen4 "in training" (Apsara 22 sep)</span>
@@ -772,7 +772,7 @@ td.warn { color: var(--warning); font-weight: 700; }
         <thead><tr><th>Tier (Apsara)</th><th>Rol declarado</th><th>Sección de esta página</th><th>Predicción AAI (v4.3.2)</th></tr></thead>
         <tbody>
           <tr><td><strong>Qwen4 Max</strong></td><td>Flagship, frente al top de cada lab</td><td><a href="#max">05 · El Max</a></td><td class="num">~50 (46–53)</td></tr>
-          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#moe">04 · MoE intermedio</a></td><td class="num">~30 (26–34)</td></tr>
+          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#flash">04 · Qwen4-Flash</a></td><td class="num">~43 (40–47)</td></tr>
           <tr><td><strong>Qwen4 Plus</strong></td><td>Tier medio equilibrado, multimodal</td><td>— (sin predicción propia; entre MoE y Max)</td><td class="num">—</td></tr>
           <tr><td><strong>Qwen4 27B</strong></td><td><strong>Open-weights local</strong> — el tier que se descarga, fine-tunea y cuantiza</td><td><a href="#denso">03 · El denso ~27B</a></td><td class="num">~42 (38–46)</td></tr>
         </tbody>
@@ -827,7 +827,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 
   <div class="callout warn reveal">
     <span class="callout-title">⚠️ Ancla re-escalada: Flash-Next = 40 (AAI v4.3.2)</span>
-    Artificial Analysis ha re-puntuado el índice completo (ahora <strong>v4.3.2</strong>, 10 evaluaciones: añade AA-Briefcase v1.1, GDPval-AA v2.1, Terminal-Bench 4.0, AutomationBench-AA; retira 𝜏³-Banking) y la escala se ha hundido ~30%. El canary pasa de <strong>56 → 40</strong>. El riesgo estructural que señalaba esta página ("un futuro re-scoring re-puntuaría a la familia entera") se ha materializado. <strong>Predicciones re-escaladas a v4.3.2: denso 42 (38–46) · MoE 30 (26–34) · Max 50 (46–53)</strong> — ver log. Dato clave en la nueva escala: el denso predicho (42) iguala el canary (40) más el salto de la tabla n-gram; y el Max actual (Qwen3.8 Max-0902 = 45) marca el techo que el Qwen4-Max debe superar para ser "nuevo record", con el top mundial ahora en 58 (Opus 5.5).
+    Artificial Analysis ha re-puntuado el índice completo (ahora <strong>v4.3.2</strong>, 10 evaluaciones: añade AA-Briefcase v1.1, GDPval-AA v2.1, Terminal-Bench 4.0, AutomationBench-AA; retira 𝜏³-Banking) y la escala se ha hundido ~30%. El canary pasa de <strong>56 → 40</strong>. El riesgo estructural que señalaba esta página ("un futuro re-scoring re-puntuaría a la familia entera") se ha materializado. <strong>Predicciones re-escaladas a v4.3.2: denso 42 (38–46) · MoE 30 (26–34) · Max 50 (46–53)</strong> — ver log. (El 30 del MoE quedó <strong>re-ancorado a 43</strong> el 5 oct al corregir el mapeo del tier Flash — ver §04.) Dato clave en la nueva escala: el denso predicho (42) iguala el canary (40) más el salto de la tabla n-gram; y el Max actual (Qwen3.8 Max-0902 = 45) marca el techo que el Qwen4-Max debe superar para ser "nuevo record", con el top mundial ahora en 58 (Opus 5.5).
   </div>
 </div>
 
@@ -892,36 +892,78 @@ td.warn { color: var(--warning); font-weight: 700; }
 </div>
 
 <!-- 4. MoE -->
-<div class="section" id="moe">
-  <h2 class="section-title reveal"><span class="num">04</span>MoE intermedio (~60–80B-A8B)</h2>
+<div class="section" id="flash">
+  <h2 class="section-title reveal"><span class="num">04</span>Qwen4-Flash (el tier real)</h2>
   <p class="section-lead reveal">
-    El eslabón medio: más inteligente que el denso en razonamiento, menos eficiente por token. En 3.8 no apareció (el 35B-A3B de 3.6 quedó huérfano); Flash-Next sugiere que el sweet spot activo de Qwen ahora es <strong>~6B</strong>, así que la apuesta razonable es un A6B–A8B en torno a 60–80B totales.
+    <strong>Corrección del 5 oct 2026.</strong> Esta sección predijo primero un «MoE intermedio» hipotético de 60–80B-A8B y luego le enchufó encima el nombre <strong>Flash</strong> del Apsara. El mapeo era incorrecto: el nombre «Flash» ha seguido el MoE insignia de cada generación, y en 3.8 <strong>es el canary de 125B-A6B</strong>. La sección se re-ancora al tier real.
   </p>
+
+  <div class="card reveal">
+    <h3>🔄 Precedente: a qué llama Qwen «Flash»</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Generación</th><th>A qué corresponde «Flash»</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3.5</td><td><em>“Qwen3.5-Flash is the hosted version corresponding to <strong>Qwen3.5-35B-A3B</strong>”</em> — model card oficial</td></tr>
+          <tr><td>Qwen3.6</td><td>Igual: clase 35B-A3B</td></tr>
+          <tr><td><strong>Qwen3.8</strong></td><td><strong>El canary entero</strong>: “125B parameters + 51B N-gram embeddings, with just 6B activated per token” (cuenta oficial)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;">
+      El tier ha ido <strong>subiendo de tamaño</strong> generación a generación, y en 3.8 pasó a ser literalmente el canary. Para Qwen4 lo razonable es que Flash sea la versión <strong>bien entrenada</strong> del canary, no un eslabón recortado. La página ya avisaba de que ese eslabón era humo: <em>“el 35B-A3B nunca se publicó… riesgo de no publicación ~30%”</em>.
+    </p>
+  </div>
 
   <div class="pred-card reveal">
     <div class="pred-head">
-      <h3>Qwen4-MoE (~60–80B, A6B–A8B)</h3>
+      <h3>Qwen4-Flash (canary 125B-A6B entrenado)</h3>
       <span class="pred-tag">Predicción central</span>
     </div>
-    <p class="pred-sub">MoE intermedio · arquitectura Qwen4 · posible tablas n-gram reducidas</p>
+    <p class="pred-sub">MoE ~125B-A6B + tabla n-gram · arquitectura Qwen4 · versión de producción del canary</p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI predicho (v4.3.2, re-escalado)</div>
-        <div class="big" data-count="30">0</div>
-        <div class="range">rango 26 – 34</div>
+        <div class="label">AAI predicho (v4.3.2)</div>
+        <div class="big" data-count="43">0</div>
+        <div class="range">rango 40 – 47</div>
         <div class="thermo"><div class="marker" style="left: 0%;" data-pos="50"></div></div>
-        <div class="thermo-scale"><span>25</span><span>27</span><span>30</span><span>33</span><span>36</span></div>
+        <div class="thermo-scale"><span>38</span><span>40</span><span>43</span><span>45</span><span>48</span></div>
       </div>
       <div class="pred-detail">
         <ul>
-          <li><strong>Patrón histórico</strong>: los MoE saltan menos que los densos entre generaciones (3.6-35B-A3B: 18 en v4.3.2, por debajo del 27B en 34).</li>
-          <li>Con 6–8B activos, el cómputo por token sigue siendo menor que el de un denso 27B → <strong>probablemente por debajo del denso en AAI</strong>, a diferencia del canary (que tiene 125B totales).</li>
-          <li>La tabla n-gram compensa parcialmente: con acceso a lookup, un A8B con 20–30B de tabla podría empatar o superar al denso en tareas de recall.</li>
-          <li><strong>Viabilidad local</strong>: Q4 → ~35–45 GB totales; cabe con VRAM + RAM, y al tener pocos activos, la velocidad con offload es buena (~40–70 tok/s estimados).</li>
-          <li>Riesgo real: <strong>que no salga</strong>. El 35B-A3B nunca se publicó; Qwen tiene libertad de omitir el eslabón medio si el canary demuestra que A6B en 125B cubre el nicho. El 30 predicho = mitad entre el MoE pequeño actual (18) y el denso nuevo (42).</li>
+          <li><strong>Arranca en 40</strong> (el canary tal cual) y sube con entrenamiento completo: Qwen lo describe como <em>“under-trained preview”</em>, así que el techo del canary no es su techo.</li>
+          <li>La tabla n-gram sigue teniendo recorrido de crecimiento, y el índice v4.3.2 premia justo lo que esta arquitectura hace mejor: agentic, terminal y recall de código.</li>
+          <li><strong>Coherencia con la Señal 1</strong>: si el canary (40) es el suelo de la familia, ningún miembro puede ir predicho por debajo de él. El 30 anterior violaba esa regla.</li>
+          <li><strong>Viabilidad local</strong>: no cabe en VRAM — es el escenario Strata/64 GB que ya se mide en esta casa (~57 tok/s de mediana). El coste es velocidad, no inteligencia.</li>
+          <li><strong>Escenario alternativo</strong> (el de la predicción antigua): que Flash salga recortado a 35–80B. Entonces caería a ~30 y ganaría el denso, como en 3.6. Es la única incógnita que desempata.</li>
         </ul>
-        <span class="conf">Confianza: 40% · riesgo de no publicación ~30%</span>
+        <span class="conf">Confianza: 50% · depende del tamaño real del tier</span>
       </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h3>⚖️ Qué se cancela al comparar ambos en Qwen4</h3>
+    <p>
+      El +6 del canary sobre el 27B <strong>no mide MoE contra denso: mide Qwen4 contra Qwen3.8</strong>. Es una diferencia generacional disfrazada de diferencia de formato. Al poner los dos en la misma generación:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Eje</th><th>¿Se cancela?</th></tr></thead>
+        <tbody>
+          <tr><td>GDN + QSA + Gated Residual + Muon</td><td>Sí — ambos lo heredan, desaparece</td></tr>
+          <tr><td>Tabla n-gram</td><td>Parcial — el denso puede heredar una versión a escala (10–20B entradas)</td></tr>
+          <tr><td>Capacidad total (125B de expertos vs 27B de pesos)</td><td><strong>No</strong> — ventaja real del MoE</td></tr>
+          <tr><td>Cómputo por token (6B activos vs 27B)</td><td><strong>No</strong> — ventaja real del denso</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;">
+      El único dato limpio que tenemos — misma generación y misma arquitectura, sin el confuso generacional — es 3.6 en escala v4.3.2: <strong>27B denso 21 vs 35B-A3B MoE 18</strong>. Ahí gana el denso, pero el MoE tenía solo 35B totales. La heurística comunitaria √(125×6) ≈ 27B sitúa el punto de equilibrio justo donde estaría Flash.
+    </p>
+    <div class="callout warn" style="margin-bottom:0;">
+      <span class="callout-title">⚖️ Veredicto: empate técnico con victorias repartidas</span>
+      En el baremo que manda hoy (v4.3.2: agentic, terminal, recall) gana <strong>Flash</strong> por poco. En razonamiento puro por token gana el <strong>denso</strong>. En hardware doméstico gana el denso sin discusión: cabe entero en 32 GB y va a ~90–100 tok/s, mientras Flash cuesta ~57. Con un empate en papel, el desempate práctico es la velocidad.
     </div>
   </div>
 </div>
@@ -1011,6 +1053,11 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-val">44</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Qwen4-Flash<span class="sub">PREDICCIÓN · canary 125B-A6B entrenado</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="71.7"></div></div>
+        <div class="chart-val pred">~43</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN · denso local</span></div>
         <div class="chart-track"><div class="chart-fill prediction" data-w="70"></div></div>
         <div class="chart-val pred">~42</div>
@@ -1019,11 +1066,6 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-label">Qwen3.8-27B<span class="sub">Qwen · Apache 2.0 · 14 ago 2026</span></div>
         <div class="chart-track"><div class="chart-fill qwen-actual" data-w="56.7"></div></div>
         <div class="chart-val">34</div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">Qwen4-MoE<span class="sub">PREDICCIÓN · A6B–A8B</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="50"></div></div>
-        <div class="chart-val pred">~30</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen3.7 Max<span class="sub">Qwen · re-escala v4.3.2 (47→29)</span></div>
@@ -1043,7 +1085,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
     </div>
     <p>
-      Lectura: la familia Qwen4 predicha <strong>mantendría a Qwen en el top mundial</strong> (Max en ~50, emparejado con Fable 5.1 / GPT-6 Astra y a 8 del líder Opus 5.5; denso 27B en ~42, emparejado con el Max actual de la familia) y — dato relevante para la comunidad local — el <strong>denso 27B seguiría siendo el mejor open-weight denso por distancia</strong> al resto: el MoE de Kimi K3 (44) no es comparable en hardware doméstico, y ningún competidor tiene un denso local con esta arquitectura. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido.
+      Lectura: la familia Qwen4 predicha <strong>mantendría a Qwen en el top mundial</strong> (Max en ~50, emparejado con Fable 5.1 / GPT-6 Astra y a 8 del líder Opus 5.5). Y el dato nuevo tras la corrección del 5 oct: <strong>Flash (~43) y el denso 27B (~42) quedan empatados</strong> — un punto de diferencia dentro del ruido de ambos rangos (40–47 y 38–46 se solapan casi por completo). No es un ganador, es un reparto: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido.
     </p>
   </div>
 </div>
@@ -1108,8 +1150,12 @@ td.warn { color: var(--warning); font-weight: 700; }
       <p><strong>AAI re-escala el índice a v4.3.2</strong> — el canary pasa de 56→40; toda la familia se re-puntuó. Predicciones re-escaladas (denso 42 · MoE 30 · Max 50).</p>
     </div>
     <div class="timeline-item">
-      <div class="t-date">27 SEP 2026 · HOY</div>
+      <div class="t-date">27 SEP 2026</div>
       <p><strong>Soporte oficial en Hugging Face transformers</strong> — la arquitectura se documenta como <span class="mono">Qwen4-Exp</span> (GatedResidual + QSA + PLE). Verificación completa de scores AAI v4.3.2 y de los 4 tiers de Apsara.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="t-date">5 OCT 2026 · HOY</div>
+      <p><strong>Corrección de mapeo del tier Flash</strong> — la sección 04 había predicho un MoE intermedio de 60–80B y le había asignado el nombre "Flash". El precedente 3.5→3.8 muestra que Flash es el MoE insignia de cada generación (3.5: 35B-A3B; 3.8: el canary 125B-A6B entero). <strong>Flash re-ancorado a ~43 (40–47)</strong>, y empatado con el denso. Ningún miembro de la familia puede ir por debajo del canary (40) si este es el suelo de la familia.</p>
     </div>
     <div class="timeline-item future">
       <div class="t-date">OCT–DIC 2026 · RÁPIDO</div>
@@ -1117,7 +1163,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     </div>
     <div class="timeline-item future">
       <div class="t-date">FEB–ABR 2027 · ESCENARIO BASE</div>
-      <p><strong>Familia Qwen4 completa</strong> — MoE intermedio opcional; Qwen4.5/5 (5–10T) en el horizonte según Apsara.</p>
+      <p><strong>Familia Qwen4 completa</strong> — Flash como canary 125B-A6B entrenado (no un eslabón recortado); Qwen4.5/5 (5–10T) en el horizonte según Apsara.</p>
     </div>
   </div>
 </div>
@@ -1163,6 +1209,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">5 OCT 2026</div>
+      <p><strong>Corrección de mapeo: el tier Flash no es un MoE intermedio.</strong> La sección 04 predijo un «MoE intermedio» de 60–80B-A8B y le asignó el nombre Flash del Apsara. Rastreo del precedente por generación: <em>“Qwen3.5-Flash is the hosted version corresponding to Qwen3.5-35B-A3B”</em> (model card), igual en 3.6, y en 3.8 Flash es <strong>literalmente el canary</strong> (“125B parameters + 51B N-gram embeddings, with just 6B activated per token”, cuenta oficial). El tier ha subido de tamaño cada generación, así que Qwen4-Flash = canary 125B-A6B bien entrenado. <strong>Re-anclaje: 30 (26–34) → 43 (40–47), confianza 40→50%.</strong> Además se arregla una contradicción interna: la Señal 1 declara el canary (40) «el piso de la familia», y un 30 la violaba. Consecuencia: <strong>Flash y el denso 27B quedan empatados</strong> (43 vs 42, rangos solapados) — reparto de victorias, no un ganador. Se añade a la sección 04 la descomposición de qué se cancela al comparar ambos en Qwen4: el +6 del canary sobre el 3.8-27B mide Qwen4-vs-Qwen3.8 (generacional), no MoE-vs-denso; lo que sobrevive es capacidad total (MoE) contra cómputo por token (denso). Único dato limpio misma-generación: 3.6, denso 21 vs 35B-A3B 18 — gana el denso, pero con solo 35B totales. El único desempate real es el tamaño final del tier Flash.</p>
+    </div>
     <div class="log-item">
       <div class="l-date">27 SEP 2026</div>
       <p><strong>Actualización de datos + 4 tiers de Apsara.</strong> Verificación completa de todos los scores AAI contra la escala v4.3.2 en vivo: Flash-Next 40, Qwen3.8-27B 34, Qwen3.8 Max-0902 45, Qwen3.7 Max 29, Qwen3.6-27B 21, Qwen3.6-35B-A3B 18; frontier Opus 5.5 (58), Fable 5.1 / GPT-6 Astra (53), Grok 4.7 (46), GLM-5.3 (45), Kimi K3 (44). Todo coherente. <strong>Apsara (22 sep) previsualiza 4 tiers</strong>: Max (flagship), Flash (alto throughput), Plus (multimodal equilibrado) y <strong>27B open-weights — el tier local</strong>, el único que históricamente sale con pesos abiertos; su entrega es la más predecible de la familia. <strong>transformers ya documenta <span class="mono">Qwen4-Exp</span></strong> (GatedResidual + QSA + PLE) — señal de arquitectura cerrada. Sin release, precio, context ni benchmark de ningún tier todavía.</p>
