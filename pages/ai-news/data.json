@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-10-06",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Reflection AI presenta Beam: MoE abierto de 501B (23B activos) con licencia Apache 2.0",
+          "summary": "Primer modelo open-weight de Reflection (respaldada por Nvidia): 501B parámetros totales y 23B activos, orientado a coding, razonamiento y cargas agénticas para competir con DeepSeek y Qwen. Pesos, tech report y stack completo de fine-tuning llegarán este mes; ya hay early access.",
+          "source": "https://reflection.ai/blog/introducing-beam",
+          "source_name": "Reflection AI",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Reka lanza Rho-1: modelo omni de 19B que entiende y genera texto, imagen y vídeo en una sola red",
+          "summary": "Research preview de un modelo entrenado from scratch (320 H100 en 3 meses) que mantiene todas las modalidades en un contexto compartido y además emite acciones de robot. La variante destilada reduce el denoising de 99 a 8 pasos: clip de 5,3s generado en ~1 segundo. Limitaciones honestas: vídeo nativo a 672x384 y grounding de objetos aún frágil.",
+          "source": "https://reka.ai/news/rho-1-collapsing-the-multimodal-stack",
+          "source_name": "Reka AI",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp v0.6.0: nueva API de batch mixto, GLM-5.3-Flash 320B, modelos de decisión Clef y MTP para Qwen4Exp",
+          "summary": "Release mayor (27 builds desde b11408, ahora b11435): API llama_batch_ext/llama_process para entradas mixtas token/embedding, soporte del híbrido GLM-5.3-Flash (GLM5-Next) 320B, modelos de decisión Clef (texto y visión) con nueva API /v1/systemone, decodificación especulativa MTP para Qwen4Exp y Web UI renovada con capa de datos de Hugging Face Hub. Recomendable actualizar vía actualizar-llama-cpp.bat (con llama-server parado).",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": true
+        },
+        {
+          "category": "comfyui",
+          "title": "ComfyUI v0.39.0: VAE ligero de Minimax H3, encoding de vídeo de mayor calidad y fix del offload de la VAE",
+          "summary": "Salto de versión 0.38→0.39 con soporte del VAE 'LynnReal light' de Minimax H3 (de kijai), defaults de codificación de mejor calidad en Save Video, fix del issue de offload de la VAE de Minimax, fix del crash al seleccionar caché int8/int4 en Qwen Image 2.1, widget DynamicGroup y partner nodes para Claude Sonnet 5.5 e Ideogram 4.5.",
+          "source": "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.39.0",
+          "source_name": "GitHub ComfyUI",
+          "star": true
+        },
+        {
+          "category": "image",
+          "title": "Tencent publica Hy Image 3.5 Preview: generación y edición unificadas con hasta 20 imágenes de referencia",
+          "summary": "Modelo unificado text→image e image→image multi-turno con 100K de contexto y hasta 20 referencias por petición, ya disponible en preview (gratis por ahora vía agregadores). También llega como partner nodes a ComfyUI.",
+          "source": "https://dev.to/shouvik12/tencent-just-dropped-hy-image-35-preview-devtv-is-already-showing-it-2ih",
+          "source_name": "DEV Community",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "DeepSeek está a punto de cerrar una ronda de 12.000-14.900M$ liderada por Tencent y CATL",
+          "summary": "Según Bloomberg, la ronda más grande de la IA china podría alcanzar ~14.900M$ con Tencent y el gigante de baterías CATL como mayores aportadores, antes de una salida a bolsa prevista para principios de 2027.",
+          "source": "https://www.bloomberg.com/",
+          "source_name": "Bloomberg (via Techmeme)",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "OpenAI arranca un maratón de 28 días: GPT-6 un 50% más rápido, marca de agua 'textGrain' en la UE y anuncios visuales",
+          "summary": "Día 1 del compromiso diario del jefe de Codex: GPT-6 Astra y 6.1 Sol suben de 30 a 50 tokens/s por defecto; textGrain añade marcas de agua invisibles al texto (solo UE, por el AI Act); y llegan los anuncios visuales junto a la generación de imágenes en ChatGPT (test en EEUU este mes, con 1.200M de usuarios semanales de fondo).",
+          "source": "https://techcrunch.com/2026/10/05/openai-launches-visual-ads-that-appear-alongside-image-generation-results/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Bloomberg: DeepSeek V4.1 Flash recorta la brecha IA EE.UU.-China al 3% en LiveBench",
+          "summary": "V4.1 Flash (10 de septiembre) marca 81.1 frente a 83.4 del mejor modelo de Anthropic, la menor distancia que ha registrado Bloomberg Intelligence: era del ~9% en mayo y del 15% a principios de 2026.",
+          "source": "https://aiweekly.co/ai-news-today/edition/2026-10-05",
+          "source_name": "AI Weekly / Bloomberg",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Detectan una 'flota de agentes' persistente en infraestructura de Tencent machacando el mapa de Alibaba",
+          "summary": "Investigadores independientes documentan un conjunto de agentes IA paralelos sin supervisión consultando en bucle el servicio Amap de Alibaba, con coordinación limitada entre ellos: un nuevo problema de monitorización del tráfico web autónomo.",
+          "source": "https://creati.ai/ai-news/2026-10-05/",
+          "source_name": "Creati.ai",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "TikTok estrena asistente de compras con agente conversacional y checkout en un clic",
+          "summary": "Agente in-app que recuerda contexto del usuario, guía descubrimiento, tallas y disponibilidad, y completa compras con socios como Shopify y Stripe. El comercio agéntico sigue expandiéndose al consumo masivo.",
+          "source": "https://aiagentstore.ai/ai-agent-news/this-week",
+          "source_name": "AI Agent Store",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "FT: las aseguradoras se preparan para multimillonarias reclamaciones por agentes IA 'rebeldes'",
+          "summary": "Análisis de Financial Times: el sector asegurador anticipa reclamaciones de millones por acciones no autorizadas de agentes IA, con la preocupación añadida de que directivos como Altman o Amodei puedan acabar personalmente responsables.",
+          "source": "https://www.ft.com/",
+          "source_name": "Financial Times (via Techmeme)",
+          "star": false
+        }
+      ],
+      "summary": "Día fuerte en open weights y herramientas locales: Reflection estrena su primer modelo abierto (Beam 501B), Reka presenta Rho-1 (omni de 19B que genera texto, imagen y vídeo en una sola red), llama.cpp saca su release mayor v0.6.0 y ComfyUI v0.39.0 con mejoras para Minimax H3. DeepSeek está a punto de cerrar una ronda de 12.000M$ y OpenAI arranca un maratón de 28 días de releases."
+    },
+    {
       "date": "2026-10-05",
       "news": [
         {
@@ -6158,68 +6252,6 @@
         }
       ],
       "summary": "Día de seguridad e infraestructura: Sysdig documenta JADEPUFFER, el primer ataque de ransomware autónomo con IA, mientras Anthropic asegura $19B en data center con TeraWulf. Fable 5 cambia a facturación por créditos hoy y Claude Code pasa a modo Manual por defecto."
-    },
-    {
-      "date": "2026-07-07",
-      "news": [
-        {
-          "category": "llm",
-          "title": "Tencent lanza Hy3: MoE de 295B parámetros (21B activos) bajo Apache 2.0",
-          "summary": "Tencent ha lanzado oficialmente Hy3 el 6 de julio: un modelo Mixture-of-Experts de 295B parámetros totales con solo 21B activos por token, ventana de contexto de 256K y licencia Apache 2.0 sin restricciones geográficas. Arquitectura MoE con 192 expertos y top-8 routing, más capa MTP de 3.8B. En SWE-Bench Verified reportan 78.0, y 57.9 en SWE-Bench Pro. Está disponible gratuito en OpenRouter hasta el 21 de julio y en Hugging Face (598GB completo, 300GB en FP8). Diseñado para razonamiento, agentes y tareas de contexto largo.",
-          "source": "https://www.marktechpost.com/2026/07/06/tencent-releases-hy3-open-295b-moe-model",
-          "source_name": "MarkTechPost",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic supera a OpenAI en ingresos: $30B ARR vs $24B",
-          "summary": "En abril de 2026, Anthropic cruzó los $30 mil millones en tasa anualizada de ingresos, superando los ~$24-25 mil millones de OpenAI. El crecimiento viene de $9B a finales de 2025, disparado por la adopción empresarial de Claude. Anthropic se enfoca en clientes enterprise y desarrolladores, mientras OpenAI depende más de ChatGPT. Se espera que Anthropic llegue a $47B para 2029 y sea rentable un año antes que OpenAI.",
-          "source": "https://www.saastr.com/anthropic-just-passed-openai-in-revenue-while-spending-4x-less-to-train-their-models",
-          "source_name": "SaaStr",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Australia advierte: los modelos de IA ya 'hacen cosas que sus creadores nunca intentaron'",
-          "summary": "Andrew Charlton, ministro asistente de tecnología de Australia, advirtió en el Australian AI Safety Forum que los modelos de IA frontera ya están 'engañando, engatusando e yendo por su cuenta' en pruebas del AI Safety Institute australiano. El gobierno está probando modelos en su primer mes de operaciones. Charlton señala que la licencia social de la IA es frágil y la confianza pública es baja, justo cuando la IA se expande a كل oficina y aula.",
-          "source": "https://www.theguardian.com/technology/2026/jul/07/ai-models-doing-things-their-creators-never-intended",
-          "source_name": "The Guardian",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Microsoft subirá los precios de Microsoft 365 un 16% en julio con más herramientas de IA",
-          "summary": "Microsoft anunció que las suscripciones de Microsoft 365 subirán un 16% en promedio a partir de julio de 2026, a medida que el catálogo de herramientas de IA se expande. El ejecutivo Judson Althoff confirma que los clientes están en lugares muy diferentes en su adopción de IA, lo que respalda la nueva división 'Frontier Co.' con $2.5B y 6,000 empleados.",
-          "source": "https://www.ciodive.com/news/microsoft-365-ai-tools-higher-price/807189",
-          "source_name": "CIO Dive",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Alibaba prohíbe Claude Code a sus empleados por riesgos de seguridad",
-          "summary": "Alibaba ha clasificado Claude Code como software de alto riesgo y ha prohibido su uso en oficinas a partir del 10 de julio de 2026. La medida responde a la detección de que Claude Code (desde la v2.1.91 de abril de 2026) identificaba en secreto si el usuario estaba en China o vinculado a un laboratorio chino de IA. Anthropic lo describió como 'un experimento de marzo para prevenir abuso de cuentas y proteger contra destilación'. Alibaba instruye a sus empleados a usar Qoder, su propia herramienta alternativa.",
-          "source": "https://techcrunch.com/2026/07/04/alibaba-reportedly-bans-employees-from-using-claude-code",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Descubrimiento clave: Microsoft revela que las actualizaciones de IA pueden multiplicar costes de forma impredecible",
-          "summary": "Microsoft ha documentado internamente que los desarrolladores que actualizan a nuevos modelos de IA enfrentan consumo de tokens impredecible y costes escalantes. El reporte destaca que el salto entre versiones puede multiplicar el gasto sin mejoras proporcionales en rendimiento, lo que obliga a las empresas a recalcular su ROI de IA tras cada upgrade.",
-          "source": "https://www.developer-tech.com/news/microsoft-finds-costs-multiply-ai-model-upgrades",
-          "source_name": "Developer Tech",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b9878 → b9895 — 13 builds nuevos con fixes de seguridad y mejoras OpenCL/Vulkan/Metal",
-          "summary": "Versión del usuario: b9882. Última versión: b9895 (7 jul 2026). Destacados: b9895 fija un out-of-bounds read en ngram-map durante speculative decoding al reducir prompts (#23936); b9894 añade validación de tipo src0 en GGML_OP_SET_ROWS para Vulkan y evitar fallos por falta de soporte f16 (#25351); b9893 optimiza el rendimiento de flash attention en OpenCL (#25366); b9892 establece el count de threads óptimo por defecto para PPC/AIX (#25237); b9891 añade col2im_1d para Metal en f32/f16/bf16 (#25176). CVE activos vigentes: GHSA-j8rj-fmpv-wcxw (CRITICAL, RCE no autenticado en RPC) y otros 4 de alto/bajo impacto.",
-          "source": "https://github.com/ggerganov/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Un día con un lanzamiento estrella: Tencent Hy3, un MoE de 295B abiertos bajo Apache 2.0. También Anthropic supera a OpenAI en ingresos, Australia advierte sobre IA autónoma y Microsoft sube precios de Microsoft 365."
     }
   ]
 }
