@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash re-ancorado a ~43 (5 oct). Viabilidad local en RTX 5090.">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash re-ancorado a ~43 (5 oct). Rumor 0-day (7 oct): ventana finales de octubre, sin confirmar. Viabilidad local en RTX 5090.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -633,7 +633,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 5 octubre 2026</div>
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 7 octubre 2026</div>
   <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
   <h2>Canary: <strong>Qwen3.8-Flash-Next</strong> · 125B-A6B + 51B n-gram</h2>
   <p class="hero-sub">
@@ -646,6 +646,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
     <span class="badge">Ventana base: feb–abr 2027</span>
     <span class="badge blue">Ancla AAI: 40 (v4.3.2)</span>
+    <span class="badge live">🔈 Rumor 0-day: finales de octubre · sin confirmar</span>
   </div>
 </div>
 
@@ -681,6 +682,14 @@ td.warn { color: var(--warning); font-weight: 700; }
       <h4>Primer "Qwen4" en la API</h4>
       <p>Cualquier modelo <span class="mono">qwen4*</span> o preview en Qwen Cloud / DashScope. Históricamente, el Max llega a la API antes que los pesos.</p>
       <div class="s-state">⏳ no detectado</div>
+    </div>
+  </div>
+  <div class="signal open">
+    <div class="s-dot"></div>
+    <div>
+      <h4>Rumor 0-day: «finales de octubre»</h4>
+      <p>Partner 0-day de Alibaba en r/LocalLLaMA (6 oct): Qwen4 planeado para fin de mes. Corroboran los registros de beta cerrada en qwen.ai y un prediction market (~74% antes de noviembre). <strong>Oficialmente sigue sin haber fecha.</strong></p>
+      <div class="s-state">🔈 rumor · sin confirmar</div>
     </div>
   </div>
 </div>
@@ -992,7 +1001,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       <div class="pred-detail">
         <ul>
           <li><strong>Base 45</strong> (Qwen3.8 Max-0902, AAI v4.3.2) + salto de arquitectura (QSA + n-gram + Gated Residual). El 50 predicho = 45 + 5, el salto típico Max→Max con nueva arquitectura.</li>
-          <li>El canary ya supera a Opus 4.6 en tareas agénticas con 125B totales; el Max de Qwen4 con varios teras de parámetros apunta a <strong>competer directamente con el top mundial</strong> (Opus 5.5: 58, Claude Fable 5.1: 53, GPT-6 Astra: 53 — en la escala v4.3.2).</li>
+          <li>El canary ya supera a Opus 4.6 en tareas agénticas con 125B totales; el Max de Qwen4 con varios teras de parámetros apunta a <strong>competer directamente con el top mundial</strong> (Opus 5.5: 58, Sonnet 5.5: 56, Fable 5.1 / GPT-6 Astra / Gemini 4 Argon: 53 — en la escala v4.3.2).</li>
           <li><strong>Desconocido clave</strong>: el 3.8-Max era text-only; el canary es multimodal. Si el Max de Qwen4 integra visión nativa (probable, dado el canary), sube el techo en benchmarks multimodales.</li>
           <li>El salto Max→Max suele ser moderado en reasoning puro (+1–2 GPQA) y grande en agentic; la nueva arquitectura amplifica sobre todo lo segundo.</li>
           <li>Licencia: se espera el mismo esquema "Max License" (no Apache) que en 3.8 — el Max es el producto comercial, los densos son el canal de adopción.</li>
@@ -1018,6 +1027,11 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-val">58</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Claude Sonnet 5.5<span class="sub">Anthropic · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="93.3"></div></div>
+        <div class="chart-val">56</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Claude Fable 5.1<span class="sub">Anthropic · propietario</span></div>
         <div class="chart-track"><div class="chart-fill us" data-w="88.3"></div></div>
         <div class="chart-val">53</div>
@@ -1028,6 +1042,16 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-val">53</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Gemini 4 Argon<span class="sub">Google · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="88.3"></div></div>
+        <div class="chart-val">53</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">GPT-6.1 Sol<span class="sub">OpenAI · propietario</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="86.7"></div></div>
+        <div class="chart-val">52</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Qwen4-Max<span class="sub">PREDICCIÓN · "in training" (Apsara)</span></div>
         <div class="chart-track"><div class="chart-fill prediction" data-w="83.3"></div></div>
         <div class="chart-val pred">~50</div>
@@ -1035,6 +1059,11 @@ td.warn { color: var(--warning); font-weight: 700; }
       <div class="chart-row">
         <div class="chart-label">Grok 4.7<span class="sub">xAI · propietario (xhigh)</span></div>
         <div class="chart-track"><div class="chart-fill us" data-w="76.7"></div></div>
+        <div class="chart-val">46</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">MiMo-V2.6-Pro<span class="sub">Xiaomi · open weights · top abierto</span></div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="76.7"></div></div>
         <div class="chart-val">46</div>
       </div>
       <div class="chart-row">
@@ -1079,13 +1108,13 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
       <div class="chart-legend">
         <span><i class="lg q"></i> Qwen (real)</span>
-        <span><i class="lg u"></i> EE.UU. (Anthropic / OpenAI / xAI)</span>
+        <span><i class="lg u"></i> EE.UU. (Anthropic / OpenAI / Google / xAI)</span>
         <span><i class="lg c"></i> China (otros)</span>
         <span><i class="lg p"></i> Predicción Qwen4 (provisional)</span>
       </div>
     </div>
     <p>
-      Lectura: la familia Qwen4 predicha <strong>mantendría a Qwen en el top mundial</strong> (Max en ~50, emparejado con Fable 5.1 / GPT-6 Astra y a 8 del líder Opus 5.5). Y el dato nuevo tras la corrección del 5 oct: <strong>Flash (~43) y el denso 27B (~42) quedan empatados</strong> — un punto de diferencia dentro del ruido de ambos rangos (40–47 y 38–46 se solapan casi por completo). No es un ganador, es un reparto: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido.
+      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) y Sonnet 5.5 (56) mandan, y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Y un dato que importa a la comunidad local: el liderato open-weights ha cambiado — <strong>MiMo-V2.6-Pro (46) arrebata a Kimi K3 (44) el trono abierto</strong>, así que el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo. Lo del 5 oct sigue en pie: <strong>Flash (~43) y el denso 27B (~42) quedan empatados</strong> — un punto dentro del ruido de ambos rangos (40–47 y 38–46 se solapan casi por completo). No es un ganador, es un reparto: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido.
     </p>
   </div>
 </div>
@@ -1094,7 +1123,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="timeline">
   <h2 class="section-title reveal"><span class="num">07</span>Timeline & Fechas</h2>
   <p class="section-lead reveal">
-    <strong>Apsara (22 sep 2026) confirma que Qwen4 está "in training"</strong> con salida "muy pronto", y el PR de llama.cpp ya está mergado: el timeline se comprime respecto a la estimación original. Se sube la probabilidad del escenario rápido (oct–dic 2026); el base sigue siendo <strong>feb–abr 2027</strong> (patrón canary→familia ~6 meses), con el Max primero y el denso 1–6 semanas después.
+    <strong>Apsara (22 sep 2026) confirma que Qwen4 está "in training"</strong> con salida "muy pronto", y el PR de llama.cpp ya está mergado: y el 6 de octubre un partner 0-day de Alibaba filtra «Qwen4 a finales de octubre»: el escenario rápido sube a ~40%. El base sigue siendo <strong>feb–abr 2027</strong> (patrón canary→familia ~6 meses) — una señal de timing re-pondera probabilidades, no recalibra la estimación base. Si el rumor se cumple, el Max iría primero y el denso 1–6 semanas después.
   </p>
 
   <div class="card reveal">
@@ -1103,9 +1132,9 @@ td.warn { color: var(--warning); font-weight: 700; }
       <table>
         <thead><tr><th>Escenario</th><th>Ventana</th><th class="num">Prob.</th><th>Señales</th></tr></thead>
         <tbody>
-          <tr><td>Rápido (Apsara: "muy pronto")</td><td>oct–dic 2026</td><td class="num">~25%</td><td>Apsara lo pone "muy pronto"; PR ya mergado; "qwen4" en la API</td></tr>
-          <tr><td><strong>Base (patrón canary→familia ~6 meses)</strong></td><td><strong>feb–abr 2027</strong></td><td class="num"><strong>~55%</strong></td><td>Patrón Qwen3-Next→3.5; el Max primero, denso 1–6 sem después</td></tr>
-          <tr><td>Lento (refinan la arquitectura)</td><td>verano 2027</td><td class="num">~20%</td><td>Patch de QSA, bugs de runtime, competencia; Qwen4.5/5 a 5–10T después</td></tr>
+          <tr><td>Rápido (Apsara: «muy pronto» + rumor 0-day)</td><td>oct–dic 2026</td><td class="num">~40%</td><td>Rumor 0-day «finales de octubre» (6 oct); beta cerrada en qwen.ai; prediction market ~74% antes de nov; PR ya mergado</td></tr>
+          <tr><td><strong>Base (patrón canary→familia ~6 meses)</strong></td><td><strong>feb–abr 2027</strong></td><td class="num"><strong>~42%</strong></td><td>Patrón Qwen3-Next→3.5; el Max primero, denso 1–6 sem después</td></tr>
+          <tr><td>Lento (refinan la arquitectura)</td><td>verano 2027</td><td class="num">~18%</td><td>Patch de QSA, bugs de runtime, competencia; Qwen4.5/5 a 5–10T después</td></tr>
         </tbody>
       </table>
     </div>
@@ -1122,6 +1151,8 @@ td.warn { color: var(--warning); font-weight: 700; }
           <tr><td>Apsara: Qwen4 "in training"</td><td><strong>✓ OCURRIDO (22 sep)</strong> — Alibaba lo confirma; salida "muy pronto". Escenario rápido sube 15→25%.</td><td class="good">−1 a −3 meses</td></tr>
           <tr><td>Modelo "qwen4*" o preview en Qwen API</td><td>El Max ya está corriendo internamente</td><td class="good">familia a semanas</td></tr>
           <tr><td>Unsloth anuncia fine-tuning de Flash-Next</td><td>Ecosistema maduro → la familia no tarda</td><td class="good">−2 a −4 semanas</td></tr>
+          <tr><td>0-day partner: «finales de octubre» (r/LocalLLaMA)</td><td><strong>✓ OCURRIDO (6 oct)</strong> — rumor con fuente creíble, sin fecha oficial; HuggingFace sigue sin ningún repo Qwen4 (verificado 7 oct)</td><td class="warn">rápido 25→40%</td></tr>
+          <tr><td>Beta cerrada con registros en qwen.ai</td><td><strong>✓ OCURRIDO</strong> (cierre 30 sep) — el modelo ya circula entre partners</td><td class="good">coherente con oct–nov</td></tr>
           <tr><td>QSA "corregido" o nueva variante en un teaser</td><td>La arquitectura aún no está cerrada</td><td class="bad">+1 a +3 meses</td></tr>
         </tbody>
       </table>
@@ -1154,12 +1185,16 @@ td.warn { color: var(--warning); font-weight: 700; }
       <p><strong>Soporte oficial en Hugging Face transformers</strong> — la arquitectura se documenta como <span class="mono">Qwen4-Exp</span> (GatedResidual + QSA + PLE). Verificación completa de scores AAI v4.3.2 y de los 4 tiers de Apsara.</p>
     </div>
     <div class="timeline-item">
-      <div class="t-date">5 OCT 2026 · HOY</div>
+      <div class="t-date">5 OCT 2026</div>
       <p><strong>Corrección de mapeo del tier Flash</strong> — la sección 04 había predicho un MoE intermedio de 60–80B y le había asignado el nombre "Flash". El precedente 3.5→3.8 muestra que Flash es el MoE insignia de cada generación (3.5: 35B-A3B; 3.8: el canary 125B-A6B entero). <strong>Flash re-ancorado a ~43 (40–47)</strong>, y empatado con el denso. Ningún miembro de la familia puede ir por debajo del canary (40) si este es el suelo de la familia.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="t-date">7 OCT 2026 · HOY</div>
+      <p><strong>Señal de timing: «finales de octubre».</strong> Un partner 0-day de Alibaba filtra en r/LocalLLaMA que Qwen4 está planeado para fin de mes. Corroboran: los registros de beta cerrada en qwen.ai (cierre 30 sep), otros reportes de «late October–early November», y un prediction market que da ~74% a un lanzamiento antes de noviembre. Verificado hoy: ningún repo Qwen4 en la org de HuggingFace (lo último sigue siendo Qwen-Image-2.1), ningún qwen4* en la API ni en los leaderboards de AAI. <strong>Rumor con fuente creíble, no fecha oficial.</strong> Escenario rápido 25→40%; la base feb–abr 2027 no se mueve.</p>
     </div>
     <div class="timeline-item future">
       <div class="t-date">OCT–DIC 2026 · RÁPIDO</div>
-      <p><strong>Qwen4-Max (API primero)</strong> — si "muy pronto" se cumple: el Max en Qwen Cloud, denso ~27B+tabla 1–6 semanas después (Apache 2.0 esperado).</p>
+      <p><strong>Qwen4 — la ventana del rumor: finales de octubre</strong> — si el 0-day acierta: Max/Plus en Qwen Cloud primero y denso ~27B+tabla 1–6 semanas después (Apache 2.0 esperado). Si octubre pasa en blanco, la señal muere y el peso vuelve al patrón base.</p>
     </div>
     <div class="timeline-item future">
       <div class="t-date">FEB–ABR 2027 · ESCENARIO BASE</div>
@@ -1209,6 +1244,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">7 OCT 2026</div>
+      <p><strong>Señal de timing (sin recalibración): el rumor «finales de octubre».</strong> Un partner 0-day de Alibaba dijo en r/LocalLLaMA que Qwen4 está planeado para fin de mes. Encaja con señales independientes: registros de beta cerrada en qwen.ai (cierre 30 sep), reportes de «late October–early November» en otros hilos, y un prediction market que da ~74% a un lanzamiento antes de noviembre. <strong>Qué es oficial y qué no:</strong> el material escrito de Alibaba sigue diciendo solo «in training», sin mes ni quarter; verificado hoy — ningún repo Qwen4 en la org de HuggingFace, ningún qwen4* en la API ni en AAI. <strong>Ajuste: rápido 25→40% · base 55→42% · lento 20→18%</strong>; las predicciones de AAI (denso 42 · Flash 43 · Max 50) no se tocan — una señal de timing no cambia capacidades. Refresco del frente (AAI v4.3.2 en vivo, 7 oct): entran en el gráfico Sonnet 5.5 (56), Gemini 4 Argon (53), GPT-6.1 Sol (52) y MiMo-V2.6-Pro (46), que arrebata a Kimi K3 (44) el liderato open-weights — el listón que Qwen4 debe batir en lo abierto ha subido.</p>
+    </div>
     <div class="log-item">
       <div class="l-date">5 OCT 2026</div>
       <p><strong>Corrección de mapeo: el tier Flash no es un MoE intermedio.</strong> La sección 04 predijo un «MoE intermedio» de 60–80B-A8B y le asignó el nombre Flash del Apsara. Rastreo del precedente por generación: <em>“Qwen3.5-Flash is the hosted version corresponding to Qwen3.5-35B-A3B”</em> (model card), igual en 3.6, y en 3.8 Flash es <strong>literalmente el canary</strong> (“125B parameters + 51B N-gram embeddings, with just 6B activated per token”, cuenta oficial). El tier ha subido de tamaño cada generación, así que Qwen4-Flash = canary 125B-A6B bien entrenado. <strong>Re-anclaje: 30 (26–34) → 43 (40–47), confianza 40→50%.</strong> Además se arregla una contradicción interna: la Señal 1 declara el canary (40) «el piso de la familia», y un 30 la violaba. Consecuencia: <strong>Flash y el denso 27B quedan empatados</strong> (43 vs 42, rangos solapados) — reparto de victorias, no un ganador. Se añade a la sección 04 la descomposición de qué se cancela al comparar ambos en Qwen4: el +6 del canary sobre el 3.8-27B mide Qwen4-vs-Qwen3.8 (generacional), no MoE-vs-denso; lo que sobrevive es capacidad total (MoE) contra cómputo por token (denso). Único dato limpio misma-generación: 3.6, denso 21 vs 35B-A3B 18 — gana el denso, pero con solo 35B totales. El único desempate real es el tamaño final del tier Flash.</p>
