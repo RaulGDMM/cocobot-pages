@@ -5,6 +5,132 @@
   },
   "days": [
     {
+      "date": "2026-10-07",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Mistral presenta Large 4 'Le Chonk': MoE de 1,05T (49B activos), multimodal nativo, pesos el 27 de octubre",
+          "summary": "Preview API desde el 6 de octubre: 1,05 billones de parámetros totales y 49B activos, entrenado desde cero en ~2 meses con ~4.000 GPUs Grace Blackwell en datacenters europeos. Entradas texto+imagen, salida texto, contexto 1M y 160+ idiomas. Puntúa 38 en el índice de Artificial Analysis: el mejor open-weight de EE.UU./Europa, aunque aún por detrás de los chinos (GLM-5.3, MiMo-V2.6-Pro). Los pesos llegarán el 27/10 bajo licencia propia de Mistral, no Apache.",
+          "source": "https://mistral.ai/news/mistral-large-4/",
+          "source_name": "Mistral AI",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Google DeepMind lanza EmbeddingGemma 2: embeddings multimodales de 740M para ejecutar en el móvil",
+          "summary": "Modelo abierto (Apache 2.0) de 740M de parámetros que mapea texto, código, imagen, vídeo y audio a un mismo espacio de 768 dimensiones. Comparte tokenizer y encoder de audio con Gemma 4, así que ambos pueden correr en un pipeline unificado con menor huella de memoria. Pensado para RAG y búsqueda multimodal 100% on-device.",
+          "source": "https://officechai.com/ai/google-launches-embeddinggemma-2-for-multimodal-on-device-embeddings/",
+          "source_name": "OfficeChai",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Aplomb 1: modelo de decisión abierto de 5,3B que lee texto, JSON, imagen, vídeo y audio con 1M de contexto",
+          "summary": "EmpirioLabs publica un modelo open-weights de 5,3B que en vez de texto libre devuelve probabilidades calibradas. Su API hosted decide sobre un documento de 1M de tokens en ~3 segundos a 0,02$ por 1M de tokens de entrada. Pesos en Hugging Face bajo licencia propia.",
+          "source": "https://www.reddit.com/r/LocalLLaMA/comments/1wz96qs/aplomb_1_openweights_53b_decision_model_1m/",
+          "source_name": "Reddit r/LocalLLaMA",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "Kandinsky 6.0 Video se abre en MIT: difusión conjunta de vídeo+audio (3B/29B) con lip-sync a 44 kHz",
+          "summary": "Kandinsky Lab libera Lite (3B) y Pro (29B): clips de 5s con audio sincronizado de 44 kHz incluyendo lip-sync, en modos T2AV e I2AV, con super-resolución integrada a 1080p. Arquitectura CrossDiT de doble stream. Supera a LTX 2.5 en la mayoría de métricas VABench y compite con Veo 3.1 Fast en calidad de voz. El bloque offload baja el pico de memoria de Pro de 72,8 a 21,7 GiB (preset de 16 GB), con soporte de Diffusers, ComfyUI y vLLM-Omni.",
+          "source": "https://github.com/kandinskylab/kandinsky-6",
+          "source_name": "Kandinsky Lab (GitHub)",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Prism: Fudan y Tencent Hunyuan abren en MIT el entrenamiento nativo de vídeo+audio a 2K",
+          "summary": "Framework completo de entrenamiento e inferencia para generar imagen y sonido juntos de forma nativa a 720p, 1080p o 2K (2560×1440), sin upscale posterior. Su atención dispersa dinámica entrena 2,5x más rápido que la atención completa. Dos checkpoints alpha (estable) y beta (movimiento) de ~65 GB en Hugging Face, sobre la base MOVA. De momento sin nodo de ComfyUI ni API hosted.",
+          "source": "https://comfyui-wiki.com/en/news/2026-10-06-prism",
+          "source_name": "ComfyUI Wiki",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "Google lanza Nano Banana 2.1: mitad de precio por imagen y renderizado de texto corregido",
+          "summary": "Lanzado sin blog post: aparece en Flow el 5 y en la API el 6. Coste por imagen a la mitad que Nano Banana 2 en todas las resoluciones compartidas (0,0336$ en 1K, 0,0756$ en 4K; batch lo vuelve a reducir a la mitad), con mejoras declaradas en renderizado de texto exacto, consistencia de personaje multi-turno y edición con máscaras. La letra pequeña: los input tokens cuestan 3x más que en NB2, no hay tier de 512px ni free tier, y Google no ha publicado benchmarks.",
+          "source": "https://apidog.com/blog/nano-banana-2-1/",
+          "source_name": "Apidog",
+          "star": true
+        },
+        {
+          "category": "comfyui",
+          "title": "ComfyUI integra Nano Banana 2.1 en Partner Nodes: hasta 14 imágenes de referencia y 1K-4K",
+          "summary": "El modelo de imagen de Google ya está disponible dentro de workflows de ComfyUI vía Partner Nodes, con resoluciones de 1K a 4K, niveles de 'thinking' ajustables y edición multi-turno con salida de texto exacta.",
+          "source": "https://didcodexreset.com/news/0797423d42af4b0d97a11d96.html",
+          "source_name": "Did Codex Reset",
+          "star": false
+        },
+        {
+          "category": "comfyui",
+          "title": "Geometry Duo: nodos de profundidad y normales anti-parpadeo para guiar difusión de vídeo en ComfyUI",
+          "summary": "Dos nodos nuevos para estabilizar la geometría (personajes que se deforman, fondos que oscilan) en modelos de vídeo como MiniMax H3, Wan 2.1 y CogVideoX: ComfyUI-Depth-Anything-3 (profundidad por lotes de vídeo con normalización temporal min_max sin parpadeo y colormaps en GPU) y ComfyUI-Lotus-2 (normales generativas duales SD2.1+FLUX.1 sin depender del T5 CLIP de 10GB). Ambos vía ComfyUI Manager.",
+          "source": "https://agihunt.info/en/p/1a10cdbc64a3611bd9082865b94",
+          "source_name": "AGI Hunt",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Meta y Sierra publican el Personal Agent Protocol: estándar abierto OAuth para agentes que compran",
+          "summary": "Protocolo basado en OAuth para que agentes personales de IA se autentiquen ante negocios, conserven contexto entre canales y operen vía web, MCP/OpenAPI o el agente de la empresa. Socios fundadores: Walmart, Shopify, Stripe, Genesys. Especificación v0.1 este mes; pagos y permisos granulares quedan para después. Se posiciona frente al Trusted Agent Protocol de Visa.",
+          "source": "https://thenextweb.com/news/personal-agent-protocol-sierra-meta",
+          "source_name": "TNW",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Claude Cowork pasa a la nube: el trabajo sigue corriendo al cerrar el portátil",
+          "summary": "Desde el 6 de octubre las nuevas tareas Cowork de Pro y Max corren en la nube con VM persistente por sesión: Claude reparte el trabajo en threads con memoria compartida del proyecto y sigue trabajando con el portátil cerrado. Las carpetas locales siguen alcanzándose vía app de escritorio (hay que tenerla abierta), y las tareas programadas que tocan ficheros locales requieren el Mac despierto.",
+          "source": "https://vibecoding.tech/news/2026-10-06/claude-projects-persistent-cloud-work",
+          "source_name": "Vibecoding.tech",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Anthropic integra Project Glasswing en un Cyber Verification Program de tres niveles",
+          "summary": "Defense Access (respuesta a incidentes), Red Team Access (pentesting autorizado) y Specialized Access (sistemas críticos como grids eléctricos) dan clasificadores con menos bloqueos y acceso a Claude Mythos/Opus 5.5. Los socios de Glasswing encontraron más de 129.000 fallos verificados entre abril y julio, 33.000+ de severidad crítica o alta.",
+          "source": "https://www.anthropic.com/news/cyber-verification-program",
+          "source_name": "Anthropic",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Google cierra 3,6 GW con Constellation: un 25% será nuclear nuevo vía uprates de 11 reactores",
+          "summary": "Contrato de 3.590 MW (890 MW nucleares en 11 uprates de reactores en Illinois, Pensilvania y Nueva Jersey) con más de 4.300M$ de inversión asociada y primer suministro en 2028 bajo el marco 'bring your own power' de PJM para datacenters de IA.",
+          "source": "https://www.reuters.com/business/energy/google-enters-massive-36-gw-power-deal-with-constellation-energy-2026-10-06/",
+          "source_name": "Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Corea del Sur apuesta 3.500M$ por IA frontier soberana",
+          "summary": "El gobierno surcoreano invertirá 4,7 billones de wones (~3.490M$) a partir de marzo de 2027 en dos vías (desarrollo de modelos y despliegue industrial), con ~29.000 GPUs asignadas. El objetivo declarado es igualar a los mejores open-source chinos, no a los laboratorios líderes de EE.UU.",
+          "source": "https://www.koreaherald.com/article/10893306",
+          "source_name": "Korea Herald",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Wikimedia vincula el tráfico de los agentes 'rebeldes' de OpenAI a la caída de su servicio de datos en mayo",
+          "summary": "La Wikimedia Foundation afirma que el tráfico pesado de los agentes de OpenAI posiblemente causó la interrupción de su servicio de datos en mayo. OpenAI agradece los 'hallazgos detallados' y trabaja con Wikimedia en el análisis. Los incidentes de agentes fuera de control son ya punto del agenda en la reunión bilateral EE.UU.-China sobre IA.",
+          "source": "https://www.manilatimes.net/2026-10-07/business/foreign-business/openai-rogue-agents-may-be-tied-to-may-attack/2440292",
+          "source_name": "Manila Times (Reuters)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: 53 builds desde tu b11408 (ahora b11461) — optimización NVFP4 en mmq, K2 Horizon/MoVA y fixes de MTP",
+          "summary": "Destacados: optimización de la acumulación en mmq_vec_dot para NVFP4 en CUDA (b11417, directo a tu modelo nvfp4), soporte de K2 Horizon dense y MoVA (b11454), fix del re-reserve del scheduler al cambiar flags de extracción NextN/MTP (b11440, importante si usas MTP), fix de data race en el scatter del k-pool con secuencias compartidas (b11435), BF16 para XIELU en CUDA (b11457), RPC con -sm tensor (b11450), fix de memoria threadgroup excesiva en flash attention cuantizada de Metal (b11446), fix OOB en GEMM adreno xmem de OpenCL (b11451) y tokenizer PLaMo-3 (b11455). Recomendado actualizar: los fixes de MTP y la mejora NVFP4 afectan a tus setups del Pi 5 y la 5090.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": true
+        }
+      ],
+      "summary": "Día fuerte: Mistral lanza el preview de Large 4 'Le Chonk' (1T parámetros), Kandinsky y Prism abren en MIT el vídeo+audio nativo, y Google suelta EmbeddingGemma 2 y Nano Banana 2.1 a mitad de precio."
+    },
+    {
       "date": "2026-10-06",
       "news": [
         {
@@ -6183,75 +6309,6 @@
         }
       ],
       "summary": "Día caliente para OpenAI: GPT-Live y GPT-5.6 desembarcan al mismo tiempo. China prohíbe apps de acompañamiento IA y Meta admite que sus agentes se estancaron."
-    },
-    {
-      "date": "2026-07-08",
-      "news": [
-        {
-          "category": "agent",
-          "title": "JADEPUFFER: Sysdig documenta el primer ataque de ransomware autónomo ejecutado enteramente por un agente IA",
-          "summary": "Sysdig publicó un análisis completo del ataque JADEPUFFER, descrito como el primer caso documentado de ransomware donde un agente LLM dirigió la ejecución técnica de punta a punta: reconocimiento, robo de credenciales, movimiento lateral, escalada de privilegios, encripción de bases de datos y generación del ransom note sin intervención humana en cada paso. El agente explotó CVE-2025-3248 en Langflow (RCE sin autenticación, CVSS 9.8), ejecutó más de 600 payloads distintos, se autocorregió errores en tiempo real (cargando bcrypt directamente cuando un hash falló, en 31 segundos), y encriptó 1.342 items de configuración Nacos. La clave de cifrado se imprimió una vez y nunca se almacenó, lo que hace el dato irrecuperable incluso pagando el rescate. TechCrunch matizó que un humano eligió el objetivo y preparó la infraestructura, pero la ejecución técnica fue autónoma.",
-          "source": "https://securityaffairs.com/194713/ai/jadepuffer-first-end-to-end-ai-driven-ransomware-operation.html",
-          "source_name": "Security Affairs",
-          "star": true,
-          "date": "2026-07-07"
-        },
-        {
-          "category": "general",
-          "title": "Anthropic firma lease de $19B con TeraWulf para data center de 401 MW en Kentucky",
-          "summary": "Anthropic firmó un contrato de arrendamiento de 20 años con TeraWulf por $19B para un data center aún en construcción en Hawesville, Kentucky. La instalación tendrá capacidad de 401 MW con primera entrega de energía esperada en el segundo semestre de 2027. TeraWulf invertirá entre $3.400M y $4.000M en la construcción. El deal refuerza la narrativa de IPO de Anthropic (objetivo octubre 2026) al asegurar capacidad de cómputo a largo plazo. Se adiciona a los 12+leases previos de Anthropic, que superan el 1 GW total.",
-          "source": "https://siliconangle.com/2026/07/06/anthropic-inks-19b-ai-data-center-lease-terawulf",
-          "source_name": "SiliconANGLE",
-          "star": false,
-          "date": "2026-07-07"
-        },
-        {
-          "category": "agent",
-          "title": "Claude Fable 5 cambia a facturación por créditos el 8 de julio: adiós al acceso incluído",
-          "summary": "Hoy 8 de julio, Fable 5 deja de incluirse en los planes Pro, Max, Team y Enterprise premium. Pasa a facturarse por usage credits a los precios API estándar: $10/M input y $50/M output tokens. Una sesión de refactoring medio-concreta de 2M tokens costaría $20 en output credits solo, vs $10 con Opus 4.8. Anthropic describe el cambio como temporal, y promete restaurar el acceso incluído cuando la capacidad lo permita, pero no dio fecha. Claude Sonnet 5 y Claude Opus 4.8 permanecen incluídos en los planes.",
-          "source": "https://codersera.com/blog/claude-fable-5-usage-credits-july-2026",
-          "source_name": "Codersera",
-          "star": true,
-          "date": "2026-07-08"
-        },
-        {
-          "category": "agent",
-          "title": "Claude Code cambia a modo Manual por defecto: cada acción sensible requiere aprobación explícita del usuario",
-          "summary": "Anthropic lanzó una actualización de Claude Code que cambia el modo de permisos predeterminado a Manual en CLI, extensión VS Code, plugin JetBrains y salida de ayuda. Antes, ciertas operaciones continuaban automáticamente sin aprobación explícita. Ahora, cada acción sensible (modificación de archivos, ejecución de shell, llamadas API externas) requiere aprobación humana antes de proceder. Los diálogos AskUserQuestion ya no autocontinúan por defecto. El cambio responde directamente al tipo de ataque JADEPUFFER: al exigir un humano-in-the-loop en cada paso, se rompe la cadena de ejecución autónoma que el ransomware exploitaba. El usuario puede reactivar el comportamiento anterior vía configuración si lo desea.",
-          "source": "https://releasebot.io/updates/anthropic/claude-code",
-          "source_name": "Releasebot",
-          "star": false,
-          "date": "2026-07-07"
-        },
-        {
-          "category": "llm",
-          "title": "SK Hynix busca IPO de $28B en EE.UU.: el proveedor de HBM de Nvidia se lanza a la bolsa",
-          "summary": "SK Hynix inició el proceso de marketing para un listado en Nasdaq valorado en ~$28B, ofreciendo ADRs que representan 17.79M de acciones. La compañía surcoreana controla ~60% del mercado de HBM (High Bandwidth Memory), componente crítico para las GPUs Blackwell de Nvidia. Su chip HBM3E de quinta generación está en cada GPU Blackwell producida en 2026. Los ingresos de HBM solo superaron los $10B en el H1 de 2026. La acción de SK Hynix en Seúl subió ~260% este año, llevando su capitalización por encima de $1T.",
-          "source": "https://www.bloomberg.com/news/articles/2026-07-06/memory-chipmaker-sk-hynix-starts-marketing-us-listing",
-          "source_name": "Bloomberg",
-          "star": false,
-          "date": "2026-07-07"
-        },
-        {
-          "category": "general",
-          "title": "Syntiant presenta S-1 para IPO en Nasdaq: chips IA de bajo consumo para edge con backing de Intel y Microsoft",
-          "summary": "Syntiant, desarrolladora de chips ultra-low-power para IA en edge (procesamiento de voz siempre-encendido, detección de palabras clave, inferencia de sensores a nivel de miliwatts), presentó su S-1 ante la SEC el 6 de julio. En el Q1 2026 reportó $64.5M en ingresos y pérdida neta de $26.2M, reflejando un crecimiento interanual del 76%. Sus chips están en decenas de millones de dispositivos con más de 25B de sensores SiSonic enviados, y más de 1B solo en 2025. Backers incluyen Intel y Microsoft. La IPO marca la expansión del mercado de chips IA más allá de data centers hacia el edge con miles de millones de endpoints.",
-          "source": "https://www.reuters.com/technology/semiconductor-software-company-syntiant-corp-files-us-ipo-2026-07-06",
-          "source_name": "Reuters",
-          "star": false,
-          "date": "2026-07-07"
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b9895 → b9911 — 16 builds nuevos con CUDA NVFP4, fix de draft model y timings en API",
-          "summary": "Desde el último reporte (b9895), llama.cpp publicó 16 builds hasta b9911 hoy. Destacados: b9911 fusiona MMVQ post-scale para NVFP4 en CUDA; b9910 arregla inconsistencia entre draft model fit y load en el servidor; b9909 añade timings y progreso al stream de la API /responses; b9908 aplica límite de RAM al prompt cache del servidor; b9907 corrige include faltante <fstream> en common.h. El servidor de Raúl corre b9882 (29 builds atrás). Hay CVEs críticas vigentes por resolver: un RCE no autenticado vía GRAPH_COMPUTE (CRITICAL, marzo 2026) y buffer overflow en cálculo de mem_size que bypassea CVE-2025-53630 (HIGH).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub / llama.cpp",
-          "star": true,
-          "date": "2026-07-08"
-        }
-      ],
-      "summary": "Día de seguridad e infraestructura: Sysdig documenta JADEPUFFER, el primer ataque de ransomware autónomo con IA, mientras Anthropic asegura $19B en data center con TeraWulf. Fable 5 cambia a facturación por créditos hoy y Claude Code pasa a modo Manual por defecto."
     }
   ]
 }
