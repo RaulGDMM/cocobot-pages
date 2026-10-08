@@ -504,8 +504,19 @@ $('sizeSlider').oninput = (e) => { scale.s = parseFloat(e.target.value); rebuild
 $('distSlider').oninput = (e) => { scale.d = parseFloat(e.target.value); rebuildScale(); updateHUD(); };
 document.querySelectorAll('#speedpresets .btn').forEach(b => b.onclick = () => {
   document.querySelectorAll('#speedpresets .btn').forEach(x => x.classList.remove('on'));
-  b.classList.add('on'); rate = parseFloat(b.dataset.rate); updateHUD();
+  b.classList.add('on'); rate = parseFloat(b.dataset.rate);
+  if (rate > 0) $('timeSlider').value = Math.log10(rate);
+  updateHUD();
 });
+// deslizador de tiempo: escala logarítmica 1 min/s → 10 años/s
+$('timeSlider').oninput = (e) => {
+  rate = Math.pow(10, parseFloat(e.target.value));
+  const near = [...document.querySelectorAll('#speedpresets .btn')].find(x => x.dataset.rate > 0 &&
+    Math.abs(Math.log10(parseFloat(x.dataset.rate)) - parseFloat(e.target.value)) < 0.02);
+  document.querySelectorAll('#speedpresets .btn').forEach(x => x.classList.remove('on'));
+  if (near) near.classList.add('on');
+  updateHUD();
+};
 $('trueScale').onclick = () => {
   scale.s = 0; scale.d = 0; $('sizeSlider').value = 0; $('distSlider').value = 0;
   rebuildScale(); updateHUD(); toast(T.toastReal);
@@ -551,10 +562,23 @@ function stepTour(dt) {
   flyTo(rec, 2.2); tour.wait = 5;
 }
 
+function rateLabel(r) {
+  if (r === 0) return T.speed[0];
+  const rk = Object.keys(T.speed).map(Number).find(k => k > 0 && Math.abs(k - r) / k < 0.02);
+  if (rk !== undefined) return T.speed[rk];
+  const es = lang === 'es';
+  const f = (v, u) => `1 s = ${v < 10 ? v.toFixed(1) : Math.round(v)} ${u}`;
+  if (r * 86400 < 60)      return f(r * 86400, es ? 's' : 's');
+  if (r * 1440  < 60)      return f(r * 1440,  es ? 'min' : 'min');
+  if (r * 24    < 1.2)     return f(r * 24,    es ? 'h' : 'h');
+  if (r         < 30.4)    return f(r,         es ? 'días' : 'days');
+  if (r         < 365.25)  return f(r / 30.4,  es ? 'meses' : 'months');
+  return f(r / 365.25, es ? 'años' : 'years');
+}
 function updateHUD() {
   $('simdate').textContent = fmtDate(simTime);
-  const rk = Object.keys(T.speed).map(Number).find(k => Math.abs(k - rate) < 1e-7);
-  $('simrate').textContent = rk !== undefined ? T.speed[rk] : rate.toFixed(3) + ' d/s';
+  $('simrate').textContent = rateLabel(rate);
+  $('timeval').textContent = rateLabel(rate).replace(/^1 s = /, '');
   const infl = sizeScale(6371) / (AU_PER_KM * 6371);
   $('sizeval').textContent = scale.s < 0.005 ? T.real : (lang === 'es' ? `×${infl.toFixed(1)} en la Tierra` : `×${infl.toFixed(1)} at Earth`);
   $('distval').textContent = scale.d < 0.005 ? T.real
@@ -580,6 +604,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 });
 addEventListener('keydown', (e) => {
   if (e.key === ' ') { e.preventDefault(); rate = rate > 0 ? 0 : 7;
+    if (rate > 0) $('timeSlider').value = Math.log10(rate);
     document.querySelectorAll('#speedpresets .btn').forEach(x => x.classList.toggle('on', parseFloat(x.dataset.rate) === rate)); updateHUD(); }
   if (e.key === 'Escape') { stopTour(); overview(); }
   if (e.key.toLowerCase() === 't') startTour();
