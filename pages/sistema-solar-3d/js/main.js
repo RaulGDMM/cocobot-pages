@@ -345,7 +345,7 @@ function orbitLine(def, color) {
 //  CONSTRUCCIÓN
 // ══════════════════════════════════════════════════════════════
 let simTime = J2000 + (Date.now() / 86400000 - 10957.5);
-let rate = 1;
+let rate = 7;   // 1 s = 1 semana: el movimiento es perceptible desde el primer segundo
 BODIES.forEach(d => { const rec = buildBody(d, null);
   if (d.el) { rec.orbit = orbitLine(d, ORBIT_COLORS[d.key] ?? 0x888888); orbitGroup.add(rec.orbit); } });
 MOONS.forEach(m => {
@@ -579,7 +579,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
   down = null;
 });
 addEventListener('keydown', (e) => {
-  if (e.key === ' ') { e.preventDefault(); rate = rate > 0 ? 0 : 1;
+  if (e.key === ' ') { e.preventDefault(); rate = rate > 0 ? 0 : 7;
     document.querySelectorAll('#speedpresets .btn').forEach(x => x.classList.toggle('on', parseFloat(x.dataset.rate) === rate)); updateHUD(); }
   if (e.key === 'Escape') { stopTour(); overview(); }
   if (e.key.toLowerCase() === 't') startTour();
@@ -635,7 +635,7 @@ let last = performance.now(), started = false;
 function loop(now) {
   requestAnimationFrame(loop);
   const dt = Math.min(0.05, (now - last) / 1000); last = now;
-  if (started) simTime += rate * dt;   // simTime es día juliano; rate = días por segundo real
+  simTime += rate * dt;   // simTime es día juliano; rate = días por segundo real (vivo también bajo la intro)
   updateBodies();
 
   if (fly) {
