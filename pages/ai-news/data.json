@@ -5,6 +5,68 @@
   },
   "days": [
     {
+      "date": "2026-10-12",
+      "news": [
+        {
+          "category": "agent",
+          "title": "Vals AI: los equipos de agentes cuestan hasta 5,1x más y casi no mejoran la calidad",
+          "summary": "Vals AI probó GPT-6 Sol y Claude Opus 5.5 en solitario vs. equipos en el 'Vibe Code Bench': solo 1 de 4 comparaciones mostró mejora estadísticamente significativa (+7,3 pts con Sol a razonamiento medio). A máximo razonamiento, el equipo no aporta nada. Los datos propios de Anthropic coinciden: de 10 a 100 agentes la calidad se estanca mientras los tokens siguen subiendo.",
+          "source": "https://the-decoder.com/ai-agent-teams-waste-massive-tokens-for-barely-measurable-quality-gains-research-finds/",
+          "source_name": "The Decoder",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Amazon negocia comprar la startup de world models Decart por unos 7.000M$",
+          "summary": "Según WSJ (recogido por Reuters), Amazon está en conversaciones para adquirir Decart —creadores de Oasis/Mirage, world models interactivos en tiempo real— por alrededor de 7.000 millones de dólares. Sería una de las mayores compras del sector de modelos de mundo.",
+          "source": "https://www.reuters.com/business/retail-consumer/amazon-talks-buy-ai-startup-decart-around-7-billion-wsj-reports-2026-10-11/",
+          "source_name": "Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "El FMI: la inversión en IA mantiene el crecimiento global en ~3% y Asia es la gran beneficiada",
+          "summary": "El FMI afirma que la ola de inversión en IA está sosteniendo el crecimiento mundial en torno al 3%, con beneficios notables para Asia. El aviso implícito del mercado (a16z vía The Decoder): todo depende de que el volumen de uso crezca más rápido de lo que bajan los precios por token — paradoja de Jevons.",
+          "source": "https://www.reuters.com/world/china/imf-says-ai-investment-keeps-global-growth-around-3-with-major-asia-benefits-2026-10-12/",
+          "source_name": "Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "ArXiv limita a 2 envíos por mes: la inundación de papers de IA desborda a los moderadores",
+          "summary": "Desde el 1 de octubre, ArXiv solo permite 2 submissions por persona y mes: las enviadas a septiembre superaron las 40.000 (el doble que en 2024, x6 en cs.AI en dos años) y generaron ~9.000 tickets de soporte. Los papers rechazados cuentan para el límite porque consumen tiempo de moderación.",
+          "source": "https://the-decoder.com/arxiv-caps-submissions-at-two-per-month-as-ai-paper-flood-overwhelms-the-preprint-server/",
+          "source_name": "The Decoder",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "LAION libera Humaneness Voice Converter: conversión de voz abierta que conserva la emoción",
+          "summary": "LAION subió a Hugging Face un modelo abierto de voice conversion basado en Chatterbox (Resemble AI): con un clip de 5-10 s dices las mismas palabras en otra voz conservando timing, énfasis y emoción. Salidas a 24 kHz, pesos abiertos (su parte CC BY 4.0, Chatterbox MIT), demo gratuita e infer.py para GPU propia.",
+          "source": "https://huggingface.co/laion/Humaneness-Voice-Converter",
+          "source_name": "Hugging Face / LAION",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "Odyssey-3: world model con preview pública gratuita — y su récord de Physics-IQ es best-of-8",
+          "summary": "Odyssey abrió preview pública gratuita de su world model Odyssey-3 (Flash): genera entornos interactivos desde texto en primera/tercera persona con física en tiempo real. Pro presume récord de 66.1 en Physics-IQ Verified, pero es mejor-de-8-intentos; con el protocolo oficial (4 runs) promedia 63.37. Sus claims de robots/humanoides van sin tasas de éxito publicadas. Mismo enfoque que Genie 3 o Cosmos3.",
+          "source": "https://the-decoder.com/odyssey-3-is-a-new-generative-world-model-that-you-can-try-for-free/",
+          "source_name": "The Decoder",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: 11 builds desde tu b11552 (ahora b11564) — Prism Bonsai 2 27B y fix de F16C en AVX2",
+          "summary": "Soporte para Prism Bonsai 2 27B (b11556), fix de CPUs AVX2 que no usaban F16C cuando estaba disponible (b11555, rendimiento CPU), OpenCL: decode GPU para Gemma-4 E4B/E2B y optimizaciones DK64/DK128 (b11559), hexagon IM2COL_3D con rutas DMA (b11560), GGML_RPC_DEBUG como niveles de verbosidad (b11557) y símbolos ggml hidden (b11563). Sin CVEs nuevos; para tu 5090/CUDA no hay nada crítico — update sin prisa en tu próxima ventana de mantenimiento.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": false
+        }
+      ],
+      "summary": "Lunes con noticias sobre todo de negocio y agentes: Amazon negocia comprar Decart por ~7.000M$, el FMI dice que la IA sostiene el crecimiento global, y Vals AI demuestra que los equipos de agentes gastan hasta 5x más tokens para casi nada. En abierto: LAION lanza un conversor de voz y Odyssey abre su world model al público."
+    },
+    {
       "date": "2026-10-11",
       "news": [
         {
@@ -6385,107 +6447,6 @@
         }
       ],
       "summary": "Semana intensa: Apple demanda a OpenAI por secretos comerciales, Google y Microsoft se alían en protocolo agente contra MCP, y OpenAI lanza GPT-Live con voz full-duplex"
-    },
-    {
-      "date": "2026-07-13",
-      "news": [
-        {
-          "category": "llm",
-          "title": "OpenAI lanza GPT-Live: modelo de voz full-duplex que escucha, habla y razona simultáneamente",
-          "summary": "OpenAI lanzó GPT-Live, una nueva generación de modelos de voz con arquitectura full-duplex que escucha, habla y razona al mismo tiempo, eliminando las pausas tipo walkie-talkie de los asistentes de voz actuales. GPT-Live-1 se convierte en el modelo por defecto para usuarios Go, Plus y Pro, mientras GPT-Live-1 mini reemplaza Advanced Voice Mode para usuarios Free. Para preguntas complejas, delega a GPT-5.5 en segundo plano manteniendo la conversación. Soporta traducción en tiempo real, búsqueda web durante la conversación y delegación de tareas a otros agentes. El timing estratégico: voice es la interfaz donde el moat consumer de OpenAI es más fuerte y donde Google (con Gemini en Android) es el rival más peligroso a largo plazo.",
-          "source": "https://techcrunch.com/2026/07/08/openai-releases-new-voice-models-for-more-natural-live-conversations",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Meta lanza Muse Spark 1.1: modelo para agentes autónomos con coordinación de sub-agentes nativa",
-          "summary": "Meta lanzó Muse Spark 1.1, un modelo diseñado específicamente para agentes autónomos, desarrollo de software y uso de herramientas. La característica clave: coordinación nativa de sub-agentes, donde el modelo maneja internamente el dispatch de múltiples sub-agentes especializados en paralelo — el patrón popularizado por Kimi K2.6 de Moonshot. Esto simplifica significativamente lo que antes requería LangGraph o schedulers personalizados. Meta también duplicó sus compromisos de compute (acuerdos con Samsung, sitio de $10B en Alberta) y Muse Spark a precio agresivo parece el primer producto de su estrategia de vender capacidad de IA externamente.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Mistral lanza Leanstral 1.5: verificación formal de código con pruebas matemáticas en Lean 4",
-          "summary": "Mistral lanzó Leanstral 1.5, un modelo enfocado en verificación formal de código a través de pruebas matemáticas escritas en Lean 4, dirigido a software safety-critical donde un suite de pruebas no es suficiente. En lugar de argumentar que el código funciona porque las pruebas pasan, la verificación formal demuestra propiedades del código matemáticamente — el estándar exigido en aviación, dispositivos médicos y sistemas criptográficos. Leanstral genera y verifica esas pruebas automáticamente. Estratégicamente coherente con Mistral: encontrar una capability difícil y poco glamurosa que los grandes labs tratan como side quest y poseerla.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic expande Project Glasswing a 150 organizaciones en 15 países",
-          "summary": "Anthropic triplicó Project Glasswing, su programa que despliega el modelo de ciberseguridad Claude Mythos para encontrar y parchear vulnerabilidades en software crítico, de 50 a 150 organizaciones en 15 países. Glasswing opera en infraestructura de la que dependen las sociedades: utilities, hospitales, sistemas financieros y proyectos open-source subfinanciados. El contexto: la alianza Five Eyes advirtió el 22 de junio que los modelos frontier transformarán la capacidad cibernética ofensiva en meses, no años, y Sysdig ya documentó JADEPUFFER, la primera operación de ransomware autónomo IA de extremo a extremo.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Anthropic publica GRAM: método para eliminar conocimiento peligroso de modelos de IA sin reentrenar",
-          "summary": "Anthropic y AE Studio publicaron GRAM (Gradient-Routed Auxiliary Modules), un método revolucionario que permite a los modelos de IA aislar conocimiento peligroso (virología, ciberseguridad, física nuclear) en módulos dedicados que pueden activarse o desactivarse. Eliminar un módulo remueve la capacidad correspondiente tan efectivamente como nunca haber entrenado con esos datos, sin degradar el rendimiento general. Funciona en modelos de 50M a 5B parámetros, aunque Anthropic admite que aún no se ha validado a escala frontier real. Es un paso hacia el 'olvido selectivo' como herramienta de seguridad.",
-          "source": "https://alignment.anthropic.com/2026/modular-pretraining",
-          "source_name": "Anthropic",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "OpenAI adquiere Northslope para potenciar su brazo de servicios enterprise",
-          "summary": "OpenAI adquirió Northslope, una firma de ingenieros forward-deployed que se integran dentro de organizaciones cliente para construir sistemas de IA alrededor de sus operaciones reales. La adquisición sigue el playbook de Palantir y refleja que las empresas no fallan en IA porque los modelos son débiles, sino porque nadie dentro del edificio puede conectar el modelo con flujos de trabajo legacy. OpenAI necesita revenue enterprise en trimestres, no años — lectura diferente tres meses antes de un IPO de $730B.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic lanza Claude Corps: fellowship pagado de 12 meses para IA en organizaciones sin ánimo de lucro",
-          "summary": "Anthropic anunció Claude Corps, un fellowship pagado de 12 meses que entrena a personas early-career como profesionales de IA dentro de organizaciones nonprofit. Sin requisito de título universitario, con máximo 2 años de experiencia. Dirige al cohort que la automatización por IA está presionando más fuerte del mercado laboral, mientras los nonprofits reciben el tratamiento de ingenieros forward-deployed que solo las empresas han podido costear.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Cloudflare abre lista de espera para su gateway de pagos x402 para agentes de IA",
-          "summary": "Cloudflare abrió la lista de espera para su Monetization Gateway, infraestructura basada en el protocolo x402 que permite a sitios web, APIs, datasets y servicios digitales cobrar a agentes de IA instantáneamente por acceso. x402 revive el código de estado HTTP 402 Payment Required: un agente accede a un recurso, recibe un precio legible por máquina, paga programáticamente y continúa — sin cuentas, API keys ni flujos de checkout humano. Con resultados de búsqueda ahora generados por IA y agentes consumiendo la web en nombre de humanos, la economía de clicks y anuncios que financió el contenido online por 25 años está estructuralmente rota.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "video",
-          "title": "GPT Image 2 + Aleph 2.0 de Runway: edición de video con un solo frame de referencia",
-          "summary": "Un nuevo workflow que combina GPT Image 2 de OpenAI con Aleph 2.0 de Runway permite a editores modificar un solo frame de referencia y que el cambio se propague automáticamente en todo el video: cambiar un traje, reiluminar una escena o reemplazar un objeto una vez y cada frame sigue. Lo que antes era trabajo VFX shot por shot colapsa a una edición de imagen más un paso de propagación. La consistencia temporal ha sido la barrera entre herramientas de imagen IA y trabajo profesional de video desde los primeros modelos diffusion.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "Goldman Sachs recomienda modelos chinos de IA a sus clientes",
-          "summary": "Goldman Sachs publicó análisis recomendando modelos chinos de IA específicos a clientes, un hito en la normalización de modelos open-weight chinos en stacks enterprise occidentales. DeepSeek V4, Kimi K2.6, GLM-5 y Qwen3.5 ocupan cuatro de los cinco puestos top de open-weight globalmente. La economía es directa: modelos chinos open-weight entregan 80-90% de la capacidad frontier a precios open-weight (DeepSeek output ~$0.44 por millón de tokens vs $30 para GPT-5.6 Sol). Cuando el banco más establishment de Wall Street formaliza esa aritmética en investigación para clientes, la era de los modelos chinos como curiosidad terminó.",
-          "source": "https://www.cnbc.com/",
-          "source_name": "CNBC",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Meta limita gasto interno de tokens de IA tras consumir 73.7 billones en un mes",
-          "summary": "Meta impuso controles centralizados de gasto en uso de IA por empleados tras detectar un aumento exponencial en el consumo interno de tokens. El memo interno reveló que empleados de Meta consumieron 73.7 billones de tokens en aproximadamente 30 días, un número rastreado en un leaderboard interno llamado 'Claudeonomics' (referencia a Claude de Anthropic). Meta planea desmantelar el leaderboard y reemplazarlo con 'AI Gateway', una plataforma de monitoreo centralizada que rastreará uso y gasto en tiempo real.",
-          "source": "https://mlq.ai/news/meta-caps-internal-ai-token-spending-after-costs-approach-billions-in-2026",
-          "source_name": "MLQ",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Meta desarrolla IA que 'oye' lo que escuchas a través de ondas cerebrales",
-          "summary": "Investigadores de Meta desarrollaron IA capaz de interpretar lo que una persona está escuchando estudiando sus ondas cerebrales. El proyecto Brain2Qwerty ofrece una nueva vía de comunicación sin cirugía, traduciando señales cerebrales a texto. TIME lo describe como un avance significativo en interfaces cerebro-computadora no invasivas.",
-          "source": "https://time.com/6210261/meta-ai-brains-speech",
-          "source_name": "TIME",
-          "star": false
-        }
-      ]
     }
   ]
 }
