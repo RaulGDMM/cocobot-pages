@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-10-13",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Meta lanza Muse Wonder, su primer modelo frontera: $4/$20 por millón de tokens y cero cifras publicadas",
+          "summary": "Meta Superintelligence Labs (Alexandr Wang) libera Muse Wonder y Muse Wonder Full, entrenados en el datacenter Prometheus. Active Memory (contexto entre conversaciones) y Active Focus (persistencia en tareas largas). Ventaja declarada en MemoryBench, Harvey Legal Agent Benchmark (13,1% vs 8,6% de GPT-6 Astra) y SWE-Marathon (57,5% vs 46,3% de Claude Opus 5.5), que pierde en ProgramBench (59% vs 70,5%). Precio: $4/$20 por M tokens, el doble que GPT-6.1 Sol y Sonnet 5.5, sin publicar parámetros, contexto ni benchmarks numéricos.",
+          "source": "https://research.meta.ai/blog/muse-wonder",
+          "source_name": "Meta AI Research",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Decision 3.0: vLLM saca 6 modelos de decisión abiertos (Apache 2.0) que superan a Jev en su propio índice",
+          "summary": "El equipo vllm-sr (vLLM Semantic Router) sube a Hugging Face la familia Decision 3.0: seis tamaños de d3-edge (0,59B) a d3 (26B con encoder de visión), basados en Qwen3.5/3.8, leen imagen y vídeo. d3 marca 64,7 en el Jev Decision Index 0.3.1 frente a 60,1 de Jev y 62,8 del Decider v1.1 de Perplexity. Ojo: sin métricas de calibración publicadas y con pocas horas de descargas, cifras preliminares. Cuarto actor de la categoría en un mes (Jev, Laya, Microsoft, vLLM).",
+          "source": "https://bugtraqsolutions.com/en/news/2026-10-12-decision-3-0-vllm",
+          "source_name": "Bugtraq Solutions",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "ColGrep-Agent-2B: un agente local de búsqueda de código que recorta un tercio los tokens de Claude Code",
+          "summary": "LightOn libera ColGrep-Agent-2B, un modelo de 2B que se sitúa entre tu agente de código y el repositorio: busca con ColGrep (búsqueda semántica multi-vector), sigue referencias y devuelve rutas y rangos de líneas. Insertado en Claude Code en 52 preguntas sobre 13 repos, recorta un 34% los tokens API y un 40% el coste cache-aware sin pérdida significativa de precisión. GGUF Q8_0 de ~2,5 GB, sin servidor externo: día uno en llama.cpp.",
+          "source": "https://huggingface.co/blog/lightonai/colgrep-agent",
+          "source_name": "Hugging Face / LightOn",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Microsoft presenta Maia 300: 288 GB de HBM4 y un 40% más de tokens por megavatio",
+          "summary": "Tercera generación del chip propio de Microsoft para inferencia: chiplets TSMC N2P, 8 módulos HBM4 (288 GB, 18 TB/s), racks de 96 aceleradores en 167 kW con 27,6 TB de HBM y 1,7 PB/s agregados. Despliegues multi-gigavatio desde 2027, convirtiendo a Maia en el sistema primario de inferencia de Copilot y compañía. La cifra clave no es velocidad bruta sino eficiencia: con capex >175.000M$, el cuello de botella es la electricidad, no el silicio. Maia 200 ya sirve producción.",
+          "source": "https://blogs.microsoft.com/blog/2026/10/12/microsoft-to-expand-azure-maia-system-to-multi-gigawatt-deployments/",
+          "source_name": "Microsoft",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "PoeLLM: una botnet de minería caza servidores Ollama y LiteLLM expuestos a internet",
+          "summary": "Lumen Black Lotus Labs documenta la campaña Canto Incognito: malware que escanea el puerto 4000 (LiteLLM) y 3000, explota una inyección de comandos (CVE-2026-42271) e instala un minero. El C&C está oculto en un poema en GitHub (cuatro palabras → cuatro números → IP; el poema cambió 11 veces entre abril y septiembre). Objetivo preferente: servidores GPU con claves API a la vista. Acción: revisar qué puertos tienes expuestos si auto-alojas modelos.",
+          "source": "https://aitoolsrecap.com/Blog/poellm-malware-ollama-litellm-exposed-2026",
+          "source_name": "AIToolsRecap / Lumen",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Anthropic: modelos pequeños podrían auto-replicarse en IoT (teles, neveras) 'en meses'",
+          "summary": "Informe del frontier red team de Anthropic: los dispositivos IoT domésticos podrían ser el primer hábitat de agentes autorreplicantes ('gusanos de IA') para finales de 2026; sin host centralizado serían 'difíciles de apagar'. Ningún modelo actual es a la vez bastante potente y pequeño para replicarse de forma fiable en una smart TV, pero la tendencia apunta a ello. Además, Anthropic dice haber reducido un 90-99% la extracción ilícita de datos por destilación.",
+          "source": "https://www.aljazeera.com/economy/2026/10/13/ai-could-self-replicate-on-home-devices-within-months-anthropic-says",
+          "source_name": "Al Jazeera / Anthropic",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "EE.UU. cortó 17 días el acceso del AISI británico a modelos frontera",
+          "summary": "UK's AI Security Institute recuperó el 11 de octubre el acceso a modelos frontera tras un corte iniciado el 24 de septiembre, atribuido a una petición de la Oficina Nacional del Ciberdirector de EE.UU. (revisiones de seguridad americanas primero). Durante el congelamiento, Anthropic retuvo Claude Mythos 5.1 fuera de EE.UU. y ahora Gemini 4 Argon entra en revisión. Lección: los acuerdos voluntarios de 2023 no dan palancas — el organismo que testea modelos para un país se apaga con una petición.",
+          "source": "https://aitoolsrecap.com/Blog/ai-news-october-13-2026",
+          "source_name": "AIToolsRecap",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Fed, OCC y ECB exigen a los bancos un 'kill switch' para sus agentes de IA",
+          "summary": "Reuters: los supervisores bancarios de EE.UU. y Europa preguntan a los bancos si pueden controlar y apagar sus agentes de IA; el ECB exige un plan de recuperación antes de fin de octubre. La regulación de agentes pasa de genérica a sector bancario: reversibilidad de acciones, trazabilidad y autoridad definida por agente.",
+          "source": "https://bugtraqsolutions.com/en/news/2026-10-13-bancos-ia-reguladores",
+          "source_name": "Bugtraq Solutions / Reuters",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "DXC se asocia con LangChain para gobernar agentes en IT crítica (OASIS, 125 entornos)",
+          "summary": "DXC licencia LangSmith y orquesta con LangGraph su plataforma OASIS, ya en producción hacia 125 entornos de clientes en industrias reguladas. Modelo gobernable: acciones evaluadas por reversibilidad/impacto, pausas para aprobación humana y trazabilidad total. DXC presume -95% tiempo de resolución y 92%+ de precisión diagnóstica en 500 casos medidos.",
+          "source": "https://www.unite.ai/dxc-technology-partners-with-langchain-to-scale-governed-ai-agents/",
+          "source_name": "Unite.AI",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "HiDream-O1-Video: la API pública solo acepta una imagen, lejos del ómnimodal prometido",
+          "summary": "HiDream.ai prometía texto+imagen+vídeo, 5-20s, 1080p y audio nativo; la API HiHarness verificada el 11 de octubre solo toma una imagen, con toggle de 10s y sin selector de resolución ni audio. Sexta posición en la tabla I2V de Artificial Analysis (1175 Elo), sin listado en texto-a-vídeo. Dos comunicados contradictorios sobre su disponibilidad en vivago. Retrato de la brecha announcement-vs-artifact.",
+          "source": "https://quantslant.com/hidream-o1-video-api-image-to-video-only/",
+          "source_name": "Quantslant",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp: 16 builds desde tu b11564 (ahora b11580) — hexagon, fix vllm d3 multi-seq y kernel Metal",
+          "summary": "De b11564 a b11580: hexagon extiende scalar DMA broadcasting en ops binarias (#30245) y optimiza CPY/CONCAT (ronda 3, short-rows #30341), fix del caso multi-secuencia de vllm d3 (#30408), padding de la dimensión KV a 256 en atención no-cache (#30416) y fix del error de kernel_mul_mm con tensores grandes en Metal (#28748). Sin CVEs nuevas este rango. Update recomendado si usas rutas hexagon/Metal o el server con slots múltiples; tu exe Windows (BeeLlama) sigue desactualizado según el scan.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub ggml-org/llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Día fuerte: Meta estrena su primer modelo frontera (Muse Wonder) al doble de precio que GPT-6.1 Sol, Microsoft presenta el chip Maia 300 y aparece una botnet (PoeLLM) que ataca servidores Ollama/LiteLLM expuestos. La ola de modelos de decisión suma un cuarto actor abierto: Decision 3.0 de vLLM."
+    },
+    {
       "date": "2026-10-12",
       "news": [
         {
@@ -6393,60 +6487,6 @@
         }
       ],
       "summary": "Día intenso: vigilancia independiente califica a todas las labs de IA con notas reprobatorias, Corea del Sur apuesta $880B en IA, y el talento estrella se desplaza hacia Anthropic."
-    },
-    {
-      "date": "2026-07-14",
-      "news": [
-        {
-          "category": "general",
-          "title": "Apple demanda a OpenAI por robo de secretos comerciales para hardware AI",
-          "summary": "Apple presentó una demanda federal contra OpenAI alegando robo de secretos comerciales y reclutamiento coordinado de más de 400 ex empleados. OpenAI negó las acusaciones. El conflicto se intensificó el fin de semana tras un intercambio público entre Musk y Altman en X.",
-          "source": "https://www.cnbc.com/2026/07/10/apple-openai-lawsuit-trade-secrets.html",
-          "source_name": "CNBC",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "OpenAI lanza GPT-Live: modelo de voz full-duplex para conversación natural",
-          "summary": "OpenAI anunció GPT-Live, un modelo de voz de arquitectura full-duplex que escucha y habla simultáneamente, eliminando las pausas tipo 'walkie-talkie'. Usa GPT-5.6 en el backend y soporta traducción en vivo y tareas agenticas en tiempo real.",
-          "source": "https://openai.com/index/introducing-gpt-live",
-          "source_name": "OpenAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Google, Microsoft, Salesforce, Snowflake y ServiceNow se alían en protocolo agente para disputar a MCP de Anthropic",
-          "summary": "Un consorcio de gigantes tecnológicos acordó respaldar un protocolo backend de IA para conectar agentes con datos y herramientas empresariales, explicitamente enfocado en contrarrestar la hegemonía del Model Context Protocol de Anthropic y OpenAI en el espacio empresarial.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "The Information / Build Fast with AI",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Meta lanza Muse Spark 1.1: modelo para agentes autónomos",
-          "summary": "Meta publicó Muse Spark 1.1, diseñado para coordinación nativa de sub-agentes y tareas multi-paso de largo alcance. Soporta Retrieval-Augmented Generation y herramientas de código, con inferencia enfocada a eficiencia.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-13-2026",
-          "source_name": "Build Fast with AI (13 Jul)",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "SK Hynix cierra el IPO más grande de una compañía extranjera en Wall Street: $26.5B",
-          "summary": "SK Hynix recaudó $26.5 billion en su debut en Nasdaq, el IPO extranjero más grande en la historia de EE.UU., superando al de Alibaba en 2014. La demanda fue siete veces mayor que la oferta.",
-          "source": "https://techcrunch.com/2026/07/10/sk-hynix-raises-26-5b-in-the-biggest-foreign-ipo-in-us-history-is-urged-to-build-new-us-fabs",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "SambaNova levanta $1B a valuación de $11B como rival de Nvidia",
-          "summary": "SambaNova completó el primer cierre de su Serie F liderado por General Atlantic, recibiendo $1 billion. La empresa desarrolla chips exclusivos para inferencia AI y está considerando un IPO en 2017.",
-          "source": "https://techcrunch.com/2026/07/08/sambanova-draws-1b-at-11b-valuation-in-series-f-first-close",
-          "source_name": "TechCrunch",
-          "star": false
-        }
-      ],
-      "summary": "Semana intensa: Apple demanda a OpenAI por secretos comerciales, Google y Microsoft se alían en protocolo agente contra MCP, y OpenAI lanza GPT-Live con voz full-duplex"
     }
   ]
 }
