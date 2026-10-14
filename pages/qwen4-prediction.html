@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash re-ancorado a ~43 (5 oct). Rumor 0-day (7 oct): ventana finales de octubre, sin confirmar. Viabilidad local en RTX 5090.">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash re-ancorado a ~43 (5 oct). Rumor 0-day (7 oct): ventana finales de octubre, sin confirmar (refrendado 14 oct). Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -633,7 +633,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 7 octubre 2026</div>
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 14 octubre 2026</div>
   <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
   <h2>Canary: <strong>Qwen3.8-Flash-Next</strong> · 125B-A6B + 51B n-gram</h2>
   <p class="hero-sub">
@@ -646,7 +646,8 @@ td.warn { color: var(--warning); font-weight: 700; }
     <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
     <span class="badge">Ventana base: feb–abr 2027</span>
     <span class="badge blue">Ancla AAI: 40 (v4.3.2)</span>
-    <span class="badge live">🔈 Rumor 0-day: finales de octubre · sin confirmar</span>
+    <span class="badge live">🔈 Rumor 0-day: finales de octubre · quedan ~17 días · sin confirmar</span>
+    <span class="badge cyan">⚡ Canary medido: 90–120 tok/s (5090 + 64 GB)</span>
   </div>
 </div>
 
@@ -689,7 +690,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     <div>
       <h4>Rumor 0-day: «finales de octubre»</h4>
       <p>Partner 0-day de Alibaba en r/LocalLLaMA (6 oct): Qwen4 planeado para fin de mes. Corroboran los registros de beta cerrada en qwen.ai y un prediction market (~74% antes de noviembre). <strong>Oficialmente sigue sin haber fecha.</strong></p>
-      <div class="s-state">🔈 rumor · sin confirmar</div>
+      <div class="s-state">🔈 rumor vivo · refrendado 14 oct · sin fecha oficial</div>
     </div>
   </div>
 </div>
@@ -746,7 +747,7 @@ td.warn { color: var(--warning); font-weight: 700; }
   </div>
 
   <div class="card reveal">
-    <h3>🖥️ Viabilidad local del canary (datos Unsloth, día 0)</h3>
+    <h3>🖥️ Viabilidad local del canary (Unsloth día 0 · medido 14 oct)</h3>
     <p>
       Unsloth publicó los GGUF el mismo día (colección <span class="mono">unsloth/Qwen3.8-Flash-Next-GGUF</span>, 177B params totales) con requisitos de <strong>75 GB mínimos</strong>. Puntos clave: la tabla n-gram <strong>tiene un floor de 4-bit</strong> (acceso aleatorio): cuantizarla más hondo daña el modelo, por eso el quant mínimo (IQ1_S) ya son 72.5 GB.
     </p>
@@ -762,8 +763,12 @@ td.warn { color: var(--warning); font-weight: 700; }
       </table>
     </div>
     <p>
-      Unsloth afirma que la arquitectura permite inferir desde RAM con rendimiento "más cercano a VRAM de lo típico" (la tabla es lookup, no cómputo). Requiere llama.cpp con el <strong>PR #27742</strong>. Estimación conservadora en el setup de referencia (RTX 5090 + 64 GB DDR5): <strong>~15–25 tok/s</strong> de generación con quant 2-bit. La velocidad real se medirá cuando alguien con hardware similar lo corra.
+      Unsloth afirma que la arquitectura permite inferir desde RAM con rendimiento "más cercano a VRAM de lo típico" (la tabla es lookup, no cómputo). Requiere llama.cpp con el <strong>PR #27742</strong>. Estimación conservadora en el setup de referencia (RTX 5090 + 64 GB DDR5): <strong>~15–25 tok/s</strong> de generación con quant 2-bit. <strong>Actualizado 14 oct: la estimación se quedó corta por 4×.</strong> Medido en una RTX 5090 + 64 GB DDR5 con el motor <span class="mono">Strata</span> (NVFP4, expertos page-locked en RAM): <strong>90–120 tok/s de decodificación</strong> en sesión real, prefill ~4.400 tok/s y una conversación de 126K tokens releída en 1,8 s gracias a la reutilización de prefijo.
     </p>
+    <div class="callout ok" style="margin-bottom:0;">
+      <span class="callout-title">📐 Medido en casa (14 oct 2026) — la viabilidad local ya no es una estimación</span>
+      El canary vuela en hardware doméstico: 90–120 tok/s de decodificación y ~4.400 tok/s de prefill, con caché de expertos en VRAM al 90–95% de aciertos y MTP. La arquitectura que Alibaba diseñó para servir barato es también la que mejor cae en una 5090: solo ~6B parámetros activos por token; el resto vive en RAM. Lección para Qwen4: el cuello no fue la velocidad, fue la RAM — los expertos NVFP4 (~44 GiB) caben justos en 64 GB; si el tier sigue subiendo de tamaño cada generación, <strong>128 GB pasa de mejora a requisito</strong>.
+    </div>
   </div>
 
   <div class="callout info reveal">
@@ -810,7 +815,7 @@ td.warn { color: var(--warning); font-weight: 700; }
   <div class="card reveal">
     <h3>🎯 Señal 2: el patrón canary → familia de Qwen</h3>
     <p>
-      Qwen3-Next (canary de Gated DeltaNet, finales de 2025) → familia Qwen3.5: <strong>~6 meses</strong>. El model card de Flash-Next lo define como *"experimental preview of the architecture that will underpin Qwen4"* — el aviso público sirve para que runtimes (llama.cpp, vLLM, SGLang) y cuantizaciones (Unsloth) estén listos antes de la familia. Si Qwen4 saliera en 6 semanas, no tendría sentido dar meses de aviso.
+      Qwen3-Next (canary de Gated DeltaNet, finales de 2025) → familia Qwen3.5: <strong>~6 meses</strong>. El model card de Flash-Next lo define como *"experimental preview of the architecture that will underpin Qwen4"* — el aviso público sirve para que runtimes (llama.cpp, vLLM, SGLang) y cuantizaciones (Unsloth) estén listos antes de la familia. Si Qwen4 saliera en 6 semanas, no tendría sentido dar meses de aviso. La fila de salida verificada el 14 oct lo refrenda: los kernels de vLLM (#53909), el config ya upstream en transformers y la rama dedicada de sglang llevan semanas montándose — el aviso está cumpliendo exactamente esa función.
     </p>
   </div>
 
@@ -895,7 +900,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     </p>
     <div class="callout ok" style="margin-bottom:0;">
       <span class="callout-title">✅ Veredicto para hardware local</span>
-      Si la predicción de arquitectura se cumple, Qwen4-27B será <strong>el mejor modelo por token de segundos</strong> que un 5090 + 64 GB haya ejecutado: más inteligencia que el 27B actual a la misma velocidad, sin offload de cómputo, sin perder VRAM en expertos inactivos.
+      Si la predicción de arquitectura se cumple, Qwen4-27B será <strong>el mejor modelo por token de segundos</strong> que un 5090 + 64 GB haya ejecutado: más inteligencia que el 27B actual a la misma velocidad, sin offload de cómputo, sin perder VRAM en expertos inactivos. Y ya no es extrapolación: el canary <strong>mide 90–120 tok/s reales en exactamente ese hardware</strong> (14 oct) — la arquitectura nueva no penaliza al hardware doméstico.
     </div>
   </div>
 </div>
@@ -943,7 +948,7 @@ td.warn { color: var(--warning); font-weight: 700; }
           <li><strong>Arranca en 40</strong> (el canary tal cual) y sube con entrenamiento completo: Qwen lo describe como <em>“under-trained preview”</em>, así que el techo del canary no es su techo.</li>
           <li>La tabla n-gram sigue teniendo recorrido de crecimiento, y el índice v4.3.2 premia justo lo que esta arquitectura hace mejor: agentic, terminal y recall de código.</li>
           <li><strong>Coherencia con la Señal 1</strong>: si el canary (40) es el suelo de la familia, ningún miembro puede ir predicho por debajo de él. El 30 anterior violaba esa regla.</li>
-          <li><strong>Viabilidad local</strong>: no cabe en VRAM — es el escenario Strata/64 GB que ya se mide en esta casa (~57 tok/s de mediana). El coste es velocidad, no inteligencia.</li>
+          <li><strong>Viabilidad local</strong>: no cabe en VRAM — es el escenario Strata/64 GB que ya se mide en esta casa (90–120 tok/s medidos en casa con Strata/NVFP4, 14 oct). El coste es RAM, no velocidad ni inteligencia.</li>
           <li><strong>Escenario alternativo</strong> (el de la predicción antigua): que Flash salga recortado a 35–80B. Entonces caería a ~30 y ganaría el denso, como en 3.6. Es la única incógnita que desempata.</li>
         </ul>
         <span class="conf">Confianza: 50% · depende del tamaño real del tier</span>
@@ -1123,7 +1128,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="timeline">
   <h2 class="section-title reveal"><span class="num">07</span>Timeline & Fechas</h2>
   <p class="section-lead reveal">
-    <strong>Apsara (22 sep 2026) confirma que Qwen4 está "in training"</strong> con salida "muy pronto", y el PR de llama.cpp ya está mergado: y el 6 de octubre un partner 0-day de Alibaba filtra «Qwen4 a finales de octubre»: el escenario rápido sube a ~40%. El base sigue siendo <strong>feb–abr 2027</strong> (patrón canary→familia ~6 meses) — una señal de timing re-pondera probabilidades, no recalibra la estimación base. Si el rumor se cumple, el Max iría primero y el denso 1–6 semanas después.
+    <strong>Apsara (22 sep 2026) confirma que Qwen4 está "in training"</strong> con salida "muy pronto", y el PR de llama.cpp ya está mergado: y el 6 de octubre un partner 0-day de Alibaba filtra «Qwen4 a finales de octubre»: el escenario rápido sube a ~40%. El base sigue siendo <strong>feb–abr 2027</strong> (patrón canary→familia ~6 meses) — una señal de timing re-pondera probabilidades, no recalibra la estimación base. Si el rumor se cumple, el Max iría primero y el denso 1–6 semanas después. <strong>Refrendado 14 oct:</strong> el prediction market sigue en ~75% y HuggingFace sigue sin ningún repo Qwen4 — la ventana del rumor vive, con ~17 días por delante.
   </p>
 
   <div class="card reveal">
@@ -1151,7 +1156,7 @@ td.warn { color: var(--warning); font-weight: 700; }
           <tr><td>Apsara: Qwen4 "in training"</td><td><strong>✓ OCURRIDO (22 sep)</strong> — Alibaba lo confirma; salida "muy pronto". Escenario rápido sube 15→25%.</td><td class="good">−1 a −3 meses</td></tr>
           <tr><td>Modelo "qwen4*" o preview en Qwen API</td><td>El Max ya está corriendo internamente</td><td class="good">familia a semanas</td></tr>
           <tr><td>Unsloth anuncia fine-tuning de Flash-Next</td><td>Ecosistema maduro → la familia no tarda</td><td class="good">−2 a −4 semanas</td></tr>
-          <tr><td>0-day partner: «finales de octubre» (r/LocalLLaMA)</td><td><strong>✓ OCURRIDO (6 oct)</strong> — rumor con fuente creíble, sin fecha oficial; HuggingFace sigue sin ningún repo Qwen4 (verificado 7 oct)</td><td class="warn">rápido 25→40%</td></tr>
+          <tr><td>0-day partner: «finales de octubre» (r/LocalLLaMA)</td><td><strong>✓ OCURRIDO (6 oct)</strong> — rumor con fuente creíble, sin fecha oficial; HuggingFace sigue sin ningún repo Qwen4 (verificado 7 y 14 oct)</td><td class="warn">rápido 25→40%</td></tr>
           <tr><td>Beta cerrada con registros en qwen.ai</td><td><strong>✓ OCURRIDO</strong> (cierre 30 sep) — el modelo ya circula entre partners</td><td class="good">coherente con oct–nov</td></tr>
           <tr><td>QSA "corregido" o nueva variante en un teaser</td><td>La arquitectura aún no está cerrada</td><td class="bad">+1 a +3 meses</td></tr>
         </tbody>
@@ -1189,12 +1194,16 @@ td.warn { color: var(--warning); font-weight: 700; }
       <p><strong>Corrección de mapeo del tier Flash</strong> — la sección 04 había predicho un MoE intermedio de 60–80B y le había asignado el nombre "Flash". El precedente 3.5→3.8 muestra que Flash es el MoE insignia de cada generación (3.5: 35B-A3B; 3.8: el canary 125B-A6B entero). <strong>Flash re-ancorado a ~43 (40–47)</strong>, y empatado con el denso. Ningún miembro de la familia puede ir por debajo del canary (40) si este es el suelo de la familia.</p>
     </div>
     <div class="timeline-item">
-      <div class="t-date">7 OCT 2026 · HOY</div>
+      <div class="t-date">7 OCT 2026</div>
       <p><strong>Señal de timing: «finales de octubre».</strong> Un partner 0-day de Alibaba filtra en r/LocalLLaMA que Qwen4 está planeado para fin de mes. Corroboran: los registros de beta cerrada en qwen.ai (cierre 30 sep), otros reportes de «late October–early November», y un prediction market que da ~74% a un lanzamiento antes de noviembre. Verificado hoy: ningún repo Qwen4 en la org de HuggingFace (lo último sigue siendo Qwen-Image-2.1), ningún qwen4* en la API ni en los leaderboards de AAI. <strong>Rumor con fuente creíble, no fecha oficial.</strong> Escenario rápido 25→40%; la base feb–abr 2027 no se mueve.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="t-date">14 OCT 2026 · HOY</div>
+      <p><strong>El software ya está en la fila de salida — y el canary vuela en casa.</strong> vLLM tiene abierto el PR <span class="mono">#53909 “add qwen4 fuse op”</span> (kernels HyperConnection + QSA + PLE: el blueprint de la arquitectura); el config <span class="mono">qwen4_exp</span> ya es upstream en transformers y está registrado como <strong>multimodal</strong> en vLLM (torre Qwen3-VL, frontend Rust mergado 1 sep); sglang mantiene una rama dedicada a la línea. Y en hardware doméstico: el canary mide <strong>90–120 tok/s</strong> en una RTX 5090 + 64 GB vía Strata (NVFP4) — 4× sobre la estimación day-0 de esta página. Timing: prediction market ~75% (12 oct), ningún repo Qwen4 en HF (verificado hoy). Las predicciones AAI no se mueven.</p>
     </div>
     <div class="timeline-item future">
       <div class="t-date">OCT–DIC 2026 · RÁPIDO</div>
-      <p><strong>Qwen4 — la ventana del rumor: finales de octubre</strong> — si el 0-day acierta: Max/Plus en Qwen Cloud primero y denso ~27B+tabla 1–6 semanas después (Apache 2.0 esperado). Si octubre pasa en blanco, la señal muere y el peso vuelve al patrón base.</p>
+      <p><strong>Qwen4 — la ventana del rumor: finales de octubre</strong> (~17 días para el cierre de la ventana) — si el 0-day acierta: Max/Plus en Qwen Cloud primero y denso ~27B+tabla 1–6 semanas después (Apache 2.0 esperado). Si octubre pasa en blanco, la señal muere y el peso vuelve al patrón base.</p>
     </div>
     <div class="timeline-item future">
       <div class="t-date">FEB–ABR 2027 · ESCENARIO BASE</div>
@@ -1244,6 +1253,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">14 OCT 2026</div>
+      <p><strong>La fila de salida y el canary medido en casa — predicciones intactas.</strong> <em>Señales de ingeniería:</em> el PR <span class="mono">#53909</span> de vLLM (“add qwen4 fuse op”, abierto) implementa los kernels HyperConnection + QSA + PLE; el config <span class="mono">qwen4_exp</span> ya es upstream en transformers y está registrado como multimodal en vLLM; sglang trabaja en la rama <span class="mono">qwen4-main-squashed</span>. El ecosistema de inferencia se está completando <strong>antes</strong> del modelo — exactamente la función del aviso público del canary (Señal 2), y refuerza que la familia no está lejos. <em>Medida real:</em> el canary corre a <strong>90–120 tok/s de decodificación y ~4.400 tok/s de prefill</strong> en una RTX 5090 + 64 GB DDR5 (Strata NVFP4, MTP, reutilización de prefijo: 126K tokens releídos en 1,8 s) — 4× sobre la estimación day-0 de esta página (~15–25 tok/s). Se corrigen con datos reales la sección 01 y la viabilidad del Flash (04): el cuello es la RAM, no la velocidad; 128 GB es el upgrade para el próximo salto de tamaño del tier. <em>Timing:</em> prediction market ~75% a un lanzamiento antes de noviembre (12 oct), rumor sin refutar, ningún repo Qwen4 en HF (verificado 14 oct). Refresco frontier AAI v4.3.2 (14 oct, en vivo): sin cambios — Opus 5.5 (58), Sonnet 5.5 (56), Fable 5.1 / Gemini 4 Argon (53), GPT-6.1 Sol (52); MiMo-V2.6-Pro (46) sigue de líder open-weights. <strong>Predicciones AAI (denso 42 · Flash 43 · Max 50) y escenarios de fecha: intactos.</strong></p>
+    </div>
     <div class="log-item">
       <div class="l-date">7 OCT 2026</div>
       <p><strong>Señal de timing (sin recalibración): el rumor «finales de octubre».</strong> Un partner 0-day de Alibaba dijo en r/LocalLLaMA que Qwen4 está planeado para fin de mes. Encaja con señales independientes: registros de beta cerrada en qwen.ai (cierre 30 sep), reportes de «late October–early November» en otros hilos, y un prediction market que da ~74% a un lanzamiento antes de noviembre. <strong>Qué es oficial y qué no:</strong> el material escrito de Alibaba sigue diciendo solo «in training», sin mes ni quarter; verificado hoy — ningún repo Qwen4 en la org de HuggingFace, ningún qwen4* en la API ni en AAI. <strong>Ajuste: rápido 25→40% · base 55→42% · lento 20→18%</strong>; las predicciones de AAI (denso 42 · Flash 43 · Max 50) no se tocan — una señal de timing no cambia capacidades. Refresco del frente (AAI v4.3.2 en vivo, 7 oct): entran en el gráfico Sonnet 5.5 (56), Gemini 4 Argon (53), GPT-6.1 Sol (52) y MiMo-V2.6-Pro (46), que arrebata a Kimi K3 (44) el liderato open-weights — el listón que Qwen4 debe batir en lo abierto ha subido.</p>
