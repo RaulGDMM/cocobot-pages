@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash re-ancorado a ~43 (5 oct). Rumor 0-day (7 oct): ventana finales de octubre (refrendado 14 y 17 oct). Teaser oficial @QwenDevs «let's do both!» (10 oct): release dual 27B+Max insinuado, sin fecha. Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct).">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash recalibrado a ~45 (17 oct, delta cocción medido). Rumor 0-day (7 oct): ventana finales de octubre (refrendado 14 y 17 oct). Teaser oficial @QwenDevs «let's do both!» (10 oct): release dual 27B+Max insinuado, sin fecha. Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -795,7 +795,7 @@ td.warn { color: var(--warning); font-weight: 700; }
         <thead><tr><th>Tier (Apsara)</th><th>Rol declarado</th><th>Sección de esta página</th><th>Predicción AAI (v4.3.2)</th></tr></thead>
         <tbody>
           <tr><td><strong>Qwen4 Max</strong></td><td>Flagship, frente al top de cada lab</td><td><a href="#max">05 · El Max</a></td><td class="num">~50 (46–53)</td></tr>
-          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#flash">04 · Qwen4-Flash</a></td><td class="num">~43 (40–47)</td></tr>
+          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#flash">04 · Qwen4-Flash</a></td><td class="num">~45 (41–49)</td></tr>
           <tr><td><strong>Qwen4 Plus</strong></td><td>Tier medio equilibrado, multimodal</td><td>— (sin predicción propia; entre MoE y Max)</td><td class="num">—</td></tr>
           <tr><td><strong>Qwen4 27B</strong></td><td><strong>Open-weights local</strong> — el tier que se descarga, fine-tunea y cuantiza</td><td><a href="#denso">03 · El denso ~27B</a></td><td class="num">~42 (38–46)</td></tr>
         </tbody>
@@ -850,7 +850,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 
   <div class="callout warn reveal">
     <span class="callout-title">⚠️ Ancla re-escalada: Flash-Next = 40 (AAI v4.3.2)</span>
-    Artificial Analysis ha re-puntuado el índice completo (ahora <strong>v4.3.2</strong>, 10 evaluaciones: añade AA-Briefcase v1.1, GDPval-AA v2.1, Terminal-Bench 4.0, AutomationBench-AA; retira 𝜏³-Banking) y la escala se ha hundido ~30%. El canary pasa de <strong>56 → 40</strong>. El riesgo estructural que señalaba esta página ("un futuro re-scoring re-puntuaría a la familia entera") se ha materializado. <strong>Predicciones re-escaladas a v4.3.2: denso 42 (38–46) · MoE 30 (26–34) · Max 50 (46–53)</strong> — ver log. (El 30 del MoE quedó <strong>re-ancorado a 43</strong> el 5 oct al corregir el mapeo del tier Flash — ver §04.) Dato clave en la nueva escala: el denso predicho (42) iguala el canary (40) más el salto de la tabla n-gram; y el Max actual (Qwen3.8 Max-0902 = 45) marca el techo que el Qwen4-Max debe superar para ser "nuevo record", con el top mundial ahora en 58 (Opus 5.5).
+    Artificial Analysis ha re-puntuado el índice completo (ahora <strong>v4.3.2</strong>, 10 evaluaciones: añade AA-Briefcase v1.1, GDPval-AA v2.1, Terminal-Bench 4.0, AutomationBench-AA; retira 𝜏³-Banking) y la escala se ha hundido ~30%. El canary pasa de <strong>56 → 40</strong>. El riesgo estructural que señalaba esta página ("un futuro re-scoring re-puntuaría a la familia entera") se ha materializado. <strong>Predicciones re-escaladas a v4.3.2: denso 42 (38–46) · MoE 30 (26–34) · Max 50 (46–53)</strong> — ver log. (El 30 del MoE quedó <strong>re-ancorado a 43</strong> el 5 oct al corregir el mapeo del tier Flash, y <strong>recalibrado a 45</strong> el 17 oct por el delta de cocción medido — ver §04 y log.) Dato clave en la nueva escala: el denso predicho (42) iguala el canary (40) más el salto de la tabla n-gram; y el Max actual (Qwen3.8 Max-0902 = 45) marca el techo que el Qwen4-Max debe superar para ser "nuevo record", con el top mundial ahora en 58 (Opus 5.5).
   </div>
 </div>
 
@@ -947,14 +947,14 @@ td.warn { color: var(--warning); font-weight: 700; }
     <div class="pred-body">
       <div class="pred-score">
         <div class="label">AAI predicho (v4.3.2)</div>
-        <div class="big" data-count="43">0</div>
-        <div class="range">rango 40 – 47</div>
+        <div class="big" data-count="45">0</div>
+        <div class="range">rango 41 – 49</div>
         <div class="thermo"><div class="marker" style="left: 0%;" data-pos="50"></div></div>
-        <div class="thermo-scale"><span>38</span><span>40</span><span>43</span><span>45</span><span>48</span></div>
+        <div class="thermo-scale"><span>40</span><span>42</span><span>45</span><span>48</span><span>50</span></div>
       </div>
       <div class="pred-detail">
         <ul>
-          <li><strong>Arranca en 40</strong> (el canary tal cual) y sube con entrenamiento completo: Qwen lo describe como <em>“under-trained preview”</em>, así que el techo del canary no es su techo.</li>
+          <li><strong>Arranca en 40</strong> (el canary tal cual) y sube con entrenamiento completo: Qwen lo describe como <em>“under-trained preview”</em>. El delta de cocción está medido en esta misma escala: en misma arquitectura y tamaño, <span class="mono">Qwen3.8 2.4T-A95B OW (40) → snapshot Max-0902 (45)</span> = <strong>+5</strong> — de preview→producción cabe esperar <em>al menos</em> lo que valió un snapshot fechado. De ahí el centro 45 (antes +3).</li>
           <li>La tabla n-gram sigue teniendo recorrido de crecimiento, y el índice v4.3.2 premia justo lo que esta arquitectura hace mejor: agentic, terminal y recall de código.</li>
           <li><strong>Coherencia con la Señal 1</strong>: si el canary (40) es el suelo de la familia, ningún miembro puede ir predicho por debajo de él. El 30 anterior violaba esa regla.</li>
           <li><strong>Viabilidad local</strong>: no cabe en VRAM — es el escenario Strata/64 GB que ya se mide en esta casa (90–120 tok/s medidos en casa con Strata/NVFP4, 14 oct). El coste es RAM, no velocidad ni inteligencia.</li>
@@ -985,8 +985,8 @@ td.warn { color: var(--warning); font-weight: 700; }
       El único dato limpio que tenemos — misma generación y misma arquitectura, sin el confuso generacional — es 3.6 en escala v4.3.2: <strong>27B denso 21 vs 35B-A3B MoE 18</strong>. Ahí gana el denso, pero el MoE tenía solo 35B totales. La heurística comunitaria √(125×6) ≈ 27B sitúa el punto de equilibrio justo donde estaría Flash.
     </p>
     <div class="callout warn" style="margin-bottom:0;">
-      <span class="callout-title">⚖️ Veredicto: empate técnico con victorias repartidas</span>
-      En el baremo que manda hoy (v4.3.2: agentic, terminal, recall) gana <strong>Flash</strong> por poco. En razonamiento puro por token gana el <strong>denso</strong>. En hardware doméstico gana el denso sin discusión: cabe entero en 32 GB y va a ~90–100 tok/s, mientras Flash cuesta ~57. Con un empate en papel, el desempate práctico es la velocidad.
+      <span class="callout-title">⚖️ Veredicto: ventaja leve de Flash, con victorias repartidas</span>
+      En el baremo que manda hoy (v4.3.2: agentic, terminal, recall) gana <strong>Flash</strong> por 3 (45 vs 42) — con los rangos aún solapados en el borde, es una ventaja leve, no una victoria limpia. En razonamiento puro por token gana el <strong>denso</strong>. En hardware doméstico gana el denso sin discusión: cabe entero en 32 GB y va a ~90–100 tok/s, mientras Flash cuesta ~57. Aun con Flash por delante en el papel, el desempate práctico sigue siendo la velocidad.
     </div>
   </div>
 </div>
@@ -1091,6 +1091,11 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-val">46</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Qwen4-Flash<span class="sub">PREDICCIÓN · canary 125B-A6B entrenado</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="75"></div></div>
+        <div class="chart-val pred">~45</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Qwen3.8 Max-0902<span class="sub">Qwen · OW · snapshot 2 sep 2026</span></div>
         <div class="chart-track"><div class="chart-fill qwen-actual" data-w="75"></div></div>
         <div class="chart-val">45</div>
@@ -1109,11 +1114,6 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-label">Kimi K3 (max)<span class="sub">Moonshot · open weights (jul 2026)</span></div>
         <div class="chart-track"><div class="chart-fill cn" data-w="73.3"></div></div>
         <div class="chart-val">44</div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">Qwen4-Flash<span class="sub">PREDICCIÓN · canary 125B-A6B entrenado</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="71.7"></div></div>
-        <div class="chart-val pred">~43</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN · denso local</span></div>
@@ -1168,7 +1168,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
     </div>
     <p>
-      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) manda en solitario, Sonnet 5.5 (56) ya no está solo en la plata — <strong>Muse Wonder Full de Meta (56) empata con él</strong> — y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Y un dato que importa a la comunidad local: el liderato open-weights aguanta — <strong>MiMo-V2.6-Pro (46)</strong> sigue de número uno abierto — pero el top abierto se puebla: <strong>Step 5 Preview (44)</strong> empata con Kimi K3 y <strong>Ling 3.1 Flash de Ant (41)</strong> entró dos días después de publicarse, así que el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo un listón que sube también por abajo. Lo del 5 oct sigue en pie: <strong>Flash (~43) y el denso 27B (~42) quedan empatados</strong> — un punto dentro del ruido de ambos rangos (40–47 y 38–46 se solapan casi por completo). No es un ganador, es un reparto: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido. Y ahora con las generaciones previas en la escala, la lectura comparativa queda negra sobre blanco: el <strong>Qwen4-27B predicho (42) empata exactamente con Opus 4.8 (42)</strong>, el listón titular que la última vez superó el denso de Qwen (3.8-27B, 34, superó a Opus 4.6, 32); Opus 5 (51) queda dos puntos por encima del Max predicho (~50), así que el escalón Anthropic→Qwen de dos generaciones (~19 pts del 4.6 al 5) marca el ritmo que Qwen4 tendría que igualar para no nacer por detrás del rival directo.
+      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) manda en solitario, Sonnet 5.5 (56) ya no está solo en la plata — <strong>Muse Wonder Full de Meta (56) empata con él</strong> — y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Y un dato que importa a la comunidad local: el liderato open-weights aguanta — <strong>MiMo-V2.6-Pro (46)</strong> sigue de número uno abierto — pero el top abierto se puebla: <strong>Step 5 Preview (44)</strong> empata con Kimi K3 y <strong>Ling 3.1 Flash de Ant (41)</strong> entró dos días después de publicarse, así que el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo un listón que sube también por abajo. Tras la recalibración del 17 oct: <strong>Flash (~45) ya supera por 3 al denso 27B (~42)</strong> — los rangos (41–49 y 38–46) aún se solapan en el borde, así que sigue siendo más reparto que victoria clara: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido. Y ahora con las generaciones previas en la escala, la lectura comparativa queda negra sobre blanco: el <strong>Qwen4-27B predicho (42) empata exactamente con Opus 4.8 (42)</strong>, el listón titular que la última vez superó el denso de Qwen (3.8-27B, 34, superó a Opus 4.6, 32); Opus 5 (51) queda dos puntos por encima del Max predicho (~50), así que el escalón Anthropic→Qwen de dos generaciones (~19 pts del 4.6 al 5) marca el ritmo que Qwen4 tendría que igualar para no nacer por detrás del rival directo.
     </p>
   </div>
 </div>
@@ -1307,6 +1307,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">17 OCT 2026 · RECALIBRACIÓN §04</div>
+      <p><strong>Qwen4-Flash: 43 → 45 (41–49, confianza 50%).</strong> La observación de la casa: un centro de +3 sobre el canary era incoherente con el propio argumento de la sección («under-trained preview»). Y el delta está medido en la misma escala v4.3.2: <strong>Qwen3.8 2.4T-A95B (OW, 40) → snapshot Max-0902 (45) = +5</strong>, mismo tamaño y misma arquitectura — cocción pura. Una preview→producción debería valer <em>al menos</em> lo que un snapshot fechado. Respaldos: el índice v4.3.2 premia el terreno propio de esta arquitectura (agentic/terminal/recall), la tabla n-gram tiene recorrido de crecimiento, y el precedente canary→familia MoE (Qwen3-Next ≈11 → miembros 3.5 MoE 16–18) da +5–7. Coherencia: el suelo 40 se respeta; la ventaja sobre el denso pasa de «empate» (43 vs 42) a «ventaja leve» (45 vs 42, rangos solapados en el borde) — veredicto y lectura actualizados. <strong>El denso (42) y el Max (50) no se mueven:</strong> el argumento «mismo canary, más cocción» no les aplica — la ancla del Max ya es el snapshot 0902, y el denso es un miembro nuevo, no el canary re-entrenado. La barra de predicción sube en el gráfico a la altura de Max-0902. El escenario alternativo (Flash recortado a 35–80B → ~30) sigue siendo la única incógnita que desempata.</p>
+    </div>
     <div class="log-item">
       <div class="l-date">17 OCT 2026</div>
       <p><strong>Teaser oficial «let's do both» — re-ponderación de timing; capacidades intactas.</strong> <em>La señal:</em> @QwenDevs (10 oct) «big or small?» → «alright guys, let's do both!»; la comunidad lee un release dual <strong>Qwen4-27B (open weights) + Qwen4-Max</strong>. Es la primera vez que la cuenta oficial sugiere la <em>forma</em> del release y no solo el estado «in training»; no da fecha, tamaño ni specs (post citado por 2+ medios independientes; no verificable directamente). <em>Qué mueve:</em> <strong>rápido 40→45% · base 42→37% · lento 18% (=100)</strong>. Una señal de forma no dice nada de capacidades: <strong>las predicciones AAI (denso 42 · Flash 43 · Max 50) y la tabla de calificación no se tocan</strong>; el riesgo «el denso puede no existir» (~15%) queda como residuo a la baja. <em>Ingeniería:</em> SGLang <span class="mono">#43048</span> (8 oct) habilita LayerNorm sequence-parallel para GR/PLE en Qwen4Exp (TTFT −14,6/−18,4%, ~1 GiB/GPU liberada; borrador sin mergear, medida del autor sin reproducir) — otro artefacto del runtime en la fila antes que el modelo. <em>Comunidad:</em> early testers (15-16 oct) describen primeras salidas «competitivas con Opus 5.5» — anecdótico, sin scores, no computa como señal. <em>Comprobaciones de ausencia (hoy):</em> org HF Qwen sin repo Qwen4 (lo último: línea 3.8; actividad reciente = datasets), ningún qwen4* en API, AAI sin entrada qwen4. Prediction market: ~74-75%, <em>sin mover</em> desde el 12 oct. <em>Refresco frontier (AAI en vivo, 17 oct):</em> escala intacta (canary sigue en 40 → v4.3.2 vigente); entran <strong>Muse Wonder Full (56, Meta)</strong>, que empata con Sonnet 5.5 por la plata, <strong>Step 5 Preview (44)</strong>, top-3 abierto empatando con Kimi K3, y <strong>Ling 3.1 Flash (41, Ant)</strong> dos días después de salir; líder open-weights sin cambios: MiMo-V2.6-Pro (46). <em>Añadido al gráfico (a petición):</em> las generaciones previas de Anthropic que serán la referencia comparativa de la familia — Opus 4.6 (max) 32, Sonnet 5 (max) 38, Opus 4.8 (max) 42, Opus 5 (max) 51 — scores v4.3.2 verificados hoy en las páginas de modelo de AAI (41.79/50.78/38.16/31.95 redondeados).</p>
