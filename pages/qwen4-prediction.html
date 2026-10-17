@@ -1030,7 +1030,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="frontier">
   <h2 class="section-title reveal"><span class="num">06</span>vs Frontier</h2>
   <p class="section-lead reveal">
-    Todos los scores son del <strong>Artificial Analysis Intelligence Index v4.3.2</strong> (re-escalonado de septiembre 2026), incluido el canary (40; antes 56 en v4.1.1). Las barras rayadas son <strong>predicciones re-escaladas</strong> de esta página. El máximo de la barra es 60 (top mundial actual: Opus 5.5 = 58).
+    Todos los scores son del <strong>Artificial Analysis Intelligence Index v4.3.2</strong> (re-escalonado de septiembre 2026), incluido el canary (40; antes 56 en v4.1.1). Las barras rayadas son <strong>predicciones re-escaladas</strong> de esta página. El máximo de la barra es 60 (top mundial actual: Opus 5.5 = 58). Se incluyen además las <strong>generaciones previas de Anthropic (Opus 4.6, Sonnet 5, Opus 4.8, Opus 5)</strong> porque son la referencia con la que se medirá a Qwen4 en la práctica — igual que el 3.8-27B se midió contra Opus 4.6.
   </p>
 
   <div class="card reveal">
@@ -1069,6 +1069,11 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-label">GPT-6.1 Sol<span class="sub">OpenAI · propietario</span></div>
         <div class="chart-track"><div class="chart-fill us" data-w="86.7"></div></div>
         <div class="chart-val">52</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Claude Opus 5 (max)<span class="sub">Anthropic · propietario · predecesor</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="85"></div></div>
+        <div class="chart-val">51</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen4-Max<span class="sub">PREDICCIÓN · "in training" (Apsara)</span></div>
@@ -1116,14 +1121,29 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-val pred">~42</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Claude Opus 4.8 (max)<span class="sub">Anthropic · propietario · predecesor</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="70"></div></div>
+        <div class="chart-val">42</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Ling 3.1 Flash<span class="sub">Ant (InclusionAI) · open weights prometido · nuevo (17 oct)</span></div>
         <div class="chart-track"><div class="chart-fill cn" data-w="68.3"></div></div>
         <div class="chart-val">41</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Claude Sonnet 5 (max)<span class="sub">Anthropic · propietario · predecesor</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="63.3"></div></div>
+        <div class="chart-val">38</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Qwen3.8-27B<span class="sub">Qwen · Apache 2.0 · 14 ago 2026</span></div>
         <div class="chart-track"><div class="chart-fill qwen-actual" data-w="56.7"></div></div>
         <div class="chart-val">34</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Claude Opus 4.6 (max)<span class="sub">Anthropic · propietario · predecesor</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="53.3"></div></div>
+        <div class="chart-val">32</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen3.7 Max<span class="sub">Qwen · re-escala v4.3.2 (47→29)</span></div>
@@ -1143,7 +1163,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
     </div>
     <p>
-      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) manda en solitario, Sonnet 5.5 (56) ya no está solo en la plata — <strong>Muse Wonder Full de Meta (56) empata con él</strong> — y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Y un dato que importa a la comunidad local: el liderato open-weights aguanta — <strong>MiMo-V2.6-Pro (46)</strong> sigue de número uno abierto — pero el top abierto se puebla: <strong>Step 5 Preview (44)</strong> empata con Kimi K3 y <strong>Ling 3.1 Flash de Ant (41)</strong> entró dos días después de publicarse, así que el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo un listón que sube también por abajo. Lo del 5 oct sigue en pie: <strong>Flash (~43) y el denso 27B (~42) quedan empatados</strong> — un punto dentro del ruido de ambos rangos (40–47 y 38–46 se solapan casi por completo). No es un ganador, es un reparto: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido.
+      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) manda en solitario, Sonnet 5.5 (56) ya no está solo en la plata — <strong>Muse Wonder Full de Meta (56) empata con él</strong> — y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Y un dato que importa a la comunidad local: el liderato open-weights aguanta — <strong>MiMo-V2.6-Pro (46)</strong> sigue de número uno abierto — pero el top abierto se puebla: <strong>Step 5 Preview (44)</strong> empata con Kimi K3 y <strong>Ling 3.1 Flash de Ant (41)</strong> entró dos días después de publicarse, así que el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo un listón que sube también por abajo. Lo del 5 oct sigue en pie: <strong>Flash (~43) y el denso 27B (~42) quedan empatados</strong> — un punto dentro del ruido de ambos rangos (40–47 y 38–46 se solapan casi por completo). No es un ganador, es un reparto: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido. Y ahora con las generaciones previas en la escala, la lectura comparativa queda negra sobre blanco: el <strong>Qwen4-27B predicho (42) empata exactamente con Opus 4.8 (42)</strong>, el listón titular que la última vez superó el denso de Qwen (3.8-27B, 34, superó a Opus 4.6, 32); Opus 5 (51) queda dos puntos por encima del Max predicho (~50), así que el escalón Anthropic→Qwen de dos generaciones (~19 pts del 4.6 al 5) marca el ritmo que Qwen4 tendría que igualar para no nacer por detrás del rival directo.
     </p>
   </div>
 </div>
@@ -1284,7 +1304,7 @@ td.warn { color: var(--warning); font-weight: 700; }
   <div class="reveal">
     <div class="log-item">
       <div class="l-date">17 OCT 2026</div>
-      <p><strong>Teaser oficial «let's do both» — re-ponderación de timing; capacidades intactas.</strong> <em>La señal:</em> @QwenDevs (10 oct) «big or small?» → «alright guys, let's do both!»; la comunidad lee un release dual <strong>Qwen4-27B (open weights) + Qwen4-Max</strong>. Es la primera vez que la cuenta oficial sugiere la <em>forma</em> del release y no solo el estado «in training»; no da fecha, tamaño ni specs (post citado por 2+ medios independientes; no verificable directamente). <em>Qué mueve:</em> <strong>rápido 40→45% · base 42→37% · lento 18% (=100)</strong>. Una señal de forma no dice nada de capacidades: <strong>las predicciones AAI (denso 42 · Flash 43 · Max 50) y la tabla de calificación no se tocan</strong>; el riesgo «el denso puede no existir» (~15%) queda como residuo a la baja. <em>Ingeniería:</em> SGLang <span class="mono">#43048</span> (8 oct) habilita LayerNorm sequence-parallel para GR/PLE en Qwen4Exp (TTFT −14,6/−18,4%, ~1 GiB/GPU liberada; borrador sin mergear, medida del autor sin reproducir) — otro artefacto del runtime en la fila antes que el modelo. <em>Comunidad:</em> early testers (15-16 oct) describen primeras salidas «competitivas con Opus 5.5» — anecdótico, sin scores, no computa como señal. <em>Comprobaciones de ausencia (hoy):</em> org HF Qwen sin repo Qwen4 (lo último: línea 3.8; actividad reciente = datasets), ningún qwen4* en API, AAI sin entrada qwen4. Prediction market: ~74-75%, <em>sin mover</em> desde el 12 oct. <em>Refresco frontier (AAI en vivo, 17 oct):</em> escala intacta (canary sigue en 40 → v4.3.2 vigente); entran <strong>Muse Wonder Full (56, Meta)</strong>, que empata con Sonnet 5.5 por la plata, <strong>Step 5 Preview (44)</strong>, top-3 abierto empatando con Kimi K3, y <strong>Ling 3.1 Flash (41, Ant)</strong> dos días después de salir; líder open-weights sin cambios: MiMo-V2.6-Pro (46).</p>
+      <p><strong>Teaser oficial «let's do both» — re-ponderación de timing; capacidades intactas.</strong> <em>La señal:</em> @QwenDevs (10 oct) «big or small?» → «alright guys, let's do both!»; la comunidad lee un release dual <strong>Qwen4-27B (open weights) + Qwen4-Max</strong>. Es la primera vez que la cuenta oficial sugiere la <em>forma</em> del release y no solo el estado «in training»; no da fecha, tamaño ni specs (post citado por 2+ medios independientes; no verificable directamente). <em>Qué mueve:</em> <strong>rápido 40→45% · base 42→37% · lento 18% (=100)</strong>. Una señal de forma no dice nada de capacidades: <strong>las predicciones AAI (denso 42 · Flash 43 · Max 50) y la tabla de calificación no se tocan</strong>; el riesgo «el denso puede no existir» (~15%) queda como residuo a la baja. <em>Ingeniería:</em> SGLang <span class="mono">#43048</span> (8 oct) habilita LayerNorm sequence-parallel para GR/PLE en Qwen4Exp (TTFT −14,6/−18,4%, ~1 GiB/GPU liberada; borrador sin mergear, medida del autor sin reproducir) — otro artefacto del runtime en la fila antes que el modelo. <em>Comunidad:</em> early testers (15-16 oct) describen primeras salidas «competitivas con Opus 5.5» — anecdótico, sin scores, no computa como señal. <em>Comprobaciones de ausencia (hoy):</em> org HF Qwen sin repo Qwen4 (lo último: línea 3.8; actividad reciente = datasets), ningún qwen4* en API, AAI sin entrada qwen4. Prediction market: ~74-75%, <em>sin mover</em> desde el 12 oct. <em>Refresco frontier (AAI en vivo, 17 oct):</em> escala intacta (canary sigue en 40 → v4.3.2 vigente); entran <strong>Muse Wonder Full (56, Meta)</strong>, que empata con Sonnet 5.5 por la plata, <strong>Step 5 Preview (44)</strong>, top-3 abierto empatando con Kimi K3, y <strong>Ling 3.1 Flash (41, Ant)</strong> dos días después de salir; líder open-weights sin cambios: MiMo-V2.6-Pro (46). <em>Añadido al gráfico (a petición):</em> las generaciones previas de Anthropic que serán la referencia comparativa de la familia — Opus 4.6 (max) 32, Sonnet 5 (max) 38, Opus 4.8 (max) 42, Opus 5 (max) 51 — scores v4.3.2 verificados hoy en las páginas de modelo de AAI (41.79/50.78/38.16/31.95 redondeados).</p>
     </div>
     <div class="log-item">
       <div class="l-date">14 OCT 2026</div>
