@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash recalibrado a ~45 (17 oct, delta cocción medido). Rumor 0-day (7 oct): ventana finales de octubre (refrendado 14, 17 y 19 oct; prediction market 83%, 19 oct). Teaser oficial @QwenDevs «let's do both!» (10 oct): release dual 27B+Max insinuado, sin fecha. Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct).">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash recalibrado a ~45 (17 oct, delta cocción medido). Rumor 0-day (7 oct): ventana finales de octubre (refrendado 14, 17 y 19 oct; prediction market 83%, 19 oct). Teaser oficial @QwenDevs «let's do both!» (10 oct): release dual 27B+Max insinuado, sin fecha. Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct). Revisión 20 oct: sin señal; frontier suma Muse Spark 1.3 (48) y MiniMax-M3.1-Flash (43).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -633,7 +633,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 19 octubre 2026</div>
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 20 octubre 2026</div>
   <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
   <h2>Canary: <strong>Qwen3.8-Flash-Next</strong> · 125B-A6B + 51B n-gram</h2>
   <p class="hero-sub">
@@ -646,7 +646,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
     <span class="badge">Ventana base: feb–abr 2027</span>
     <span class="badge blue">Ancla AAI: 40 (v4.3.2)</span>
-    <span class="badge live">🔈 Rumor 0-day: finales de octubre · market 83% (19 oct) · quedan ~12 días · sin confirmar</span>
+    <span class="badge live">🔈 Rumor 0-day: finales de octubre · market 83% (20 oct, plano) · quedan ~11 días · sin confirmar</span>
     <span class="badge live">📣 @QwenDevs: «big or small? … let's do both!» (10 oct) · forma, no fecha</span>
     <span class="badge cyan">⚡ Canary medido: 90–120 tok/s (5090 + 64 GB)</span>
   </div>
@@ -691,7 +691,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     <div>
       <h4>Rumor 0-day: «finales de octubre»</h4>
       <p>Partner 0-day de Alibaba en r/LocalLLaMA (6 oct): Qwen4 planeado para fin de mes. Corroboran los registros de beta cerrada en qwen.ai y un prediction market que sube a <strong>83%</strong> «antes del 1 nov» (19 oct; ~74-75% quieto desde el 12). <strong>Oficialmente sigue sin haber fecha.</strong></p>
-      <div class="s-state">🔈 rumor vivo · refrendado 14, 17 y 19 oct · mercado 83% · sin fecha oficial</div>
+      <div class="s-state">🔈 rumor vivo · refrendado 14, 17, 19 y 20 oct · mercado 83% plano · sin fecha oficial</div>
     </div>
   </div>
   <div class="signal open">
@@ -1081,6 +1081,11 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-val pred">~50</div>
       </div>
       <div class="chart-row">
+        <div class="chart-label">Muse Spark 1.3 (max)<span class="sub">Meta · propietario · nuevo en lista (checkpoint 2 sep)</span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="80"></div></div>
+        <div class="chart-val">48</div>
+      </div>
+      <div class="chart-row">
         <div class="chart-label">Grok 4.7<span class="sub">xAI · propietario (xhigh)</span></div>
         <div class="chart-track"><div class="chart-fill us" data-w="76.7"></div></div>
         <div class="chart-val">46</div>
@@ -1119,6 +1124,11 @@ td.warn { color: var(--warning); font-weight: 700; }
         <div class="chart-label">Kimi K3 (max)<span class="sub">Moonshot · open weights (jul 2026)</span></div>
         <div class="chart-track"><div class="chart-fill cn" data-w="73.3"></div></div>
         <div class="chart-val">44</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">MiniMax-M3.1-Flash<span class="sub">MiniMax · propietario · nuevo (19 oct)</span></div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="71.7"></div></div>
+        <div class="chart-val">43</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN · denso local</span></div>
@@ -1173,7 +1183,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
     </div>
     <p>
-      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) manda en solitario, Sonnet 5.5 (56) ya no está solo en la plata — <strong>Muse Wonder Full de Meta (56) empata con él</strong> — y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Y un dato que importa a la comunidad local: el liderato open-weights aguanta — <strong>MiMo-V2.6-Pro (46)</strong> sigue de número uno abierto — pero el top abierto se puebla rápido: entra <strong>DeepSeek V4.1 Flash 1017 (45)</strong> (publicado el 17 oct) junto a <strong>GLM-5.3 (45)</strong>, así que el podio abierto es 46-45-45 y el listón pisa ya el suelo del Flash predicho (~45); por debajo, <strong>Step 5 Preview (44)</strong> empata con Kimi K3 y <strong>Ling 3.1 Flash de Ant (41)</strong> entró dos días después de publicarse — el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo un listón que sube también por abajo. Tras la recalibración del 17 oct: <strong>Flash (~45) ya supera por 3 al denso 27B (~42)</strong> — los rangos (41–49 y 38–46) aún se solapan en el borde, así que sigue siendo más reparto que victoria clara: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido. Y ahora con las generaciones previas en la escala, la lectura comparativa queda negra sobre blanco: el <strong>Qwen4-27B predicho (42) empata exactamente con Opus 4.8 (42)</strong>, el listón titular que la última vez superó el denso de Qwen (3.8-27B, 34, superó a Opus 4.6, 32); Opus 5 (51) queda dos puntos por encima del Max predicho (~50), así que el escalón Anthropic→Qwen de dos generaciones (~19 pts del 4.6 al 5) marca el ritmo que Qwen4 tendría que igualar para no nacer por detrás del rival directo.
+      Lectura: el campo se ha movido desde la última verificación. El Max predicho (~50) ya no empata con la primera línea: Opus 5.5 (58) manda en solitario, Sonnet 5.5 (56) ya no está solo en la plata — <strong>Muse Wonder Full de Meta (56) empata con él</strong> — y el grupo 52–53 (Fable 5.1, GPT-6 Astra, Gemini 4 Argon, GPT-6.1 Sol) queda por delante — Qwen4-Max sería segunda línea mundial salvo que el salto de arquitectura sorprenda. Refresco del 20 oct: Meta coloca una segunda barra (<strong>Muse Spark 1.3 (max), 48</strong> — checkpoint de septiembre puntuado ahora) justo entre el Max y el Flash predichos, y <strong>MiniMax-M3.1-Flash (43, propietario, publicado el 19 oct)</strong> se sitúa un punto sobre el 27B predicho: la franja 43–48, la que Qwen4 tendría que barrer del tirón, deja de estar vacía. Y un dato que importa a la comunidad local: el liderato open-weights aguanta — <strong>MiMo-V2.6-Pro (46)</strong> sigue de número uno abierto — pero el top abierto se puebla rápido: entra <strong>DeepSeek V4.1 Flash 1017 (45)</strong> (publicado el 17 oct) junto a <strong>GLM-5.3 (45)</strong>, así que el podio abierto es 46-45-45 y el listón pisa ya el suelo del Flash predicho (~45); por debajo, <strong>Step 5 Preview (44)</strong> empata con Kimi K3 y <strong>Ling 3.1 Flash de Ant (41)</strong> entró dos días después de publicarse — el Qwen4-27B predicho (42) no nacería como el mejor open-weights sino persiguiendo un listón que sube también por abajo. Tras la recalibración del 17 oct: <strong>Flash (~45) ya supera por 3 al denso 27B (~42)</strong> — los rangos (41–49 y 38–46) aún se solapan en el borde, así que sigue siendo más reparto que victoria clara: Flash manda en agentic/terminal/recall, el denso en razonamiento por token y en hardware doméstico. Para la comunidad local el denso sigue siendo el rey por una razón física, no de puntero: cabe entero en 32 GB y rinde ~90–100 tok/s frente a los ~57 del MoE con offload. Ojo: todos los valores son v4.3.2 — compararlos con la escala anterior (v4.1.1) no es válido. Y ahora con las generaciones previas en la escala, la lectura comparativa queda negra sobre blanco: el <strong>Qwen4-27B predicho (42) empata exactamente con Opus 4.8 (42)</strong>, el listón titular que la última vez superó el denso de Qwen (3.8-27B, 34, superó a Opus 4.6, 32); Opus 5 (51) queda dos puntos por encima del Max predicho (~50), así que el escalón Anthropic→Qwen de dos generaciones (~19 pts del 4.6 al 5) marca el ritmo que Qwen4 tendría que igualar para no nacer por detrás del rival directo.
     </p>
   </div>
 </div>
@@ -1182,7 +1192,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="timeline">
   <h2 class="section-title reveal"><span class="num">07</span>Timeline & Fechas</h2>
   <p class="section-lead reveal">
-    <strong>Apsara (22 sep 2026) confirma que Qwen4 está "in training"</strong> con salida "muy pronto", y el PR de llama.cpp ya está mergado: y el 6 de octubre un partner 0-day de Alibaba filtra «Qwen4 a finales de octubre» (rápido →40%); el 10 oct la cuenta oficial insinúa un release dual («big or small?» → «let's do both!») y el rápido sube a <strong>~45%</strong>; el 19 oct el prediction market salta a 83% antes del 1 nov y el rápido queda en <strong>~50%</strong>. El base sigue siendo <strong>feb–abr 2027</strong> (patrón canary→familia ~6 meses) — una señal de timing re-pondera probabilidades, no recalibra la estimación base. Si el rumor se cumple, el Max iría primero y el denso 1–6 semanas después. <strong>Actualizado 19 oct:</strong> el prediction market sube a 83% antes del 1 nov (venía quieto en ~74-75% desde el 12 oct), HuggingFace sigue sin ningún repo Qwen4, y el teaser «let's do both!» sigue sin concretarse en fecha — la ventana del rumor vive, con ~12 días por delante.
+    <strong>Apsara (22 sep 2026) confirma que Qwen4 está "in training"</strong> con salida "muy pronto", y el PR de llama.cpp ya está mergado: y el 6 de octubre un partner 0-day de Alibaba filtra «Qwen4 a finales de octubre» (rápido →40%); el 10 oct la cuenta oficial insinúa un release dual («big or small?» → «let's do both!») y el rápido sube a <strong>~45%</strong>; el 19 oct el prediction market salta a 83% antes del 1 nov y el rápido queda en <strong>~50%</strong>. El base sigue siendo <strong>feb–abr 2027</strong> (patrón canary→familia ~6 meses) — una señal de timing re-pondera probabilidades, no recalibra la estimación base. Si el rumor se cumple, el Max iría primero y el denso 1–6 semanas después. <strong>Actualizado 20 oct:</strong> revisión completa sin señal — el prediction market se mantiene en 83% antes del 1 nov, y HuggingFace, la API y AAI siguen sin ningún rastro de Qwen4; el teaser «let's do both!» no ha llegado a concretarse en fecha y la ventana del rumor vive, con ~11 días por delante.
   </p>
 
   <div class="card reveal">
@@ -1254,7 +1264,11 @@ td.warn { color: var(--warning); font-weight: 700; }
       <p><strong>Señal de timing: «finales de octubre».</strong> Un partner 0-day de Alibaba filtra en r/LocalLLaMA que Qwen4 está planeado para fin de mes. Corroboran: los registros de beta cerrada en qwen.ai (cierre 30 sep), otros reportes de «late October–early November», y un prediction market que da ~74% a un lanzamiento antes de noviembre. Verificado hoy: ningún repo Qwen4 en la org de HuggingFace (lo último sigue siendo Qwen-Image-2.1), ningún qwen4* en la API ni en los leaderboards de AAI. <strong>Rumor con fuente creíble, no fecha oficial.</strong> Escenario rápido 25→40%; la base feb–abr 2027 no se mueve.</p>
     </div>
     <div class="timeline-item">
-      <div class="t-date">19 OCT 2026 · HOY</div>
+      <div class="t-date">20 OCT 2026 · HOY</div>
+      <p><strong>Revisión completa: no dispara ninguna señal.</strong> Manifold sigue en <strong>83%</strong> a «Qwen4 antes del 1 nov» (plano desde el 19; ventana a 11 días) y no hay más señal de timing: sin posts oficiales desde el teaser del 10 oct, y los runtimes siguen puliendo la arquitectura sin novedad (hoy: PRs Qwen4-Exp/QSA en la vía ROCm de vLLM y en sglang — fondo ya recogido el 14 y el 17, no señal). Comprobaciones de ausencia (hoy): org HF Qwen sin repo Qwen4 (lo último: Qwen-Image-2.1-Turbo, 12 oct), 468 IDs en la API sin ningún qwen4*, AAI sin entrada qwen4 y escala v4.3.2 intacta (sonda en la página del canary). Frontier sincronizada: entran <strong>Muse Spark 1.3 (48, Meta)</strong> — se coloca entre el Max y el Flash predichos — y <strong>MiniMax-M3.1-Flash (43, publicado el 19 oct)</strong>; liderato abierto sin cambios (MiMo 46). Predicciones (denso 42 · Flash 45 · Max 50), escenarios (50/32/18) y calificación: <strong>intactos</strong>.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="t-date">19 OCT 2026</div>
       <p><strong>El mercado aprieta la ventana; el listón abierto sube un escalón.</strong> Prediction market (Manifold, 19 oct): <strong>83%</strong> a «Qwen4 antes del 1 nov» — +8 pts desde los ~74-75% que llevaban quietos desde el 12; en el mercado de releases de octubre, «cualquier Qwen» va al 84%. Es señal de multitud sobre el rumor, no dato oficial: Alibaba sigue sin mover «in training». Re-ponderación de timing: rápido 45→50% · base 37→32% · lento 18% (=100); predicciones AAI (denso 42 · Flash 45 · Max 50) y tabla de calificación intactas. Condición de muerte: ventana vacía el 31 oct → pesos revierten. Frontier (AAI en vivo): escala intacta (canary sigue en 40; «Intelligence Index v4.3.2» confirmado en la página del modelo); entra <strong>DeepSeek V4.1 Flash 1017 (45)</strong> — publicado el 17 oct, nº2 open-weights tras MiMo (46), empatado con Max-0902 y con el Flash predicho: el listón abierto pisa el suelo del tier predicho. Corrección: GLM-5.3 es open-weights según AAI (figuraba «propietario»). Comprobaciones de ausencia (hoy): org HF Qwen sin repo Qwen4 (lo último: datasets del 15 oct), ningún qwen4* en la API ni entrada qwen4 en AAI; sin posts oficiales desde el teaser del 10 oct (el «aviso» que circula en Weibo/Sina es re-publish de ese día). Contexto (prensa, 18 oct): los labs abiertos chinos están en seco salvo DeepSeek — Qwen cumple 65 días sin pesos.</p>
     </div>
     <div class="timeline-item">
@@ -1317,6 +1331,10 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="actualizaciones">
   <h2 class="section-title reveal"><span class="num">10</span>Actualizaciones</h2>
   <div class="reveal">
+    <div class="log-item">
+      <div class="l-date">20 OCT 2026 · SIN SEÑAL (REVISIÓN) + SYNC FRONTIER</div>
+      <p><strong>No dispara nada — revisión de rutina con frontier sincronizada.</strong> Ninguna señal nueva: Manifold 83% «Qwen4 antes del 1 nov» plano desde el 19 oct; qwen.ai y @QwenDevs sin posts desde el teaser del 10 oct. <em>Comprobaciones de ausencia (hoy):</em> org HF Qwen sin repo Qwen4 (lo último: Qwen-Image-2.1-Turbo, 12 oct), API OpenRouter con 468 modelos sin ningún identificador qwen4*, AAI sin entrada qwen4; sonda de escala: «Intelligence Index v4.3.2» vigente (canary sigue en 40). <em>Ingeniería:</em> mantenimiento activo sobre la arquitectura (vLLM: fp8 KV/indexer en la vía ROCm de Qwen4Exp; sglang: skip de reescritura del backing-file PLE) — continuidad del trabajo ya recogido el 14/17, no señal nueva. <em>Frontier (AAI en vivo):</em> entran <strong>Muse Spark 1.3 (max), 48 (Meta)</strong> — checkpoint del 2 sep puntuado ahora; queda entre el Max (~50) y el Flash (~45) predichos — y <strong>MiniMax-M3.1-Flash, 43</strong> — publicado el 19 oct, propietario según AAI; un punto sobre el 27B predicho. Claude Haiku 5.5 (43), GLM-5.3-Flash (42) y Gemini 3.8 Flash (41) quedan fuera por el criterio de una barra por familia/nivel. Liderato open-weights sin cambios: MiMo-V2.6-Pro (46). Sin cambios de capacidades: denso 42 · Flash 45 · Max 50; escenarios 50/32/18; HOY movido al 20 oct.</p>
+    </div>
     <div class="log-item">
       <div class="l-date">19 OCT 2026 · TIMING (market) + SYNC FRONTIER</div>
       <p><strong>Señal de timing: el prediction market sube a 83% — predicciones intactas.</strong> Manifold «Qwen4 antes del 1 nov» pasa de ~74-75% (quieto desde el 12 oct) a <strong>83%</strong>: +8 pts con la ventana del rumor a 12 días; el mercado paralelo de releases de octubre («cualquier Qwen») va al 84%; Polymarket solo tiene mercados Qwen 3.9+ (12-13%, otro targets — no comparables). Ningún dato oficial: la verificación de hoy — org HF Qwen sin repo Qwen4 (lo último: datasets del 15 oct), ningún qwen4* en API, AAI sin entrada qwen4, sin posts oficiales desde el teaser del 10 oct (el «aviso» de Weibo/Sina es re-publish del 10). Re-ponderación: rápido 45→50% · base 37→32% · lento 18% (=100) — un +8 pts de multitud sobre el mismo rumor pide ~+5 pts de escenario, no más; si el 31 oct la ventana cierra vacía, la señal muere y los pesos revierten a 45/37/18. Sonda de escala antes de tocar el gráfico: canary sigue en 40 y la página del modelo declara «Intelligence Index v4.3.2» — vigente, sin re-escala. Frontier: entra <strong>DeepSeek V4.1 Flash 1017 (45)</strong> — open weights publicados el 17 oct, nº2 abierto tras MiMo-V2.6-Pro (46), empatado con Max-0902 y con el Flash predicho (~45); el denso predicho (42) queda por detrás de cuatro abiertos (46/45/45/44). Corregida la etiqueta de GLM-5.3: open-weights según AAI (figuraba «propietario»). Sin cambios de capacidades: denso 42 · Flash 45 · Max 50 y la tabla de calificación no se tocan.</p>
