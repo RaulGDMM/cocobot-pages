@@ -5,6 +5,116 @@
   },
   "days": [
     {
+      "date": "2026-10-23",
+      "news": [
+        {
+          "category": "agent",
+          "title": "Anthropic abre Claude Duet: agente proactivo con Opus 5.5 que trabaja mientras duermes",
+          "summary": "Research preview de un agente independiente que envía un briefing matinal, revisa tus apps conectadas cada pocas horas y sigue trabajando en su propia VM en la nube. Requiere aprobación explícita para enviar mensajes, pagar o borrar; >6.000 conectores, lista de espera para suscriptores Pro/Max de EE.UU. en iOS, Android y claude.ai.",
+          "source": "https://www.technology.org/2026/10/22/anthropic-claude-duet-proactive-ai-agent-research-preview/",
+          "source_name": "Technology.org",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Google presenta Agent Compute Engine: una microVM aislada por agente y sin credenciales dentro",
+          "summary": "Cada agente recibe una microVM single-tenant con chips Titan/Titanium; las credenciales reales viven fuera del sandbox (las inyecta un Agent Gateway, el agente solo tiene una identidad SPIFFE efímera). Las VM ociosas se pausan con snapshots y comparten memoria copy-on-write. Google abre el runtime 'Agent Substrate' para Kubernetes: 10x agentes por servidor y suspend/resume <500 ms con 200.000 agentes. Preview en los próximos meses.",
+          "source": "https://searchenginewatch.com/google-agent-compute-engine-preview-isolated-ai-agents/",
+          "source_name": "Search Engine Watch",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Recursive lanza Flint: MoE de 40B (2,5B activos) de código, en gran parte 'construido por IA', a 125+ tok/s en portátil",
+          "summary": "Pesos Apache 2.0 en Hugging Face y gratis en OpenRouter, 262K de contexto, ~23 GB en 4-bit y 125-131 tok/s en un MacBook Pro M4. 74,2% en SWE-bench Verified (54,9% en Terminal-Bench 2.1, por detrás de Qwen3.8 27B). Su 'Eureka Machine' automatizó casi todo el pipeline de entrenamiento, incluyendo entrenamiento en low-bit que redujo el modelo un 71% casi sin pérdida.",
+          "source": "https://toolsift.ai/llm-news/2026-10-22/",
+          "source_name": "ToolSift (vía TechCrunch/The Neuron)",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "MAI-DxO de Microsoft: un panel de agentes IA acierta el 83% de casos complejos frente al 36% de médicos generalistas",
+          "summary": "El orquestador pregunta al paciente, pide pruebas y debate diagnósticos en equipo; paper en Science (22 oct) sobre casos de NEJM: más del doble de precisión que médicos de atención primaria. Matiz de TechCrunch: buena parte de la mejora podría venir del modelo base, no del orquestador.",
+          "source": "https://techcrunch.com/2026/10/22/microsofts-mustafa-suleyman-says-its-ai-outperforms-doctors-on-hard-cases-as-he-chases-medical-superintelligence/",
+          "source_name": "TechCrunch",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "DeepSeek levanta ~15.000 M$ (100.000 M yuanes) dos días después de que EE.UU. ordenara expulsarla de las agencias federales",
+          "summary": "Una de las mayores rondas privadas de IA en China, con Tencent y CATL entre los principales respaldadores, tras los 7.000 M$ de junio. Timing deliberado: la subida de capital llega justo después de la orden del DHS.",
+          "source": "https://techcrunch.com/2026/10/22/deepseek-reportedly-raises-15b-days-after-us-restrictions/",
+          "source_name": "TechCrunch",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Los grandes bancos de EE.UU. empiezan a bloquear agentes IA sin verificar dentro de las cuentas",
+          "summary": "Según Axios, Morgan Stanley ya bloquea agentes de terceros y JPMorgan, Bank of America, Citi y Wells Fargo restringen accesos: detectan agentes actuando dentro de cuentas de clientes sin autorización y sin forma de atribuir si una acción la pidió el usuario o la inventó el agente.",
+          "source": "https://www.axios.com/2026/10/22/ai-agents-banks-unauthorized-accounts-access",
+          "source_name": "Axios",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "iFlytek Spark X2.6: MoE 293B-A30B con contexto de 1M, entrenado íntegramente con cómputo doméstico chino",
+          "summary": "Presentado en su festival de desarrolladores: la serie 293B-A30B presume de nivel puntero en coding y agentes con 1M de contexto, con open-source del Spark X2.6-4B on-device (tres modos de razonamiento) y precios agresivos (~0,9 yuanes/M tokens de entrada). iFlytek afirma ser el único gran modelo entrenado solo con hardware nacional.",
+          "source": "https://sflood.com/en/daily/ai-2026-10-23",
+          "source_name": "AI Frontier Daily",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Nvidia abre Nemotron 3.5 Retriever: Embed 8B/1B (también NVFP4), Rerank 8B y Parse para agentes RAG multimodales",
+          "summary": "Pesos abiertos con licencia OpenMDW: recuperan evidencia de texto E imágenes de documentos (tablas, gráficos, esquemas) en 34 idiomas, con versión NVFP4 cuantizada del Embed 1B. SOTA en el nuevo leaderboard ViDoRe v3.1 (60,49 nDCG@10 frente a 59,17 de Qwen-3-VL-Reranker-8B); Perplexity y Turbopuffer reportan buenos resultados propios.",
+          "source": "https://huggingface.co/blog/nvidia/nemotron-retriever-world-class-agentic-retrieval",
+          "source_name": "Hugging Face (NVIDIA)",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "Verus-Insight 8B: Peking U y Kling abren un modelo de detección EXPLICABLE de artefactos en vídeo generado",
+          "summary": "Modelo multimodal de 8B + benchmark Verus-Bench: en vez de clasificar real/falso a ciegas, localiza y razona artefactos concretos (manos, texturas, coherencia temporal) en vídeo IA. Pesos, código, bench y homepage públicos, pensado para auditoría de pipelines como los de Kuaishou/Kling.",
+          "source": "https://huggingface.co/papers/2610.30866",
+          "source_name": "Hugging Face Papers",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Anthropic: Claude escribe ~180M de líneas de pruebas formales en Rocq y verifica 123 librerías open source",
+          "summary": "Frontier Red Team + Theorem: verificación formal de propiedades de seguridad a nivel de ensamblador RISC-V sobre 239 puntos de entrada de fuzzing, encontrando bugs que llevaban años sin detectarse. Apuntan que la verificación formal 'a escala' se vuelve viable con LLMs.",
+          "source": "https://www.anthropic.com/research/formal-verification",
+          "source_name": "Anthropic",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Pichai: Gemini 4 Argon procesó ~25 billones de tokens en 72 horas y Google va corto de capacidad",
+          "summary": "3x lo que Gemini 3 consumió en la misma ventana; el CEO admite límites de capacidad para servirlo, que hay versiones más eficientes en desarrollo y que los agentes 'always-on' llegarán a Gemini consumer en los próximos meses.",
+          "source": "https://toolsift.ai/llm-news/2026-10-22/",
+          "source_name": "ToolSift (vía Sources with Alex Heath)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Microsoft: el grupo hacker Storm-0940 usó IA agéntica (ARTEX) en el ataque a la cadena de suministro de ConnectWise",
+          "summary": "Caso destacado por Microsoft de un actor vinculado a China usando un sistema de pentesting agéntico (ARTEX) para automatizar actividad ofensiva y abusar de credenciales de aplicaciones en entornos Microsoft 365: la IA comprime el tiempo entre el acceso inicial y el compromiso.",
+          "source": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-october-23-2026/",
+          "source_name": "The Neuron",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b11827→b11836: fixes en el server (rerank y API realtime) y depthwise conv2d en OpenCL",
+          "summary": "Desde b11785: el placeholder de rerank se sustituye solo de la plantilla original (#30864), la API de transcripción realtime envía 'complete' cuando se drena el audio confirmado (#30994), depthwise conv2d en OpenCL (#30900) y ajustes SYCL/oneDNN y CANN. Sin CVEs nuevos (los abiertos siguen siendo los de marzo). Mantenimiento rutinario: update opcional, recomendable si usas el endpoint /rerank o la API realtime.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Día intenso y muy 'agentil': Anthropic lanza Claude Duet y Google presenta Agent Compute Engine (microVMs aisladas por agente), los grandes bancos de EE.UU. empiezan a bloquear agentes de terceros, y los modelos abiertos siguen lloviendo (Flint de Recursive, Spark X2.6 de iFlytek, Nemotron Retriever de Nvidia). Además: Microsoft presume de superar a médicos en diagnóstico y DeepSeek levanta ~15.000 M$ justo tras la orden de expulsión federal."
+    },
+    {
       "date": "2026-10-21",
       "news": [
         {
@@ -6801,36 +6911,6 @@
         }
       ],
       "summary": "Día de reestructuración y alianzas: Amazon recorta su división AGI mientras IBM baja su pronóstico de ingresos por el éxodo hacia infraestructura IA. AMD sella un megaacuerdo con Anthropic y ex-empleados de DOGE lanzan una startup de ciberseguridad militar."
-    },
-    {
-      "date": "2026-07-23",
-      "news": [
-        {
-          "category": "general",
-          "title": "La Casa Blanca presenta \"Winning the Race: America's AI Action Plan\" con más de 90 recomendaciones",
-          "summary": "Trump unveilió hoy el plan estratégico federal de IA en la cumbre 'Winning the AI Race'. Incluye tres pilares: acelerar innovación, construir infraestructura de IA estadounidense, y liderar en diplomacia y seguridad internacional. Propone desregular, bloquear fondos federales a estados con regulaciones estrictas de IA, impulsar modelos open-source, y acelerar la adopción en el gobierno federal (especialmente DoD).",
-          "source": "https://www.paulhastings.com/insights/client-alerts/white-house-releases-ai-action-plan-winning-the-race-americas-ai-action-plan",
-          "source_name": "Paul Hastings LLP",
-          "star": true
-        },
-        {
-          "category": "video",
-          "title": "Higgsfield libera acceso gratuito e ilimitado a todos sus modelos top por 24 horas",
-          "summary": "El CEO de Higgsfield anunció que está 'quemando GPUs' para ofrecer acceso gratuito e ilimitado a todos sus modelos premium durante 24 horas para nuevos usuarios. Incluye Seedance 2.0, Kling 3.0, GPT Image 2, Nano Banana Pro y más. Los que suscriban después obtienen 7 días adicionales ilimitados.",
-          "source": "https://higgsfield.ai/blog/seedance-unlimited",
-          "source_name": "Higgsfield",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10082 → b10092 disponible (10 builds nuevos)",
-          "summary": "10 builds nuevos desde el último reporte. Destacan: b10092 habilita backend PowerPC en AIX, b10091 corrige lookup de librerías SYCL, b10090 añade kernel CONV_2D_DW para WebGPU, b10089 implementa GET_ROWS cuantizados en CUDA, y b10088 corrige tensor ops de DeepSeek4 APE. Tu servidor está en b10068 — hay 24 builds de diferencia.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "La Casa Blanca lanza su plan estratégico de IA con más de 90 recomendaciones. llama.cpp avanza a b10092 con 10 builds nuevos. Higgsfield hace free todos sus modelos top por 24h."
     }
   ]
 }
