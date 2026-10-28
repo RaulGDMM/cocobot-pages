@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-10-28",
+      "news": [
+        {
+          "category": "video",
+          "title": "Google DeepMind presenta Genie 4: modelo de mundo en tiempo real con audio nativo y escenarios de 2 minutos",
+          "summary": "Genie 4 genera música, ambiente y diálogo sincronizados dentro de la simulación, admite instrucciones de texto en mitad de la escena (clima, cámara, personajes) y mantiene la coherencia ~2 minutos, el doble que Genie 3. Gemini 3.8 Flash actúa como agente guía en el bucle. Preview para testers de confianza; llegará a Project Genie (Google AI Ultra) y socios de la Gemini API. Todo con marca de agua SynthID.",
+          "source": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+          "source_name": "Google DeepMind",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Liquid AI lanza LFM3: familia abierta de 6 modelos 2B (texto, visión, audio, omni y decisión) con GGUF y 256K de contexto",
+          "summary": "Seis modelos open-weight derivados de un backbone común de 1,7B: el modelo de texto se entrena con 22T tokens, cabe en ~1 GB a 4-bit y soporta 256K de contexto. GGUF/MLX/ONNX listos y llama.cpp ya añadió soporte de LFM3-Audio/Omni y d1-2B (b11941/b11945). Fine-tuning en una sola GPU; licencia comercial exige acuerdo por encima de 10 M$ de facturación.",
+          "source": "https://www.liquid.ai/blog/lfm3",
+          "source_name": "Liquid AI",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Meta amplía su emisión de acciones a 97.500 M$; Nvidia pone 3.000 M$ y AMD 1.000 M$ como inversores ancla",
+          "summary": "Meta fija 25.000 M$ de acciones comunes a 625 $/acción (ampliado desde 22.500 M$) más 12.500 M$ de preferentes convertibles y un programa ATM de hasta 60.000 M$. Nvidia invertirá 3.000 M$ y AMD 1.000 M$, atando a los fabricantes de chips al cap table de su mayor cliente; cierre previsto el 29 de octubre. Circularidad capital-chip cada vez más visible.",
+          "source": "https://spikepanel.com/digest/2026-10-28",
+          "source_name": "SpikePanel / WSJ",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "OpenAI planea comprar TPUs de Google, según The Information",
+          "summary": "OpenAI prepara la compra directa de chips TPU de Google y contrata ingenieros para optimizar sus modelos en ellos, profundizando su diversificación más allá de Nvidia. Ya alquila TPUs a Google desde 2025; no hay cifras de volumen ni precio y ninguna de las dos partes confirma el acuerdo.",
+          "source": "https://www.reuters.com/business/openai-plans-buy-googles-ai-chips-information-reports-2026-10-28/",
+          "source_name": "Reuters / The Information",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b11922→b11946: endpoint /v1/realtime de conversación en tiempo real, niveles de reasoning effort y soporte de LFM3",
+          "summary": "b11946 añade conversación y transcripción en tiempo real en /v1/realtime (compatible estilo OpenAI Realtime, #31269); b11944 expone los niveles de reasoning effort de la plantilla de chat; b11940 soporta deferred tools y tool_reference; b11941/b11945 suman los modelos LiquidAI LFM3 y d1. Sin CVEs nuevos desde los de marzo. Recomendación: muy tentador para stacks de voz local; en el equipo de Raúl, esperar a que el fork Strata se rebase sobre ≥b11946.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Apple añade un asistente de IA a Pages, Keynote y Numbers… y soporte de MCP en macOS 27",
+          "summary": "El asistente redacta y revisa documentos, monta presentaciones y analiza hojas de cálculo dentro de la ofimática de Apple. Lo suculento para devs: macOS 27 traerá Model Context Protocol nativo, permitiendo que agentes de terceros se conecten a Pages, Keynote y Numbers.",
+          "source": "https://www.theverge.com/tech/1019373/apple-pages-keynote-numbers-ai-chatbot-update",
+          "source_name": "The Verge",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Cloudflare filtra datos entre clientes en su servicio GLM-5.3 de Workers AI por un bug de caché de SGLang",
+          "summary": "Un desajuste de configuración activó un bug de SGLang: algunas peticiones largas recibían datos cacheados de otros clientes. 155 respuestas afectadas entre el 27 de agosto y el 9 de septiembre, sin evidencia de explotación deliberada. Cloudflare ha parcheado configuración y motor de inferencia. Aviso para todo stack de inferencia multi-tenant: la KV-cache compartida es superficie de ataque.",
+          "source": "https://blog.cloudflare.com/kv-cache-exposure-remediation/",
+          "source_name": "Cloudflare Blog",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Baidu abre ERNIE Unlimited OCR 2: parseo de documentos con páginas ilimitadas de una pasada (3.600 páginas, Harry Potter entero)",
+          "summary": "Primer OCR con páginas arbitrarias gracias a su atención SR-SWA (sparse reference sliding window) con gating por páginas: hasta 7x más rápido que atención completa en documentos de cientos de páginas. SOTA declarado en MPDocBench (84,6) y MarathonDocBench (77,1), por delante de Qwen 3.8-Max, Gemini-3.8-Flash y DeepSeek-4.1-Flash.",
+          "source": "https://sflood.com/en/daily/ai-2026-10-28",
+          "source_name": "Sina Tech / AI Frontier Daily",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Axiom verifica con Lean la Clasificación de Grupos Simples Finitos: 43,1 millones de líneas formalizadas por agentes IA en 24 días",
+          "summary": "El teorema cuya prueba original ocupa ~15.000 páginas en más de 500 papers de ~100 matemáticos queda verificado paso a paso por el comprobador Lean, con decenas de agentes IA coordinados por humanos. Además detectaron 34 deslizillos en las pruebas publicadas, la mayoría erratas pero alguna afirmación directamente falsa.",
+          "source": "https://theairankings.com/daily/2026-10-28/",
+          "source_name": "The AI Rankings / Axiom",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "MAI-Image-2.6 y MAI-Image-2.6-Flash ya están en disponibilidad general en Microsoft Foundry",
+          "summary": "Los modelos de imagen de Microsoft pasan a GA: MAI-Image-2.6 a $38/M tokens de imagen de salida y la variante Flash a $19/M, pensados para trabajo creativo escalable con refinado y adaptación multi-audiencia.",
+          "source": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/mai-image-2-6-and-mai-image-2-6-flash-are-now-generally-available-in-microsoft-f/4566327",
+          "source_name": "Microsoft Community Hub",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Países Bajos eliminará 25.000 empleos públicos como parte de los ahorros por adopción de IA",
+          "summary": "Más del 15% de la función pública neerlandesa desaparecerá antes de nuevos despliegues de IA en la administración. Es la primera decisión de plantilla a esta escala que convierte el debate sobre automatización del sector público en cifras concretas de despidos.",
+          "source": "https://www.semafor.com/article/10/27/2026/netherlands-to-slash-state-jobs-as-part-of-ai-related-savings",
+          "source_name": "Semafor",
+          "star": false
+        }
+      ],
+      "summary": "Día redondo: Google DeepMind lanza Genie 4 con audio nativo, Meta amplía su emisión a 97.500 M$ con Nvidia y AMD dentro, y OpenAI quiere comprar TPUs a Google. Liquid AI estrena la familia abierta LFM3 y llama.cpp trae un endpoint /v1/realtime que cambia la voz en local."
+    },
+    {
       "date": "2026-10-27",
       "news": [
         {
@@ -7025,36 +7119,6 @@
         }
       ],
       "summary": "Día activo en IA: MCP pasa a ser completamente stateless, Meta invierte $14B en data centers con BlackRock, y OpenAI open-sourcea su CLI de seguridad Codex. En el ecosistema local, llama.cpp avanza con b10174."
-    },
-    {
-      "date": "2026-07-28",
-      "news": [
-        {
-          "category": "agent",
-          "title": "Microsoft lanza MAI-Cyber-1-Flash y Perception, su plataforma de agentes de ciberseguridad",
-          "summary": "Microsoft presenta su primer modelo de IA especializado en ciberseguridad (MAI-Cyber-1-Flash) junto con Perception, una plataforma con equipos de agentes autónomos rojos, azules y verdes para detectar y corregir vulnerabilidades. El modelo, combinado con GPT-5.4 en el sistema MDASH, supera a Gemini, GPT-5.5 Cyber, GPT-5.6 Sol y Mythos 5 en el benchmark Cyber Gym. Preview disponible el 3 de noviembre.",
-          "source": "https://techcrunch.com/2026/07/27/microsoft-launches-its-first-cyber-model-and-a-new-agentic-cybersecurity-system/",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Chats compartidos de Claude aparecen indexados en Google, exponiendo datos sensibles",
-          "summary": "Usuarios de Reddit descubrieron que chats compartidos de Claude —incluyendo registros médicos, documentos internos de empresas y datos personales de menores— aparecen indexados en Google mediante búsquedas como 'site:claude.ai/share'. Anthropic atribuye el problema a enlaces compartidos públicamente en foros o redes sociales. Google ya no devuelve resultados con la misma consulta, sugiriendo una corrección parcial.",
-          "source": "https://techcrunch.com/2026/07/27/psa-your-claude-shared-chats-and-artifacts-may-have-ended-up-on-google/",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10125 → b10158 disponible (33 builds nuevos)",
-          "summary": "Tu servidor corre b10125, pero ya hay b10158 disponible (33 builds nuevos). Mejoras recientes: soporte para modelo Nanbeige4.2, función common_print_available_devices(), soporte de audio MiMo-V2.5 en mtmd, corrección de -ffast-math en HIP, y soporte eagle3-v3 para gpt-oss. Hay 5 advisorys de seguridad sin parchear (incluyendo 1 CRITICAL de RCE no autenticado y 2 HIGH de heap overflow). Actualización recomendada.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Microsoft lanza su primer modelo de ciberseguridad especializado y una plataforma de agentes autónomos. Chats compartidos de Claude aparecen indexados en Google, exponiendo datos sensibles de usuarios."
     }
   ]
 }
