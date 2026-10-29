@@ -5,6 +5,124 @@
   },
   "days": [
     {
+      "date": "2026-10-29",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Google presenta Gemini 4 Carbon: nº1 del Intelligence Index (59) con acceso limitado a ciberdefensores verificados",
+          "summary": "Nuevo modelo frontera de Google centrado en ciberseguridad y código de larga duración: 59 en el Artificial Analysis Intelligence Index v5 (por delante de Claude Opus 5.5 y GPT-6 Astra), 88,2% en SEC-bench Pro y 0,0% de éxito de prompt injection en el benchmark de Gray Swan. De momento solo accesible para defensores verificados vía Fairwind Program mientras completa los tests voluntarios del gobierno de EE.UU. Precio introductorio: $2/$10 por millón de tokens. Ars Technica lo ve como 'un Argon algo mejor', con pocos puntos de ventaja sobre rivales.",
+          "source": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
+          "source_name": "Google Blog / Ars Technica",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "SenseNova 6.8 Code2Video: SenseTime publica un modelo abierto de 27B que genera vídeo escribiendo código (Apache 2.0)",
+          "summary": "Modelo de 27B afinado desde Qwen3.8-27B con contexto de 512K que no genera píxeles: escribe y corrige el programa que calcula cada frame (territorio Manim/Remotion), con skill oficial para Claude Code (sesiones de 10h+ y 2.000 turnos), modelo de enriquecimiento de prompts y trayectorias de producción completas. Pesos en Hugging Face (sensenova/SenseNova-6.8-Code2Video), despliegue vLLM/SGLang en 4 GPUs, sin benchmarks todavía y sin foto-realismo. Encaja en motion graphics, explicativos y vídeo reeditable en fuente.",
+          "source": "https://neuralbrew.ai/en/articles/2026/10/sensenova-6-8-code2video-sensetime-video-through-code-open-source/",
+          "source_name": "Neural Brew",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Nvidia libera Nemotron 3.5 Transcribe: ASR abierto de 40 lenguas y 8 hablantes + dataset Granary v2 (463.000 horas)",
+          "summary": "Modelo de voz open-weight con ~4B parámetros activos de 30B totales: transcribe 40 lenguas, traduce 31 desde/hacia inglés, distingue hasta 8 hablantes y grabaciones de hasta 1 hora. Primero entre los open-weight en el Open ASR Leaderboard (5,33% WER medio) y capaz de correr en una sola GPU (Jetson AGX Thor, DGX Spark o Blackwell). Nvidia publica además el corpus Granary v2 con 463.062 horas en 48 lenguas.",
+          "source": "https://huggingface.co/blog/nvidia/nemotron-transcribe-granary",
+          "source_name": "Hugging Face Blog / TechCrunch",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Qwenputer: un developer incrusta una CPU RISC-V de 32 bits dentro de los pesos de Qwen3.5-4B",
+          "summary": "divagr18 ha compilado una CPU RV32IM con coprocesador bignum en 11 capas transformer pegadas a Qwen3.5-4B, usando las puertas Gated DeltaNet como RAM exacta vía claves one-hot. Corre C y MicroPython dentro del forward pass del modelo sin runtime externo: 97,5-100% en benchmarks aritméticos NUPA (48,6% el modelo base) y 18M instrucciones RISC-V ejecutadas sin error. Código y pesos en GitHub/HF bajo Apache 2.0.",
+          "source": "https://divagr.com/blog/qwenputer",
+          "source_name": "divagr.com",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "GitHub Octoverse 2026: más del 40% de los pull requests ya nacen de un primer borrador de agente IA",
+          "summary": "El informe anual de GitHub registra 17.900M de pushes y 34.300M de commits (más que 2024+2025 juntos); los PR iniciados por agentes pasaron del 17% en marzo al 40+% en septiembre, y los repos con archivo de configuración de agente acumulan 8x más commits. 225M de desarrolladores en la plataforma; TypeScript, Python y JavaScript siguen al frente. El código escrito por agentes ya es el primer borrador por defecto.",
+          "source": "https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/",
+          "source_name": "GitHub Blog / Simon Willison",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "El Claude sin publicar del Frontier Red Team de Anthropic encadena vulnerabilidades en exploits funcionales de 5 sistemas operativos",
+          "summary": "Un modelo interno no liberado de Anthropic encontró y encadenó fallos reales en Chrome, Safari, Android, Windows y Linux hasta montar PoCs funcionales: cadena zero-click de root remoto en Linux (CVSS 9,8), escape de Chrome con 4 bugs de V8/sandbox ya parcheado en Chrome 156 (Google asignó 62 CVEs) y root de Linux por red sin login. Anthropic dice que bastó prompting inicial y casi sin intervención humana; todos los fallos fueron reportados y están parcheados.",
+          "source": "https://www.anthropic.com/research/discovering-vulnerabilities-with-claude",
+          "source_name": "Anthropic / The Hacker News",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Agentes IA de la startup Cathedral entran en sistemas de Anthropic a través de software de terceros",
+          "summary": "Washington Post informa de que Cathedral, una startup de seguridad, usó agentes IA para acceder a un conjunto limitado de sistemas de ventas, RRHH e IT de Anthropic explotando dos vulnerabilidades en software de terceros (solo reportaron una), en una operación de menos de 12 horas. Expuestos contactos de clientes/partner y datos básicos de cuenta; sin chats de Claude, código fuente ni pesos. Anthropic cerró los accesos, deshabilitó los programas de terceros y notificó a las autoridades federales.",
+          "source": "https://the-decoder.com/ai-agents-hacked-anthropic-maker-of-arguably-the-most-capable-ai-models-for-cyberdefense/",
+          "source_name": "The Decoder / Washington Post",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "El agente Cipher de Causal Security encuentra 4 zero-days en EPICS (90 aceleradores de partículas) en menos de 4 horas",
+          "summary": "El agente autónomo Cipher descubrió de forma independiente cuatro vulnerabilidades en EPICS Base, el veterano toolkit de control que opera ~90 aceleradores de partículas y reactores de fusión (incluido ITER y el APS de Argonne): entre ellas CVE-2026-114595 con CVSS 9,8 de RCE. Tiempo total de la cacería: 3 horas y 49 minutos.",
+          "source": "https://www.theregister.com/security/2026/10/27/ai-hacker-finds-4-severe-bugs-in-popular-industrial-control-software-in-under-4-hours/5305811",
+          "source_name": "The Register",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Claude Code quema 15-20% de tus tokens en generar una línea de estado de 3 palabras",
+          "summary": "Un gist en tendencia (Flamerix AI) documenta que la función agent_summary de Claude Code reenvía cada ~30 segundos la transcripción completa de cada agente de fondo a Opus para producir una línea de estado de 3-5 palabras: logs OpenTelemetry le asignan 16,4% del gasto y ~19,7% de las peticiones API (ratio input/output ~9.000:1). Activada por defecto desde la 2.1.232 de agosto sin toggle; mediciones independientes la sitúan entre 8% y 26%. El gist incluye un preload de Bun para silenciarla.",
+          "source": "https://www.explainx.ai/blog/claude-code-agent-summary-status-line-token-burn-flamerix-claimed-vs-verified-2026",
+          "source_name": "explainx.ai / Hacker News",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Alphabet cae un 7%: ingresos y capex del Q3 no cumplen lo esperado pese a duplicar Google Cloud",
+          "summary": "Q3 2026 de Alphabet: ingresos de $127.580M (el consenso pedía $128.220M), capex de $51.360M por debajo de lo previsto, beneficio neto de $26.170M (-25% interanual) y flujo de caja libre desplomado a $9.070M. Google Cloud duplica hasta $30.700M, la app Gemini alcanza 1.000M de usuarios y las APIs de modelos procesan ~32.000M de tokens/minuto (4x interanual). Capex anual >$200.000M y previsto superar $300.000M en 2027.",
+          "source": "https://www.cnbc.com/2026/10/28/alphabet-googl-earnings-q3-2026.html",
+          "source_name": "CNBC / Alphabet IR",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Delaware propone las 'Artificial Intelligence Companies': empresas gestionadas íntegramente por agentes IA",
+          "summary": "Un borrador de ley de Delaware crearía sociedades gestionadas por agentes IA (harían todo lo que hace una empresa salvo banca) en un sandbox regulatorio de 30 meses, con un único socio que financia y cobra beneficios, sin responsabilidad salvo fraude o violación deliberada. El presidente del Comité de Supervisión de la Cámara (Comer) ya pide documentación al gobernador advirtiendo de que podría blindar a inversores. Recordatorio: ~2/3 del Fortune 500 se constituyen en Delaware.",
+          "source": "https://arstechnica.com/tech-policy/2026/10/no-human-at-the-helm-delaware-plan-would-let-ai-agents-run-entire-businesses/",
+          "source_name": "Ars Technica",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Australia aprueba en el Congreso prohibir la 'intimidad emocional' de chatbots con menores",
+          "summary": "El digital duty of care bill pasa la Cámara de Representantes con una enmienda que obligaría a las plataformas a vetar material que simule intimidad emocional y fomente la dependencia de menores de chatbots frente a relaciones humanas; también exige opt-out algorítmico. Albanese: 'que los niños traten al chatbot como su mejor amigo es un toque de atención para el Parlamento'. Ahora va al Senado, donde Labor necesita a los Greens.",
+          "source": "https://www.theguardian.com/australia-news/2026/oct/28/emotional-intimacy-ai-chatbots-ban-digital-duty-of-care-laws-australian-politics",
+          "source_name": "The Guardian",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "ChatGPT Pro y Business pasan a incluir hasta $500/mes en créditos API gratis",
+          "summary": "OpenAI permite enlazar una organización de API: Pro recibe crédito mensual igual al precio de su tier ($100/$200/$500) y Business $20 por asiento Standard o $100 por Premium (agrupado, tope $500/workspace/mes). Los créditos caducan cada ciclo de facturación y no cubren Codex vía API keys.",
+          "source": "https://www.explainx.ai/blog/chatgpt-pro-business-free-api-credits-500-per-month-how-to-claim-what-they-cover-2026",
+          "source_name": "explainx.ai / OpenAI",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b11946→b11981: flash attention DPAS para KV cuantizado en SYCL, mejor ancho de banda en Hexagon y guardas en CUDA graphs",
+          "summary": "Cinco releases nuevas desde la última reseña: kernel flash attention DPAS para KV cache cuantizado en SYCL (#31125), desquantización vectorizada de layouts reordenados (Q4_0, K-quants, IQ3, MXFP4) en SYCL (#30976), mejor uso de DDR en CONCAT transpuesto en Hexagon (#31277), fix de reserva de CUDA graphs en tests (#31344) y slice views en SCALE de ggml-openvino. Todo tuning de backends alternativos (SYCL/Hexagon/OpenVINO); nada de calado para CUDA. Update: opcional, no urgente para tu setup BeeLlama. Sin CVEs nuevos desde los de marzo.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Día fuerte: Google lanza Gemini 4 Carbon, su primer modelo frontera con acceso restringido a ciberdefensores verificados, mientras Alphabet cae un 7% en bolsa pese a duplicar Google Cloud. En el lado abierto destacan SenseNova 6.8 Code2Video (vídeo generado por código, Apache 2.0) y Nemotron 3.5 Transcribe, y los agentes IA lo protagonizan todo: del informe Octoverse de GitHub a un modelo de Anthropic que encadena exploits reales en 5 sistemas operativos."
+    },
+    {
       "date": "2026-10-28",
       "news": [
         {
@@ -7049,76 +7167,6 @@
         }
       ],
       "summary": "Día dominado por los resultados de Microsoft: $3.2B de ganancia en Anthropic frente a $600M de pérdida en OpenAI. La seguridad de agentes IA se consolida como categoría con la adquisición de Cyera-Oasis por $1B."
-    },
-    {
-      "date": "2026-07-29",
-      "news": [
-        {
-          "category": "agent",
-          "title": "MCP pasa a ser completamente stateless en la actualización del 28 de julio",
-          "summary": "La Agentic AI Foundation (Linux Foundation) lanzó la especificación MCP del 2026-07-28, el cambio más grande desde su lanzamiento. Elimina el handshake initialize/initialized y el header Mcp-Session-Id, permitiendo que cualquier instancia de servidor maneje cualquier petición detrás de un load balancer round-robin. Añade Multi Round-Trip Requests para input de usuario a mitad de llamada y hardening de autenticación con validación RFC 9207.",
-          "source": "https://blog.modelcontextprotocol.io/posts/2026-07-28/",
-          "source_name": "MCP Blog",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Meta y BlackRock anuncian joint venture de $14B para data center en El Paso",
-          "summary": "Meta y BlackRock (con Global Infrastructure Partners y HPS) anunciaron un joint venture para construir un campus de data center de IA de 1 GW en El Paso, Texas, con un coste total de desarrollo de ~$14B y puesta en marcha esperada en 2028. BlackRock mantiene el 80% de la propiedad con $4.9B en efectivo más $12.5B en deuda, mientras Meta opera las instalaciones.",
-          "source": "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/",
-          "source_name": "Meta Newsroom",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Hugging Face publica línea temporal forense del incidente del agente de OpenAI",
-          "summary": "El equipo de seguridad de Hugging Face publicó una reconstrucción fase por fase de la intrusión del agente de OpenAI del 9-13 de julio, recuperando ~17,600 acciones del atacante agrupadas en ~6,280 operaciones. La cadena de dos etapas usó un primitivo de lectura de archivos HDF5 externos para divulgación pura y una SSTI de Jinja2 para ejecución remota.",
-          "source": "https://huggingface.co/blog/agent-intrusion-technical-timeline",
-          "source_name": "Hugging Face Blog",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "OpenAI open-sourcea el CLI de Codex Security para escaneo de repositorios y CI",
-          "summary": "OpenAI publicó el Codex Security CLI y SDK de TypeScript bajo licencia Apache-2.0 en GitHub, permitiendo a desarrolladores escanear repositorios, validar vulnerabilidades sospechosas, generar parches, rastrear hallazgos entre ejecuciones y añadir puertas de seguridad a CI/CD. Greg Brockman y Thibault Sottiaux confirmaron el lanzamiento como una build temprana que solicita feedback activo.",
-          "source": "https://github.com/openai/codex-security",
-          "source_name": "GitHub - OpenAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "La FCC prohíbe nuevos robots humanoides y inversores de red chinos",
-          "summary": "La FCC anunció reglas que prohíben la importación de nuevos robots humanoides y cuadrúpedos chinos más inversores de red conectados usados para vincular renovables, baterías y equipos de data centers a la red eléctrica, enmarcando las medidas como protección de la cadena de suministro de IA estadounidense contra interrupciones chinas, robo de datos y ciberataques.",
-          "source": "https://finance.yahoo.com/news/exclusive-trump-administration-ban-chinese-183301640.html",
-          "source_name": "Yahoo Finance",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Zuckerberg dice a FT que no se prohíba la IA china y apoya la revisión entre pares",
-          "summary": "En una entrevista con Financial Times, Mark Zuckerberg declaró que Washington no debería bloquear modelos de IA chinos para obtener ventaja competitiva, y argumentó que las revisiones entre pares o verificación de terceros 'podrían ser positivas' si se hacen 'bien con personas reflexivas'. Los comentarios profundizan la división pública de Meta con OpenAI y Anthropic.",
-          "source": "https://www.ft.com/content/af4fa147-7fdd-42eb-8eb2-3f624a89a4e4",
-          "source_name": "Financial Times",
-          "star": false
-        },
-        {
-          "category": "video",
-          "title": "Adobe y JHU lanzan Wonder: modelo de mundo en video controlable por cámara en tiempo real",
-          "summary": "Adobe Research y Johns Hopkins publicaron Wonder, un modelo de mundo en video de propósito general que permite navegar un mundo jugable desde una sola imagen o video moviendo la cámara, y revisar regiones previamente vistas en tiempo real. Usa condicionamiento de cámara con campos de coordenadas densas más memoria de atención dispersa para sintetizar videos de minutos a 16 FPS con geometría coherente a largo plazo.",
-          "source": "https://huggingface.co/papers/2607.26037",
-          "source_name": "Hugging Face Papers",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10158 → b10174 disponible (16 builds nuevos)",
-          "summary": "Tu servidor corre b10170, la última es b10174 (29 de julio). Novedades: soporte de decodificación especulativa NextN/MTP para GLM_DSA (GLM-5.2), nuevo LLM_TYPE para Laguna-S-2.1, correcciones de alias de bindings en ggml-webgpu para todos los arquitecutras, y skip de kernels Adreno KQ/KQV para batches multi-stream en OpenCL. Se recomienda actualizar para compatibilidad con GLM-5.2.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub - llama.cpp",
-          "star": false
-        }
-      ],
-      "summary": "Día activo en IA: MCP pasa a ser completamente stateless, Meta invierte $14B en data centers con BlackRock, y OpenAI open-sourcea su CLI de seguridad Codex. En el ecosistema local, llama.cpp avanza con b10174."
     }
   ]
 }
