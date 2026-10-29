@@ -133,9 +133,20 @@ main { position: relative; z-index: 1; }
 .nav-menu a:hover { background: var(--primary-soft); color: var(--text-primary); }
 
 /* Hero */
+.hero-band {
+  max-width: 1100px; margin: 64px auto 0; padding: 0 24px;
+}
+.hero-band video {
+  display: block; width: 100%; height: auto;
+  border-radius: 16px; border: 1px solid var(--border);
+  box-shadow: 0 12px 44px rgba(124, 58, 237, 0.18);
+  background: #06060b;
+}
+@media (prefers-reduced-motion: reduce) { .hero-band { display: none; } }
+
 .hero {
   max-width: 1100px; margin: 0 auto;
-  padding: 120px 24px 50px;
+  padding: 56px 24px 50px;
   display: flex; flex-direction: column; align-items: center;
   text-align: center; position: relative; z-index: 1;
 }
@@ -630,6 +641,9 @@ td.warn { color: var(--warning); font-weight: 700; }
 </div>
 
 <main>
+
+<!-- Cabecera animada — loop 10 s generado con code-video (qwen4-header/VERIFY.md) -->
+<div class="hero-band"><video autoplay muted loop playsinline preload="metadata" aria-hidden="true" src="qwen4-header.mp4"></video></div>
 
 <!-- Hero -->
 <div class="hero">
