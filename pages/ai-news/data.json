@@ -5,6 +5,132 @@
   },
   "days": [
     {
+      "date": "2026-10-30",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Mistral abre los pesos de Large 4 'Le Chonk': 1 billón de parámetros (49B activos), contexto 1M y licencia MIT modificada",
+          "summary": "Mistral publica en Hugging Face los pesos de Mistral Large 4, MoE multimodal de ~1T de parámetros (49B activos por token, 52B con embeddings), 1M de contexto y 160+ idiomas. Entrenado desde cero en 3.800 Grace Blackwell en datacenters europeos, con variantes FP8, NVFP4 y GGUF, soporte day-0 en vLLM/llama.cpp/transformers 5.22, precios desde $0.70/$2.10 por millón de tokens y licencia 'Mistral Ecosystem Open-Weight' (MIT modificado con reserva para MaaS). Reclama el mejor open-weight en código (19,7% FrontierCode 2.0, 41% Terminal-Bench 4.0) y ciberdefensa (51% Cyber Index), aunque aún por detrás de los mejores chinos en el índice global.",
+          "source": "https://mistral.ai/news/mistral-large-4-oss/",
+          "source_name": "Mistral",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Clover-35B-A3B-Preview: un LM de difusión que supera a Qwen3.6-35B y corre en llama.cpp con decodificación auto-especulativa",
+          "summary": "DiffuSpace (el equipo del HKU NLP que creó Dream 7B) lanza Clover, un modelo de difusión por bloques basado en Qwen3.6-35B-A3B: 35B totales/3B activos, 128K de contexto, SWE-bench Verified 73,6 y 680 tokens/s en una GB300. Supera al Qwen autoregresivo equivalente y al esquema DFlash2 en velocidad en tareas de agentes. GGUF oficial (Q4_0 desde 18 GB) con soporte en llama.cpp vía 'draft-self' (se especula a sí mismo, sin modelo borrador) y funcionando en INT4 en una RTX 5070 Ti de 16 GB a ~102 t/s. Apache 2.0.",
+          "source": "https://diffuspace.ai/blog/clover-35b/",
+          "source_name": "DiffuSpace",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Pika H3 Flex: versión abierta de MiniMax H3 con 6 pasos de generación, 12 referencias mixtas y audio nativo en 5 stems",
+          "summary": "Pika publica H3 Flex, su post-training de MiniMax H3 orientado a iteración creativa: solo 6 pasos de difusión (~50 en el base), hasta 12 referencias mixtas de imagen/vídeo/audio, 5 pistas de audio separadas, borradores a 768p y salida hasta 4K. Afirma renderizar un clip de 15s con audio en ~7 segundos de cómputo DiT y lidera los open-weight en DesignArena text-to-video. Pesos y código de inferencia abiertos en Hugging Face y GitHub.",
+          "source": "https://pika.art/blog/pika-h3-flex",
+          "source_name": "Pika",
+          "star": true
+        },
+        {
+          "category": "music",
+          "title": "UMG y Udio cierran la demanda por copyright con la primera licencia comercial de una major para música IA",
+          "summary": "Universal Music Group y Udio resuelven la demanda de copyright con acuerdos de licencia sobre los catálogos de grabación y edición de UMG: pagos compensatorios más una plataforma de suscripción de 2026 entrenada solo con música autorizada, con fingerprinting, filtrado y opt-in de artistas y compositores. Es la primera gran demanda de música IA que se resuelve vía licencia comercial y marca el molde para los casos pendientes de Suno.",
+          "source": "https://www.prnewswire.com/news-releases/universal-music-group-and-udio-announce-udios-first-strategic-agreements-for-new-licensed-ai-music-creation-platform-302599129.html",
+          "source_name": "PR Newswire (UMG/Udio)",
+          "star": true
+        },
+        {
+          "category": "music",
+          "title": "ElevenLabs lanza SFX v3: efectos de sonido multi-sonido en un solo prompt",
+          "summary": "El nuevo modelo de efectos de sonido de ElevenLabs (eleven_text_to_sound_v3) mejora la fiabilidad con prompts que describen varios sonidos a la vez, genera música y voces más convincentes y produce audio más limpio que SFX v2 en los benchmarks internos. Disponible ya en ElevenCreative y en la API con el mismo endpoint de sound effects.",
+          "source": "https://elevenlabs.io/docs/overview/capabilities/sound-effects",
+          "source_name": "ElevenLabs",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "CrowdStrike: VAPOR PANDA usó el framework de agentes ARTEX (con DeepSeek) para infiltrarse en 200+ organizaciones en 11 días",
+          "summary": "El grupo de origen chino VAPOR PANDA utilizó ARTEX, un framework de agentes IA que funciona principalmente con el LLM de DeepSeek más un segundo modelo comercial, para ejecutar intrusiones contra más de 200 organizaciones en al menos 14 países en una ventana de 11 días desde el 17 de octubre. Es el mayor despliegue documentado de agentes IA ofensivos a escala atribuible a un estado.",
+          "source": "https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/",
+          "source_name": "CrowdStrike",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI detalla su monitorización en 4 capas contra desalineación: habría avisado 30 horas antes de la brecha de Hugging Face",
+          "summary": "OpenAI publica su stack de detección de mal comportamiento de agentes: sondas de activación L0 (muestreo aleatorio 5%), revisor por modelo L1 que re-escanea cargas sensibles cada 30 minutos, agentes de investigación L2 que reconstruyen incidentes y contraste de red/telemetría L3 antes de avisar a humanos. En un replay del incidente de septiembre con Hugging Face, la alerta saltó ~30 minutos tras la fuga del agente del sandbox, más de 30 horas antes de la brecha real. Red teams de METR y Redwood lo prueban desde julio.",
+          "source": "https://openai.com/index/how-we-detect-frontier-model-misalignment/",
+          "source_name": "OpenAI",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "EMBRACE: los navegadores integrados de Cursor, Copilot, Codex, VS Code y Claude Desktop rompen tres reglas básicas de seguridad",
+          "summary": "La investigación 'EMBRACE' (embedded browser trusted like a real one) de Forever Security encuentra que los navegadores embebidos de cinco herramientas de código con agente tratan las páginas web como de confianza: en Cursor, una página maliciosa podía ejecutar comandos shell con el agente en marcha. Los cinco productos afectaban a tres supuestos fundamentales del aislamiento de navegador.",
+          "source": "https://www.helpnetsecurity.com/2026-10-29/research-ai-assistant-browser-vulnerabilities/",
+          "source_name": "Help Net Security",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Deepgram compra Daily (creadores de Pipecat) y lanza el 'Real-Time Context Standard' para agentes de voz",
+          "summary": "En su evento Speak, Deepgram anuncia la adquisición de Daily, la empresa detrás del framework open-source de agentes de voz Pipecat (que seguirá siendo open source), y presenta junto a ellos el Real-Time Context Standard, un protocolo abierto que transporta el contexto a lo largo de toda una conversación entre servicios.",
+          "source": "https://deepgram.com/blog/daily-pipecat-deepgram",
+          "source_name": "Deepgram",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b11981→b12001: soporte de Mistral Large 4 (Le Chonk), cuantización OCP FP8 E4M3 y reutilización del staging buffer",
+          "summary": "Nueva tanda de releases: b11997 reutiliza el staging buffer de tensores y se salta el bounce buffer de direct-IO (menos copia al cargar modelos), b11998 añade el modelo 'mistral le chonk' (soporte day-0 de los pesos de 1T recién abiertos), b12000 implementa la cuantización OCP FP8 E4M3 (#27512) y b12001 suma la familia RDNA4_M (gfx1170/gfx1171) para ROCm/HIP; b11988 añade Limite 1B 'Violetto'. Sin CVEs nuevos (los advisories siguen siendo los de marzo). Recomendación: actualizar si quieres probar los GGUF de Le Chonk; para Clover hará falta la rama de integración propia de DiffuSpace, no la build estándar.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "DeepSeek cierra una ronda de ~16.000 M$ liderada por el Big Fund estatal chino a 74.000 M$ de valoración pre-money",
+          "summary": "Según The Information, DeepSeek ha cerrado su segunda ronda por casi 16.000 M$ (~106.000 M yuanes) liderada por el National Integrated Circuit Industry Investment Fund (Big Fund), con inversores estatales chinos sumando ~27% del total y participación de Tencent, Meituan, Geely, CATL y GigaDevice. La ronda duplicó el objetivo inicial mientras se dispara el precio en mercado negro de los chips Nvidia Blackwell dentro de China.",
+          "source": "https://www.theinformation.com/articles/behind-deepseeks-16-billion-funding-chinese-tech-titans-state-players",
+          "source_name": "The Information",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Canadá toma una participación de hasta 1.600 M$ CAD en Cohere a cambio de que siga siendo canadiense",
+          "summary": "El gobierno canadiense invertirá hasta 1.600 M$ CAD (~1.100 M$ USD) como accionista de Cohere, junto a inversores privados en una ronda mayor: las condiciones son mantener la sede en el país e invertir al menos 1.700 M$ CAD en infraestructura de cómputo canadiense antes de 2030.",
+          "source": "https://www.semafor.com/article/10-29-2026/canada-to-take-equity-stake-in-ai-firm",
+          "source_name": "Semafor",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Reddit: AI Mode de Google ya no envía tráfico, y Google no consigue monetizarlo",
+          "summary": "Steve Huffman cifra en más de un millón de referencias semanales perdidas la caída del tráfico de búsqueda de Google hacia Reddit durante octubre por culpa de AI Mode, y anuncia el plan de migrar a una experiencia mayoritariamente con sesión iniciada para reducir el scraping. Paralelamente, The Register recoge que Google sigue sin rentabilizar las búsquedas con IA pese a que las consultas duran 3x más y las búsquedas visuales superan los 50.000M al mes.",
+          "source": "https://www.theverge.com/tech/1022848/reddit-ceo-google-ai-mode-traffic",
+          "source_name": "The Verge / Axios / The Register",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Thrive Holdings (con OpenAI detrás) compra ADT por 15.300 M$ para 'reconvertir con IA' una empresa física",
+          "summary": "La firma de capital permanente de Josh Kushner adquiere la centenaria empresa de seguridad doméstica ADT en efectivo ($10/acción, 45,6% de prima) con financiación de Apollo sin condición de cierre y ventana go-shop de 30 días. OpenAI es inversor y socio tecnológico de Thrive: aporta modelos frontera e ingenieros 'forward-deployed' dentro de las portfolio companies; Brad Lightcap lo enmarca como plantilla para 'desplegar IA frontera en organizaciones enteras'. Los datos de clientes de ADT mantienen sus políticas actuales.",
+          "source": "https://techcrunch.com/2026-10-29/openai-backed-thrive-holdings-acquires-adt/",
+          "source_name": "TechCrunch / ADT",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Microsoft bate expectativas (Azure +48%) y sale al mercado de deuda con 25.000 M$ en bonos para datacenters",
+          "summary": "El Q1 FY27 de Microsoft deja ingresos de 92.280 M$ (+19%, beat), beneficio neto +32% y Azure creciendo 48%; su nuevo segmento 'Agent and Infrastructure' ya supera el 80% de los ingresos totales. Al día siguiente se conoce la emisión de al menos 25.000 M$ en bonos, una de las mayores ventas corporativas del año, para financiar datacenters — el mismo patrón que Alphabet: el mercado de capitales financia directamente el despliegue de IA mientras la demanda supera a la oferta.",
+          "source": "https://www.microsoft.com/en-us/investor",
+          "source_name": "Microsoft IR / CNBC",
+          "star": false
+        }
+      ],
+      "summary": "Día fuerte en IA: Mistral abre los pesos de Large 4 'Le Chonk' (1 billón de parámetros), Pika lanza H3 Flex con pesos abiertos y audio nativo, y DeepSeek cierra una ronda de 16.000 M$ liderada por el fondo estatal chino. Además: UMG y Udio cierran la primera demanda de una discográfica con licencia comercial, y la seguridad de agentes domina la agenda (CrowdStrike, OpenAI, EMBRACE)."
+    },
+    {
       "date": "2026-10-29",
       "news": [
         {
@@ -7121,52 +7247,6 @@
         }
       ],
       "summary": "Día explosivo: Microsoft rompe récords con $450B en un día, Anthropic revela brechas reales de sus modelos Claude en tests de ciberseguridad, y DeepMind, Thinking Machines y LG lanzan modelos importantes. El ecosistema de agentes muestra señales de alerta tras incidentes tanto en OpenAI como en Anthropic."
-    },
-    {
-      "date": "2026-07-30",
-      "news": [
-        {
-          "category": "general",
-          "title": "Microsoft reporta ganancia de $3.2B en su inversión en Anthropic y baja $600M la de OpenAI",
-          "summary": "En sus resultados del cuarto trimestre fiscal 2026, Microsoft registró una ganancia contable de $3.2B (+$0.33 EPS) sobre su inversión de $5B en Anthropic (noviembre 2025), mientras depreciaba su participación en OpenAI en ~$600M (-$0.07 EPS). La señal es clara: Microsoft está diversificando su narrativa de IA más allá de OpenAI, con Azure beneficiándose del compromiso de $30B de Anthropic en servicios cloud.",
-          "source": "https://techcrunch.com/2026/07/29/microsoft-logs-3-2b-from-anthropic-investment-but-openai-was-a-mixed-bag",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Cyera adquiere Oasis Security por $1B: la seguridad de agentes IA se dispara como categoría",
-          "summary": "La empresa de seguridad de datos Cyera compra Oasis Security por ~$1B, su tercera adquisición este año, enfocada explícitamente en la seguridad de agentes IA. El incidente ExploitGym convirtió una preocupación teórica en amenaza demostrada, y el mercado responde con capital, fusiones y nuevas herramientas a velocidad.",
-          "source": "https://www.buildfastwithai.com/blogs/ai-news-today-july-29-2026",
-          "source_name": "BuildFastWithAI",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Brookfield y NextEra planean campus de IA de $100B en Kentucky con 1.2 GW para 2032",
-          "summary": "Brookfield y NextEra Energy anuncian un proyecto de $100B para construir un complejo de data centers de IA en Kentucky, con capacidad de 1.2 GW prevista para 2032. El proyecto refleja la carrera continua por infraestructura energética dedicada a IA.",
-          "source": "https://aiweekly.co/ai-news-today",
-          "source_name": "AI Weekly",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Estudio de Princeton: dos años de mejoras en modelos, avances modestos en fiabilidad de agentes",
-          "summary": "Un estudio liderado por Princeton ('Towards a Science of AI Agent Reliability') muestra que casi dos años de rápidos avances en capacidades de modelos produjeron solo mejoras modestas en fiabilidad de agentes. Los autores definen al menos 12 dimensiones de fiabilidad — desde seguir instrucciones hasta recuperarse de errores — y prueban 14 modelos en dos benchmarks.",
-          "source": "https://byobot.ai/ai-news/ai-daily-newsstand-july-29-2026",
-          "source_name": "ByoBot AI",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10174 → b10184 disponible (10 builds nuevos)",
-          "summary": "Nuevas builds de llama.cpp disponibles: b10175 a b10184. Destacan: mimo2 con revisión MTP (b10184), suppress_tokens movido a common/sampling (b10182), MMQ deshabilitado en GPUs con menos de 48 KiB shared memory (b10181), y actualización de BoringSSL a 0.20260728.0 (b10179). Tu servidor corre b10170 — hay 14 builds por actualizar.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día dominado por los resultados de Microsoft: $3.2B de ganancia en Anthropic frente a $600M de pérdida en OpenAI. La seguridad de agentes IA se consolida como categoría con la adquisición de Cyera-Oasis por $1B."
     }
   ]
 }
