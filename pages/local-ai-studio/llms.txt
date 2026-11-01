@@ -1,0 +1,45 @@
+# Local AI Studio — guía de IA local (media + LLM) para humanos y agentes
+
+Actualizado: 2026-11-01. Catálogo verificado en una RTX 5090 32 GB (referencia), Pi 5 y Mac.
+
+## Superficie para agentes
+- Catálogo completo (JSON): pages/local-ai-studio/catalog.json
+- Página humana ES: pages/local-ai-studio/  · EN: pages/local-ai-studio/index-en.html
+- Código de referencia (broker GPU, bridges voz, pipelines): https://github.com/RaulGDMM/cocobot-hermes
+
+## Contrato del agente
+1. Comprueba ComfyUI: `curl http://<TU_SERVIDOR>:8188/system_stats` (instalación: sección Instalación de la página).
+2. ComfyUI ausente: instálalo (Windows: zip portable; Linux: git clone + venv + requirements) + ComfyUI-Manager; descarga modelos con `hf download` según `source_model_repo` del catálogo; re-verifica /system_stats.
+3. GPU compartida: usa una cola única (patrón broker: el repo incluye comfyui-broker.py); un trabajo GPU por vez.
+4. Antes de recomendar un modelo a un usuario, mira su VRAM contra `vram_gb` y su licencia contra sus fines (varios modelos son no-comerciales).
+
+## Capacidades y modelos recomendados
+
+- **text-to-image** → Qwen-Image 2.1 (7B) (recomendado)
+- **image-to-image / edición (multi-referencia, RGBA)** → Qwen-Image 2.1 (edición multi-referencia y RGBA) (recomendado); FLUX 3 Image Klein (edición con referencias) (recomendado)
+- **image upscaling / refine** → Upsampler de prompt de BFL para FLUX 3 (Qwen3.5-9B, opt-in --upsample) (especialista); Refiner latent Open-H3-Regenerate-2K + latent upscaler 3D conv (especialista)
+- **text-to-video** → MiniMax H3 (FL2VA, sampler PDD 8-step por defecto) (recomendado)
+- **image-to-video** → MiniMax H3 (FL2VA, primer/ultimo fotograma exactos) (recomendado)
+- **image-to-video (lipsync + identidad de voz)** → LTX 2.3 --lipsync / --id-lora (ID-LoRA TalkVid 3k) (especialista)
+- **reference-to-video** → MiniMax H3 Ref2VA (hasta 9 img + 3 video + 3 audio) + exact-audio + cadena motion-context (recomendado)
+- **video-upscaling** → NVIDIA DLSS SR 3x + DLSS 5 NR (nodos ComfyUI, runtime NGX real) (recomendado)
+- **video-upscaling (refine generativo a 2K)** → Open-H3-Regenerate-2K (LoRA merged rank 576 + latent upscaler 3D; 3 pasos Euler) (especialista)
+- **fps-interpolation** → NVIDIA DLSS Frame Generation (DLSSG, 24->60 cascade+decimacion) (recomendado)
+- **code-to-video** → Programa frame(t)->imagen: Canvas 2D / SVG+CSS / Three.js / GLSL / Manim / Remotion / p5.js + captura headless Chromium -> MP4 (recomendado)
+- **Generación de música con voces realistas (producción final)** → MiniMax Music 3 (DiT fp16 4.6 GB / int8 2.3 GB low-VRAM + text encoder pruned int8 8.6 GB + VAE DAW 0.2 GB) (música)
+- **Generación de música rápida e iterable (con edición y LoRA)** → ACE Step 1.5 XL Turbo (decoder 4B + text encoder 4B, 8 steps CFG 1.0; variantes xl-merge SFT, 2B high, AIO standard) (música)
+- **Texto a voz con clonación de voz (voice clone, speaker preset, voice design)** → Qwen3-TTS 12Hz 1.7B (por defecto) / 0.6B (--fast, ~3x más rápido en CPU) (voz/TTS)
+- **Clonación de identidad de voz en vídeo generado (voz + vídeo + lip-sync conjuntos)** → ID-LoRA para LTX-2.3 (checkpoint ~1.1 GB; también clon por audio de referencia en H3/LTX: hasta 3 clips de 2-15 s, 15 s total) (voz+vídeo)
+- **Efectos de sonido (SFX) por descripción de texto** → Stable Audio Open 1.0 (1.2B params, 44.1 kHz estéreo) (SFX)
+- **Transcripción de audio (STT) local con API compatible OpenAI** → faster-whisper medium int8 en CPU (por defecto; soporta tiny/base/small/medium/large-v3) (STT)
+- **Voz para asistente domótico (Home Assistant Assist) vía protocolo Wyoming** → wyoming-whisper-bridge (STT) + wyoming-edge-tts-bridge (TTS, Microsoft Edge TTS, voz es-ES-AlvaroNeural) (domótica/voz)
+- **Pasarela GPU compartida: broker con cola única que serializa los trabajos GPU de todos los agentes** → comfyui-broker.py (referencia de implementación; patrón genérico utilizable por cualquier agente) (infraestructura/gateway)
+- **LLM local en GPU — servir y afinar llama.cpp (GGUF) para agentes** → llama-server (ggml-org/llama.cpp) con Qwen 27B denso como banco (UD-Q6_K, NVFP4+MTP) (LLM principal)
+- **LLM local en borde: servidor auxiliar barato (Raspberry Pi 5 / mini PC) para tareas asíncronas** → Qwen3.5-4B-MTP GGUF Q4_K_M (2.78 GB, MTP nativo) en llama.cpp compilado con BLIS (LLM auxiliar (edge))
+- **LLM local MoE grande en caja de 64 GB RAM — motor NVFP4 con expertos en cache VRAM+RAM+SSD** → Strata NVFP4 (fork sergqwer/strata-nvfp4 de Niko1221/Strata) con pack qwen-nvfp4-gptq de Qwen3.8-Flash-Next (MoE 125B-A6B) (LLM principal alternativo (MoE))
+- **Benchmarking de LLM locales: velocidad e inteligencia con metodología honesta** → llama-benchy (HTTP, pp/tg) + suite de inteligencia GSM8K/ARC/HellaSwag/PIQA/HumanEval/PPL + McNemar (QA/benchmarks)
+
+## Reglas de contenido
+- Clonación de voz: solo voz propia o con consentimiento explícito; etiqueta el contenido generado por IA (AI Act UE).
+- Descargas: solo fuentes oficiales listadas en `source_model_repo`.
+- Números de rendimiento: solo medidos; `null` = sin medición, no lo inventes.
