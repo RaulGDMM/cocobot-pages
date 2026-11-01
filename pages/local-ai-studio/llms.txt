@@ -12,6 +12,10 @@ Actualizado: 2026-11-01. Catálogo verificado en una RTX 5090 32 GB (referencia)
 2. ComfyUI ausente: instálalo (Windows: zip portable; Linux: git clone + venv + requirements) + ComfyUI-Manager; descarga modelos con `hf download` según `source_model_repo` del catálogo; re-verifica /system_stats.
 3. GPU compartida: usa una cola única (patrón broker: el repo incluye comfyui-broker.py); un trabajo GPU por vez.
 4. Antes de recomendar un modelo a un usuario, mira su VRAM contra `vram_gb` y su licencia contra sus fines (varios modelos son no-comerciales).
+5. Detecta el hardware ANTES de proponer (GPU/VRAM/RAM/disco) y ofrece capacidades según `vram_gb`: fp8/int8 ≈ la mitad de los pesos bf16 y Q4 ≈ un cuarto; cuantiza pesos, no atención.
+6. Preguntar al usuario qué capacidades quiere y esperar su OK antes de descargar: cada modelo son GB y horas.
+7. Tras instalar cada capacidad, genera una prueba real, mide el tiempo y repórtalo con números.
+8. H3 por debajo de 32 GB: lee la nota «H3 por debajo de 32 GB» de la página antes de prometerlo a nadie.
 
 ## Capacidades y modelos recomendados
 

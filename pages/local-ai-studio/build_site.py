@@ -117,6 +117,11 @@ def llms_txt():
              "3. GPU compartida: usa una cola única (patrón broker: el repo incluye comfyui-broker.py); un trabajo GPU por vez.",
              "4. Antes de recomendar un modelo a un usuario, mira su VRAM contra `vram_gb` y su licencia contra sus fines "
              "(varios modelos son no-comerciales).",
+             "5. Detecta el hardware ANTES de proponer (GPU/VRAM/RAM/disco) y ofrece capacidades según `vram_gb`: "
+             "fp8/int8 ≈ la mitad de los pesos bf16 y Q4 ≈ un cuarto; cuantiza pesos, no atención.",
+             "6. Preguntar al usuario qué capacidades quiere y esperar su OK antes de descargar: cada modelo son GB y horas.",
+             "7. Tras instalar cada capacidad, genera una prueba real, mide el tiempo y repórtalo con números.",
+             "8. H3 por debajo de 32 GB: lee la nota «H3 por debajo de 32 GB» de la página antes de prometerlo a nadie.",
              "", "## Capacidades y modelos recomendados", ""]
     for key, _, _ in SECTIONS:
         d = json.loads((CATDIR / f"{key}.json").read_text())
@@ -248,6 +253,13 @@ footer a{color:var(--cy)}
 .visit-counter-badge{font-family:var(--mono);font-size:.8rem;border:1px solid var(--line);border-radius:99px;padding:.2rem .7rem}
 ol.steps{margin:.5rem 0 .5rem 1.2rem;font-size:.93rem}ol.steps li{margin:.3rem 0}
 .note{border:1px dashed var(--am);border-radius:8px;padding:.7rem .9rem;font-size:.88rem;color:var(--ink);margin:.8rem 0}
+.seedbox{margin-top:1rem;border:1px solid var(--cy);border-radius:10px;padding:.9rem 1.1rem;background:rgba(79,214,224,.05)}
+.seed-t{margin-bottom:.5rem}
+.seed-row{display:flex;gap:.6rem;align-items:stretch;flex-wrap:wrap}
+.seed-row code{flex:1;min-width:250px;font-family:var(--mono);font-size:.8rem;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:.5rem .6rem;overflow-wrap:anywhere;text-align:left}
+.seed-btn{font-family:var(--mono);font-size:.8rem;background:var(--panel2);border:1px solid var(--cy);color:var(--cy);border-radius:6px;padding:.45rem .9rem;cursor:pointer;flex:none}
+.seed-btn:hover{background:var(--cy);color:var(--bg)}
+.seed-note{margin-top:.5rem;font-size:.8rem;color:var(--dim)}
 .hamburger-btn{background:var(--panel2);border:1px solid var(--line);color:var(--cy);width:34px;height:34px;border-radius:7px;cursor:pointer;font-size:1.02rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:border-color .2s;flex:none}
 .hamburger-btn:hover{border-color:var(--cy)}
 .nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -321,6 +333,10 @@ PROSE = {
       "instala ComfyUI si falta, verifica con <code>GET /system_stats</code> y usa una cola única de GPU. "
       "El código de referencia (broker, bridges, pipelines) está en "
       "<a href=\"https://github.com/RaulGDMM/cocobot-hermes\" target=\"_blank\" rel=\"noopener noreferrer\">cocobot-hermes</a>.",
+ seed_t="<b>Pásale solo esta frase a tu agente</b> — el resto de instrucciones ya están en esta misma web:",
+ seed_msg="Montame en este equipo el estudio de IA local de esta guía: https://raulgdmm.github.io/cocobot-pages/pages/local-ai-studio/ — Lee su llms.txt y catalog.json, detecta mi GPU/RAM/disco, proponme opciones y espera mi OK antes de descargar nada.",
+ seed_btn="Copiar",
+ seed_note="Vale con Claude, ChatGPT, Copilot o cualquier agente que lea webs. Cuando te pregunte qué montar, elige capacidades según tu GPU.",
  hw_t="Hardware: qué necesitas según tu GPU",
  hw_sub="Referencia real de esta guía: RTX 5090 32 GB · 64 GB RAM · NVMe 2 TB. «Nativo» es bf16/fp16 medido "
         "en esta guía; «~» es estimación honesta de cuantizado: fp8/int8 pesa ~la mitad que bf16 y Q4 ~un cuarto "
@@ -414,6 +430,10 @@ PROSE = {
       "install ComfyUI if missing, verify with <code>GET /system_stats</code> and keep one GPU queue. Reference "
       "code (broker, bridges, pipelines) lives in "
       "<a href=\"https://github.com/RaulGDMM/cocobot-hermes\" target=\"_blank\" rel=\"noopener noreferrer\">cocobot-hermes</a>.",
+ seed_t="<b>Hand your agent just this sentence</b> — the rest of the instructions already live on this site:",
+ seed_msg="Set up the local AI studio from this guide on this machine: https://raulgdmm.github.io/cocobot-pages/pages/local-ai-studio/ — Read its llms.txt and catalog.json, detect my GPU/RAM/disk, propose options, and wait for my OK before downloading anything.",
+ seed_btn="Copy",
+ seed_note="Works with Claude, ChatGPT, Copilot or any agent that reads the web. When it asks what to build, pick capabilities that fit your GPU.",
  hw_t="Hardware: what you need per GPU",
  hw_sub="Real reference for this guide: RTX 5090 32 GB · 64 GB RAM · 2 TB NVMe. \u201cNative\u201d is bf16/fp16 measured "
         "in this guide; \u201c~\u201d is an honest quantization estimate: fp8/int8 weighs ~half of bf16 and Q4 ~a quarter "
@@ -556,6 +576,11 @@ def page(lang):
 <div class="panel"><h3>__DOORS_H__</h3><p>__DOORS_HP__</p></div>
 <div class="panel"><h3>__DOORS_A__</h3><p>__DOORS_AP__</p></div>
 </div>
+<div class="seedbox">
+<p class="seed-t">__SEED_T__</p>
+<div class="seed-row"><code id="seed-msg">__SEED_MSG__</code><button class="seed-btn" id="seed-btn" data-lbl="__SEED_BTN__" onclick="copySeed()">__SEED_BTN__</button></div>
+<p class="seed-note">__SEED_NOTE__</p>
+</div>
 </section>
 <section id="hardware">
 <h2><span class="no">02</span>__HW_T__</h2>
@@ -597,6 +622,11 @@ __CATALOG__
 </main>
 <script>
 function toggleNav(){var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),b=document.getElementById('hamburger-btn');var open=d.classList.toggle('active');o.classList.toggle('active',open);document.body.classList.toggle('nav-open',open);b.textContent=open?'\u2715':'\u2630';b.setAttribute('aria-expanded',open?'true':'false');}
+function copySeed(){var t=document.getElementById('seed-msg').textContent.trim(),b=document.getElementById('seed-btn');
+function ok(){b.textContent='\u2713';setTimeout(function(){b.textContent=b.dataset.lbl;},1500);}
+function fb(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();
+try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(ta);}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}}
 document.querySelectorAll('#nav-drawer a').forEach(function(a){a.addEventListener('click',function(){toggleNav();});});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('nav-drawer').classList.contains('active')){toggleNav();}});
 if(document.documentElement.classList.contains('js-anim')){
@@ -636,6 +666,7 @@ lastY=y;},{passive:true});
         "__ST1__": P["st1"], "__ST2__": P["st2"], "__ST3__": P["st3"], "__ST4__": P["st4"], "__VCAP__": P["vcap"],
         "__VIDEOS__": videos_html(lang), "__DOORS_T__": P["doors_t"], "__DOORS_H__": P["doors_h"],
         "__DOORS_HP__": P["doors_hp"], "__DOORS_A__": P["doors_a"], "__DOORS_AP__": P["doors_ap"],
+        "__SEED_T__": P["seed_t"], "__SEED_MSG__": P["seed_msg"], "__SEED_BTN__": P["seed_btn"], "__SEED_NOTE__": P["seed_note"],
         "__HW_T__": P["hw_t"], "__HW_SUB__": P["hw_sub"], "__HWTABLE__": hw_table(lang),
         "__INSTALLA__": "instalacion" if lang == "es" else "install",
         "__CATALOGA__": "catalogo" if lang == "es" else "catalog",
