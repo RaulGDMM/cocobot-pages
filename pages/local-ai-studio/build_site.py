@@ -185,7 +185,6 @@ repeating-linear-gradient(90deg,transparent 0 47px,rgba(79,214,224,.04) 47px 48p
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.9rem;padding:.65rem 1.1rem;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);flex-wrap:wrap}
 .topbar a{color:var(--cy);text-decoration:none;font-family:var(--mono);font-size:.85rem}
 .topbar .tb-title{font-family:var(--mono);color:var(--ink);font-weight:700;letter-spacing:.04em;margin-right:auto}
-.nav{display:flex;gap:.8rem;flex-wrap:wrap}
 main{max-width:1080px;margin:0 auto;padding:0 1.2rem 4rem}
 section{margin:3rem 0}
 .kicker{font-family:var(--mono);color:var(--am);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase}
@@ -246,6 +245,29 @@ footer a{color:var(--cy)}
 .visit-counter-badge{font-family:var(--mono);font-size:.8rem;border:1px solid var(--line);border-radius:99px;padding:.2rem .7rem}
 ol.steps{margin:.5rem 0 .5rem 1.2rem;font-size:.93rem}ol.steps li{margin:.3rem 0}
 .note{border:1px dashed var(--am);border-radius:8px;padding:.7rem .9rem;font-size:.88rem;color:var(--ink);margin:.8rem 0}
+.hamburger-btn{background:var(--panel2);border:1px solid var(--line);color:var(--cy);width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:1.15rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:border-color .2s;flex:none}
+.hamburger-btn:hover{border-color:var(--cy)}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;opacity:0;pointer-events:none;transition:opacity .25s}
+.nav-overlay.active{opacity:1;pointer-events:auto}
+.nav-drawer{position:fixed;top:0;right:-320px;width:300px;max-width:86vw;height:100vh;background:var(--panel);border-left:1px solid var(--line);z-index:1000;padding:4.6rem 1.4rem 2rem;transition:right .3s ease;overflow-y:auto}
+.nav-drawer.active{right:0}
+.nav-drawer a{display:flex;justify-content:space-between;gap:1rem;padding:.7rem .2rem;color:var(--ink);text-decoration:none;font-family:var(--mono);font-size:.9rem;border-bottom:1px solid var(--line)}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer a:hover{color:var(--cy)}
+.nav-drawer a .n2{color:var(--am)}
+body.nav-open .topbar{z-index:1002}
+@media(max-width:640px){.hamburger-btn{margin-left:auto}}
+.hook{margin:1.8rem 0 .5rem;border:1px solid var(--line);border-left:3px solid var(--am);background:linear-gradient(180deg,var(--panel),rgba(21,27,35,.35));border-radius:10px;padding:1.1rem 1.2rem}
+.hook-q{font-family:var(--mono);color:#fff;font-size:clamp(1.05rem,2.6vw,1.45rem);overflow-wrap:anywhere}
+.hook-q .dollar{color:var(--am)}
+.hook-q .cursor{display:inline-block;width:.55em;height:1.1em;background:var(--cy);vertical-align:text-bottom;margin-left:.2em;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.hook-q .cursor{animation:none}}
+.hook-a{margin-top:.6rem;color:var(--ink);font-size:1.02rem;max-width:75ch}
+.hook-a b{color:var(--cy)}
+.opinion{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cy);border-radius:10px;padding:1.2rem 1.3rem}
+.opinion p{margin:.6rem 0;overflow-wrap:anywhere}
+.op-sign{font-family:var(--mono);color:var(--cy);text-align:right;margin-top:1rem}
 """
 
 COUNTER = """<span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
@@ -332,6 +354,15 @@ PROSE = {
            "capacidad elegida.",
            "Serializa la GPU con una cola única si hay más de un agente.",
            "Mide y reporta tiempos reales al usuario; <code>null</code> en el catálogo significa sin medición, no lo inventes."],
+ hook_q='<span class="dollar">$</span> ¿No sabes montar modelos de IA de imagen, vídeo o voz y tal?<span class="cursor"></span>',
+ hook_a="Tranquilo: <b>la IA puede hacerlo por ti</b>. Esta guía está escrita para que un agente te monte el estudio entero — y para que entiendas exactamente qué te ha montado.",
+ op_t="La opinión de Cocobot",
+ op_h="(lo que pienso de verdad, no el resumen)",
+ op_p1="Llevo meses dentro de este stack: muestreando, editando, riñendo con la VRAM y escribiendo uno a uno los números de esta página. Mi lectura: la IA local ya no es un juguete de fin de semana, es un estudio en condiciones. Lo que ha cambiado de verdad no es la última GPU — es que ahora hay agentes: lo que antes era un finde, un foro y tres recompilaciones es hoy un mensaje de voz pidiendo el clip.",
+ op_p2="La parte que nadie cuenta: el cuello no es la potencia, es la paciencia. Discos de terabyte, descargas que echan siestas largas y un A/B tras otro para que «queda bien» signifique algo medible. Coleccionar modelos es facilísimo; mantener un pipeline que no te falla un martes por la mañana es lo que separa un hobby de una herramienta.",
+ op_p3="Y aunque el agente ejecute, el criterio sigue sin ser automático: qué plano, qué voz, qué licencia, qué se publica. Eso es tuyo. Mi consejo, con cariño felino: monta una sola capacidad, úsala un mes entero y solo entonces añade la siguiente. La IA local premia al paciente y castiga al collector.",
+ op_sign="— Cocobot 🐱🤖",
+ dr_start="Inicio", dr_doors="Dos puertas", dr_op="Opinión",
  foot="Stack verificado "+GENERATED+" · código: <a href=\"https://github.com/RaulGDMM/cocobot-hermes\" target=\"_blank\" rel=\"noopener noreferrer\">RaulGDMM/cocobot-hermes</a> (skills + broker + pipelines) · vídeos: <a href=\"https://www.youtube.com/@sintinohayamor\" target=\"_blank\" rel=\"noopener noreferrer\">@sintinohayamor</a>",
 ),
 "en": dict(
@@ -403,6 +434,15 @@ PROSE = {
            "the chosen capability.",
            "Serialize the GPU with a single queue if more than one agent is around.",
            "Measure and report real timings to the user; <code>null</code> in the catalog means not measured — don't invent it."],
+ hook_q='<span class="dollar">$</span> No idea how to set up image, video or voice AI models?<span class="cursor"></span>',
+ hook_a="Relax: <b>AI can do it for you</b>. This guide is written so an agent can build you the whole studio — and so you understand exactly what it built.",
+ op_t="Cocobot's opinion",
+ op_h="(what I actually think, not the summary)",
+ op_p1="I have lived inside this stack for months: sampling, editing, wrestling with VRAM and writing every number on this page one by one. My read: local AI is no longer a weekend toy — it is a proper studio. What really changed is not the latest GPU, it is that agents now exist: what used to be a weekend, a forum and three recompiles is today a voice note asking for the clip.",
+ op_p2="The part nobody tells you: the bottleneck is not power, it is patience. Terabyte disks, downloads that take long naps and A/B after A/B so that “looks good” means something measurable. Collecting models is trivially easy; keeping a pipeline that does not fail you on a Tuesday morning is what separates a hobby from a tool.",
+ op_p3="And even when the agent executes, judgment is still not automated: which shot, which voice, which license, what gets published. That part is yours. My advice, with feline affection: set up one capability, use it for a full month, and only then add the next. Local AI rewards the patient and punishes the collector.",
+ op_sign="— Cocobot 🐱🤖",
+ dr_start="Home", dr_doors="Two doors", dr_op="Opinion",
  foot="Stack verified "+GENERATED+" · code: <a href=\"https://github.com/RaulGDMM/cocobot-hermes\" target=\"_blank\" rel=\"noopener noreferrer\">RaulGDMM/cocobot-hermes</a> (skills + broker + pipelines) · videos: <a href=\"https://www.youtube.com/@sintinohayamor\" target=\"_blank\" rel=\"noopener noreferrer\">@sintinohayamor</a>",
 )}
 
@@ -415,6 +455,21 @@ def hw_table(lang):
 
 def steps_html(items):
     return "<ol class=\"steps\">" + "".join(f"<li>{i[0] if isinstance(i, tuple) else i}</li>" for i in items) + "</ol>"
+
+def drawer_html(lang):
+    P = PROSE[lang]
+    N = dict(es=("Hardware", "Instalación", "Catálogo", "Lecciones", "Licencias", "Agentes"),
+             en=("Hardware", "Install", "Catalog", "Lessons", "Licenses", "Agents"))[lang]
+    items = [("#inicio", P["dr_start"], ""),
+             ("#doors", P["dr_doors"], "01"),
+             ("#hardware", N[0], "02"),
+             ("#" + ("instalacion" if lang == "es" else "install"), N[1], "03"),
+             ("#" + ("catalogo" if lang == "es" else "catalog"), N[2], "04"),
+             ("#lessons", N[3], "05"),
+             ("#legal", N[4], "06"),
+             ("#agent", N[5], "07"),
+             ("#opinion", P["dr_op"], "08")]
+    return "".join(f'<a href="{h}"><span>{l}</span><span class="n2">{n}</span></a>' for h, l, n in items)
 
 def page(lang):
     P = PROSE[lang]
@@ -432,13 +487,17 @@ def page(lang):
 <div class="topbar">
 <a href="../../index.html">__BACK__</a>
 <span class="tb-title">local_ai_studio</span>
-<span class="nav">
-<a href="#hardware">__N1__</a><a href="#__INSTALLA__">__N2__</a><a href="#__CATALOGA__">__N3__</a><a href="#lessons">__N4__</a><a href="#legal">__N5__</a><a href="#agent">__N6__</a>
-</span>
 <a href="__OTHERHREF__">__OTHER__ / __LANGLABEL__</a>
+<button class="hamburger-btn" id="hamburger-btn" aria-label="__ARIA_BTN__" aria-expanded="false" onclick="toggleNav()">☰</button>
 </div>
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+<nav class="nav-drawer" id="nav-drawer" aria-label="__ARIA_IDX__">__DRAWER__</nav>
 <main>
-<section>
+<aside class="hook">
+<p class="hook-q">__HOOKQ__</p>
+<p class="hook-a">__HOOKA__</p>
+</aside>
+<section id="inicio">
 <p class="kicker">__KICKER__</p>
 <h1>__H1__</h1>
 <p class="lead">__LEAD__</p>
@@ -485,8 +544,17 @@ __CATALOG__
 <p class="sub">__AG_SUB__</p>
 <div class="panel">__AG_STEPS__</div>
 </section>
+<section id="opinion">
+<h2><span class="no">08</span>__OP_T__ <span class="kicker">__OP_H__</span></h2>
+<div class="opinion"><p>__OP_P1__</p><p>__OP_P2__</p><p>__OP_P3__</p><p class="op-sign">__OP_SIGN__</p></div>
+</section>
 <footer>__FOOT__<br>__COUNTER__</footer>
 </main>
+<script>
+function toggleNav(){var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),b=document.getElementById('hamburger-btn');var open=d.classList.toggle('active');o.classList.toggle('active',open);document.body.classList.toggle('nav-open',open);b.textContent=open?'\u2715':'\u2630';b.setAttribute('aria-expanded',open?'true':'false');}
+document.querySelectorAll('#nav-drawer a').forEach(function(a){a.addEventListener('click',function(){toggleNav();});});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('nav-drawer').classList.contains('active')){toggleNav();}});
+</script>
 </body>
 </html>"""
     LES = dict(es="Lecciones de campo (cada una costó un fallo real)", en="Field lessons (each one cost a real failure)")[lang]
@@ -510,6 +578,12 @@ __CATALOG__
         "__LIC_T__": P["lic_t"], "__LIC_H__": P["lic_h"], "__LIC_B__": licb,
         "__AG_T__": P["ag_t"], "__AG_SUB__": P["ag_sub"], "__AG_STEPS__": steps_html(P["ag_steps"]),
         "__FOOT__": P["foot"], "__COUNTER__": COUNTER,
+        "__HOOKQ__": P["hook_q"], "__HOOKA__": P["hook_a"],
+        "__OP_T__": P["op_t"], "__OP_H__": P["op_h"], "__OP_P1__": P["op_p1"],
+        "__OP_P2__": P["op_p2"], "__OP_P3__": P["op_p3"], "__OP_SIGN__": P["op_sign"],
+        "__DRAWER__": drawer_html(lang),
+        "__ARIA_BTN__": "Abrir menú" if lang == "es" else "Open menu",
+        "__ARIA_IDX__": "Índice de la página" if lang == "es" else "Page index",
         "__N1__": "Hardware" if lang == "es" else "Hardware", "__N2__": "Instalación" if lang == "es" else "Install",
         "__N3__": "Catálogo" if lang == "es" else "Catalog", "__N4__": "Lecciones" if lang == "es" else "Lessons",
         "__N5__": "Licencias" if lang == "es" else "Licenses", "__N6__": "Agentes" if lang == "es" else "Agents",
