@@ -325,14 +325,14 @@ PROSE = {
         "en esta guía; «~» es estimación honesta de cuantizado: fp8/int8 pesa ~la mitad que bf16 y Q4 ~un cuarto "
         "(solo los pesos; la caché KV y las activaciones van encima). Orientación por tarjetas:",
  hw_rows=[("12 GB (RTX 3060/4070)", "Z-Image-Turbo (10 GB), FLUX.2 Klein 9B (12 GB), Music3 int8 (2,3 GB), SFX Stable Audio (4 GB), Whisper, LLMs ≤ 8 GB de pesos",
-          "Añade FLUX.1 Dev Kontext fp8 (~8 GB), MOSS-Image fp8 (~10 GB), Qwen-Image 2.1 int8 (~12 GB de pesos: justo, a 1024² con offload), MoE Q4 con capa en RAM",
-          "Vídeo generativo: no. Edición multi-referencia >1,5 MP con offload = lenta"),
+          "Añade FLUX.1 Dev Kontext fp8 (~8 GB), MOSS-Image fp8 (~10 GB), Qwen-Image 2.1 int8 (~12 GB de pesos: justo, a 1024² con offload), MoE Q4 con capa en RAM; H3 W4 compact (~10 GB) + encoder Q2_K + offload: corre, decenas de min por clip",
+          "H3: justo y con paciencia (offload + 32 GB de RAM). Edición multi-referencia >1,5 MP con offload = lenta"),
          ("16 GB (RTX 4080/4070 Ti S)", "Lo anterior + FLUX.1 Dev Kontext (16 GB) nativo",
-          "Qwen-Image 2.1 fp8/int8 (~12 GB) sobrado; MOSS fp8 cómodo; 27B Q4_K_M con offload (agradece 64 GB de RAM); LTX fp8 + tiling a 720p: experimental",
-          "H3 vídeo: no. Ideogram 4 fp8 (~15 GB) apurado; más de 1,5 MP, offload"),
+          "Qwen-Image 2.1 fp8/int8 (~12 GB) sobrado; MOSS fp8 cómodo; 27B Q4_K_M con offload (agradece 64 GB de RAM); LTX fp8 + tiling a 720p: experimental; H3 W8/W4 (~14 GB) en clips cortos",
+          "Ideogram 4 fp8 (~15 GB) apurado; H3 cuantizado: sí, sin esperar 1080p; más de 1,5 MP, offload"),
          ("24 GB (RTX 3090/4090)", "Añade MOSS-Image (20 GB) y Qwen-Image 2.1 int8 sin apreturas",
-          "Qwen-Image 2.1 fp8 cómodo a 1024²; Ideogram 4 fp8 (~15 GB); vídeo LTX corto; 27B Q6 con contexto medio",
-          "H3: aquí no te vendo lo que no he medido — la soltura real empieza en 32 GB"),
+          "Qwen-Image 2.1 fp8 cómodo a 1024²; Ideogram 4 fp8 (~15 GB); vídeo LTX; H3 pruned INT8 ConvRot (~20 GB): tope comunitario en 24 GB",
+          "H3: vía comunitaria con avisos (ver nota abajo); sin cuantizar, la soltura empieza en 32 GB"),
          ("32 GB (RTX 5090) — esta guía", "Todo el catálogo, incl. Qwen-Image 2.1 bf16, Ideogram 4, H3 a 2K y LLMs de 27B Q6 con contexto largo",
           "Aquí se cuantiza por comodidad, no por necesidad: int8 carga antes y muestrea igual (medido)",
           "Refinar >2K y clips H3 de 15 s a 2K: OOM")],
@@ -344,7 +344,9 @@ PROSE = {
          "no acelera el muestreo (Qwen-Image: ~18 s en bf16 y en int8); ahorras VRAM y carga. En 12–16 GB el truco es "
          "fp8 en ComfyUI + tiling + offload: lo que no cabía entra, pero tarda más. Cuantiza <b>pesos</b>, no atención: "
          "parchear la atención a int8 (Q/K int8 + V fp8 en el refiner H3) convirtió clips >5 s en basura sin dar error. "
-         "Y H3: medido solo en 32 GB — por debajo, no te cuento lo que no he visto.",
+         "Y H3, en la nota siguiente.",
+ hw_h3='<b>H3 por debajo de 32 GB (cuantizados de la comunidad, no medidos aquí):</b> el difusor pruned INT8 ConvRot (~20 GB) entra en la clase 24 GB; los repos publican pruebas de carga en una 4090: pico reservado ~21 GB. En 16 GB se empieza por W8/W4 (~14 GB); en 12 GB, W4 (~10 GB) + encoder Q2_K + offload, y el clip se paga a minutos o decenas de minutos (hay quien lo corre hasta en un portátil de 8 GB con 16 GB de RAM). <b>FastH3</b> (FastVideo): destilado a 4–8 pasos con atención VSA, baja a 8 GB a 480p, exige los nodos VSA —sin ellos escupe ruido uniforme— y en nuestros A/B afloja en caras, detalle fino y audio: por eso seguimos con la base + PDD 8-pasos. La licencia de comunidad de H3 aplica a quants y destilados. Tablas por VRAM: <a href="https://huggingface.co/DmitryDB/MiniMax-H3-ComfyUI-Quants" target="_blank" rel="noopener noreferrer">DmitryDB/MiniMax-H3-ComfyUI-Quants</a> y <a href="https://github.com/MiniMax-AI/awesome-minimax-h3-integration" target="_blank" rel="noopener noreferrer">awesome-minimax-h3-integration</a>.',
+
  in_t="Instalación: de cero a ComfyUI",
  in_sub="ComfyUI es el motor de todo el catálogo: un grafo de nodos al que se le puede hablar por API, ideal para "
         "personas y agentes. Los modelos se descargan a la carpeta de modelos según la ruta que indica cada ficha.",
@@ -416,14 +418,14 @@ PROSE = {
         "in this guide; \u201c~\u201d is an honest quantization estimate: fp8/int8 weighs ~half of bf16 and Q4 ~a quarter "
         "(weights only — KV cache and activations come on top). Card orientation:",
  hw_rows=[("12 GB (RTX 3060/4070)", "Z-Image-Turbo (10 GB), FLUX.2 Klein 9B (12 GB), Music3 int8 (2.3 GB), Stable Audio SFX (4 GB), Whisper, LLMs ≤ 8 GB of weights",
-          "Adds FLUX.1 Dev Kontext fp8 (~8 GB), MOSS-Image fp8 (~10 GB), Qwen-Image 2.1 int8 (~12 GB of weights: tight, 1024² with offload), Q4 MoE with layers in RAM",
-          "Generative video: no. Multi-reference editing >1.5 MP with offload = slow"),
+          "Adds FLUX.1 Dev Kontext fp8 (~8 GB), MOSS-Image fp8 (~10 GB), Qwen-Image 2.1 int8 (~12 GB of weights: tight, 1024² with offload), Q4 MoE with layers in RAM; H3 W4 compact (~10 GB) + Q2_K encoder + offload: it runs, tens of minutes per clip",
+          "H3: doable but patience-thirsty (offload + 32 GB RAM). Multi-reference editing >1.5 MP with offload = slow"),
          ("16 GB (RTX 4080/4070 Ti S)", "All of 12 GB plus FLUX.1 Dev Kontext (16 GB) native",
-          "Qwen-Image 2.1 fp8/int8 (~12 GB) with room; MOSS fp8 comfortable; 27B Q4_K_M with offload (64 GB RAM helps); LTX fp8 + tiling at 720p: experimental",
-          "H3 video: no. Ideogram 4 fp8 (~15 GB) is tight; beyond 1.5 MP, offload"),
+          "Qwen-Image 2.1 fp8/int8 (~12 GB) with room; MOSS fp8 comfortable; 27B Q4_K_M with offload (64 GB RAM helps); LTX fp8 + tiling at 720p: experimental; short H3 clips via W8/W4 (~14 GB)",
+          "Ideogram 4 fp8 (~15 GB) is tight; quantized H3 works, but do not expect 1080p; beyond 1.5 MP, offload"),
          ("24 GB (RTX 3090/4090)", "Adds MOSS-Image (20 GB) and Qwen-Image 2.1 int8 without squeezing",
-          "Qwen-Image 2.1 fp8 comfortable at 1024²; Ideogram 4 fp8 (~15 GB); short LTX clips; 27B Q6 with medium context",
-          "H3: I won't sell you what I haven't measured — real headroom starts at 32 GB"),
+          "Qwen-Image 2.1 fp8 comfortable at 1024²; Ideogram 4 fp8 (~15 GB); LTX video; H3 pruned INT8 ConvRot (~20 GB): the community ceiling at 24 GB",
+          "H3: community-proven with caveats (note below); un-quantized headroom starts at 32 GB"),
          ("32 GB (RTX 5090) — this guide", "The whole catalog, incl. Qwen-Image 2.1 bf16, Ideogram 4, H3 at 2K and 27B Q6 LLMs with long context",
           "Here you quantize for convenience, not necessity: int8 loads sooner and samples the same (measured)",
           "Refining >2K and 15 s H3 clips at 2K: OOM")],
@@ -435,7 +437,9 @@ PROSE = {
          "up sampling (Qwen-Image: ~18 s in bf16 and in int8); you save VRAM and load time. On 12–16 GB cards the trick "
          "is fp8 in ComfyUI + tiling + offload: what didn't fit now fits, but takes longer. Quantize <b>weights</b>, not "
          "attention: patching attention to int8 (Q/K int8 + V fp8 in the H3 refiner) turned clips >5 s into garbage "
-         "with no error raised. And H3: measured on 32 GB only — below that, I won't tell you what I haven't seen.",
+         "with no error raised. H3 below 32 GB: see the note below.",
+ hw_h3="<b>H3 below 32 GB (community quants, not measured here):</b> the pruned INT8 ConvRot diffusion fits the 24 GB class; the repos publish RTX 4090 loader tests: ~21 GB peak reserved. On 16 GB start at W8/W4 (~14 GB); on 12 GB, W4 (~10 GB) + Q2_K encoder + offload, and each clip is paid in minutes or tens of minutes (some even run it on an 8 GB laptop with 16 GB of RAM). <b>FastH3</b> (FastVideo): distilled to 4–8 steps with VSA attention, drops to 8 GB at 480p, demands the VSA nodes — without them it spits uniform noise — and in our A/Bs it loosens on faces, fine detail and audio: that is why we stayed on base + PDD 8-step. The H3 community license applies to quants and distillations too. Per-VRAM tables: <a href=\"https://huggingface.co/DmitryDB/MiniMax-H3-ComfyUI-Quants\" target=\"_blank\" rel=\"noopener noreferrer\">DmitryDB/MiniMax-H3-ComfyUI-Quants</a> and <a href=\"https://github.com/MiniMax-AI/awesome-minimax-h3-integration\" target=\"_blank\" rel=\"noopener noreferrer\">awesome-minimax-h3-integration</a>.",
+
  in_t="Installation: zero to ComfyUI",
  in_sub="ComfyUI is the engine behind the whole catalog: a node graph you can talk to over an API, ideal for people "
         "and agents alike. Models download into the models folder at the path each card states.",
@@ -489,7 +493,8 @@ def hw_table(lang):
     return (f'<p class="swipe">{"↔ desliza la tabla ↔" if lang == "es" else "↔ swipe table ↔"}</p>'
             f'<div class="table-wrap"><table class="w4"><tr><th>{L[0]}</th><th>{L[1]}</th><th>{L[2]}</th><th>{L[3]}</th></tr>{rows}</table></div>'
             f'<div class="note">{PROSE[lang]["hw_warn"]}</div>'
-            f'<div class="note">{PROSE[lang]["hw_quant"]}</div>')
+            f'<div class="note">{PROSE[lang]["hw_quant"]}</div>'
+            f'<div class="note">{PROSE[lang]["hw_h3"]}</div>')
 
 def steps_html(items):
     return "<ol class=\"steps\">" + "".join(f"<li>{i[0] if isinstance(i, tuple) else i}</li>" for i in items) + "</ol>"
