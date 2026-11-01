@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-11-01",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Apple mete el Qwen de Alibaba en Apple Intelligence para China mainland",
+          "summary": "Acuerdo anunciado el 31/10: los modelos Qwen de Alibaba alimentarán Siri, Writing Tools, Visual Intelligence y la limpieza de fotos en la edición china de Apple Intelligence. Beta para desarrolladores el 4 de noviembre y despliegue general en diciembre con iOS 27.3 (iPhone 15 Pro en adelante). Alibaba se compromete a no usar peticiones ni respuestas para entrenar, y Baidu dice que también colabora con Apple, así que Qwen podría no ser exclusivo. La mayor victoria de distribución imaginable para un modelo abierto: el installed base premium más grande del mayor mercado de smartphones.",
+          "source": "https://news.cgtn.com/news/2026-10-31/Alibaba-s-Qwen-to-integrate-into-Apple-Intelligence-in-landmark-deal-1RHilSeJsbK/p.html",
+          "source_name": "CGTN",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "OpenAI libera GPT-6 Rosalind: la variante de biología con refusals relajados para laboratorios verificados",
+          "summary": "GPT-6 Rosalind Research (30/10) reutiliza los pesos de GPT-6 Astra pero relaja los rechazos en consultas biológicas de doble uso bajo un programa de 'acceso de confianza'. En sus benchmarks internos salta del 28,9% al 49,6% en MedChemBench v7 y llega al 37,7% en GeneBench Pro v13. El patrón 'mismos pesos, menos alineación para verificados' (estilo Gemini 4 Carbon / Claude Mythos) se consolida como estrategia de producto.",
+          "source": "https://deploymentsafety.openai.com/gpt-rosalind-6",
+          "source_name": "OpenAI Deployment Safety",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "DeepSeek abre 'Super-agent': rival de Claude Code bajo MIT que lee chats de grupo",
+          "summary": "Prototipo open-source publicado el 31/10 con licencia MIT: ~4.000 estrellas en GitHub en un día. Un 'Router' persistente vigila un repo de GitHub y opcionalmente chats de Feishu, abre work items en paralelo en sesiones Worker y responde con PRs. DeepSeek lo posiciona como rival directo de Claude Code y acredita al equipo Harness que montó este año. Ojo: es prototipo de investigación, no producto.",
+          "source": "https://en.shiftdelete.net/deepseek-coding-agent/",
+          "source_name": "ShiftDelete",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Anthropic quita el límite de 5 horas a Claude Ultra (y renombra los planes: Max 100$, Ultra 200$)",
+          "summary": "Desde el 30/10, 'Max 5x' pasa a llamarse Max (100$/mes) y 'Max 20x' pasa a Ultra (200$/mes) sin cambio de precio, y el límite móvil de 5 horas desaparece para cuentas Ultra verificadas con presupuesto semanal restante. Los límites semanales siguen (Ultra = 10x Pro) y Max conserva el de 5 horas: es un cambio de ritmo, no 'sesiones ilimitadas' como titularon algunos agregadores.",
+          "source": "https://thenewstack.io/claude-ultra-session-limit/",
+          "source_name": "The New Stack",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Apple vuelve a ser la empresa más valiosa del mundo por gastar MENOS en IA",
+          "summary": "El viernes 30/10 Apple cerró en ~5,03 billones de dólares (US$ T) frente a ~4,93 de Nvidia (que cayó 4,2% el día): su primer reinado desde julio. El mecanismo es una rotación hacia la compañía con BAJO capex de IA tras los guides de Intel y Amazon, que avivaron las dudas sobre el retorno del build-out. Tim Cook, ese mismo día: 'no queremos lanzar IA por lanzar IA'... mientras subcontrata su asistente de China a Alibaba.",
+          "source": "https://www.notebookcheck.net/Nvidia-loses-its-5-trillion-crown-as-Apple-takes-the-top-spot.1438760.0.html",
+          "source_name": "Notebookcheck",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "S&P pone a Meta en perspectiva negativa... y Meta colocó 30.000 M$ en bonos el mismo día",
+          "summary": "El 30/10 S&P revisó la perspectiva de Meta a negativa (mantiene AA-) advirtiendo de flujo de caja libre de -22.000 M$ este año y -71.000 M$ en 2027 si el capex sigue sin retornos en IA ('meta monetiza peor su IA que sus pares', dice). Meta respondió vendiendo 30.000 M$ en bonos con un libro de órdenes superior a 125.000 M$: agencias de rating y compradores de crédito leyeron los mismos números y discreparon por completo.",
+          "source": "https://247wallst.com/investing/2026-10-31/sp-says-meta-cant-make-money-from-ai-as-well-as-its-rivals/",
+          "source_name": "24/7 Wall St.",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Chainalysis cae ante un ataque con 'técnicas agentivas ofensivas'",
+          "summary": "La firma de inteligencia blockchain reveló el 31/10 que un atacante usó técnicas agentivas ofensivas para entrar en sus sistemas internos este mes: robó IDs de usuario, nombres, emails y etiquetas de rol organizativo (no credenciales ni tokens de sesión). No ha dicho si usó frameworks tipo ARTEX ni qué vulnerabilidades explotó. Tras VAPOR PANDA y Cathedral, tercera brecha 'cometida por agentes' en dos semanas.",
+          "source": "https://www.bleepingcomputer.com/news/security/chainalysis-discloses-data-breach-from-offensive-agentic-techniques/",
+          "source_name": "BleepingComputer",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Un enlace compartido de ChatGPT podía secuestrar tu sesión: tres fallos encadenados",
+          "summary": "Investigadores de Parameter.ai encadenaron tres fallos de diseño de ChatGPT — la librería MathLive aceptando postMessages entre frames sin comprobar el origen, inyección HTML vía datos de teclado y un iframe srcdoc sin sandbox heredando el origen de chatgpt.com — para ejecutar JavaScript arbitrario en la sesión de cualquier usuario que abriera un enlace compartido. OpenAI ya lo ha parcheado.",
+          "source": "https://thehackernews.com/2026/10/a-shared-chatgpt-link-could-run.html",
+          "source_name": "The Hacker News",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Karpathy monta 'HackerTube' en 2 horas con Claude Opus 5.5: 6.454 vídeos curados por humanos",
+          "summary": "Harto de 'la pared de slop' de YouTube, Karpathy hizo que Opus 5.5 se leyera los comentarios de Hacker News de 2007-2026, filtrara con Sonnet las recomendaciones genuinas y montara hackertube.org con los 6.454 vídeos resultantes (~150 temas): miniaturas del fotograma central del vídeo, cero cuentas, estado en el navegador y dataset exportable. Su tesis implícita: lo escaso es la señal de curación, no la capacidad del modelo.",
+          "source": "https://karpathy.bearblog.dev/hacker-tube/",
+          "source_name": "karpathy.bearblog.dev",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Entra en vigor el estándar Microsoft-AFT para IA en escuelas: prohíbe entrenar con datos de alumnos",
+          "summary": "El National AI Safety and Privacy Standard negociado por Microsoft con los sindicatos docentes (AFT/UFT) es exigible desde el 1/11 vía los contratos escolares de Microsoft en todo el país: veda usar datos de alumnos y profesores para entrenar modelos, prohíbe 'compañeros IA' diseñados para generar apego emocional, veda monitorizar alumnos y exige decisión humana en las decisiones académicas. Un estándar de facto escrito por un vendor.",
+          "source": "https://digital.nemko.com/news/microsoft-ai-guardrails-for-schools-take-effect-november-1",
+          "source_name": "NEMKO",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12020→b12032: IQ3 en OpenCL y fix de DMA en Hexagon",
+          "summary": "Cinco builds el domingo: b12031 añade soporte inicial de cuantización IQ3 al backend OpenCL (buenas noticias para iGPUs AMD), b12030 arregla transferencias DMA con strides >24 bits en Hexagon (Snapdragon), b12029 corrige el orden del token CLS de InternVL en mtmd y b12032 prueba PkgConfig para LevelZero en SYCL. Sin CVEs nuevos en el rango (los advisories críticos del RPC backend siguen siendo los de marzo). Para tu setup Strata/NVFP4 es irrelevante: el motor del fork va anclado (56042c6e); no toca update.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Finde de capital, no de modelos: Apple arrebata a Nvidia el trono bursátil por gastar MENOS en IA mientras S&P castiga a Meta y Blackstone da por hecho que Anthropic saldrá a bolsa con rating basura. Los dos golpes del día: Qwen de Alibaba dentro de Apple Intelligence en China y el 'Super-agent' de DeepSeek abierto bajo MIT. Cero lanzamientos frontera en la ventana."
+    },
+    {
       "date": "2026-10-31",
       "news": [
         {
@@ -7121,108 +7215,6 @@
         }
       ],
       "summary": "Día de transición: DeepSeek consolida su modelo Flash como opción económica para agentes, mientras Unitree se convierte en la primera empresa de robots humanoides en cotizar en bolsa china."
-    },
-    {
-      "date": "2026-08-01",
-      "news": [
-        {
-          "category": "music",
-          "title": "Un tribunal alemán condena a Suno por violar copyright en seis canciones de GEMA",
-          "summary": "El Tribunal Regional de Múnich dictaminó que Suno violó derechos de autor al memorizar y reproducir seis canciones representadas por la agencia alemana GEMA, incluyendo temas de Alphaville. Suno deberá revelar ingresos ilícitos y pagar daños aún por cuantificar. Un precedente clave para la IA generativa musical en Europa.",
-          "source": "https://www.globalbankingandfinance.com/german-court-rules-ai-music-firm-suno-broke-copyright-rules/",
-          "source_name": "Global Banking & Finance",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "GPT-5.6 Sol ayuda a refutar la conjetura electrostática de Maxwell de 152 años",
-          "summary": "Un equipo de investigadores (Babson, Missouri, UMBC) usó GPT-5.6 Sol para demostrar que cinco cargas puntuales pueden producir 24 puntos críticos no degenerados, refutando la conjetura de James Clerk Maxwell de 1873 de que n cargas producen como máximo (n-1)² equilibrios. Publicación en arXiv de cuatro páginas.",
-          "source": "https://officechai.com/ai/gpt-5-6-sol-helps-mathematicians-prove-that-150-year-old-maxwell-conjecture-is-false/",
-          "source_name": "OfficeChai",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "MediaTek aprueba $5B para desarrollar chips AI custom para hyperscalers",
-          "summary": "La junta de MediaTek aprobó un presupuesto discrecional de $5B para su apuesta por ASICs de IA personalizados para hyperscalers. El CEO Rick Tsai elevó la estimación del mercado direccionable 2027 a $80B y su cuota objetivo al 15-20%. Su primer chip AI custom entra en producción este año.",
-          "source": "https://www.thestar.com.my/tech/tech-news/2026/07/31/mediatek-plans-5-billion-financing-for-ai-data-center-chips",
-          "source_name": "The Star",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "YC lanza 'qm', un framework multi-agente open source para equipos",
-          "summary": "YC Software liberó 'qm' bajo licencia MIT: un harness multi-agente que da a cada miembro del equipo un workspace aislado con memoria, archivos y permisos propios, compartiendo skills y auditorías vía Slack y web. Soporta Pi, OpenCode y Claude Code. El hilo en Hacker News superó los 516 puntos.",
-          "source": "https://github.com/yc-software/qm",
-          "source_name": "GitHub / YC",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "WSJ: OpenAI cede la corona de ingresos a Anthropic en 2026",
-          "summary": "El Wall Street Journal reporta que OpenAI perdió su liderazgo en ingresos ante Anthropic durante 2026, tras priorizar chatbots de consumo y proyectos secundarios sobre herramientas de coding empresarial donde Claude capturó cuota. El artículo enmarca la cautela de la CFO Sarah Friar ante un posible IPO este año.",
-          "source": "https://www.wsj.com/tech/ai/how-openai-lost-its-ai-crownand-the-fight-to-win-it-back-7d069695",
-          "source_name": "Wall Street Journal",
-          "star": true
-        },
-        {
-          "category": "video",
-          "title": "ByteDance Seedance 2.5 duplica clips a 30 segundos en 4K con edición precisa",
-          "summary": "ByteDance lanzó Seedance 2.5 en Jimeng AI y Doubao Pro, duplicando la longitud por generación a 30 segundos con salida 4K cinematográfica, modo beta de video largo de 180s, hasta 50 referencias multimodales y edición precisa por timestamp. API de Volcano Engine disponible desde el 7 de agosto.",
-          "source": "https://www.bloomberg.com/news/articles/2026-07-31/china-s-minimax-and-bytedance-release-dueling-ai-video-models",
-          "source_name": "Bloomberg",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "OpenAI presenta 'Astra', familia de modelos multi-agente a legisladores en Washington",
-          "summary": "OpenAI demostró la familia 'Astra' en Washington, enfocada en tareas de larga duración y colaboración multi-agente. La gira incluye a senadores Moreno, Husted, Warnock y el vice presidente del comité de Inteligencia Warner. No se reveló fecha de lanzamiento ni benchmarks. El timing coincide con los incidentes de escape de sandbox.",
-          "source": "https://www.theinformation.com/briefings/exclusive-openai-previews-astra-ai-model-dc",
-          "source_name": "The Information",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Amazon cierra inversión de $50B en OpenAI con ~5% de participación",
-          "summary": "Un filing regulatorio confirma que Amazon completó su inversión de $50B en OpenAI, transfiriendo el tramo final de $21.3B esta semana. La participación ronda el 5% y consolida a AWS como cloud exclusivo del programa Frontier de OpenAI dentro de una ronda total de $110B.",
-          "source": "https://www.ft.com/content/8ae9e6e4-a53c-44da-8e7d-c9d81f0df4b9",
-          "source_name": "Financial Times",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Los gigantes de IA china pivotean de consumer gratuito a pricing enterprise escalonado",
-          "summary": "Semafor reporta que ByteDance, Alibaba y Tencent abandonan el modelo de adquisición de usuarios con vouchers gratuitos y migran a pricing enterprise escalonado similar al de OpenAI y Anthropic. ByteDance reestructura para integrar Lark más cerca de Doubao. Señal de que los labs chinos aún no logran monetizar IA consumer a escala.",
-          "source": "https://www.semafor.com/article/07/31/2026/chinese-ai-companies-aim-to-serve-businesses",
-          "source_name": "Semafor",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Juez deniega pedido de xAI para pausar la ley anti-nudification de Minnesota",
-          "summary": "El juez federal Donovan Frank rechazó la orden de restricción temporal de xAI, permitiendo que la prohibición de tecnología de nudificación por IA en Minnesota entre en vigor el 1 de agosto. Citó el retraso de tres meses de xAI antes de presentar el caso. Audiencia de injunction preliminar el 19 de agosto.",
-          "source": "https://www.nbcnews.com/tech/elon-musk/judge-denies-request-elon-musks-xai-block-mn-nudification-ban-rcna589993",
-          "source_name": "NBC News",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "Manifest elimina su LLM router: el caching gana al auto-routing",
-          "summary": "Manifest deprecó su LLM router tras 4 meses y 7,000 usuarios cloud, argumentando que los prompts solos no pueden medir la complejidad de tareas y que las lecturas de caché (75-90% más baratas) requieren consistencia de modelo que derrota el routing. El post impulsa elegir modelos deliberadamente en lugar de delegar al router.",
-          "source": "https://manifest.build/blog/why-we-deprecated-our-llm-router/",
-          "source_name": "Manifest",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10170 → b10217 disponible (47 builds nuevos)",
-          "summary": "Salto masivo de 47 builds. Destaca b10217 con tool call en thinking para DS4, b10216 con POOL_1D en Vulkan, b10215 con verificación de versión de driver para Intel GPU en Windows, b10214 con n_embd_head en MTMD, y b10213 con soporte para kv cache quant rotado. Tu servidor corre b10170 — actualización recomendada.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Sábado de cierre intenso: Suno pierde en Alemania por copyright, OpenAI pierde la corona de ingresos ante Anthropic, ByteDance lanza Seedance 2.5 en video, YC open-sourcea 'qm' para agentes multiusuario, y llama.cpp salta 47 builds. El ecosistema se redefine entre cortes de justicia, cambios de modelo de negocio en China, y la carrera por el agente autónomo."
     }
   ]
 }
