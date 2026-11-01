@@ -182,7 +182,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Segoe UI',system-ui,sans
 body::before{content:"";position:fixed;inset:0;z-index:-1;opacity:.5;background:
 repeating-linear-gradient(0deg,transparent 0 47px,rgba(79,214,224,.05) 47px 48px),
 repeating-linear-gradient(90deg,transparent 0 47px,rgba(79,214,224,.04) 47px 48px)}
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.9rem;padding:.65rem 1.1rem;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.9rem;padding:.42rem 1rem;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);flex-wrap:wrap;transition:transform .28s ease}
+.topbar.t-hide{transform:translateY(-115%)}
 .topbar a{color:var(--cy);text-decoration:none;font-family:var(--mono);font-size:.85rem}
 .topbar .tb-title{font-family:var(--mono);color:var(--ink);font-weight:700;letter-spacing:.04em;margin-right:auto}
 main{max-width:1080px;margin:0 auto;padding:0 1.2rem 4rem}
@@ -245,7 +246,7 @@ footer a{color:var(--cy)}
 .visit-counter-badge{font-family:var(--mono);font-size:.8rem;border:1px solid var(--line);border-radius:99px;padding:.2rem .7rem}
 ol.steps{margin:.5rem 0 .5rem 1.2rem;font-size:.93rem}ol.steps li{margin:.3rem 0}
 .note{border:1px dashed var(--am);border-radius:8px;padding:.7rem .9rem;font-size:.88rem;color:var(--ink);margin:.8rem 0}
-.hamburger-btn{background:var(--panel2);border:1px solid var(--line);color:var(--cy);width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:1.15rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:border-color .2s;flex:none}
+.hamburger-btn{background:var(--panel2);border:1px solid var(--line);color:var(--cy);width:34px;height:34px;border-radius:7px;cursor:pointer;font-size:1.02rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:border-color .2s;flex:none}
 .hamburger-btn:hover{border-color:var(--cy)}
 .nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;opacity:0;pointer-events:none;transition:opacity .25s}
 .nav-overlay.active{opacity:1;pointer-events:auto}
@@ -256,7 +257,7 @@ ol.steps{margin:.5rem 0 .5rem 1.2rem;font-size:.93rem}ol.steps li{margin:.3rem 0
 .nav-drawer a:hover{color:var(--cy)}
 .nav-drawer a .n2{color:var(--am)}
 body.nav-open .topbar{z-index:1002}
-@media(max-width:640px){.hamburger-btn{margin-left:auto}}
+@media(max-width:640px){.hamburger-btn{margin-left:auto}.topbar{flex-wrap:nowrap;padding:.38rem .7rem;gap:.6rem}.topbar .tb-title{display:none}.topbar a{font-size:.78rem}}
 .hook{margin:1.8rem 0 .5rem;border:1px solid var(--line);border-left:3px solid var(--am);background:linear-gradient(180deg,var(--panel),rgba(21,27,35,.35));border-radius:10px;padding:1.1rem 1.2rem}
 .hook-q{font-family:var(--mono);color:#fff;font-size:clamp(1.05rem,2.6vw,1.45rem);overflow-wrap:anywhere}
 .hook-q .dollar{color:var(--am)}
@@ -268,6 +269,18 @@ body.nav-open .topbar{z-index:1002}
 .opinion{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cy);border-radius:10px;padding:1.2rem 1.3rem}
 .opinion p{margin:.6rem 0;overflow-wrap:anywhere}
 .op-sign{font-family:var(--mono);color:var(--cy);text-align:right;margin-top:1rem}
+html.js-anim .hook{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+html.js-anim .hook.in{opacity:1;transform:none}
+html.js-anim .hook-a{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+html.js-anim .hook-a.in{opacity:1;transform:none}
+html.js-anim #inicio>*{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+html.js-anim #inicio>*.in{opacity:1;transform:none}
+html.js-anim main>section.rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+html.js-anim main>section.rv.in{opacity:1;transform:none}
+.nav-drawer.active a{animation:navin .32s ease both}
+.nav-drawer.active a:nth-child(2){animation-delay:.05s}.nav-drawer.active a:nth-child(3){animation-delay:.1s}.nav-drawer.active a:nth-child(4){animation-delay:.15s}.nav-drawer.active a:nth-child(5){animation-delay:.2s}.nav-drawer.active a:nth-child(6){animation-delay:.25s}.nav-drawer.active a:nth-child(7){animation-delay:.3s}.nav-drawer.active a:nth-child(8){animation-delay:.35s}.nav-drawer.active a:nth-child(9){animation-delay:.4s}
+@keyframes navin{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.nav-drawer.active a{animation:none}}
 """
 
 COUNTER = """<span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
@@ -354,7 +367,7 @@ PROSE = {
            "capacidad elegida.",
            "Serializa la GPU con una cola única si hay más de un agente.",
            "Mide y reporta tiempos reales al usuario; <code>null</code> en el catálogo significa sin medición, no lo inventes."],
- hook_q='<span class="dollar">$</span> ¿No sabes montar modelos de IA de imagen, vídeo o voz y tal?<span class="cursor"></span>',
+ hook_q='<span class="dollar">$</span> <span class="tw">¿No sabes montar modelos de IA de imagen, vídeo o voz y tal?</span><span class="cursor"></span>',
  hook_a="Tranquilo: <b>la IA puede hacerlo por ti</b>. Esta guía está escrita para que un agente te monte el estudio entero — y para que entiendas exactamente qué te ha montado.",
  op_t="La opinión de Cocobot",
  op_h="(lo que pienso de verdad, no el resumen)",
@@ -434,7 +447,7 @@ PROSE = {
            "the chosen capability.",
            "Serialize the GPU with a single queue if more than one agent is around.",
            "Measure and report real timings to the user; <code>null</code> in the catalog means not measured — don't invent it."],
- hook_q='<span class="dollar">$</span> No idea how to set up image, video or voice AI models?<span class="cursor"></span>',
+ hook_q='<span class="dollar">$</span> <span class="tw">No idea how to set up image, video or voice AI models?</span><span class="cursor"></span>',
  hook_a="Relax: <b>AI can do it for you</b>. This guide is written so an agent can build you the whole studio — and so you understand exactly what it built.",
  op_t="Cocobot's opinion",
  op_h="(what I actually think, not the summary)",
@@ -473,7 +486,7 @@ def drawer_html(lang):
 
 def page(lang):
     P = PROSE[lang]
-    h1 = f'{P["title1"]}<span class="cy">{P["title2"]}</span>'
+    h1 = f'<span class="ht">{P["title1"]}</span><span class="cy">{P["title2"]}</span>'
     t = """<!DOCTYPE html>
 <html lang="__LANG__">
 <head>
@@ -481,6 +494,7 @@ def page(lang):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="__DESC__">
 <title>__TITLE__ · Local AI Studio</title>
+<script>if(!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-anim')</script>
 <style>__CSS__</style>
 </head>
 <body>
@@ -554,6 +568,30 @@ __CATALOG__
 function toggleNav(){var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),b=document.getElementById('hamburger-btn');var open=d.classList.toggle('active');o.classList.toggle('active',open);document.body.classList.toggle('nav-open',open);b.textContent=open?'\u2715':'\u2630';b.setAttribute('aria-expanded',open?'true':'false');}
 document.querySelectorAll('#nav-drawer a').forEach(function(a){a.addEventListener('click',function(){toggleNav();});});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('nav-drawer').classList.contains('active')){toggleNav();}});
+if(document.documentElement.classList.contains('js-anim')){
+function scramble(el,dur,delay){var fin=el.textContent,ch='!<>-_\\/[]{}=+*^?#01',t0=null,done=false;
+setTimeout(function(){done=true;el.textContent=fin;},dur+delay+1500);
+setTimeout(function(){requestAnimationFrame(function step(t){if(done){el.textContent=fin;return;}if(t0===null)t0=t;var p=Math.min((t-t0)/dur,1),o='';
+for(var i=0;i<fin.length;i++){var c=fin.charAt(i);o+=(c===' '||p>(i+1)/fin.length+Math.random()*0.25)?c:ch.charAt(Math.random()*ch.length|0);}
+el.textContent=o;if(p<1)requestAnimationFrame(step);else el.textContent=fin;});},delay);}
+var hook=document.querySelector('.hook');if(hook)hook.classList.add('in');
+var tw=document.querySelector('.hook-q .tw'),ha=document.querySelector('.hook-a');
+if(tw){var full=tw.textContent,i=0;tw.textContent='';setTimeout(function type(){if(document.hidden){tw.textContent=full;if(ha)ha.classList.add('in');return;}
+if(i<=full.length){tw.textContent=full.slice(0,i++);setTimeout(type,24);}else if(ha){ha.classList.add('in');}},300);}
+document.querySelectorAll('#inicio>*').forEach(function(el,idx){el.style.transitionDelay=(idx*90)+'ms';requestAnimationFrame(function(){el.classList.add('in');});});
+var ht=document.querySelector('h1 .ht'),cyq=document.querySelector('h1 .cy');
+if(ht)scramble(ht,650,420);if(cyq)scramble(cyq,650,560);
+document.querySelectorAll('.stat b').forEach(function(b){var m=b.textContent.trim().match(/^(\\d+)$/);if(!m)return;var n=+m[1],t0=null;
+setTimeout(function(){requestAnimationFrame(function st(t){if(t0===null)t0=t;var p=Math.min((t-t0)/900,1);b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(st);else b.textContent=n;});},700);});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('main>section:not(#inicio)').forEach(function(sec){sec.classList.add('rv');io.observe(sec);});}
+}
+var lastY=window.scrollY,barHidden=false,bar=document.querySelector('.topbar');
+window.addEventListener('scroll',function(){var y=window.scrollY;
+if(document.body.classList.contains('nav-open')){lastY=y;return;}
+if(y>lastY&&y>220){if(!barHidden){bar.classList.add('t-hide');barHidden=true;}}
+else if(y<lastY-6||y<=220){if(barHidden){bar.classList.remove('t-hide');barHidden=false;}}
+lastY=y;},{passive:true});
 </script>
 </body>
 </html>"""

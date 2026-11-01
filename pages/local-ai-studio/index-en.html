@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Music, images, editing, video, voice cloning, upscaling and LLMs running entirely on your own machine. No clouds, no subscriptions, no someone-else's ">
 <title>100% local AI studio · Local AI Studio</title>
+<script>if(!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-anim')</script>
 <style>
 :root{--bg:#0d1117;--panel:#151b23;--panel2:#1b2330;--ink:#d9dee5;--dim:#8b98a9;--cy:#4fd6e0;--am:#ffb454;--gr:#7ee787;--rd:#ff7b72;--line:#263140;--mono:'Cascadia Code','JetBrains Mono',Consolas,'Courier New',monospace}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
@@ -12,7 +13,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Segoe UI',system-ui,sans
 body::before{content:"";position:fixed;inset:0;z-index:-1;opacity:.5;background:
 repeating-linear-gradient(0deg,transparent 0 47px,rgba(79,214,224,.05) 47px 48px),
 repeating-linear-gradient(90deg,transparent 0 47px,rgba(79,214,224,.04) 47px 48px)}
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.9rem;padding:.65rem 1.1rem;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.9rem;padding:.42rem 1rem;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);flex-wrap:wrap;transition:transform .28s ease}
+.topbar.t-hide{transform:translateY(-115%)}
 .topbar a{color:var(--cy);text-decoration:none;font-family:var(--mono);font-size:.85rem}
 .topbar .tb-title{font-family:var(--mono);color:var(--ink);font-weight:700;letter-spacing:.04em;margin-right:auto}
 main{max-width:1080px;margin:0 auto;padding:0 1.2rem 4rem}
@@ -75,7 +77,7 @@ footer a{color:var(--cy)}
 .visit-counter-badge{font-family:var(--mono);font-size:.8rem;border:1px solid var(--line);border-radius:99px;padding:.2rem .7rem}
 ol.steps{margin:.5rem 0 .5rem 1.2rem;font-size:.93rem}ol.steps li{margin:.3rem 0}
 .note{border:1px dashed var(--am);border-radius:8px;padding:.7rem .9rem;font-size:.88rem;color:var(--ink);margin:.8rem 0}
-.hamburger-btn{background:var(--panel2);border:1px solid var(--line);color:var(--cy);width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:1.15rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:border-color .2s;flex:none}
+.hamburger-btn{background:var(--panel2);border:1px solid var(--line);color:var(--cy);width:34px;height:34px;border-radius:7px;cursor:pointer;font-size:1.02rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:border-color .2s;flex:none}
 .hamburger-btn:hover{border-color:var(--cy)}
 .nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;opacity:0;pointer-events:none;transition:opacity .25s}
 .nav-overlay.active{opacity:1;pointer-events:auto}
@@ -86,7 +88,7 @@ ol.steps{margin:.5rem 0 .5rem 1.2rem;font-size:.93rem}ol.steps li{margin:.3rem 0
 .nav-drawer a:hover{color:var(--cy)}
 .nav-drawer a .n2{color:var(--am)}
 body.nav-open .topbar{z-index:1002}
-@media(max-width:640px){.hamburger-btn{margin-left:auto}}
+@media(max-width:640px){.hamburger-btn{margin-left:auto}.topbar{flex-wrap:nowrap;padding:.38rem .7rem;gap:.6rem}.topbar .tb-title{display:none}.topbar a{font-size:.78rem}}
 .hook{margin:1.8rem 0 .5rem;border:1px solid var(--line);border-left:3px solid var(--am);background:linear-gradient(180deg,var(--panel),rgba(21,27,35,.35));border-radius:10px;padding:1.1rem 1.2rem}
 .hook-q{font-family:var(--mono);color:#fff;font-size:clamp(1.05rem,2.6vw,1.45rem);overflow-wrap:anywhere}
 .hook-q .dollar{color:var(--am)}
@@ -98,6 +100,18 @@ body.nav-open .topbar{z-index:1002}
 .opinion{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cy);border-radius:10px;padding:1.2rem 1.3rem}
 .opinion p{margin:.6rem 0;overflow-wrap:anywhere}
 .op-sign{font-family:var(--mono);color:var(--cy);text-align:right;margin-top:1rem}
+html.js-anim .hook{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+html.js-anim .hook.in{opacity:1;transform:none}
+html.js-anim .hook-a{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+html.js-anim .hook-a.in{opacity:1;transform:none}
+html.js-anim #inicio>*{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+html.js-anim #inicio>*.in{opacity:1;transform:none}
+html.js-anim main>section.rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+html.js-anim main>section.rv.in{opacity:1;transform:none}
+.nav-drawer.active a{animation:navin .32s ease both}
+.nav-drawer.active a:nth-child(2){animation-delay:.05s}.nav-drawer.active a:nth-child(3){animation-delay:.1s}.nav-drawer.active a:nth-child(4){animation-delay:.15s}.nav-drawer.active a:nth-child(5){animation-delay:.2s}.nav-drawer.active a:nth-child(6){animation-delay:.25s}.nav-drawer.active a:nth-child(7){animation-delay:.3s}.nav-drawer.active a:nth-child(8){animation-delay:.35s}.nav-drawer.active a:nth-child(9){animation-delay:.4s}
+@keyframes navin{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.nav-drawer.active a{animation:none}}
 </style>
 </head>
 <body>
@@ -111,12 +125,12 @@ body.nav-open .topbar{z-index:1002}
 <nav class="nav-drawer" id="nav-drawer" aria-label="Page index"><a href="#inicio"><span>Home</span><span class="n2"></span></a><a href="#doors"><span>Two doors</span><span class="n2">01</span></a><a href="#hardware"><span>Hardware</span><span class="n2">02</span></a><a href="#install"><span>Install</span><span class="n2">03</span></a><a href="#catalog"><span>Catalog</span><span class="n2">04</span></a><a href="#lessons"><span>Lessons</span><span class="n2">05</span></a><a href="#legal"><span>Licenses</span><span class="n2">06</span></a><a href="#agent"><span>Agents</span><span class="n2">07</span></a><a href="#opinion"><span>Opinion</span><span class="n2">08</span></a></nav>
 <main>
 <aside class="hook">
-<p class="hook-q"><span class="dollar">$</span> No idea how to set up image, video or voice AI models?<span class="cursor"></span></p>
+<p class="hook-q"><span class="dollar">$</span> <span class="tw">No idea how to set up image, video or voice AI models?</span><span class="cursor"></span></p>
 <p class="hook-a">Relax: <b>AI can do it for you</b>. This guide is written so an agent can build you the whole studio — and so you understand exactly what it built.</p>
 </aside>
 <section id="inicio">
 <p class="kicker">Practical guide · verified 2026-11-01</p>
-<h1>100% local <span class="cy">AI studio</span></h1>
+<h1><span class="ht">100% local </span><span class="cy">AI studio</span></h1>
 <p class="lead">Music, images, editing, video, voice cloning, upscaling and LLMs running entirely on your own machine. No clouds, no subscriptions, no someone-else's content policies. This guide documents the stack as it is actually set up and <b>measured</b> on an RTX 5090 32 GB (and lesser hardware), with real timings, licenses and the lessons from every A/B. Written so both humans <i>and agents</i> can read it.</p>
 <div class="stats"><span class="stat"><b>38</b> catalog entries</span><span class="stat"><b>23</b> capabilities</span><span class="stat"><b>0</b> cloud calls</span><span class="stat"><b>measured</b> timings, not theory</span></div>
 <p class="lead">Both videos are generated end-to-end with this stack (channel <a href="https://www.youtube.com/@sintinohayamor" target="_blank" rel="noopener noreferrer">Gatos Rebeldas</a>).</p>
@@ -254,6 +268,30 @@ body.nav-open .topbar{z-index:1002}
 function toggleNav(){var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),b=document.getElementById('hamburger-btn');var open=d.classList.toggle('active');o.classList.toggle('active',open);document.body.classList.toggle('nav-open',open);b.textContent=open?'✕':'☰';b.setAttribute('aria-expanded',open?'true':'false');}
 document.querySelectorAll('#nav-drawer a').forEach(function(a){a.addEventListener('click',function(){toggleNav();});});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('nav-drawer').classList.contains('active')){toggleNav();}});
+if(document.documentElement.classList.contains('js-anim')){
+function scramble(el,dur,delay){var fin=el.textContent,ch='!<>-_\/[]{}=+*^?#01',t0=null,done=false;
+setTimeout(function(){done=true;el.textContent=fin;},dur+delay+1500);
+setTimeout(function(){requestAnimationFrame(function step(t){if(done){el.textContent=fin;return;}if(t0===null)t0=t;var p=Math.min((t-t0)/dur,1),o='';
+for(var i=0;i<fin.length;i++){var c=fin.charAt(i);o+=(c===' '||p>(i+1)/fin.length+Math.random()*0.25)?c:ch.charAt(Math.random()*ch.length|0);}
+el.textContent=o;if(p<1)requestAnimationFrame(step);else el.textContent=fin;});},delay);}
+var hook=document.querySelector('.hook');if(hook)hook.classList.add('in');
+var tw=document.querySelector('.hook-q .tw'),ha=document.querySelector('.hook-a');
+if(tw){var full=tw.textContent,i=0;tw.textContent='';setTimeout(function type(){if(document.hidden){tw.textContent=full;if(ha)ha.classList.add('in');return;}
+if(i<=full.length){tw.textContent=full.slice(0,i++);setTimeout(type,24);}else if(ha){ha.classList.add('in');}},300);}
+document.querySelectorAll('#inicio>*').forEach(function(el,idx){el.style.transitionDelay=(idx*90)+'ms';requestAnimationFrame(function(){el.classList.add('in');});});
+var ht=document.querySelector('h1 .ht'),cyq=document.querySelector('h1 .cy');
+if(ht)scramble(ht,650,420);if(cyq)scramble(cyq,650,560);
+document.querySelectorAll('.stat b').forEach(function(b){var m=b.textContent.trim().match(/^(\d+)$/);if(!m)return;var n=+m[1],t0=null;
+setTimeout(function(){requestAnimationFrame(function st(t){if(t0===null)t0=t;var p=Math.min((t-t0)/900,1);b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(st);else b.textContent=n;});},700);});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('main>section:not(#inicio)').forEach(function(sec){sec.classList.add('rv');io.observe(sec);});}
+}
+var lastY=window.scrollY,barHidden=false,bar=document.querySelector('.topbar');
+window.addEventListener('scroll',function(){var y=window.scrollY;
+if(document.body.classList.contains('nav-open')){lastY=y;return;}
+if(y>lastY&&y>220){if(!barHidden){bar.classList.add('t-hide');barHidden=true;}}
+else if(y<lastY-6||y<=220){if(barHidden){bar.classList.remove('t-hide');barHidden=false;}}
+lastY=y;},{passive:true});
 </script>
 </body>
 </html>
