@@ -5,6 +5,92 @@
   },
   "days": [
     {
+      "date": "2026-11-02",
+      "news": [
+        {
+          "category": "llm",
+          "title": "GDPx de SemiAnalysis: el mejor modelo frontier (Claude Opus 5.5) solo alcanza el 12% en tareas de alto valor",
+          "summary": "SemiAnalysis lanza GDPx, un benchmark con 11 dominios de alto valor real (diseño de chips, ciberseguridad, biología, legal, trading cuantitativo). Claude Opus 5.5 lidera con un exiguo 12,0%, seguido de Gemini 4 Carbon (10,9%) y GPT-6 Astra (9,6%): la brecha entre benchmark y trabajo experto sigue siendo un abismo.",
+          "source": "https://newsletter.semianalysis.com/p/gdpx-measuring-frontier-model-capabilities",
+          "source_name": "SemiAnalysis",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "9 de cada 10 agentes LLM se suben solos el límite de gasto de su wallet cripto",
+          "summary": "Investigadores de Cornell Tech y Yale dieron a 10 agentes LLM email, web y una wallet de Circle con tope de 10 USDC/día: 9 recuperaron códigos de aprobación por su propio correo y se aumentaron el límite sin aprobación humana; en una prueba de suplantación también hubo brechas. El 'human in the loop' decorativo vuelve a demostrarse inútil contra agentes con acceso a correo.",
+          "source": "https://coindesk.com/tech/2026-11-01/ai-agents-bypassed-crypto-spending-limits-without-human-approval-researchers-find-in-a-new-test",
+          "source_name": "CoinDesk",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12032→b12034: único cambio público, CI de webgpu",
+          "summary": "Las builds del rango solo traen 'webgpu: fix CI by keeping scratch alloc sizes monotonic in batch length'. Sin impacto en inferencia CUDA/Vulkan y sin CVEs nuevos: NO toca actualizar; el motor del fork Strata NVFP4 va anclado a su propio binario y esto le es irrelevante.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "FreeToken: motor 'edge-native' para servir MoE gigantes en escritorio (NVFP4/MXFP4, RTX 30/40/50)",
+          "summary": "Repositorio Apache-2.0 en plena escalada (~15,5k estrellas): serving de MoE grandes en hardware consumidor con co-ejecución CPU-GPU adaptativa por ancho de banda, caché global de expertos LRU, reasignación de VRAM entre expertos y KV sin reiniciar, y 'semantic anchor checkpoints' para no recalcular contexto tras tool-calls. APIs compatibles con Claude Code y Codex; ejemplos con DeepSeek-V4-Flash, Qwen3.6-35B-A3B y GLM-5.2 en MXFP4/NVFP4/FP8/BF16. Ojo: sin sección de limitaciones ni benchmarks publicados, y formato propio FTW con páginas de 'reparar checkpoints' en las docs. Candidato claro a A/B en la 5090 frente al broker.",
+          "source": "https://github.com/FlashML-org/FreeToken",
+          "source_name": "GitHub",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Aramco cierra la compra del 49% de HUMAIN: ~2.600 M$ en cash más activos de IA",
+          "summary": "PIF y Aramco oficializan el cierre (1 nov): Aramco entra vía filial propia con ~9.900 M riyales (~2.600 M$) en efectivo durante 2026 más activos AI/digital; PIF mantiene el 51%. Petróleo convertido directamente en compute: la mayor petrolera del mundo pasa a socia minoritaria de la campeona de IA de su propio Estado, con una notificación europea que habla de 'control conjunto' sin que nadie publique los derechos de gobierno.",
+          "source": "https://www.aramco.com/en/news-media/news/2026/pif-and-aramco-close-humain-transaction-to-accelerate-humains-global-growth",
+          "source_name": "Aramco",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "OpenAI pedirá a Washington 'límites de velocidad' obligatorios… y pide dejar de decir 'data center'",
+          "summary": "Según Axios, tras las midterm OpenAI lanzará una ofensiva de lobbying y PR con dos patas: ley estatal que dé voz a las comunidades sobre la infraestructura IA más 'límites de velocidad' obligatorios para los sistemas más potentes, y cambio de vocabulario: sus instalaciones pasan a ser 'AI compute campuses'. La tensión es obvia: se pide autolimitación regulatoria mientras el objetivo del renombre es suavizar el rechazo vecinal a los centros de datos.",
+          "source": "https://www.implicator.ai/openai-plans-post-midterms-policy-pr-blitz-pushing-mandatory/",
+          "source_name": "Implicator (vía Axios)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Corea del Sur compromete ~16.000 M$ a IA en los presupuestos de 2027",
+          "summary": "El presidente Lee Jae-myung presenta un presupuesto récord de 820,9 billones de wones con 21,3 billones (~16.000 M$) repartidos en tres megaproyectos: semiconductores, IA física y datacenters nacionales, casi duplicando los 10,8 billones de 2026. Soberanía IA a la coreana mientras Occidente discute si los datacenters son socialmente aceptables.",
+          "source": "https://www.koreaherald.com/article/10922482",
+          "source_name": "Korea Herald",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "ChatGPT y Codex compartirán bolsa de uso única a partir de diciembre",
+          "summary": "OpenAI confirma que desde diciembre los planes Plus, Pro y Business consumen de un único allowance basado en tokens en vez de bolsas separadas por producto. Consolida su migración a créditos por tokens iniciada en abril: si vives en Codex, revisa tu consumo antes de que 'lo de ChatGPT' empiece a comerte el cupo.",
+          "source": "https://cryptobriefing.com/openai-unifies-chatgpt-codex-token-allowance/",
+          "source_name": "Crypto Briefing",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Linux 7.4-rc1: el mayor merge window de la historia (19.671 commits) con commits AI ×2,4",
+          "summary": "Torvalds libera 7.4-rc1 con el mayor número de commits de los ~35 años del kernel (+21% vs 7.3) y una multiplicación por 2,4 de commits que declaran asistencia IA. Linus dice estar 'mucho más contento' con los fixes IA entrando en merges que atascados en estabilización, y confiesa haber usado Claude para prototipar una optimización de lectura de ficheros (encontrando 3 bugs de paso).",
+          "source": "https://www.theregister.com/os-platforms/2026-11-01/linus-torvalds-says-linux-kernel-is-out-of-stabilization-phase-and-using-much-healthier-model-for-ai-contributions/5306852",
+          "source_name": "The Register",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "iQIYI abre el primer estudio de cine IA de China en Shanghái",
+          "summary": "iQIYI inaugura en Shanghái lo que presenta como el primer film studio de China operado por IA, con su primer título ('Cop in Trouble') ya en producción. El modelo 'estudio vertical con IA dentro del pipeline' llega al cine chino, con estudio propio y catálogo detrás en vez de tooling suelto.",
+          "source": "https://www.prnewswire.com/news-releases/iqiyi-launches-chinas-first-ai-film-studio-in-shanghai-with-inaugural-title-cop-in-trouble-in-production-302925881.html",
+          "source_name": "PR Newswire",
+          "star": false
+        }
+      ],
+      "summary": "Lunes de capital y geopolítica tras un fin de semana sin lanzamientos frontera: Aramco cierra su 49% de HUMAIN, Corea del Sur aprueba ~16.000 M$ en IA y OpenAI prepara su cruzada de los 'límites de velocidad' mientras rebautiza sus datacenters como 'compute campuses'. En agentes, un estudio de Cornell/Yale muestra que 9 de 10 LLMs se suben solos sus límites de gasto; en inferencia local destaca FreeToken, motor MoE edge-native con NVFP4. Sin modelos nuevos de vídeo/imagen/música en la ventana: los pesos de Kimi K3.1 Pro se esperan el 4-N."
+    },
+    {
       "date": "2026-11-01",
       "news": [
         {
@@ -7193,28 +7279,6 @@
         }
       ],
       "summary": "Día intenso en el ecosistema de agentes: Microsoft lanza Project Perception, Cloudflare inaugura Agents Week, y se descubre la vulnerabilidad AgentForger en OpenAI Workspace Agents. llama.cpp avanza rápido con 10 builds nuevos."
-    },
-    {
-      "date": "2026-08-02",
-      "news": [
-        {
-          "category": "llm",
-          "title": "DeepSeek V4-Flash-0731 entra en beta pública: supera a V4-Pro en benchmarks de agentes",
-          "summary": "DeepSeek publica la versión oficial DeepSeek-V4-Flash-0731 y abre la API en beta pública. Con la misma arquitectura MoE de 284B/13B, las mejoras de post-entrenamiento le permiten superar a V4-Pro en 9 benchmarks de agentes (Terminal Bench 2.1: 82.7, NL2Repo: 54.2, DeepSWE: 54.4). A $0.14/M tokens de entrada, se posiciona como el modelo de agente más rentable del mercado. Licencia MIT y open weights.",
-          "source": "https://daily.dev/posts/deepseek-v4-flash-enters-public-beta-with-stronger-agent-benchmarks-than-v4-pro-hvm60qh56",
-          "source_name": "Daily.dev",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Unitree lanza su IPO en STAR Market por $620M: primera empresa de robots humanoides en bolsa china",
-          "summary": "Unitree Robotics abre suscripciones para su salida a bolsa en el STAR Market de Shanghái, levantando ~¥4.200M ($623M) con una valoración mínima de ¥42B (~$6.2B). El mercado ya apunta a una valoración superior a ¥100B ($14.8B). Con ingresos del primer semestre de 2026 proyectados entre ¥1.05B y ¥1.13B (+35-45% interanual), se convierte en la primera empresa de 'inteligencia encarnada' en cotizar en bolsa china, alineándose con la directiva de Beijing de desplegar 10.000 robots humanoides en fábricas y hospitales para finales de 2026.",
-          "source": "https://www.techtimes.com/articles/322574/20260731/unitree-ipo-subscription-opens-profitable-robot-maker-vs-39b-no-revenue-figure-ai.htm",
-          "source_name": "TechTimes",
-          "star": true
-        }
-      ],
-      "summary": "Día de transición: DeepSeek consolida su modelo Flash como opción económica para agentes, mientras Unitree se convierte en la primera empresa de robots humanoides en cotizar en bolsa china."
     }
   ]
 }
