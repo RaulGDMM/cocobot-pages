@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-11-03",
+      "news": [
+        {
+          "category": "general",
+          "title": "Marvell compra Lumentum en un all-stock de 115.000 M$: la fiebre óptica de la IA",
+          "summary": "El fabricante de chips Marvell Technology anunció el lunes la compra del fabricante de componentes ópticos Lumentum en una operación de 115.000 M$ solo en acciones, la última consolidación de infraestructura IA en plena duda de los inversores sobre si el boom de gasto dará retorno. La interconexión óptica de datacenters se confirma como cuello de botella estratégico del scale-out.",
+          "source": "https://techxplore.com/news/2026-11-marvell-lumentum-merge-billion-ai.html",
+          "source_name": "TechXplore / AFP",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "Anthropic, ante su OPV: ingresos trimestrales ×12, ~900.000 M$ en compromisos de gasto y aviso de cercanía a la RSI",
+          "summary": "Anthropic reportó el lunes un aumento del 1.100% en ingresos trimestrales y casi 900.000 M$ en compromisos de gasto mientras cuenta atrás para su salida a bolsa este mismo mes. En la misma comunicación advierte de estar 'muy cerca' de la capacidad RSI (IA que se auto-mejora), el punto que sus propios investigadores describen como el acelerón del que no hay vuelta atrás. Ingresos y advertencia existencial en la misma llamada: el 2026 en una frase.",
+          "source": "https://techxplore.com/news/2026-11-anthropic-revenue-surged-ipo.html",
+          "source_name": "TechXplore / AFP + TechCrunch",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "\"Weight Space Programming\": LLMs que leen y escriben pesos de redes neuronales",
+          "summary": "Latent Space resume hoy un frente de investigación en el que los propios LLMs editan directamente los pesos de otros modelos (p. ej. retocar pesos de un Qwen para reducir sus bucles de razonamiento), recortando el bucle de auto-investigación del ciclo RSI. Investigación temprana, pero convierte la 'edición de modelos' en una secuencia de tool-calls de un agente.",
+          "source": "https://latent.space/p/ainews-llms-can-read-write-neural-network-weights-weight-space-programming-cuts-autoresearch-out-of/",
+          "source_name": "Latent Space AINews",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Garry Tan (Y Combinator): hasta 200.000 $ al año en tokens para sus agentes personales",
+          "summary": "El CEO de YC confesó en el podcast de Walter Isaacson que su consumo de tokens con agentes de IA le cuesta hasta 200.000 $ anuales, y bromea con 'psicosis cibernética' y dormir poco de la emoción de trabajar con sus agentes. Termómetro del coste real de un power-user agente-first en 2026.",
+          "source": "https://techcrunch.com/2026-11-02/y-combinators-garry-tan-uses-ai-agents-so-much-he-spends-up-to-200k-a-year-on-tokens/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "The New York Times y otros medios demandan a Brave por presunto scraping de contenido",
+          "summary": "El NYT y otras editoriales demandan al navegador de privacidad Brave por presuntamente rastrear contenido protegido por derechos de autor y distribuirlo a clientes como Anthropic y Perplexity. Nuevo frente legal sobre el scraping como fuente de datos para IA, esta vez contra un navegador que hizo de la privacidad su marca.",
+          "source": "https://techcrunch.com/2026-11-02/new-york-times-and-other-outlets-sue-web-browser-brave-over-alleged-content-scraping/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "KAIST: seleccionar los datos útiles de fine-tuning lo acelera ~3x (10 h → 3 h)",
+          "summary": "Investigadores de KAIST presentan una técnica que selecciona las muestras de entrenamiento más útiles y las distribuye uniformemente entre múltiples GPUs, recortando un fine-tuning de 10 horas a unas 3 sin perder calidad. Relevante para quien hace fine-tune con clusters pequeños.",
+          "source": "https://techxplore.com/news/2026-11-roughly-triple-ai-fine-tuning.html",
+          "source_name": "TechXplore",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Strata 0.2.10 (upstream): DFlash2 es el drafter por defecto y supera a MTP en Blackwell",
+          "summary": "El upstream Niko1221/Strata promociona DFlash2 a drafter por defecto: frente a MTP con Qwen3.8, +7,9% greedy y +6,2% en respuestas cortas muestreadas en CUDA sm_120 (misma arquitectura que la 5090) y +8,8-12% en Ryzen AI Max Windows; pero solo +1,4% en respuestas largas y ~0 en sesiones agentivas largas. Trae además reparto 'all-cards' multi-GPU en Linux (2×A6000: 195→~385 t/s en edición de código) y 128K de contexto en tarjetas de 8 GB. En la caja de Raúl NO es utilizable aún: el fork Strata NVFP4 sigue anclado al motor 0.2.0; cuando rebasee, A/B DFlash2 vs MTP con ganancia esperable modesta en sesiones largas.",
+          "source": "https://github.com/Niko1221/Strata/releases",
+          "source_name": "GitHub — Niko1221/Strata",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12034→b12065: atención unificada multi-seq, modelo Clover y Pocket TTS sin clonado",
+          "summary": "Ráfaga de builds: flash_attn_ext_rows con KV unificado para multi-secuencia (#29510, la mejora gorda para servidores con varios slots), soporte del MoE híbrido Clover (HF), voces Pocket TTS predefinidas sin clonado (#31429), copias dflash vía device copies, fix del kv-cache que devolvía 0 filas en warmups con caches compartidos (#31570) y fix del crash de imatrix --nextn. Sin CVEs nuevos. Para Raúl: sin urgencia — su servidor va por el motor Strata y BeeLlama aún no ha rebuildado; actualizable cuando salga su exe.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        }
+      ],
+      "summary": "Martes sin lanzamientos de modelos (el último verificado sigue siendo Gemini 4 Carbon del 28/10): día dominado por el capital y la investigación. Marvell compra Lumentum en un all-stock de 115.000 M$ y Anthropic, a un mes de su OPV, reporta ingresos ×12 con aviso de cercanía a la RSI. En el terreno local, Strata 0.2.10 promociona DFlash2 a drafter por defecto por delante de MTP."
+    },
+    {
       "date": "2026-11-02",
       "news": [
         {
@@ -7225,60 +7295,6 @@
         }
       ],
       "summary": "MiniMax suelta H3 open-source con soporte nativo en ComfyUI y licencia que excluye EE.UU./UE. Alibaba lanza Qwen 3.8 con 2.4T de parámetros. CrowdStrike advierte que los adversarios ya explotan vulnerabilidades en menos de 24h con IA."
-    },
-    {
-      "date": "2026-08-03",
-      "news": [
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10226 → b10236 disponible (10 builds nuevos)",
-          "summary": "llama.cpp avanza de b10226 a b10236 con 10 builds nuevos. Destacan: implementaciones Metal para DSv4 Lightning Indexer, SILU_BACK, soporte F16 para operaciones binarias, limitación de workgroup size en OpenCL para GLU, y hyper-connections de DeepSeek V4 en Metal. Tu servidor (b10226) está 10 builds atrás.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Microsoft Project Perception entra en preview público: agente de ciberseguridad autónomo",
-          "summary": "Microsoft lanza el preview público de Project Perception, su plataforma de agentes de ciberseguridad diseñada para detectar y responder a amenazas de forma autónoma. Se posiciona como respuesta directa a los recientes incidentes de agentes escapando de sandboxes en OpenAI y Anthropic.",
-          "source": "https://aiagentstore.ai/ai-agent-news/2026-august",
-          "source_name": "AI Agent Store",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "AgentForger: vulnerabilidad en OpenAI Workspace Agents permitía crear agentes sin autorización",
-          "summary": "Se descubrió AgentForger, un fallo en el Workspace Agents Builder de OpenAI que permitía a un enlace malicioso crear y configurar un agente dentro de la sesión de un usuario usando conectores ya aprobados. OpenAI ya ha parcheado la vulnerabilidad, pero el incidente refuerza la necesidad de gobernanza estricta en plataformas de agentes.",
-          "source": "https://aiagentstore.ai/ai-agent-news/2026-august",
-          "source_name": "AI Agent Store",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Cloudflare inaugura Agents Week: ¿qué infraestructura necesitan los agentes del futuro?",
-          "summary": "Cloudflare abre su segunda Agents Week (3-7 de agosto) sin lanzar productos inmediatos, sino invitando a la comunidad a definir qué primitivas de infraestructura necesitan los agentes: identidad, memoria, acceso seguro, coordinación y descubrimiento en la web. Los anuncios técnicos llegarán durante la semana.",
-          "source": "https://aiagentstore.ai/ai-agent-news/2026-august",
-          "source_name": "AI Agent Store",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "OpenAI o3 será retirado de ChatGPT el 26 de agosto",
-          "summary": "OpenAI anuncia el retiro de o3 de ChatGPT el 26 de agosto tras un periodo de 90 días de depreciación. El modelo seguirá disponible vía API. GPT-4.5 ya fue retirado en junio. Los cambios afectan solo a ChatGPT, no a la API.",
-          "source": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
-          "source_name": "OpenAI Help Center",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "OpenAI deprecia Custom GPTs para cuentas business el 26 de agosto",
-          "summary": "OpenAI anuncia que Custom GPTs serán deprecados para cuentas business el 26 de agosto de 2026. Los Workspace Agents, que corren continuamente en la nube y se integran con Slack, Salesforce y otras herramientas, serán el reemplazo. Los Custom GPTs para usuarios individuales no se ven afectados.",
-          "source": "https://www.youtube.com/watch?v=K3qa1ijg-WA",
-          "source_name": "AI News in 5",
-          "star": false
-        }
-      ],
-      "summary": "Día intenso en el ecosistema de agentes: Microsoft lanza Project Perception, Cloudflare inaugura Agents Week, y se descubre la vulnerabilidad AgentForger en OpenAI Workspace Agents. llama.cpp avanza rápido con 10 builds nuevos."
     }
   ]
 }
