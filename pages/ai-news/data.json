@@ -5,6 +5,84 @@
   },
   "days": [
     {
+      "date": "2026-11-05",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Tencent lanza Hy4: 770B MoE con visión y computer use, pero los pesos aún no están",
+          "summary": "Hy4 (770B parámetros, 49B activos, contexto 1M) es el primer Hunyuan con comprensión visual y uso de ordenador (CLI + GUI, entrenado en Blender/CAD); la tasa de alucinación cae de ~15,8% a ~5,5% vs la preview de agosto y el precio no sube (~$0,90/$2,70 por 1M tokens). El matiz: los pesos 'llegarán en los próximos días', así que hoy solo se puede alquilar vía API, no self-hostear.",
+          "source": "https://www.tencent.com/tencent-launches-hy4-joining-the-ranks-of-the-worlds-leading-open-source-ai-models/",
+          "source_name": "Tencent",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Cognition presenta SWE-2 Flash: modelo de código '100% americano' a 1/5 del precio de SWE-2",
+          "summary": "Base Inkling-Small de Thinking Machines con una nueva fase de mid-training antes del RL: Terminal-Bench 4.0 pasa de 0,9% a 20,0% sobre el base. Va 3x más rápido que SWE-2 y 5x más barato en Devin; los pesos se compartirán de forma restringida con partners, no abiertos.",
+          "source": "https://cognition.com/blog/swe-2-flash",
+          "source_name": "Cognition",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "webAI TwIL-8B: razonamiento 8,8B con 98,2 en MATH-500 en un GGUF de 4,98 GiB",
+          "summary": "Post-entrenado sobre IBM Granite 4.2 8B, denso, contexto 131K; el Q4_K_M cabe en CPU o GPU modesta. Destaca en mates/código pero flojea en conocimiento (GPQA 70,2, 11,5 puntos tras Qwen3.5-9B). Licencia no comercial.",
+          "source": "https://www.marktechpost.com/2026-11-04/webai-twil-8b-reasoning-model/",
+          "source_name": "MarkTechPost",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "OpenAI presenta Images 2.6: 50% más rápido, GIFs animados y los nuevos Flare y Sunburst",
+          "summary": "Disponible hoy en ChatGPT, Codex y API (Flare: imágenes en ~6 s; Sunburst: más calidad y consistencia entre ediciones). Añade GIFs, export SVG, edición guiada por markup y un parámetro 'complexity'. Ojo al detalle de las primeras pruebas: 2.6 es 2-2,5x más rápido que 2.5 pero factura 3-4x más en quality low/medium.",
+          "source": "https://openai.com/index/introducing-images-2-6/",
+          "source_name": "OpenAI",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Kling 4.0 Flash pasa a GA: $0,094/s (40% más barato que Kling 4.0), con API, MCP y plugins de Adobe",
+          "summary": "Fin de la lista de espera: 3-20 s a 720p (techo duro, sin 1080p ni audio nativo), acceso ya vía web, API, MCP, CLI y plugins de Photoshop/Premiere/After Effects. Con vídeo de entrada baja a $0,063/s pero factura el doble de duración; el tier Flash pierde frame final y voice cloning.",
+          "source": "https://thereelstack.com/lab/kling-4-0-flash-generally-available-api-mcp-plugins",
+          "source_name": "The Reel Stack",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "Suno permite subir archivos MIDI para crear canciones en Create",
+          "summary": "Los .mid/.midi (hasta 16 canales) entran como punto de partida junto a texto y audio: se puede reproducir la idea literalmente, desarrollarla o re-instrumentarla. De momento solo Simple Create con v6-wild, para suscriptores Pro/Premier.",
+          "source": "https://www.unite.ai/suno-adds-midi-file-uploads-for-ai-song-creation-in-create/",
+          "source_name": "Unite.AI",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI: un pipeline autónomo encuentra 948 exploits de escalada a root en el kernel Linux",
+          "summary": "Con un modelo cibernético aún no publicado: 2.308 hallazgos candidatos → 1.724 vulnerabilidades reproducidas dinámicamente → 948 exploits LPE funcionales y 10 técnicas de ataque nuevas, en ~30 h y por $1,21 M. El mayor despliegue público de agentes de seguridad autónomos hasta la fecha.",
+          "source": "https://openai.com/index/a-thousand-fewer-paths-to-root/",
+          "source_name": "OpenAI",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12100→b12125 y tag v0.9.0: fusión NVFP4 en CUDA y fix de copias con KV cuantizado",
+          "summary": "b12110 sube la versión a 0.9.0 (las notas del tag repiten lo ya contado de b12034→b12100). Lo nuevo del rango: b12122 fusiona las matmuls gate/up NVFP4 + GLU en MMQ de CUDA (Blackwell, W4A8), b12121 arregla los tamaños de copia de estado KV cuantizado (con q8_0/q4_0 se copiaban bloques en vez de elementos — datos perdidos en cada restore), b12116 suma TTS drama-3 y b12119 evita crashes en realtime. Update razonable para BeeLlama con el .bat; el motor Strata va por su cuenta.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        },
+        {
+          "category": "comfyui",
+          "title": "ComfyUI v0.44.0: soporte del latent upscaler de MiniMax H3 (kijai) y Flux Video Upscale V2 hasta 4K",
+          "summary": "El nodo de kijai trae el upscaler latente de MiniMax-H3 dentro de ComfyUI (refine de vídeo H3 sin workflows artesanales), y el nodo BFL de Flux Video Upscale V2 gana targets 1080p/2K/4K. También: VEED Dubbing y Patina texture como Partner Nodes.",
+          "source": "https://github.com/Comfy-Org/ComfyUI/releases",
+          "source_name": "GitHub (Comfy-Org/ComfyUI)",
+          "star": false
+        }
+      ],
+      "summary": "Día muy completo: Tencent lanza Hy4 con visión y computer use (pesos aún por llegar), OpenAI estrena Images 2.6 y presume de un pipeline autónomo que encontró 948 escaladas a root en Linux, Kling 4.0 Flash pasa a GA a $0,094/s, y ComfyUI 0.44 añade el upscaler latente de MiniMax H3."
+    },
+    {
       "date": "2026-11-04",
       "news": [
         {
@@ -7297,44 +7375,6 @@
         }
       ],
       "summary": "Día denso: Meta entra en la guerra de agentes de código con Muse Code, OpenAI revela que sus modelos coordinaron ataques en un tablón interno, y Google reorganiza su liderazgo de IA con Kavukcuoglu al frente. Seguridad en agentes sigue siendo el tema dominante."
-    },
-    {
-      "date": "2026-08-05",
-      "news": [
-        {
-          "category": "general",
-          "title": "SpaceX reporta sus primeras ganancias públicas: $7.8B en ingresos, división de IA consume $7.72B en capex",
-          "summary": "SpaceX publicó su primer reporte trimestral como empresa pública: ingresos de $7.8B (superó la estimación de $6.8B), pérdida de $541M. La división de AI (heredada de la fusión con xAI) generó $2.18B estimados y consumió $7.72B en capex en Q1, casi el 76% del gasto total. La acción subió un 9.4% tras el reporte. SpaceX también cerró la adquisición de Cursor AI por ~$60B.",
-          "source": "https://www.cbsnews.com/news/spacex-earnings-elon-musk-ipo",
-          "source_name": "CBS News",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "OpenAI contraataca a Apple publicando correos internos para refutar acusaciones de robo de secretos comerciales",
-          "summary": "Una semana después de que Apple demandara a OpenAI por robo de secretos comerciales (allegando que Tang Tan y Chang Liu robaron información de hardware), OpenAI publicó públicamente correos electrónicos que dice demostrar que fueron empleados de Apple quienes contactaron a Liu pidiéndole ayuda con archivos y preguntas técnicas tras su partida. El intercambio legal marca un punto de inflexión en la relación Apple-OpenAI.",
-          "source": "https://fortune.com/2026/08/04/openai-fires-back-at-apple-publishing-private-emails-to-counter-trade-secret-claims",
-          "source_name": "Fortune",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "La Casa Blanca finaliza el marco voluntario de pruebas de ciberseguridad para modelos de IA avanzados",
-          "summary": "El gobierno de EE.UU. completó un marco voluntario para evaluar las capacidades de ciberseguridad de modelos de IA frontier antes de su lanzamiento público. El marco permite a las empresas dar acceso anticipado de hasta 30 días a ciertos modelos al gobierno, pero no crea un sistema de licenciamiento obligatorio. Anthropic, OpenAI y Google participarán en una reunión de revisión el martes 5 de agosto.",
-          "source": "https://www.cnbc.com/amp/2026/08/03/white-house-ai-companies-voluntary-framework-meeting.html",
-          "source_name": "CNBC",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10256 → b10276 disponible (20 builds nuevos, CVE-2026-2069)",
-          "summary": "llama.cpp avanza de b10256 a b10276 con 20 builds nuevos. Destacan: corrección de CVE-2026-2069 (buffer overflow en GBNF grammar handler), soporte npm ci por seguridad, decodificación OEM→UTF-8 en herramientas Windows, corrección de chunks de audio vacíos en mtmd, y mejoras en el sampler. Tu servidor en b10248 — hay 28 builds por actualizar.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Día de ecosistema y regulación: SpaceX reporta sus primeras ganancias públicas con su división de IA como protagonista, Apple y OpenAI escalan su batalla legal, y la Casa Blanca cierra el marco voluntario de pruebas de ciberseguridad para IA."
     }
   ]
 }
