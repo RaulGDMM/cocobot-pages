@@ -5,6 +5,116 @@
   },
   "days": [
     {
+      "date": "2026-11-07",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Ant Group lanza Ling-3.2-flash: MoE multimodal de 560B con 1M de contexto que bate a Claude Opus 5 en documentos",
+          "summary": "MoE nativamente multimodal (560B parámetros, 25B activos) con contexto de 1M tokens que acepta texto, imagen y vídeo. Supera a Claude Opus 5 en OmniDocBench1.5 (92,21 vs 90,56), ZEROBench Sub (43,71 vs 39,52) y Vision2Web (85,86 vs 80,20), con APIs compatibles con OpenAI y Anthropic gratis durante dos semanas. Ojo: solo API, los pesos no están en Hugging Face.",
+          "source": "https://pandaily.com/ant-group-ling-3-2-flash-native-multimodal-560b-moe-25b-active-1m-context",
+          "source_name": "Pandaily",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Baidu abre ERNIE 5.5 Flash Base: MoE de 280B con licencia que excluye la UE",
+          "summary": "MoE disperso de 280B (~14B activos) preentrenado desde cero con 33,5 billones de tokens, publicado en FP8 y BF16 en Hugging Face y ModelScope. Es un checkpoint base (sin afinar) y la licencia excluye UE, Reino Unido y Corea del Sur, además de exigir el rótulo 'Powered by ERNIE' en productos comerciales: pesos abiertos, jurisdicciones no.",
+          "source": "https://startupfortune.com/baidu-open-sources-ernie-55-flash-base-in-a-race-to-cheap-inference/",
+          "source_name": "Startup Fortune / The Decoder",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "World Labs estrena Frameboy: mundos de Atlas transmitidos en tiempo real en el navegador",
+          "summary": "Preview de investigación que envía una variante de Atlas muy optimizada para inferencia desde GPUs de la nube a una pestaña del navegador a hasta 15 fps: pasearse por escenas 3D generadas desde una sola imagen sin descargar nada. Solo escenas predefinidas por ahora (las propias, en beta 'Viewfinder'); sin precios ni ficha técnica del modelo.",
+          "source": "https://www.worldlabs.ai/blog",
+          "source_name": "World Labs",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Meta lleva la Memoria Activa y el Enfoque Activo de Muse Wonder a todos los usuarios",
+          "summary": "Meta despliega versiones especializadas de los modelos Muse y Meta AI entrenadas con el modelo frontier del 12 de octubre, trayendo por primera vez Memoria Activa y Enfoque Activo al usuario de a pie: presume de 2,4x menos 'olvido' de información clave y 67% más aciertos cuando cambian las restricciones, aunque no publica líneas base ni tamaños de muestra.",
+          "source": "https://thenewstack.io/meta-muse-specialized-models/",
+          "source_name": "The New Stack",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "DigitalOcean lanza Cuttlefish: vigila y aprueba las llamadas a herramientas de tus agentes desde el iPhone",
+          "summary": "App nativa de iOS que retransmite en vivo sesiones de Managed Agents y permite aprobar o denegar tool calls (con comando y diff completos), redirigir o matar ejecuciones desde el móvil. Compatible con Claude Code, Codex CLI, OpenCode, OpenHands, Hermes, LangGraph y CrewAI — sí, también con el motor que usas tú.",
+          "source": "https://investors.digitalocean.com/news/news-details/2026/DigitalOcean-Launches-Cuttlefish-to-Supervise-AI-Agents-From-Anywhere-With-Box-as-Launch-Partner/default.aspx",
+          "source_name": "DigitalOcean",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Check Point: un operador con agentes autónomos robó 300 certificados de Apple por ~1.500 $",
+          "summary": "La campaña ARTEX usó agentes IA autónomos durante dos semanas (14-29 de octubre) para robar más de 300 certificados de firma iOS de Apple (3 plenamente válidos) y 190.000 credenciales de Honor of Kings de 13 backends de mercado gris, quemando unos 36.000 millones de tokens de DeepSeek v4.1 Flash y Kimi K3.1 Pro por 700-1.500 $ — la mayoría pidiendo 'cómo vas'. Primer caso documentado de ciberdelito a escala con agentes en piloto automático.",
+          "source": "https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/",
+          "source_name": "Check Point Research",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Perplexity Teammates: agentes persistentes siempre activos por 200 $/mes",
+          "summary": "Agentes con memoria, proyectos y habilidades heredados de Perplexity Computer que viven en la barra lateral: triaje de bugs, bucles de QA, monitorización de Slack y seguimientos automáticos. De momento solo web y solo para suscriptores Max (200 $/mes); Srinivas dice que ve 'cientos de Teammates por persona' en el futuro.",
+          "source": "https://dataconomy.com/2026-11-06/perplexity-launches-always-on-ai-agents-for-work/",
+          "source_name": "Dataconomy",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12144→b12182: soporte del modelo de texto Kimi-K3.1-Pro, fix de crash UTF-8 en CLI",
+          "summary": "b12180 añade el modelo de texto Kimi-K3.1-Pro (los pesos aterrizaron en Hugging Face hace un par de días); b12182 sube el límite de compute view para buffers con pocos tensores, b12179 trae conv_3d a Hexagon y b12177 arregla el crash del CLI con UTF-8 inválido en prompts o ficheros. Para tu 5090 no hay urgencia — el MoE de 2,8T no cabe ni de lejos — pero si quieres experimentar con GGUFs recortados de K3.1 o quitarte de encima el crash de UTF-8, un update no molesta.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "DeepMind: agentes de IA abaratan ~1.600x la falsificación de firmas en RSA-1024",
+          "summary": "Agentes de DeepMind guiados por los criptoanalistas Nadia Heninger y Emmanuel Thomé han logrado dos avances contra RSA de 1024 bits en pocas semanas: una técnica de falsificación de firmas ~1.600x más eficiente contra claves de digest corto y un algoritmo de factorización por lotes que recorta ~30x el coste marginal por clave adicional. Validado reproduciendo la clave RSA-1024 ya resuelta con 3,5x menos CPU. RSA-2048+ no está afectado, pero el mensaje es otro: años de criptoanálisis comprimidos en semanas.",
+          "source": "https://cryptobriefing.com/google-deepmind-ai-rsa-1024-bit-weaknesses/",
+          "source_name": "CryptoBriefing / DeepMind",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "OpenAI cierra los primeros 11.000 M$ de su ronda a 1,25 billones de valoración",
+          "summary": "Bloomberg informa del primer cierre de la mega-ronda, con SoftBank y MGX participando: muy por debajo de los 30.000 M$ objetivo y de los 1,5 billones de valoración que pedía OpenAI. El hambre de financiación IA se enfría tras el desplome post-elecciones de media semana.",
+          "source": "https://www.bloomberg.com/news/articles/2026-11-06/openai-completes-11-billion-portion-of-funding-at-1-25-trillion-value",
+          "source_name": "Bloomberg",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "El IPO de Anthropic se reprisa a 1,2-1,3 billones tras el desplome bursátil",
+          "summary": "Tras el jueves negro (Nasdaq 100 -6,4%, el peor día desde la pandemia, con ~2,3 billones de capitalización volatilizados y Nvidia cayendo un 8-9%), los compradores hablan ya de 1,2-1,3 billones (algunos hasta 1,1) frente a los 1,4-1,5 comunicados a los banqueros y un objetivo inicial de hasta 2 billones. Reuters duda de que el roadshow pueda arrancar la semana del 9 de noviembre.",
+          "source": "https://www.bloomberg.com/news/articles/2026-11-06/anthropic-ipo-valuation-expectations-pressured-after-ai-rout",
+          "source_name": "Bloomberg / Axios",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "METR: Anthropic mejora capacidades ~1,9x más rápido, y atribuye a la IA ~80% de esa aceleración",
+          "summary": "La evaluación independiente (5 de noviembre) mide un crecimiento 1,9x más veloz del benchmark interno AECI desde octubre de 2025 (IC 95%: 1,5-2,8x), incluyendo snapshots no publicados, y estima que la propia IA explica ~80% de la aceleración, sin cuello de botella claro a 12 meses. El detalle incómodo: Anthropic tachó la mayor parte de la evidencia y METR admite que eso dificulta verificar su trabajo.",
+          "source": "https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/",
+          "source_name": "METR",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "PSI demuestra la conjetura de Aaronson-Ambainis (abierta desde 2008) con un modelo privado de Anthropic",
+          "summary": "Physical Superintelligence afirma que su sistema interno de investigación, montado sobre un modelo de Anthropic sin publicar, completó la prueba de la conjetura que acota cuándo los ordenadores cuánticos logran aceleración exponencial —en su tercer día de operación, con Lean verificando cada paso y dos refinamientos posteriores. La demostración más seria hasta ahora de 'IA matemática' sobre un problema abierto de verdad.",
+          "source": "https://psi.inc/research/aaronson-ambainis/",
+          "source_name": "PSI (Physical Superintelligence)",
+          "star": false
+        }
+      ],
+      "summary": "Fin de semana con digest denso: la financiación IA se enfría tras el desplome bursátil del jueves (OpenAI cierra 11.000 M$ a 1,25 B$ de valoración, el IPO de Anthropic se reprisa a la baja) mientras los agentes IA acaparan titulares — de la criptoanálisis RSA de DeepMind al ciberdelito autónomo documentado por Check Point. China empuja en pesos abiertos y multimodales: ERNIE 5.5 Flash Base 280B y Ling-3.2-flash 560B."
+    },
+    {
       "date": "2026-11-06",
       "news": [
         {
@@ -7329,68 +7439,6 @@
         }
       ],
       "summary": "Semana intensa: Higgsfield lanza Seedance 2.5 con video 4K nativo, GitHub sufre su sexta caída en agosto afectando a Copilot, y Cloudflare bate expectativas con un giro total al 'internet agéntico'."
-    },
-    {
-      "date": "2026-08-07",
-      "news": [
-        {
-          "category": "general",
-          "title": "ChatGPT elimina límites de texto para usuarios gratuitos",
-          "summary": "OpenAI anuncia chats de texto ilimitados en las capas Free y Go de ChatGPT, con GPT-5.6 Luna como modelo por defecto. Incluye un botón 'Think' para razonamiento profundo. Los usuarios Plus/Pro reciben GPT-5.6 Sol actualizado con más fiabilidad en hechos y un slider de razonamiento.",
-          "source": "https://techcrunch.com/2026/08/06/openai-brings-unlimited-chatgpt-text-chats-to-free-users",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "OpenAI, AWS, Cursor, Microsoft y Vercel lanzan Agent Plugins: estándar abierto para extensiones de agentes",
-          "summary": "Agent Plugins 1.0.0 es un estándar vendor-neutral para empaquetar Agent Skills y servidores MCP en plugins portables. Compatible desde el lanzamiento con Codex, ChatGPT, Cursor, GitHub Copilot, Kiro y VS Code. Google se une como Core Maintainer.",
-          "source": "https://9to5mac.com/2026/08/06/gpt-5-turning-one-as-openai-shares-new-agent-plugins-standard",
-          "source_name": "9to5Mac",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Anthropic confirma equipo interno de diseño de chips IA para Claude",
-          "summary": "Anthropic está construyendo un equipo in-house para diseñar chips personalizados para sus modelos Claude, con salarios hasta $485K. Mantiene estrategia multi-chip (AWS, Google, NVIDIA, AMD) mientras desarrolla su silicon propio.",
-          "source": "https://www.reuters.com/business/anthropic-build-in-house-chip-design-team-claude-hire-engineers-2026-08-05",
-          "source_name": "Reuters",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Cloudflare Wallets: identidad y billeteras programables para agentes IA",
-          "summary": "Cloudflare anuncia Wallets y cloudflare.pay para dar a los agentes IA una identidad estable y capacidad de pago. Account Wallets con límites controlados por humanos, Virtual Wallets por API key, y pagos x402 en stablecoins. Reservas abiertas desde el 4 de agosto.",
-          "source": "https://www.cloudflare.com/press/press-releases/2026/cloudflare-gives-ai-agents-an-identity-and-a-wallet",
-          "source_name": "Cloudflare",
-          "star": true
-        },
-        {
-          "category": "video",
-          "title": "Higgsfield Global Film Festival: $1M en premios por la mejor película IA",
-          "summary": "Higgsfield lanza su festival de cine IA con $1M en premios en efectivo. Edwin Catmull (co-fundador de Pixar, laureado Turing) y Phedón Papamichael (cinematógrafo de Ford v Ferrari) se unen al jurado. Seedance 2.5 entra en acceso ilimitado desde el 7 de agosto.",
-          "source": "https://x.com/higgsfield",
-          "source_name": "Higgsfield AI (X)",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Google lanza agentes IA que llaman a tiendas físicas por ti",
-          "summary": "Google cruza la línea de los agentes que interactúan con el mundo real: sus asistentes ahora pueden llamar a tiendas para verificar inventario y completar compras. Un hito que establece precedente para toda la industria de agentes conversacionales.",
-          "source": "https://assindo.com/news/ai-agent-news-august-2026",
-          "source_name": "Assindo",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10248 → b10299 disponible (51 builds nuevos, hardening de server y fixes críticos)",
-          "summary": "Desde tu build b10248 hay 51 builds nuevos hasta b10299. Highlights: hardening de file_glob_search contra junctions en Windows (b10289), fix de CORS proxy (b10297), fix de strides en tensores cuantizados (b10295), chunk save/load en MTMD (b10298), y hardening de Metal para threadgroup arrays (b10299). Se recomienda actualizar.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Semana intensa: OpenAI abre ChatGPT gratis sin límites y lanza el estándar Agent Plugins, Anthropic entra en hardware propio, Cloudflare da billeteras a los agentes, y Higgsfield anuncia su festival de cine IA con $1M en premios."
     }
   ]
 }
