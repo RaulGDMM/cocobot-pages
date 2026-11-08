@@ -5,6 +5,60 @@
   },
   "days": [
     {
+      "date": "2026-11-08",
+      "news": [
+        {
+          "category": "llama",
+          "title": "Basalt 0.3.1: el tier SSD de expertos llega a Qwen3.8-Flash-Next, con packs UD-IQ4_XS (97,6 GB) y UD-IQ1_S (70,4 GB)",
+          "summary": "El fork de linaje Strata unifica en v0.3.1 el volcado de expertos a SSD (aviso 'N experts on SSD', métrica engine.spill y ssd_share por request) para todos los modelos, rediseña la reserva de RAM (--ram-reserve-mib sustituye los suelos antiguos) y estrena packs Flash-Next: UD-IQ4_XS de 97,6 GB y UD-IQ1_S de 70,4 GB (experts.layout v7, exige esta versión), con KV int8/q4_0/k8v4 opcional. Cumple por fin el disparador que pedíamos (tier disco/SSD): en una caja 32+64 GB podría repartir expertos entre VRAM+RAM+SSD, pero sigue siendo compilar de fuente (MSVC/CUDA 13) y el impacto del spill en decode está por medir — candidato a A/B real contra el fork Strata; muro aún no derribado.",
+          "source": "https://github.com/jesdga95/basalt/releases",
+          "source_name": "GitHub Basalt",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12182→b12202: el PR #30966 pasa a merged — los expertos fallidos del MoE cache pueden computarse en CPU",
+          "summary": "El PR #30966 (vigilado como parte de la serie MTP/mainline) se fusionó el 7/11 y llega en b12191: --moe-cache-cpu-share F calcula en CPU una fracción de los fallos del MoE cache desde los expertos en RAM en vez de subirlos, con script moe-cache-tune.py para calibrar (en la máquina del autor: 24,2→47,6 t/s con share 0,95). Completan el lote b12201 (speculative: no aplicar el MoE cache al modelo draft, relevante para MTP/spec) y b12199 (sanitiza UTF-8 inválido en argumentos de tool-calls PEG); el MTP de qwen4exp sigue sin mainline y el fork Strata (engine 0.2.0) no se ve afectado — update rutinario vía .bat, sin urgencia.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Google ADK 2.14.0: el framework de agentes estabiliza A2A, entornos de ejecución y evaluación",
+          "summary": "Publicado el 7/11, saca de experimental el protocolo agente-a-agente A2A, los entornos de ejecución, la evaluación y el runtime (42 módulos pierden la etiqueta experimental), y añade evaluación multi-run en paralelo, ToolArgsMatcher semántico y TeamsRunner, con +23% de velocidad en flujos multi-turno largos y −9% de pico de memoria. La estabilización de A2A es lo relevante: interoperabilidad entre frameworks de distintos vendors ya con calidad de infraestructura.",
+          "source": "https://github.com/google/adk-python/releases/tag/v2.14.0",
+          "source_name": "GitHub Google ADK",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "NVIDIA detalla la memoria de Vera Rubin NVL72: +3% de HBM y hasta 30x de inferencia agéntica por coste",
+          "summary": "Según NVIDIA (datos SemiAnalysis AgentX, 6/11), los racks Vera Rubin NVL72 rinden hasta 30x en throughput agéntico ajustado a coste frente a GB300 NVL72 con casi la misma HBM por GPU: la clave es NVFP4 en pesos y KV, pesos repartidos por las 72 GPUs, la RAM de la CPU Vera como tier y Dynamo migrando contexto a almacenamiento barato — la misma filosofía de tiers que ya usa un motor de inferencia local, a escala de rack. Cifras del fabricante, sin benchmark independiente aún.",
+          "source": "https://blogs.nvidia.com/blog/vera-rubin-nvl72-efficiency-ai-agents/",
+          "source_name": "NVIDIA Blog",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "OpenAI ficha a Hacktron para atacar sus propios sistemas y ensancha su perímetro de seguridad",
+          "summary": "Anunciado el 7/11: la firma de agentes de pentesting y red teaming Hacktron probará junto a ingenieros de OpenAI las costuras entre sus servicios y plataformas de terceros (auth, handoffs de datos, permisos), y recibe acceso ampliado a modelos frontera vía Daybreak Red. Tercer movimiento de la semana en seguridad tras Cathedral y la subida de bug bounties.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-8-2026-openai-taps-hacktron-for-bug-hunts-muse-wonder-for-everyone-gin",
+          "source_name": "AI Daily Digest (dev.to)",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "H3 Dials: diales de 14 KB para gobernar movimiento y mood en MiniMax H3 sin reentrenar nada",
+          "summary": "Publicado el 6/11: un 'dial' es un fichero diminuto generado de un par de prompts opuestos ('congelado' vs 'corriendo y saltando') que, cargado en el workflow de ComfyUI, desplaza la generación con un slider — el de movimiento va de ~0,05x a ~2,7x, y el pack 'villainy' trae ocho diales de tono (sinister, creepy, unhinged…). Funciona en el modelo base y en Pika H3 Flex; control granular sin training y sin apenas peso, muy útil para afinar clips sin tocar seeds.",
+          "source": "https://www.kombitz.com/2026/11/07/ai-image-video-model-news-roundup-november-7-2026/",
+          "source_name": "Kombitz",
+          "star": true
+        }
+      ],
+      "summary": "Domingo tranquilo de resaca del viernes, con el movimiento real en motores de inferencia: llama.cpp fusiona la ejecución en CPU de los expertos fallidos del MoE cache y Basalt (linaje Strata) reporta tier SSD para los expertos de Qwen3.8-Flash-Next, acercando el A/B en cajas de 64 GB. En agentes, Google estabiliza ADK 2.14 con A2A, y NVIDIA detalla la estrategia de memoria de Vera Rubin (NVFP4 + tiers, 30x agéntico declarado)."
+    },
+    {
       "date": "2026-11-07",
       "news": [
         {
@@ -7393,52 +7447,6 @@
         }
       ],
       "summary": "Semana tensa en IA: OpenAI frena Astra por riesgos cibernéticos críticos, Cloudflare lanza Kitesurf para agentes, Stanford demuestra 37.000 agentes colaborando en descubrimiento farmacéutico, y Qwen 3.8 Max promete abrir sus pesos esta semana."
-    },
-    {
-      "date": "2026-08-08",
-      "news": [
-        {
-          "category": "video",
-          "title": "Higgsfield lanza Seedance 2.5: video 4K nativo, hasta 30 segundos y 50 referencias multimodales",
-          "summary": "ByteDance/Higgsfield estrena Seedance 2.5, su modelo de video más avanzado: salida 4K nativa, clips de hasta 30 segundos en una sola generación, 50 referencias multimodales simultáneas para mantener consistencia facial/objeto, audio generado en el mismo paso (paso, motor, música sincronizados), y adherencia al prompt +20% respecto a 2.0. Acceso ilimitado gratuito por 7 días desde el 7 de agosto.",
-          "source": "https://higgsfield.ai/seedance/2.5",
-          "source_name": "Higgsfield",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "GitHub Actions y Pages sufren su sexta caída en agosto: Copilot Coding Agent también afectado",
-          "summary": "GitHub registró su sexto incidente en los primeros 6 días de agosto: Actions degradado desde las 15:22 UTC, con Pages, Copilot code review, Copilot coding agent, hosted runners y Enterprise Importer arrastrados. La frecuencia de caídas (26 en julio, 23 en junio) sugiere un problema estructural posiblemente ligado a la carga creciente de herramientas IA como Copilot.",
-          "source": "https://aiweekly.co/alerts/github-actions-and-pages-stumble-in-sixth-august-outage",
-          "source_name": "The Register / AI Weekly",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Cloudflare bate Q2 2026: $696M en ingresos (+36% YoY) y giro estratégico al 'internet agéntico'",
-          "summary": "Cloudflare reportó Q2 con $696M de ingresos (+36% interanual), superando estimaciones. La acción subió un 17.4% en sesión extendida. El mensaje clave: el tráfico de agentes IA ya es un driver estructural. Más de 7.4M de desarrolladores en la plataforma (+2M solo en Q2). Margen bruto mejoró secuencialmente por primera vez en 8 trimestres (73.1%).",
-          "source": "https://www.investing.com/news/company-news/cloudflare-q2-2026-slides-agentic-internet-drives-36-revenue-growth-93CH-4844865",
-          "source_name": "Investing.com",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic cierra acuerdo de $10B con Volta, startup de infraestructura IA respaldada por Nvidia",
-          "summary": "Anthropic firmó un contrato de $10 mil millones con Volta Infra Holdings, una startup fundada en 2026 que no existía hace 6 meses. Volta proveerá 133 MW de capacidad desde un datacenter en Noruega alimentado por energía hidroeléctrica con chips Nvidia Vera Rubin. La entrega se hará en dos fases hasta marzo 2027. Volta ya levantó $300M de VC (aA16Z, Altimeter) con Nvidia y Michael Dell como inversores.",
-          "source": "https://the-decoder.com/anthropic-locks-in-10-billion-of-compute-from-volta-a-cloud-startup-that-didnt-exist-six-months-ago",
-          "source_name": "The Decoder",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10299 → b10327 disponible (28 builds nuevos, fixes CUDA/Metal/SYCL/MTMD)",
-          "summary": "Desde tu build actual (b10299) hay 28 releases hasta b10327: fix de CUDA en kernels cuantizados (b10327), timing de TTS con vocoder (b10326), coalescencia de cargas ssm_conv en SYCL (b10322), fix de NORM/RMS_NORM en Metal para longitudes parciales de simdgroup (b10321), y corrección de longest_edge en MTMD ignorando píxeles min/max (b10319). Sin CVEs nuevos.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Semana intensa: Higgsfield lanza Seedance 2.5 con video 4K nativo, GitHub sufre su sexta caída en agosto afectando a Copilot, y Cloudflare bate expectativas con un giro total al 'internet agéntico'."
     }
   ]
 }
