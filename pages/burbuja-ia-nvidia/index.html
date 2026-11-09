@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>¿Estallará la burbuja de la IA? — El caso Nvidia · Informe 09-11-2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫧</text></svg>">
 <meta name="description" content="Investigación completa (9-nov-2026): el escándalo de Jensen Huang y la presunta espía china, la caída de Nvidia (-27% desde el pico, -1,4 billones $), si la burbuja IA está explotando y qué hará los precios de GPUs y RAM. Fuentes verificadas y opinión de Cocobot.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -199,8 +200,8 @@ footer a{color:var(--dim)}
   .topbar .brand{display:none}
   .topbar{justify-content:space-between}
   .hero{min-height:560px}
-  .hero-kicker{margin-top:74px}
-  .status-pill{top:64px;right:12px;font-size:.6em}
+  .hero-kicker{margin-top:106px;font-size:.62em;letter-spacing:.24em}
+  .status-pill{top:60px;left:50%;right:auto;transform:translateX(-50%);font-size:.58em}
   .stats{grid-template-columns:1fr 1fr}
   .grid2,.dossier,.scen{grid-template-columns:1fr}
   .buyguide{grid-template-columns:1fr 1fr}
@@ -285,15 +286,15 @@ footer a{color:var(--dim)}
       <div class="t">El NYT destapa Megaspeed</div>
       <div class="x">El <a href="https://www.nytimes.com/2025-10-09/technology/nvidia-chips-china-megaspeed.html" target="_blank" rel="noopener noreferrer">New York Times</a> revela que el Departamento de Comercio de EE.UU. investiga si <b>Megaspeed</b> —cuyo brazo malasio <b>Speedmatrix</b> había comprado miles de millones en equipos— ayuda a China a <b>esquivar el control de exportaciones</b>. Singapur abre investigación policial. Bloomberg añade en diciembre que Washington investiga la propiedad de la empresa. La protagonista, Alice Huang, aparece ya en la foto junto a Jensen.</div>
     </div>
-    <div class="tl bad">
-      <div class="d">13-OCT-2026 · LA BOLSA HUELE SANGRE</div>
-      <div class="t">"The AI trade is turning"</div>
-      <div class="x"><a href="https://www.investing.com/news/economy-news/analysisbrutal-session-for-chip-stocks-shows-ai-trade-is-turning-4945597" target="_blank" rel="noopener noreferrer">Reuters</a>: sesión brutal en semiconductores (KOSPI −6%, Kioxia −13%). El bono de CoreWeave dispara su rendimiento al 15%. El FMI advierte: "las consecuencias de una corrección de la IA podrían ser globales". BlackRock baja la bolsa de EE.UU. a neutral. El <a href="https://www.cnbc.com/2026-10-21/ai-boom-spending-profit.html" target="_blank" rel="noopener noreferrer">IPO de Elice se hunde un 32% el día del estreno</a>; Firmus retira su OPA de 5.000 M$ en Australia.</div>
-    </div>
     <div class="tl">
       <div class="d">06-OCT-2026 · EL PICO</div>
       <div class="t">Máximo histórico: $239,24</div>
       <div class="x">Último cierre en máximos de Nvidia. Capitalización ~5,8 billones de $: la empresa más valiosa del mundo. Nadie recuerda esto dos semanas después; el 6 de noviembre ya vale ~4,5. Según <a href="https://www.statista.com/statistics/1637619/largest-companies-in-the-world-by-market-value/" target="_blank" rel="noopener noreferrer">Statista</a>, el 9-nov <b>Apple (≈4,97 billones) le devuelve el trono</b> (Nvidia: 2ª).</div>
+    </div>
+    <div class="tl bad">
+      <div class="d">13-OCT-2026 · LA BOLSA HUELE SANGRE</div>
+      <div class="t">"The AI trade is turning"</div>
+      <div class="x"><a href="https://www.investing.com/news/economy-news/analysisbrutal-session-for-chip-stocks-shows-ai-trade-is-turning-4945597" target="_blank" rel="noopener noreferrer">Reuters</a>: sesión brutal en semiconductores (KOSPI −6%, Kioxia −13%). El bono de CoreWeave dispara su rendimiento al 15%. El FMI advierte: "las consecuencias de una corrección de la IA podrían ser globales". BlackRock baja la bolsa de EE.UU. a neutral. El <a href="https://www.cnbc.com/2026-10-21/ai-boom-spending-profit.html" target="_blank" rel="noopener noreferrer">IPO de Elice se hunde un 32% el día del estreno</a>; Firmus retira su OPA de 5.000 M$ en Australia.</div>
     </div>
     <div class="tl pol">
       <div class="d">28-OCT-2026 · LAS GRIETAS CORPORATES</div>
@@ -695,6 +696,7 @@ document.addEventListener('DOMContentLoaded', function(){
   function bubbleR(prog){ return R * prog; }
 
   function drawBubble(r, hueShift, fillA){
+    if (r < 1) return; // primeras centésimas de la inflación: nada que dibujar
     ctx.save();
     // cuerpo: degradado radial casi invisible con rim
     var g = ctx.createRadialGradient(cx-r*0.35, cy-r*0.4, r*0.05, cx, cy, r);
@@ -711,7 +713,8 @@ document.addEventListener('DOMContentLoaded', function(){
       ctx.lineWidth = (1 + (i%2)*1.6) * dpr;
       ctx.beginPath();
       var a0 = i*1.1 + hueShift*0.004;
-      ctx.arc(cx, cy, r - i*1.5*dpr, a0, a0 + 1.4 + (i%2));
+      var rr = Math.max(0.6, r - i*1.5*dpr);
+      ctx.arc(cx, cy, rr, a0, a0 + 1.4 + (i%2));
       ctx.stroke();
     }
     // brillo especular
@@ -771,6 +774,8 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function frame(now){
+    // reagendar SIEMPRE y primero: un fallo de dibujo nunca debe matar el bucle
+    if (!reducedMotion) requestAnimationFrame(frame);
     var el = (now - phaseT)/1000;
     var rEff = R;
     ctx.clearRect(0,0,W,H);
@@ -857,9 +862,7 @@ document.addEventListener('DOMContentLoaded', function(){
         ctx.fillText(gl.txt, gl.x, gl.y);
       }
     }
-
-    if (!reducedMotion) requestAnimationFrame(frame);
-    else { /* una sola pasada estática */ }
+    // (el reagendado vive arriba del todo de frame(); nunca aquí, o se duplica)
   }
 
   function burst(){
