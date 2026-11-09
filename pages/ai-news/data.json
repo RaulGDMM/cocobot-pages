@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-11-09",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Mistral abre los pesos de Large 4 'Le Chonk': 1T parámetros, 52B activos y licencia MIT con cláusula anti-MaaS",
+          "summary": "Mistral publica los pesos completos de Large 4 en Hugging Face: MoE multimodal nativo de ~1T totales/52B activos, 1M de contexto, entrenado desde cero en infraestructura europea. Licencia Mistral Ecosystem Open-Weight (MIT modificado: venderlo como MaaS exige acuerdo comercial), 41% en Terminal-Bench 4.0, empate con GLM-5.3 en el índice de agentes de código de Artificial Analysis usando 47% menos tokens, y soporte día uno en vLLM y llama.cpp con quants GGUF más recetas FP8/NVFP4 para Blackwell. API: $0,70/$2,10 por M tokens.",
+          "source": "https://mistral.ai/news/mistral-large-4-oss/",
+          "source_name": "Mistral",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "OpenAI lanza GPT-6.1 Terra: el modelo medio sube a la línea 6.1 con recorte de precio del 50%",
+          "summary": "Terra, que se quedó fuera cuando salieron GPT-6 Sol y Luna, salta de GPT-5.6 a GPT-6.1: $1/M input y $5/M output, ~3x más rápido que GPT-6 Astra y GPT-6.1 Sol según OpenAI (benchmark interno), y a la altura de Astra con un décimo del precio por token. Disponible ya como gpt-6.1-terra en API, ChatGPT Work y Codex; para el código más complejo OpenAI sigue recomendando Sol o Astra.",
+          "source": "https://featureddaily.com/news/openai-launches-gpt-6-1-terra-a-faster-cheaper-medium-sized-model",
+          "source_name": "FeaturedDaily",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "LG abre gratis la API de K-EXAONE 2.5: +70% en 8 semanas y nivel agéntico de DeepSeek y GLM",
+          "summary": "En el NVIDIA AI Day Seoul, LG AI Research presenta K-EXAONE 2.5, un refuerzo de su modelo soberano con metodología de entrenamiento mejorada: 74.6 en AutomationBench (DeepSeek: 74.9), 77.3 en Claw-Eval y 59.2 en SWE-Bench Pro (supera a DeepSeek en las tres; GLM manda en código). Desde hoy API gratuita para quien quiera clave; la apuesta es tener modelo frontier propio en enero.",
+          "source": "https://www.asiae.co.kr/en/article/2026110908593029581",
+          "source_name": "The Asia Business Daily",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "VIDRAFT libera Darwin-180B-RSI-R3: un MoE de 180B auto-mejorado que nace de Qwen3.8-Flash-Next",
+          "summary": "La coreana VIDRAFT publica los pesos de Darwin-180B-RSI-R3, tercera iteración de su bucle de auto-mejora recursiva (RSI) construido sobre el checkpoint de Qwen3.8-Flash-Next — la base de tu motor: 73.68 en SuperCLUE de mates y ciencias, primero entre open-weights y segundo absoluto tras los cerrados. ~3B activos por token y GGUF 4-bit de ~111 GB: en tu caja de 64 GB no cabe y los benchmarks son del fabricante, pero es la señal de que Flash-Next está vivo como base de fine-tunes serios.",
+          "source": "https://dev.to/ai_openfree_b23025ef075cf/darwin-180b-rsi-r3-vidraft-releases-weights-for-its-recursively-self-improved-180b-moe-reasoning-22a9",
+          "source_name": "DEV Community",
+          "star": false
+        },
+        {
+          "category": "video",
+          "title": "Sulphur-3: el fine-tune sin censura de MiniMax H3 llega a la versión con audio y pesos desde 11,4 GB",
+          "summary": "FusionCow migra su serie Sulphur a H3 y publica BF16 (40,2 GB), INT8 (20,9 GB) y W4A8 (11,4 GB), más una variante Ref2VA que acepta imágenes de referencia para estabilizar cara y ropa entre frames. Su métrica estrella toca de lleno tu 5090: INT8 Ref2VA en 32 GB de VRAM genera 124 frames a 672x384 en ~50 s. Peros: los archivos en HF van por solicitud con aprobación manual, y las cifras son del autor.",
+          "source": "https://news.hamidun.com/en/news/15410/fusioncow-releases-sulphur-3-a-minimax-h3-fine-tune-for-vide",
+          "source_name": "Hamidun News (Neurogen)",
+          "star": true
+        },
+        {
+          "category": "image",
+          "title": "P-JiT: un modelo de imagen open-weight entrenado por dos personas con 21.000 $",
+          "summary": "El grupo Linum (dos investigadores) publica Pyramid-JiT, un generador de imágenes que ataca los dos dolores clásicos —coste de generación y control— con un entrenamiento piramidal que costó 21.000 $ y pesos abiertos. Lejos de los frontier en calidad bruta, pero cada P-JiT ajusta más la curva de cuánto cuesta entrar en esto.",
+          "source": "https://ground.news/article/p-jit-an-image-generation-ai-model-that-successfully-achieved-ultra-low-cost-and-efficient-training-is-now-available-as-open-weights",
+          "source_name": "Ground News / GIGAZINE",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "FreeToken 0.2.2: decodificación especulativa MTP/DFlash2 para Qwen3.8-Flash-Next y GGUF NVFP4 con scales",
+          "summary": "La vigilancia de engines salta por dos criterios a la vez: FreeToken añade --speculative-algorithm mtp (la capa MTP del propio checkpoint) y dflash (drafter DFlash2) para Flash-Next — en H100 pasa de 92,9 a 149,7 t/s con MTP y 174,2 con DFlash2 (cifras del autor; el GGUF de Flash-Next exige pack MTP de Strata) — y ya lee los scales NVFP4 de los GGUF qwen4exp, el muro que impedía cargar packs NVFP4. Además kernels CPU NVFP4 W4A8 más rápidos en hybrid. Sigue sin tier SSD de expertos (~63,3 GB anfitriones por diseño), así que el encaje real en 64 GB sigue sin demostrar: re-trigger disparado, candidato a A/B si alguien confirma footprint.",
+          "source": "https://github.com/FlashML-org/FreeToken/releases/tag/v0.2.2",
+          "source_name": "GitHub",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12202→b12212: Top-K de CUDA/Metal determinista y fast path SSM para Zamba2",
+          "summary": "Diez builds: el radix Top-K de CUDA/Metal resuelve empates de forma determinista (#31084 — reproducibilidad de seeds y ruteos), fast path d_state=64 en SSM_SCAN (+35% en Zamba2), refactor de mtmd sin clip.h, llamafile vxe bf16/q8_0 y fix del backend zdnn en releases. Nada toca MTP, qwen4exp ni NVFP4 — update rutinario opcional vía .bat; el MTP de qwen4exp sigue sin mainline.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "DeepMind: WeatherNext Cyclones gana un día entero de aviso de huracanes y abre todos sus pesos",
+          "summary": "Paper en Nature con el NOAA y el Met Office: el ensemble pasa de 50 a 1.000 miembros y añade más de un día de antelación en trayectoria e intensidad de ciclones —un avance que llaman equivalente a una década meteorológica— funcionando con datos 100 veces más groseros (28 km) de lo que la teoría pedía. Código y pesos de Cyclones, WeatherNext 2 y el mini (una TPU, Colab gratuito) quedan abiertos para que cada agencia entrene su modelo local.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm",
+          "source_name": "AI Daily Digest (DEV)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "xAI activa marcas de agua en el texto de Grok por defecto en toda su API",
+          "summary": "Desde el 7 de noviembre, las salidas de siete variantes de Grok llevan una marca de agua estadística invisible verificable vía header x-watermark; el opt-out es a propósito engorroso (solo admins de equipo, por modelo y confirmando una excepción legal). La documentación cita el Artículo 50(2) del AI Act europeo, cuyo plazo de marcado vence el 2 de diciembre: la regulación europea dictando el diseño de las APIs americanas.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-9-2026-mistral-opens-le-chonk-weights-grok-api-watermarks-by-default-2gdm",
+          "source_name": "AI Daily Digest (DEV)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Bloomberg: el nuevo CEO de Apple aprieta por una Siri agéntica de multi-paso mientras Amazon deja comprar por texto con Alexa",
+          "summary": "Según Bloomberg (8/11), John Ternus presiona a Craig Federighi para que Siri complete tareas de varios pasos en lugar de responder consultas sueltas, con objetivo en iOS 28 y 2027; Apple no confirma nada. En paralelo, Amazon estrena comprar por SMS/texto con Alexa (búsqueda, comparación y compra autónoma) justo cuando mantiene vetado el agente de compras de Meta en su web: los agentes solo son bienvenidos en la casa del vecino.",
+          "source": "https://aitoolsrecap.com/Blog/ai-news-november-09-2026",
+          "source_name": "AI Tools Recap (Bloomberg)",
+          "star": false
+        }
+      ],
+      "summary": "Día fuerte: Mistral abre los pesos de Large 4 'Le Chonk' (1T/52B activos) y OpenAI lanza GPT-6.1 Terra a mitad de precio, mientras la vigilancia de engines salta — FreeToken 0.2.2 trae MTP/speculative para Qwen3.8-Flash-Next y ya acepta GGUF NVFP4. China (LG, Tencent, VIDRAFT) sigue pisando el terreno open-weight."
+    },
+    {
       "date": "2026-11-08",
       "news": [
         {
@@ -7393,60 +7487,6 @@
         }
       ],
       "summary": "Meta entra en la guerra de agentes de código con Muse Code y Muse Spark 1.2, mientras Google sacude DeepMind con cambios de liderazgo y transforma Maps en un agente de compras. llama.cpp sigue avanzando con nuevos builds."
-    },
-    {
-      "date": "2026-08-09",
-      "news": [
-        {
-          "category": "general",
-          "title": "OpenAI pausa Astra: modelo fronterizo con capacidades cibernéticas críticas",
-          "summary": "OpenAI suspendió actividades internas con Astra tras evaluaciones que mostraron avances significativos en coding agéntico y ciberseguridad. El modelo podría identificar y desarrollar exploits zero-day de todos los niveles en sistemas endurecidos sin ayuda humana. Es la primera vez que un laboratorio frena públicamente un modelo por estos motivos, en un contexto donde Anthropic y Meta también revelaron incidentes de contención de agentes.",
-          "source": "https://techcrunch.com/2026/08/07/openai-says-it-slowed-astra-model-development-over-security-concerns",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Cloudflare lanza Kitesurf: navegador cloud diseñado exclusivamente para agentes IA",
-          "summary": "Kitesurf es un navegador headless alojado en Cloudflare Workers, optimizado para tareas de agentes IA: navegación web, extracción de HTML, capturas de pantalla y automatización de formularios. Elimina features innecesarios para agentes (pestañas, temas, extensiones) y consume menos CPU/ram que Chromium. Disponible en beta a través de Browser Run.",
-          "source": "https://www.iclarified.com/101694/cloudflare-launches-kitesurf-a-browser-built-for-ai-agents",
-          "source_name": "iClarified",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "OpenAI adquiere NextSlide, startup de presentaciones con IA",
-          "summary": "El equipo de NextSlide se integra en OpenAI para trabajar en ChatGPT. NextSlide convertía notas, documentos y prompts en presentaciones editables y pulidas. El acuerdo se cerró antes en 2026 pero se hizo público el 8 de agosto. El fundador Ahmed Beshry (ex-Caper AI, adquirida por Instacart) no reveló los términos financieros.",
-          "source": "https://aiweekly.co/alerts/openai-acquires-presentation-startup-nextslide-for-chatgpt",
-          "source_name": "AI Weekly",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Stanford opera 37.000 agentes IA como biotech virtual: Merck confirma independientemente un diseño de fármaco",
-          "summary": "James Zou de Stanford presentó el 'Virtual Biotech': un sistema con decenas de miles de agentes especializados organizados en divisiones (descubrimiento de targets, diseño molecular, ensayos clínicos) supervisados por un agente CSO. En un caso, el sistema propuso un diseño de conjugado anticuerpo-fármaco para el target B7-H3 de cáncer de pulmón que Merck replicó independientemente meses después.",
-          "source": "https://venturebeat.com/orchestration/stanford-is-running-37-000-ai-agents-as-a-virtual-biotech-and-one-of-its-drug-designs-got-independently-confirmed-by-merck",
-          "source_name": "VentureBeat",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10327 → b10331 disponible (4 builds nuevos, tool isolation y mejoras CUDA)",
-          "summary": "Nuevos builds incluyen: soporte inicial de aislamiento de herramientas vía Docker en el servidor (#26507), reporte del directorio de trabajo del isolate (#26773), fusión CUDA de rms_norm + mul + rope (#26767), y restricción de directorio de trabajo solo cuando una herramienta lo lee (#26762). El servidor local sigue en b10248 — hay 83 builds pendientes.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "Qwen 3.8 Max promete abrir pesos la semana del 10 de agosto: 2.4T parámetros MoE a $2/Mtok",
-          "summary": "Alibaba lanzó Qwen 3.8 Max el 3 de agosto con 2.4T parámetros (95B activos), contexto de 1M tokens y pricing de $2/$6 por millón de tokens input/output. Alibaba anunció que los pesos se abrirán la semana del 10 de agosto junto con un checkpoint más pequeño de 27B. Lidera PaperBench con 93.0 y OSWorld-Verified con 86.1 según benchmarks propios.",
-          "source": "https://www.developersdigest.tech/blog/qwen-3-8-max-release-2026",
-          "source_name": "Developer's Digest",
-          "star": true
-        }
-      ],
-      "summary": "Semana tensa en IA: OpenAI frena Astra por riesgos cibernéticos críticos, Cloudflare lanza Kitesurf para agentes, Stanford demuestra 37.000 agentes colaborando en descubrimiento farmacéutico, y Qwen 3.8 Max promete abrir sus pesos esta semana."
     }
   ]
 }
