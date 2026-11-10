@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-11-10",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Anthropic lanza Claude Fable 5.2 y Mythos 5.2: el mismo modelo, un 20% más barato y hasta 30% más rápido",
+          "summary": "Un modelo con dos niveles de acceso: Fable 5.2 para todos (salvaguardas reforzadas de ciber/bio, por defecto en Claude Code con 1M de contexto) y Mythos 5.2 reservado a organizaciones admitidas a los programas Cyber/Life Sciences Verification. API a $8/$40 por millón de tokens (-20% vs 5.1) y hasta un 30% más rápido; en las tablas de Anthropic bate a Opus 5.5 en casi todo, con la habilidad de 'investigación en IA' deliberadamente mantenida cerca de 5.5 por el miedo al RSI. Demostraciones: un equipo de agentes formalizó el Último Teorema de Fermat en 30 horas y superó 72 soluciones récord de MIPLIB. Todo llega el día que arranca el roadshow de su IPO.",
+          "source": "https://www.anthropic.com/claude-fable-and-mythos-5-2",
+          "source_name": "Anthropic",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Meta presenta Muse Ember: su modelo más pequeño para ejecución de agentes, a $0,10 por millón de tokens de entrada",
+          "summary": "El tercero de la familia Muse cubre el trabajo repetitivo de agentes: tool calls secuenciales, subtareas de código, routing, extracción y documentos largos. 1M de contexto, hasta 512K tokens de salida, texto+imagen+audio+vídeo nativos y primer modelo entrenado con Muse Wonder Full. Está en la Meta Model API como 'muse-ember-1.0' con Responses API ($0,10 entrada / $0,50 salida por millón). Artificial Analysis lo pone al nivel de Claude Haiku 5.5 haciendo el mismo trabajo por aproximadamente un tercio de coste por tarea. Sin pesos abiertos anunciados.",
+          "source": "https://www.theverge.com/tech/1029979/meta-is-launching-its-smallest-and-most-efficient-ai-model-muse-ember",
+          "source_name": "The Verge",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Strata NVFP4 fork: nueva release v0.2.13-nvfp4.1 (rebase a upstream 0.2.13) con fix clave para copias page-locked de 64 GiB",
+          "summary": "El fork se mueve a upstream 0.2.13 (engine 0.1.59) manteniendo logits y tokens greedy bit-idénticos a v0.2.0-beta-nvfp4.3 y la misma velocidad (12,2 ms/vuelta y 8.589 t/s en prompt de 32K sobre RTX 5090 en sus medidas). Fix #20: la copia de modelo page-locked por slices (un Mix de 64 GiB, por ejemplo) ya no revienta con 'adaptive swap copy failed ... invalid argument' — exactamente el escenario de la caja de 64 GB. Ojo a dos cambios de comportamiento: las llamadas a tools no declaradas ahora llegan como texto (se restaura con \"undeclared_tool_calls\": \"call\" en el run config) y el pack UD-Q3_K_XL pasa a 4 ficheros (upstream) sustituyendo al de 3 del fork. Los defaults nuevos de upstream no medidos con NVFP4 (PCIe share según CPU, verify window ancho, adaptive tier async) quedan desactivados por env var. Actualizar con update.cmd y pasar A/B contra el config actual.",
+          "source": "https://github.com/sergqwer/strata-nvfp4/releases",
+          "source_name": "GitHub sergqwer/strata-nvfp4",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "DSpine: decodificación especulativa paralela de hasta 4x en SGLang, con código abierto",
+          "summary": "Tencent Youtu Lab, Shanghai Jiao Tong y Xiamen publican DSpine ('Draft in Parallel, Condition Through Depth'): inyecta en cada capa del draft network las características de predicción en formación de la posición predecesora a la sucesora y corrige al final con una transition cache, atacando el 'suffix decay' del draft paralelo (la familia DFlash/DFlash2/DSpark). Hasta 4x de throughput en SGLang, código abierto en github.com/tencent/dspine (paper arXiv:2609.36173). Todavía no utilizable en la caja de Raúl: vive en el stack SGLang, exige entrenar la draft red por modelo y no hay nada de Qwen3.8-Flash-Next/NVFP4, pero es el heredero directo de la línea DFlash2 que ya usa vía FreeToken y conviene vigilarle las releases.",
+          "source": "https://github.com/tencent/dspine",
+          "source_name": "GitHub tencent/dspine",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12221→b12244: endpoint TTS /v1/audio/speech, audio de entrada para Gemma 4 y fixes de json_schema",
+          "summary": "Rango del 9-10 de noviembre: añade el endpoint OpenAI-compatible /v1/audio/speech (TTS), stream de audio de entrada para Gemma 4 en mtmd con resampler, carga externa de ficheros PLE (--ple como alias de --shard), adjunta scales NVFP4 de pesos en Granite (IBM), deja de subir al backend inputs que nadie lee (micro-perf), arregla response_format json_schema cuando el schema no va envuelto (#28697), quita la grammar lazy cuando hay response_format + tools (#31956) y corrige un out-of-bounds write del Flash Attention en Metal. Nada de MTP/qwen4exp en este rango: para la caja local no hay prisa por actualizar el vanilla — lo provechoso llegará cuando Strata rebasee sobre estos builds.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub ggml-org/llama.cpp",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "NVIDIA desvela GR00T 2 en CoRL: un modelo 'world-action' abierto de 2B que aprende manipulación con 400.000 horas de vídeo en primera persona",
+          "summary": "Un solo diffusion transformer predice a la vez el vídeo futuro y las acciones del robot: preentrenado con 402.730 horas de vídeo egocéntrico humano (100.000 se publican como Human-1M-100K con licencia CC BY 4.0), 10.184 horas de demos con gripper UMI y solo 23.500 de teleoperación; un checkpoint base sirve para grippers paralelos, manos dextrous y humanoides con cabezales por cuerpo. NVIDIA declara 71% de éxito medio en 50 tareas con una sola demo (95% con cinco), 40% zero-shot, y la variante Turbo corre a bordo de un Unitree G1 con una predicción en 38 ms sobre RTX 5090; cada adaptación son ~30 min de LoRA en una sola 5090. Muros honestos: son números propios y las 50 tareas se eligieron entre las que el modelo aprende bien; el código llega en diciembre. También presentó Isaac Lab 3.0.",
+          "source": "https://blogs.nvidia.com/blog/robotics-simulation-advancements-corl/",
+          "source_name": "NVIDIA Blog",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Google completa el año con cuatro sistemas TPU: 8tx de inferencia confidencial y 8i Max con doble de HBM y cómputo",
+          "summary": "Primera vez que Google presenta cuatro sistemas TPU en un año. TPU 8tx: inferencia confidencial a nivel hardware (datos y pesos protegidos incluso durante el cómputo) sobre el mismo silicio del 8t con hosts AMD EPYC de 5ª gen, hasta 2x menos latencia que 8t con penalización 'casi cero'. TPU 8i Max: dos chips 8i empaquetados — 2x cómputo, 2x SRAM, 2x ancho de banda HBM — contra el muro de memoria de agentes multi-agente con contextos de millón de tokens y máxima densidad por rack. Detalle clave: son sistemas, no chips nuevos (entrega en meses, no años). Software: TorchTPU para PyTorch/HuggingFace, backends para vLLM/SGLang, TPU Sync (jerarquía de memoria que baja KV caches del chip y recorta TTFT >90%) y Agent Compute Engine que suspende agentes en pausa.",
+          "source": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/tpu-8i-max-and-8tx/",
+          "source_name": "Google Blog (Amin Vahdat)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Anthropic paga $3.400M por 1,7 GW de generadores de gas: la electricidad sustituye a los chips como foso",
+          "summary": "Según FT y CNBC, Anthropic tomó el traspaso de un pedido de 1,7 GW de generadores de gas pesados (Caterpillar) a OnePWR Solutions por ~$3.400M, la mayor compra única de equipamiento eléctrico registrada por un laboratorio de IA: la forma de saltarse colas de interconexión a red de 5-7 años comprando slot de generación ya fabricado. Su filing de IPO actualizado revela casi $900.000M en compromisos de cómputo e infraestructura hasta 2045.",
+          "source": "https://techcrunch.com/2026/11/09/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "El consejo de NVIDIA abre una investigación independiente sobre Jensen Huang tras admitir su relación con una ejecutiva presuntamente reclutada por espionaje chino",
+          "summary": "Tras circular un memo de inteligencia de EE.UU. que afirma que Alice Huang, ejecutiva de la chipmaker singapurense Megaspeed, fue reclutada por el Ministerio de Seguridad del Estado chino para espiar a NVIDIA, Jensen Huang admitió la infidelidad en un memo interno y el consejo anunció el domingo una investigación independiente. Un catedrático de Yale (Sonnenfeld) calcula en '50-50' las probabilidades de que pierda el puesto. Es la primera vez que el CEO de la empresa estratégica del hardware de IA está bajo investigación por contrainteligencia, con la acción de NVDA de por medio.",
+          "source": "https://www.theverge.com/ai-artificial-intelligence/1030422/nvidia-jensen-huang-ai-china-alice-huang",
+          "source_name": "The Verge",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Fireworks AI admite su segunda brecha en semanas: accedieron a datasets, secretos y pesos de modelos de clientes",
+          "summary": "En update del 9 de noviembre, Fireworks reconoce que los atacantes alcanzaron sus máquinas de desarrollo a través de un proveedor cloud de terceros: además de datos de cuenta y facturación, un grupo limitado de clientes sufrió acceso a secretos, datasets y pesos de modelos incompletos, ampliando la divulgación de octubre. Bloomberg y Forbes recuerdan el riesgo estructural: para entrenar modelos propios baratos, las empresas mandan datos propietarios a plataformas de inferencia de terceros.",
+          "source": "https://www.bleepingcomputer.com/news/security/fireworks-ai-discloses-new-breach-after-cloud-provider-hack/",
+          "source_name": "BleepingComputer",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Los dots de ChatGPT ya operan sobre varios ordenadores locales, elegidos para cada tarea",
+          "summary": "Los agentes persistentes lanzados en septiembre permiten conectar varios equipos al mismo dot y elegir cuál usa en cada tarea: construir y probar una app en una máquina dedicada mientras sigues programando en el portátil, probar un cambio en Xcode en un segundo Mac y recibir capturas, reproducir un bug en una máquina con SDK antiguo o dejar que el agente navegue una interfaz sin secuestrar tu pantalla ni tu cursor. El 'puesto de trabajo' del agente se vuelve una pequeña granja personal.",
+          "source": "https://jls42.org/en/news/ia-actualites-09-nov-2026",
+          "source_name": "JLS42 (resumen diario)",
+          "star": false
+        }
+      ],
+      "summary": "Día denso con Anthropic robando el titular: Claude Fable/Mythos 5.2 salen más baratos y rápidos el mismo día que arranca su roadshow de IPO, y Meta responde en horas con Muse Ember, su modelo barato para agentes. Google redondea cuatro sistemas TPU en un año, NVIDIA enseña GR00T 2 en CoRL mientras su consejo investiga a Jensen Huang, y en el patio local toca update del fork Strata con un fix que afecta justo a cajas de 64 GB."
+    },
+    {
       "date": "2026-11-09",
       "news": [
         {
@@ -7449,44 +7543,6 @@
         }
       ],
       "summary": "Día tranquilo en IA: llama.cpp sigue su ritmo frenético con 24 builds nuevos en 48h, mientras el resto del ecosistema digiere las grandes noticias de la semana pasada."
-    },
-    {
-      "date": "2026-08-10",
-      "news": [
-        {
-          "category": "agent",
-          "title": "Meta lanza Muse Code y Muse Spark 1.2: su primer agente de código en terminal compite con Claude Code y Codex",
-          "summary": "Meta presenta Muse Code (beta), un agente de código basado en terminal alimentado por Muse Spark 1.2, su modelo más reciente optimizado para generación de código, debugging complejo y comprensión de codebases. El modelo se ofrece con pricing agresivo: $1.25/$4.25 por millón de tokens, o $0.10/$0.20 si aceptas que Meta use tus datos. Meta lo posiciona como competitivo con Claude Opus 5, GPT-5.6 Terra, Gemini 3.6 Flash y Grok 4.5.",
-          "source": "https://venturebeat.com/orchestration/meta-enters-the-ai-coding-wars-with-muse-spark-1-2-and-muse-code-with-persistent-async-background-agents",
-          "source_name": "VentureBeat",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Google reorganiza DeepMind: Demis Hassabis deja la CEO para centrarse en AGI, Jeff Dean abandona para fundar Discovery Loop",
-          "summary": "Demis Hassabis, cofundador de DeepMind y Nobel de Química 2024, pasa de CEO a Chairman de DeepMind y Chief Scientist de Alphabet para enfocarse en AGI. Koray Kavukcuoglu asume la gestión diaria como SVP. Jeff Dean, chief scientist legendario, abandona junto a otros investigadores para fundar una startup llamada Discovery Loop, con inversión de Google. La reorganización centraliza DeepMind en Mountain View y genera preocupación sobre la pérdida de independencia de la unidad británica.",
-          "source": "https://www.theguardian.com/technology/2026/aug/08/google-demis-hassabis-deepmind-shifts-role",
-          "source_name": "The Guardian",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Google Maps recibe su mayor actualización en una década: navegación 3D con Gemini y Ask Maps como agente de pedidos",
-          "summary": "Google transforma Maps con navegación inmersiva en 3D alimentada por Gemini y convierte Ask Maps en un agente de compras: puede encontrar restaurantes abiertos en tu ruta y añadir platos directamente al carrito para checkout. El lanzamiento incluye partners como Square y Toast, con Uber Eats próximamente. La actualización convierte Maps de herramienta de consulta a superficie de descubrimiento y transacción en una sola conversación.",
-          "source": "https://www.pinmeto.com/news/google-maps-ask-maps-agentic-ordering-august-2026",
-          "source_name": "PinMeTo",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10331 → b10333 disponible (2 builds nuevos, fix Q5_0 SpaceMiT y limpieza CI ROCm)",
-          "summary": "Dos builds nuevos desde el último reporte. b10333 corrige dispatch faltante de Q5_0 en el backend SpaceMiT para CPU. b10332 elimina la variable GGML_HIP_ROCWMMA_FATTN del CI. Tu servidor corre b10248, con 85 builds pendientes. No hay CVEs nuevos desde los ya conocidos (GHSA-j8rj-fmpv-wcxw CRITICAL, GHSA-3p4r-fq3f-q74v HIGH).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Meta entra en la guerra de agentes de código con Muse Code y Muse Spark 1.2, mientras Google sacude DeepMind con cambios de liderazgo y transforma Maps en un agente de compras. llama.cpp sigue avanzando con nuevos builds."
     }
   ]
 }
