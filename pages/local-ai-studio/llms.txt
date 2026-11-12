@@ -1,6 +1,6 @@
 # Local AI Studio — guía de IA local (media + LLM) para humanos y agentes
 
-Actualizado: 2026-11-01. Catálogo verificado en una RTX 5090 32 GB (referencia), Pi 5 y Mac.
+Actualizado: 2026-11-12. Catálogo verificado en una RTX 5090 32 GB (referencia), Pi 5 y Mac.
 
 ## Superficie para agentes
 - Catálogo completo (JSON): pages/local-ai-studio/catalog.json
@@ -19,8 +19,8 @@ Actualizado: 2026-11-01. Catálogo verificado en una RTX 5090 32 GB (referencia)
 
 ## Capacidades y modelos recomendados
 
-- **text-to-image** → Qwen-Image 2.1 (7B) (recomendado)
-- **image-to-image / edición (multi-referencia, RGBA)** → Qwen-Image 2.1 (edición multi-referencia y RGBA) (recomendado); FLUX 3 Image Klein (edición con referencias) (recomendado)
+- **text-to-image** → MiniMax H3-Image (33.1B destilado a 6 pasos) (recomendado)
+- **image-to-image / edición (multi-referencia, RGBA)** → MiniMax H3-Image (edición y hasta 16 referencias, un solo checkpoint) (recomendado); FLUX 3 Image Klein (edición con referencias) (recomendado)
 - **image upscaling / refine** → Upsampler de prompt de BFL para FLUX 3 (Qwen3.5-9B, opt-in --upsample) (especialista); Refiner latent Open-H3-Regenerate-2K + latent upscaler 3D conv (especialista)
 - **text-to-video** → MiniMax H3 (FL2VA, sampler PDD 8-step por defecto) (recomendado)
 - **image-to-video** → MiniMax H3 (FL2VA, primer/ultimo fotograma exactos) (recomendado)

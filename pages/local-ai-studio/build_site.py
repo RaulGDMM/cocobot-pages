@@ -10,7 +10,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 CATDIR = Path("/root/workspace/cocobot-hermes/catalog-parts")
 SECTIONS = [("image", "Imagen", "Image"), ("video", "Vídeo", "Video"), ("audio-llm", "Audio y LLM", "Audio & LLM")]
-GENERATED = "2026-11-01"
+GENERATED = "2026-11-12"
 YT = [("xaDnAqtJVM8", "Sonda Europa — cortometraje de ciencia ficción", "Sonda Europa — sci-fi short film"),
       ("-xjZmepNbU4", "Perros vs Gatos — el concierto que acaba con la guerra de internet (4K 60fps)",
        "Perros vs Gatos — the concert that ends the internet war (4K 60fps)")]
@@ -173,6 +173,9 @@ def lessons_html(lang):
         ("Un flag óptimo mal cableado falla en silencio", "A mis-wired opt-in flag fails silently",
          "El A/B de un flag de mejora de prompt se midió sin que el nodo estuviera realmente en el grafo. Verifica que el nodo aparece en el workflow enviado, no solo en el script.",
          "A prompt-enhancer flag A/B was measured with the node never actually in the graph. Verify the node appears in the submitted workflow, not just in the script."),
+        ("Un default es una medición, no una identidad", "A default is a measurement, not an identity",
+         "El campeón de 2026-09 perdió el trono en un día: con los mismos prompts y semillas de siempre, MiniMax H3-Image le ganó 4 de 6 (le escribió «LIBÑO» en el cartel y un zorro bicéfalo al antiguo default, cambió de bando las posiciones en multi-referencia) siendo ~3× más rápido. Cuando un modelo nuevo comparte familia e instalacion, re-corre la batería vieja el mismo día: el default caduca con la primera batería que pierde.",
+         "The 2026-09 champion lost its throne in a day: on the same old prompts and seeds, MiniMax H3-Image won 4 of 6 (the old default wrote “LIBÑO” on the poster and grew a two-headed fox, and it swapped sitters in multi-reference) while being ~3× faster. When a new model shares family and install, rerun the old battery the same day — a default expires with the first battery it loses."),
     ]
     out = []
     for t_es, t_en, b_es, b_en in items:
@@ -319,7 +322,7 @@ PROSE = {
       "ordenador. Sin nubes, sin suscripciones, sin límites de contenido ajeno. Esta guía documenta el stack tal "
       "como está montado y <b>medido</b> en una RTX 5090 32 GB (y en hardware menor), con tiempos reales, "
       "licencias y las lecciones de cada A/B. Está escrita para que la lean personas <i>y agentes</i>.",
- st1="<b>38</b> entradas de catálogo", st2="<b>23</b> capacidades", st3="<b>0</b> llamadas a la nube",
+ st1="<b>40</b> entradas de catálogo", st2="<b>23</b> capacidades", st3="<b>0</b> llamadas a la nube",
  st4="tiempos <b>medidos</b>, no teóricos", vcap="Los dos vídeos están generados íntegramente con este stack "
       "(canal <a href=\"https://www.youtube.com/@sintinohayamor\" target=\"_blank\" rel=\"noopener noreferrer\">Gatos Rebeldas</a>).",
  doors_t="Dos puertas: humano y agente",
@@ -348,9 +351,9 @@ PROSE = {
           "Qwen-Image 2.1 fp8/int8 (~12 GB) sobrado; MOSS fp8 cómodo; 27B Q4_K_M con offload (agradece 64 GB de RAM); LTX fp8 + tiling a 720p: experimental; H3 W8/W4 (~14 GB) en clips cortos",
           "Ideogram 4 fp8 (~15 GB) apurado; H3 cuantizado: sí, sin esperar 1080p; más de 1,5 MP, offload"),
          ("24 GB (RTX 3090/4090)", "Añade MOSS-Image (20 GB) y Qwen-Image 2.1 int8 sin apreturas",
-          "Qwen-Image 2.1 fp8 cómodo a 1024²; Ideogram 4 fp8 (~15 GB); vídeo LTX; H3 pruned INT8 ConvRot (~20 GB): tope comunitario en 24 GB",
+          "Qwen-Image 2.1 fp8 cómodo a 1024²; Ideogram 4 fp8 (~15 GB); vídeo LTX; H3 pruned INT8 ConvRot (~20 GB): tope comunitario en 24 GB. MiniMax H3-Image: el DiT pruned int8 (21 GB) no cabe junto al encoder de 32 GB — existe variante w4a8 (12,5 GB), sin medir por debajo de 32 GB",
           "H3: vía comunitaria con avisos (ver nota abajo); sin cuantizar, la soltura empieza en 32 GB"),
-         ("32 GB (RTX 5090) — esta guía", "Todo el catálogo, incl. Qwen-Image 2.1 bf16, Ideogram 4, H3 a 2K y LLMs de 27B Q6 con contexto largo",
+         ("32 GB (RTX 5090) — esta guía", "Todo el catálogo, incl. MiniMax H3-Image a 4K nativo (medido sin OOM), Qwen-Image 2.1 bf16, Ideogram 4, H3 a 2K y LLMs de 27B Q6 con contexto largo",
           "Aquí se cuantiza por comodidad, no por necesidad: int8 carga antes y muestrea igual (medido)",
           "Refinar >2K y clips H3 de 15 s a 2K: OOM")],
  hw_warn="<b>Aviso honesto:</b> el coste real no es la GPU, es el disco: el catálogo completo ocupa cientos de GB "
@@ -381,12 +384,12 @@ PROSE = {
         "(patrón broker, referencia <code>comfyui-broker.py</code> en el repo).",)],
  in_note="Consejo para agentes: instala primero ComfyUI + Manager, y <b>descarga cada modelo solo cuando el usuario "
          "elija esa capacidad</b> — ahorras cientos de GB y horas de descarga.",
- cat_t="El catálogo", cat_sub="38 entradas de modelos probados, organizadas por capacidad. Roles: ",
+ cat_t="El catálogo", cat_sub="40 entradas de modelos probados, organizadas por capacidad. Roles: ",
  leg="recomendado (default probado)", alt="alternativa", spec="especialista (gana en su nicho)",
  lic_t="Licencias y ética", lic_h="(lo aburrido que te ahorra problemas)",
  lic_b=["<b>No comercial</b>: Qwen-Image 2.1 (Qwen Research) e Ideogram 4 no se usan comercialmente sin licencia aparte. "
         "FLUX Kommunity permite comercial por debajo de 5M USD/año. MOSS-Image y ACE-Step son Apache-2.0 (comercial OK). "
-        "MiniMax H3/Music 3 tienen licencias de comunidad con exclusiones regionales — léelas.",
+        "MiniMax H3/H3-Image/Music 3 tienen licencias de comunidad con exclusiones regionales (la UE está excluida: úsalos en España solo con permiso de MiniMax) — léelas.",
         "<b>Clonación de voz</b>: solo tu voz o con consentimiento explítico de la persona. Etiqueta el contenido "
         "generado por IA: es transparencia exigida en la UE (AI Act) y sentido común en cualquier sitio.",
         "<b>Descargas</b>: usa siempre las fuentes oficiales enlazadas en cada ficha. Los mirrors caducan y nadie "
@@ -416,7 +419,7 @@ PROSE = {
       "No clouds, no subscriptions, no someone-else's content policies. This guide documents the stack as it is "
       "actually set up and <b>measured</b> on an RTX 5090 32 GB (and lesser hardware), with real timings, licenses "
       "and the lessons from every A/B. Written so both humans <i>and agents</i> can read it.",
- st1="<b>38</b> catalog entries", st2="<b>23</b> capabilities", st3="<b>0</b> cloud calls",
+ st1="<b>40</b> catalog entries", st2="<b>23</b> capabilities", st3="<b>0</b> cloud calls",
  st4="<b>measured</b> timings, not theory", vcap="Both videos are generated end-to-end with this stack "
       "(channel <a href=\"https://www.youtube.com/@sintinohayamor\" target=\"_blank\" rel=\"noopener noreferrer\">Gatos Rebeldas</a>).",
  doors_t="Two doors: human and agent",
@@ -445,9 +448,9 @@ PROSE = {
           "Qwen-Image 2.1 fp8/int8 (~12 GB) with room; MOSS fp8 comfortable; 27B Q4_K_M with offload (64 GB RAM helps); LTX fp8 + tiling at 720p: experimental; short H3 clips via W8/W4 (~14 GB)",
           "Ideogram 4 fp8 (~15 GB) is tight; quantized H3 works, but do not expect 1080p; beyond 1.5 MP, offload"),
          ("24 GB (RTX 3090/4090)", "Adds MOSS-Image (20 GB) and Qwen-Image 2.1 int8 without squeezing",
-          "Qwen-Image 2.1 fp8 comfortable at 1024²; Ideogram 4 fp8 (~15 GB); LTX video; H3 pruned INT8 ConvRot (~20 GB): the community ceiling at 24 GB",
+          "Qwen-Image 2.1 fp8 comfortable at 1024²; Ideogram 4 fp8 (~15 GB); LTX video; H3 pruned INT8 ConvRot (~20 GB): the community ceiling at 24 GB. MiniMax H3-Image: the pruned int8 DiT (21 GB) doesn't fit beside the 32 GB encoder — a w4a8 variant (12.5 GB) exists, unmeasured below 32 GB",
           "H3: community-proven with caveats (note below); un-quantized headroom starts at 32 GB"),
-         ("32 GB (RTX 5090) — this guide", "The whole catalog, incl. Qwen-Image 2.1 bf16, Ideogram 4, H3 at 2K and 27B Q6 LLMs with long context",
+         ("32 GB (RTX 5090) — this guide", "The whole catalog, incl. MiniMax H3-Image at native 4K (measured, no OOM), Qwen-Image 2.1 bf16, Ideogram 4, H3 at 2K and 27B Q6 LLMs with long context",
           "Here you quantize for convenience, not necessity: int8 loads sooner and samples the same (measured)",
           "Refining >2K and 15 s H3 clips at 2K: OOM")],
  hw_warn="<b>Honest warning:</b> the real cost isn't the GPU, it's the disk: the full catalog takes hundreds of GB "
@@ -478,12 +481,12 @@ PROSE = {
         "(broker pattern; reference <code>comfyui-broker.py</code> in the repo).",)],
  in_note="Tip for agents: install ComfyUI + Manager first, and <b>download each model only when the user picks that "
          "capability</b> — you save hundreds of GB and hours of downloading.",
- cat_t="The catalog", cat_sub="38 entries of battle-tested models, organized by capability. Roles: ",
+ cat_t="The catalog", cat_sub="40 entries of battle-tested models, organized by capability. Roles: ",
  leg="recommended (proven default)", alt="alternative", spec="specialist (wins its niche)",
  lic_t="Licenses and ethics", lic_h="(the boring part that saves you trouble)",
  lic_b=["<b>Non-commercial</b>: Qwen-Image 2.1 (Qwen Research) and Ideogram 4 forbid commercial use without a "
         "separate license. FLUX Kommunity allows commercial use below USD 5M/year. MOSS-Image and ACE-Step are "
-        "Apache-2.0 (commercial OK). MiniMax H3/Music 3 carry community licenses with regional exclusions — read them.",
+        "Apache-2.0 (commercial OK). MiniMax H3/H3-Image/Music 3 carry community licenses with regional exclusions (the EU is excluded: use them in the EU only with MiniMax permission) — read them.",
         "<b>Voice cloning</b>: your own voice or with the person's explicit consent only. Label AI-generated "
         "content: it's transparency required by the EU AI Act and common sense everywhere else.",
         "<b>Downloads</b>: always use the official sources linked on each card. Mirrors go stale and nobody "
