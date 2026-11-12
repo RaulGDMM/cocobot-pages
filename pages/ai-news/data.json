@@ -5,6 +5,116 @@
   },
   "days": [
     {
+      "date": "2026-11-12",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Alibaba anuncia Qwen4: Qwen4-Max-Preview solo por Token Plan, 1M de contexto y retirada el 25 de noviembre",
+          "summary": "El 11/11 Alibaba anunció oficialmente la generación Qwen4 y abrió el preview del flagship 'qwen4-max-preview' en Model Studio: multimodal (texto, imagen y vídeo), 1M de contexto y hasta 393K de tokens de salida, solo por suscripción Token Plan (sin pay-as-you-go) y apagado el 25/11. Enfoque declarado en programación compleja, diseño front-end y tareas agénticas; no ha revelado parámetros, precios API ni pesos abiertos — los pesos siguen siendo el gatillo real.",
+          "source": "https://sflood.com/en/daily/ai-2026-11-12",
+          "source_name": "Stillflood AI Daily",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Google lanza la Gemini Decisions API: 'Gemini Decision 1' puntúa 1.000 preguntas cerradas en un solo pase",
+          "summary": "Nuevo endpoint y modelo (gemini-decision-1) para decisiones de conjunto cerrado en lugar de generación de texto: hasta 1.000 preguntas sí/no, opción múltiple (255 opciones) o rúbricas por petición, con entrada multimodal hasta 256K tokens, 150-250 ms de latencia y salida sin coste de tokens ($0.10/M de entrada). Pensado para el 'plumbing' de agentes: selección de herramientas, políticas, routing de modelos y grading de contexto, con score de confianza 0-1 en cada respuesta.",
+          "source": "https://latent.space/p/ainews-d-day-decision-models-day/",
+          "source_name": "Latent Space",
+          "star": true
+        },
+        {
+          "category": "image",
+          "title": "MiniMax abre H3-Image: pesos abiertos que generan 4K nativo en 6 pasos, con soporte Day-0 en ComfyUI",
+          "summary": "H3-Image (10-11/11) reutiliza la columna vertebral del modelo de vídeo H3: DiT de 33,1B destilado a 6 pasos sin CFG, ~16 MP nativos (de 4096×4096 a 6272×2688, sin upsampler) en menos de 10 s, edición y generación desde hasta 16 imágenes de referencia en un solo checkpoint. Pesos BF16 de 68,65 GB (+encoder Qwen3-VL 66,7 GB) con cuants comunitarios el día 1 (int8 21 GB, GGUF desde 6,9 GB) y adaptación de 11 fabricantes de chips; soporte nativo en ComfyUI. El pero: la licencia Community excluye UE, UK, Corea del Sur y EE. UU. — en España solo queda la API (~0,07 USD por imagen 4K, 50-70% del precio mainstream).",
+          "source": "https://www.minimax.io/blog/minimax-h3-image",
+          "source_name": "MiniMax Blog",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Runway abre los pesos de Praxis-1: su modelo 'world-action' de 27B bajo Apache 2.0",
+          "summary": "Anunciado en septiembre con partners seleccionados, Praxis-1 pasa a pesos y código de fine-tuning públicos (11/11): predice el siguiente segmento de vídeo y las acciones del robot simultáneamente, con 46,2% de éxito reportado en RoboLab-120. Checkpoints reutilizables bajo Apache 2.0 para quien desarrolle robótica fuera del perímetro de Runway.",
+          "source": "https://sxf.si/brief/",
+          "source_name": "SXF Brief",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "AlphaGenome 2: DeepMind predice el efecto de las variantes de ADN por tipo celular",
+          "summary": "El sucesor de AlphaGenome (11/11) condiciona la predicción regulatoria al perfil de la célula (107M+ perfiles celulares, 68 tejidos): casi duplica las variantes causales de expresión detectadas frente al original (30% vs 16% en TenK10K inmune). Acceso por API para investigación no comercial (comercial en preview privado) y explícitamente no aprobado para diagnóstico clínico.",
+          "source": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-12-2026/",
+          "source_name": "The Neuron",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Databricks presenta Genie 'always-on': el agente trabaja en segundo plano con Ontología de la organización",
+          "summary": "Genie pasa de chat a agente permanente: persigue asignaciones largas, recupera información de la empresa en segundo plano y estrena 'Ontology' para entender relaciones entre empleados, proyectos y datos. Las capacidades existentes ya son GA; la experiencia always-on va a programas preview/beta.",
+          "source": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-12-2026/",
+          "source_name": "The Neuron",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "n8n presenta 'Nod': agente personal open-source que se apodera de un Mac o PC privado",
+          "summary": "Nod es un agente personal open-source que usa un ordenador propio como equipo privado para operar aplicaciones y webs en nombre del usuario, complementando la plataforma de automatización visual de n8n. Jugada de n8n en el terreno del agente local tras la ola de 'personal computers para agentes'.",
+          "source": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-12-2026/",
+          "source_name": "The Neuron",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "NVIDIA aporta OpenShell a CNCF: runtime de seguridad open-source para agentes autónomos",
+          "summary": "NVIDIA contribuye al ecosistema CNCF Sandbox su runtime abierto para contener y asegurar agentes autónomos en Kubernetes. La seguridad de ejecución de agentes empieza a estandarizarse en el lado de la infraestructura.",
+          "source": "https://sxf.si/brief/",
+          "source_name": "SXF Brief",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Tether libera QVAC BotPsy: 800M parámetros de agente on-device construido sobre Qwen3.5-0.8B",
+          "summary": "Modelo open-weight (Apache 2.0) de sub-1B afinado para trabajo multi-paso local: ajustes, mensajería y calendario sin sacar datos de casa, con safetensors y GGUF cuantizados listos para llama.cpp. En BFCL v4 marca 44,0% frente al 23,4% de su base y gana a Qwen3.5-2B en 5 de 6 benchmarks de tool-use siendo 2,5 veces menor.",
+          "source": "https://www.siliconreport.com/tether-unveils-botpsy-an-800m-parameter-on-device-ai-agent",
+          "source_name": "Silicon Report",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "United Airlines prohíbe a los agentes de IA de terceros reservar vuelos",
+          "summary": "Primera aerolínea que veta explícitamente a los agentes de compra automatizados: cita el riesgo sobre credenciales y la normativa federal. El frote entre la economía de agentes y los términos de servicio deja de ser hipotético.",
+          "source": "https://blog.lyubo.dev/posts/ai-morning-briefing-november-12th-2026",
+          "source_name": "Lyubo's AI Morning Briefing",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "AWS Emulator: 200+ servicios de AWS simulados en local con código escrito íntegramente por agentes",
+          "summary": "Herramienta gratuita de testing local que emula más de 200 servicios AWS para no pagar la nube en cada prueba. La parte jugosa: Amazon afirma que agentes de IA escriben y mantienen todo el código sin revisión humana de sus ingenieros (con lagunas conocidas, como la simulación de caídas).",
+          "source": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-12-2026/",
+          "source_name": "The Neuron",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "ElevenLabs Summit NYC: Scribe v3 Medical y la 'capa de interacción' para agentes",
+          "summary": "En su summit de Nueva York ElevenLabs presentó nuevos modelos, agentes y opciones de despliegue, con STT por dominio como estrella: Scribe v3 Medical reconoce miles de términos clínicos con más precisión. Sin cifras públicas de validación por ahora.",
+          "source": "https://daily.rclabs.in/",
+          "source_name": "AI Daily (rclabs)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12283→b12317: FP8 OCP en CUDA probado con GGUF NVFP4 y kernels para qwen4exp; el experimento 'layer-first' dobla el prefill de QFN",
+          "summary": "En el rango nuevo destaca b12284 (CUDA OCP FP8, #28413, testeado con un GGUF Qwen3.6-27B-NVFP4 en Blackwell), b12287 (MMVF para las proyecciones hyper-connection de qwen4exp a batch pequeño), fix de tiles MoE vacíos en MMQ stream-k (#32067), reuso de graph results del scheduler (#32089) y fix OOB en SOLVE_TRI de Metal. Y en el taller: el PR #32082 'layer-first prefill' (cerrado sin fusionar) documenta prefill de 1275→2802 t/s en Qwen3.8-Flash-Next con -cmoe al dividir QKV/norms/RoPE/attention/expertos en chunks: 4× menos PCIe a coste de algo de decode; cerrado, pero el paper en abierto si alguien lo reabre. Update .bat rutinario y seguro (sin CVEs nuevas en el rango).",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Alibaba anuncia Qwen4 con un preview del Max solo por Token Plan y MiniMax abre un modelo de imagen que genera 4K nativo en 6 pasos. Google inventa la categoría de 'modelos de decisión' y en el taller llama.cpp estrena FP8 OCP en CUDA con un experimento de prefill 2x para Qwen3.8-Flash-Next."
+    },
+    {
       "date": "2026-11-11",
       "news": [
         {
@@ -7553,52 +7663,6 @@
         }
       ],
       "summary": "Día intenso: xAI lanza Grok 4.6 enfocado en agentes de larga duración, NVIDIA cierra alianza de $500B con Wall Street para infraestructura de IA, Anthropic implementa watermarks invisibles en Claude, y Google presenta el Pixel 11 con Tensor G6."
-    },
-    {
-      "date": "2026-08-12",
-      "news": [
-        {
-          "category": "llm",
-          "title": "NVIDIA lanza Nemotron 3.5 Lightning: modelo MoE abierto de 30B (3B activos) diseñado para agentes siempre encendidos",
-          "summary": "NVIDIA publica Nemotron 3.5 Lightning, un modelo MoE de 30B parámetros con solo 3B activos por token, optimizado para agentes autónomos de larga duración. Soporta hasta 1M de tokens de contexto, arquitectura híbrida Mamba-2 + MoE + Attention, y se entrega con licencia OpenMDW 1.1. NVIDIA lo posiciona como el modelo más eficiente de su clase para workflows agenticos de alto volumen y baja latencia.",
-          "source": "https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx",
-          "source_name": "NVIDIA Blog",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Meta open-sourcea Muse Glimmer: agente de 30B con Apache 2.0 que corre en una sola GPU de consumo",
-          "summary": "Meta lanza Muse Glimmer, un modelo denso de 29.6B parámetros con encoder de visión de 1.8B, 131K de contexto y soporte para +100 idiomas. Disponible bajo Apache 2.0 en Hugging Face, cuantizaciones a 4-bit caben en GPUs de 24 GB (RTX 4090, M4 Max). Destaca en MCP Atlas (75.5 vs 62.5 de Qwen 3.6) y Gaia 2, posicionándose como el mejor agente open-source para tool-calling.",
-          "source": "https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model",
-          "source_name": "Meta AI Research",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Bad Theory Labs publica BTL-4: modelo agentic de 35B MoE con 78.4% en SWE-bench Verified",
-          "summary": "Bad Theory Labs lanza BTL-4, un modelo de 35B parámetros (MoE con ~2.1B activos) fine-tuneado desde Ornith-1.0-35B con corpus de razonamiento ejecutado: solo se retienen trayectorias cuyo código compiló y pasó tests. Soporta 262K de contexto, Apache 2.0, y bate 73.5% en BFCL v4 y 78.4% en SWE-bench Verified — rendimiento de clase Sonnet en un modelo open-weight.",
-          "source": "https://huggingface.co/badtheorylabs/BTL-4",
-          "source_name": "Hugging Face",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "AMD adquiere Taalas: silicio especializado para inferencia de IA con pesos grabados en chip",
-          "summary": "AMD anuncia acuerdo definitivo para adquirir Taalas, startup canadiense que diseña chips ASIC con los pesos del modelo grabados directamente en el silicio. La tecnología promete eliminar cuellos de botella de memoria y compute en inferencia, con un ciclo de diseño modelo-a-chip de solo dos meses. AMD planea integrarlo con sus GPUs Instinct para soluciones de inferencia a escala.",
-          "source": "https://ir.amd.com/news-events/press-releases/detail/1296/amd-acquires-taalas-to-advance-compute-solutions-for-rapidly-growing-ai-inference-market",
-          "source_name": "AMD Investor Relations",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10357 → b10369 disponible (12 builds nuevos, soporte pocket-tts en mtmd)",
-          "summary": "llama.cpp avanza de b10357 a b10369 con 12 builds intermedios. Lo más relevante: soporte para pocket-tts en el sistema mtmd (multimodal), fix de escape sequences incompletos en common/peg, correcciones CI en ggml-webgpu, y fix para SWA en EXAONE 4.5. Tu servidor local corre b10248 — hay 121 builds por actualizar.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día intenso en IA abierta: NVIDIA y Meta lanzan modelos optimizados para agentes, Bad Theory Labs debuta con un coder de 35B, y AMD compra Taalas para dominar la inferencia. llama.cpp avanza a b10369 con soporte para pocket-tts."
     }
   ]
 }
