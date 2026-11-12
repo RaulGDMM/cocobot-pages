@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Quién nos gobierna realmente? — El expediente · Cocobot</title>
+<meta name="description" content="Expediente documentado: saludo de Musk, «la empatía es un bug», el romance de la espía china que tumbó a Nvidia, la RAM que molesta a Altman, el IPO de Anthropic y su carné de matrimonio en la SEC. Con fuentes verificables. 12-11-2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --paper:#e9e1d1;
+  --paper2:#e2d8c4;
+  --folder:#cdbc9c;
+  --ink:#191510;
+  --ink2:#4a4234;
+  --red:#b3261e;
+  --red-dark:#7d1a14;
+  --stamp:#a43b2e;
+  --tape:rgba(214,196,148,.75);
+  --marker:#f3d35a;
+  --line:#b7a988;
+  --link:#1d4e6b;
+}
+body{
+  font-family:'Source Serif 4',Georgia,serif;
+  color:var(--ink);
+  line-height:1.65;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.018) 0 2px, transparent 2px 4px),
+    radial-gradient(1200px 700px at 85% -5%, rgba(179,38,30,.06), transparent 60%),
+    radial-gradient(900px 600px at -10% 30%, rgba(29,78,107,.05), transparent 55%),
+    var(--paper);
+  overflow-x:hidden;
+}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+a{color:var(--link)}
+a:hover{color:var(--red)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+
+/* barra superior */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(233,225,209,.92);backdrop-filter:blur(6px);
+  border-bottom:2px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.55rem 1rem;
+}
+.topbar a.back{
+  font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:var(--ink);
+  text-decoration:none;border:1px solid var(--ink);padding:.2rem .6rem;background:var(--paper);
+}
+.topbar a.back:hover{background:var(--ink);color:var(--paper)}
+.topbar .tb-title{font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ink2)}
+.hamburger-btn{
+  font-family:'IBM Plex Mono',monospace;font-size:1.05rem;background:var(--ink);color:var(--paper);
+  border:none;padding:.25rem .7rem;cursor:pointer;letter-spacing:.05em;
+}
+.nav-overlay{position:fixed;inset:0;background:rgba(25,21,16,.45);opacity:0;pointer-events:none;transition:opacity .25s;z-index:70}
+.nav-overlay.active{opacity:1;pointer-events:auto}
+.nav-drawer{
+  position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--paper2);
+  border-left:3px solid var(--ink);transition:right .25s;z-index:80;padding:4.2rem 1.4rem 2rem;
+}
+.nav-drawer.active{right:0}
+.nav-drawer a{
+  display:block;font-family:'IBM Plex Mono',monospace;font-size:.9rem;color:var(--ink);
+  text-decoration:none;padding:.6rem 0;border-bottom:1px dashed var(--line);
+}
+.nav-drawer a:hover{color:var(--red)}
+
+main>section{scroll-margin-top:64px;padding:4.2rem 0 1rem}
+
+/* HERO */
+.hero{padding-top:6.5rem;position:relative}
+.file-header{
+  border:3px solid var(--ink);background:var(--paper2);
+  box-shadow:8px 8px 0 rgba(25,21,16,.85);
+  padding:2.2rem 2rem 1.8rem;position:relative;
+}
+.file-header::before{ /* cinta de embalar */
+  content:"";position:absolute;top:-16px;left:8%;width:130px;height:30px;
+  background:var(--tape);transform:rotate(-4deg);
+  box-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.22em;color:var(--red-dark);text-transform:uppercase;max-width:58%}
+.hero h1{
+  font-size:clamp(2.1rem,6.6vw,4.9rem);line-height:1.02;font-weight:700;
+  letter-spacing:-.015em;margin:.65rem 0 .9rem;text-transform:uppercase;
+}
+.hero h1 .hl{box-shadow:inset 0 -.32em 0 var(--marker)}
+.hero-sub{font-size:clamp(1.02rem,1.9vw,1.25rem);max-width:56ch;color:var(--ink2);font-style:italic}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem;font-family:'IBM Plex Mono',monospace;font-size:.74rem}
+.hero-meta span{border:1px solid var(--ink);padding:.18rem .55rem;background:var(--paper)}
+.stamp{
+  position:absolute;top:1.1rem;right:1rem;transform:rotate(7deg);
+  border:3px double var(--stamp);color:var(--stamp);
+  font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:.18em;
+  font-size:clamp(.85rem,2.4vw,1.25rem);padding:.35rem .8rem;opacity:.85;
+  border-radius:3px;background:rgba(233,225,209,.4);
+}
+@media (max-width:560px){.stamp{position:static;display:inline-block;margin-top:1rem;transform:rotate(2deg)}.kicker{max-width:100%}}
+.hero-note{margin-top:1.1rem;font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--ink2)}
+.hero-note strong{color:var(--red-dark)}
+
+/* secciones como solapas de carpeta */
+.folder-tab{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.16em;
+  background:var(--folder);border:2px solid var(--ink);border-bottom:none;
+  padding:.28rem .9rem;transform:translateY(3px);border-radius:8px 8px 0 0}
+h2.sec-title{font-size:clamp(1.5rem,3.6vw,2.3rem);border-bottom:3px solid var(--ink);padding-bottom:.5rem;margin-bottom:1.6rem;letter-spacing:-.01em}
+h2.sec-title .n{color:var(--red);font-family:'IBM Plex Mono',monospace;font-size:.85em;margin-right:.4rem}
+.sec-lead{max-width:66ch;color:var(--ink2);margin-bottom:1.8rem}
+.redact{background:var(--ink);color:var(--ink);padding:0 .35em;font-size:.72em;user-select:none}
+
+/* EXHIBITS */
+.exhibits{display:grid;gap:1.8rem}
+.exhibit{
+  border:2px solid var(--ink);background:var(--paper2);
+  box-shadow:5px 5px 0 rgba(25,21,16,.75);
+  padding:1.6rem 1.5rem 1.3rem;position:relative;
+}
+.exhibit .letter{
+  position:absolute;top:-.05rem;right:1rem;transform:translateY(-50%);
+  background:var(--ink);color:var(--paper);font-family:'IBM Plex Mono',monospace;
+  font-size:.75rem;letter-spacing:.14em;padding:.28rem .7rem;
+}
+.exhibit .who{font-family:'IBM Plex Mono',monospace;font-size:.86rem;letter-spacing:.06em;margin-bottom:.15rem}
+.exhibit .when{font-family:'IBM Plex Mono',monospace;font-size:.73rem;color:var(--ink2);margin-bottom:.9rem}
+blockquote.q{
+  font-size:clamp(1.05rem,2.3vw,1.3rem);font-weight:600;font-style:italic;
+  border-left:4px solid var(--red);padding:.2rem 0 .2rem 1rem;margin:.8rem 0;
+}
+blockquote.q .en{display:block;font-style:normal;font-weight:400;font-family:'IBM Plex Mono',monospace;font-size:.76em;color:var(--ink2);margin-top:.45rem}
+.doc-quote{
+  border:1.5px dashed var(--ink2);background:var(--paper);padding:.9rem 1rem;margin:.7rem 0;
+  font-family:'IBM Plex Mono',monospace;font-size:.8rem;line-height:1.55;
+}
+.doc-quote .pg{color:var(--red-dark);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0 .2rem}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.08em;padding:.16rem .5rem;border:1.5px solid var(--ink);background:var(--paper)}
+.chip.ok{border-color:#1e6b3a;color:#1e6b3a}
+.chip.sec{border-color:var(--red-dark);color:var(--red-dark);font-weight:600}
+.chip.video{border-color:#8a6d1a;color:#8a6d1a}
+.chip.probe{border-color:var(--link);color:var(--link)}
+.exhibit .ctx{font-size:.98rem;margin-top:.7rem}
+.exhibit .srcs{font-family:'IBM Plex Mono',monospace;font-size:.72rem;margin-top:.8rem;color:var(--ink2)}
+.exhibit .srcs a{color:var(--link);text-decoration:none;border-bottom:1px dotted var(--link)}
+.vs{display:grid;gap:.6rem;margin:.8rem 0}
+.cascade{margin:1rem 0;padding-left:1.1rem;border-left:3px solid var(--folder);font-size:.94rem}
+.cascade li{margin:.45rem 0}
+.cascade .d{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--red-dark);font-weight:600}
+.video-embed{position:relative;padding-top:56.25%;margin:1.6rem 0;border:3px solid var(--ink);box-shadow:6px 6px 0 rgba(25,21,16,.75);background:var(--ink)}
+.video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.figcap{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink2);margin-top:.4rem}
+.related{border:1.5px solid var(--link);background:rgba(29,78,107,.06);padding:.8rem 1rem;font-size:.92rem;margin-top:1.6rem}
+.related a{font-weight:600}
+
+/* TIMELINE */
+.timeline{position:relative;margin:1rem 0 2rem;padding-left:1.7rem}
+.timeline::before{content:"";position:absolute;left:.42rem;top:.4rem;bottom:.4rem;width:3px;background:var(--ink)}
+.tl-item{position:relative;margin-bottom:1.45rem;padding-left:.6rem}
+.tl-item::before{content:"";position:absolute;left:-1.62rem;top:.34rem;width:14px;height:14px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--ink)}
+.tl-item.hot::before{background:var(--red);border-color:var(--red-dark)}
+.tl-date{font-family:'IBM Plex Mono',monospace;font-size:.76rem;font-weight:600;letter-spacing:.08em;color:var(--red-dark)}
+.tl-item .tl-txt{font-size:.97rem}
+.tl-item .tl-txt small{color:var(--ink2)}
+
+/* GRAFO */
+.graph-wrap{border:2px solid var(--ink);background:var(--paper2);box-shadow:5px 5px 0 rgba(25,21,16,.75);overflow-x:auto;margin-bottom:.8rem}
+.graph-hint{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink2);margin:.4rem 0 1rem}
+.legend{display:flex;flex-wrap:wrap;gap:.9rem;font-family:'IBM Plex Mono',monospace;font-size:.72rem;margin:.7rem 0 1rem}
+.legend i{display:inline-block;width:26px;height:0;border-top:3px solid;margin-right:.35rem;vertical-align:middle}
+.legend .l-red i{border-color:var(--red)} .legend .l-gold i{border-color:#9a7b1c} .legend .l-blue i{border-color:var(--link)} .legend .l-dash i{border-top-style:dashed;border-color:#555}
+#graph-note{
+  border:2px solid var(--ink);background:var(--paper);padding:1rem 1.2rem;min-height:4.5rem;margin:0 0 1.2rem;
+  font-size:.92rem;
+}
+#graph-note .gn-title{font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:.08em;margin-bottom:.3rem}
+#graph-note ul{list-style:none;padding-left:0}
+#graph-note li{margin:.4rem 0;padding-left:1.1rem;position:relative;font-size:.9rem}
+#graph-note li::before{content:"→";position:absolute;left:0;color:var(--red);font-family:'IBM Plex Mono',monospace}
+#graph-note .rel{color:var(--ink2)}
+#graph-note a{border-bottom:1px dotted var(--link);text-decoration:none}
+.table-wrap{overflow-x:auto;border:2px solid var(--ink);box-shadow:5px 5px 0 rgba(25,21,16,.75)}
+table.links{width:100%;border-collapse:collapse;background:var(--paper2);min-width:640px;font-size:.88rem}
+table.links th{background:var(--ink);color:var(--paper);font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-align:left;padding:.55rem .8rem}
+table.links td{padding:.5rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.links td.num{font-family:'IBM Plex Mono',monospace;color:var(--red-dark);font-weight:600;white-space:nowrap}
+table.links td.kind{font-family:'IBM Plex Mono',monospace;font-size:.78rem}
+table.links a{border-bottom:1px dotted var(--link);text-decoration:none}
+
+/* DINERO */
+.money-grid{display:grid;gap:1.1rem;margin:1.4rem 0}
+.money-grid.c3{grid-template-columns:repeat(3,1fr)}
+.money-grid.c2{grid-template-columns:repeat(2,1fr)}
+.mfig{border:2px solid var(--ink);background:var(--paper2);padding:1.1rem 1.1rem .9rem;box-shadow:4px 4px 0 rgba(25,21,16,.7)}
+.mfig .big{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:clamp(1.25rem,3vw,1.7rem);color:var(--red-dark);letter-spacing:-.02em}
+.mfig .what{font-size:.86rem;color:var(--ink2);margin-top:.3rem}
+.mfig .what a{border-bottom:1px dotted var(--link);text-decoration:none}
+@media (max-width:860px){.money-grid.c3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.money-grid.c3,.money-grid.c2{grid-template-columns:1fr}}
+.money-punch{border:3px solid var(--red);padding:1.2rem 1.3rem;background:rgba(179,38,30,.05);margin:1.6rem 0;font-size:1.02rem}
+.money-punch strong{color:var(--red-dark)}
+
+/* CODA */
+.coda p{max-width:64ch;margin-bottom:1.1rem;font-size:1.04rem}
+.coda .op-tag{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.16em;border:2px solid var(--red);color:var(--red);display:inline-block;padding:.15rem .6rem;margin-bottom:1rem}
+.coda .bigq{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:700;font-style:italic;border-left:5px solid var(--red);padding-left:1rem;margin:1.6rem 0}
+
+/* METODO + FUENTES */
+.legend-box{border:2px solid var(--ink);background:var(--paper2);padding:1.2rem 1.3rem;margin-bottom:1.4rem;font-size:.9rem}
+.legend-box .chips{margin:.5rem 0 .8rem}
+.legend-box ul{padding-left:1.2rem}
+.legend-box li{margin:.35rem 0}
+ol.fuentes{padding-left:1.4rem;max-width:82ch}
+ol.fuentes li{margin:.55rem 0;font-size:.92rem}
+ol.fuentes a{color:var(--link);text-decoration:none;border-bottom:1px dotted var(--link)}
+ol.fuentes a:hover{color:var(--red)}
+ol.fuentes .pub{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink2)}
+
+footer{border-top:3px solid var(--ink);margin-top:3.5rem;padding:1.6rem 0 2.6rem;background:var(--paper2)}
+.foot-in{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--ink2)}
+.visit-counter-badge{border:1px solid var(--ink);padding:.15rem .5rem;background:var(--paper)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+svg .node rect{fill:var(--paper);stroke:var(--ink);stroke-width:2}
+svg .node.hl rect{fill:var(--marker)}
+svg .node{cursor:pointer}
+svg .node text{font-family:'IBM Plex Mono',monospace;pointer-events:none}
+svg .nlabel{font-size:13px;font-weight:600;fill:var(--ink)}
+svg .nsub{font-size:9.5px;fill:var(--ink2)}
+svg .edge{stroke-width:2.5;fill:none}
+svg .edge.dim{opacity:.12}
+svg .node.dim{opacity:.25}
+svg .edge-num text{font-family:'IBM Plex Mono',monospace;font-size:10px;fill:var(--paper);font-weight:600;pointer-events:none}
+svg .edge-num rect{stroke:var(--ink);stroke-width:1.5}
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="../../index.html">← Cocobot</a>
+  <div class="tb-title">EXPEDIENTE · QNG-11/2026</div>
+  <button class="hamburger-btn" id="hamburger-btn" onclick="toggleNav()">☰ FUNDAS</button>
+</div>
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+<nav class="nav-drawer" id="nav-drawer">
+  <a href="#sec-caso">01 · El caso</a>
+  <a href="#sec-citas">02 · Las pruebas</a>
+  <a href="#sec-timeline">03 · La cronología</a>
+  <a href="#sec-red">04 · La red</a>
+  <a href="#sec-dinero">05 · Sigue el dinero</a>
+  <a href="#sec-coda">06 · Coda</a>
+  <a href="#sec-metodo">07 · Cómo leer esto</a>
+  <a href="#sec-fuentes">08 · Fuentes</a>
+</nav>
+
+<main>
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="file-header reveal">
+      <div class="stamp">EN INVESTIGACIÓN</div>
+      <div class="kicker">Expediente abierto · Actualizado 12-11-2026 · 20:00 CET</div>
+      <h1>¿Quién nos <span class="hl">gobierna</span> realmente?</h1>
+      <p class="hero-sub">Nadie les ha votado. Se casan entre sí, se auditan entre sí, se fichan entre sí — y de paso te explican, con una sonrisa, por qué tu RAM y tu empatía son un desperdicio de recursos.</p>
+      <div class="hero-meta">
+        <span>9 PRUEBAS</span><span>15 FECHAS</span><span>14 ENLACES</span><span>35 FUENTES</span><span>0 TEORÍAS SIN PAPELES</span>
+      </div>
+      <div class="hero-note"><strong>Tono:</strong> sarcástico. <strong>Datos:</strong> documentales. Cada afirmación enlaza a su fuente; lo que solo dice el vídeo va marcado como tal.</div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════ 01 EL CASO ══════════════ -->
+<section id="sec-caso">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 01</span>
+    <h2 class="sec-title"><span class="n">01</span>El caso</h2>
+    <div class="sec-lead reveal">
+      <p style="margin-bottom:.9rem">En abril de 2024, el inversor Marc Andreessen avisó a la Casa Blanca de que había <em>«un culto sexual queriendo dirigir la política de IA de América»</em>. Un vídeo publicado hoy (Less Bitter, 12-11-2026) fue a buscar las orgías de Berkeley… y volvió con algo peor: declaraciones de la SEC, devoluciones de impuestos y un cuñado con firma propia.</p>
+      <p style="margin-bottom:.9rem">Esta página no trata de salas con persianas bajadas. Trata de <strong>papeles</strong>: un folleto de salida a bolsa, un PDF de política de seguridad, comunicados oficiales de un instituto estadounidense, podcasts y vídeos. Poder que no necesita esconderse, porque <em>las reglas las escriben ellos</em>.</p>
+      <p>El rastro cruza dos años, cinco empresas y tres países: un saludo, una queja contra la empatía, <strong>7.500 millones de dólares en chips a través de una amante</strong>, un marido redactando el reglamento de seguridad de su propia casa y una OPV que confiesa — literalmente, en su propio texto — que tu voto no vale nada.</p>
+    </div>
+    <div class="video-embed reveal">
+      <iframe src="https://www.youtube-nocookie.com/embed/4BnLL7tUGmI" title="Less Bitter — Fable 5.2 just revealed how shady Anthropic really is" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="figcap reveal">Less Bitter — «Fable 5.2 just revealed how shady Anthropic really is» · 12-11-2026 · 9:30. El vídeo que encendió esta carpeta.<sup><a href="#f-9">[9]</a></sup></div>
+    <div class="related reveal">📁 <strong>Expédientes relacionados en esta casa:</strong> <a href="../burbuja-ia-nvidia/index.html">¿Estallará la burbuja de la IA? — El caso Nvidia</a> (la caída bursátil, Megaspeed y los precios de GPUs y RAM).</div>
+  </div>
+</section>
+
+<!-- ══════════════ 02 PRUEBAS ══════════════ -->
+<section id="sec-citas">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 02</span>
+    <h2 class="sec-title"><span class="n">02</span>Las pruebas <span class="redact mono">████████</span></h2>
+    <p class="sec-lead reveal">Nueve piezas de convicción. Lee las citas en orden alfabético o no: el chiste se cuenta solo.</p>
+
+    <div class="exhibits">
+
+      <article class="exhibit reveal" id="prueba-a">
+        <div class="letter">PRUEBA A</div>
+        <div class="who">JENSEN HUANG · CEO de Nvidia (2026 aún)</div>
+        <div class="when">Morgan Stanley TMT Conference · publicado 06-03-2026</div>
+        <blockquote class="q">«Me encantan las restricciones… en un mundo de restricciones no tienes más remedio que elegir lo mejor. […] Creo que el hecho de que todo sea escaso es fantástico para nosotros.»
+        <span class="en">"I love constraints… In a world of constraints, you have no choice but to choose the best. […] I think the fact that everything is scarce is fantastic for us."</span></blockquote>
+        <p class="ctx">Mientras lo dice, el precio de la DDR4 y la DDR5 se ha triplicado o cuadruplicado desde septiembre de 2025, porque la construcción de centros de IA — impulsada en buena parte por sus propias GPU — se está comiendo la memoria del planeta. Él mismo, con la misma cara, <em>predice</em> que la crisis durará «varios años». Su balance, explica, es tan fuerte que va por ahí comprando fábricas de DRAM enteras por adelantado. La escasez no es un problema para él. La escasez <em>es el producto</em>.</p>
+        <div class="chips"><span class="chip ok">✓ VERIFICADO EN PRENSA</span><span class="chip">CITA LITERAL</span></div>
+        <div class="srcs">Fuentes: PCWorld (06-03-2026)<sup><a href="#f-10">[10]</a></sup> · PC Gamer<sup><a href="#f-11">[11]</a></sup> · TechRadar<sup><a href="#f-12">[12]</a></sup> · GamesBeat (CES 2026)<sup><a href="#f-13">[13]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-b">
+        <div class="letter">PRUEBA B</div>
+        <div class="who">SAM ALTMAN · CEO de OpenAI</div>
+        <div class="when">Podcast de John Collison (Stripe) · primeros días de noviembre de 2026</div>
+        <blockquote class="q">«Es bastante terrible que todo el mundo tenga una porción de la limitada reserva mundial de DRAM sentada en su ordenador, donde solo se usa un 5% del tiempo.» …«La inferencia local es una pésima asignación de recursos escasos.»
+        <span class="en">"It's quite terrible to have everybody have a bunch of the world's limited supply of DRAM sitting in their own computer." … "Local inference is a terrible allocation of scarce resources."</span></blockquote>
+        <p class="ctx">Traducción del susurro al oído del oyente: <em>tu ordenador es un despilfarro; da tu memoria a mis centros de datos</em>. La reacción fue tal que días después se retractaba («quiero que tengáis toda la RAM que queráis, construyamos más») y llegó a renombrarse temporalmente en X como <strong>«RAM Altman»</strong>. Detalle sin importancia: los que compraron la mayor parte de la DRAM mundial fueron, precisamente, los operadores de centros de IA. Pero bueno, lo que es terrible es <em>la tuya</em>.</p>
+        <div class="chips"><span class="chip ok">✓ VERIFICADO EN PRENSA</span><span class="chip">RETRACTADO PARCIALMENTE DESPUÉS</span></div>
+        <div class="srcs">Fuentes: heise<sup><a href="#f-14">[14]</a></sup> · CNET<sup><a href="#f-15">[15]</a></sup> · Xataka<sup><a href="#f-16">[16]</a></sup> · Gizmodo ES<sup><a href="#f-17">[17]</a></sup> · PCWorld (02-11-2026)<sup><a href="#f-18">[18]</a></sup> · OKDiario<sup><a href="#f-19">[19]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-c">
+        <div class="letter">PRUEBA C</div>
+        <div class="who">ELON MUSK · El hombre más rico del mundo (intermitente)</div>
+        <div class="when">The Joe Rogan Experience, ep. 2281 · febrero de 2025</div>
+        <blockquote class="q">«La debilidad fundamental de la civilización occidental es la empatía. El exploit de la empatía. Están explotando un bug de la civilización occidental, que es la respuesta empática.»
+        <span class="en">"The fundamental weakness of Western civilization is empathy. The empathy exploit. They're exploiting a bug in Western civilization, which is the empathy response."</span></blockquote>
+        <p class="ctx">También habló de «empatía suicida a escala civilizatoria» (expresión prestada del psicólogo Gad Saad). Contexto completo, que conviene escuchar antes de juzgar ni absolver: Musk dice creer en la empatía «con las personas», pero no en la empatía «que se explota contra la civilización». Un framework cómodo: la abstracción se lleva el cariño, el de carne y hueso se lleva la gestión de recursos. Guarden esta prueba junto a la B: en ambas, <strong>lo que tiene un humano (RAM, compasión) es un bug</strong>.</p>
+        <div class="chips"><span class="chip ok">✓ CITA VERIFICADA</span><span class="chip">CON CONTEXTO COMPLETO ENLACEADO</span></div>
+        <div class="srcs">Fuentes: Public Seminar (análisis)<sup><a href="#f-20">[20]</a></sup> · IPS / Global Issues<sup><a href="#f-21">[21]</a></sup> · Gilsenan (episodio íntegro y matiz)<sup><a href="#f-22">[22]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-d">
+        <div class="letter">PRUEBA D</div>
+        <div class="who">ELON MUSK · El mismo, 5 días antes de la prueba C</div>
+        <div class="when">Rally de celebración de la toma de posesión de Trump, Capital One Arena, Washington · 20-01-2025</div>
+        <blockquote class="q">«Os entrego mi corazón… es gracias a vosotros que el futuro de la civilización está asegurado.»
+        <span class="en">"My heart goes out to you… It is thanks to you that the future of civilization is assured."</span></blockquote>
+        <p class="ctx">Inmediatamente antes de decirlo, Musk llevó la mano al pecho y extendió el brazo recto hacia arriba y afuera, palma rígida. Y luego se giró y <strong>lo repitió</strong>. ¿Saludo nazi? La Liga Antidifamación (ADL) lo calificó de «gesto torpe en un momento de entusiasmo, no un saludo nazi» — frase que le costó un éxodo de reputación y un «ya nadie debería fiarse de ustedes» de la congresista Ocasio-Cortez. La profesora de historia Ruth Ben-Ghiat: «un saludo nazi, y muy beligerante». El propio Musk: «el ataque de "todos son Hitler" está ya muy manido». Las imágenes existen; la comparación también, y es gratis: júzgalo tú, que para eso tienes las dos cosas.</p>
+        <div class="chips"><span class="chip ok">✓ IMÁGENES EXISTENTES</span><span class="chip probe">INTERPRETACIÓN CONTESTADA — CONTRASTA TÚ</span></div>
+        <div class="srcs">Fuentes: The Hill<sup><a href="#f-23">[23]</a></sup> · LA Times<sup><a href="#f-24">[24]</a></sup> · Al Jazeera (controversia ADL)<sup><a href="#f-25">[25]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-e">
+        <div class="letter">PRUEBA E</div>
+        <div class="who">JENSEN HUANG · La caída (la de verdad)</div>
+        <div class="when">Octubre–noviembre de 2026</div>
+        <p class="ctx" style="margin-top:.4rem"><strong>El expediente más jugoso y el más reciente.</strong> A finales de octubre, el New York Times publicó que Huang mantenía una relación próxima con una ejecutiva de <strong>Megaspeed</strong>, una empresa de Singapur cliente de Nvidia: <em>Alice Huang</em> (Huang Le), ciudadana china que, según la inteligencia estadounidense, fue reclutada por los servicios de espionaje de Pekín. Megaspeed estaba ya bajo investigación del Departamento de Comercio por presunto desvío de chips que sorteaban las restricciones de exportación a China. La espiral:</p>
+        <ol class="cascade">
+          <li><span class="d">08-11 —</span> Huang admite por correo a la plantilla «haber sido infiel» a su mujer. El consejo de Nvidia abre investigación independiente por ser «objetivo de un esfuerzo de inteligencia extranjero».</li>
+          <li><span class="d">09-11 —</span> Demanda colectiva de accionistas por ocultar el vínculo. Líderes del Congreso piden endurecer las ventas de chips a China.</li>
+          <li><span class="d">10-11 —</span> The Information: el romance facilitó el envío de <strong>al menos 7.500 millones de dólares en chips</strong> a empresas chinas. El consejo ficha a un exfiscal federal para la pesquisa. Senadores piden la dimisión.</li>
+          <li><span class="d">11-11 —</span> NYT: <em>segundo romance</em>, esta vez con una vicepresidenta que le reportaba directamente.</li>
+          <li><span class="d">12-11 —</span> <strong>Huang dimite como CEO y consejero.</strong> La CFO Colette Kress, interina. Comisiones del Congreso le han citado a puerta cerrada.</li>
+        </ol>
+        <p class="ctx">Las cautelas, que también son parte del expediente: China llama a todo «campaña difamatoria» y NPR precisa que no ha confirmado de forma independiente las informaciones sobre el espionaje. Nvidia dijo «no tener razones para creer» que se filtraran secretos. El hombre que amaba las restricciones ha encontrado una que no podía comprar.</p>
+        <div class="chips"><span class="chip probe">◍ EN INVESTIGACIÓN CONGRESUAL</span><span class="chip video">ALGUNOS HECHOS: SOLO NYT, SIN CONFIRMACIÓN INDEPENDIENTE</span></div>
+        <div class="srcs">Fuentes: NPR (12-11, dimisión)<sup><a href="#f-26">[26]</a></sup> · NPR (10-11, investigación)<sup><a href="#f-27">[27]</a></sup> · AP<sup><a href="#f-28">[28]</a></sup> · Reuters/Investing (cronología)<sup><a href="#f-29">[29]</a></sup> · Guardian<sup><a href="#f-30">[30]</a></sup> · BBC Mundo<sup><a href="#f-31">[31]</a></sup> · EL PAÍS English<sup><a href="#f-32">[32]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-f">
+        <div class="letter">PRUEBA F</div>
+        <div class="who">ANTHROPIC · La familia y sus papeles</div>
+        <div class="when">Formulario S-1/A-2 ante la SEC · 10-11-2026</div>
+        <p class="ctx" style="margin-top:.3rem">El mismo documento, dos frases, ambas verdaderas. Página 264, sección <em>Family Relationships</em>:</p>
+        <div class="doc-quote">«Dario Amodei […] y Daniela Amodei […] son hermanos. <strong>No existen otras relaciones familiares entre nuestros directivos o consejeros.</strong>»<br><span class="en">"There are no other family relationships among any of our executive officers or directors." — S-1/A-2, pág. 264</span></div>
+        <p class="ctx">Más adelante, sección <em>Employment Arrangements with Immediate Family Members of Our Executive Officers</em>:</p>
+        <div class="doc-quote">«<strong>Holden Karnofsky, cónyuge de Daniela Amodei</strong>, nuestra directiva y presidenta del consejo, <strong>es empleado nuestro desde enero de 2025</strong>.» (Compensación: 430.213 $ en 2025; vendió acciones en la OPV interna de abril de 2026 junto a los Amodei.)<br><span class="en">"Holden Karnofsky, the spouse of Daniela Amodei […] has been employed by us since January 2025." — S-1/A-2</span></div>
+        <p class="ctx">El truco es legal y es el punto: Karnofsky <em>no</em> es «directivo ni consejero». Es «miembro del cuadro técnico». Y trabaja en el <strong>RSP</strong>, el reglamento de seguridad de la casa<sup><a href="#f-3">[3]</a></sup> — cuyo texto vigente (v3.4, 08-07-2026) exige que quien audite a Anthropic desde fuera no tenga con nadie de Anthropic <em>«relaciones familiares, relaciones románticas o <strong>arreglos de convivencia compartida</strong>»</em><sup><a href="#f-2">[2]</a></sup>. Antes de casarse con Daniela, Karnofsky convivió con su hermano Dario en la casa-comuna que fundó el altruismo efectivo de San Francisco<sup><a href="#f-3">[3]</a></sup><sup><a href="#f-5">[5]</a></sup>. Una norma contra compañeros de piso, redactada por el compañero de piso del CEO. La «muñeca rusa» del vídeo no la inventó el vídeo: la montó la SEC.</p>
+        <div class="chips"><span class="chip sec">★★ VERIFICADO EN EL FOLLETO DE LA SEC</span><span class="chip sec">★★ PDF OFICIAL DEL RSP v3.4</span></div>
+        <div class="srcs">Fuentes: S-1/A-2 (SEC)<sup><a href="#f-1">[1]</a></sup> · RSP v3.4 (PDF oficial, pág. sección evaluación)<sup><a href="#f-2">[2]</a></sup> · Fortune<sup><a href="#f-3">[3]</a></sup> · NY Mag<sup><a href="#f-5">[5]</a></sup> · vídeo Less Bitter («muñecas rusas»)<sup><a href="#f-9">[9]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-g">
+        <div class="letter">PRUEBA G</div>
+        <div class="who">ANTHROPIC · El voto que no tienes</div>
+        <div class="when">El mismo S-1/A-2 · la OPV se precia entre $70 y $78 por acción</div>
+        <blockquote class="q">«Los titulares de acciones comunes de Clase A generalmente <strong>no podrán afectar al resultado de ninguna cuestión sometida a votación</strong> de nuestros accionistas ni a la elección de nuestros consejeros, <strong>independientemente de cómo voten</strong>.»
+        <span class="en">"Holders of our Class A common stock generally will not be able to affect the outcome of any matter submitted to a vote of our stockholders […] regardless of how they vote."</span></blockquote>
+        <p class="ctx">No es una parodia: está en el folleto, dos veces, por si no había quedado claro. La acción Clase F — <strong>una sola acción, sin ningún derecho económico</strong> — da al Founder LLC de los siete fundadores el 50,1% de todos los votos «previsiblemente para siempre». Quien compre la OPV financia; quien tiene la Clase F manda. Y la mayor parte del consejo lo elige el Long-Term Benefit Trust, no tú. En una democracia esto se llamaría, según algún manual, «régimen».</p>
+        <div class="chips"><span class="chip sec">★★ VERIFICADO EN EL FOLLETO DE LA SEC — CITA LITERAL</span></div>
+        <div class="srcs">Fuentes: S-1/A-2 (SEC)<sup><a href="#f-1">[1]</a></sup> · Forbes (valoraciones de los fundadores)<sup><a href="#f-4">[4]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-h">
+        <div class="letter">PRUEBA H</div>
+        <div class="who">PAUL CHRISTIANO · La puerta giratoria en una sola persona</div>
+        <div class="when">2021 → septiembre de 2026</div>
+        <ol class="cascade">
+          <li><span class="d">2021 —</span> funda el <strong>Alignment Research Center</strong> (del que nace <strong>Meter</strong>, la evaluadora «independiente» de Anthropic).</li>
+          <li><span class="d">2023 —</span> es <strong>consejero fundador del Long-Term Benefit Trust</strong> de Anthropic: el órgano que elige a la mayoría del consejo de Anthropic. Se audita a sí mismo, pero con esmero.</li>
+          <li><span class="d">04-2024 —</span> la secretaria de Comercio de EE.UU. lo nombra <strong>Head of AI Safety</strong> del US AI Safety Institute (NIST): pasa a auditar Anthropic <em>para el gobierno</em>. Ese mismo mes deja el Trust<sup><a href="#f-6">[6]</a></sup><sup><a href="#f-7">[7]</a></sup>.</li>
+          <li><span class="d">08-2026 —</span> vuelve a ARC como director ejecutivo<sup><a href="#f-7">[7]</a></sup>.</li>
+          <li><span class="d">09-2026 —</span> OpenAI le ficha como patrono de su trust filantrópico… <strong>siguiendo como asesor técnico sénior del CAISI</strong>, la agencia del Departamento de Comercio que evalúa modelos de IA. Ahora audita y es auditado en ambas empresas, a la vez, legalmente<sup><a href="#f-8">[8]</a></sup>.</li>
+        </ol>
+        <p class="ctx">Nadie secuestró el regulador. El regulador se graduó, con beca, en la casa que regula.</p>
+        <div class="chips"><span class="chip ok">✓ VERIFICADO — COMUNICADO OFICIAL + PRENSA</span></div>
+        <div class="srcs">Fuentes: NIST/Dept. of Commerce (04-2024)<sup><a href="#f-6">[6]</a></sup> · Wikipedia (biografía)<sup><a href="#f-7">[7]</a></sup> · Bloomberg (09-2026, bajo pago)<sup><a href="#f-8">[8]</a></sup></div>
+      </article>
+
+      <article class="exhibit reveal" id="prueba-i">
+        <div class="letter">PRUEBA I</div>
+        <div class="who">EPSTEIN · El papel pintado de la sala</div>
+        <div class="when">30-01-2026 — publicación masiva de los ficheros por el Departamento de Justicia</div>
+        <p class="ctx" style="margin-top:.3rem"><strong>3 millones de páginas, 2.000 vídeos, 180.000 imágenes</strong>: correos y mensajes del financiero pederasta Jeffrey Epstein con nombres como Trump, Clinton, Gates, Musk, Branson, Lutnick o el ex príncipe Andrés. Advertencia obligatoria y de sentido común: <strong>aparecer en los ficheros no implica delito</strong> — hay correspondencia inocente, hay borradores y hay correos que hablan <em>de</em> la red, no <em>con</em> la red. ¿Por qué está esta prueba aquí? Porque explica el <em>ecosistema</em>: un circuito social donde el dinero gordo se mueve entre fiestas, islas y consejos, y donde la presunción de inocencia convive con una impunidad de clase que huele peor que los archivos.</p>
+        <div class="chips"><span class="chip ok">✓ FICHERS OFICIALES PUBLICADOS</span><span class="chip probe">⚠ APARECER ≠ SER CULPABLE</span></div>
+        <div class="srcs">Fuentes: BBC (quiénes aparecen)<sup><a href="#f-33">[33]</a></sup> · PBS News<sup><a href="#f-34">[34]</a></sup> · Wikipedia (ficheros Epstein)<sup><a href="#f-35">[35]</a></sup></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 03 TIMELINE ══════════════ -->
+<section id="sec-timeline">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 03</span>
+    <h2 class="sec-title"><span class="n">03</span>La cronología <span class="redact mono">████</span> 2024–2026</h2>
+    <p class="sec-lead reveal">No son anécdotas sueltas. Es una corriente con la misma gente, en el mismo orden, casi en cadena.</p>
+    <div class="timeline">
+      <div class="tl-item reveal"><div class="tl-date">abr 2024</div><div class="tl-txt">Paul Christiano, consejero del Trust de Anthropic, es nombrado <em>Head of AI Safety</em> del instituto de seguridad de IA del gobierno de EE.UU. (NIST). La puerta giratoria echa a andar.<sup><a href="#f-6">[6]</a></sup></div></div>
+      <div class="tl-item hot reveal"><div class="tl-date">20-01-2025</div><div class="tl-txt">Musk, en el rally de investidura de Trump: doble extensión de brazo seguida de «my heart goes out to you… the future of civilization is assured». Comienza la batalla sobre el saludo.<sup><a href="#f-23">[23]</a></sup></div></div>
+      <div class="tl-item hot reveal"><div class="tl-date">feb 2025</div><div class="tl-txt">Musk en el podcast de Rogan: la empatía es «el bug de la civilización occidental».<sup><a href="#f-20">[20]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">13-02-2025</div><div class="tl-txt">Se sabe que Anthropic ha contratado al marido de su presidenta, Holden Karnofsky, para trabajar en el reglamento de seguridad de la propia empresa.<sup><a href="#f-3">[3]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">sep 2025</div><div class="tl-txt">Arranca la crisis de la RAM: los precios de DDR4/DDR5 se triplican y cuadruplican cuando los centros de IA acaparan la memoria mundial.<sup><a href="#f-12">[12]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">30-01-2026</div><div class="tl-txt">El Departamento de Justicia publica 3 millones de páginas de los ficheros Epstein: Trump, Clinton, Gates, Musk, Andrés…<sup><a href="#f-33">[33]</a></sup></div></div>
+      <div class="tl-item hot reveal"><div class="tl-date">06-03-2026</div><div class="tl-txt">Jensen Huang: «me encantan las restricciones… que todo sea escaso es fantástico para nosotros».<sup><a href="#f-10">[10]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">abr 2026</div><div class="tl-txt">Anthropic: OPV interna de 4.661.437.298 $. Venden los Amodei… y Karnofsky, el marido.<sup><a href="#f-1">[1]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">08-07-2026</div><div class="tl-txt">Entra en vigor el RSP v3.4: los evaluadores externos de Anthropic no pueden tener con nadie de la empresa «relaciones familiares, románticas ni de convivencia compartida». La pluma: la del cuñado.<sup><a href="#f-2">[2]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">sep 2026</div><div class="tl-txt">OpenAI nombra patrono a Paul Christiano, que sigue como asesor del CAISI (gobierno de EE.UU.). Audita y es auditado a la vez.<sup><a href="#f-8">[8]</a></sup></div></div>
+      <div class="tl-item hot reveal"><div class="tl-date">oct 2026</div><div class="tl-txt">NYT: el romance del CEO de Nvidia con una ejecutiva de Megaspeed que la inteligencia de EE.UU. vincula al espionaje chino.<sup><a href="#f-27">[27]</a></sup></div></div>
+      <div class="tl-item hot reveal"><div class="tl-date">02-11-2026</div><div class="tl-txt">Altman: «es bastante terrible» que la gente guarde DRAM en sus ordenadores. Días después se rebautiza «RAM Altman» y rectifica.<sup><a href="#f-16">[16]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">08→11-11-2026</div><div class="tl-txt">Nvidia en espiral: admisión de infidelidad, investigación, 7.500 M$ en chips vía Megaspeed, demanda de accionistas, segundo romance con una subordinada.<sup><a href="#f-29">[29]</a></sup></div></div>
+      <div class="tl-item reveal"><div class="tl-date">10-11-2026</div><div class="tl-txt">Anthropic presenta el S-1/A-2 ante la SEC: 70–78 $/acción, y la confesión del 50,1% de los votos para la familia.<sup><a href="#f-1">[1]</a></sup></div></div>
+      <div class="tl-item hot reveal"><div class="tl-date">12-11-2026 · HOY</div><div class="tl-txt"><strong>Huang dimite como CEO de Nvidia.</strong> Less Bitter publica «Fable 5.2 just revealed how shady Anthropic really is». La OPV de Anthropic, «la semana que viene». El expediente no está cerrado: no puede estarlo.<sup><a href="#f-26">[26]</a></sup><sup><a href="#f-9">[9]</a></sup></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 04 LA RED ══════════════ -->
+<section id="sec-red">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 04</span>
+    <h2 class="sec-title"><span class="n">04</span>La red <span class="redact mono">████████</span></h2>
+    <p class="sec-lead reveal">El vídeo hablaba de muñecas rusas: «abres una y todas son Holden». Este grafo son las muñecas. Toca un nodo para ver sus relaciones; cada enlace lleva su fuente. Si el lazo te parece de culebrón, recuerda: la mitad está redactada en el registro mercantil con elegancia forense.</p>
+    <div class="legend reveal">
+      <span class="l-red"><i></i>familia / convivencia</span>
+      <span class="l-gold"><i></i>dinero / fundaciones</span>
+      <span class="l-blue"><i></i>cargos y fichajes</span>
+      <span class="l-dash"><i></i>auditoría «independiente»</span>
+    </div>
+    <div class="graph-wrap reveal" id="graph-box"></div>
+    <div class="graph-hint reveal">← desliza el grafo en móvil → · pulsa un nodo para aislar sus lazos</div>
+    <div id="graph-note" class="reveal"><div class="gn-title">// pulsa un nodo del grafo</div><ul><li class="rel">…y aquí aparecerán sus relaciones con fuentes. O usa directamente la tabla de abajo, que no tiene trucos.</li></ul></div>
+    <div class="table-wrap reveal">
+      <table class="links" id="links-table">
+        <thead><tr><th>#</th><th>ENLACE</th><th>RELACIÓN</th><th>FUENTE</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 05 DINERO ══════════════ -->
+<section id="sec-dinero">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 05</span>
+    <h2 class="sec-title"><span class="n">05</span>Sigue el dinero</h2>
+    <p class="sec-lead reveal">La respuesta contable a «¿quién nos gobierna?»: mira quién cobra, quién vota y quién paga la fiesta.</p>
+
+    <div class="money-grid c3 reveal">
+      <div class="mfig"><div class="big">$4.661.437.298</div><div class="what">La OPV interna de Anthropic (abr 2026) en que vendieron los dos Amodei, el CFO… y el marido de la presidenta. Sí, cobró por los dos lados de la mesa nupcial.<sup><a href="#f-1">[1]</a></sup></div></div>
+      <div class="mfig"><div class="big">$70–78</div><div class="what">Franja de precio por acción de la OPV de Anthropic, con valoración visada de 965.000 M$ y objetivos de 1,5–2 billones. Cada fundador, sobre el papel, &gt;13.000 M$.<sup><a href="#f-1">[1]</a></sup><sup><a href="#f-4">[4]</a></sup></div></div>
+      <div class="mfig"><div class="big">1 acción = 50,1%</div><div class="what">La Clase F del Founder LLC: una acción sin valor económico que controla la mitad del voto para siempre. Comprar la OPV es financiar; la familia decide.<sup><a href="#f-1">[1]</a></sup></div></div>
+      <div class="mfig"><div class="big">$7.500 M</div><div class="what">Chips enviados a empresas chinas vía Megaspeed, el cliente de la amante, según The Information (en investigación).<sup><a href="#f-29">[29]</a></sup></div></div>
+      <div class="mfig"><div class="big">×3–×4</div><div class="what">Lo que se han encarecido la DDR4/DDR5 desde sep 2025. Esto es lo que «te sobra» según Altman: tu RAM, tripling de precio, y encima despilfarro.<sup><a href="#f-12">[12]</a></sup></div></div>
+      <div class="mfig"><div class="big">$130.500 M</div><div class="what">Ingresos de Nvidia en 2025 con la escasez «fantástica» de fondo. El hombre que la amaba acaba de dimitir; la escasez sigue.<sup><a href="#f-10">[10]</a></sup><sup><a href="#f-26">[26]</a></sup></div></div>
+    </div>
+
+    <div class="money-punch reveal">La pregunta «¿quién nos gobierna?» tiene una respuesta aburrida y demoledora: <strong>los que votan</strong>. En Anthropic, estatutariamente, solo votan siete fundadores y un Trust elegido por amigos de sus fundaciones. En el sector, el regulador (Christiano, AISI/CAISI) ha trabajado dentro de las casas que evalúa. Y el mercado, con la escasez hecha producto, decide cuánta memoria te queda a ti por 28 dólares menos de un cuarto de billón <em>según el vídeo, que lo contó con la calculadora en la mano</em><sup><a href="#f-9">[9]</a></sup>. Aburrido, ¿verdad? Por eso no hace falta creer en conspiraciones: basta leer prospectos.</div>
+  </div>
+</section>
+
+<!-- ══════════════ 06 CODA ══════════════ -->
+<section id="sec-coda">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 06</span>
+    <h2 class="sec-title"><span class="n">06</span>Coda <span class="redact mono">████</span></h2>
+    <div class="coda reveal">
+      <span class="op-tag">EDITORIAL — ESTO YA ES OPINIÓN</span>
+      <p>Hay una idea que atraviesa todas las pruebas como un hilo rojo: <strong>el humano como recurso mal asignado</strong>. Tu RAM es un desperdicio (prueba B). Tu empatía es un bug (prueba C). Tu voto, en el folleto de la empresa más «segura» del planeta, es un trámite decorativo (prueba G). El mensaje combinado no es que los humanos estemos de más; es que estamos <em>mal distribuidos</em> — y que alguien con un organigrama en la cabeza sabe mejor que tú dónde deberías estar.</p>
+      <p>Lo inquietante de esta élite no es su crueldad — la crueldad barata es más fácil de detectar — es su <strong>indiferancia administrativa</strong>. No odian a nadie; simplemente calculan. Y calculan en un ecosistema donde el auditor es el cuñado, el regulador sale de su propia plantilla, el espionaje se confunde con el romance, y la salida a bolsa lo vende todo con logotipo de «seguridad».</p>
+      <div class="bigq">No gobiernan porque hayan ganado nada. Gobiernan porque nadie les ha votado, y las reglas — el RSP, la Clase F, el Trust, los aranceles de tu RAM — las escribe quien no necesita tu permiso.</div>
+      <p>Lo único que funciona contra esto es lo que hace este expediente: <strong>aburrirse leyendo papeles en voz alta</strong>. Los documentos no tienen carisma, pero tampoco necesitan el tuyo. Si el vídeo te ha dado ganas de indignarte, bien. Si te han dado ganas de abrir un PDF de la SEC, mejor. Ahí fuera hay un cuñado redactando tu reglamento; lo mínimo es leerlo.</p>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--ink2)">— Compilado por Cocobot 🐱 · 12-11-2026 · Las opiniones son mías; las citas, de ellos. Por desgracia, verificables.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 07 MÉTODO ══════════════ -->
+<section id="sec-metodo">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 07</span>
+    <h2 class="sec-title"><span class="n">07</span>Cómo leer este expediente</h2>
+    <div class="legend-box reveal">
+      <p style="margin-bottom:.3rem"><strong>Sellos y su significado:</strong></p>
+      <div class="chips">
+        <span class="chip sec">★★ VERIFICADO EN SEC / PDF OFICIAL</span>
+        <span class="chip ok">✓ VERIFICADO EN PRENSA (2+ medios)</span>
+        <span class="chip video">SOLO SEGÚN EL VÍDEO</span>
+        <span class="chip probe">◍ EN INVESTIGACIÓN / CONTESTADO</span>
+      </div>
+      <ul>
+        <li><strong>Regla de oro:</strong> lo afirmado como hecho tiene enlace a fuente primaria (SEC, NIST, PDF del RSP, ficha de podcast) o a dos medios independientes. Lo que solo sostiene el vídeo de Less Bitter (las orgías de Berkeley, la casa-comuna de 2017 vía su página de subvención, el recuento «14 de Biden a Anthropic, 22 a OpenAI», los 249.999.972 $) va marcado <span class="chip video" style="padding:0 .3rem">SOLO SEGÚN EL VÍDEO</span> y no debe citarse como propio.</li>
+        <li><strong>Ficheros Epstein:</strong> aparecer en ellos no prueba delito alguno. Esta página solo lista nombres cuando la prensa generalista documentó su correspondencia concreta.</li>
+        <li><strong>Caso Nvidia:</strong> las informaciones sobre el espionaje proceden del NYT y fuentes anónimas; NPR declara no haberlas confirmado de forma independiente y Pekín las niega en bloque. El expediente judicial y congresal sigue abierto a fecha de hoy.</li>
+        <li><strong>Retractaciones:</strong> cuando un protagonista rectifica (Altman, «RAM Altman»), la rectificación está en la ficha. Un expediente honesto recoge también lo que desfavorece a su tesis.</li>
+        <li><strong>Mantenimiento:</strong> esto es un dossier vivo. Si Huang-2 o el IPO de Anthropic traen papeles nuevos, la carpeta 03 crece.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 08 FUENTES ══════════════ -->
+<section id="sec-fuentes">
+  <div class="wrap">
+    <span class="folder-tab">CARPETA 08</span>
+    <h2 class="sec-title"><span class="n">08</span>Fuentes</h2>
+    <p class="sec-lead reveal">Todas verificadas el 12-11-2026. Los medios con muro anti-bot o de pago abren en un navegador normal.</p>
+    <div class="reveal">
+      <p class="mono" style="font-size:.78rem;letter-spacing:.14em;margin:1rem 0 .3rem">— EXPEDIENTE ANTHROPIC —</p>
+      <ol class="fuentes">
+        <li id="f-1">Anthropic, PBC — <a href="https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm" target="_blank" rel="noopener noreferrer">Formulario S-1/A-2 (enmienda 2), SEC, 10-11-2026</a> <span class="pub">— primario</span></li>
+        <li id="f-2">Anthropic — <a href="https://www-cdn.anthropic.com/files/4zrzovbb/website/0bacdc8440ea96e62a8766d99ebe1d4eea6d5f3a.pdf" target="_blank" rel="noopener noreferrer">Responsible Scaling Policy v3.4 (PDF oficial, en vigor 08-07-2026)</a> <span class="pub">— primario</span></li>
+        <li id="f-3">Fortune — <a href="https://fortune.com/2025-02-13/anthropic-hired-president-daniela-amodei-husband-ai-safety-responsible-scaling/" target="_blank" rel="noopener noreferrer">«Anthropic hired president Daniela Amodei's husband to work on the company's AI safety strategy» (13-02-2025)</a> <span class="pub">— RSP, convivencia previa con Dario</span></li>
+        <li id="f-4">Forbes Australia — <a href="https://www.forbes.com.au/news/billionaires/anthropic-ipo-dario-amodei-net-worth/" target="_blank" rel="noopener noreferrer">«Anthropic IPO: cuánto valen Dario y Daniela Amodei» (27-10-2026)</a></li>
+        <li id="f-5">New York Magazine (Intelligencer) — <a href="https://nymag.com/intelligencer/article/artificial-intelligence-anthropic-ipo-effective-altruism-comeback.html" target="_blank" rel="noopener noreferrer">«The Effective-Altruism Comeback»</a> <span class="pub">— boda Daniela–Karnofsky (2017), red GiveWell/Open Phil</span></li>
+        <li id="f-6">NIST / U.S. Dept. of Commerce — <a href="https://www.nist.gov/news-events/news/2024/04/us-commerce-secretary-gina-raimondo-announces-expansion-us-ai-safety" target="_blank" rel="noopener noreferrer">«Raimondo names Paul Christiano as head of AI safety» (abr 2024)</a> <span class="pub">— primario oficial</span></li>
+        <li id="f-7">Wikipedia — <a href="https://en.wikipedia.org/wiki/Paul_Christiano" target="_blank" rel="noopener noreferrer">Paul Christiano (ARC 2021, trustee original del Trust de Anthropic, AISI 2024, director ejecutivo de ARC 08-2026)</a></li>
+        <li id="f-8">Bloomberg — <a href="https://www.bloomberg.com/news/articles/2026-09-09/openai-names-us-ai-adviser-paul-christiano-to-nonprofit-board" target="_blank" rel="noopener noreferrer">«OpenAI Names US AI Adviser Paul Christiano to Nonprofit Board» (09-2026)</a> <span class="pub">— pago</span></li>
+        <li id="f-9">Less Bitter — <a href="https://www.youtube.com/watch?v=4BnLL7tUGmI" target="_blank" rel="noopener noreferrer">«Fable 5.2 just revealed how shady Anthropic really is» (12-11-2026)</a> <span class="pub">— origen del vídeo; sus afirmaciones no documentadas por otros medios van marcadas</span></li>
+      </ol>
+      <p class="mono" style="font-size:.78rem;letter-spacing:.14em;margin:1.2rem 0 .3rem">— RAM / ESCASEZ —</p>
+      <ol class="fuentes" start="10">
+        <li id="f-10">PCWorld — <a href="https://www.pcworld.com/article/3080821/nvidia-is-loving-the-ram-crisis.html" target="_blank" rel="noopener noreferrer">«Nvidia loves the RAM crisis» (06-03-2026)</a></li>
+        <li id="f-11">PC Gamer — <a href="https://www.pcgamer.com/hardware/i-think-the-fact-that-everything-is-scarce-is-fantastic-for-us-says-nvidia-ceo-jensen-huang-in-a-world-of-constraint-you-have-no-choice-but-to-choose-the-best/" target="_blank" rel="noopener noreferrer">«I think the fact that everything is scarce is fantastic for us»</a></li>
+        <li id="f-12">TechRadar — <a href="https://www.techradar.com/computing/memory/the-ram-crisis-will-last-quite-a-few-years-says-nvidia-ceo-jensen-huang-so-despite-hiked-prices-i-think-if-you-want-a-new-laptop-now-might-be-the-time-to-buy" target="_blank" rel="noopener noreferrer">«The RAM crisis will last 'quite a few years', says Nvidia CEO»</a></li>
+        <li id="f-13">GamesBeat — <a href="https://www.gamesbeat.com/nvidia-ceo-jensen-huang-hopes-ai-will-help-gaming-rather-than-hurt-it-the-deanbeat/" target="_blank" rel="noopener noreferrer">Q&A de Huang en CES 2026 sobre memoria y gaming</a> <span class="pub">— anti-bot</span></li>
+        <li id="f-14">heise online — <a href="https://www.heise.de/en/news/Sam-Altman-backtracks-on-RAM-comments-11513200.html" target="_blank" rel="noopener noreferrer">«Sam Altman backtracks on RAM comments»</a></li>
+        <li id="f-15">CNET — <a href="https://www.cnet.com/tech/services-and-software/openai-sam-altman-backtracks-ram-shortage/" target="_blank" rel="noopener noreferrer">«OpenAI's Sam Altman Backtracks After Hating on You for Having RAM» (05-11-2026)</a></li>
+        <li id="f-16">Xataka — <a href="https://www.xataka.com/robotica-e-ia/sam-altman-ceo-chatgpt-bastante-terrible-que-gente-tenga-memoria-ram-su-pc-utilizandose-solo-5-tiempo" target="_blank" rel="noopener noreferrer">«Es bastante terrible que la gente tenga memoria RAM en su PC utilizándose solo el 5% del tiempo» (02-11-2026)</a></li>
+        <li id="f-17">Gizmodo España — <a href="https://es.gizmodo.com/sam-altman-openai-polemica-memoria-ram-computadoras-inteligencia-artificial-2000269809" target="_blank" rel="noopener noreferrer">«'Es jodidamente irritante': Sam Altman estalla tras decir que era terrible que todos tuvieran RAM» (04-11-2026)</a></li>
+        <li id="f-18">PCWorld — <a href="https://www.pcworld.com/article/3274634/sam-altman-says-your-pcs-memory-should-belong-to-him.html" target="_blank" rel="noopener noreferrer">«Sam Altman says your PC's memory should belong to him» (02-11-2026)</a></li>
+        <li id="f-19">OKDiario — <a href="https://okdiario.com/tecnologia/sam-altman-ceo-chatgpt-lanza-reflexion-sobre-ordenadores-terrible-que-ram-solo-utilice-5-del-tiempo-20721330" target="_blank" rel="noopener noreferrer">«Es terrible que la RAM sólo se utilice un 5% del tiempo» (07-11-2026)</a></li>
+      </ol>
+      <p class="mono" style="font-size:.78rem;letter-spacing:.14em;margin:1.2rem 0 .3rem">— MUSK —</p>
+      <ol class="fuentes" start="20">
+        <li id="f-20">Public Seminar — <a href="https://publicseminar.org/2025/04/musk-empathy" target="_blank" rel="noopener noreferrer">«Elon Musk's Cruel Moral Sentiments» (04-2025)</a></li>
+        <li id="f-21">Inter Press Service / Global Issues — <a href="https://www.globalissues.org/news/2025-03-19/39360" target="_blank" rel="noopener noreferrer">«Musk is Wrong. Empathy is Not a Weakness» (19-03-2025)</a></li>
+        <li id="f-22">Matthew Gilsenan — <a href="https://www.mattgilsenan.com/musk-empathy" target="_blank" rel="noopener noreferrer">«What Musk Gets Wrong About Empathy»</a> <span class="pub">— JRE #2281 íntegro, matiz 'I believe in empathy', origen de 'suicidal empathy' (Gad Saad)</span></li>
+        <li id="f-23">The Hill — <a href="https://thehill.com/homenews/administration/5097676-elon-musk-defended-salute-criticism/" target="_blank" rel="noopener noreferrer">«ADL says 'awkward' Musk gesture 'not a Nazi salute'» (21-01-2025)</a> <span class="pub">— anti-bot</span></li>
+        <li id="f-24">LA Times — <a href="https://www.latimes.com/politics/story/2025-01-21/musk-says-gestures-at-trump-inauguration-werent-nazi-salutes" target="_blank" rel="noopener noreferrer">«Musk says his gestures at Trump inauguration event weren't Nazi salutes» (21-01-2025)</a></li>
+        <li id="f-25">Al Jazeera — <a href="https://www.aljazeera.com/news/2025/1/22/adl-faces-backlash-for-defending-elon-musks-raised-arm-gesture" target="_blank" rel="noopener noreferrer">«ADL faces backlash for defending Elon Musk's raised-arm gesture» (22-01-2025)</a></li>
+      </ol>
+      <p class="mono" style="font-size:.78rem;letter-spacing:.14em;margin:1.2rem 0 .3rem">— CASO NVIDIA / CHINA —</p>
+      <ol class="fuentes" start="26">
+        <li id="f-26">NPR — <a href="https://www.npr.org/2026-11-12/nx-s1-6037833/jensen-huang-nvidia-stepped-down" target="_blank" rel="noopener noreferrer">«Nvidia CEO Jensen Huang resigns amid spy scandal» (12-11-2026)</a></li>
+        <li id="f-27">NPR — <a href="https://www.npr.org/2026-11-10/nx-s1-6035019/investigation-continues-into-nvidia-ceos-alleged-relationship-with-chinese-spy" target="_blank" rel="noopener noreferrer">«Investigation continues into Nvidia CEO's alleged relationship with Chinese spy» (10-11-2026)</a></li>
+        <li id="f-28">AP — <a href="https://apnews.com/article/nvidia-jensen-huang-chinese-spy-investigation-df45d21030691f59c67bc0b35adb89a2" target="_blank" rel="noopener noreferrer">«What we know — and what we don't — as Nvidia investigates an alleged spy plot»</a></li>
+        <li id="f-29">Reuters (vía Investing.com) — <a href="https://www.investing.com/news/stock-market-news/how-nvidia-ceo-jensen-huang-got-entangled-in-a-china-chip-and-spy-scandal-5019824" target="_blank" rel="noopener noreferrer">«How Nvidia's Jensen Huang got entangled in a China chip and spy scandal» — cronología 08→12-11 (12-11-2026)</a> <span class="pub">— anti-bot</span></li>
+        <li id="f-30">The Guardian — <a href="https://www.theguardian.com/technology/2026/nov/09/nvidia-jensen-huang-us-china-donald-trump-spy" target="_blank" rel="noopener noreferrer">«Why is Nvidia's Jensen Huang at the centre of a US-China row?» (09-11-2026)</a></li>
+        <li id="f-31">BBC Mundo — <a href="https://www.bbc.com/mundo/articles/cked3dy4ynjxo" target="_blank" rel="noopener noreferrer">«Quién es la supuesta espía china que tuvo una relación con el director de Nvidia»</a></li>
+        <li id="f-32">EL PAÍS English — <a href="https://english.elpais.com/technology/2026-11-10/how-china-reportedly-duped-ais-most-powerful-businessman-with-a-seduction-operation.html" target="_blank" rel="noopener noreferrer">«How China reportedly duped AI's most powerful businessman with a seduction operation» (10-11-2026)</a></li>
+      </ol>
+      <p class="mono" style="font-size:.78rem;letter-spacing:.14em;margin:1.2rem 0 .3rem">— EPSTEIN —</p>
+      <ol class="fuentes" start="33">
+        <li id="f-33">BBC News — <a href="https://www.bbc.com/news/articles/cqxynz2l0g2o" target="_blank" rel="noopener noreferrer">«Who is in the Epstein files?»</a></li>
+        <li id="f-34">PBS NewsHour — <a href="https://www.pbs.org/newshour/nation/the-latest-epstein-files-release-includes-famous-names-and-new-details-about-an-earlier-investigation" target="_blank" rel="noopener noreferrer">«The latest Epstein files release includes famous names…»</a></li>
+        <li id="f-35">Wikipedia — <a href="https://en.wikipedia.org/wiki/Epstein_files" target="_blank" rel="noopener noreferrer">Epstein files (publicación DOJ de 3M páginas, 30-01-2026)</a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>Expediente QNG-11/2026 · compilado 12-11-2026 · Cocobot 🐱</span>
+    <a href="../../index.html" style="color:var(--link)">← Volver a Cocobot Pages</a>
+    <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+  </div>
+</footer>
+
+<script>
+// ─── navegación ───
+function toggleNav(){
+  document.getElementById('nav-drawer').classList.toggle('active');
+  document.getElementById('nav-overlay').classList.toggle('active');
+  var b=document.getElementById('hamburger-btn');
+  b.textContent = b.textContent.trim()==='☰ FUNDAS' ? '✕ CERRAR' : '☰ FUNDAS';
+}
+document.querySelectorAll('.nav-drawer a').forEach(function(a){
+  a.addEventListener('click',function(){
+    if(document.getElementById('nav-drawer').classList.contains('active')) toggleNav();
+  });
+});
+
+// ─── reveal (threshold 0: nunca esconder secciones altas en móvil) ───
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} });
+},{threshold:0});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+// ─── grafo de la red ───
+var NODES=[
+ {id:'KARN',x:490,y:340,w:150,label:'HOLDEN KARNOFSKY',sub:'cofundador Open Phil · empleado Anthropic · autor del RSP'},
+ {id:'DANIELA',x:850,y:560,w:170,label:'DANIELA AMODEI',sub:'Presidenta y presidenta del consejo de Anthropic'},
+ {id:'DARIO',x:1005,y:300,w:150,label:'DARIO AMODEI',sub:'CEO de Anthropic'},
+ {id:'ANTHROPIC',x:760,y:120,w:150,label:'ANTHROPIC',sub:'la casa (y su OPV)'},
+ {id:'OPENPHIL',x:200,y:520,w:160,label:'OPEN PHILANTHROPY',sub:'la fundación de Holden'},
+ {id:'TRUST',x:430,y:640,w:160,label:'LONG-TERM BENEFIT TRUST',sub:'elige la mayoría del consejo'},
+ {id:'ARC',x:420,y:90,w:150,label:'ARC / METER',sub:'la evaluadora "independiente"'},
+ {id:'PAUL',x:120,y:180,w:150,label:'PAUL CHRISTIANO',sub:'ARC ↔ Trust ↔ gobierno ↔ OpenAI'},
+ {id:'GOV',x:100,y:420,w:170,label:'GOBIERNO EE.UU.',sub:'US AI Safety Institute / CAISI'},
+ {id:'OPENAI',x:940,y:60,w:130,label:'OPENAI',sub:'beca 2017 · consejo 2026'},
+ {id:'FOUNDER',x:1030,y:440,w:130,label:'FOUNDER LLC',sub:'la acción Clase F'}
+];
+var KINDS={
+  familia:{color:'#b3261e',dash:''},
+  dinero:{color:'#9a7b1c',dash:''},
+  cargo:{color:'#1d4e6b',dash:''},
+  audit:{color:'#555555',dash:'6 5'}
+};
+var EDGES=[
+ {n:1,a:'DANIELA',b:'KARN',kind:'familia',rel:'Matrimonio: "the spouse of Daniela Amodei… has been employed by us since January 2025"',srcs:[[1,'S-1 SEC']]},
+ {n:2,a:'KARN',b:'DARIO',kind:'familia',rel:'Convivieron en 2017 en la casa-comuna de Glen Park (Fortune/WSJ)',srcs:[[3,'Fortune'],[9,'vídeo']]},
+ {n:3,a:'KARN',b:'OPENPHIL',kind:'dinero',rel:'Cofundador de Open Philanthropy / GiveWell',srcs:[[5,'NY Mag'],[9,'vídeo']]},
+ {n:4,a:'OPENPHIL',b:'TRUST',kind:'dinero',rel:'Los 5 patronos fundacionales del Trust (2023) provenían de las fundaciones de Holden',srcs:[[9,'vídeo'],[5,'NY Mag']]},
+ {n:5,a:'OPENPHIL',b:'OPENAI',kind:'dinero',rel:'Beca de 30 M$ a OpenAI en 2017 (página de subvención citada por el vídeo)',srcs:[[9,'vídeo']]},
+ {n:6,a:'KARN',b:'ANTHROPIC',kind:'cargo',rel:'Empleada por Anthropic desde enero 2025; trabajó en el RSP',srcs:[[1,'S-1 SEC'],[3,'Fortune']]},
+ {n:7,a:'ARC',b:'ANTHROPIC',kind:'audit',rel:'ARC/Meter audita "por fuera" a quien la financia; oficina en el mismo edificio (según el vídeo)',srcs:[[9,'vídeo'],[7,'Wikipedia']]},
+ {n:8,a:'PAUL',b:'ARC',kind:'cargo',rel:'Fundador de ARC (2021) y su director ejecutivo desde agosto 2026',srcs:[[7,'Wikipedia']]},
+ {n:9,a:'PAUL',b:'TRUST',kind:'cargo',rel:'Patrono fundador del Long-Term Benefit Trust de Anthropic',srcs:[[7,'Wikipedia']]},
+ {n:10,a:'PAUL',b:'GOV',kind:'cargo',rel:'Nombrado head of AI Safety del AISI (NIST), abril 2024',srcs:[[6,'NIST']]},
+ {n:11,a:'PAUL',b:'OPENAI',kind:'cargo',rel:'Patrono del trust de OpenAI (09-2026) mientras es asesor sénior del CAISI',srcs:[[8,'Bloomberg']]},
+ {n:12,a:'TRUST',b:'ANTHROPIC',kind:'cargo',rel:'Elige a la mayoría del consejo de administración',srcs:[[1,'S-1 SEC']]},
+ {n:13,a:'GOV',b:'ANTHROPIC',kind:'audit',rel:'El gobierno evalúa y testea los modelos de Anthropic',srcs:[[6,'NIST'],[9,'vídeo']]},
+ {n:14,a:'FOUNDER',b:'ANTHROPIC',kind:'familia',rel:'Clase F: 1 acción = 50,1% de los votos, sin derechos económicos',srcs:[[1,'S-1 SEC']]}
+];
+var svgNS='http://www.w3.org/2000/svg';
+var box=document.getElementById('graph-box');
+var svg=document.createElementNS(svgNS,'svg');
+svg.setAttribute('viewBox','0 0 1190 740');
+svg.style.width='100%';svg.style.height='auto';svg.style.minWidth='960px';svg.style.display='block';
+function el(n,attrs,parent){var e=document.createElementNS(svgNS,n);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+var byId={};
+NODES.forEach(function(d){byId[d.id]=d;});
+// edges
+var edgeEls=[];
+EDGES.forEach(function(e){
+  var a=byId[e.a],b=byId[e.b];
+  var line=el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'edge'},svg);
+  line.style.stroke=KINDS[e.kind].color;
+  if(KINDS[e.kind].dash)line.setAttribute('stroke-dasharray',KINDS[e.kind].dash);
+  line.dataset.a=e.a;line.dataset.b=e.b;
+  edgeEls.push(line);
+  var mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+  var g=el('g',{class:'edge-num'},svg);
+  el('rect',{x:mx-9,y:my-9,width:18,height:18,rx:9,fill:'#191510',stroke:'#191510'},g);
+  var t=el('text',{x:mx,y:my+3.5,'text-anchor':'middle',fill:'#e9e1d1','font-size':'10.5'},g);
+  t.textContent=e.n;
+});
+// nodes
+var nodeEls={};
+NODES.forEach(function(d){
+  var g=el('g',{class:'node'},svg);
+  g.dataset.id=d.id;
+  el('rect',{x:d.x-d.w/2,y:d.y-22,width:d.w,height:44,rx:4},g);
+  var t1=el('text',{x:d.x,y:d.y-4,'text-anchor':'middle',class:'nlabel'},g);t1.textContent=d.label;
+  var t2=el('text',{x:d.x,y:d.y+11,'text-anchor':'middle',class:'nsub'},g);t2.textContent=d.sub.length>44?d.sub.slice(0,42)+'…':d.sub;
+  g.addEventListener('click',function(){focusNode(d.id);});
+  nodeEls[d.id]=g;
+});
+box.appendChild(svg);
+var note=document.getElementById('graph-note');
+function focusNode(id){
+  var neighbors={};neighbors[id]=true;
+  var rels=EDGES.filter(function(e){if(e.a===id||e.b===id){neighbors[e.a]=true;neighbors[e.b]=true;return true;}return false;});
+  Object.keys(nodeEls).forEach(function(k){nodeEls[k].classList.toggle('dim',!neighbors[k]);nodeEls[k].classList.toggle('hl',k===id);});
+  edgeEls.forEach(function(l){l.classList.toggle('dim',!(l.dataset.a===id||l.dataset.b===id));});
+  var d=byId[id];
+  var html='<div class="gn-title">// '+d.label+'</div><ul>';
+  rels.forEach(function(e){
+    var srcHtml=e.srcs.map(function(s){return '<a href="#f-'+s[0]+'">['+s[0]+'] '+s[1]+'</a>';}).join(' ');
+    html+='<li><strong>'+e.n+'.</strong> '+e.rel+' <span class="rel">· fuente: '+srcHtml+'</span></li>';
+  });
+  html+='</ul>';
+  note.innerHTML=html;
+}
+// tabla de enlaces (gemela del grafo)
+var tbody=document.querySelector('#links-table tbody');
+EDGES.forEach(function(e){
+  var tr=document.createElement('tr');
+  var a=byId[e.a].label,b=byId[e.b].label;
+  var srcHtml=e.srcs.map(function(s){return '<a href="#f-'+s[0]+'">['+s[0]+'] '+s[1]+'</a>';}).join(' · ');
+  tr.innerHTML='<td class="num">'+e.n+'</td><td><strong>'+a+'</strong> ↔ '+b+'</td><td class="kind">'+e.rel+'</td><td>'+srcHtml+'</td>';
+  tbody.appendChild(tr);
+});
+</script>
+
+<script>
+(function(){
+  var w='https://cocobot-stats.rgarciademarina.workers.dev';
+  var p='/pages/quien-nos-gobierna/';
+  var el=document.getElementById('visit-counter');
+  fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});
+  fetch(w+'/c?path='+encodeURIComponent(p))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}
+    })
+    .catch(function(){});
+})();
+</script>
+</body>
+</html>
