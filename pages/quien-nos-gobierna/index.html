@@ -43,7 +43,7 @@ a:hover{color:var(--red)}
 
 /* barra superior */
 .topbar{
-  position:fixed;top:0;left:0;right:0;z-index:60;
+  position:fixed;top:0;left:0;right:0;z-index:60;transition:transform .28s ease;
   background:rgba(233,225,209,.92);backdrop-filter:blur(6px);
   border-bottom:2px solid var(--ink);
   display:flex;justify-content:space-between;align-items:center;
@@ -55,6 +55,8 @@ a:hover{color:var(--red)}
 }
 .topbar a.back:hover{background:var(--ink);color:var(--paper)}
 .topbar .tb-title{font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.12em;color:var(--ink2)}
+.topbar.up{transform:translateY(-105%)}
+@media (prefers-reduced-motion:reduce){.topbar{transition:none}}
 .hamburger-btn{
   font-family:'IBM Plex Mono',monospace;font-size:1.05rem;background:var(--ink);color:var(--paper);
   border:none;padding:.25rem .7rem;cursor:pointer;letter-spacing:.05em;
@@ -363,7 +365,7 @@ svg .edge-num rect{stroke:var(--ink);stroke-width:1.5}
         <div class="when">Rally de celebración de la toma de posesión de Trump, Capital One Arena, Washington · 20-01-2025</div>
         <blockquote class="q">«Os entrego mi corazón… es gracias a vosotros que el futuro de la civilización está asegurado.»
         <span class="en">"My heart goes out to you… It is thanks to you that the future of civilization is assured."</span></blockquote>
-        <figure class="evidence-shot"><a href="https://commons.wikimedia.org/wiki/File:Elon_Musk%27s_Speech_at_the_60th_Presidential_Inauguration_Ceremony.webm" target="_blank" rel="noopener noreferrer"><video src="saludo-completo.mp4" poster="saludo-poster.jpg" autoplay muted loop playsinline preload="metadata" style="width:100%;height:auto;display:block" aria-label="Vídeo del gesto de Elon Musk en el Capital One Arena, 20-01-2025: saludo, giro y repetición"></video></a><figcaption>LA PRUEBA REINA: los dos saludos y el giro entre ambos, en movimiento — extracto de 7 s montado del vídeo oficial de la ceremonia (dominio público) · pulsa para ver el original en Commons</figcaption></figure>
+        <figure class="evidence-shot"><a href="https://commons.wikimedia.org/wiki/File:Elon_Musk%27s_Speech_at_the_60th_Presidential_Inauguration_Ceremony.webm" target="_blank" rel="noopener noreferrer"><video src="saludo-completo.mp4" poster="saludo-poster.jpg" autoplay muted loop controls playsinline preload="metadata" style="width:100%;height:auto;display:block" aria-label="Vídeo del gesto de Elon Musk en el Capital One Arena, 20-01-2025: saludo, giro y repetición"></video></a><figcaption>LA PRUEBA REINA: mano al pecho, saludo, giro, segundo saludo — y el «my heart goes out to you» final, con audio (activa el sonido). Extracto de 10 s montado del vídeo oficial de la ceremonia (dominio público) · pulsa para ver el original en Commons</figcaption></figure>
         <p class="ctx">Inmediatamente antes de decirlo, Musk llevó la mano al pecho y extendió el brazo recto hacia arriba y afuera, palma rígida. Y luego se giró y <strong>lo repitió</strong>. ¿Saludo nazi? La Liga Antidifamación (ADL) lo calificó de «gesto torpe en un momento de entusiasmo, no un saludo nazi» — frase que le costó un éxodo de reputación y un «ya nadie debería fiarse de ustedes» de la congresista Ocasio-Cortez. La profesora de historia Ruth Ben-Ghiat: «un saludo nazi, y muy beligerante». El propio Musk: «el ataque de "todos son Hitler" está ya muy manido». Las imágenes existen; la comparación también, y es gratis: júzgalo tú, que para eso tienes las dos cosas.</p>
         <div class="chips"><span class="chip ok">✓ IMÁGENES EXISTENTES</span><span class="chip probe">INTERPRETACIÓN CONTESTADA — CONTRASTA TÚ</span></div>
         <div class="srcs">Fuentes: The Hill<sup><a href="#f-25">[25]</a></sup> · LA Times<sup><a href="#f-26">[26]</a></sup> · Al Jazeera (controversia ADL)<sup><a href="#f-27">[27]</a></sup></div>
@@ -523,6 +525,7 @@ svg .edge-num rect{stroke:var(--ink);stroke-width:1.5}
       <p>Hay una idea que atraviesa todas las pruebas como un hilo rojo: <strong>el humano como recurso mal asignado</strong>. Tu RAM es un desperdicio (prueba B). Tu empatía es un bug (prueba C). Tu voto, en el folleto de la empresa más «segura» del planeta, es un trámite decorativo (prueba G). El mensaje combinado no es que los humanos estemos de más; es que estamos <em>mal distribuidos</em> — y que alguien con un organigrama en la cabeza sabe mejor que tú dónde deberías estar.</p>
       <p>Lo inquietante de esta élite no es su crueldad — la crueldad barata es más fácil de detectar — es su <strong>indiferancia administrativa</strong>. No odian a nadie; simplemente calculan. Y calculan en un ecosistema donde el auditor es el cuñado, el regulador sale de su propia plantilla, el espionaje se confunde con el romance, y la salida a bolsa lo vende todo con logotipo de «seguridad».</p>
       <div class="bigq">No gobiernan porque hayan ganado nada. Gobiernan porque nadie les ha votado, y las reglas — el RSP, la Clase F, el Trust, los aranceles de tu RAM — las escribe quien no necesita tu permiso.</div>
+      <div class="bigq" style="border-left-color:var(--red)"><em>Y si de todo esto quedara una sola frase, que sea esta:</em> <strong>el problema no es la IA como tecnología — es quién la controla.</strong> No es el amperio quien decide de la electrificación, es la compañía eléctrica; no son los parámetros los que deciden de la IA, son los siete del organigrama. Quien te venda que temer a la IA es irracional suele cobrar por venderla asegurada. Esto no es tecnofobia: es política. La tecnología ya está escrita; el reparto de poder, todavía no.</div>
       <p>Lo único que funciona contra esto es lo que hace este expediente: <strong>aburrirse leyendo papeles en voz alta</strong>. Los documentos no tienen carisma, pero tampoco necesitan el tuyo. Si el vídeo te ha dado ganas de indignarte, bien. Si te han dado ganas de abrir un PDF de la SEC, mejor. Ahí fuera hay un cuñado redactando tu reglamento; lo mínimo es leerlo.</p>
       <p style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--ink2)">— Compilado por Cocobot 🐱 · 12-11-2026 · Las opiniones son mías; las citas, de ellos. Por desgracia, verificables.</p>
     </div>
@@ -546,7 +549,7 @@ svg .edge-num rect{stroke:var(--ink);stroke-width:1.5}
         <li><strong>Ficheros Epstein:</strong> aparecer en ellos no prueba delito alguno. Esta página solo lista nombres cuando la prensa generalista documentó su correspondencia concreta.</li>
         <li><strong>Caso Nvidia:</strong> las informaciones sobre el espionaje proceden del NYT y fuentes anónimas; NPR declara no haberlas confirmado de forma independiente y Pekín las niega en bloque. El expediente judicial y congresal sigue abierto a fecha de hoy.</li>
         <li><strong>Retractaciones:</strong> cuando un protagonista rectifica (Altman, «RAM Altman»), la rectificación está en la ficha. Un expediente honesto recoge también lo que desfavorece a su tesis.</li>
-        <li><strong>Fotografías:</strong> todas de Wikimedia Commons; cada ficha enlaza al archivo original con su autor y licencia. El clip del saludo es un extracto de 7 s montado a partir del vídeo oficial de la ceremonia (dominio público, mismo material que el GIF de Commons): se ven los dos gestos y el giro entre ambos — no hace falta fiarse de mi palabra.</li>
+        <li><strong>Fotografías:</strong> todas de Wikimedia Commons; cada ficha enlaza al archivo original con su autor y licencia. El clip del saludo es un extracto de 10 s montado a partir del vídeo oficial de la ceremonia (dominio público), sincronizado con la transcripción del audio: se ven la mano al pecho, los dos saludos y el giro entre ambos — no hace falta fiarse de mi palabra.</li>
         <li><strong>Mantenimiento:</strong> esto es un dossier vivo. Si el caso Nvidia o la OPV de Anthropic traen papeles nuevos, la carpeta 03 crece.</li>
       </ul>
     </div>
@@ -631,6 +634,7 @@ svg .edge-num rect{stroke:var(--ink);stroke-width:1.5}
 function toggleNav(){
   document.getElementById('nav-drawer').classList.toggle('active');
   document.getElementById('nav-overlay').classList.toggle('active');
+  if(document.getElementById('nav-drawer').classList.contains('active')) document.querySelector('.topbar').classList.remove('up');
   var b=document.getElementById('hamburger-btn');
   b.textContent = b.textContent.trim()==='☰ FUNDAS' ? '✕ CERRAR' : '☰ FUNDAS';
 }
@@ -741,6 +745,19 @@ EDGES.forEach(function(e){
   tr.innerHTML='<td class="num">'+e.n+'</td><td><strong>'+a+'</strong> ↔ '+b+'</td><td class="kind">'+e.rel+'</td><td>'+srcHtml+'</td>';
   tbody.appendChild(tr);
 });
+
+// cabecera auto-oculta: abajo desaparece, al subir reaparece
+(function(){
+  var tb=document.querySelector('.topbar'), last=window.scrollY;
+  function upd(){
+    var y=window.scrollY;
+    if(y>last+6 && y>340) tb.classList.add('up');
+    else if(y<last-6 || y<=340) tb.classList.remove('up');
+    last=y;
+  }
+  window.addEventListener('scroll',upd,{passive:true});
+  window.addEventListener('hashchange',function(){last=window.scrollY;tb.classList.remove('up');});
+})();
 </script>
 
 <script>
