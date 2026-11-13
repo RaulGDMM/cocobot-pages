@@ -5,6 +5,68 @@
   },
   "days": [
     {
+      "date": "2026-11-13",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Google presenta Gemini 4 Hydrogen: el modelo 'rápido' de la familia que sustituye a 3.8 Flash, a $1,50/$7,50 planos",
+          "summary": "Tercer modelo de la familia Gemini 4, diseñado para ejecución rápida de coding diario y agentes: 2,5x más rápido que 3.8 Flash, Terminal-Bench 4.1 del 18,2% al 57%, índice Artificial Analysis 51 (54 con el nuevo nivel xhigh) — por encima de Argon (50). Precio plano en toda la ventana de 1M tokens ($1,50 entrada / $7,50 salida, Batch/Flex a mitad) y despliegue el mismo día en API, Gemini app y Search; Antigravity estrena 'Orchestrator' que reparte cada tarea entre Carbon y Hydrogen (−24% de cuota media, −19% de tiempo). Ojo: la capa gratuita usa tus datos para mejorar el producto, y el precio de Carbon/Argon se dobla el 1 de diciembre.",
+          "source": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/",
+          "source_name": "Google Blog",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "NVIDIA anuncia la dimisión de Jensen Huang: la CFO Colette Kress será CEO interina",
+          "summary": "El consejo acepta la renuncia efectiva el 12 de noviembre, tres días después de abrir la investigación independiente por su relación con una ejecutiva presuntamente captada por espionaje chino. Colette Kress (CFO desde 2013) pasa a CEO interina sin dejar sus funciones y Harvey C. Jones es nombrado primer presidente del consejo en la historia de la empresa; la búsqueda de sucesor permanente arranca ya, dentro y fuera de NVIDIA.",
+          "source": "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition",
+          "source_name": "NVIDIA Newsroom",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI lanza Daybreak Red Team y Defense Factory: agentes que atacan tus web apps y dejan el parche listo para mergear",
+          "summary": "En su keynote 'Cyber at the Frontier', OpenAI presenta dos productos sobre GPT-6 Cyber: Red Team (early access) ejecuta pentesting continuo con flotas de agentes que leen el código, investigan rutas de ataque y verifican si las vulnerabilidades son realmente explotables; Defense Factory (preview vía plugin en Codex) cierra el bucle — investiga cada hallazgo y entrega a los ingenieros un PR con parche y test que demuestra que funciona. Sin precios anunciados; el humano sigue siendo el aprobador. Brockman: 'serás tan seguro como el modelo frontier que te defienda'.",
+          "source": "https://www.theregister.com/security/2026-11-12/openai-launches-security-products-tells-orgs-theyre-doomed-if-they-dont-use-them/5309500",
+          "source_name": "The Register",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "'Nonprofits' demandan a Anthropic, Google, Meta, OpenAI y SpaceXSI para congelar por vía judicial el desarrollo de IA avanzada",
+          "summary": "Public Citizen, Irreplaceable Education Fund, Heat Initiative y Alliance for Secure AI han demandado en el juzgado de San Francisco invocando la ley de competencia desleal de California: piden un mandato de emergencia que congele entrenamiento y despliegue de modelos frontier citando ciberataques reales de agentes, riesgo bioweapon y las propias advertencias de los CEOs (Altman 2015, Amodei 2025). Es la primera demanda que busca parar el desarrollo en sí, no solo la publicación de modelos; llega con el nuevo Congreso demócrata recién salido de las midterm.",
+          "source": "https://apnews.com/article/artificial-intelligence-ai-lawsuit-cyberattacks-anthropic-openai-03ece37b96979fe834f60976648504ba",
+          "source_name": "AP News",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Baidu desvela ERNIE 5.5 Flash Preview: 280B/14B activos, 1M de contexto y pesos Apache 2.0 el 25 de noviembre",
+          "summary": "MoE con nueva arquitectura de inferencia eficiente que ya supera los 200 t/s de generación, con mejoras en coding, tareas agénticas y knowledge work (Terminal-Bench 4.0: 46,5). Está activo como endpoint de pago en Qianfan y gratis en OpenRouter; a diferencia del modelo base (licencia propia, hace 6 días), los pesos se publicarán bajo Apache 2.0 antes del 25/11 — otro frontier abierto que se suma a la colección de esta semana.",
+          "source": "https://ernie.baidu.com/release/ernie-5-5-flash-preview",
+          "source_name": "ERNIE (Baidu)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12317→b12345: fix de SSRF en el server, CUDA MMQ para batches pequeños y cancelación de tool-calls MCP",
+          "summary": "b12340 arregla un SSRF en el CORS proxy y las media URLs del server (#32115, el único motivo de peso para actualizar); b12342 añade MMQ de pocas filas para batch size 2-24 en CUDA; b12343 mergea tensores también al convertir qwen3.5; b12344 cancela las llamadas a herramientas MCP cuando el cliente se desconecta o expira; b12345 trae Q5_0/Q5_1 a Hexagon. Para la caja (BeeLlama local monousuario): update opcional con el .bat; nada toca MTP ni qwen4exp y el motor diario sigue siendo el fork Strata.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub llama.cpp",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Basalt v0.3.3: prefill de prompts fríos de Flash-Next 12-22% más rápido en una RTX 5090 y entrada de vídeo por NVDEC",
+          "summary": "Con --parallel 4 lee las filas n-gram del siguiente chunk en paralelo con el actual: en una 5090 a 400 W, los prompts fríos de 40k/100k/250k tokens tardan 12/20/22% menos — justo el terreno del kill-shot >140K del retest. Además: entrada de vídeo en Qwen3.8-Flash-Next decodificada por NVDEC (la segunda pregunta sobre el mismo vídeo casi instantánea), documentos PDF/Office en las tres APIs, logprobs calculados en GPU, /v1/answer_now para cortar el thinking y contenedor CUDA 13 Blackwell. Honestamente: el watchdog de #261 no se declara arreglado (issues Windows 170→176, #347 nueva) y .basalt/config siguen en v2 — una pasada más de A/B con las mismas sondas es barata y merece.",
+          "source": "https://github.com/jesdga95/basalt/releases",
+          "source_name": "GitHub basalt",
+          "star": false
+        }
+      ],
+      "summary": "Día explosivo: Google lanza Gemini 4 Hydrogen para todo el mundo, Jensen Huang dimite como CEO de NVIDIA tras la investigación del consejo, OpenAI entra en ciberseguridad con agentes que atacan tus propias apps, y una coalición de 'nonprofits' demanda a cinco gigantes para congelar la IA avanzada por vía judicial."
+    },
+    {
       "date": "2026-11-12",
       "news": [
         {
@@ -7617,52 +7679,6 @@
         }
       ],
       "summary": "Día de cambios en herramientas de desarrollo: Claude Code pasa a Auto Mode por defecto, Gemini alcanza 1.000M usuarios, y Lovable cierra una Serie C de $400M. En seguridad, un ataque a razonamiento cifrado afecta a los tres grandes labs."
-    },
-    {
-      "date": "2026-08-13",
-      "news": [
-        {
-          "category": "llm",
-          "title": "xAI presenta Grok 4.6: modelo de 1.5T parámetros optimizado para agentes de larga duración",
-          "summary": "SpaceXAI lanzó Grok 4.6 el 12 de agosto, reutilizando la base de 1.5T V9 de Grok 4.5 pero con SFT y RL significativamente mejorados. Se enfoca en agentes que mantienen tareas complejas a través de muchos pasos: investigación, análisis, navegación en codebases y creación de aplicaciones. Contexto de 500k tokens, entrada texto+imagen, salida texto. Precio: $2/$0.50/$6 por millón de tokens (input/cached/output) bajo 200k prompt tokens.",
-          "source": "https://x.ai/news/grok-4-6",
-          "source_name": "xAI Blog",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "NVIDIA cierra alianza de $500.000 millones con Wall Street para financiar infraestructura de IA",
-          "summary": "NVIDIA firmó un acuerdo preliminar con Apollo, BlackRock, Blackstone, Brookfield, Goldman Sachs y KKR para movilizar más de $500B en capital de terceros para financiar infraestructura de cómputo de IA. Jensen Huang presentó el cómputo de IA como una \"clase de activos invertible\" que llamó \"fábricas de IA\". El objetivo es ampliar el acceso a infraestructura NVIDIA para desarrolladores de IA, empresas, gobiernos y proveedores cloud.",
-          "source": "https://www.cnbc.com/2026/08/10/nvidia-wall-street-asset-managers-500-billion-ai-push.html",
-          "source_name": "CNBC",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Anthropic implementa watermarks invisibles en todo el texto generado por Claude",
-          "summary": "Anthropic confirmó que los modelos Claude lanzados desde el 2 de agosto 2026 incrustan marcas de agua invisibles directamente en el texto generado. El watermark viaja con el texto al copiar y pegar, y puede persistir tras edición parcial. Se aplica a nivel de modelo, globalmente, en API, Claude Code y plataformas cloud. La medida responde al Código de Práctica de la UE sobre transparencia de contenido generado por IA, pero Anthropic lo extendió a nivel mundial.",
-          "source": "https://explainx.ai/blog/anthropic-claude-invisible-watermarks-c2pa-august-2026",
-          "source_name": "ExplainX",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Google presenta Pixel 11 con Tensor G6 en evento Made by Google",
-          "summary": "Google lanzó la serie Pixel 11 en su evento Made by Google del 12 de agosto, con el nuevo chip Tensor G6 fabricado en 2nm — el salto más grande en rendimiento del lineup Pixel. También se presentó el Pixel Watch 5. El Tensor G6 representa la apuesta de Google por integrar IA de nivel Gemini directamente en hardware propio, con Gemini Intelligence como diferenciador principal.",
-          "source": "https://www.androidcentral.com/phones/live/made-by-google-2026-launch-live-pixel-11-pixel-11-pro-fold-pixel-watch-5-gemini-and-all-the-news",
-          "source_name": "Android Central",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10369 → b10400 disponible (31 builds nuevos, fix arm builds y parsing Qwen)",
-          "summary": "Se publicaron 31 builds nuevos desde b10369 hasta b10400. Destacan: b10400 con fix de compilación ARM y variable unused en ggml; b10375 con parsing de funciones bare tightening para modelos Qwen; b10373 con mejora en imatrix.cpp (finite check solo en expertos tocados). Tu servidor corre b10248 — vas 152 builds detrás. Las vulnerabilidades de seguridad conocidas (GHSA-j8rj, GHSA-3p4r, GHSA-96jg) siguen sin parche en tu versión.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día intenso: xAI lanza Grok 4.6 enfocado en agentes de larga duración, NVIDIA cierra alianza de $500B con Wall Street para infraestructura de IA, Anthropic implementa watermarks invisibles en Claude, y Google presenta el Pixel 11 con Tensor G6."
     }
   ]
 }
