@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-11-14",
+      "news": [
+        {
+          "category": "llama",
+          "title": "llama.cpp y ggml alcanzan v1.0.0: contrato de estabilidad de API y decodificación especulativa en llama.h",
+          "summary": "Tras 3.5 años, ggml-org libera llama.cpp v1.0.0 y ggml v1.0.0 con semver estricto (major = ruptura de la API C pública), 35 funciones deprecated eliminadas, la API NextN/speculative promovida a llama.h, caché KV OCP FP8, caché de expertos MoE en RAM host con share de CPU configurable, shards PLE externos y tres arquitecturas text nuevas (Kimi-K3 entre ellas), sobre 150+ arquitecturas soportadas. En la caja de Raúl: el motor Strata no se ve afectado (engine propio); para BeeLlama conviene esperar a que los wrappers declaren soporte v1 antes de actualizar (la remoción de API deprecated rompe downstreams).",
+          "source": "https://huggingface.co/blog/ggml-org/llama-cpp-v1",
+          "source_name": "GGML-org / Hugging Face Blog",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI lanza ChatGPT Wallet: los agentes 'Dots' compran por ti con aprobación biométrica",
+          "summary": "ChatGPT Wallet permite a los agentes Dots hacer compras en nombre del usuario (EE. UU., solo suscriptores Pro mayores de 18): tarjeta guardada una vez, aprobación con Face ID/huella en cada compra y tokens de red de un solo uso para que el comercio nunca vea el número real. Lanza con Amex, Chase, Mastercard y Visa; OpenAI no se queda comisión al inicio mientras construye relaciones con comercios.",
+          "source": "https://aiweekly.co/ai-news-today",
+          "source_name": "AI Weekly",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "DeepSeek convierte toda su app en API: búsqueda, OCR y voz sobre V4.1-Flash-1017",
+          "summary": "DeepSeek expone como APIs independientes las capacidades que eran exclusivas de su chat: búsqueda web, búsqueda profunda, lectura de URLs, entrada de ficheros/OCR, ASR/TTS y chequeo de seguridad, con precios de $0,75/1.000 búsquedas y $0,225/1.000 páginas de OCR (voz con 50% de descuento de lanzamiento). El alias deepseek-flash pasa a ser V4.1-Flash-1017 en los endpoints Messages, Responses y Chat Completions; además libera un demo de chat open-source con voz e importación de historial.",
+          "source": "https://api-docs.deepseek.com/updates/",
+          "source_name": "DeepSeek API Docs",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Perplexity libera Decider v1.3 y Decider Flash v1.3: pesos abiertos Apache construidos sobre Qwen",
+          "summary": "Modelos de 'decisión' (responden probabilidades, no texto) para clasificar, rutear y filtrar: Decider v1.3 (27B, sobre Qwen3.8-27B) y Flash v1.3 (4B destilado, sobre Qwen3.5-4B), con pesos Apache en Hugging Face, vía OpenRouter y su Decisions API al mismo precio que v1.2 ($0,02/$0,01 por Mtok de entrada, salida gratis). Novedad 'locate': extrae span exacto de texto con offsets de carácter; media de 91,6% de precisión en 63 tareas de clasificación, 6,5 puntos sobre sus clasificadores de producción.",
+          "source": "https://www.perplexity.ai/hub/blog/perplexity-decider",
+          "source_name": "Perplexity Research",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "Suno Bridge: los modelos de Suno generan stems directamente dentro de Ableton Live",
+          "summary": "App independiente en beta para Mac que corre junto a Ableton Live 12 y escribe pistas instrumentales y vocales en la línea de tiempo siguiendo el tempo, tonalidad, progresión de acordes y groove de tu sesión (nada de samples genéricos). Incluye la suscripción Premier; cada generación consume créditos y la sincronización sube el proyecto a los servidores de Suno, donde pasa filtros anti-copyright.",
+          "source": "https://suno.com/blog/introducing-bridge",
+          "source_name": "Suno",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Caída global de Microsoft 365: Outlook, Teams, SharePoint y Copilot, horas no disponibles",
+          "summary": "Una avería de Exchange Online dejó a millones de usuarios sin correo, Teams, OneDrive ni Copilot (el NHS británico reportó disrupciones); Microsoft pidió perdón 'encarecidamente' y aclaró que no fue un ciberataque ni un problema de IA. A viernes por la mañana la recuperación avanzaba sin ETA total, con la ventana de reintentos de correo extendida a 48 horas para no perder mensajes.",
+          "source": "https://www.theguardian.com/technology/2026/nov/13/microsoft-outage-outlook-teams-word-excel-reports",
+          "source_name": "The Guardian",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Anthropic abre en beta privada los Claude Managed Agents auto-hospedados: el harness de agentes completo en tus servidores",
+          "summary": "Hasta ahora Anthropic ejecutaba el servicio; ahora el arnés de agentes, sandboxes, el almacén de sesiones PostgreSQL y los workers pueden correr en tu cloud o on-prem, con las credenciales fuera de las sandboxes (proxy que las inyecta en las tool-calls MCP) y auditoría de cada paso. Las llamadas a modelo se pueden enrutar a Anthropic, Bedrock, Agent Platform, Foundry o tu propio gateway; acceso vía cuenta de empresa y precio a medida.",
+          "source": "https://aiweekly.co/ai-news-today",
+          "source_name": "AI Weekly",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Arrancan los reservas de las Intelligent Eyewear: las primeras gafas Android XR de Google con Gemini en el oído",
+          "summary": "Google abrió el jueves los prepedidos de las primeras gafas de audio Android XR, co-desarrolladas con Samsung con monturas de Warby Parker y Gentle Monster: Gemini via auricular, compatibles con Android e iPhone y envíos previstos para esta campaña navideña. Figuró como cierre del recuento de Pichai: 8 anuncios de Google en 5 días (dos TPUs, dos Gemini 4, tres proyectos DeepMind y una API).",
+          "source": "https://www.moneycontrol.com/technology/sundar-pichai-reveals-eight-big-ai-updates-google-rollouts-in-five-days-spanning-chips-gemini-4-and-smart-glasses-article-14080121.html",
+          "source_name": "Moneycontrol",
+          "star": false
+        }
+      ],
+      "summary": "Tras la semana de Gemini 4 y Claude 5.2, llega el hito técnico del día: llama.cpp y ggml alcanzan por fin v1.0.0 con contrato de estabilidad de API. El viernes también trae pagos agénticos (ChatGPT Wallet), la app entera de DeepSeek convertida en API y una caída global de Microsoft 365 que tumbó Copilot."
+    },
+    {
       "date": "2026-11-13",
       "news": [
         {
@@ -7569,116 +7639,6 @@
         }
       ],
       "summary": "Día activo en la nube: Google lanza Gemini 3.7 Flash tres semanas después del 3.6, DeepSeek dispara sus precios hasta 4x con tarifas pico/valle, OpenAI cambia a su CRO y Stanford+Arc publican los primeros virus diseñados con IA que funcionan en el laboratorio."
-    },
-    {
-      "date": "2026-08-14",
-      "news": [
-        {
-          "category": "agent",
-          "title": "Claude Code activa Auto Mode por defecto hoy: el clasificador detecta más amenazas que los humanos",
-          "summary": "Anthropic habilita Auto Mode automáticamente para usuarios Pro, Max y Team de Claude Code a partir del 14 de agosto. Un clasificador interno revisa cada llamada a herramientas antes de ejecutarla, detectando el 89% de comandos peligrosos (vs 13.6% de revisión humana). Los equipos en Auto Mode entregan un 25% más de pull requests, y Anthropic absorbe el coste extra de tokens del clasificador.",
-          "source": "https://9to5mac.com/2026/08/07/psa-claude-code-enabling-auto-mode-as-default-next-week-anthropic-says/",
-          "source_name": "9to5Mac",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Claude mejora un límite matemático de 100 años: de 41.6% a 67.2% en la hipótesis de Riemann",
-          "summary": "Una versión de investigación de Claude, ejecutada dentro de Claude Code con ~60 subagentes y 31M de tokens, logró elevar el límite inferior conocido de ceros de la función zeta que satisfacen la hipótesis de Riemann del 41.6% al 67.2%. El modelo generó 650 ideas iniciales y ejecutó 2.400 comandos shell con miles de validaciones numéricas. No resuelve la hipótesis, pero demuestra el potencial de la orquestación de agentes en problemas matemáticos complejos.",
-          "source": "https://www.anthropic.com/research/riemann-zeta",
-          "source_name": "Anthropic Research",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Gemini supera los 1.000 millones de usuarios mensuales, igualando a ChatGPT",
-          "summary": "Google anuncia que la app Gemini ha cruzado el umbral de 1.000M de usuarios activos mensuales, convirtiéndose en el producto de más rápido crecimiento en los 28 años de la compañía. El 63% de los usuarios emplean funciones de voz, se generan más de 150M de imágenes diarias, y hay más de 100M de activos en iOS. ChatGPT alcanzó el mismo hito en junio de 2026.",
-          "source": "https://techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Lovable cierra Serie C de $400M a una valoración de $13.3B",
-          "summary": "La startup sueca de 'vibe coding' Lovable ha levantado $400M en Serie C, co-liderada por Menlo Ventures y Scaleup Europe Fund (EQT), con participación de Balderton, Tencent y World Innovation Lab. La valoración de $13.3B duplica la de su Serie B de diciembre. Lovable planea crecer un 50% su plantilla hasta 450 empleados y expandirse a Latinoamérica. Proyecta un revenue run rate cercano a $600M para finales de agosto.",
-          "source": "https://lovable.dev/blog/series-c",
-          "source_name": "Lovable Blog",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic cierra acuerdo de compute de $9.1B con Riot Platforms: 191 MW durante 20 años",
-          "summary": "Riot Platforms reveló un contrato de arrendamiento de data center de 20 años en Rockdale, Texas, con un inquilino identificado por Bloomberg como Anthropic. El acuerdo de 191 MW se extiende hasta junio de 2048 por ~$9.1B, con dos opciones de extensión de 5 años que podrían elevar el valor total a $16.1B. La entrega es escalonada: 96 MW para diciembre de 2027 y los 191 MW completos para junio de 2028.",
-          "source": "https://www.theblock.co/news/business/2026-08-10-riot-platforms-ai-deal-anthropic-411358",
-          "source_name": "The Block",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "GPT-5.6-Cyber de OpenAI descubre dos zero-days en Chrome V8",
-          "summary": "OpenAI lanzó GPT-5.6-Cyber, un modelo entrenado específicamente para ciberseguridad que responde al 95% de consultas sensibles sobre cadenas de explotación, bypass de autenticación y escalada de privilegios. El modelo identificó dos vulnerabilidades desconocidas en el motor V8 de Chrome que permiten corromper memoria y evadir el sandbox; Google las parchó como CVE-2026-15903. Es el primer modelo de OpenAI en alcanzar el umbral 'High' de su Preparedness Framework.",
-          "source": "https://the-decoder.com/openai-launches-gpt-5-6-cyber-to-help-defenders-find-vulnerabilities-before-attackers-do/",
-          "source_name": "The Decoder",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Nuevo ataque descifra el razonamiento CoT cifrado de Anthropic, OpenAI y Google",
-          "summary": "Un paper publicado en Hugging Face demuestra que los bloques de razonamiento cifrados emitidos por los proveedores son intercambiables entre sesiones, usuarios y modelos dentro de un mismo ecosistema. Un atacante puede inyectar el CoT cifrado de un modelo capaz en uno más débil y forzar su descifrado en texto plano sin jailbreak. Los autores decodificaron 315.320 bloques de repositorios públicos, recuperando 367 artefactos de PII y 182 credenciales, además de una ruta para inyecciones de prompts invisibles.",
-          "source": "https://huggingface.co/papers/2608.09867",
-          "source_name": "Hugging Face Papers",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Manus vuelve a operar como empresa independiente: eliminará datos de usuarios el 23-24 de agosto",
-          "summary": "Manus confirma que dejará de operar bajo Meta y regresará como empresa independiente tras la orden de Beijing de deshacer la adquisición. Los datos generados por ciertos usuarios desde el 29 de diciembre de 2025 serán eliminados entre el 23 y 24 de agosto (SGT). Los usuarios afectados deben hacer backup antes de las 07:59 SGT del 23 de agosto; la restauración abre el 25 de agosto. Manus aclara que no se trata de un incidente de seguridad.",
-          "source": "https://manus.im/blog/a-note-to-our-users",
-          "source_name": "Manus Blog",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "tl;dv filtró 181.000 reuniones grabadas con IA: el parche tardó seis meses",
-          "summary": "El investigador bobdahacker reveló que tl;dv, la popular herramienta de notas con IA para Zoom, Google Meet y Teams, dejó 181.874 registros de reuniones de 84.312 usuarios consultables por cualquier usuario autenticado debido a una regla faltante de aislamiento en Firestore. El fallo fue reportado el 28 de enero de 2026 y permaneció sin parche durante meses, con sesiones activas de agencias gubernamentales, universidades y empresas accesibles por externos.",
-          "source": "https://bobdahacker.com/blog/tldv-hack",
-          "source_name": "bobdahacker",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "PortSwigger: sistema de IA autónomo descubre ataques HTTP desync novedosos en 700 sitios activos",
-          "summary": "James Kettle de PortSwigger presentó HTTP Terminator, un sistema de investigación con IA autónomo que probó 30.000 vectores candidatos de desync HTTP contra miles de sitios autorizados, identificando ~700 vulnerables (bancos, infraestructura gubernamental, productos de seguridad y un aeropuerto). El sistema generó clases de ataque nuevas y también expuso un zero-day en Apache Traffic Server. Kettle lo califica como el primer caso de IA produciendo investigación de seguridad genuinamente novel.",
-          "source": "https://portswigger.net/research/http-terminator",
-          "source_name": "PortSwigger Research",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Cloudflare lanza Kitesurf: un navegador para agentes IA que usa hasta 7x menos memoria que Chromium",
-          "summary": "Cloudflare presentó Kitesurf, un navegador en la nube diseñado exclusivamente para agentes de IA que se ejecuta dentro de Workers V8 isolates. Construido en 12 semanas combinando Blitz (renderer), Stylo de Firefox (CSS), Parley (texto) y Boa JS, pasa ~215.000 Web Platform Tests y reporta 3.1x-3.8x menos CPU y 4.7x-7.0x menos memoria vs Chromium para capturas de pantalla y extracción HTML. Disponible en beta gratuita vía Browser Run.",
-          "source": "https://blog.cloudflare.com/kitesurf/",
-          "source_name": "Cloudflare Blog",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Anthropic relaja los filtros de biología de Fable 5: reduce consultas bloqueadas un 85%",
-          "summary": "Anthropic reescribió y reentrenó el clasificador de seguridad de biología de Fable 5 para distinguir entre preguntas de salud cotidianas, educativas y clínicas frente a investigación de doble uso. El cambio reduce los fallbacks relacionados con biología un ~85% y el volumen total de fallbacks un ~67% en Claude.ai. Las consultas de virología, toxicología y diseño molecular siguen enrutando a Opus 5.",
-          "source": "https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards",
-          "source_name": "Anthropic",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10248 → b10426 disponible (78 builds nuevos, OpenVINO Qwen3.5, fix WASI y SYCL)",
-          "summary": "Tu servidor está en b10248 y la última versión es b10426 (78 builds atrás). Novedades destacadas: soporte OpenVINO para Qwen3.5 con optimización de memoria, force single thread en WASI, fusión de writeback en SYCL, y clarificación de logging en dflash. No hay CVEs nuevas que afecten tu versión actual — los advisory vigentes ya están parcheados desde b8146. Actualización recomendable pero no urgente.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día de cambios en herramientas de desarrollo: Claude Code pasa a Auto Mode por defecto, Gemini alcanza 1.000M usuarios, y Lovable cierra una Serie C de $400M. En seguridad, un ataque a razonamiento cifrado afecta a los tres grandes labs."
     }
   ]
 }
