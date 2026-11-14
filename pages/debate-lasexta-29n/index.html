@@ -469,6 +469,18 @@ Primero si quieres analiza y dime posibles dudas o sugerencias que puedas tener 
     </div>
   </details>
   <details class="method">
+    <summary>🐱🤖 Con qué se ha hecho (y por qué eso también es transparencia)</summary>
+    <div class="pad">
+      <p>Este estudio lo ha firmado <b>Cocobot</b>, el asistente de IA que Raúl mantiene en casa: el framework de agente <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener noreferrer">Hermes Agent</a> (open source, de Nous Research) pilotando el modelo abierto <b>Qwen3.8</b>, que se ejecuta <b>localmente</b> en el PC de Raúl (RTX 5090, cuantización NVFP4). No ha intervenido ningún SaaS cerrado ni API de terceros: ni el análisis, ni la transcripción, ni el texto. Nada viaja a ninguna caja negra ajena.</p>
+      <ul style="padding-left:1.2em;display:grid;gap:.4em">
+        <li><b>Transcripción:</b> <a href="https://github.com/SYSTRAN/faster-whisper" target="_blank" rel="noopener noreferrer">faster-whisper</a> (implementación libre de Whisper) sobre CPU, con los scripts en el repo (ver abajo).</li>
+        <li><b>La web:</b> HTML/CSS/JS escrito a mano, sin frameworks, sin cookies y sin JS de terceros. El código de esta misma página es inspeccionable (Ctrl+U) y vive en <a href="https://github.com/RaulGDMM/cocobot-pages" target="_blank" rel="noopener noreferrer">RaulGDMM/cocobot-pages</a>.</li>
+        <li><b>El utillaje:</b> los scripts y procedimientos (skills) usados —incluida la transcripción de este debate— están respaldados en el repositorio público <a href="https://github.com/RaulGDMM/cocobot-hermes" target="_blank" rel="noopener noreferrer">RaulGDMM/cocobot-hermes</a>.</li>
+      </ul>
+      <p>¿Por qué importa? Porque <b>todo el código es verificable</b>: cualquiera puede mirar cómo se descargó el vídeo, cómo se transcribió y con qué se cruzaron los datos, y repetir el proceso. La única capa de juicio es el texto que estás leyendo —escrito por el modelo, revisado por Raúl antes de publicar— y hasta el prompt original está publicado arriba. Transparencia con las tripas de fuera, open source hasta la última pieza.</p>
+    </div>
+  </details>
+  <details class="method">
     <summary>⚠️ Limitaciones y conflictos de interés declarados</summary>
     <div class="pad">
       <ul style="padding-left:1.2em;display:grid;gap:.4em">
@@ -674,13 +686,13 @@ function claimNode(c){
   var io2 = new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("go"); io2.unobserve(e.target); } }); }, {threshold:0});
   io2.observe(document.getElementById("poll"));
   var bar = document.getElementById("topbar"), last = window.scrollY;
-  var noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // NOTA: con prefers-reduced-motion la UI ya mata transiciones por CSS; ocultar
+  // la barra al bajar sigue siendo comportamiento deseado en movil (no animacion).
   function barState(){
     var y = window.scrollY, pastHero = y > window.innerHeight * 0.85;
     document.body.classList.toggle("tb-on", pastHero);
-    if (!pastHero) { bar.classList.remove("show","t-hide"); return; }
+    if (!pastHero) { bar.classList.remove("show","t-hide"); last = y; return; }
     if (document.body.classList.contains("nav-open")) { bar.classList.add("show"); bar.classList.remove("t-hide"); last = y; return; }
-    if (noMotion) { bar.classList.add("show"); bar.classList.remove("t-hide"); last = y; return; }
     bar.classList.add("show");
     if (y > last + 6) bar.classList.add("t-hide");           // bajando: se esconde
     else if (y < last - 6) bar.classList.remove("t-hide");   // subiendo: reaparece
