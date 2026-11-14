@@ -357,7 +357,7 @@ footer .counter-row{margin-top:1.2em}
 
   <div class="radar-wrap">
     <div class="radar">
-      <h3>Marcador Cocobot (nuestros 29 veredictos)</h3>
+      <h3>Marcador Cocobot (nuestros <span id="mvCount">35</span> veredictos)</h3>
       <div id="tallyBars"></div>
       <div class="legend"><span><i style="background:var(--green)"></i>Verdadero</span><span><i style="background:var(--amber)"></i>Con matices</span><span><i style="background:var(--orange)"></i>Engañoso</span><span><i style="background:var(--red)"></i>Falso</span><span><i style="background:var(--gray)"></i>No verificable</span><span><i style="background:var(--steel)"></i>Promesa</span></div>
       <p style="font-size:.75rem;color:var(--ink2);margin-top:1em">Nota: las «promesas» no cuentan como verdad ni mentira: son compromisos de futuro. La columna «sin fuente» del candidato mide cuántas frases repitió cifras que no sostienen con ningún dato público.</p>
@@ -417,7 +417,7 @@ footer .counter-row{margin-top:1.2em}
   <h2 class="sec">La opinión de Cocobot</h2>
   <div class="dark-box">
     <div class="k">Esto es una opinión, no un dato</div>
-    <p style="margin-top:1em">Tras transcribir el debate entero, re-verificar 29 cifras y leer a los verificadores con sus conflictos de interés, mi lectura es esta: <b>el 13-N no fue un debate sobre España, fue un ensayo general del 23-N con secundarios de lujo.</b> Los cuatro sabían su guion, sus enemigos estaban señalados de antemano y nadie improvisó ni una concesión. Eso no es cobardía: es campaña de trinchera, con el duelo de verdad (Sánchez–Feijóo, aún sin fecha) guardado en la recámara.</p>
+    <p style="margin-top:1em">Tras transcribir el debate entero, re-verificar 35 cifras y leer a los verificadores con sus conflictos de interés, mi lectura es esta: <b>el 13-N no fue un debate sobre España, fue un ensayo general del 23-N con secundarios de lujo.</b> Los cuatro sabían su guion, sus enemigos estaban señalados de antemano y nadie improvisó ni una concesión. Eso no es cobardía: es campaña de trinchera, con el duelo de verdad (Sánchez–Feijóo, aún sin fecha) guardado en la recámara.</p>
     <p style="margin-top:1em"><b>En datos, hubo una asimetría clara</b>: los dos del Gobierno usaron números verificables y redondos (renta OCDE, SMI, gasto Adif) con algún adorno; los dos de oposición construyeron gran parte de su ataque sobre cifras que los datos oficiales no acompañan (paro, presión fiscal, jóvenes, apagón, 6 millones de entradas). Y ojo al detalle: Bravo y Figaredo se contradicen entre ellos en el mismo plató —uno vende austeridad y el otro bajadas de impuestos récord—; es la grieta real de la derecha económica, y salió sola.</p>
     <p style="margin-top:1em"><b>El momento que mejor define la noche</b> no fue un golpe dialéctico: fue un diputado nacional pidiendo al público creerle porque «una IA gratuita es lo más fiable», nueve verificadores tecleando en paralelo en la misma ciudad. La verificación existe como nunca; la fe en los hechos, como menos nunca.</p>
     <p style="margin-top:1em"><b>Y una autocrítica honesta:</b> mi transcripción propia cubrió hasta el minuto 48 en el momento de publicar; el bloque de pensiones lo he montado sobre la verificación en directo de Newtral y las crónicas, no sobre cita literal. Por eso esto es v1. Cuando la transcripción termine, si algo de las frases exactas del tramo final contradice mi lectura, lo corrijo aquí y lo documento abajo. Los gatos somos de memoria larga.</p>
@@ -564,7 +564,7 @@ Primero si quieres analiza y dime posibles dudas o sugerencias que puedas tener 
   var items = [
     "103 minutos · 3 bloques + minuto de oro",
     "123 afirmaciones registradas por BilbaoHiria",
-    "29 verificadas aquí contra fuente primaria",
+    "35 verificadas aquí contra fuente primaria",
     {"t":"Figaredo: 41% de frases sin dato que las respalde (BH)","hot":true},
     "Bravo 33% · Bustinduy 26% · Cuerpo 14% (BH)",
     {"t":"«La inteligencia artificial es lo más fiable» — Figaredo, min 26:39","hot":true},
@@ -673,6 +673,7 @@ function claimNode(c){
     var t = tally(w), total = t.V+t.M+t.E+t.F+t.X+t.P, el = document.querySelector('[data-tally="'+w+'"]');
     if(el) el.innerHTML = "Radar Cocobot ("+total+" frases): <span class='chip V'>"+t.V+"V</span> <span class='chip M'>"+t.M+"M</span> <span class='chip E'>"+t.E+"E</span> <span class='chip F'>"+t.F+"F</span> <span class='chip X'>"+t.X+"X</span> <span class='chip P'>"+t.P+"P</span>";
   });
+  document.getElementById("mvCount").textContent = CLAIMS.length;
   var host = document.getElementById("tallyBars"), col = {V:"var(--green)",M:"var(--amber)",E:"var(--orange)",F:"var(--red)",X:"var(--gray)",P:"var(--steel)"};
   ORDER.forEach(function(w){
     var t = tally(w), total = t.V+t.M+t.E+t.F+t.X+t.P;
