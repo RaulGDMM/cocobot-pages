@@ -48,7 +48,6 @@ body.nav-open{overflow:hidden}
 @media (max-width:640px){
   .topbar nav{display:none}
   .topbar .tb-row{display:flex}
-  .topbar.show{transform:translateY(0)}
 }
 @media (max-width:380px){ .tb-row .tb-title{display:none} }
 
@@ -693,9 +692,8 @@ function claimNode(c){
     document.body.classList.toggle("tb-on", pastHero);
     if (!pastHero) { bar.classList.remove("show","t-hide"); last = y; return; }
     if (document.body.classList.contains("nav-open")) { bar.classList.add("show"); bar.classList.remove("t-hide"); last = y; return; }
-    bar.classList.add("show");
-    if (y > last + 6) bar.classList.add("t-hide");           // bajando: se esconde
-    else if (y < last - 6) bar.classList.remove("t-hide");   // subiendo: reaparece
+    if (y > last + 6) { bar.classList.remove("show"); bar.classList.add("t-hide"); }      // bajando: se esconde
+    else if (y < last - 6) { bar.classList.add("show"); bar.classList.remove("t-hide"); } // subiendo: reaparece
     last = y;
   }
   window.addEventListener("scroll", function(){ requestAnimationFrame(barState); }, {passive:true});
