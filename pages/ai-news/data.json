@@ -5,6 +5,108 @@
   },
   "days": [
     {
+      "date": "2026-11-15",
+      "news": [
+        {
+          "category": "llama",
+          "title": "Basalt v0.4.0: su primer modelo denso (Qwen3.8-27B QUASAR NVFP4) y muestreo especulativo exacto",
+          "summary": "Basalt v0.4.0 añade Qwen3.8-27B como primer modelo denso: pack de 19,7 GiB desde el checkpoint NVFP4 QAT de QUASAR (Apache-2.0) con drafter DFlash 2, 262K de contexto e imágenes/vídeo. En una RTX 5090 declara 12.735 t/s de lectura de prompt a 4K y decode de 90 t/s plano / 262 t/s con drafting, además de muestreo especulativo exacto (los tokens siguen la distribución del modelo) y ventanas de drafting de hasta 16 filas con slots --parallel. En la caja de Raúl no mejora al Flash-Next 177B que corre ahora — es un modelo distinto, más pequeño, que entra entero en la 5090; el formato .basalt sigue siendo v2 con dos tipos de tensor nuevos, así que toca update tras cerrar el soak de v0.3.3 y A/B después.",
+          "source": "https://github.com/jesdga95/basalt/releases/tag/v0.4.0",
+          "source_name": "GitHub · jesdga95/basalt",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Edge0-145B y Edge0-120B: un MoE de 145B 'abierto' que corre en portátil con 29 GB pico… sin licencia declarada",
+          "summary": "Edge0 (AutoArk) ha publicado pesos de lo que vende como el primer modelo abierto de 145B que corre íntegro en máquina propia: ~10B activos por paso, pico de 29 GB en un portátil de 48 GB, 80+ t/s declarados y contexto 128K-256K. Los benchmarks son propios, el informe técnico aún no existe y el detalle curioso: la publicación no nombra ninguna licencia, algo raro en algo facturado como open source. Ya circulan requantizados (NVFP4/q3k para NInfer, plegados para Basalt) en Hugging Face.",
+          "source": "https://byobot.ai/ai-news/ai-daily-newsstand-november-15-2026",
+          "source_name": "BYOBot AI Daily (pesos y packs verificados en Hugging Face)",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "OpenAI publica 372 familias de resultados matemáticos generados por un modelo sin lanzar",
+          "summary": "OpenAI ha volcado en un repositorio público de GitHub 372 familias de resultados matemáticos y 722 manuscritos producidos por un modelo frontier interno aún sin lanzar, con titulares que incluyen una solución a la conjetura de Kakeya en 4 dimensiones y progreso hacia la hipótesis de Riemann. Según OpenAI, cada resultado costó ~3 horas de cómputo equivalente a un ChatGPT Pro y muchas demostraciones fueron verificadas con Lean, paso a paso.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-15-2026-opus-55-becomes-default-openai-publishes-372-math-results-1pm5",
+          "source_name": "AI Daily Digest (dev.to)",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Anthropic pone Claude Opus 5.5 como modelo por defecto en todos los planes de pago y pide dejar de decir 'piensa a fondo'",
+          "summary": "Opus 5.5 pasa a ser el modelo por defecto en Pro, Max, Ultra y Team, y Anthropic ha publicado una guía que recomienda abandonar hábitos de prompting heredados: 'think hard' y fórmulas similares son peso muerto porque el modelo calibra solo su profundidad de razonamiento según la tarea y el effort elegido; en sus tests internos, quitarlas hizo las respuestas más rápidas sin pérdida medible de calidad.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-15-2026-opus-55-becomes-default-openai-publishes-372-math-results-1pm5",
+          "source_name": "AI Daily Digest (dev.to)",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Meta compra Conductor: la orquestación de agentes de código en paralelo entra en casa",
+          "summary": "Meta ha confirmado la adquisición de Conductor, una startup de 2024 (CEO Charlie Holtz, CTO Jackson de Campos) cuya plataforma despliega y gestiona múltiples agentes de código en paralelo dando a cada uno un workspace aislado que corre en cloud, local o móvil. El objetivo obvio: engranar la orquestación multi-agente en su pila Muse; términos económicos no revelados.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-15-2026-opus-55-becomes-default-openai-publishes-372-math-results-1pm5",
+          "source_name": "AI Daily Digest (dev.to)",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Poppy 1.0: el protocolo de Sierra para agentes personales ya es estándar con 100+ empresas y Meta Muse de cara",
+          "summary": "El Personal Agent Protocol de Sierra alcanza v1.0: Shopify lo activa para todos sus comerciantes, Meta Muse lo busca automáticamente en cada sitio que visita, y se suman 60 nuevas compañías (Salesforce, Delta, Intuit; Stripe ya estaba) hasta pasar de 100. Construido sobre MCP, OpenAPI y UCP con OAuth, define cómo un agente personal habla con las empresas; es la apuesta de estándar de carril central frente al apilamiento de integraciones ad-hoc (y el contra-relato a United Airlines vetando agentes).",
+          "source": "https://sierra.ai/blog/releasing-poppy",
+          "source_name": "Sierra (blog oficial)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Resaca Huang: la petición para restaurarle pasa de 100.000 firmas y el Congreso cita a Nvidia el 1-3 de diciembre",
+          "summary": "La petición para que la junta de Nvidia reintegre a Jensen Huang superó las 100.000 firmas (5.248 autoidentificadas como empleados; Musk, Tim Sweeney y Garry Tan entre firmantes), mientras Musk advierte de que algunos acuerdos de suministro eran 'un apretón de manos con Jensen, no un contrato'. En paralelo, el Congreso fija audiencias del 1 al 3 de diciembre sobre ventas de chips a China con citaciones en la mesa, y el secretario del Tesoro Bessent cuestiona si la cúpula sabía que GPUs restringidas acabaron en empresas pantalla.",
+          "source": "https://malpass.co/top-ai-stories-2026-11-15/",
+          "source_name": "Malpass Top AI Stories / Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Ground stop nacional de la FAA a los pocos días de desplegar su herramienta de ruteo IA de ~$1.000M",
+          "summary": "La FAA inmovilizó todos los vuelos de EE.UU. el 13 de noviembre — primer ground stop nacional desde enero de 2023, ~7.000 vuelos retrasados o cancelados — días después de terminar de desplegar en todos sus centros de control en ruta SMART, su herramienta de ruteo construida por Air Space Intelligence por casi 1.000 M$. Homeland Security dice investigar si ambas cosas se relacionan; no hay vínculo confirmado ni limpia total. El recordatorio del fin de semana: la autonomía que se da a los sistemas de decisión importa.",
+          "source": "https://byobot.ai/ai-news/ai-daily-newsstand-november-15-2026",
+          "source_name": "BYOBot AI Daily / Futurism",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "IPO de Anthropic: libro de órdenes ~6x sobre suscrito con precio esperado para el 18 de noviembre",
+          "summary": "Reuters cuenta que el libro de órdenes de la OPV de Anthropic estaba ~6 veces sobre suscrito, con roadshow hasta el miércoles 18 (fecha prevista de fijación de precio de la colocación, reportada en 64.000 M$); los bancos modelan ingresos de 270.000-280.000 M$ para 2028, cifra que inversores más cautos discuten. Amodei llamó a la compra de cómputo 'el dilema de negocio más profundo' de la compañía.",
+          "source": "https://malpass.co/top-ai-stories-2026-11-15/",
+          "source_name": "Malpass / Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Google duplica el precio de Gemini 4 Argon el 1 de diciembre: $2/$10 → $4/$20 por millón",
+          "summary": "La página de precios de AI Studio mantiene Gemini 4 Argon a $2,00/$10,00 por millón de tokens solo hasta el 30 de noviembre: desde el 1 de diciembre sube a $4,00/$20,00 y la lectura de caché pasa de $0,10 a $0,20. Es la segunda subida fechada en el calendario de Google (Gemini 3.8 Flash sube el 1/1/2027): las tarifas de lanzamiento se están convirtiendo en permanentes por calendario, así que las previsiones de diciembre deben usarse con los números nuevos.",
+          "source": "https://www.deai.org/news/daily-brief-2026-11-15",
+          "source_name": "DeAI Daily Brief (página oficial de precios de Google)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "AMD MEXT: predicción de memoria con transformers y flash para gastar la mitad de DRAM manteniendo el 99% del rendimiento",
+          "summary": "AMD ha detallado MEXT, un motor de memoria que usa modelos transformer y almacenamiento flash para predecir qué datos necesitará un servidor, dejando en DRAM solo lo caliente: hasta el 99% del rendimiento con la mitad de DRAM, ya activo en 145 servidores y con plan de llegar a 2.000 en 2027. Es la misma idea del tier de SSD para expertos MoE que usan Basalt/Strata en la caja de Raúl, aplicada al datacenter: si el patrón madura, el silicio deja de ser el cuello de botella más caro.",
+          "source": "https://dev.to/hiroki-ii-ai/ai-daily-digest-november-15-2026-opus-55-becomes-default-openai-publishes-372-math-results-1pm5",
+          "source_name": "AI Daily Digest (dev.to)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12345→b12405: reutilización de conexiones tras streaming, softmax CUDA más rápido y FA Vulkan para RDNA3/4",
+          "summary": "Tanda corta hasta b12405: arregla la reutilización de conexiones del server tras respuestas en streaming (#30492 — molesta a clientes de agentes con keep-alive), el softmax cooperativo en CUDA pasa de 5 pasadas a global memory a 2 (#28982), Flash Attention de Vulkan optimizado para RDNA3/RDNA4 y matrices narrow-N, fix del aviso de posiciones no consecutivas en M-RoPE y rechazo limpio de grammar_triggers fuera de rango en vez de abortar. Sin CVEs nuevos y nada crítico para la 5090: update de cortesía cuando toque, sin urgencia.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub · ggml-org/llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Domingo denso en movimientos de fondo: Basalt v0.4.0 estrena su primer modelo denso (Qwen3.8-27B NVFP4 a 262 t/s con drafting en una RTX 5090), Edge0 suelta un MoE de 145B para portátiles sin declarar licencia, OpenAI publica 372 familias de resultados matemáticos de un modelo sin lanzar y la resaca de la salida de Huang (petición de 100K firmas) domina la semana chip."
+    },
+    {
       "date": "2026-11-14",
       "news": [
         {
@@ -7593,52 +7695,6 @@
         }
       ],
       "summary": "Día movido en infraestructura y open-source: Z.ai lanza GLM-5.3 con capacidades cibernéticas emergentes que le hacen retrasar los pesos abiertos, SpaceX cierra oficialmente la compra de Cursor por $60B y llama.cpp publica 5 builds nuevos con soporte para Kimi-K3."
-    },
-    {
-      "date": "2026-08-15",
-      "news": [
-        {
-          "category": "llm",
-          "title": "Google lanza Gemini 3.7 Flash, solo tres semanas después del 3.6",
-          "summary": "Nuevo modelo 'workhorse' de Google con mejoras sustanciales en ingeniería de software (FrontierCode 1.1: 34.4→43.6%, DeepSWE: 49→65.3%), WebDev Arena 1588, y precio de introducción a la mitad que el 3.6 Flash. Disponible en Spark, Antigravity, AI Studio y Android Studio. Según Seeking Alpha superó a Sonnet 5 y GPT-5.6 en evals de coding.",
-          "source": "https://arstechnica.com/ai/2026/08/google-announces-gemini-3-7-flash-just-three-weeks-after-previous-release",
-          "source_name": "Ars Technica",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "DeepSeek sube precios hasta 4x con nuevo pricing pico/valle para V4",
-          "summary": "DeepSeek anunciará precios pico/valle para V4-Pro y V4-Flash (50% a 1100% por encima de los actuales): V4-Pro pasará de $0.87 a $3.96/M tokens en pico (mitad en valle), V4-Flash de $0.28 a $1.32/M en pico. Entra en vigor el 16-17 de agosto, poco antes de su posible IPO. Sigue siendo más barato que los frontier (Sonnet 5: $2/$10).",
-          "source": "https://www.reuters.com/world/china/deepseek-raises-api-pricing-its-v4-models-2026-08-13",
-          "source_name": "Reuters",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "OpenAI sustituye a su CRO: Dali Rajic (ex-Wiz) reemplaza a Denise Dresser",
-          "summary": "OpenAI releva a Denise Dresser como chief revenue officer tras solo 8-9 meses; la sustituye Dali Rajic, presidente y COO de Wiz (adquirida por Google por $32B). El cambio llega tras las salidas de Brad Lightcap (COO) y Fidji Simo, con el ARR creciendo 20%+ total y 32% en enterprise en julio, de cara a la OPI de 2027.",
-          "source": "https://techcrunch.com/2026-08-13/openai-hires-new-cro-as-executive-shake-up-continues",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Stanford y Arc Institute publican en Science los primeros bacteriófagos viables diseñados por IA",
-          "summary": "Usando los modelos de genomas Evo 1/Evo 2 generaron ~700.000 candidatos, sintetizaron ~300 y 16 bacteriófagos resultaron funcionales, infectando E. coli (algunos mejor que el ΦX174 natural). Solo infectan bacterias y los experimentos se hicieron en laboratorio seguro, pero el método queda público y los expertos alertan de que 'la gobernanza no existe' todavía.",
-          "source": "https://press.asimov.com/articles/ai-phages",
-          "source_name": "Arc Institute",
-          "star": true
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10430 → b10437 disponible (7 builds nuevos, soporte MiniMax M1, fix jinja cuadrático)",
-          "summary": "Tu servidor va de b10430 a b10437. Highlights: soporte para MiniMaxText01ForCausalLM y MiniMaxM1ForCausalLM (b10437, #27018), fixes variados en mtmd y common (b10436), fix del coste cuadrático en gather_string_parts de jinja (b10435) y passage de reasoning_effort al template (b10434). Recomendado actualizar, sobre todo por el fix de rendimiento de jinja.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        }
-      ],
-      "summary": "Día activo en la nube: Google lanza Gemini 3.7 Flash tres semanas después del 3.6, DeepSeek dispara sus precios hasta 4x con tarifas pico/valle, OpenAI cambia a su CRO y Stanford+Arc publican los primeros virus diseñados con IA que funcionan en el laboratorio."
     }
   ]
 }
