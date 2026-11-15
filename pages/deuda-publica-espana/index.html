@@ -849,7 +849,8 @@ function barChart(cid){
   var btnS=[document.getElementById('btnSnow'),document.getElementById('btnSnowEn')];
   var btnG=[document.getElementById('btnSail'),document.getElementById('btnSailEn')];
   function setMode(m){mode=m;
-    [btnS,btnG].forEach(function(arr,i){arr.forEach(function(b){if(b)b.classList.toggle('on',(i===0)===(m==='snow'))})});}
+    [btnS,btnG].forEach(function(arr,i){arr.forEach(function(b){if(b)b.classList.toggle('on',(i===0)===(m==='snow'))})});
+    if(RM)frame(performance.now());}
   btnS.concat(btnG).forEach(function(b){if(b)b.onclick=function(){setMode(b===btnS[0]||b===btnS[1]?'snow':'sail')}});
   function resize(){dpr=devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;g.setTransform(dpr,0,0,dpr,0,0)}
   addEventListener('resize',resize);resize();
