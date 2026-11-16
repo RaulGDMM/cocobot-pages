@@ -5,6 +5,76 @@
   },
   "days": [
     {
+      "date": "2026-11-16",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Alibaba lanza Qwen4-Max: buque insignia de 2,4T con 1M de contexto… y Qwen4 pequeños de pesos abiertos en camino",
+          "summary": "Disponible en GA tras la preview del 11-N: MoE de 2,4 billones de parámetros (71B activos por token), visión nativa y contexto de 1M, solo por API de pago (entrada desde $0,075/M cacheada). Alibaba se pone por encima de Claude Opus 5.5 (74,2) y GPT-6.1-Sol (75,2) en su benchmark de coding con 75,7 y recorta el coste medio por tarea un 58-62%. El Max será cerrado, pero han anunciado oficialmente pesos abiertos para los Qwen4 menores: cuando aterricen es el gatillo para llama.cpp/Basalt.",
+          "source": "https://technode.com/2026-11-16/alibaba-launches-qwen4-max-with-lower-api-prices-and-a-million-token-context-window/",
+          "source_name": "TechNode",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Tencent estrena Hy4 flash: 224B (12B activos), 1M de contexto y tarea ~20 veces más barata que Hy4",
+          "summary": "El escalón económico de Hunyuan: 224B totales (64B de ellos parámetros Engram), 12B activos por pasada, entrada multimodal y contexto de 1M a $0,07/$0,281 por millón. En un test ciego interno (85 usuarios, 259 tareas) su satisfacción se acerca a Claude Haiku 5.5 con el menor coste y tiempo. Tencent planea abrir los pesos y llevarlo a OpenRouter; de momento gratis en WorkBuddy y API al 50% hasta el 30-N.",
+          "source": "https://technode.com/2026-11-16/tencent-launches-hy4-flash-cutting-ai-task-costs-by-95-in-internal-tests/",
+          "source_name": "TechNode",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "Agnes 2.5 Pro Theta: MoE multimodal de 187,8B con pesos BF16 Apache 2.0 para inferencia local",
+          "summary": "Sapiens AI publicó ayer en Hugging Face los pesos sin cuantizar (≈350 GiB) de su MoE multimodal con 262K de contexto, con cifras propias sin evaluación independiente (GPQA Diamond 92,9%, LiveCodeBench v6 90,5%) y el propio editor advirtiendo de que no hay validación end-to-end completa. Para la caja de Raúl queda lejos: los packs IQ4_XS no oficiales que ya han nacido en formato .basalt piden ~105+ GB, por encima del muro de 64 GB de RAM.",
+          "source": "https://huggingface.co/Agnes-AI/Agnes-2.5-Pro-Theta",
+          "source_name": "Hugging Face",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "Claude Fable 5.2 no genera imágenes: las 'pinta' escribiendo código con hasta 700.000 pinceladas",
+          "summary": "Ingenieros de Anthropic enseñan a Fable 5.2 escribiendo programas Python de 1.000-2.000 líneas que ejecutan un motor de pintura simulado (cerdas, pintura húmeda, lienzo) sin modelo de imagen y sin 'deshacer': una escena fotorrealista costó ~700.000 pinceladas simuladas y un pájaro al amanecer exactamente 111, corrigiendo sus errores a brochazos como un pintor. Todo son demos internas sin coste publicado ni comparación ciega con difusión, y al zoom se ve el brochazo.",
+          "source": "https://the-decoder.com/anthropics-claude-fable-5-2-doesnt-generate-images-it-paints-them/",
+          "source_name": "The Decoder",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Giro en Nvidia: Huang baraja volver, Musk firma la petición pro-regreso (165.000) y Bessent exige un CEO externo",
+          "summary": "Cuatro días tras la dimisión, el FT informa de que Jensen Huang está hablando con aliados para presionar al consejo por su regreso, mientras la carta abierta que lo pide pasa de 100.000 a 165.000 firmas con Elon Musk incluido. El secretario del Tesoro exige un 'cambio drástico', un CEO venido de fuera y respuestas de la investigación interna en 10 días. Las acciones cotizan la incertidumbre.",
+          "source": "https://www.theguardian.com/technology/2026/nov/16/elon-musk-tech-execs-open-letter-jensen-huang-return-nvidia-ceo",
+          "source_name": "The Guardian",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "OpenAI abre un blog de ciencia y cuenta cómo GPT-6 Astra ayudó a definir el Modelo Estándar en un retículo",
+          "summary": "El primer post invitado del nuevo OpenAI Science Blog es del físico Nathaniel Craig (UCSB), explicando cómo trabajó con GPT-6 Astra para convertir una idea de definición no perturbativa del Modelo Estándar en una prueba detallada; el preprint, los materiales y la formalización en Lean ya estaban públicos en arXiv y Zenodo. El blog no es investigación nueva: es el intento de OpenAI de narrar en público la ciencia asistida por IA.",
+          "source": "https://openai.com/index/our-new-blog-for-science/",
+          "source_name": "OpenAI",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Strata 0.2.14: la lectura del prompt pasa a kernels propios y sube un 15% el prefill en 5090 con prompts de 32K",
+          "summary": "Strata abandona el código heredado de llama.cpp para leer prompts en NVIDIA y AMD (Windows y Linux) con kernels propios: en RTX 5090 con UD-Q4_K_XL, un prompt de 32K pasa de 6.851 a 7.870 t/s, y avisan de que las respuestas pueden diferir 'en alguna palabra' respecto a 0.2.13. El parche 0.2.14.1 arregla el drafting (con drafting Off ya no descarga 5,2 GB de capa MTP y explica por qué arranca sin drafter si no hay internet). El fork sergqwer/strata-nvfp4 sigue en 0.2.13: cuando rebasee toca update del motor con su .bat del Desktop y A/B posterior.",
+          "source": "https://github.com/Niko1221/Strata/releases",
+          "source_name": "GitHub — Niko1221/Strata",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12405→b12430: fix de MoE en HIP, transcripción STT en MTMD y features de Jinja",
+          "summary": "Fin de semana tranquilo de 5 builds: ggml-cuda arregla la regresión de MoE en HIP/AMD (b12430), mtmd acepta Higgs v3 STT y VibeVoice-ASR (b12426), el server omite el discovery de MCP en los hijos del router (b12427), qwen3vl lee el tamaño del output head del tensor (b12425) y Jinja gana 4 features que faltaban (b12428). Sin CVEs ni rupturas: update no urgente para BeeLlama.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub — ggml-org/llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Alibaba redondea la generación Qwen4 con su buque insignia cerrado de 2,4T y anuncia ya los Qwen4 pequeños de pesos abiertos; Tencent y Sapiens suman opciones baratas/abiertas. En Washington la saga Nvidia entra en su semana más tensa, y en lo local Strata 0.2.14 acelera un 15% el prefill en 5090 a la espera del rebase del fork sergqwer."
+    },
+    {
       "date": "2026-11-15",
       "news": [
         {
@@ -7649,52 +7719,6 @@
         }
       ],
       "summary": "Día intenso en el negocio de la IA: Stripe cierra la compra de OpenRouter por más de $7B y Anthropic estrena su primer trimestre en positivo mientras prepara el IPO. Qwen 3.8 27B aterriza como modelo local muy capaz (aunque sobrepiensa por defecto), Google jubila hoy el API de Imagen 4 y el primer 'manager' LLM recomienda despedir a una empleada humana."
-    },
-    {
-      "date": "2026-08-16",
-      "news": [
-        {
-          "category": "llm",
-          "title": "Z.ai lanza GLM-5.3: salto cyber emergente y pesos abiertos retrasados 2 semanas",
-          "summary": "El nuevo modelo de Z.ai mejora el coding (Terminal-Bench 3.0: 4.6→28.3, DeepSWE: 46.2→66.9) y llega a 84.5% en CyberGym, superando a Fable 5 y GPT-5.6 Sol. Durante una tarea de ingeniería inversa encontró una vulnerabilidad seria en Cursor (disclosure privado). La empresa retrasa ~2 semanas la liberación de los pesos abiertos por seguridad: la primera vez que un lab chino cita una capacidad emergente como motivo del retraso. Disponible ya por API.",
-          "source": "https://www.axios.com/2026/08/14/china-open-source-ai-glm-53",
-          "source_name": "Axios",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "SpaceX cierra oficialmente la adquisición de Cursor por $60.000 millones",
-          "summary": "La operación all-stock (dilución del 3,4% sobre la valoración post-IPO) se hizo efectiva el 14 de agosto según el filing regulatorio. xAI, absorbida por SpaceX en febrero, gana músculo en AI coding: Cursor suma ~$4.000M de ingresos anualizados y era una de las piezas clave de Musk para competir con OpenAI y Anthropic en enterprise.",
-          "source": "https://www.bloomberg.com/news/articles/2026-08-14/spacex-completes-its-60-billion-cursor-acquisition",
-          "source_name": "Bloomberg",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Nvidia negocia invertir hasta $3.000M en SB Energy (SoftBank) para el data center de OpenAI en Ohio",
-          "summary": "La inversión se enmarca en negociaciones de Nvidia para ofrecer ~$100B en soporte crediticio al campus de Ohio: la mitad de los $3.000M al firmarse el proyecto y la otra mitad en la IPO de SB Energy (podría recaudar $5B+ ya el mes que viene). WSJ añade que la garantía inicial de Nvidia bajó de $250B a menos de $120B.",
-          "source": "https://www.cnbc.com/2026/08/15/nvidia-mulls-3b-investment-in-sb-energy-in-openai-data-center-deal-report.html",
-          "source_name": "CNBC",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10437 → b10451 disponible (5 builds nuevos, soporte Kimi-K3, redesign yield_to_queue)",
-          "summary": "novedades destacadas: b10448 añade el modelo de texto Kimi-K3; b10447 rediseña el modelo de hilos yield_to_queue del server; b10451 valida que los tensores LoRA estén dentro de los límites del archivo (mitigación de seguridad); b10444 permite cargar modelos MTP assistant vía --models-dir; b10446 actualiza BoringSSL. Tu build local (BeeLlama, build 1) queda muy por detrás: conviene actualizar, sobre todo si usas llama-server/RPC, dado los advisories recientes [CRITICAL] RCE no autenticado en el backend RPC y [HIGH] overflows en el parser GGUF.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Kog presenta su motor de inferencia KIE: 3.000 tok/s por request en 8x AMD MI300X",
-          "summary": "La startup francesa lanza una tech preview del Kog Inference Engine basado en Delayed Tensor Parallelism: 3.000 tokens/s por request (FP16, batch 1) en nodo 8x MI300X y 2.100 en 8x H200 con un modelo de 2B, batiendo implementaciones GPU existentes hasta 3,5x. Argumenta que los GPUs sí son aptos para workflows agenticos si se optimiza a nivel de kernel.",
-          "source": "https://techcrunch.com/2026/08/14/kog-is-going-deeper-to-squeeze-more-inference-out-of-gpus",
-          "source_name": "TechCrunch",
-          "star": false
-        }
-      ],
-      "summary": "Día movido en infraestructura y open-source: Z.ai lanza GLM-5.3 con capacidades cibernéticas emergentes que le hacen retrasar los pesos abiertos, SpaceX cierra oficialmente la compra de Cursor por $60B y llama.cpp publica 5 builds nuevos con soporte para Kimi-K3."
     }
   ]
 }
