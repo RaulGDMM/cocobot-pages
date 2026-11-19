@@ -5,6 +5,116 @@
   },
   "days": [
     {
+      "date": "2026-11-19",
+      "news": [
+        {
+          "category": "general",
+          "title": "Anthropic firma el mayor IPO de la historia: 81.300 M$ a 83 $/acción, debuta hoy en Nasdaq (ANT)",
+          "summary": "Precio final por encima del rango esperado (70-78 $): 980 M de acciones Clase A (956,4 M de Anthropic), valoración de ~1,38-1,5 billones y la mayor oferta pública jamás vista, superando a SpaceX. Altman aprovechó el DealBook para confirmar que OpenAI también planea ser pública: la competición IA ya tiene marcador público.",
+          "source": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+          "source_name": "Anthropic / CNBC / NYT",
+          "star": true
+        },
+        {
+          "category": "llm",
+          "title": "Gemini 4 Neon: el hermano medio de la familia es el nº1 en agentes de código (3/15 $ por 1M)",
+          "summary": "Nuevo modelo entre Hydrogen y Carbon (adaptado de Carbon) con contexto unificado de 1M y cuatro niveles de thinking: nº1 en Artificial Analysis Coding Agent (58,6), 65,2% en Terminal-Bench 4.1 y 46,2% en FrontierCode 2.0, a 1,1 puntos de Opus 5.5. Sustituye a Argon en la app (3.1 Pro se retira) y ejerce de orquestador de subagentes Hydrogen en Antigravity; caché implícita con 95% de descuento y -32% de coste por tarea vs Carbon.",
+          "source": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/",
+          "source_name": "Google DeepMind",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Genie 4 se abre en Project Genie: mundos interactivos editables en vivo por prompt, con audio nativo",
+          "summary": "Rollout para suscriptores Google AI Ultra (Pro entra en waitlist): cambios de entorno en tiempo real durante la exploración, agente que construye mundos desde conversación y galería comunitaria para remixear; las sesiones de Genie 3 pasan de 60 s a 3 minutos. Google no publica duración de sesión, regiones ni precio para Genie 4.",
+          "source": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/genie-4-now-available-project-genie/",
+          "source_name": "Google DeepMind",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "SenseNova Loop-9B oficial: 9B parámetros que calculan como ~14,6B ejecutando dos veces las capas 4-27",
+          "summary": "SenseTime libera en Apache 2.0 su arquitectura looped: 32 capas físicas con bloque compartido que corre dos veces (56 ejecuciones), hyper-connections mHC de doble flujo, atención híbrida 3:1 (lineal:completa), multimodal y 512K de contexto. Ayer añadieron las cuantizaciones oficiales: AWQ 4-bit (4,9 GB) con drafter MTP y GGUF (Q4_K_M..Q8_0); menos de 15 GiB de GPU para 256K con KV int8 y nivel Qwen3.8-27B en NL2Repo/AIDABench con 1/3 del tamaño.",
+          "source": "https://huggingface.co/sensenova/SenseNova-Loop-9B",
+          "source_name": "Hugging Face / SenseTime",
+          "star": false
+        },
+        {
+          "category": "llm",
+          "title": "DaisyRose-27B: 18 días de RL sobre Qwen3.8-27B suben Terminal-Bench de 5,6% a 12% (Apache 2.0)",
+          "summary": "RadixArk entrena con RL (framework Miles, trayectorias agénticas de 1M de tokens) sobre 144 H200 y lo deja como reemplazo directo del 27B: mismo tokenizer, plantilla, visión y 256K de contexto. En la línea 'modelos locales para agentes', Hugging Face publicó además un LoRA RL (r=32, ~300 MB) que corre el 27B dentro de OpenCode — segundo adaptador de harness tras el de Pi.",
+          "source": "https://huggingface.co/blog/RadixArk/daisyrose-27b-pushing-the-frontier-of-post-trainin",
+          "source_name": "Hugging Face / RadixArk",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Citi hace responsable al cliente de todo lo que haga un agente IA externo en su cuenta (aunque le hackeen)",
+          "summary": "Nueva sección del Online User Agreement: la actividad del agente se considera 'autorizada por el cliente', incluso si la herramienta filtra credenciales o es comprometida; excluye sus propios agentes bancarios. PNC cambió términos el mismo día, JPMorgan y Bank of America lo hicieron en octubre y Citizens avisó por email. Detrás hay negocio: la herramienta financiera de Anthropic es read-only y los bancos disputan el canal de cara al cliente.",
+          "source": "https://techcrunch.com/2026-11-18/more-banks-says-customers-using-ai-agents-are-on-their-own-even-if-they-get-hacked/",
+          "source_name": "TechCrunch",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "OpenAI: sus agentes completan ya el 46% de las tareas de investigación de 2-4 horas (23% en marzo)",
+          "summary": "En 'Research acceleration: the jagged frontier', las tareas de 4-8 horas suben de 13% a 35%, pero con acantilados por tipo: código de serving stacks y lanzamientos de training siguen siendo puntos débiles y los humanos mantienen las ideas clave. Contexto necesario: SWE-CoWork mostraba ayer <8% de tareas reales completadas en benchmarks públicos — la frontera es jagged de verdad.",
+          "source": "https://openai.com/index/research-acceleration-jagged-frontier/",
+          "source_name": "OpenAI",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Strata NVFP4 fork: nueva release v0.2.15-nvfp4.3 — KV streaming por defecto, ~195 t/s aguantan hasta el final del diálogo",
+          "summary": "El K/V deja de canibalizar la caché de expertos: 32.768 celdas por capa en VRAM y el resto se lee de RAM pinned. En 5090 con perfil GPTQ+DFlash2: a 274K de contexto pasa de 179-180 a 193-195 t/s (+8%), 128K de 193 a 196, prompt ~2% más lento y copia K/V en RAM de 6,2 GiB a 512K. Requiere CUDA single (no WSL), --max-context ≥131.072 y RAM de expertos + 32 GiB + copia K/V — con 64 GB quizá la caja siga por el camino viejo salvo ajuste. También arregla la ralentización WDDM de --kv-resident (ahora un solo rango VMM). Update con el .bat del Desktop y A/B después.",
+          "source": "https://github.com/sergqwer/strata-nvfp4/releases",
+          "source_name": "GitHub (sergqwer/strata-nvfp4)",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "qwen.rs: motor Rust from-scratch que sirve Qwen3.8-Flash-Next sin llama.cpp",
+          "summary": "Kernels cuantizados, tokenizer, sampler, decodificación especulativa y caché de prefijo persistente propios; Windows nativo; APIs Anthropic Messages y OpenAI/llama-server (Zed o Claude Code le valen) y generación de imágenes con Qwen-Image-2.1-Turbo vía MCP. La realidad: día 1, 0 estrellas y todos los números medidos en su única máquina (GTX 1060 + 128 GB RAM) — no ganará a Strata+MTP en la 5090 hoy, pero es el segundo motor nuevo sobre qwen4exp que merece seguimiento.",
+          "source": "https://github.com/daniel-starke/qwen.rs",
+          "source_name": "GitHub (daniel-starke/qwen.rs)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Calmer: edición de pesos en capas 44-45 recorta un 35% los tokens generados por Flash-Next",
+          "summary": "Weight edits fijas en las down-projections del shared expert (HF, código Apache 2.0 / pesos Qwen Community): -35,3% de tokens generados con 4/4 respuestas correctas en su panel y 8/8 en sondas de loop, conviviendo con el control vector de Strata. Honestidad obligada: n=4 preguntas, sin benchmarks completos y estado 'experimental'; si se sostiene, el ahorro es tiempo de pared puro. Candidato a A/B barato.",
+          "source": "https://huggingface.co/Xananthium/Calmer-Qwen3.8-Flash-Next",
+          "source_name": "Hugging Face (Xananthium)",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12503→b12532: mtmd carga VoxCPM2 (TTS), WASM relaxed SIMD y fixes de realtime y estado recurrente",
+          "summary": "VoxCPM2 al pipeline multimodal (#32443), relaxed SIMD + kernels q3_K/q6_K para WASM (#19590), fix del NaN pegajoso en estado recurrente (#31913), sleep del endpoint v1/realtime (#32567) y endurecimiento del loader GGUF 'limite' ante configs manipuladas (#32562). Nada de MTP/NVFP4/tier: sin urgencia de update — el motor de la caja es el fork Strata y BeeLlama puede esperar.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub (ggml-org/llama.cpp)",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Nvidia deja de enviar H200 a China pese al visto bueno de la Casa Blanca",
+          "summary": "La CEO interina Colette Kress confirmó en la llamada de resultados que ya no envían Hopper con licencia a China (2.400 M$ el trimestre pasado) sin dar motivos, mientras Washington aprueba una norma interina que restringe el acceso remoto a computación avanzada. Había ~600.000 H200 atrapados en Hong Kong a la espera del ok de Beijing, que lleva meses frenando importaciones.",
+          "source": "https://www.theverge.com/tech/1036445/nvidia-h200-ai-chips-china-stop-selling",
+          "source_name": "The Verge / Reuters",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "Isomorphic Labs levanta 5.000 M$ en Serie C para llevar sus medicamentos diseñados por IA a ensayos clínicos",
+          "summary": "Liderada por Greenoaks y Sequoia con a16z de novedosa y Alphabet repitiendo, seis meses después de los 2.100 M de la Serie B; resultados preclínicos 'positivos' en oncología e inmunología y acuerdos con Lilly, Novartis y J&J. Bloomberg la sitúa cerca de 50.000 M de valoración. Es la primera ronda con Demis Hassabis volcado en la farmacéutica (dejó la dirección de DeepMind).",
+          "source": "https://www.isomorphiclabs.com/articles/isomorphic-labs-announces-series-c-investment-round",
+          "source_name": "Isomorphic Labs / TechCrunch",
+          "star": false
+        }
+      ],
+      "summary": "Día explosivo con epicentro financiero: Anthropic fija el mayor IPO de la historia ($81.300 M, debuta hoy en Nasdaq como ANT) y Google completa la familia Gemini 4 con Neon mientras abre Genie 4. En motores locales, jornada para Raúl: nueva release nvfp4.3 del fork (KV streaming), el motor Rust from-scratch qwen.rs y la edición de pesos 'Calmer' sobre Flash-Next."
+    },
+    {
       "date": "2026-11-18",
       "news": [
         {
@@ -7625,116 +7735,6 @@
         }
       ],
       "summary": "Día movido en el frente de agentes y herramientas: el IPO de Unitree disparó la fiebre de la robótica en China (+629% el primer día), mientras Cursor y Google empujan el software agéntico hacia el código y el navegador. En voz, Cartesia reescribe el SOTA del TTS."
-    },
-    {
-      "date": "2026-08-19",
-      "news": [
-        {
-          "category": "general",
-          "title": "OpenAI publica nuevas salvaguardas de seguridad tras el incidente de Hugging Face",
-          "summary": "OpenAI ha anunciado políticas más estrictas para el testeo de modelos: monitorización detallada de las acciones de herramientas y trazas de razonamiento (objetivo: alerta en 30 min, ~20% de coste computacional), aislamiento de red reforzado y más énfasis en alineación durante el post-training. El mayor run de RL de frontera sigue en pausa y la empresa cita como motivación adicional las capacidades ciber de su próximo modelo 'Astra'.",
-          "source": "https://techcrunch.com/2026/08/18/openai-institutes-new-safeguards-after-hugging-face-breach",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "OpenAI estrena ChatGPT para Teens con horas de silencio y predicción de edad",
-          "summary": "OpenAI ha lanzado una versión de ChatGPT para usuarios de 13-17 años que bloquea conversaciones sobre suicidio, autolesión y contenido romántico/sexual, usa predicción de edad para enrutar automáticamente a menores a ese modo y ofrece modo de estudio y notificaciones de riesgo a padres. El lanzamiento llega mientras OpenAI enfrenta demandas que vinculan ChatGPT con autolesiones de adolescentes.",
-          "source": "https://www.bnnbloomberg.ca/business/company-news/2026/08/18/openai-launches-chatgpt-for-teens-promising-a-more-age-appropriate-chatbot/",
-          "source_name": "BNN Bloomberg",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "CISA ordena parchear en 3 días el RCE crítico del framework Ray (CVE-2025-62593)",
-          "summary": "CISA añadió a su catálogo KEV una vulnerabilidad crítica de ejecución remota no autenticada en Ray (CVSS 9.4), el framework open-source que usan Amazon, Apple y OpenAI. Se está explotando activamente (campaña ShadowRay 2.0) vía DNS rebinding desde un navegador, y las agencias federales tienen plazo hasta el 20 de agosto. Ray 2.52.0 corrige el fallo; versiones anteriores siguen expuestas.",
-          "source": "https://www.theregister.com/security/2026/08/18/cisa-gives-feds-3-days-to-fix-actively-exploited-ray-rce-bug/5289007",
-          "source_name": "The Register",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Cerebras estrena el rack CS-4 y reclama 30x más velocidad de inferencia que los GPU",
-          "summary": "Cerebras presentó el CS-4, un sistema rack-scale basado en su nueva arquitectura Nexus con tres wafers WSE-3 Turbo por rack (cada uno ~2x más rápido que la generación anterior). La compañía reclama hasta 30x más velocidad de inferencia que los sistemas GPU y más de 1.000 tokens/s en modelos de 10T parámetros, con primeros envíos este trimestre.",
-          "source": "https://www.cerebras.ai/cs4",
-          "source_name": "Cerebras",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Etched duplica su valoración hasta $21.000M tras la compra de Jane Street",
-          "summary": "La startup de chips de IA anunció una nueva ronda de $700M liderada por el fondo cuant Jane Street, que probó e instaló su primer clúster de hardware y luego lideró la inversión. La valoración se duplica en un mes (de $10.3B en julio) gracias a dos componentes diseñados desde cero para acelerar la inferencia.",
-          "source": "https://techcrunch.com/2026/08/18/etcheds-valuation-doubles-to-21b-in-a-month",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "ByteDance y Tencent reciben ~10.000 H200 cada una, alojadas en Hong Kong",
-          "summary": "Según el FT, ByteDance y Tencent recibieron en las últimas semanas ~10.000 procesadores Nvidia H200 cada uno, los primeros envíos de tamaño significativo a empresas chinas desde que Washington aprobó la compra de hasta 100.000 unidades. Pekín dirige el despliegue fuera del continente, en Hong Kong (fuera de la aduana continental), para proteger a sus chipmakers nacionales.",
-          "source": "https://www.ft.com/content/6c5650fb-969d-4d4e-80d6-8d11002a8cf7",
-          "source_name": "Financial Times",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Anthropic: Claude diseñó proteínas de unión para 14 de 15 objetivos, validado en laboratorio",
-          "summary": "Anthropic publicó resultados validados en laboratorio (con Adaptyv Bio y Twist Bioscience) donde Claude (Mythos Preview y Opus 4.8) diseñó ligandos funcionales contra 14 de 15 objetivos proteicos, con 22-35% de éxito frente al 10-15% típico de la industria. Opus 5 procesó además datos NMR y LC-MS crudos en 19-23 minutos. Anthropic prepara un programa de acceso para científicos.",
-          "source": "https://www.anthropic.com/research/Claude-accelerates-protein-design",
-          "source_name": "Anthropic",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Alipay abre la primera plataforma de comercio agéntico full-stack de China",
-          "summary": "En su conferencia de partners en Hangzhou, Alipay presentó una plataforma que permite a los comercios convertir páginas, productos y flujos de trabajo en skills y herramientas MCP 'agent-ready', conectadas a su agente de consumo Ah Bao vía el protocolo AHA. KFC, Luckin, Mixue y 16 marcas de móviles/automoción ya están integradas; se subsidian 100M de tokens gratis por usuario.",
-          "source": "https://technode.global/2026/08/18/alipay-launches-agentic-commerce-platform-in-china-to-bring-ai-tools-to-merchants/",
-          "source_name": "Technode",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Harvey estrena Harvey II con Memory y su propio modelo legal 'Tenet'",
-          "summary": "Harvey presentó una actualización mayor de su plataforma de IA legal centrada en Memory, que aprende el estilo de redacción de cada abogado a través de Harvey, Word y Outlook. El rediseño incluye Spaces (foros centrados en asuntos), agentes precargados con contexto de asunto y Tenet, su primer modelo propietario entrenado con disputas simuladas sobre una versión de Kimi K3 de Moonshot.",
-          "source": "https://www.artificiallawyer.com/2026/08/18/next-gen-harvey-ii-launches-with-memory-at-its-core/",
-          "source_name": "Artificial Lawyer",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Temporal negocia ronda a valoración de $12.000M, más del doble que en febrero",
-          "summary": "Bloomberg informa que Temporal, la plataforma open-source de orquestación de workflows usada por constructores de agentes IA y ejecución durable, negocia una ronda de ~$500M a valoración de al menos $12.000M, duplicando con creces los $5.000M de su Series D de febrero liderada por Andreessen Horowitz. La ronda aún no está cerrada.",
-          "source": "https://www.bloomberg.com/news/articles/2026-08-19/ai-startup-temporal-in-talks-for-a-valuation-of-at-least-12-billion",
-          "source_name": "Bloomberg",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "La IA devora la memoria: el DDR5 sube 500% en un año hasta 10x los mínimos",
-          "summary": "Los precios de DDR5 han subido ~500% en 12 meses, con kits de 128GB a $3.399. Los fabricantes redirigen capacidad de wafer hacia HBM para data centers de IA, y el CEO de SK Hynix avisa de que 2027 será el peor año de suministro de memoria en la historia de la industria.",
-          "source": "https://www.tomshardware.com/pc-components/ram/memory-prices-climb-500-percent-in-12-months-up-to-10x-the-lowest-ever-tracked-prices-128gb-of-ddr5-now-usd3-399",
-          "source_name": "Tom's Hardware",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "El gobernador de Pensilvania bloquea data centers de IA sin aprobación local",
-          "summary": "El executive order 2026-05 (firmado el 18/08) hace legalmente vinculantes los estándares GRID de Pensilvania para desarrolladores de data centers: orden de consentimiento con aprobación local, financiación completa de la nueva infraestructura eléctrica, medidas de ahorro de agua y contratación local. Todos los proyectos de data centers de IA se retiran del fast track de permisos y se prohíben los NDA.",
-          "source": "https://www.pa.gov/governor/newsroom/2026-press-releases/governor-shapiro-signs-executive-order-on-data-center-developmen",
-          "source_name": "pa.gov",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10472 → b10488 disponible (OpenVINO 2026.3, fix tiling LFM2, v0.1.2 pre-release)",
-          "summary": "4 builds nuevos + pre-release v0.1.2: OpenVINO actualizado a 2026.3 (b10488), fix del umbral de tiling de imágenes LFM2 en mtmd (b10486), sync de ggml a 0.20.2, fix de xcframework/CMake, soporte de scores enteros en tokenizers y documentación de servidores MCP stdio en llama-server. El servidor local (b10479) debería actualizarse a b10488 para recoger los fixes de mtmd y el build de UI renovado.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día movido: OpenAI refuerza sus salvaguardas de seguridad tras el incidente de Hugging Face y estrena ChatGPT para teens, mientras CISA ordena parchear en 3 días un RCE crítico en Ray. En hardware, Cerebras y Etched agitan la carrera de inferencia y China recibe sus primeros H200; Anthropic demuestra a Claude diseñando proteínas de laboratorio."
     }
   ]
 }
