@@ -5,6 +5,84 @@
   },
   "days": [
     {
+      "date": "2026-11-23",
+      "news": [
+        {
+          "category": "llm",
+          "title": "LingSante-3.1-flash: Ant Group abre un MoE medico de 560B (25B activos) con licencia MIT",
+          "summary": "Ant Ling anuncio el 22/11 la apertura de LingSante-3.1-flash (560B totales, 25B por token, arquitectura hybrid-linear heredada de Ling-3.1-flash: 63 capas KDA + 9 gated MLA, 512 expertos con 8 activos), con checkpoint MXFP4 de 291,7 GiB y un hermano multimodal LingSante-3.1-air-VL de 124B/5,5B. Los numeros que ganan a GPT-6 Astra (HealthBench Professional 65,72; HLE con herramientas 72,22; BrowseComp 94,10) son propios, y en MedXpertQA queda lejos de Gemini y Claude; ademas la tarjeta presume 1M de contexto pero el config.json marca 262.144. La propia tarjeta lo deja claro: investigacion y evaluacion, no es producto clinico.",
+          "source": "https://www.unite.ai/ant-group-begins-open-weight-release-of-lingsante-medical-ai-models/",
+          "source_name": "Unite.AI",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "OpenAI propone la perplexity como metrica comun de progreso (y de pacing)",
+          "summary": "Jakub Pachocki, cientifico jefe de OpenAI, ha publicado las perplexities internas del laboratorio (GPT-4 en ~0,91; los modelos de hoy por debajo de 0,8) y propone usar la prediccion del siguiente token como indicador comparable entre casas para discutir limites de ritmo. Sam Altman lo ha llamado 'lo mas importante que OpenAI publica en tiempo'. El limite esta en el propio planteamiento: cuanto sorprende el siguiente token no dice como se comporta un modelo en agentes de larga duracion ni en tareas reales.",
+          "source": "https://openai.com/index/perplexity-and-intelligence",
+          "source_name": "OpenAI",
+          "star": true
+        },
+        {
+          "category": "general",
+          "title": "OpenRouter da de baja 3 provedores y quita el 'Zero Data Retention' a 125 endpoints",
+          "summary": "Tras sembrar cerca de 2M de prompts canario (claves AWS, contraseñas SSH, URLs de repos privados) en peticiones enrutadas a gateways de IA, la investigacion de Dragos encontro terceros leyendo esos datos 40-130 horas despues de la peticion. OpenRouter comunico el 22/11 la expulsion de tres inference providers, la perdida de la elegibilidad ZDR para 125 endpoints y el aviso a los clientes afectados, con canary testing continuo como condicion para volver. Leccion practica: la etiqueta 'no retenemos datos' de un router es hoy una afirmacion revocable, no una politica.",
+          "source": "https://openrouter.ai/blog/announcements/data-processing-incidents-on-inference-providers/",
+          "source_name": "OpenRouter",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Frostbite: un CPU de arquitectura nueva descubierta, diseñada y verificada por agentes de IA",
+          "summary": "Architect Labs (Palo Alto) afirma que sus agentes diseñaron de extremo a extremo Frostbite, un CPU de proposito general basado en redes de interaccion en lugar de un pipeline clasico: en 25 cargas simuladas, un cluster de cuatro tiles rinde 4,59 veces el rendimiento por vatio de un core in-order dual-issue 'silicon-proven' (3,83x en las 15 cargas sin tuning especifico, y 8,77x por unidad de area). Todo es pre-silicio sobre un diseño de 7 nm: no hay chip fabricado, no se ha revelado el CPU con el que se compara y falta revision independiente.",
+          "source": "https://www.tomshardware.com/tech-industry/semiconductors/ai-agents-design-an-entirely-new-cpu-architecture-from-scratch-startup-claims-frostbite-posts-4-59x-the-performance-per-watt-of-an-in-order-core-in-pre-silicon-tests",
+          "source_name": "Tom's Hardware",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "Binding of Isaac: Repentance Plus retira la musica de Suno tras el review-bombing",
+          "summary": "Un jugador encontro metadatos de 'suno' en las pistas de una partida secreta con tematica GTA y el DLC gratuito se hundio hasta el 9% de reseñas positivas recientes en Steam. Nicalis ha eliminado la musica generativa que no se habia declarado y Edmund McMillen ha dicho que se entero por la reaccion. Despues del caso de la portada de Tor Books, la trazabilidad del contenido generado sigue siendo la asignatura pendiente.",
+          "source": "https://www.theverge.com/games/1039770/binding-of-isaac-ai-music",
+          "source_name": "The Verge",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "OCRia-nano-1: un pipeline de OCR de 8,1M parametros que corre en CPU",
+          "summary": "LlamaIndex ha publicado los pesos de OCRia-nano-1 dentro de LiteParse 2.21.0: detector de lineas, router de alfabetos y cuatro reconocidores (latino, CJK, RTL y 'world script') que suman 8,1M parametros y funcionan solo con CPU, pensados para ingestion masiva de contratos, facturas y escaneos dentro de agentes. Nada que ver con el OCRia-1 de 4B que alimenta LlamaParse: lo interesante aqui es que leer documentos vuelve a caber en un portatil sin GPU.",
+          "source": "https://github.com/run-llama/liteparse/pull/610",
+          "source_name": "LlamaIndex / GitHub",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "Strata mainline 0.2.20: el reparto MoE de 4 niveles (GPU+RAM+CPU+SSD) llega a Qwen3.8-Flash-Next y arregla el NVFP4",
+          "summary": "El planificador adaptativo de 4 niveles se aplica ya a las tres familias MoE (Qwen3.8-Flash-Next, Hy4-Flash, Inkling 2 Mini): tronco denso + KV elastica en GPU con volcado de KV a host automatico desde 32K de contexto, expertos calientes en VRAM (hasta 0 en tarjetas de 4-6 GiB), expertos frios en RAM con calculo SIMD en CPU y streaming por SSD, con modos GPU+SSD y CPU+SSD puros y --layer-split auto de 2 a 4 GPUs. En bugs: corregida la salida mezclada/garbled y el 0% de aceptacion especulativa de NVFP4 (#6575 y compañia, restaurando el escalado de cola L.s_down) y los NaN en prompts de 24-45K (#879). El muro para tu caja: el motor es el fork nvfp4, basado en 0.2.15, asi que nada de esto es tuyo hasta que sergqwer rebasee; mientras, el fork sigue siendo el camino.",
+          "source": "https://github.com/Niko1221/Strata/releases",
+          "source_name": "Niko1221/Strata",
+          "star": true
+        },
+        {
+          "category": "llama",
+          "title": "Strata NVFP4 fork: nueva release v0.2.15-nvfp4.7",
+          "summary": "El arreglo es para Windows multi-GPU: cuando el driver WDDM rechaza el pineo de expertos (dos 5060 Ti con 256 GB de RAM seguian colgando), ahora el layer split pinea como maximo 62 GiB entre TODAS las GPUs, el motor anota donde le cortaron en %LOCALAPPDATA%\\strata\\wddm-pin-limit.txt en vez de colgarse y 'strata serve' relanza solo pineando 2 GiB menos; si usabas STRATA_ARENA_PIN_GIB como apaño, fuera. Con una sola GPU nada cambia (en 5090: 61,96 GiB pineados y 9.206 tokens/s de prefill a 32K) y no hacen falta archivos nuevos de modelo, solo update.cmd. Segun tengo anotado tu caja ya esta en nvfp4.7 desde el 22/11, asi que esto es cerrar el registro y el A/B de rigor.",
+          "source": "https://github.com/sergqwer/strata-nvfp4/releases",
+          "source_name": "sergqwer/strata-nvfp4",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12602 -> b12649: los .scale del GGUF se aplican solos y fix de expertos compartidos con --n-cpu-moe",
+          "summary": "Unas 47 builds en dos dias: #32669 aplica automaticamente los tensores .scale del GGUF (con fix de correctness), #32807 corrige la copia de expertos cuando un host weight lo comparten varios nodos (las capas compartidas de inkling2_loop con --n-cpu-moe se quedaban obsoletas), #32790 arregla el doble escalado de NVFP4 en CDNA3 y #32519 puntua solo los k-pools de las secuencias del ubatch en QSA. Completan el paquete audio mtmd (FFT iterativa mas rapida, fix de la cola de qwen3a/Qwen3-Omni), OpenCL (xielu, GEMM q4_k coop-k c8 para spec verify), token-aware parsing en chat y kernel gated_delta_net en SYCL. Para tu caja: nada que te mueva de Strata; apunte solo si algun dia prueba GGUF NVFP4 por llama.cpp.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "ggml-org/llama.cpp",
+          "star": false
+        }
+      ],
+      "summary": "Finde sin bombas de modelos y lunes de movimiento fino: Ant Group abre un MoE medico de 560B (MIT), OpenAI reabre como se mide el progreso, OpenRouter limpia su red tras el estudio canario de Dragos y, en el terreno local, Strata 0.2.20 trae el reparto MoE de 4 niveles (GPU+RAM+CPU+SSD) y arregla el NVFP4, mientras el fork nvfp4.7 cierra el hang de pineo bajo Windows."
+    },
+    {
       "date": "2026-11-21",
       "news": [
         {
@@ -7689,92 +7767,6 @@
         }
       ],
       "summary": "Día movido en agentes: NVIDIA demuestra que el harness importa más que el modelo con un 100% en ARC-AGI-3, OpenAI rebaja un 20%+ el GPT-5.6 Sol y Anthropic abre Claude Security en beta pública. En local, Liquid AI saca drafters para LFM2.5 con hasta 3.18x de velocidad en llama.cpp."
-    },
-    {
-      "date": "2026-08-22",
-      "news": [
-        {
-          "category": "llama",
-          "title": "llama.cpp estrena v0.2.0 (versionado semántico) + builds b10549→b10573",
-          "summary": "llama.cpp lanza v0.2.0, la primera versión 'stable' con versionado semántico vX.Y.Z (los tags b[NUM] siguen siendo nightly/dev). Desde el b10538 ya reportado hay 4 builds nuevos: b10573 (mtmd soporta webp vía ffmpeg), b10569 (año modelo dots3-note), b10568 (ggml_rope_set_offset) y b10549 (tensor split para LFM2/LFM2MOE). Recomendación: actualiza tu server a v0.2.0 (stable) o b10573 para webp + fixes; si usas el backend RPC, los builds recientes parchean el RCE crítico no autenticado (GHSA-j8rj-fmpv-wcxw).",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub llama.cpp",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "DeepSeek estrena V4-Flash-Vision-Exp, su primer modelo visual multimodal",
-          "summary": "DeepSeek lanza DeepSeek-V4-Flash-Vision-Exp, un modelo experimental de comprensión visual, y abre su API multimodal —su paso más ambicioso fuera del texto. Completa la familia V4 (V4-Pro de 1,6T parámetros y V4-Flash de 284B, ambos con 1M de contexto) y permite reutilizar imágenes gratis vía Files API.",
-          "source": "https://www.caixinglobal.com/2026-08-22/deepseek-enters-the-multimodal-ai-race-with-experimental-vision-model-102476706.html",
-          "source_name": "Caixin Global",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Anthropic pone en GA el Computer use, Skills API y Files API para agentes",
-          "summary": "Anthropic abre al público el computer use (varias acciones por turno y un nuevo browser use basado en estructura de página), la Skills API (subir y versionar tus propias skills y adjuntarlas a cualquier request, ejecutadas en sandbox de Claude) y la Files API (1 TB por organización, 5x rate limits). Disponible en Claude Platform, elegible para HIPAA y vía Microsoft Foundry y Vertex AI.",
-          "source": "https://claude.com/blog/computer-use-skills-api-files-api",
-          "source_name": "Anthropic",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Starcloud recauda $250M más para data centers en órbita",
-          "summary": "Starcloud amplía su Series A con $250M adicionales (valoración post de $2.300M, liderada por Manhattan West) para escalar su constelación de satélites que ejecutan inferencia IA en órbita, usando el chip Space-1 Vera Rubin de Nvidia en sus próximos satélites.",
-          "source": "https://techcrunch.com/2026-08-21/starcloud-raises-200-million-for-orbital-data-centers-as-launch-options-dry-up/",
-          "source_name": "TechCrunch",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Binance lanza Agent OS: agentes IA que analizan y ejecutan trades",
-          "summary": "Binance abre Agent OS para conectar agentes IA a su infraestructura financiera (APIs, Wallet Agentic Hub, x402, MCP) y dejar que ejecuten operaciones. El control recae en el usuario: subcuentas sandbox con retiros bloqueados por defecto y límites diarios (swaps $50K, DeFi $100K, x402 $20); Binance no ve el razonamiento de las decisiones.",
-          "source": "https://techcrunch.com/2026-08-20/binance-now-lets-ai-agents-trade-but-keeping-them-in-check-is-largely-up-to-users/",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "music",
-          "title": "Adobe Firefly: generación de música, voz y efectos ya disponible para todos",
-          "summary": "Adobe abre al público sus tres herramientas de audio de Firefly (Generate Music, Generate Speech y Generate Sound Effects) con licencia 'universal' para uso comercial sin takedowns, y añade Gemini Omni Flash como modelo partner (acepta video, audio e imagen además de texto).",
-          "source": "https://blog.adobe.com/en/publish/2026-08-20/adobe-firefly-expands-its-creative-ai-studio-generate-music-speech-and-sound-effects-in-one-place",
-          "source_name": "Adobe Blog",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "NanoClaw llega a Slack: equipos de agentes persistentes con un solo mensaje",
-          "summary": "La integración NanoClaw para Slack permite crear equipos completos de agentes persistentes (con skills, workflows y avatares propios) desde un solo prompt, y trabajar juntos en canales y Canvases compartidos. El agente en marcha puede crear más teammates dentro de la conversación; la capacidad comunitaria es gratuita.",
-          "source": "https://venturebeat.com/orchestration/nanoclaw-comes-to-slack-letting-you-create-persistent-ai-agent-teams-and-colleagues-from-a-single-message",
-          "source_name": "VentureBeat",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Nueva técnica de 'inyección de contexto criptográfico' evade los guardrails de Grok",
-          "summary": "Investigadores de Adversa describen un ataque que encripta instrucciones maliciosas dentro de contenido para que el modelo las descifre y ejecute, exfiltrando chats y datos del usuario a una URL controlada por el atacante. Afecta a Grok (y se demostró también en Gemini); las guardrails actuales escanean texto estático y no ejecutan ni descifran durante la inspección.",
-          "source": "https://www.scworld.com/brief/new-attack-bypasses-ai-guardrails-by-encrypting-malicious-prompts",
-          "source_name": "SC Media",
-          "star": false
-        },
-        {
-          "category": "general",
-          "title": "Pew: 1 de cada 3 páginas web publicadas desde ChatGPT muestra autoría por IA",
-          "summary": "Un estudio de Pew Research (Common Crawl + detección OpenPangram) halla que el 35% de las páginas publicadas tras el lanzamiento de ChatGPT muestran 'signos significativos de autoría por IA', frente al ~10% del corpus completo. Los dominios .com muestran ~10x más autoría IA que .edu o .gov (~1%).",
-          "source": "https://techcrunch.com/2026-08-20/a-third-of-webpages-published-since-chatgpts-launch-show-signs-of-ai-authorship-study-finds/",
-          "source_name": "TechCrunch",
-          "star": false
-        },
-        {
-          "category": "llm",
-          "title": "Estudio de Duke: la salida 'creativa' de los LLMs converge entre proveedores",
-          "summary": "Investigadores de Duke University (69 modelos de 12 familias, 2023-2026) miden una caída estadísticamente significativa en la diversidad de salidas creativas: las respuestas de proveedores distintos se vuelven más parecidas entre generaciones, lo que plantea dudas sobre el valor a largo plazo de los LLMs como socios creativos.",
-          "source": "https://www.unite.ai/ai-models-creative-output-is-becoming-similar-across-providers/",
-          "source_name": "Unite.AI",
-          "star": false
-        }
-      ],
-      "summary": "Día movido: DeepSeek estrena su primer modelo visual (V4-Flash-Vision-Exp) y Anthropic abre sus APIs de agentes (Computer use + Skills + Files) al público; llama.cpp da el salto al versionado semántico con v0.2.0. El resto, una oleada de agentes que operan (Binance Agent OS, NanoClaw en Slack) y una alerta de seguridad por evasión criptográfica de guardrails."
     }
   ]
 }
