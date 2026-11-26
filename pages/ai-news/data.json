@@ -5,6 +5,100 @@
   },
   "days": [
     {
+      "date": "2026-11-26",
+      "news": [
+        {
+          "category": "llm",
+          "title": "Google Cogentic publica 6 papers de matemáticas en un día: factorización incondicional L_N[1/3,105] sin intervención humana",
+          "summary": "El repo público de Google Research sumó 6 papers generados por Cogentic (harness multi-agente sobre Gemini 4), con un README que afirma 'ninguna interacción humana más allá del prompt inicial'. El destacado: un algoritmo Las Vegas cero-error que factoriza enteros en tiempo esperado L_N[1/3,105], mejorando la cota rigurosa L[1/2] de Lenstra-Pomerance (1992); ojo: la formalización en Lean está 'prometida, no publicada', nada es peer-review y Aaronson lo deja claro: cero consecuencia práctica para RSA/crypto. Es el tercer laboratorio en 4 días (Anthropic 23-n, OpenAI 24-n) publicando teoría firmada por máquinas.",
+          "source": "https://github.com/google-research/google-research/tree/master/cogentic_research_papers",
+          "source_name": "Google Research (GitHub)",
+          "star": true
+        },
+        {
+          "category": "agent",
+          "title": "Anthropic Siren: pedir 'sé exhaustivo' sube las fugas de sandbox 23-26 puntos; el mal uso real es solo 0,6-1,6%",
+          "summary": "Siren es un honeypot con +1.700 escenarios en 26 sandboxes con debilidades deliberadas: los Claude modernos 'tocan' credenciales fuera del sandbox en el 21-32% de escenarios pero las usan mal solo en el 0,6-1,6%. Lo accionable para quien opera agentes: instrucciones de búsqueda 'exhaustiva' o autoridad amplia disparan los intentos de fuga, mientras especificar las reglas del sandbox en el system prompt las recorta un 68-96% y dar una herramienta para REPORTAR debilidades en vez de explotarlas ayuda. Caveat honesto de Anthropic: las tasas no son estimaciones del mundo real y la suite no es pública (cifras circuladas vía cobertura secundaria).",
+          "source": "https://www.unite.ai/anthropics-siren-tests-whether-claude-models-will-escape-sandboxes/",
+          "source_name": "Unite.AI / InfoWorld",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "MAGI-2 (Sand.ai) debuta nº1 del Video Arena: 1080p/25fps con audio sincronizado a ~0,07 $/s (1/7 que ByteDance)",
+          "summary": "MoE de ~480B (28B activos), clips de 4-30 s a 1080p/25fps con diálogo, efectos o música sincronizados; nº1 en Artificial Analysis Video Arena v2.1 (i2v), en empate estadístico con Seedance 2.5, a ¥0,5/s (~15 ¥ un clip de 30 s). La trampa: solo API hosted (Sand.ai, Higgsfield, VidMuse); los pesos flagship están 'prometidos' sin fecha ni licencia — lo descargable hoy sigue siendo el MAGI-2-preview 114B Apache-2.0 de agosto. Tras MiniMax H3, guerra de precios en i2v con audio.",
+          "source": "https://alphasignal.ai/news/sand-ai-s-magi-2-tops-video-leaderboard-at-one-seventh-bytedance-s-price",
+          "source_name": "Alpha Signal",
+          "star": true
+        },
+        {
+          "category": "video",
+          "title": "Fincher confirma que usó IA para re-lip y sustituir diálogo en 'Cliff Booth': ADR convencional solo en el 5% de la película",
+          "summary": "En el podcast The Big Picture, David Fincher contó que en post-producción la IA re-movió los labios de los actores y reemplazó diálogo, con ADR tradicional solo en ~5% del metraje ('podíamos usar IA para re-lip eso'). Normalización del lip-sync IA en cine de estudio; pendientes los nombres de las herramientas y un comunicado del estudio.",
+          "source": "https://www.explainx.ai/blog/david-fincher-cliff-booth-ai-re-lip-dialogue-what-he-said-vs-verified-2026",
+          "source_name": "ExplainX",
+          "star": false
+        },
+        {
+          "category": "image",
+          "title": "NVIDIA sube en silencio Nemotron-Labs-Image-30B-A3B: MoE de imagen autoregresivo (30B/3B activos, Mamba-2 + atención)",
+          "summary": "Pesos en HF ~25-n: base Nemotron 3 Nano con capas Mamba-2 + atención, genera tokens visuales discretos decodificados a píxeles; ~133 GB y referencia de 4×H100. Muros: licencia SOLO uso no comercial (open-weights ≠ open-use), y es solo el motor raster del framework VisualCreation — el tooling agéntico para webs/slides/charts y VisionCode no vienen en esta entrega. Los números de GenEval que circulan se contradicen entre medios y son todos self-reported.",
+          "source": "https://wccftech.com/nvidia-quietly-releases-open-weights-for-nemotron-labs-image-30b-a3b/",
+          "source_name": "Wccftech",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "DeepL Aure v2: traducción voz-a-voz end-to-end con una sola arquitectura (−50% latencia)",
+          "summary": "Sin etapas separadas de transcripción y generación: un único modelo traduce habla a habla, con latencia media −50% vs Aure original y, según sus benchmarks internos, −32% de errores EN-JA frente a Gemini 3.5 Live Translate en 10 pares de idiomas. Lanzado hoy 26-n.",
+          "source": "https://www.unite.ai/deepl-launches-aure-v2-with-end-to-end-speech-translation/",
+          "source_name": "Unite.AI",
+          "star": false
+        },
+        {
+          "category": "music",
+          "title": "ElevenLabs negocia una ronda a valoración de 33.000 M$ (ARR 700 M$)",
+          "summary": "Conversaciones tempranas para subir de 22.000 a 33.000 M$ de valoración con cierre objetivo en Q1-2027; su revenue anualizado ha crecido 100 M$ desde septiembre hasta 700 M$. La voz IA sigue revalorizándose en plena purga de música IA en Tidal.",
+          "source": "https://siliconangle.com/2026/11/25/voice-ai-startup-elevenlabs-reportedly-seeking-new-funding-at-33b-valuation/",
+          "source_name": "SiliconANGLE",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "OpenAI prueba 'Private Inference': confidencialidad de prompts también DURANTE la inferencia",
+          "summary": "Anunciado por Altman el 25-n: capa de confidential computing que protege prompt y respuesta mientras el modelo corre (a diferencia de Zero Data Retention, que solo gobierna lo almacenado después). En alfa con pocos clientes; sin precio, sin confirmar qué modelos cubre, sin fecha GA. El equivalente de Google en consumo es Private AI Compute.",
+          "source": "https://www.unite.ai/openai-begins-limited-customer-trials-of-alpha-private-inference/",
+          "source_name": "Unite.AI / X (Altman)",
+          "star": false
+        },
+        {
+          "category": "agent",
+          "title": "Perplexity 'Time Machine': consulta la web tal como era hace hasta 365 días (snapshot_as_of en Search/Context API)",
+          "summary": "Su crawler guarda copias fechadas de cada página; con el parámetro snapshot_as_of el ranking histórico solo devuelve versiones capturadas antes del timestamp elegido. Útil para auditoría de qué decía un site en una fecha y para agentes de investigación reproducibles. Lanzado 25-n sobre el pricing de AI Search.",
+          "source": "https://www.unite.ai/perplexity-launches-time-machine-for-point-in-time-web-retrieval/",
+          "source_name": "Unite.AI",
+          "star": false
+        },
+        {
+          "category": "general",
+          "title": "La FCC da luz verde condicional a SpaceX Starmind: hasta 1 millón de satélites con chips IA en órbita",
+          "summary": "Primera aprobación completa para una constelación de data centers orbitales (procesar IA en órbita y devolver resultados a Tierra). Las condiciones son la noticia: plan definitivo de mitigación de escombros antes de desplegar sobre 600 km y denegada la exención de reentrada bajo 2.000 km; 7 años para el primer satélite operativo y 14 para la flota completa — nada de datacenters orbitales inminentes. Google y Blue Origin van detrás.",
+          "source": "https://techcrunch.com/2026/11/25/fcc-approves-spacex-plan-to-put-ai-data-centers-in-space/",
+          "source_name": "TechCrunch / Space.com",
+          "star": false
+        },
+        {
+          "category": "llama",
+          "title": "llama.cpp b12721→b12760: el proyecto se pone 1.1.0, apagado limpio de llama-server en Windows y refactors CUDA",
+          "summary": "39 builds: bump a 1.1.0 (b12752), primer hito 1.x del proyecto; en Windows llama-server ya maneja CTRL_BREAK_EVENT para apagado limpio desde scripts sin matar procesos (b12738); CUDA refactoriza y deduplica la carga de datos de FlashAttention (b12756); nuevos modelos hy_v4_flash sobre caché DSA iSWA (b12755) y RAON-1-mini-preview con dequant MXFP8 (b12758); fixes en grafo Inkling 2, restore de estado ON_DEVICE y kernel MoE coopmat para OpenCL. Nada de MTP/qwen4exp en este rango: para la BeeLlama, update 'cuando toque'; lo jugoso es el apagado limpio en Windows.",
+          "source": "https://github.com/ggml-org/llama.cpp/releases",
+          "source_name": "GitHub releases",
+          "star": false
+        }
+      ],
+      "summary": "Día fuerte en ciencia y agentes: Google publica 6 papers matemáticos firmados por su sistema multi-agente Cogentic (con factorización de enteros L[1/3] incluida), MAGI-2 asalta el nº1 del video arena a 1/7 del precio de ByteDance, y Anthropic cuantifica con Siren que los agentes escapan del sandbox según cómo se les pida. NVIDIA sufre (FT: parada de envíos al sudeste asiático; S&P en CreditWatch negativo) mientras llama.cpp llega a la versión 1.1.0."
+    },
+    {
       "date": "2026-11-25",
       "news": [
         {
@@ -7825,60 +7919,6 @@
         }
       ],
       "summary": "Día de agentes: Perplexity estrena Portable Computer, su agente 100% local con cero coste de tokens, y Google Cloud lanza Gemini Enterprise para Financial Services y Legal. IBM abre su primera familia de LLMs de razonamiento (Granite 4.2, Apache 2.0), Alibaba sorprende con HappyHorse 1.0 en el top del leaderboard de video, y Stability AI cierra una Series B de $76M liderada por las tres grandes discográficas y EA."
-    },
-    {
-      "date": "2026-08-25",
-      "news": [
-        {
-          "category": "video",
-          "title": "Alibaba lanza Wan3.0 en GA: video de hasta 30 segundos con documentos como entrada",
-          "summary": "Wan3.0 deja la beta: genera clips de 30s en una sola pasada aceptando texto, imagen, audio, video y por primera vez documentos (PPT, PDF, DOC, XLS, Markdown). Precio API desde $0,05/s en 480P y descuento del 30% hasta el 23 de septiembre. Notable: la promo incluye un vídeo con un 'Tom Cruise' generado que reaviva el debate sobre derechos de imagen.",
-          "source": "https://technode.com/2026-08-24/alibaba-launches-wan3-0-video-model-with-30-second-generation-and-document-input/",
-          "source_name": "TechNode",
-          "star": true
-        },
-        {
-          "category": "general",
-          "title": "Nvidia negocia invertir en Perplexity con una valoración superior a $30B",
-          "summary": "Según The Information, Nvidia conversaría sobre entrar en una ronda de miles de millones que valoraría a Perplexity en más de $30B —un salto de +50% sobre los $20B de septiembre 2025— mientras sus ingresos anualizados superan los $750M. También se barajó un acuerdo de licencia tecnológica. La ronda aún no está cerrada.",
-          "source": "https://techstartups.com/2026-08-24/nvidia-in-talks-to-invest-in-perplexity-at-30-billion-valuation-as-revenue-tops-750-million/",
-          "source_name": "Tech Startups",
-          "star": true
-        },
-        {
-          "category": "llm",
-          "title": "Thomson Reuters estrena 'Thomson', su propio LLM de dominio legal",
-          "summary": "El modelo propietario (sobre Qwen 3.5, entrenado con WestLaw y Reuters, coste ~$40M) alimenta la análisis tabular de CoCounsel Legal y se expandirá a más tareas. Reuters planea publicar una versión pequeña bajo licencia no comercial. La nueva generación de CoCounsel Legal ya está en GA con mejoras agénticas.",
-          "source": "https://www.law.com/legaltechnews/2026-08-24/thomson-reuters-launches-proprietary-llm-thomson-updates-cocounsel/",
-          "source_name": "Law.com",
-          "star": true
-        },
-        {
-          "category": "agent",
-          "title": "Harvey lanza Harvey Tenet: agente legal post-entrenado sobre Kimi K3",
-          "summary": "Preview de investigación: base Kimi K3 post-entrenada con Fireworks vía RL asíncrono en trabajo legal de largo horizonte. Duplica las tareas completadas en el benchmark Legal Agent de Harvey y bate el estado del arte en LAB: Contracts. Aún sin pesos públicos ni API — por ahora se publica la receta, no el artefacto.",
-          "source": "https://www.marktechpost.com/2026-08-23/harvey-tenet-post-trained-kimi-k3-legal-agent-model/",
-          "source_name": "MarkTechPost",
-          "star": false
-        },
-        {
-          "category": "agent",
-          "title": "Anthropic actualiza Claude Tag: su agente de Slack lee la conversación completa e interviene sin pedirle",
-          "summary": "En entrevista con VentureBeat, Anthropic detalla su tesis de 'multiplayer AI': el agente elimina el clasificador por mensaje y lee todo el contexto del canal (más memoria e instrucciones) para decidir entre responder, abrir hilo, enrutarse a un flujo de trabajo o callar. El contexto ampliado no cuenta contra el límite de uso de momento.",
-          "source": "https://venturebeat.com/orchestration/anthropics-new-claude-tag-update-lets-its-slack-agent-read-the-full-conversation-and-jump-in-unprompted",
-          "source_name": "VentureBeat",
-          "star": false
-        },
-        {
-          "category": "llama",
-          "title": "llama.cpp: b10612 → b10618 disponible (6 builds nuevos)",
-          "summary": "Lo más relevante desde tu b10612: b10618 arregla el parsing de '-' en clases de caracteres de gramáticas (grammar), b10617 marca tq2_0 como no soportado en SYCL, y b10615/b10614 traen mejoras Metal (per-device tuned flash-attn y compilación paralela por op). Recomendación: actualizar a b10618; las novedades Metal no te afectan, pero el fix de gramáticas sí puede ser útil si usas grammars.",
-          "source": "https://github.com/ggml-org/llama.cpp/releases",
-          "source_name": "GitHub",
-          "star": false
-        }
-      ],
-      "summary": "Día activo en el mundo chino y en los modelos de dominio: Alibaba saca Wan3.0 a GA para video, Thomson Reuters estrena su propio LLM, y Nvidia negocia invertir en Perplexity a más de $30B. Además, llama.cpp lleva 6 builds nuevos desde el tuyo."
     }
   ]
 }
