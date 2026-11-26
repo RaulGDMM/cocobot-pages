@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwen4 — Predicción de la familia completa (post Flash-Next)</title>
-  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash recalibrado a ~45 (17 oct, delta cocción medido). Rumor 0-day (7 oct): ventana finales de octubre (refrendado 14, 17 y 19 oct; prediction market 83%, 19 oct). Teaser oficial @QwenDevs «let's do both!» (10 oct): release dual 27B+Max insinuado, sin fecha. Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct). Señal 22 oct: dos modelos anónimos en LMArena — «Kalmia» (atribuida por tokenizer a Qwen4) y «Kibitz» (Kimi K3.1); prensa apunta a release esta semana; market en 83% por entonces; escenario rápido 50→60%. Ingeniería 24 oct: los kernels vLLM/XPU de Intel describen el 27B como DENSE (H5120 + HC4 + QSA + MTP) — filtración indirecta de terceros, no spec oficial; «Kibitz» publicado como Kimi K3.1 Pro (55); Kalmia sin release. 27 oct: el mercado cae 83,5→48% y deja de dar por hecha la ventana de octubre (cierra 31 oct); escenario rápido 60→50%. Predicciones AAI intactas. Señal 28 oct: AAI estrena Intelligence Index v5.0 — re-escala no uniforme (Qwen3.8-27B 34→20; Max-0902 45→34; Kimi K3.1 55→46; MiMo 46→30) mientras el top aguanta o sube (Gemini 4 Carbon 59; Astra 53→57). El canary aún sin score v5.0: sin ancla en la nueva escala, la página queda etiquetada en v4.3.2; predicciones y calificación intactas hasta el pase completo. 30 oct: octubre cierra en blanco (Manifold 14,8%; diario 29 oct NO) pero en Apsara Ámsterdam la CTO de Alibaba Cloud dijo «Qwen4 next week» según asistentes (≥2 fuentes; sin post oficial); «antes del 1 dic» 92% y «pesos abiertos ≤ 25 nov» 42→83% → escenario rápido 50→70% (base 18, lento 12). Predicciones AAI y gráfico (v4.3.2 congelado): intactos — el canary sigue sin score v5.0. 2 nov: día 1 de la ventana CTO en blanco; el repo oficial qwen-code (#15762, merge 28 oct) dimensiona 6+ IDs qwen4* a 1M ctx (forma ≠ capacidad: coder-plus y omni-120b por primera vez) y el stack vLLM se endurece pre-launch (#59958, #64820); semanal nuevo «antes 9 nov» 34% (pool fino) registrado sin re-ponderar; escenarios 70/18/12 y ancla v4.3.2: intactos. Teaser oficial 6 nov @Alibaba_Qwen «The becoming begins.» (pez del Zhuangzi 鲲/Kun≈Qwen que se transforma en ave; countdown dentro de la ventana CTO 2–8 nov, que muere el domingo): rápido 70→75% · base 15% · lento 10%. 9 nov: la ventana CTO cierra vacía (falsación −5 aplicada) y «Qoduck» — modelo furtivo sin identidad en el Qoder de Alibaba (7 nov, fingerprint tokenizer Qwen, sin confirmación) — re-empuja el timing: rápido 78% · base 12% · lento 10%; escalera semanal 80% «lanzamiento ≤13 nov» (1ª lectura) y «pesos abiertos ≤25 nov» 83→61% (lectura API-first). Predicciones AAI intactas (v4.3.2 congelado; canary aún sin score v5.0). 11 nov: Qwen4 OFICIAL — «Qwen4 is coming» y qwen4-max-preview en el Token Plan y cuatro apps de Alibaba (preview cerrado; docs vía agregadores: 1M ctx, ventana hasta el 25-nov). Se resuelve la señal «primer qwen4* en la API»: rápido 78→88% (base 7, lento 5); «pesos abiertos ≤25-nov» 61→59% — la multitud mantiene la lectura API-first. Predicciones 42·45·50 y gráfico (v4.3.2) intactos. 14-nov: la escalera de Manifold se resuelve con NOVIEMBRE YES — sus reglas cuentan la preview como lanzamiento (como anticipó la página); «pesos ≤25-nov» 59→63% (pool fino); Polymarket (1ª lectura) ~98% ≤30-nov; StealthMark (tercero, solo-LOG): preview 58,8 y por debajo de 3.8-Max en general (62,4). Ausencias limpias y congel v4.3.2 vigente; escenarios (88/7/5) y predicciones intactos. 16-nov: QWEN4-Max en GA — blog oficial + API pública ($1.50/$4.50 por M) + OpenRouter; 2.4T/71B activos + 328B n-gram, visión nativa, 1M ctx. AAI v5.0.1 lo puntúa el mismo día: 42.89 (13º) — supera el equivalente convertido de la predicción (50 en v4.3.2 ≈ 39). Ancla del canary llegada (28.6): congel v4.3.2 levantado, predicciones recalibradas a v5.0.1 (27B ~29 · Flash ~34) y gráfico sincronizado (nº1: Claude Fable 5.2, 64.6). Blog promete los hermanos pequeños en open source; «pesos ≤25-nov» 63→78%. Escenarios pivotados a los pesos abiertos (72/20/8). 18-nov: pase en seco — cero señal en los hermanos open source (HF sin pesos, solo squat repos «Qwen4-27B*» imposibles; OpenRouter un solo qwen4; AAI v5.0.1 sin cambio; arena y blog mudos); el gráfico absorbe el relevo de OpenAI: GPT-6.2 Astra (62.1, nº2) y Sol (57.3) del 17-nov sustituyen a la línea 6/6.1, fuera de Current.">
+  <meta name="description" content="Predicción de la familia Qwen4 (denso ~27B, Flash y Max) tras el canary Qwen3.8-Flash-Next (26 ago 2026). Ancla AAI re-escalada: Flash-Next = 40 (v4.3.2, antes 56). 4 tiers confirmados en Apsara (22 sep): Max, Flash, Plus y 27B open-weights. Flash recalibrado a ~45 (17 oct, delta cocción medido). Rumor 0-day (7 oct): ventana finales de octubre (refrendado 14, 17 y 19 oct; prediction market 83%, 19 oct). Teaser oficial @QwenDevs «let's do both!» (10 oct): release dual 27B+Max insinuado, sin fecha. Canary medido en casa: 90–120 tok/s en RTX 5090 + 64 GB vía Strata (14 oct). Señal 22 oct: dos modelos anónimos en LMArena — «Kalmia» (atribuida por tokenizer a Qwen4) y «Kibitz» (Kimi K3.1); prensa apunta a release esta semana; market en 83% por entonces; escenario rápido 50→60%. Ingeniería 24 oct: los kernels vLLM/XPU de Intel describen el 27B como DENSE (H5120 + HC4 + QSA + MTP) — filtración indirecta de terceros, no spec oficial; «Kibitz» publicado como Kimi K3.1 Pro (55); Kalmia sin release. 27 oct: el mercado cae 83,5→48% y deja de dar por hecha la ventana de octubre (cierra 31 oct); escenario rápido 60→50%. Predicciones AAI intactas. Señal 28 oct: AAI estrena Intelligence Index v5.0 — re-escala no uniforme (Qwen3.8-27B 34→20; Max-0902 45→34; Kimi K3.1 55→46; MiMo 46→30) mientras el top aguanta o sube (Gemini 4 Carbon 59; Astra 53→57). El canary aún sin score v5.0: sin ancla en la nueva escala, la página queda etiquetada en v4.3.2; predicciones y calificación intactas hasta el pase completo. 30 oct: octubre cierra en blanco (Manifold 14,8%; diario 29 oct NO) pero en Apsara Ámsterdam la CTO de Alibaba Cloud dijo «Qwen4 next week» según asistentes (≥2 fuentes; sin post oficial); «antes del 1 dic» 92% y «pesos abiertos ≤ 25 nov» 42→83% → escenario rápido 50→70% (base 18, lento 12). Predicciones AAI y gráfico (v4.3.2 congelado): intactos — el canary sigue sin score v5.0. 2 nov: día 1 de la ventana CTO en blanco; el repo oficial qwen-code (#15762, merge 28 oct) dimensiona 6+ IDs qwen4* a 1M ctx (forma ≠ capacidad: coder-plus y omni-120b por primera vez) y el stack vLLM se endurece pre-launch (#59958, #64820); semanal nuevo «antes 9 nov» 34% (pool fino) registrado sin re-ponderar; escenarios 70/18/12 y ancla v4.3.2: intactos. Teaser oficial 6 nov @Alibaba_Qwen «The becoming begins.» (pez del Zhuangzi 鲲/Kun≈Qwen que se transforma en ave; countdown dentro de la ventana CTO 2–8 nov, que muere el domingo): rápido 70→75% · base 15% · lento 10%. 9 nov: la ventana CTO cierra vacía (falsación −5 aplicada) y «Qoduck» — modelo furtivo sin identidad en el Qoder de Alibaba (7 nov, fingerprint tokenizer Qwen, sin confirmación) — re-empuja el timing: rápido 78% · base 12% · lento 10%; escalera semanal 80% «lanzamiento ≤13 nov» (1ª lectura) y «pesos abiertos ≤25 nov» 83→61% (lectura API-first). Predicciones AAI intactas (v4.3.2 congelado; canary aún sin score v5.0). 11 nov: Qwen4 OFICIAL — «Qwen4 is coming» y qwen4-max-preview en el Token Plan y cuatro apps de Alibaba (preview cerrado; docs vía agregadores: 1M ctx, ventana hasta el 25-nov). Se resuelve la señal «primer qwen4* en la API»: rápido 78→88% (base 7, lento 5); «pesos abiertos ≤25-nov» 61→59% — la multitud mantiene la lectura API-first. Predicciones 42·45·50 y gráfico (v4.3.2) intactos. 14-nov: la escalera de Manifold se resuelve con NOVIEMBRE YES — sus reglas cuentan la preview como lanzamiento (como anticipó la página); «pesos ≤25-nov» 59→63% (pool fino); Polymarket (1ª lectura) ~98% ≤30-nov; StealthMark (tercero, solo-LOG): preview 58,8 y por debajo de 3.8-Max en general (62,4). Ausencias limpias y congel v4.3.2 vigente; escenarios (88/7/5) y predicciones intactos. 16-nov: QWEN4-Max en GA — blog oficial + API pública ($1.50/$4.50 por M) + OpenRouter; 2.4T/71B activos + 328B n-gram, visión nativa, 1M ctx. AAI v5.0.1 lo puntúa el mismo día: 42.89 (13º) — supera el equivalente convertido de la predicción (50 en v4.3.2 ≈ 39). Ancla del canary llegada (28.6): congel v4.3.2 levantado, predicciones recalibradas a v5.0.1 (27B ~29 · Flash ~34) y gráfico sincronizado (nº1: Claude Fable 5.2, 64.6). Blog promete los hermanos pequeños en open source; «pesos ≤25-nov» 63→78%. Escenarios pivotados a los pesos abiertos (72/20/8). 18-nov: pase en seco — cero señal en los hermanos open source (HF sin pesos, solo squat repos «Qwen4-27B*» imposibles; OpenRouter un solo qwen4; AAI v5.0.1 sin cambio; arena y blog mudos); el gráfico absorbe el relevo de OpenAI: GPT-6.2 Astra (62.1, nº2) y Sol (57.3) del 17-nov sustituyen a la línea 6/6.1, fuera de Current. 26-nov: doble sacudida — el mercado «pesos ≤25-nov» se resolvió NO (cero pesos en HF; toques del 20-nov = housekeeping pre-3.8; blog/X mudos desde el GA; OpenRouter 474 IDs y un solo qwen4) y la falsación migra los escenarios de pesos 72/20/8→28/52/20; AAI sube a v5.0.2 (re-score: canary 28, Max 43/14º; predicciones Flash ~33 · 27B ~28; entra Gemini 4 Neon 62; predecesor Max-0902 deprecado).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -657,20 +657,22 @@ td.warn { color: var(--warning); font-weight: 700; }
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 18 noviembre 2026</div>
+  <div class="hero-eyebrow"><span class="dot"></span> Predicción · EN CURSO · Actualizado 26 noviembre 2026</div>
   <h1><span class="l1">Qwen4</span><span class="l2">La familia completa</span></h1>
-  <h2>Salió el flagship: <strong>Qwen4-Max</strong> · 2.4T-A71B + 328B n-gram · 1M ctx · AAI 42.9</h2>
+  <h2>Salió el flagship: <strong>Qwen4-Max</strong> · 2.4T-A71B + 328B n-gram · 1M ctx · AAI 43 (v5.0.2)</h2>
   <p class="hero-sub">
     El <strong>26 de agosto de 2026</strong> Qwen publicó el primer open-weight bajo la nueva arquitectura Qwen4.
     Esta página sigue prediciendo la familia Qwen4: el <strong>denso ~27B</strong> (la estrella para hardware local),
-    el tier <strong>Flash</strong> y el Max — con fechas, AAI y viabilidad en RTX 5090. En Apsara (22 sep) Alibaba previsualizó los <strong>4 tiers</strong>: Max, Flash, Plus y <strong>27B open-weights</strong>. El <strong>16-nov</strong> salió el primer Qwen4: <strong>Qwen4-Max en GA</strong> (cerrado, medido 42.9); el blog promete los hermanos pequeños <strong>en open source</strong>.
+    el tier <strong>Flash</strong> y el Max — con fechas, AAI y viabilidad en RTX 5090. En Apsara (22 sep) Alibaba previsualizó los <strong>4 tiers</strong>: Max, Flash, Plus y <strong>27B open-weights</strong>. El <strong>16-nov</strong> salió el primer Qwen4: <strong>Qwen4-Max en GA</strong> (cerrado, medido 43); el blog promete los hermanos pequeños <strong>en open source</strong>.
   </p>
   <div class="hero-meta">
-    <span class="badge live">🚀 16 nov: QWEN4-Max en GA — API pública ($1.50/$4.50) · 2.4T-A71B + 328B n-gram · visión nativa · 1M ctx · AAI v5.0.1: 42.9 (13º)</span>
+    <span class="badge live">🚀 16 nov: QWEN4-Max en GA — API pública ($1.50/$4.50) · 2.4T-A71B + 328B n-gram · visión nativa · 1M ctx · AAI v5.0.2: 43 (14º)</span>
     <span class="badge cyan">Canary: 125B-A6B + 51B n-gram + 4B MTP</span>
-    <span class="badge live">🎯 Fase 2 — pesos abiertos: ≤1-dic 72% · patrón 3.8: ~1 semana tras el flagship</span>
-    <span class="badge blue">Anclas v5.0.1: canary 28.6 · Max MEDIDO 42.9</span>
+    <span class="badge live">🎯 Fase 2 — pesos abiertos: ≤1-dic 28% · falsación aplicada (mercado ≤25-nov resuelto NO)</span>
+    <span class="badge blue">Anclas v5.0.2 (26-nov): canary 28 · Max MEDIDO 43</span>
     <span class="badge live">✅ 16 nov: AAI v5.0.1 — canary re-scoreado (28.6): congel LEVANTADO, predicciones recalibradas y gráfico sincronizado</span>
+    <span class="badge live">🧊 25 nov: «pesos ≤25-nov» RESUELTO NO (verif 2×) — falsación aplicada: escenarios de pesos 72/20/8 → 28/52/20</span>
+    <span class="badge live">📐 26 nov: AAI v5.0.2 — re-score completo: canary 28 · Max 43/14º · Flash ~33 · 27B ~28 · entra Gemini 4 Neon (62) al gráfico</span>
     <span class="badge live">🕵️ 22 oct: «Kalmia» (Qwen4, por tokenizer) en LMArena — fase final; prensa: «esta semana» · su gemela «Kibitz» ya es pública (Kimi K3.1 Pro, 23 oct) · Kalmia sin release · sin confirmar</span>
     <span class="badge live">🧩 2 nov: el repo oficial qwen-code lista 6+ IDs qwen4* a 1M ctx — familia &gt;4 tiers (forma ≠ capacidad) · día 1 de la ventana CTO en blanco</span>
     <span class="badge live">🧩 24 oct: primera forma pública del 27B — kernels vLLM/XPU lo tratan como DENSE (H5120 + HC4 + QSA + MTP) · inferencia de terceros, no oficial</span>
@@ -748,7 +750,7 @@ td.warn { color: var(--warning); font-weight: 700; }
     <div>
       <h4>✅ AAI v5.0.1 — ancla llegada (16 nov)</h4>
       <p>El índice sube a <strong>v5.0</strong> (28 oct): 9 evals (entran FrontierCode 2.0, CritPt v2 Hard, HLE-Diamond, Terminal-Bench-Science; salen GDPval-AA, SciCode, HLE, CritPt v1, AA-LCR). Re-escala <strong>no uniforme</strong>: el top aguanta o sube (Gemini 4 Carbon 59 nuevo nº1; Opus 5.5 58; Astra 53→57), la fascia media china se hunde (Qwen3.8-27B <strong>34→20</strong>, Max-0902 <strong>45→34</strong>, Kimi K3.1 Pro 55→46, MiMo 46→30). El canary <strong>aún sin score v5.0</strong> (fila «--» en la leaderboard Current): secciones 03–05 congeladas en v4.3.2 hasta el pase completo.</p>
-      <div class="s-state">✅ 16 nov: canary puntuado (28.6) y Qwen4-Max medido (42.9) en v5.0.1 — congel v4.3.2 LEVANTADO: predicciones recalibradas, gráfico sincronizado</div>
+      <div class="s-state">✅ 16 nov: canary puntuado (28.6) y Qwen4-Max medido (42.9) en v5.0.1 — congel v4.3.2 LEVANTADO: predicciones recalibradas, gráfico sincronizado<br>📐 26 nov: <strong>AAI v5.0.2</strong> — ancla 28 · Max 43/14º · predicciones −0.6 (Flash ~33 · 27B ~28) · gráfico re-sincronizado (entra Gemini 4 Neon)</div>
     </div>
   </div>
   <div class="signal open">
@@ -913,17 +915,17 @@ td.warn { color: var(--warning); font-weight: 700; }
     </p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Tier (Apsara)</th><th>Rol declarado</th><th>Sección de esta página</th><th>AAI (v5.0.1 · 16-nov)</th></tr></thead>
+        <thead><tr><th>Tier (Apsara)</th><th>Rol declarado</th><th>Sección de esta página</th><th>AAI (v5.0.2 · 26-nov)</th></tr></thead>
         <tbody>
-          <tr><td><strong>Qwen4 Max</strong></td><td>Flagship, frente al top de cada lab</td><td><a href="#max">05 · El Max</a></td><td class="num"><strong>42.9 MEDIDO</strong><small>pred. 50 · v4.3.2 excedida</small></td></tr>
-          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#flash">04 · Qwen4-Flash</a></td><td class="num">~34 (31–37)</td></tr>
+          <tr><td><strong>Qwen4 Max</strong></td><td>Flagship, frente al top de cada lab</td><td><a href="#max">05 · El Max</a></td><td class="num"><strong>43 MEDIDO</strong><small>pred. 50 · v4.3.2 excedida · debutó con 42.89 (v5.0.1)</small></td></tr>
+          <tr><td><strong>Qwen4 Flash</strong></td><td>Alto throughput, latencia sensible</td><td><a href="#flash">04 · Qwen4-Flash</a></td><td class="num">~33 (30–36)</td></tr>
           <tr><td><strong>Qwen4 Plus</strong></td><td>Tier medio equilibrado, multimodal</td><td>— (sin predicción propia; entre MoE y Max)</td><td class="num">—</td></tr>
-          <tr><td><strong>Qwen4 27B</strong></td><td><strong>Open-weights local</strong> — el tier que se descarga, fine-tunea y cuantiza<br><small>16-nov: open source <strong>prometido oficialmente</strong> en el blog del GA</small></td><td><a href="#denso">03 · El denso ~27B</a></td><td class="num">~29 (26–33)</td></tr>
+          <tr><td><strong>Qwen4 27B</strong></td><td><strong>Open-weights local</strong> — el tier que se descarga, fine-tunea y cuantiza<br><small>16-nov: open source <strong>prometido oficialmente</strong> en el blog del GA</small></td><td><a href="#denso">03 · El denso ~27B</a></td><td class="num">~28 (25–32)</td></tr>
         </tbody>
       </table>
     </div>
     <p>
-      El <strong>27B es el tier a vigilar</strong>: es el único de los 4 que históricamente sale con pesos abiertos (patrón 3.5→27B, 3.6→27B, 3.8→27B), así que su entrega es la más predecible de la familia y la que desbloquea todo el ecosistema local (GGUF de Unsloth, MLX, NVFP4). Ojo con el número que circula: los <strong>"5–10 billones de parámetros" NO son de Qwen 4</strong> — es el objetivo de roadmap de Alibaba para Qwen 4.5 / Qwen 5. El Max ya está publicado: Qwen4-Max = 2.4T MoE con 71B activos/token + 328B de tabla n-gram — <strong>activa un 25% menos de parámetros que el 3.8-Max (95B)</strong> y rinde más: AAI 42.9 vs 34 en la misma escala.
+      El <strong>27B es el tier a vigilar</strong>: es el único de los 4 que históricamente sale con pesos abiertos (patrón 3.5→27B, 3.6→27B, 3.8→27B), así que su entrega es la más predecible de la familia y la que desbloquea todo el ecosistema local (GGUF de Unsloth, MLX, NVFP4). Ojo con el número que circula: los <strong>"5–10 billones de parámetros" NO son de Qwen 4</strong> — es el objetivo de roadmap de Alibaba para Qwen 4.5 / Qwen 5. El Max ya está publicado: Qwen4-Max = 2.4T MoE con 71B activos/token + 328B de tabla n-gram — <strong>activa un 25% menos de parámetros que el 3.8-Max (95B)</strong> y rinde más: AAI 43 (v5.0.2) vs 34 del 3.8-Max (medido en v5.0.1; el predecesor quedó deprecado sin re-score).
     </p>
   </div>
 </div>
@@ -962,7 +964,7 @@ td.warn { color: var(--warning); font-weight: 700; }
           <tr><td>Qwen3.8-35B-A3B saldría</td><td class="bad">✗ no publicado</td><td>Los MoE pequeños son opcionales para Qwen — predicciones MoE con confianza baja</td></tr>
           <tr><td>Re-escala AAI v4.3.2 (sep 2026)</td><td class="warn">⚠ OCURRIDO — toda la familia re-puntuada</td><td>El "riesgo estructural" se materializa: deltas relativos se conservan (27B→canary +4→+6), la comparación entre escalas sigue prohibida</td></tr>
           <tr><td>Qwen4-Max ≈ 50 AAI (rango 46–53, v4.3.2)</td><td class="warn">⚠ EXCEDIDA — medido 42.89 (v5.0.1); el equivalente convertido con el Δ de re-escala del propio linaje (Max 45→34 = −11) era ~39: +4 por encima, y sobre el techo del rango convertido (~40–42)</td><td>Entre índices distintos solo comparan ratios/Δ medidos, nunca absolutos; el salto Max→Max real (+8.9 en v5.0.1) superó al patrón conservador (+5) que se asumió</td></tr>
-          <tr><td>Regla del «canary como suelo de la familia»</td><td class="warn">⚠ TENSA en v5.0.1 — la re-escala separó más al denso del canary (20.1 vs 28.6 = +8.5; eran +6 en v4.3.2)</td><td>El suelo se mantiene por cómputo/token (regla cualitativa viva), pero la predicción del 27B se ancló al suelo (~29) en lugar del ratio puro (~25) — tensión anotada en §03</td></tr>
+          <tr><td>Regla del «canary como suelo de la familia»</td><td class="warn">⚠ TENSA en v5.0.2 — la brecha denso/canary aguanta (20 vs 28 = +8; +8.5 en v5.0.1, +6 en v4.3.2)</td><td>El suelo se mantiene por cómputo/token (regla cualitativa viva), pero la predicción del 27B se ancló al suelo (~29) en lugar del ratio puro (~25) — tensión anotada en §03</td></tr>
         </tbody>
       </table>
     </div>
@@ -972,8 +974,8 @@ td.warn { color: var(--warning); font-weight: 700; }
   </div>
 
   <div class="callout warn reveal">
-    <span class="callout-title">⚖️ Pase completo 16-nov: anclas en v5.0.1 — canary 28.6 · Qwen4-Max medido 42.9</span>
-    <p>La re-escala a <strong>v5.0/v5.0.1</strong> (9 evals; la v5 hundió la fascia media china ~30%) quedó completada el 16-nov con las dos filas que faltaban: el canary pasó de <strong>40 (v4.3.2) a 28.6</strong> y el <strong>Qwen4-Max real debutó con 42.89</strong>. Se levanta el congel v4.3.2 y la familia queda recalibrada en la escala viva: <strong>27B ~29 (26–33) · Flash ~34 (31–37)</strong>; el Max ya no se predice: se mide. Dato clave de la escala viva: el nº1 (Claude Fable 5.2) manda con 64.6 — la distancia del 27B predicho (29) al techo es de 35.6 puntos, la mayor de la historia de la página. Toda comparación entre generaciones es solo dentro de la misma versión; los números v4.3.2 (42 · 45 · 50) quedan como historia en el log.</p>
+    <span class="callout-title">⚖️ Anclas vivas en v5.0.2 (26-nov) — canary 28 · Qwen4-Max medido 43 (debut: 42.89 en v5.0.1)</span>
+    <p>La re-escala a <strong>v5.0/v5.0.1</strong> (9 evals; la v5 hundió la fascia media china ~30%) quedó completada el 16-nov con las dos filas que faltaban: el canary pasó de <strong>40 (v4.3.2) a 28.6</strong> y el <strong>Qwen4-Max real debutó con 42.89</strong>. Se levanta el congel v4.3.2 y la familia queda recalibrada en la escala viva: <strong>27B ~28 (25–32) · Flash ~33 (30–36)</strong> (v5.0.2, 26-nov — el canary pasó 28.6→28 y las predicciones se desplazan −0.6; la recalibración original fue el 16-nov a v5.0.1 con canary 28.6); el Max ya no se predice: se mide (43; 42.89 al debut). Dato clave de la escala viva: el nº1 (Claude Fable 5.2) manda con 64.6 — la distancia del 27B predicho (29) al techo es de 35.6 puntos, la mayor de la historia de la página. Toda comparación entre generaciones es solo dentro de la misma versión; los números v4.3.2 (42 · 45 · 50) quedan como historia en el log.</p>
 
   <div class="pred-card reveal">
     <div class="pred-head">
@@ -983,21 +985,21 @@ td.warn { color: var(--warning); font-weight: 700; }
     <p class="pred-sub">Dense ~27B · arquitectura Qwen4 (GDN + QSA + n-gram) · <strong>open source prometido oficialmente (blog del GA, 16-nov)</strong></p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI predicho (v5.0.1 · 16-nov)</div>
-        <div class="big" data-count="29">0</div>
-        <div class="range">rango 26 – 33</div>
+        <div class="label">AAI predicho (v5.0.2 · 26-nov)</div>
+        <div class="big" data-count="28">0</div>
+        <div class="range">rango 25 – 32</div>
         <div class="thermo"><div class="marker" style="left: 0%;" data-pos="50"></div></div>
         <div class="thermo-scale"><span>35</span><span>39</span><span>42</span><span>45</span><span>50</span></div>
       </div>
       <div class="pred-detail">
         <ul>
-          <li><strong>Recalibrado 16-nov a v5.0.1</strong> (ancla llegada). Dos derivaciones: el ratio de salto generacional real medido en Qwen4 (Max 34→42.89 = ×1.26) sobre el 3.8-27B (20.1) da <strong>~25</strong>; la regla del suelo (cómputo/token ≥ canary + recall de la tabla n-gram) da <strong>~30</strong>. Centro 29: sobre el suelo (28.6), entre las dos lecturas.</li>
+          <li><strong>Recalibrado 16-nov a v5.0.1 y desplazado 26-nov a v5.0.2</strong> (ancla 28.6 → 28). Dos derivaciones: el ratio de salto generacional real medido en Qwen4 (Max 34→42.89 = ×1.26) sobre el 3.8-27B (20.1) da <strong>~25</strong>; la regla del suelo (cómputo/token ≥ canary + recall de la tabla n-gram) da <strong>~30</strong>. Centro 28: clavado sobre el suelo (28 en v5.0.2 — encima, no por debajo), entre las dos lecturas.</li>
           <li><strong>La tabla n-gram es el eje nuevo</strong>: si hereda 10–20B de entradas (escala a cuerpo, no hace falta 51B), gana recall literal de código/repos/idiomas sin coste de cómputo. Es un eje que ningún denso actual tiene.</li>
           <li><strong>QSA + Gated Residual + MTP multi-step</strong>: mejora de eficiencia en contexto largo y de decodificación (el MTP multi-step debería mejorar el speculative decoding).</li>
           <li><strong>Salto esperado por benchmark</strong>: agentic +10–15% sobre 3.8-27B (SWE Pro → ~65–68, DeepSWE → ~55–60), reasoning +3–5% (GPQA → ~90–92, HLE → ~33–36).</li>
-          <li><strong>Tensión metodológica anotada</strong>: el ratio puro (25) caería <em>bajo</em> el canary (28.6) — suelo violado; el centro 29 lo respeta, como siempre en esta página. Queda por verificar si la regla del suelo sobrevivió a la compresión china de la v5 o si el denso real quedará por debajo del canary. Si la model card muestra tabla n-gram recortada, la balanza se inclina al ratio (25–27).</li>
+          <li><strong>Tensión metodológica anotada</strong>: el ratio puro (25) caería <em>bajo</em> el canary (28) — suelo violado; el centro 28 lo respeta, como siempre en esta página. Queda por verificar si la regla del suelo sobrevivió a la compresión china de la v5 o si el denso real quedará por debajo del canary. Si la model card muestra tabla n-gram recortada, la balanza se inclina al ratio (25–27).</li>
         </ul>
-        <span class="conf">Confianza: 50% · recalibrado 16-nov a v5.0.1 (era 60% en v4.3.2)</span>
+        <span class="conf">Confianza: 50% · recalibrado 16-nov a v5.0.1 y 26-nov a v5.0.2 (era 60% en v4.3.2)</span>
       </div>
     </div>
   </div>
@@ -1060,21 +1062,21 @@ td.warn { color: var(--warning); font-weight: 700; }
     <p class="pred-sub">MoE ~125B-A6B + tabla n-gram · arquitectura Qwen4 · versión de producción del canary</p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI predicho (v5.0.1)</div>
-        <div class="big" data-count="34">0</div>
-        <div class="range">rango 31 – 37</div>
+        <div class="label">AAI predicho (v5.0.2 · 26-nov)</div>
+        <div class="big" data-count="33">0</div>
+        <div class="range">rango 30 – 36</div>
         <div class="thermo"><div class="marker" style="left: 0%;" data-pos="50"></div></div>
         <div class="thermo-scale"><span>27</span><span>30</span><span>34</span><span>37</span><span>40</span></div>
       </div>
       <div class="pred-detail">
         <ul>
-          <li><strong>Arranca en 28.6</strong> (canary, puntuado por fin en v5.0.1 el 16-nov) y sube con cocción completa. El delta preview→producción medido en la escala vieja (+5: 2.4T-A95B → Max-0902) se traslada en absoluto → centro <strong>34</strong>. Refuerzo por arriba: el ratio de salto generacional real de Qwen4 (×1.26, medido hoy en el Max) sobre el canary daría ~36 — techo del rango (31–37).</li>
+          <li><strong>Arranca en 28</strong> (canary re-scoreado 26-nov en v5.0.2; eran 28.6 en v5.0.1) y sube con cocción completa. El delta preview→producción medido en la escala vieja (+5: 2.4T-A95B → Max-0902) se traslada en absoluto → centro <strong>34</strong>. Refuerzo por arriba: el ratio de salto generacional real de Qwen4 (×1.26, medido hoy en el Max) sobre el canary daría ~35 — techo del rango (30–36).</li>
           <li>La tabla n-gram sigue teniendo recorrido, y la v5.0.1 trata a esta arquitectura mucho mejor que al denso veterano: el canary le saca <strong>1.42×</strong> al 3.8-27B (en v4.3.2 eran 1.18×) — el índice premia agentic/terminal, justo el terreno de la familia, y el canary sigue sin estar cocido.</li>
-          <li><strong>Coherencia con la Señal 1</strong>: el canary (28.6 en v5.0.1) es el suelo de la familia; ningún miembro va predicho por debajo de él.</li>
+          <li><strong>Coherencia con la Señal 1</strong>: el canary (28 en v5.0.2) es el suelo de la familia; ningún miembro va predicho por debajo de él.</li>
           <li><strong>Viabilidad local</strong>: no cabe en VRAM — es el escenario Strata/64 GB que ya se mide en esta casa (90–120 tok/s medidos en casa con Strata/NVFP4, 14-oct; refrendado el 9-nov con el fork Basalt v0.3.2: mediana 89,8 tok/s en tráfico real y 98 tok/s a 124K de contexto, con el vertido de expertos a SSD como válvula de presión). El coste es capacidad de RAM, no velocidad ni inteligencia.</li>
           <li><strong>Escenario alternativo</strong> (el de la predicción antigua): que Flash salga recortado a 35–80B. Entonces caería a ~30 y ganaría el denso, como en 3.6. Es la única incógnita que desempata.</li>
         </ul>
-        <span class="conf">Confianza: 50% · recalibrado 16-nov a v5.0.1; sigue dependiendo del tamaño real del tier</span>
+        <span class="conf">Confianza: 50% · recalibrado 16-nov a v5.0.1 y 26-nov a v5.0.2; sigue dependiendo del tamaño real del tier</span>
       </div>
     </div>
   </div>
@@ -1082,7 +1084,7 @@ td.warn { color: var(--warning); font-weight: 700; }
   <div class="card reveal">
     <h3>⚖️ Qué se cancela al comparar ambos en Qwen4</h3>
     <p>
-      El +6 del canary sobre el 27B en v4.3.2 <strong>no mide MoE contra denso: mide Qwen4 contra Qwen3.8</strong>. En v5.0.1 el hueco se ensancha a +8.5 (28.6 vs 20.1): la re-escala castigó más al denso veterano. Es una diferencia generacional disfrazada de diferencia de formato. Al poner los dos en la misma generación:
+      El +6 del canary sobre el 27B en v4.3.2 <strong>no mide MoE contra denso: mide Qwen4 contra Qwen3.8</strong>. En v5.0.2 el hueco queda en +8 (28 vs 20; fue +8.5 en v5.0.1): la re-escala castigó más al denso veterano. Es una diferencia generacional disfrazada de diferencia de formato. Al poner los dos en la misma generación:
     </p>
     <div class="table-wrap">
       <table>
@@ -1121,8 +1123,8 @@ td.warn { color: var(--warning); font-weight: 700; }
     <p class="pred-sub">Flagship cerrado (propietario según AAI) · 2.4T backbone + 71B activos/token + 328B tabla n-gram · visión nativa (imagen+vídeo) · 1M ctx · $1.50/$4.50 por M tokens</p>
     <div class="pred-body">
       <div class="pred-score">
-        <div class="label">AAI medido (v5.0.1 · 16-nov)</div>
-        <div class="big" data-count="42.9">0</div>
+        <div class="label">AAI medido (v5.0.2 · 26-nov)</div>
+        <div class="big" data-count="43">0</div>
         <div class="range">predicción: 50 (46–53, v4.3.2) · equivalente convertido ≈ 39 · <strong>superado +4</strong></div>
         <div class="thermo"><div class="marker" style="left: 0%;" data-pos="64"></div></div>
         <div class="thermo-scale"><span>30</span><span>35</span><span>40</span><span>45</span><span>50</span></div>
@@ -1147,20 +1149,25 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="frontier">
   <h2 class="section-title reveal"><span class="num">06</span>vs Frontier</h2>
   <p class="section-lead reveal">
-    <strong>Sincronizado 18-nov a v5.0.1 — el congel v4.3.2 queda LEVANTADO</strong> (la ancla llegó: canary re-puntuado 28.6 el mismo día del GA). Máximo de barra: 65 (el nº1, Claude Fable 5.2 = 64.6, publicado el 9-nov, sube el techo 7 puntos sobre la era v4.3.2). Barras rayadas = predicciones recalibradas (Flash ~34 · 27B ~29); <strong>Qwen4-Max ya es barra real medida (42.9, cerrado/API)</strong>. Predecesores (Opus 4.6–5, Sonnet 5, Fable 5.1, 3.7-Max, 3.6-27B, 2.4T-A95B): <strong>retirados</strong> — la leaderboard Current no los re-puntúa y mantenerlos con sus cifras v4.3.2 mezclaría versiones (prohibido); sus números quedan en el log. Criterio de barras: una por tier vigente relevante + la línea Qwen + abiertos chinos de la zona de pronósticos; excluidos hermanos pequeños/rápidos (Haiku 5.5, Inkling 2 Small, los *-Flash de familia con barra mayor ya puesta: Gemini 3.8 Flash, GLM-5.3-Flash, MiMo-Flash) y el clúster 28–36 sin historia en la página (Grok 35.5, Hy4 34.6, Muse Ember 36.0, Ling 29.6, MiniMax 29.1; Muse Wonder 44, puntuado entre pases — hermano de la Muse Wonder Full ya en gráfico). Relevo 17-nov: GPT-6.2 Astra (62.1, nuevo nº2) y GPT-6.2 Sol (57.3) sustituyen a GPT-6 Astra y GPT-6.1 Sol, salidas de Current.
+    <strong>Sincronizado 26-nov a v5.0.2 — re-score completo medido en la leaderboard viva</strong> (el índice subió de v5.0.1 a v5.0.2 y su tabla pasa a enteros: canary 28.6→28, Max 42.89→43). Máximo de barra: 65 (el nº1, Claude Fable 5.2 = 65, publicado el 9-nov; en v5.0.1 marcaba 64.6). Barras rayadas = predicciones recalibradas (Flash ~33 · 27B ~28); <strong>Qwen4-Max es barra real medida (43, cerrado/API)</strong>. Predecesores (Opus 4.6–5, Sonnet 5, Fable 5.1, 3.7-Max, 3.6-27B, 2.4T-A95B): <strong>retirados</strong> — la leaderboard Current no los re-puntúa y mantenerlos con sus cifras v4.3.2 mezclaría versiones (prohibido); sus números quedan en el log. Criterio de barras: una por tier vigente relevante + la línea Qwen + abiertos chinos de la zona de pronósticos; excluidos hermanos pequeños/rápidos (Haiku 5.5, Inkling 2 Small, los *-Flash de familia con barra mayor ya puesta: Gemini 3.8 Flash, GLM-5.3-Flash, MiMo-Flash) y el clúster 28–36 sin historia en la página (Grok 35.5, Hy4 34.6, Muse Ember 36.0, Ling 29.6, MiniMax 29.1; Muse Wonder 44, puntuado entre pases — hermano de la Muse Wonder Full ya en gráfico). Relevo 17-nov: GPT-6.2 Astra (nº2, ahora 62) y GPT-6.2 Sol (57) sustituyen a GPT-6 Astra y GPT-6.1 Sol, salidas de Current. Actualizado 26-nov: entra <strong>Gemini 4 Neon (62)</strong>, lanzado y puntuado el 18-nov; revisados y mantenidos fuera por el criterio declarado: Muse Wonder 44 (hermano de la Full), Muse Ember 36 (tier rápido), Haiku 5.5 37, Grok 4.7 35, Hy4 35, Inkling 2 Small 31, Ling 3.1 Flash 30, MiniMax-M3.1-Flash 29, JoyAI-VL-Preview 28 (sin medición de tareas) y Nanbeige4.3-33B 20.
   </p>
 
   <div class="card reveal">
     <div class="chart" id="chart">
       <div class="chart-row">
         <div class="chart-label">Claude Fable 5.2<span class="sub">Anthropic · propietario · <strong>nuevo nº1 (9 nov)</strong></span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="99.4"></div></div>
-        <div class="chart-val">64.6</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="100"></div></div>
+        <div class="chart-val">65</div>
       </div>
             <div class="chart-row">
         <div class="chart-label">GPT-6.2 Astra<span class="sub">OpenAI · propietario · <strong>nuevo nº2 (17-nov)</strong></span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="95.6"></div></div>
-        <div class="chart-val">62.1</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="95.4"></div></div>
+        <div class="chart-val">62</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Gemini 4 Neon<span class="sub">Google · propietario · <strong>nuevo (18-nov)</strong></span></div>
+        <div class="chart-track"><div class="chart-fill us" data-w="95.4"></div></div>
+        <div class="chart-val">62</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Gemini 4 Carbon<span class="sub">Google · propietario · nº1 hasta el 9-nov</span></div>
@@ -1169,103 +1176,103 @@ td.warn { color: var(--warning); font-weight: 700; }
       </div>
       <div class="chart-row">
         <div class="chart-label">Claude Opus 5.5<span class="sub">Anthropic · propietario</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="90.9"></div></div>
-        <div class="chart-val">59.1</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="90.8"></div></div>
+        <div class="chart-val">59</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">GPT-6.2 Sol<span class="sub">OpenAI · propietario · nuevo (17-nov)</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="88.1"></div></div>
-        <div class="chart-val">57.3</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="87.7"></div></div>
+        <div class="chart-val">57</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Claude Sonnet 5.5<span class="sub">Anthropic · propietario</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="83.8"></div></div>
-        <div class="chart-val">54.5</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="84.6"></div></div>
+        <div class="chart-val">55</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Gemini 4 Hydrogen<span class="sub">Google · propietario · nuevo (12 nov)</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="82.9"></div></div>
-        <div class="chart-val">53.9</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="83.1"></div></div>
+        <div class="chart-val">54</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">GPT-6.1 Terra<span class="sub">OpenAI · propietario (max)</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="78.9"></div></div>
-        <div class="chart-val">51.3</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="78.5"></div></div>
+        <div class="chart-val">51</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Gemini 4 Argon<span class="sub">Google · propietario</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="77.5"></div></div>
-        <div class="chart-val">50.4</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="78.5"></div></div>
+        <div class="chart-val">51</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Muse Wonder Full<span class="sub">Meta · propietario (56→50.1 en la re-escala)</span></div>
-        <div class="chart-track"><div class="chart-fill us" data-w="77.1"></div></div>
-        <div class="chart-val">50.1</div>
+        <div class="chart-track"><div class="chart-fill us" data-w="76.9"></div></div>
+        <div class="chart-val">50</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Kimi K3.1 Pro<span class="sub">Moonshot · <strong>open weights (así lo clasifica AAI)</strong> · líder abierto</span></div>
-        <div class="chart-track"><div class="chart-fill cn" data-w="71.5"></div></div>
-        <div class="chart-val">46.5</div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="72.3"></div></div>
+        <div class="chart-val">47</div>
       </div>
       <div class="chart-row">
-        <div class="chart-label">Qwen4-Max<span class="sub">Qwen · <strong>CERRADO/API</strong> · <strong>MEDIDO 16-nov</strong> · 13º de 59</span></div>
-        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="66.0"></div></div>
-        <div class="chart-val">42.9</div>
+        <div class="chart-label">Qwen4-Max<span class="sub">Qwen · <strong>CERRADO/API</strong> · <strong>MEDIDO 16-nov</strong> · 14º en v5.0.2</span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="66.2"></div></div>
+        <div class="chart-val">43</div>
       </div>
       <div class="chart-row">
-        <div class="chart-label">Qwen3.8 Max-0902<span class="sub">Qwen · predecesor · 34 en v5.0.1 (medido 11-nov)</span></div>
+        <div class="chart-label">Qwen3.8 Max-0902<span class="sub">Qwen · predecesor · 34 en v5.0.1 (medido 11-nov; deprecado sin re-score)</span></div>
         <div class="chart-track"><div class="chart-fill qwen-actual" data-w="52.3"></div></div>
         <div class="chart-val">34</div>
       </div>
       <div class="chart-row">
-        <div class="chart-label">Qwen4-Flash<span class="sub">PREDICCIÓN v5.0.1 · canary cocido · 31–37</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="52.3"></div></div>
-        <div class="chart-val pred">~34</div>
+        <div class="chart-label">Qwen4-Flash<span class="sub">PREDICCIÓN v5.0.2 · canary cocido · 30–36</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="50.8"></div></div>
+        <div class="chart-val pred">~33</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">DeepSeek V4.1 Flash 1017<span class="sub">DeepSeek · open weights</span></div>
-        <div class="chart-track"><div class="chart-fill cn" data-w="50.2"></div></div>
-        <div class="chart-val">32.6</div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="49.2"></div></div>
+        <div class="chart-val">32</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">GLM-5.3<span class="sub">Z.ai (Zhipu) · open weights</span></div>
-        <div class="chart-track"><div class="chart-fill cn" data-w="48.8"></div></div>
-        <div class="chart-val">31.7</div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="49.2"></div></div>
+        <div class="chart-val">32</div>
       </div>
       <div class="chart-row">
-        <div class="chart-label">MiMo-V2.6-Pro<span class="sub">Xiaomi · open weights · nº1 abierto en v4.3.2 — la v5 lo hundió (46→29.9)</span></div>
-        <div class="chart-track"><div class="chart-fill cn" data-w="46.0"></div></div>
-        <div class="chart-val">29.9</div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN v5.0.1 · denso local · 26–33</span></div>
-        <div class="chart-track"><div class="chart-fill prediction" data-w="44.6"></div></div>
-        <div class="chart-val pred">~29</div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">Qwen3.8-Flash-Next<span class="sub">Qwen · canary de la familia · <strong>re-scoreado 16-nov</strong></span></div>
-        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="44.0"></div></div>
-        <div class="chart-val">28.6</div>
+        <div class="chart-label">MiMo-V2.6-Pro<span class="sub">Xiaomi · open weights · nº1 abierto en v4.3.2 — la v5 lo hundió (46→30)</span></div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="46.2"></div></div>
+        <div class="chart-val">30</div>
       </div>
       <div class="chart-row">
         <div class="chart-label">Step 5 Preview<span class="sub">StepFun · open weights</span></div>
-        <div class="chart-track"><div class="chart-fill cn" data-w="43.8"></div></div>
-        <div class="chart-val">28.5</div>
+        <div class="chart-track"><div class="chart-fill cn" data-w="44.6"></div></div>
+        <div class="chart-val">29</div>
       </div>
       <div class="chart-row">
-        <div class="chart-label">Qwen3.8 27B<span class="sub">Qwen · Apache 2.0 · la v5 lo hundió (34→20.1)</span></div>
-        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="30.9"></div></div>
-        <div class="chart-val">20.1</div>
+        <div class="chart-label">Qwen3.8-Flash-Next<span class="sub">Qwen · canary de la familia · <strong>re-scoreado 26-nov (v5.0.2)</strong></span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="43.1"></div></div>
+        <div class="chart-val">28</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen4-27B<span class="sub">PREDICCIÓN v5.0.2 · denso local · 25–32</span></div>
+        <div class="chart-track"><div class="chart-fill prediction" data-w="43.1"></div></div>
+        <div class="chart-val pred">~28</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Qwen3.8 27B<span class="sub">Qwen · Apache 2.0 · la v5 lo hundió (34→20)</span></div>
+        <div class="chart-track"><div class="chart-fill qwen-actual" data-w="30.8"></div></div>
+        <div class="chart-val">20</div>
       </div>
       <div class="chart-legend">
         <span><i class="lg q"></i> Qwen (real)</span>
         <span><i class="lg u"></i> EE.UU. (Anthropic / OpenAI / Google / xAI / Meta)</span>
         <span><i class="lg c"></i> China (otros)</span>
-        <span><i class="lg p"></i> Predicción Qwen4 (v5.0.1)</span>
+        <span><i class="lg p"></i> Predicción Qwen4 (v5.0.2)</span>
       </div>
     </div>
     <p>
-      Lectura: en la escala viva el nº1 se fue a 64.6 (Claude Fable 5.2, 9-nov — desplaza a Gemini 4 Carbon) y <strong>Qwen4-Max debutó 13º con 42.9: segunda línea mundial</strong> — por encima del clúster chino que la v5 redimió mal, pero a 21.7 puntos del trono. El liderazgo abierto cambió de manos sin moverse nadie: <strong>Kimi K3.1 Pro (46.5) es el nuevo nº1 abierto — y AAI lo clasifica de pesos abiertos, corrección de esta página, que lo llevaba «propietario» desde octubre</strong>; MiMo, el nº1 abierto del gráfico anterior, se desplomó 46→29.9. Las predicciones caen donde duele: <strong>Flash ~34 quedaría por encima del top abierto chino restante (DeepSeek 32.6, GLM 31.7)</strong> y el <strong>27B ~29 se sienta en el regazo del canary (28.6), en plena manada abierta 28–33</strong>. Para hardware local el denso predicho sería de los abiertos más capaces que caben enteros en una 5090 (los del clúster, no): su juego no es la cima del índice, es el coste y la localía — y con 35.6 puntos de distancia al nº1, ni el doble de salto generacional le daría la cima: esa sigue siendo cosa del Max, que hoy no es abierto.
+      Lectura (v5.0.2, 26-nov): en la escala viva el nº1 aguanta y sube a 65 (Claude Fable 5.2, 9-nov), con Gemini 4 Neon —recién lanzado el 18-nov— y GPT-6.2 Astra empatados en 62 tras él, y <strong>Qwen4-Max sostenido en 43: 14º, segunda línea mundial</strong> — por encima del clúster chino, pero a 22 puntos del trono. El liderazgo abierto no se mueve: <strong>Kimi K3.1 Pro (47) sigue siendo el nº1 de pesos abiertos</strong>; MiMo aguanta en 30 tras el hundimiento de la v5 (46→30) y el hueco chino se comprime: DeepSeek V4.1 y GLM-5.3 empatan en 32. Las predicciones caen con la marea: <strong>Flash ~33 quedaría justo por encima del top abierto chino restante (32/32)</strong> y el <strong>27B ~28 se sienta clavado en el regazo del canary (28), en plena manada abierta 28–32</strong>. Para hardware local el denso predicho seguiría siendo de los abiertos más capaces que caben enteros en una 5090 (los del clúster, no): su juego no es la cima del índice, es el coste y la localía — y con 37 puntos de distancia al nº1, ni el doble de salto generacional le daría la cima: esa sigue siendo cosa del Max, que hoy no es abierto.
     </p>
   </div>
 </div>
@@ -1274,7 +1281,7 @@ td.warn { color: var(--warning); font-weight: 700; }
 <div class="section" id="timeline">
   <h2 class="section-title reveal"><span class="num">07</span>Timeline & Fechas</h2>
   <p class="section-lead reveal">
-    <strong>El tablero de fechas se cerró el 16-nov: Qwen4-Max salió en GA</strong> — el escenario «rápido» (88% desde el 11-nov) quedó resuelto por el propio vendor. La pregunta viva es la <strong>parte abierta</strong>: cuándo caen los pesos del 27B y el Flash, prometidos por el blog oficial. La escalera de Manifold resolvió noviembre el 14; «pesos ≤25-nov» va al <strong>78%</strong> (verificado 2× hoy, con apuestas post-GA); el patrón 3.8 dice ~1 semana entre flagship y denso. Toda la historia de señales queda intacta abajo — del canary (26-ago) a la escalera (14-nov). Una señal mueve probabilidades, no la estimación base: hoy eso se traduce en la tabla de escenarios de pesos.
+    <strong>El tablero de fechas se cerró el 16-nov: Qwen4-Max salió en GA</strong> — el escenario «rápido» (88% desde el 11-nov) quedó resuelto por el propio vendor. La pregunta viva es la <strong>parte abierta</strong>: cuándo caen los pesos del 27B y el Flash, prometidos por el blog oficial. La escalera de Manifold resolvió noviembre el 14; <strong>«pesos ≤25-nov» se resolvió NO el 25-nov</strong> (verificado 2× con <span class="mono">resolution=NO</span>; cero pesos Qwen4 en la org); la falsación aplicada migra los escenarios a <strong>28/52/20</strong>; el patrón 3.8 (~1 semana–10 días flagship→denso) entra hoy en su día 10 sin completarse. Toda la historia de señales queda intacta abajo — del canary (26-ago) a la escalera (14-nov). Una señal mueve probabilidades, no la estimación base: hoy eso se traduce en la tabla de escenarios de pesos.
   </p>
 
   <div class="card reveal">
@@ -1284,9 +1291,9 @@ td.warn { color: var(--warning); font-weight: 700; }
         <thead><tr><th>Escenario</th><th>Ventana</th><th class="num">Prob.</th><th>Señales</th></tr></thead>
         <tbody>
           <tr><td><strong>LANZADO ✓ — Qwen4-Max (cerrado)</strong></td><td><strong>GA 16 nov 2026</strong></td><td class="num"><strong>✓</strong></td><td>Tablero de fechas cerrado: el escenario «rápido» (88% — oct–dic) se resolvió con el GA del flagship (blog + API pública + AAI 42.9 el mismo día). Falsaciones extinguidas: preview muere 25-nov sin GA (−10, evitada con 9 días de margen) y Qoduck (−8). La fila que queda por resolver es la abierta.</td></tr>
-          <tr><td><strong>Pesos abiertos (27B/Flash) — rápido</strong></td><td><strong>≤ 1 dic 2026</strong></td><td class="num"><strong>~72%</strong></td><td>Blog del GA (16-nov): <em>«Smaller models in the family are coming to open source, built on the same lineage»</em> — primera promesa oficial de pesos. Mercado «pesos ≤25-nov» <strong>63→78%</strong> (verif 2×; primera apuesta post-GA a las 03:33 UTC; ~57 MAnas/24 h — fino, direccional). Precedente 3.8: flagship→27B, ~1 semana. El repo qwen-code ya lista <span class="mono">qwen4-27b</span> y <span class="mono">qwen4-flash</span>. El mercado dice ≤25-nov 78%; la página fija ≤1-dic al 72% (pool fino: se sigue a la multitud con descuento, nunca por encima de su número).</td></tr>
-          <tr><td>Pesos abiertos — base</td><td>dic 2026 – ene 2027</td><td class="num">~20%</td><td>Desfase flagship→denso de 2–6 semanas (la estimación que traía la página para una familia con arquitectura nueva); cierre de año en Alibaba.</td></tr>
-          <tr><td>Pesos abiertos — lento</td><td>feb–abr 2027</td><td class="num">~8%</td><td>API-first absoluto; reviviría el riesgo-3.7 (ciclo de familia sin open weights). Qwen4.5/5 (5–10T) después.</td></tr>
+          <tr><td><strong>Pesos abiertos (27B/Flash) — rápido</strong></td><td><strong>≤ 1 dic 2026</strong></td><td class="num"><strong>~28%</strong></td><td><strong>Falsación aplicada (26-nov):</strong> el mercado «pesos ≤25-nov» —78% el 16-nov, verificado 2×— se resolvió <strong>NO</strong> el 25-nov 23:59 UTC: la org de HF sigue intacta desde el 07-nov. Residual ≤1-dic = 6 días de los 16 que medía la ventana (decaimiento ×0,375 ≈ 27) con el patrón 3.8 vivo (hoy, día 10), sin mercado que seguir y sin una sola pre-señal (cero toques de banner en la línea 3.8 desde el 07-nov; los del 20-nov son housekeeping sobre repos pre-3.8). La promesa oficial sigue en pie: <em>«Smaller models in the family are coming to open source»</em> (blog GA, 16-nov). El repo qwen-code sigue listando <span class="mono">qwen4-27b</span> y <span class="mono">qwen4-flash</span>.</td></tr>
+          <tr><td>Pesos abiertos — base</td><td>dic 2026 – ene 2027</td><td class="num">~52%</td><td>Nuevo centro de masa (migra desde el 72% difunto): desfase flagship→denso de 2–6 semanas (la franja larga del patrón y el hueco entre generaciones previas) y cierre de año en Alibaba, con cero prisa visible tras diez días de silencio.</td></tr>
+          <tr><td>Pesos abiertos — lento</td><td>feb–abr 2027</td><td class="num">~20%</td><td>El entierro del bucket ≤25-nov y el silencio reactivan el riesgo-3.7: API-first absoluto, ciclo sin open weights. Mercado nuevo (1ª lectura 26-nov, pool fino ~36 MAnas/24 h): «pesos de Qwen4-Flash ≤6 meses tras su lanzamiento» al <strong>65%</strong> — reloj sin arrancar (Flash no ha salido): la multitud apuesta a que los pesos llegarán, pero tarde. Qwen4.5/5 (5–10T) después.</td></tr>
         </tbody>
       </table>
     </div>
@@ -1317,6 +1324,8 @@ td.warn { color: var(--warning); font-weight: 700; }
           <tr><td>🚀 Post oficial «Qwen4 is coming» + preview de Qwen4-Max (11 nov)</td><td><strong>✓ OCURRIDO (11 nov, 02:01 UTC)</strong> — @Alibaba_Qwen confirma el nombre de familia y mete el flagship en el Token Plan y en QwenWork/Qoder/Qwen App/QwenStudio. Timing-only: sin model card, benchmarks, precio por token, pesos ni API pública; Flash/Plus/27B sin aparecer. El lanzamiento ya está en marcha — lo que falta es la parte abierta</td><td class="warn">rápido 78→88% · base 12→7 · lento 10→5</td></tr>
           <tr><td>📊 Escalera Manifold resuelta: noviembre YES — la preview cuenta como release (14 nov)</td><td><strong>✓ OCURRIDO (14 nov)</strong> — lectura ×2. Sus reglas («API o interfaz web» de un «Qwen 4» oficial) quedan satisfechas por el preview del 11-nov; la disidencia semántica del «≤11-nov» (35%) la resuelve el reglamento. Polymarket (1ª lectura, ~98% ≤30-nov) también cuenta el preview como el siguiente Max. Corrobora el evento del 11-nov — no re-pondera</td><td class="warn">corrobora el 88% · 0 pts</td></tr>
           <tr><td>🚀 GA de Qwen4-Max + AAI 42.9 + ancla del canary (16 nov)</td><td><strong>✓ OCURRIDO (16 nov, 02:01 UTC)</strong> — blog oficial + API pública ($1.50/$4.50; OpenRouter <span class="mono">qwen/qwen4-max</span>) + specs confirmados (2.4T/71B + 328B n-gram, 1M ctx, visión nativa); AAI puntúa Max y canary el mismo día; blog promete abiertos los hermanos pequeños. Escenario «rápido» (88%) resuelto</td><td class="good">✓ pase completo: predicciones v5.0.1 (27B ~29 · Flash ~34), gráfico sincronizado, escenarios pivotados a los pesos abiertos</td></tr>
+          <tr><td>🧊 Mercado «pesos abiertos ≤25-nov»</td><td><strong>✓ RESUELTO NO (25-nov) — falsación APLICADA (26-nov)</strong> — el mercado (78% el 16-nov, verif 2×) cierra sin pesos: org HF intacta desde el 07-nov; toques del 20-nov = housekeeping pre-3.8, no pre-launch. La promesa del blog sigue sin fecha · nuevo mercado «pesos de Flash ≤6 meses tras su lanzamiento» 65% (1ª lectura 26-nov; reloj sin arrancar)</td><td class="bad">escenarios 72/20/8 → 28/52/20</td></tr>
+          <tr><td>AAI sube a v5.0.2 (26-nov)</td><td><strong>✓ OCURRIDO</strong> — re-score no uniforme, tabla en enteros: canary 28 · Max 43 (14º) · Fable 65 nº1 · DS/GLM −2 (empate en 32) · Max-0902 deprecado sin score; entra Gemini 4 Neon (62, 18-nov)</td><td class="good">✓ pase completo 26-nov: predicciones −0.6, gráfico sincronizado</td></tr>
           <tr><td>Beta cerrada con registros en qwen.ai</td><td><strong>✓ OCURRIDO</strong> (cierre 30 sep) — el modelo ya circula entre partners</td><td class="good">coherente con oct–nov</td></tr>
           <tr><td>QSA "corregido" o nueva variante en un teaser</td><td>La arquitectura aún no está cerrada</td><td class="bad">+1 a +3 meses</td></tr>
         </tbody>
@@ -1358,7 +1367,11 @@ td.warn { color: var(--warning); font-weight: 700; }
       <p><strong>Señal de timing: «finales de octubre».</strong> Un partner 0-day de Alibaba filtra en r/LocalLLaMA que Qwen4 está planeado para fin de mes. Corroboran: los registros de beta cerrada en qwen.ai (cierre 30 sep), otros reportes de «late October–early November», y un prediction market que da ~74% a un lanzamiento antes de noviembre. Verificado hoy: ningún repo Qwen4 en la org de HuggingFace (lo último sigue siendo Qwen-Image-2.1), ningún qwen4* en la API ni en los leaderboards de AAI. <strong>Rumor con fuente creíble, no fecha oficial.</strong> Escenario rápido 25→40%; la base feb–abr 2027 no se mueve.</p>
     </div>
     <div class="timeline-item">
-      <div class="t-date">18 NOV 2026 · HOY</div>
+      <div class="t-date">26 NOV 2026 · HOY</div>
+      <p><strong>Doble sacudida: el mercado de los pesos muere y el índice re-escala.</strong> <em>Mercados:</em> «pesos ≤25-nov» se resolvió <strong>NO</strong> (verif 2×; 31 traders, 3.683 MAnas) y la falsación del 16-nov se aplica: escenarios <strong>72/20/8 → 28/52/20</strong> (aritmética en el registro). Cero pesos Qwen4 en HF; los toques del 20-nov caen sobre repos PRE-3.8 (Qwen2-VL-2B, Qwen2-1.5B, 3.6-27B, 3.5-27B, 3.5-35B) a la misma hora: housekeeping, no el patrón pre-launch de los 5/7-nov. OpenRouter: 474 IDs, un solo qwen4. Blog/X mudos desde el GA (fuentes del 23-nov: «no date» para 27B/Flash/Plus). <em>AAI v5.0.2</em> (sonda de versión obligatoria): re-score no uniforme — canary 28.6→<strong>28</strong>, Max 42.89→<strong>43 (14º)</strong>, Fable 65 nº1, DS y GLM −2 hasta empatar en 32 — pase completo: predicciones −0.6 (<strong>Flash ~33 · 27B ~28</strong>) y gráfico re-sincronizado: 21→22 barras, entra <strong>Gemini 4 Neon (62, 18-nov)</strong>; el predecesor Max-0902 queda deprecado sin re-score (barra congelada en 34, etiqueta v5.0.1). Contexto no-señal: el changelog del Agent Arena lista «Qwen4-Max (xHigh)» con fecha 15-nov (pre-GA; no re-puntúa).</p>
+    </div>
+    <div class="timeline-item">
+      <div class="t-date">18 NOV 2026</div>
       <p><strong>Pase en seco: los hermanos pequeños no dan señales de vida.</strong> La org de HF sigue en el 07-nov (Qwen3.8), OpenRouter lista 478 IDs con un único qwen4 (el Max cerrado), AAI no re-escala (v5.0.1) y el Max no se mueve, la arena calla desde el 16-nov y blog/X mudos. La promesa open source sigue sin nombre, fecha ni licencia — escenarios intactos (72/20/8). El gráfico absorbe el relevo generacional de OpenAI: <strong>GPT-6.2 Astra (62.1) es el nuevo nº2</strong> (17-nov) y sustituye a la línea GPT-6/6.1, salida de Current.</p>
     </div>
     <div class="timeline-item">
@@ -1422,11 +1435,11 @@ td.warn { color: var(--warning); font-weight: 700; }
       <p><strong>El software ya está en la fila de salida — y el canary vuela en casa.</strong> vLLM tiene abierto el PR <span class="mono">#53909 “add qwen4 fuse op”</span> (kernels HyperConnection + QSA + PLE: el blueprint de la arquitectura); el config <span class="mono">qwen4_exp</span> ya es upstream en transformers y está registrado como <strong>multimodal</strong> en vLLM (torre Qwen3-VL, frontend Rust mergado 1 sep); sglang mantiene una rama dedicada a la línea. Y en hardware doméstico: el canary mide <strong>90–120 tok/s</strong> en una RTX 5090 + 64 GB vía Strata (NVFP4) — 4× sobre la estimación day-0 de esta página. Timing: prediction market ~75% (12 oct), ningún repo Qwen4 en HF (verificado hoy). Las predicciones AAI no se mueven.</p>
     </div>
     <div class="timeline-item future">
-      <div class="t-date">≤ 1 DIC 2026 · PESOS ABIERTOS (RÁPIDO · 72%)</div>
-      <p><strong>Qwen4-27B y/o Flash en pesos</strong> — promesa oficial del blog del GA (16-nov). El mercado «pesos ≤25-nov» va al 78% (verif 2× hoy; pool fino ~57 MAnas/24 h). Precedente 3.8: flagship→27B en ~1 semana; GGUF de Unsloth día 0 y motor esperando (la estirpe Strata/Basalt corre la arquitectura desde el canary). Falsación: el 25-nov cierra sin pesos <em>y</em> sin familia nueva en los productos de Alibaba → reversión a la lógica API-larga (la prob. migra a base/lento).</p>
+      <div class="t-date">≤ 1 DIC 2026 · PESOS ABIERTOS (RÁPIDO · 28%)</div>
+      <p><strong>Qwen4-27B y/o Flash en pesos</strong> — promesa oficial del blog del GA (16-nov). El mercado «pesos ≤25-nov» se resolvió <strong>NO</strong> el 25-nov (verif 2×; 31 traders, 3.683 MAnas). Precedente 3.8: flagship→27B en ~1 semana; GGUF de Unsloth día 0 y motor esperando (la estirpe Strata/Basalt corre la arquitectura desde el canary). Falsación <strong>APLICADA (26-nov)</strong>: el 25-nov cerró sin pesos y sin familia nueva en los productos → reversión a la lógica API-larga ejecutada: la prob. migró a base/lento (72/20/8 → 28/52/20).</p>
     </div>
     <div class="timeline-item future">
-      <div class="t-date">DIC 2026–ABR 2027 · PESOS (BASE 20% / LENTO 8%)</div>
+      <div class="t-date">DIC 2026–ABR 2027 · PESOS (BASE 52% / LENTO 20%)</div>
       <p><strong>Desfase flagship→denso de 2–6 semanas, o silencio hasta el patrón canary→familia (feb–abr).</strong> En el tramo lento reviviría el riesgo-3.7: ciclo de familia sin open weights. Qwen4.5/5 (5–10T) en el horizonte según Apsara.</p>
     </div>
   </div>
@@ -1442,7 +1455,7 @@ td.warn { color: var(--warning); font-weight: 700; }
       <li><strong>El re-scoring de AAI es un riesgo estructural — y ya pasó.</strong> v4.1.1 hundió al 3.7 Max de 57→47 y al 3.6-27B de 46→38; v4.3.2 (sep 2026) re-puntuó todo de nuevo (canary 56→40); <strong>v5.0 (28 oct) repite el golpe con su propia re-escala no uniforme</strong> (27B 34→20, Max 45→34, Kimi 55→46), esta vez aún sin ancla nueva para el canary. el 16-nov cayó la ancla que faltaba (canary 28.6; el Max real debutó con 42.89) y la página se recalibró entera a v5.0.1. Las comparaciones entre generaciones solo valen dentro de la misma versión — los números v4.3.2 (42 · 45 · 50) quedan como historia en el log.</li>
       <li><strong>Licencia del canary: qwen-community-1.0.</strong> No es Apache 2.0. Las condiciones comerciales no están verificadas en esta página; el denso debería salir Apache (patrón histórico), pero no es garantía.</li>
       <li><strong>El denso puede no heredar los 51B.</strong> La predicción asume una tabla de 10–20B. Si Qwen decide que el denso no lleva tabla n-gram, el salto de AAI cae a +2 pts sobre el 27B actual (solo QSA + Gated Residual) y la ventaja de hardware local desaparece.</li>
-      <li><strong>El denso puede no existir.</strong> Precedente 3.7: Max y Plus, sin open weights. La probabilidad de que Qwen4 omita el denso es baja (~15%) pero real: el canary demuestra que el MoE A6B en 125B cubre el nicho "eficiente". El teaser oficial «let's do both!» (10 oct), si vale como indicio, apunta a que el denso <em>sí</em> está en la jugada — riesgo a la baja. 24 oct: tercer indicio indirecto — los kernels Intel XPU mergados el 23 tratan «Qwen4-27B» como DENSE y llama.cpp abre #31072 para prepararse. Sigue sin ser oficial; riesgo aún más a la baja. 2 nov: cuarto indicio, el más directo — el repo oficial <span class="mono">qwen-code</span> lista <span class="mono">qwen4-27b</span> (y por primera vez <span class="mono">coder-plus</span> y <span class="mono">omni-120b-think</span>) entre sus IDs internos. 16-nov: quinto indicio y el primero OFICIAL — el blog del GA promete los modelos pequeños «coming to open source, built on the same lineage». Riesgo residual mínimo (~5%).</li>
+      <li><strong>El denso puede no existir.</strong> Precedente 3.7: Max y Plus, sin open weights. La probabilidad de que Qwen4 omita el denso es baja (~15%) pero real: el canary demuestra que el MoE A6B en 125B cubre el nicho "eficiente". El teaser oficial «let's do both!» (10 oct), si vale como indicio, apunta a que el denso <em>sí</em> está en la jugada — riesgo a la baja. 24 oct: tercer indicio indirecto — los kernels Intel XPU mergados el 23 tratan «Qwen4-27B» como DENSE y llama.cpp abre #31072 para prepararse. Sigue sin ser oficial; riesgo aún más a la baja. 2 nov: cuarto indicio, el más directo — el repo oficial <span class="mono">qwen-code</span> lista <span class="mono">qwen4-27b</span> (y por primera vez <span class="mono">coder-plus</span> y <span class="mono">omni-120b-think</span>) entre sus IDs internos. 16-nov: quinto indicio y el primero OFICIAL — el blog del GA promete los modelos pequeños «coming to open source, built on the same lineage». Riesgo residual mínimo (~5%). 26-nov: diez días de silencio post-GA y el entierro del mercado ≤25-nov son la primera señal en contra — sin prueba, el riesgo vuelve a ~15%.</li>
       <li><strong>Soporte llama.cpp.</strong> El PR #27742 ya está mergado a main (27 ago), así que el soporte base existe. Pendiente: el offload eficiente de la tabla n-gram a RAM (la clave del escenario local) puede tardar semanas extra en madurar, como tardó el soporte de DeltaNet en su día. El denso necesitará código de modelo nuevo (hyper-connections, indexer): el cargador qwen3_5 actual no lo carga y el tracking en llama.cpp (#31072) acaba de abrirse (24 oct) — el soporte local day-0 del denso no está garantizado. En el flanco vLLM la maduración acelera: offload PLE a disco <span class="mono">#59958</span> (30 oct) y fix de overflow <span class="mono">#64820</span> (31 oct — tercer fix int32 de la semana): el soporte día-0 por vLLM se ve cerca; el hueco sigue siendo el cargador del denso en llama.cpp.</li>
       <li><strong>"~27B" no es un tamaño garantizado.</strong> Podría ser 30–32B. La predicción asume mismo tamaño de cuerpo; si crece, sube el AAI y baja la velocidad local. El leak de kernels del 24 oct apunta a mismo cuerpo que el 3.8-27B (H5120) y FFN posiblemente menor (~14336, inferido): si se confirma, el tamaño sería ≤27B, no 30–32B — inferencia de terceros, no spec oficial.</li>
     </ul>
@@ -1479,7 +1492,13 @@ td.warn { color: var(--warning); font-weight: 700; }
       <br/><strong>Gráfico (cromo):</strong> dos barras sustituidas — <strong>GPT-6.2 Astra (62.1) y GPT-6.2 Sol (57.3)</strong>, publicados y puntuados el <strong>17-nov</strong>, entran; <strong>GPT-6 Astra (56.9) y GPT-6.1 Sol (54.6) salieron en silencio de Current</strong> (suplantadas por las 6.2) y se retiran; Terra (51.3) sigue vigente. Líder abierto sin cambios (Kimi K3.1 Pro 46.5). Revisados y mantenidos fuera por criterio declarado: Muse Wonder (44, hermano de la Full), Haiku 5.5 (36), Grok 4.7 (35), Hy4 (35), Inkling 2 Small (31). Barras 21→21; orden descendente y ancho = score/65 comprobados. Los hits de GPT-6 Astra/6.1 Sol en los logs de octubre se mantienen: son historia fechada.
       <br/><em>Tocados:</em> hero (eyebrow 18-nov), §06 (2 barras + párrafo criterio), cronología (HOY 18-nov; el 16-nov queda como historia), meta description (estaba congelada en los ~45/v4.3.2 de octubre; se le añade el tramo 16→18-nov), este registro. <em>Intactos:</em> predicciones (Flash ~34 · 27B ~29), calibración, escenarios (72/20/8), señales, rastreador, falsaciones (caducidad preview 25-nov −10 y «pesos ≤25-nov» 78% siguen vivas).</p>
     </div>
-    <div class="log-item">
+        <div class="log-item">
+      <div class="l-date">26 NOV 2026 · FALSACIÓN APLICADA (MERCADO «PESOS ≤25-NOV» RESUELTO NO) + AAI v5.0.2 — PASE COMPLETO: ESCENARIOS 28/52/20, PREDICCIONES −0.6 (FLASH ~33 · 27B ~28), GRÁFICO RE-SINCRONIZADO (ENTRA GEMINI 4 NEON)</div>
+      <p><strong>El mercado de los pesos muere el 25-nov y el índice re-escala: la página se re-ancla dos veces en diez días.</strong> <em>Mercados (verificado 2× sobre SSR vivo):</em> «Will Alibaba publish open weights for a Qwen 4 model on HF by November 25?» (Terminator2) se resolvió <strong>NO</strong> — og con <span class="mono">resolution=NO</span> en dos lecturas; 31 traders, 3.683 MAnas, última apuesta 25-nov 21:03 UTC: el dinero creyó hasta el cierre (el 8% del og es residuo de liquidación, ~45 MAnas/24 h). La falsación pre-registrada del 16-nov («el 25-nov cierra sin pesos <em>y</em> sin familia nueva en los productos → reversión a la lógica API-larga») se cumple entera: cero pesos (la org sigue en el 07-nov) y cero familia nueva (OpenRouter 474 IDs: un solo qwen4, el Max; ningún qwen4* nuevo en AAI; blog/X mudos desde el GA — las fuentes del 23-nov recuentan «no date» para 27B/Flash/Plus). <strong>Re-ponderación: 72/20/8 → 28/52/20 (=100).</strong> Aritmética visible: el 72 del rápido era casi enteramente el reading del mercado ≤25-nov (78% con descuento); esa pata vale 0 desde el 25-nov. Suelo por decaimiento temporal: la ventana ≤1-dic ha perdido 10 de sus 16 días sin noticias (×6/16 ≈ 0,375 → ~27 sobre el 72); el patrón 3.8 (~1 semana–10 días flagship→27B) entra HOY en su día 10 sin completarse. El 28% residual es el patrón vivo SIN ancla de mercado (no hay mercado sucesor de fecha; el pool fino ya no manda). El 44 migrado se reparte: +32 a base (dic–ene: desfase 2–6 semanas, cierre de año) y +12 a lento (el riesgo-3.7 despierta: API-first absoluto; el riesgo «el denso puede no existir» sube cualitativamente ~5→~15%). <em>Mercado nuevo, 1ª lectura — se registra SIN re-ponderar:</em> «pesos de Qwen4-Flash ≤6 meses tras su lanzamiento» 65% (winged_one; apuesta 21-nov; ~36 MAnas/24 h; cierre 2031): el reloj no arranca hasta que Flash exista — la multitud apuesta a que la promesa se cumple, pero tarde.</p>
+      <p><strong>AAI: la versión sube a v5.0.2 — sonda obligatoria, pase completo.</strong> La leaderboard pasa a enteros y re-escorea sin uniformidad (todo medido hoy bajo la misma versión): canary 28.6→<strong>28</strong> · Qwen4-Max 42.89→<strong>43</strong> —14º: pierde un puesto por la entrada del recién nacido Gemini 4 Neon, no por caída— · nº1 Fable 5.2 64.6→65 · Astra 62.1→62 · Carbon 60 · Opus 59.1→59 · Sol 57.3→57 · Sonnet 54.5→55 · Hydrogen 53.9→54 · Terra 51.3→51 · Argon 50.4→51 · Muse Wonder Full 50.1→50 · Kimi K3.1 Pro 46.5→47 (nº1 abierto intacto) · DS V4.1 Flash 32.6→32 · GLM-5.3 31.7→32 (−2 cada uno; el clúster chino se comprime) · MiMo Pro 29.9→30 · Step 5 28.5→29 · Qwen3.8-27B 20.1→20. El predecesor Max-0902 queda <strong>deprecado sin re-score</strong>: su barra se congela en 34 etiquetada «v5.0.1» (no se mezclan versiones). <strong>Predicciones desplazadas con el ancla (regla del turno: no re-derivación desde cero): Δancla = 28 − 28.6 = −0.6 → Flash ~34→~33 (rango 30–36; techo ×1.26 ≈ 35) · 27B ~29→~28 (rango 25–32)</strong> — el 27B queda clavado sobre el suelo de la familia (28 = canary); tensión anotada. Gráfico: 21→22 barras — entra <strong>Gemini 4 Neon (62)</strong>, lanzado y puntuado el 18-nov (el día del último pase: ya era historia cuando se sincronizó; etiqueta «nuevo (18-nov)»); re-valoradas las 19 medidas; reordenado: Step 5 (29) sube sobre canary/predicción (28/28). Autoauditoría pasada: orden descendente y ancho = score/65 en las 22 barras. Revisados y mantenidos fuera (criterio declarado): Muse Wonder 44 (hermano de la Full), Muse Ember 36 (tier rápido; medido entre pases), Haiku 5.5 37, Grok 4.7 35, Hy4 35, Inkling 2 Small 31, Ling 3.1 Flash 30, MiniMax-M3.1-Flash 29, JoyAI-VL-Preview 28 (sin medición de tareas), Nanbeige4.3-33B 20. Líder abierto: sin cambio.</p>
+      <p><em>Checks de ausencia (hoy):</em> HF org por lastModified — cero repos Qwen4; los toques del 20-nov (Qwen2-VL-2B, Qwen2-1.5B, 3.6-27B, 3.5-27B, 3.5-35B-A3B — los cinco a la misma hora y todos PRE-3.8) son housekeeping de banners, no el patrón pre-launch de los 5/7-nov (que tocaba justo la línea que iba a salir); full-text «Qwen4» — los mismos squat repos de siempre (InterpreticAI, pirahansiah: 0 descargas); OpenRouter — 474 IDs, un solo qwen4 (qwen/qwen4-max, creado 16-nov, ya fichado); blog/X oficiales — sin señal tras el GA (verificado por búsqueda; qwen.ai es SPA); BenchLM — «qwen4-27b» sigue marcador sin benchmark; LMArena — sin codenaming botánico nuevo desde Kentia (2–3-nov). <em>Contexto no-señal:</em> el changelog del Agent Arena lista «Qwen4-Max (xHigh)» con fecha <strong>15-nov</strong> — evento pre-GA (la preview en prueba ciega), anterior al último pase: no re-puntúa. <em>Tocados:</em> hero (eyebrow 26-nov; h2/sub a 43; badge GA v5.0.2/14º; badge Fase 2 al 28%; anclas v5.0.2; dos badges nuevos), §01 (tabla tiers), §02 (callout de anclas + fila del suelo), §03–04 (tarjetas desplazadas), §05 (Max 43/14º), §06 (gráfico 22 barras + intro + lectura), §07 (lead, escenarios 28/52/20 con aritmética, señales +2 filas, bloque futuro ≤1-dic), §08 (riesgo del denso ~15%), cronología (HOY 26-nov; el 18-nov queda como historia), rastreador (tarjeta AAI), meta description, este registro. <em>Intactos:</em> tabla de calibración (Max excedida +4 sigue etiquetada v5.0.1 — no se re-validan predicciones contra otra versión), viabilidad local, metodología, señales históricas y mercados resueltos. <em>Falsaciones:</em> la del mercado ≤25-nov queda <strong>CONSUMIDA</strong> (aplicada); preview −10 evitada; Qoduck extinguida. Próxima línea de fuego: la base dic–ene — pesos que no lleguen al 31-ene migran a lento y el riesgo-3.7 manda.</p>
+    </div>
+<div class="log-item">
       <div class="l-date">16 NOV 2026 · QWEN4-Max EN GA — MEDIDO 42.89 (v5.0.1) · Llega la ancla del canary (28.6): PASE COMPLETO — PREDICCIONES RECALIBRADAS A v5.0.1, GRÁFICO SINCRONIZADO, ESCENARIOS PIVOTADOS A LOS PESOS ABIERTOS</div>
       <p><strong>El lanzamiento: lo esperábamos en la ventana rápida (88%) y cayó dentro.</strong> <em>El hecho:</em> 16-nov, 02:01 UTC (snowflake del post verificado): blog oficial <span class="mono">«Qwen4-Max: Your New Teammate Has Arrived»</span> + @Alibaba_Qwen — primer modelo Qwen4 en <strong>GA</strong>: 2.4T backbone, <strong>71B activos/token + 328B de tabla n-gram</strong> (arquitectura GDN+QSA / Gated Residual / n-gram, la del canary a escala flagship), visión nativa (texto+imagen+vídeo), 1M ctx; API pública en QwenCloud ($1.50/$4.50 por M, entrada en caché ~$0.075) y <span class="mono">qwen/qwen4-max</span> en OpenRouter (1M ctx, <span class="mono">text+image+video-&gt;text</span>). La preview del 11-nov caducaba el 25-nov: <strong>el GA llegó con 9 días de margen → falsación −10 EVITADA; la de Qoduck (−8) se extingue con el hecho</strong> (ya no hay «sale o no sale» que ponderar). El vendor: Work360 52.69 (vs 47.74 del 3.8-Max), tokens −24/35% (Work360) y −48/49% (Terminal-Bench 4.0), coste/tarea $4.43→$1.67 (−62%) — todo eval interno, etiquetado como tal; en su chart de 16 filas pierde donde pesa el terminal duro (Terminal-Bench 4.0: 48.5, 5º de 6; ProgramBench 31.5 vs Opus 65) y gana el agente largo (Agents' Last Exam 46.7 > Opus 43.4; legal HLAB 21.3 casi dobla al 2º). <em>Independiente, mismo día:</em> AAI lo puntúa y lo deja <strong>13º de 59 (42.89)</strong>; en Vals, 11º; Vals Terminal-Bench 48.48 ≈ el 48.5 del vendor; testers agregados: «lento y locuaz» (3º editorial). <em>Lo prometido:</em> el blog cierra con <span class="mono">«Smaller models in the family are coming to open source, built on the same lineage»</span> — primera promesa oficial de pesos; la capa de harness ya es open (Qwen-Live-Delivery-Plugin, Apache-2.0, v0.1.0, solo Codex CLI). El Max real es <strong>propietario</strong> (cabecera AAI): patrón licencia cumplido.</p>
       <p><strong>El índice: llega la ancla y se levanta el congel.</strong> AAI (v5.0.1, verificada en la página del modelo) puntuó el mismo día: <strong>Qwen4-Max 42.89</strong> y — el hallazgo silencioso — <strong>canary re-puntuado: 28.6</strong> (40 en v4.3.2, −11.4). Con ancla nueva cae el congel y se aplica el <strong>pase completo</strong>, con la aritmética vieja→nueva: <strong>Max: 50 (v4.3.2) → MEDIDO 42.89</strong>; el equivalente convertido de la predicción con el Δ de re-escala del propio linaje (Max-0902: 45→34 = −11) era ~39 → <strong>excedida +4</strong> (ratio 0.756 daría 37.8 → +5.1); el salto real Max→Max fue <strong>+8.9 (×1.26)</strong> vs el +5 conservador asumido. <strong>Flash: 45 (v4.3.2) → ~34 (31–37)</strong> = canary 28.6 + delta de cocción medido (+5); techo por ratio ×1.26 ≈ 36. <strong>27B: 42 → ~29 (26–33)</strong>: ratio generacional (20.1×1.26≈25) vs regla del suelo (canary+~2≈30) — centro sobre el suelo, tensión anotada en §03 (el ratio puro violaría el suelo: 25 < 28.6). Calibración: fila nueva «EXCEDIDA con salvedad de versión» + fila «regla del suelo TENSA»; conclusión 2+1. <strong>Gráfico (congelado desde el 28-oct): sincronizado a v5.0.1, chart_max 60→65.</strong> Entran/suben: <strong>Claude Fable 5.2 (64.6) nuevo nº1 (9-nov)</strong>, Gemini 4 Hydrogen (53.9, 12-nov), Qwen4-Max barra real 42.9; re-valorados: Opus 5.5 58→59.1, Carbon 60, Astra 53→56.9, Sol 52→54.6, Terra 48→51.3, Muse Wonder Full 56→50.1, <strong>Kimi K3.1 Pro 55 (v4.3.2)→46.5 y RECLASIFICADO open-weights por la cabecera de AAI (la página lo llevaba «propietario»)</strong> — nuevo líder abierto; MiMo 46→29.9, DS V4.1 45→32.6, GLM-5.3 45→31.7, Step 5 44→28.5, canary 40→28.6, 3.8-27B 34→20.1. Salen: predecesores sin score en la Current (Opus 4.6/4.8/5, Sonnet 5, Fable 5.1, 3.7-Max, 3.6-27B, 2.4T-A95B, Kimi K3, Muse Spark 1.3) — mantener sus cifras v4.3.2 mezclaría versiones; y excluidos por criterio de barras: Haiku 5.5 (36.5), Ember (36.0), Grok 4.7 (35.5), Hy4 (34.6), Ling (29.6), MiniMax (29.1), *-Flash hermanos.</p>
