@@ -41,7 +41,10 @@ a:hover{text-decoration:underline}
 .nav-drawer{position:fixed;top:0;right:-310px;width:288px;max-width:86vw;height:100vh;background:#121826;border-left:1px solid var(--border);z-index:1101;padding:18px 20px 24px;transition:right .3s ease;overflow-y:auto}
 @media(prefers-reduced-motion:reduce){.nav-drawer{transition:none}}
 .nav-drawer.active{right:0}
-.nav-drawer .dtitle{font-family:Georgia,serif;color:var(--gold);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 12px}
+.nav-drawer .dhead{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px}
+.nav-drawer .dtitle{font-family:Georgia,serif;color:var(--gold);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase}
+.nav-close{background:none;border:1px solid var(--border);color:var(--gold);width:38px;height:38px;border-radius:9px;cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center}
+.nav-close:hover{border-color:var(--gold)}
 .nav-drawer a{display:block;padding:.72rem .2rem;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);font-size:.92rem}
 .nav-drawer a:hover{color:var(--gold)}
 .nav-drawer a.hot{color:var(--gold)}
@@ -192,7 +195,7 @@ tr:last-child td{border-bottom:none}
 <button class="back-btn" onclick="window.history.back()">← Atrás</button>
 <div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
 <nav class="nav-drawer" id="nav-drawer" aria-label="Secciones">
-  <div class="dtitle">Secciones</div>
+  <div class="dhead"><span class="dtitle">Secciones</span><button class="nav-close" aria-label="Cerrar menú" onclick="toggleNav()">✕</button></div>
   <a href="#seccion-ficha" onclick="toggleNav()"><span class="n">01</span>Ficha técnica</a>
   <a href="#seccion-bloques" onclick="toggleNav()"><span class="n">02</span>Qué se dijo</a>
   <a href="#seccion-radar" class="hot" onclick="toggleNav()"><span class="n">03</span>Bulómetro</a>
@@ -449,7 +452,7 @@ tr:last-child td{border-bottom:none}
   <div class="card" id="upd-log">
     <div class="log-item"><span class="d">v1.1 · 27/11 01:40</span><span>Primera edición nocturna: reconstrucción por bloques contrastada con 9 directos + transcripción propia; radar con primeras verificaciones (VerificaRTVE + recomprobación primaria); flash de votaciones de lectores; formas y tablero.</span></div>
     <div class="log-item"><span class="d">v1.2 · 27/11 02:50</span><span><b>Radar completo: 30 afirmaciones verificadas con fuente primaria</b> (INE JAX, Interior, BOE, sentencias AN/TS, MIVAU, Generalitat) y minuto exacto de mi propia transcripción cuando el audio la cubre. Añadidos: flash NC Report (caso fronterizo de veda), reacciones en caliente, mapa de encuestas pre-veda y encuadres de prensa. <b>Tres correcciones a la edición de madrugada:</b> el «alquiler −4%» es de Colau (no de Sánchez); el aforamiento de Mazón es como diputado en Les Corts (no senador); la «medalla a Israel» era propuesta municipal retirada y nunca concedida.</span></div>
-    <div class="log-item"><span class="d">v1.22 · 27/11 08:05</span><span>Cabecera rediseñada (crítica de Raúl desde móvil): la franja roja pasa a línea fina fija arriba; la barra de cabecera se oculta al hacer scroll hacia abajo y reaparece al subir; los diez enlaces pasan a menú hamburguesa lateral (drawer derecha) con el diseño habitual de las páginas Cocobot — incluye enlace de vuelta al índice. Comportamiento idéntico con <i>reduced motion</i> (sin animación, misma función).</span></div>
+    <div class="log-item"><span class="d">v1.22 · 27/11 08:05</span><span>Cabecera rediseñada (crítica de Raúl desde móvil): la franja roja pasa a línea fina fija arriba; la barra de cabecera se oculta al hacer scroll hacia abajo y reaparece al subir; los diez enlaces pasan a menú hamburguesa lateral (drawer derecha) con el diseño habitual de las páginas Cocobot — incluye enlace de vuelta al índice. Comportamiento idéntico con <i>reduced motion</i> (sin animación, misma función). Además: las 5 tablas anchas van ahora en contenedor deslizable (se corrigió un desborde de 566px en pantallas de móvil que ampliaba todo el lienzo).</span></div>
     <div class="log-item"><span class="d">v1.21 · 27/11 03:20</span><span>Transcripción propia COMPLETA hasta el cierre: los cuatro minutos de oro verificados sobre mi audio ([128:38]-[131:50], cita íntegra de Feijóo actualizada). Dos afirmaciones añadidas captadas en el audio: el «25% del crecimiento es por los migrantes» de Sánchez (mayormente: techo BdE) y el «50% de extracomunitarios no cotiza» de Abascal (sin fuente). Radar: <b>32 afirmaciones</b>.</span></div>
     <div class="log-item"><span class="d">v1.3 · previsto 27/11 tarde</span><span>Audiencia del debate (Barlovento), crónicas matutinas, cierres nocturnos de EFE Verifica, votaciones de lectores cerradas (ABC/eldiario) y reacciones de La Revuelta/tertulias — con la transcripción propia completa (cierre del minuto de oro incluido).</span></div>
     <div class="log-item"><span class="d">v2 · previsto 29/11 21:05</span><span><b>Exit poll RTVE + flash La 1 + primeros resultados</b>. Se evaluará si el debate cambió algo: bloque a bloque, territorio a territorio, y se cerrará el veredicto de ganador con datos.</span></div>
@@ -565,6 +568,7 @@ function toggleNav(){
   },{passive:true});
   window.addEventListener('hashchange',function(){last=window.scrollY;bar.classList.remove('t-hide');});
 })();
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('nav-drawer').classList.contains('active'))toggleNav();});
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
     var t=document.querySelector(this.getAttribute('href'));
