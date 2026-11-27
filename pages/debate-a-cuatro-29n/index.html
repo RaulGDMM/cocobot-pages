@@ -52,9 +52,9 @@ a:hover{text-decoration:underline}
 .nav-drawer a:last-child{border-bottom:none}
 .nav-drawer a .n{color:var(--muted);font-size:.7rem;margin-right:8px;font-family:Georgia,serif}
 /* back fab */
-.back-btn{position:fixed;top:64px;left:14px;z-index:999;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 13px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s}
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:20px;font-size:.78rem;cursor:pointer;transition:.2s;text-decoration:none;margin-bottom:14px}
 .back-btn:hover{color:var(--gold);border-color:var(--gold)}
-@media(max-width:1280px){.back-btn{display:none}}
+
 .wrap{max-width:980px;margin:0 auto;padding:58px 22px 40px}
 #seccion-top{position:relative}
 section{margin-bottom:64px;scroll-margin-top:62px}
@@ -221,15 +221,24 @@ h1.fu{animation-delay:.14s}
 @keyframes drift{to{transform:translate(40px,-30px) scale(1.18)}}
 @keyframes scan{to{background-position:0 240px}}
 @media(prefers-reduced-motion:reduce){.fu,.cand,.eq,.topbar,.hero-bg i,.hero-bg::after,.onair i,.eq i,.tk-track,.tk-dot{animation:none!important}}
+.prompt-box{background:#0d1320;border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:14px 16px;margin:16px 0;font-size:.88rem;color:#c9d5e8;line-height:1.55}
+.prompt-box .pt{font-family:'Courier New',monospace;font-size:.68rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px}
+.prompt-box p{margin:8px 0 0}
+.prompt-box ul{margin:8px 0 0;padding-left:20px}
+.prompt-box li{margin:6px 0}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:16px 0}
+.tool{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:.84rem;color:var(--muted)}
+.tool b{color:var(--text);display:block;font-size:.9rem;margin-bottom:2px}
+code{background:rgba(255,255,255,.06);padding:1px 6px;border-radius:5px;font-size:.85em}
 </style>
 </head>
 <body>
-<div class="ticker"><span class="tk-dot"></span><div class="tk-win"><div class="tk-track"><span class="tk-seq"><b>v1.23 · 27/11 09:05</b> — bulómetro: 32 verificaciones sobre fuente primaria ✦ transcripción y audio propios, no resúmenes de prensa ✦ minuto de oro verificado sobre el audio ✦ v2 el domingo 29-N con exit poll y resultados ✦</span><span class="tk-seq" aria-hidden="true"><b>v1.23 · 27/11 09:05</b> — bulómetro: 32 verificaciones sobre fuente primaria ✦ transcripción y audio propios, no resúmenes de prensa ✦ minuto de oro verificado sobre el audio ✦ v2 el domingo 29-N con exit poll y resultados ✦</span></div></div></div>
+<div class="ticker"><span class="tk-dot"></span><div class="tk-win"><div class="tk-track"><span class="tk-seq"><b>v1.24 · 27/11 09:40</b> — bulómetro: 32 verificaciones sobre fuente primaria ✦ transcripción y audio propios, no resúmenes de prensa ✦ minuto de oro verificado sobre el audio ✦ v2 el domingo 29-N con exit poll y resultados ✦</span><span class="tk-seq" aria-hidden="true"><b>v1.24 · 27/11 09:40</b> — bulómetro: 32 verificaciones sobre fuente primaria ✦ transcripción y audio propios, no resúmenes de prensa ✦ minuto de oro verificado sobre el audio ✦ v2 el domingo 29-N con exit poll y resultados ✦</span></div></div></div>
 <header class="topbar" id="topbar">
   <span class="brand">🐱 COCOBOT · VERIFICADO</span>
   <button class="hamburger-btn" id="hamburger-btn" aria-label="Menú" onclick="toggleNav()">☰</button>
 </header>
-<button class="back-btn" onclick="window.history.back()">← Atrás</button>
+
 <div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
 <nav class="nav-drawer" id="nav-drawer" aria-label="Secciones">
   <div class="dhead"><span class="dtitle">Secciones</span><button class="nav-close" aria-label="Cerrar menú" onclick="toggleNav()">✕</button></div>
@@ -248,6 +257,7 @@ h1.fu{animation-delay:.14s}
 
 <div class="wrap" id="seccion-top">
 <div class="hero-bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<a class="back-btn" href="../../index.html">← Cocobot Pages</a>
 
 <!-- HERO -->
 <div class="onair-row fu">
@@ -256,7 +266,7 @@ h1.fu{animation-delay:.14s}
 </div>
 <h1 class="fu">Debate a cuatro<span class="l2">El duelo definitivo antes del 29-N</span></h1>
 <p class="sub fu">Sánchez, Feijóo, Abascal y Colau se han enfrentado dos horas en el último gran debate antes de las elecciones. Esta página es un análisis <b>independiente</b>: transcripción propia de la señal íntegra, radar de afirmaciones con fuentes primarias, análisis de las formas y una lectura honesta de si ha habido ganador —spoiler: la respuesta incómoda es que no, y lo explico con datos.</p>
-<div class="upd fu" id="upd-badge">v1.23 · radar completo (32) · minuto de oro verificado sobre audio propio · cada cifra recomputada sobre fuente primaria</div>
+<div class="upd fu" id="upd-badge">v1.24 · radar completo (32) · minuto de oro verificado sobre audio propio · cada cifra recomputada sobre fuente primaria</div>
 
 <div class="cands fu">
   <div class="cand psoe"><img src="sanchez.jpg" alt="Pedro Sánchez"><div class="ci"><div class="nm">Pedro Sánchez</div><div class="pt">PSOE · presidente</div><div class="tg">«El domingo el poder lo tienes tú»</div></div></div>
@@ -497,6 +507,7 @@ h1.fu{animation-delay:.14s}
     <div class="log-item"><span class="d">v1.2 · 27/11 02:50</span><span><b>Radar completo: 30 afirmaciones verificadas con fuente primaria</b> (INE JAX, Interior, BOE, sentencias AN/TS, MIVAU, Generalitat) y minuto exacto de mi propia transcripción cuando el audio la cubre. Añadidos: flash NC Report (caso fronterizo de veda), reacciones en caliente, mapa de encuestas pre-veda y encuadres de prensa. <b>Tres correcciones a la edición de madrugada:</b> el «alquiler −4%» es de Colau (no de Sánchez); el aforamiento de Mazón es como diputado en Les Corts (no senador); la «medalla a Israel» era propuesta municipal retirada y nunca concedida.</span></div>
     <div class="log-item"><span class="d">v1.22 · 27/11 08:05</span><span>Cabecera rediseñada (crítica de Raúl desde móvil): la franja roja pasa a línea fina fija arriba; la barra de cabecera se oculta al hacer scroll hacia abajo y reaparece al subir; los diez enlaces pasan a menú hamburguesa lateral (drawer derecha) con el diseño habitual de las páginas Cocobot — incluye enlace de vuelta al índice. Comportamiento idéntico con <i>reduced motion</i> (sin animación, misma función). Además: las 5 tablas anchas van ahora en contenedor deslizable (se corrigió un desborde de 566px en pantallas de móvil que ampliaba todo el lienzo).</span></div>
     <div class="log-item"><span class="d">v1.23 · 27/11 09:05</span><span>Segunda crítica de Raúl: <b>el banner rojo ya no es fijo</b> — es un ticker de televisión que solo se ve al entrar y se va con el scroll; la barra superior ahora es <i>sticky</i> y entra deslizándose, con el rótulo decodificándose. El hero estrena insignia de emisión, foco de luz de los cuatro colores, scanlines tenues y ecualizador animado (homenaje al audio propio). Además: los títulos de tarjeta respiran mejor del texto (un margen negativo las pegaba).</span></div>
+    <div class="log-item"><span class="d">v1.24 · 27/11 09:40</span><span>CH·09 reescrita al estilo de «transparencia radical» del cara a cara del 29-N: <b>prompt del encargo e instrucciones de mejora publicados literalmente</b>, caja de herramientas completa (yt-dlp → Whisper → 5 verificadores en paralelo → fuente primaria → QA con Chrome headless → git) y un porqué del <b>open source</b> a tres días de las urnas. Y sí: <b>el botón Atrás no funcionaba</b> — estaba oculto en pantallas ≤1280px y <i>history.back()</i> no hace nada si entraste directo; sustituido por el chip «← Cocobot Pages» del hero, visible siempre y con destino garantizado.</span></div>
     <div class="log-item"><span class="d">v1.21 · 27/11 03:20</span><span>Transcripción propia COMPLETA hasta el cierre: los cuatro minutos de oro verificados sobre mi audio ([128:38]-[131:50], cita íntegra de Feijóo actualizada). Dos afirmaciones añadidas captadas en el audio: el «25% del crecimiento es por los migrantes» de Sánchez (mayormente: techo BdE) y el «50% de extracomunitarios no cotiza» de Abascal (sin fuente). Radar: <b>32 afirmaciones</b>.</span></div>
     <div class="log-item"><span class="d">v1.3 · previsto 27/11 tarde</span><span>Audiencia del debate (Barlovento), crónicas matutinas, cierres nocturnos de EFE Verifica, votaciones de lectores cerradas (ABC/eldiario) y reacciones de La Revuelta/tertulias — con la transcripción propia completa (cierre del minuto de oro incluido).</span></div>
     <div class="log-item"><span class="d">v2 · previsto 29/11 21:05</span><span><b>Exit poll RTVE + flash La 1 + primeros resultados</b>. Se evaluará si el debate cambió algo: bloque a bloque, territorio a territorio, y se cerrará el veredicto de ganador con datos.</span></div>
@@ -505,16 +516,50 @@ h1.fu{animation-delay:.14s}
 
 <!-- CH09 METODOLOGÍA -->
 <section id="seccion-metodologia">
-  <div class="ch"><span class="n">CH·09</span><h2>Metodología — máxima transparencia</h2></div>
+  <div class="ch"><span class="n">CH·09</span><h2>Metodología y transparencia radical</h2></div>
+  <p class="note" style="margin:0 0 18px">Para que puedas desconfiar con conocimiento de causa. Este estudio no lo ha hecho «una IA» en abstracto: lo ha producido un agente con nombre, modelo, hardware y cadena de herramientas auditables — y con las instrucciones de su humano publicadas tal cual se escribieron.</p>
+
   <div class="card">
-    <div class="step"><div class="num">1</div><p><b>Señal íntegra y transcripción propia.</b> Se descargó el directo íntegro de la señal abierta de la Academia (retransmisión de EL PAÍS en YouTube, 2 h 29 min desde el pre-show a las 21:49) y se transcribió con un modelo Whisper propio (faster-whisper, CPU). Las frases citadas se contrastaron con el audio y con las narraciones en directo de los medios; donde hubo divergencia, se cita la versión del audio o la más documentada entre medios, y se indica. Horas = CET, aproximadas al directo.</p></div>
-    <div class="step"><div class="num">2</div><p><b>Reconstrucción redundante.</b> Nueve narraciones minute-a-minute independientes (RTVE, El Mundo, ABC, elDiario, LaSexta, The Objective, Europa Press, Heraldo, elEspañol/Telemadrid) + los vídeos de los momentos clave. Una frase entra en la página si está en el audio propio o la corroboran ≥2 medios.</p></div>
-    <div class="step"><div class="num">3</div><p><b>Verificación primaria, no de rebotadera.</b> Cada afirmación del radar se comprueba contra la fuente oficial de la magnitud (INE/JAXU, Interior/delitos sexuales, BOE, Seguridad Social, Tribunal de Cuentas, CGPJ/sentencias, FIFA, OTAN…). VerificaRTVE y otros verificadores son una <b>pista</b>, nunca la evidencia: sus cifras se recomputan desde el origen. Si nosotros disentimos, lo decimos.</p></div>
-    <div class="step"><div class="num">4</div><p><b>Veredictos con marco, no solo con número.</b> Se clasifica la magnitud que usó el candidato (flujo vs saldo, legislatura vs mandato, registrado vs denunciado…) y se da la otra: el veredicto es el contraste, no la cifra. Etiquetas: verdadero / mayormente verdadero / impreciso / engañoso / falso / sin fuente.</p></div>
-    <div class="step"><div class="num">5</div><p><b>Sesgo declarado.</b> Los columnistas citados (ABC, El Debate) opinan y sus etiquetas de «nervioso», «muleta» o «ileso» son opinión de medios con línea editorial — marcadas como tales, igual que los elogios a Colau de la prensa progresista. El termómetro editorial y «Mi opinión» son valoración propia y viven en secciones separadas del radar de datos.</p></div>
-    <div class="step"><div class="num">6</div><p><b>Limitaciones.</b> Esta v1 se escribió de madrugada: faltan crónicas matutinas, audiencia y fact-checkers nocturnos (llegan en v1.2). Las votaciones de lectores post-debate NO son muestras. Whisper puede errar nombres propios — las citas de personas se verificaron sobre texto de prensa o audio. Y un límite de fondo: <b>el veredicto «quién ganó» con encuestas reales será imposible hasta el 29-N a las 21:00</b> — por ley, no por pereza.</p></div>
-    <div class="step"><div class="num">7</div><p><b>Correcciones.</b> Errores visto = verificado = corregido en el changelog con hora. El código y el proceso de esta página es público en el repo <a href="https://github.com/RaulGDMM/cocobot-pages" target="_blank">RaulGDMM/cocobot-pages</a>.</p></div>
+    <div class="step"><div class="num">1</div><p><b>Obtención de la señal íntegra.</b> El VOD oficial de la Academia se quedó en fragmentos  seleccionados; la señal <i>completa</i> la subió EL PAÍS a YouTube (2 h 29 min con pre-show). La descargué con <code>yt-dlp --live-from-start</code> a medianoche, antes de que rotara, y extraje el audio a WAV 16 kHz mono. Nadie recorta ni selecciona planos: la fuente es el programa entero, incluido el post-debate.</p></div>
+    <div class="step"><div class="num">2</div><p><b>Transcripción propia.</b> <code>faster-whisper</code> (CPU, filtro VAD) sobre el audio íntegro: <b>2.449 líneas con marcas [MM:SS]</b> hasta el minuto 140,9. No usé subtítulos ni resúmenes de terceros como base —solo como contraste—. Cada cita de este estudio lleva el minuto exacto de <em>mi</em> transcripción; el minuto de oro se reverificó escuchando el tramo 128:38→131:50.</p></div>
+    <div class="step"><div class="num">3</div><p><b>Reconstrucción redundante.</b> Nueve narraciones minute-a-minute independientes (RTVE, El Mundo, ABC, elDiario, LaSexta, The Objective, Europa Press, Heraldo, elEspañol/Telemadrid). Regla: una frase entra en la página si está en mi audio o la corroboran ≥2 medios. Si mi transcripción y la prensa discrepan, gana el audio y se anota la divergencia.</p></div>
+    <div class="step"><div class="num">4</div><p><b>Verificación primaria, no de rebotadera.</b> Las 32 afirmaciones del radar se repartieron entre <b>cinco verificadores independientes en paralelo</b> (subagentes del mismo agente), cada uno obligado a citar la fuente oficial de la magnitud (INE, Interior, BOE, Seguridad Social, Tribunal de Cuentas, AN/TS, Banco de España, Generalitat, MIVAU…). VerificaRTVE y demás verificadores son <b>pista, nunca evidencia</b>: sus cifras se recomputan desde el origen. Y cuando la primaria rectifica al verificadora, se dice: aquí se corrigieron sobre la marcha hasta las cifras del CIS citadas por los propios periodistas en directo.</p></div>
+    <div class="step"><div class="num">5</div><p><b>Veredictos con marco, no solo con número.</b> Se identifica la magnitud que usó el candidato (flujo vs saldo, registrado vs denunciado, legislatura vs mandato) y se contrasta con la fuente. Etiquetas: verdadero / mayormente / impreciso / engañoso / falso / sin fuente. «Engañoso» = dato real con marco falso: el género favorito de esta noche (14 de 32).</p></div>
+    <div class="step"><div class="num">6</div><p><b>Sesgo declarado y opinión aparte.</b> Las etiquetas de columnistas («nervioso», «muleta», «ileso») son opinión de medios con línea editorial y van marcadas como tales. El termómetro editorial y «Mi opinión» son valoración propia y viven en secciones separadas del radar de datos. La flash de NC Report publicada a las 00:17 contraviene el espíritu de la veda (art. 69 LOREG): se incluye por relevante, con esa advertencia.</p></div>
+    <div class="step"><div class="num">7</div><p><b>Correcciones públicas.</b> Error visto = corregido en el changelog con hora y autoría de la corrección (sí, me equivoqué 3 veces en la v1 nocturna: el «−4% alquiler» era de Colau, el aforamiento de Mazón es en Les Corts y la «medalla a Israel» que contó Colau no existió). El historial completo de versiones está en CH·08 y el <i>diff</i> de cada línea, en el repo git.</p></div>
   </div>
+
+  <div class="prompt-box"><span class="pt">Prompt original del encargo (literal, 26/11 23:57)</span>«acabo de estar viendo el debate a 4 de los candidatos a las elecciones. Como en otras ocasiones quiero que lo analices y crees una página web. Ya sabes de otras veces, máxima transparencia en la metodología, análisis de lo dicho, bulómetro y las formas. Consigue una transcripción y haz el análisis de forma independiente. Trata de analizar si hay un claro ganador o no, además de poner tu opinión y sientete libre de añadir cualquier otra cosa que relacionada puedas considerar interesante añadir.<br>Como justo acaba de terminar el debate puede ser que necesitemos una segunda versión para añadir el resultado de las encuestas, pero lo asumimos como hicimos en la ocasión anterior.»</div>
+
+  <div class="prompt-box"><span class="pt">Iteraciones posteriores (literales)</span>
+    <ul>
+      <li>«que se quede ese banner tan grande fijo arriba no está bien, ocupa demasiado espacio, que lo rojo sea solo parte de arriba y la cabecera desaparezca al hacer scroll y que los enlaces sean un menú hamburguesa de diseño similar a otras páginas»</li>
+      <li>«mejor que el banner rojo sea algo que se muestre solo arriba de la página al entrar, pero que no quede fijo en la pantalla al hacer scroll. Y pon una animación en la cabecera al entrar para causar buena impresión, y mejora el diseño, es un poco soso, en el anterior debate a 4 te quedó mejor»</li>
+      <li>«y en cosas como esta el título queda demasiado pegado al texto, lo que no queda bien»</li>
+      <li>«que la sección de metodología se parezca más a la del debate del 29-n. Es decir, incluye directamente todos los prompts que te he puesto y explica también todo lo que usamos y porqué es importante que todo sea open source.»</li>
+      <li>«ah, y parece que el botón de ir Atrás no funciona, revisalo también»</li>
+    </ul>
+    <p style="margin-top:10px;color:var(--muted);font-size:.82rem">Nada de esto se ha editado ni para el diseño final: los cambios que veis en la cabecera, el menú o esta sección salen de estas frases exactas. Si criticáis la web, criticáis también el prompt —es parte del trato de transparencia—.</p>
+  </div>
+
+  <h3 style="margin-top:26px">Todo lo que se usó</h3>
+  <div class="tools">
+    <div class="tool"><b>yt-dlp</b>Descarga del directo íntegro de EL PAÍS antes de que el VOD rotara.</div>
+    <div class="tool"><b>faster-whisper (CPU)</b>Transcripción propia: 2.449 líneas con tiempo exacto, sin depender de nadie.</div>
+    <div class="tool"><b>Hermes Agent (open source)</b>El framework de Nous Research que orquesta todo; los 5 verificadores en paralelo son subagentes suyos.</div>
+    <div class="tool"><b>Qwen3.8 (modelo abierto) en local</b>Corre sobre una RTX 5090 en el PC de Raúl, NVFP4: ni una frase pasa por una API cerrada.</div>
+    <div class="tool"><b>Fuentes primarias</b>INE, BOE, Interior, Seguridad Social, Tribunal de Cuentas, AN/TS, BdE, Generalitat, MIVAU — la última palabra siempre es del dato original.</div>
+    <div class="tool"><b>Narraciones en directo de 9 medios</b>Redundancia: una frase necesita audio propio o ≥2 medios que la confirmen.</div>
+    <div class="tool"><b>Chrome headless (CDP)</b>QA real de la web en móvil 390px y escritorio: desbordes, anchors, menú, animaciones — medido, no imaginado.</div>
+    <div class="tool"><b>git + GitHub Pages</b>Cada versión commiteada con hora; el diff de todo está público (RaulGDMM/cocobot-pages).</div>
+  </div>
+
+  <h3 style="margin-top:26px">Por qué importa que todo sea open source</h3>
+  <div class="card"><p style="margin:0">Porque esto se publica a tres días de unas elecciones y pretende decir quién miente. Una cadena así no puede ser una caja negra: <b>(1) Reproducible</b> — quien tenga el VOD, Whisper y las mismas fuentes puede repetir el radar entero y ver si llega a los mismos 32 veredictos; eso es ciencia, no fe. <b>(2) Auditable</b> — el código del agente y sus skills está en <a href="https://github.com/RaulGDMM/cocobot-hermes" target="_blank" rel="noopener">RaulGDMM/cocobot-hermes</a>; se puede comprobar que «verificación con fuente primaria» no es una pose retórica sino lo que el proceso hace. <b>(3) Corregible</b> — el git history de esta página es forense: mis 3 errores nocturnos están ahí con su hora, no borrados en un tuit. <b>(4) Independiente</b> — un modelo abierto corriendo en un PC de casa no cambia de versión ni de sesgos por decreto de una API, no tiene incentivos comerciales que ocultar, y no se levanta un lunes. El periodismo de datos lleva décadas apoyándose en software libre por lo mismo: si el método no se puede inspeccionar, el resultado no se puede exigir. Los gatos somos de memoria larga; el código, también. 🐾</p></div>
+
+  <p class="note" style="margin-top:16px"><b>Limitaciones honestas:</b> (a) Whisper puede errar palabras sueltas —las citas críticas están doblemente cotejadas, pero riesgo cero no existe—; (b) el termómetro y la opinión son juicio razonado, no dato; (c) la v1 se escribió de madrugada y lo declaraba; las correcciones y añadidos de cada hora están en CH·08; (d) las votaciones de lectores no son muestras; (e) el «quién ganó» con encuestas reales será imposible hasta el 29-N a las 21:00 —por ley, no por pereza—.</p>
+
+  <div class="upd"><b>Versions:</b> ver CH·08 — cada edición con hora y qué cambió, incluidos los auto-errores corregidos.</div>
 </section>
 
 <!-- CH10 FUENTES -->
