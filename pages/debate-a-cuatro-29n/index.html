@@ -20,25 +20,41 @@ h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif;line-height:1.2}
 a{color:var(--gold);text-decoration:none}
 a:hover{text-decoration:underline}
 ::selection{background:rgba(232,179,75,.25)}
-/* breaking banner */
-.bb{background:linear-gradient(90deg,#8a1f1a,var(--red));color:#fff;padding:7px 1rem;font-size:.72rem;font-weight:600;text-align:center;position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
-.bb::before{content:'';width:8px;height:8px;background:#fff;border-radius:50%;animation:p 1.2s infinite;flex-shrink:0}
+/* breaking banner — franja fina, siempre visible */
+:root{--bbh:28px}
+.bb{background:linear-gradient(90deg,#8a1f1a,var(--red));color:#fff;height:var(--bbh);padding:0 12px;font-size:.68rem;font-weight:600;position:fixed;top:0;left:0;right:0;z-index:1002;display:flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden}
+.bb::before{content:'';width:7px;height:7px;background:#fff;border-radius:50%;animation:p 1.2s infinite;flex-shrink:0}
+.bb span{overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.bb .wide{display:inline}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
-/* nav */
-nav{position:fixed;top:30px;left:0;right:0;z-index:1000;background:rgba(12,16,22,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;padding:10px 20px;flex-wrap:wrap}
-nav .brand{font-family:Georgia,serif;font-weight:bold;color:var(--gold);margin-right:10px;font-size:.95rem;letter-spacing:.5px}
-nav a.nl{color:var(--muted);font-size:.78rem;padding:5px 9px;border-radius:6px;white-space:nowrap}
-nav a.nl:hover{color:var(--text);background:var(--card);text-decoration:none}
-nav a.nl.hot{color:var(--gold)}
-#hamburger-btn{display:none;background:none;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;font-size:1.05rem;cursor:pointer;margin-left:auto}
-@media(max-width:1000px){nav .links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(12,16,22,.98);flex-direction:column;align-items:stretch;padding:10px;border-bottom:1px solid var(--border)}nav.open .links{display:flex}#hamburger-btn{display:block}}
-.links{display:flex;gap:2px;flex-wrap:wrap;align-items:center}
+@media(max-width:680px){.bb .wide{display:none}}
+/* topbar fina con hamburguesa — se oculta al bajar, reaparece al subir */
+.topbar{position:fixed;top:var(--bbh);left:0;right:0;z-index:1001;background:rgba(12,16,22,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:8px 16px;height:46px;transition:transform .28s ease;flex-wrap:nowrap}
+.topbar.t-hide{transform:translateY(-115%)}
+@media(prefers-reduced-motion:reduce){.topbar{transition:none}}
+.topbar .brand{font-family:Georgia,serif;font-weight:bold;color:var(--gold);font-size:.9rem;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hamburger-btn{margin-left:auto;flex-shrink:0;background:none;border:1px solid var(--border);color:var(--gold);width:40px;height:40px;border-radius:9px;cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center;transition:border-color .2s}
+.hamburger-btn:hover{border-color:var(--gold)}
+/* drawer derecha */
+.nav-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.62);z-index:1100;display:none}
+.nav-overlay.active{display:block}
+.nav-drawer{position:fixed;top:0;right:-310px;width:288px;max-width:86vw;height:100vh;background:#121826;border-left:1px solid var(--border);z-index:1101;padding:18px 20px 24px;transition:right .3s ease;overflow-y:auto}
+@media(prefers-reduced-motion:reduce){.nav-drawer{transition:none}}
+.nav-drawer.active{right:0}
+.nav-drawer .dtitle{font-family:Georgia,serif;color:var(--gold);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 12px}
+.nav-drawer a{display:block;padding:.72rem .2rem;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);font-size:.92rem}
+.nav-drawer a:hover{color:var(--gold)}
+.nav-drawer a.hot{color:var(--gold)}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer a .n{color:var(--muted);font-size:.7rem;margin-right:8px;font-family:Georgia,serif}
 /* back fab */
-.back-btn{position:fixed;top:92px;left:14px;z-index:999;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 13px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s}
+.back-btn{position:fixed;top:calc(var(--bbh) + 56px);left:14px;z-index:999;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 13px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s}
 .back-btn:hover{color:var(--gold);border-color:var(--gold)}
 @media(max-width:1280px){.back-btn{display:none}}
-.wrap{max-width:980px;margin:0 auto;padding:150px 22px 40px}
-section{margin-bottom:64px}
+.wrap{max-width:980px;margin:0 auto;padding:calc(var(--bbh) + 92px) 22px 40px}
+section{margin-bottom:64px;scroll-margin-top:calc(var(--bbh) + 54px)}
+.kpis,.meters,.cands{scroll-margin-top:calc(var(--bbh) + 54px)}
+#seccion-top{scroll-margin-top:12px}
 .kicker{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
 h1{font-size:clamp(2.1rem,5.4vw,3.4rem);margin-bottom:12px}
 h1 .thin{color:var(--muted);font-weight:normal}
@@ -159,23 +175,26 @@ tr:last-child td{border-bottom:none}
 </style>
 </head>
 <body>
-<div class="bb">v1.21 · Actualizado 27/11/2026 03:20 — bulómetro completo (32 verificaciones con fuente primaria) + transcripción propia · v2 prevista: <b>encuestas a pie de urna y resultados la noche del 29-N</b></div>
-<button class="back-btn" onclick="window.history.back()">← Atrás</button>
-<nav id="topbar">
+<div class="bb"><span>v1.22 · 27/11 08:05 — 32 verificaciones sobre fuente primaria<span class="wide"> · transcripción y audio propios · v2: exit poll y resultados el 29-N</span></span></div>
+<header class="topbar" id="topbar">
   <span class="brand">🐱 COCOBOT · VERIFICADO</span>
-  <button id="hamburger-btn" onclick="document.getElementById('topbar').classList.toggle('open')">☰</button>
-  <div class="links">
-    <a class="nl" href="#seccion-ficha">01 Ficha</a>
-    <a class="nl" href="#seccion-bloques">02 Qué se dijo</a>
-    <a class="nl hot" href="#seccion-radar">03 Bulómetro</a>
-    <a class="nl" href="#seccion-formas">04 Las formas</a>
-    <a class="nl" href="#seccion-flash">05 Flash post-debate</a>
-    <a class="nl" href="#seccion-tablero">06 Tablero</a>
-    <a class="nl hot" href="#seccion-opinion">07 Mi opinión</a>
-    <a class="nl" href="#seccion-novedades">08 Novedades</a>
-    <a class="nl" href="#seccion-metodologia">09 Metodología</a>
-    <a class="nl" href="#seccion-fuentes">10 Fuentes</a>
-  </div>
+  <button class="hamburger-btn" id="hamburger-btn" aria-label="Menú" onclick="toggleNav()">☰</button>
+</header>
+<button class="back-btn" onclick="window.history.back()">← Atrás</button>
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+<nav class="nav-drawer" id="nav-drawer" aria-label="Secciones">
+  <div class="dtitle">Secciones</div>
+  <a href="#seccion-ficha" onclick="toggleNav()"><span class="n">01</span>Ficha técnica</a>
+  <a href="#seccion-bloques" onclick="toggleNav()"><span class="n">02</span>Qué se dijo</a>
+  <a href="#seccion-radar" class="hot" onclick="toggleNav()"><span class="n">03</span>Bulómetro</a>
+  <a href="#seccion-formas" onclick="toggleNav()"><span class="n">04</span>Las formas</a>
+  <a href="#seccion-flash" onclick="toggleNav()"><span class="n">05</span>Flash post-debate</a>
+  <a href="#seccion-tablero" onclick="toggleNav()"><span class="n">06</span>Tablero</a>
+  <a href="#seccion-opinion" class="hot" onclick="toggleNav()"><span class="n">07</span>Mi opinión</a>
+  <a href="#seccion-novedades" onclick="toggleNav()"><span class="n">08</span>Novedades</a>
+  <a href="#seccion-metodologia" onclick="toggleNav()"><span class="n">09</span>Metodología</a>
+  <a href="#seccion-fuentes" onclick="toggleNav()"><span class="n">10</span>Fuentes</a>
+  <a href="../../index.html">🏠 ← Cocobot Pages</a>
 </nav>
 
 <div class="wrap" id="seccion-top">
@@ -184,7 +203,7 @@ tr:last-child td{border-bottom:none}
 <div class="kicker">Academia de la Televisión · Transmisión 22:00 → 00:05 · Tres Cantos (Madrid) · 26·11·2026</div>
 <h1>Debate a cuatro <span class="thin">— el duelo definitivo antes del 29-N, verificado</span></h1>
 <p class="sub">Sánchez, Feijóo, Abascal y Colau se han enfrentado dos horas en el último gran debate antes de las elecciones. Esta página es un análisis <b>independiente</b>: transcripción propia de la señal íntegra, radar de afirmaciones con fuentes primarias, análisis de las formas y una lectura honesta de si ha habido ganador —spoiler: la respuesta incómoda es que no, y lo explico con datos.</p>
-<div class="upd" id="upd-badge">v1.21 · radar completo · minuto de oro verificado sobre audio propio · cada cifra recomputada sobre fuente primaria</div>
+<div class="upd" id="upd-badge">v1.22 · radar completo (32) · minuto de oro verificado sobre audio propio · cada cifra recomputada sobre fuente primaria</div>
 
 <div class="cands">
   <div class="cand psoe"><img src="sanchez.jpg" alt="Pedro Sánchez"><div class="ci"><div class="nm">Pedro Sánchez</div><div class="pt">PSOE · presidente</div><div class="tg">«El domingo el poder lo tienes tú»</div></div></div>
@@ -421,6 +440,7 @@ tr:last-child td{border-bottom:none}
   <div class="card" id="upd-log">
     <div class="log-item"><span class="d">v1.1 · 27/11 01:40</span><span>Primera edición nocturna: reconstrucción por bloques contrastada con 9 directos + transcripción propia; radar con primeras verificaciones (VerificaRTVE + recomprobación primaria); flash de votaciones de lectores; formas y tablero.</span></div>
     <div class="log-item"><span class="d">v1.2 · 27/11 02:50</span><span><b>Radar completo: 30 afirmaciones verificadas con fuente primaria</b> (INE JAX, Interior, BOE, sentencias AN/TS, MIVAU, Generalitat) y minuto exacto de mi propia transcripción cuando el audio la cubre. Añadidos: flash NC Report (caso fronterizo de veda), reacciones en caliente, mapa de encuestas pre-veda y encuadres de prensa. <b>Tres correcciones a la edición de madrugada:</b> el «alquiler −4%» es de Colau (no de Sánchez); el aforamiento de Mazón es como diputado en Les Corts (no senador); la «medalla a Israel» era propuesta municipal retirada y nunca concedida.</span></div>
+    <div class="log-item"><span class="d">v1.22 · 27/11 08:05</span><span>Cabecera rediseñada (crítica de Raúl desde móvil): la franja roja pasa a línea fina fija arriba; la barra de cabecera se oculta al hacer scroll hacia abajo y reaparece al subir; los diez enlaces pasan a menú hamburguesa lateral (drawer derecha) con el diseño habitual de las páginas Cocobot — incluye enlace de vuelta al índice. Comportamiento idéntico con <i>reduced motion</i> (sin animación, misma función).</span></div>
     <div class="log-item"><span class="d">v1.21 · 27/11 03:20</span><span>Transcripción propia COMPLETA hasta el cierre: los cuatro minutos de oro verificados sobre mi audio ([128:38]-[131:50], cita íntegra de Feijóo actualizada). Dos afirmaciones añadidas captadas en el audio: el «25% del crecimiento es por los migrantes» de Sánchez (mayormente: techo BdE) y el «50% de extracomunitarios no cotiza» de Abascal (sin fuente). Radar: <b>32 afirmaciones</b>.</span></div>
     <div class="log-item"><span class="d">v1.3 · previsto 27/11 tarde</span><span>Audiencia del debate (Barlovento), crónicas matutinas, cierres nocturnos de EFE Verifica, votaciones de lectores cerradas (ABC/eldiario) y reacciones de La Revuelta/tertulias — con la transcripción propia completa (cierre del minuto de oro incluido).</span></div>
     <div class="log-item"><span class="d">v2 · previsto 29/11 21:05</span><span><b>Exit poll RTVE + flash La 1 + primeros resultados</b>. Se evaluará si el debate cambió algo: bloque a bloque, territorio a territorio, y se cerrará el veredicto de ganador con datos.</span></div>
@@ -516,6 +536,31 @@ var FUENTES={
 };
 function fillFuentes(){Object.keys(FUENTES).forEach(function(k){var el=document.getElementById('fuentes-'+k);if(!el)return;el.innerHTML=FUENTES[k].map(function(f){return '<li><a href="'+f[1]+'" target="_blank">'+f[0]+'</a></li>';}).join('');});}
 renderClaims();fillFuentes();
+function toggleNav(){
+  var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),b=document.getElementById('hamburger-btn');
+  var open=d.classList.contains('active');
+  if(open){d.classList.remove('active');o.classList.remove('active');b.textContent='☰';document.body.classList.remove('nav-open');}
+  else{d.classList.add('active');o.classList.add('active');b.textContent='✕';document.body.classList.add('nav-open');}
+}
+(function(){
+  var bar=document.getElementById('topbar'),last=window.scrollY,lock=0;
+  window.__anchorJump=function(){lock=Date.now()+1600;bar.classList.remove('t-hide');};
+  window.addEventListener('scroll',function(){
+    if(document.body.classList.contains('nav-open')){last=window.scrollY;return;}
+    var y=window.scrollY;
+    if(Date.now()<lock){last=y;return;}
+    if(Math.abs(y-last)<6)return;
+    if(y>last&&y>220){bar.classList.add('t-hide');}else{bar.classList.remove('t-hide');}
+    last=y;
+  },{passive:true});
+  window.addEventListener('hashchange',function(){last=window.scrollY;bar.classList.remove('t-hide');});
+})();
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(this.getAttribute('href'));
+    if(t){e.preventDefault();window.__anchorJump();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
 (function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/debate-a-cuatro-29n/';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();
 </script>
 </body>
