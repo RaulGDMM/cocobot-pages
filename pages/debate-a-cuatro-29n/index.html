@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debate a cuatro (29N): el debate verificado | Cocobot</title>
+<meta name="description" content="Análisis independiente del debate a cuatro del 26-N (Sánchez, Feijóo, Abascal, Colau): transcripción propia, bulómetro con fuentes, análisis de las formas y quién ganó (o no).">
+<style>
+:root{
+  --bg:#0c1016; --bg2:#121826; --card:#151d2e; --card2:#1a2438;
+  --text:#e8edf5; --muted:#8fa1b8; --border:#263450;
+  --gold:#e8b34b; --red:#e4574f; --green:#43c26a; --teal:#3ec6bd;
+  --orange:#e8923f; --gray:#7a8699; --blue:#4f8ff0; --purple:#a86ee0;
+  --psoe:#e2453c; --pp:#3f87e8; --vox:#58a94b; --fa:#b06ee0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.65;font-size:16px}
+h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif;line-height:1.2}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+::selection{background:rgba(232,179,75,.25)}
+/* breaking banner */
+.bb{background:linear-gradient(90deg,#8a1f1a,var(--red));color:#fff;padding:7px 1rem;font-size:.72rem;font-weight:600;text-align:center;position:fixed;top:0;left:0;right:0;z-index:1001;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.bb::before{content:'';width:8px;height:8px;background:#fff;border-radius:50%;animation:p 1.2s infinite;flex-shrink:0}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
+/* nav */
+nav{position:fixed;top:30px;left:0;right:0;z-index:1000;background:rgba(12,16,22,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;padding:10px 20px;flex-wrap:wrap}
+nav .brand{font-family:Georgia,serif;font-weight:bold;color:var(--gold);margin-right:10px;font-size:.95rem;letter-spacing:.5px}
+nav a.nl{color:var(--muted);font-size:.78rem;padding:5px 9px;border-radius:6px;white-space:nowrap}
+nav a.nl:hover{color:var(--text);background:var(--card);text-decoration:none}
+nav a.nl.hot{color:var(--gold)}
+#hamburger-btn{display:none;background:none;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;font-size:1.05rem;cursor:pointer;margin-left:auto}
+@media(max-width:1000px){nav .links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(12,16,22,.98);flex-direction:column;align-items:stretch;padding:10px;border-bottom:1px solid var(--border)}nav.open .links{display:flex}#hamburger-btn{display:block}}
+.links{display:flex;gap:2px;flex-wrap:wrap;align-items:center}
+/* back fab */
+.back-btn{position:fixed;top:92px;left:14px;z-index:999;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 13px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s}
+.back-btn:hover{color:var(--gold);border-color:var(--gold)}
+@media(max-width:1280px){.back-btn{display:none}}
+.wrap{max-width:980px;margin:0 auto;padding:150px 22px 40px}
+section{margin-bottom:64px}
+.kicker{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
+h1{font-size:clamp(2.1rem,5.4vw,3.4rem);margin-bottom:12px}
+h1 .thin{color:var(--muted);font-weight:normal}
+.sub{color:var(--muted);font-size:1.02rem;max-width:820px;margin-bottom:26px}
+.upd{display:inline-block;background:rgba(232,179,75,.12);border:1px solid rgba(232,179,75,.4);color:var(--gold);font-size:.72rem;padding:5px 11px;border-radius:20px;margin-bottom:28px}
+/* candidate hero cards */
+.cands{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:10px 0 26px}
+.cand{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:relative}
+.cand img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top center;display:block;filter:saturate(.92)}
+.cand .ci{padding:10px 12px 12px}
+.cand .nm{font-family:Georgia,serif;font-size:.98rem;font-weight:bold}
+.cand .pt{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.cand .tg{font-size:.72rem;color:var(--text);opacity:.85;margin-top:4px;font-style:italic}
+.cand::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.cand.psoe::after{background:var(--psoe)}.cand.pp::after{background:var(--pp)}.cand.vox::after{background:var(--vox)}.cand.fa::after{background:var(--fa)}
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:22px 0 8px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 14px;text-align:center}
+.kpi b{display:block;font-size:1.45rem;font-family:Georgia,serif;color:var(--gold)}
+.kpi span{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+/* section heading */
+.ch{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:24px}
+.ch .n{font-size:.72rem;color:var(--gold);font-family:Georgia,serif;letter-spacing:.18em}
+.ch h2{font-size:clamp(1.4rem,3.2vw,1.9rem)}
+.note{color:var(--muted);font-size:.86rem;margin:-12px 0 22px;max-width:800px}
+.note.warn{color:#d9a44a;border-left:3px solid var(--orange);padding-left:12px}
+/* cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.card h3{font-size:1.12rem;margin-bottom:8px}
+.card h4{font-size:.95rem;margin:14px 0 6px;color:var(--gold)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+blockquote{border-left:3px solid var(--gold);background:rgba(232,179,75,.06);padding:12px 16px;margin:14px 0;border-radius:0 10px 10px 0;font-family:Georgia,serif;font-size:1.02rem}
+blockquote .who{display:block;font-family:'Inter',sans-serif;font-size:.72rem;color:var(--muted);margin-top:6px;font-style:normal}
+ul{margin:8px 0 8px 22px}
+li{margin-bottom:6px}
+.tag{display:inline-block;font-size:.64rem;padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--muted);margin-left:6px;vertical-align:middle;letter-spacing:.05em}
+.tag.f{border-color:rgba(228,87,79,.5);color:#f0918b}
+.tag.g{border-color:rgba(67,194,106,.5);color:#7edda0}
+.tag.o{border-color:rgba(232,146,63,.5);color:#eab177}
+/* radar */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.fbtn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:20px;font-size:.75rem;cursor:pointer}
+.fbtn.on{border-color:var(--gold);color:var(--gold);background:rgba(232,179,75,.08)}
+.claims{display:grid;gap:12px}
+.claim{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--gray);border-radius:12px;padding:16px 18px}
+.claim .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.who-chip{font-size:.66rem;font-weight:700;letter-spacing:.08em;padding:3px 9px;border-radius:8px;text-transform:uppercase}
+.w-s{background:rgba(226,69,60,.16);color:#f2837c}.w-f{background:rgba(63,135,232,.16);color:#86b5f2}
+.w-a{background:rgba(88,169,75,.16);color:#8fce84}.w-c{background:rgba(176,110,224,.16);color:#cda2ef}
+.tchip{font-size:.68rem;color:var(--muted)}
+.vchip{font-size:.64rem;font-weight:700;padding:3px 9px;border-radius:8px;letter-spacing:.04em;text-transform:uppercase}
+.v-verdadero{background:rgba(67,194,106,.14);color:#6fd68f}
+.v-mayormente{background:rgba(62,198,189,.14);color:#6bd8d0}
+.v-impreciso{background:rgba(232,179,75,.14);color:#eec26b}
+.v-enganoso{background:rgba(232,146,63,.16);color:#eda05c}
+.v-falso{background:rgba(228,87,79,.15);color:#f0918b}
+.v-sinfuente{background:rgba(122,134,153,.16);color:#a6b1c2}
+.v-opinion{background:rgba(168,110,224,.15);color:#c69beb}
+.v-contexto{background:rgba(79,143,240,.14);color:#89b1f4}
+.claim .q{font-family:Georgia,serif;font-size:1rem;margin-bottom:8px}
+.claim .why{font-size:.86rem;color:#c3cede}
+.claim .srcs{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.claim .srcs a{font-size:.7rem;color:var(--blue);opacity:.85}
+.claim.c-s{border-left-color:var(--psoe)}.claim.c-f{border-left-color:var(--pp)}
+.claim.c-a{border-left-color:var(--vox)}.claim.c-c{border-left-color:var(--fa)}
+.scorestrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:22px}
+.score{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.score .nm{font-size:.8rem;font-weight:700;margin-bottom:8px}
+.score .bar{height:7px;border-radius:4px;background:#22304a;overflow:hidden;margin:4px 0 9px}
+.score .bar i{display:block;height:100%;border-radius:4px}
+.score .lab{font-size:.66rem;color:var(--muted)}
+.countline{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.countline span{font-size:.66rem;padding:2px 8px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);color:var(--muted)}
+/* meters */
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:26px}
+.meter{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.meter .nm{font-size:.82rem;font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between}
+.meter .nm small{color:var(--muted);font-weight:normal}
+.mrow{font-size:.66rem;color:var(--muted);margin:8px 0 3px;display:flex;justify-content:space-between}
+.mbar{height:8px;background:#22304a;border-radius:4px;overflow:hidden}
+.mbar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),#f3d391)}
+.mbar.c2 i{background:linear-gradient(90deg,var(--teal),#7fe3dc)}
+/* tables */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem}
+th{background:var(--bg2);color:var(--muted);text-align:left;padding:9px 11px;font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--border)}
+td{padding:9px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.big{font-family:Georgia,serif;font-size:1.1rem}
+/* log */
+.log-item{display:flex;gap:14px;padding:11px 0;border-bottom:1px dashed var(--border);font-size:.85rem}
+.log-item:last-child{border:none}
+.log-item .d{color:var(--gold);white-space:nowrap;font-size:.72rem;font-weight:700;min-width:112px}
+/* sources */
+.src-cat{margin-bottom:18px}
+.src-cat h4{color:var(--gold);font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.srcs-list{font-size:.82rem}
+.srcs-list li{margin-bottom:4px;color:var(--muted)}
+/* opinion */
+.opin{background:linear-gradient(160deg,#1a2438,#141c2c);border:1px solid rgba(232,179,75,.3);border-radius:16px;padding:26px 28px}
+.opin h3{color:var(--gold);margin-bottom:12px}
+.opin p{margin-bottom:13px}
+.footnote{font-size:.74rem;color:var(--muted);margin-top:10px;font-style:italic}
+/* methodology */
+.step{display:flex;gap:14px;margin-bottom:16px}
+.step .num{min-width:34px;height:34px;border-radius:50%;background:rgba(232,179,75,.12);border:1px solid rgba(232,179,75,.4);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:bold}
+.step p{font-size:.88rem;color:#c3cede}
+.footer{border-top:1px solid var(--border);margin-top:30px;padding:22px;text-align:center}
+.footer-inner{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+.footer-brand{color:var(--muted);font-size:.85em}
+.visit-counter-badge{color:var(--muted);font-size:.8em;background:rgba(52,152,219,.06);padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+.small{font-size:.78rem;color:var(--muted)}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chiprow a{font-size:.68rem;border:1px solid var(--border);padding:4px 10px;border-radius:14px;color:var(--muted)}
+.chiprow a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
+.vs{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin:6px 0}
+.vs b{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="bb">v1.2 · Actualizado 27/11/2026 02:50 — bulómetro completo (30 verificaciones con fuente primaria) + transcripción propia · v2 prevista: <b>encuestas a pie de urna y resultados la noche del 29-N</b></div>
+<button class="back-btn" onclick="window.history.back()">← Atrás</button>
+<nav id="topbar">
+  <span class="brand">🐱 COCOBOT · VERIFICADO</span>
+  <button id="hamburger-btn" onclick="document.getElementById('topbar').classList.toggle('open')">☰</button>
+  <div class="links">
+    <a class="nl" href="#seccion-ficha">01 Ficha</a>
+    <a class="nl" href="#seccion-bloques">02 Qué se dijo</a>
+    <a class="nl hot" href="#seccion-radar">03 Bulómetro</a>
+    <a class="nl" href="#seccion-formas">04 Las formas</a>
+    <a class="nl" href="#seccion-flash">05 Flash post-debate</a>
+    <a class="nl" href="#seccion-tablero">06 Tablero</a>
+    <a class="nl hot" href="#seccion-opinion">07 Mi opinión</a>
+    <a class="nl" href="#seccion-novedades">08 Novedades</a>
+    <a class="nl" href="#seccion-metodologia">09 Metodología</a>
+    <a class="nl" href="#seccion-fuentes">10 Fuentes</a>
+  </div>
+</nav>
+
+<div class="wrap" id="seccion-top">
+
+<!-- HERO -->
+<div class="kicker">Academia de la Televisión · Transmisión 22:00 → 00:05 · Tres Cantos (Madrid) · 26·11·2026</div>
+<h1>Debate a cuatro <span class="thin">— el duelo definitivo antes del 29-N, verificado</span></h1>
+<p class="sub">Sánchez, Feijóo, Abascal y Colau se han enfrentado dos horas en el último gran debate antes de las elecciones. Esta página es un análisis <b>independiente</b>: transcripción propia de la señal íntegra, radar de afirmaciones con fuentes primarias, análisis de las formas y una lectura honesta de si ha habido ganador —spoiler: la respuesta incómoda es que no, y lo explico con datos.</p>
+<div class="upd" id="upd-badge">v1.2 · radar completo · cada cifra recomputada sobre fuente primaria, no de rebotadera</div>
+
+<div class="cands">
+  <div class="cand psoe"><img src="sanchez.jpg" alt="Pedro Sánchez"><div class="ci"><div class="nm">Pedro Sánchez</div><div class="pt">PSOE · presidente</div><div class="tg">«El domingo el poder lo tienes tú»</div></div></div>
+  <div class="cand pp"><img src="feijoo.jpg" alt="Alberto Núñez Feijóo"><div class="ci"><div class="nm">Núñez Feijóo</div><div class="pt">PP · candidato</div><div class="tg">«Voten con memoria»</div></div></div>
+  <div class="cand vox"><img src="abascal.jpg" alt="Santiago Abascal"><div class="ci"><div class="nm">Santiago Abascal</div><div class="pt">Vox</div><div class="tg">«Reconquistar el futuro»</div></div></div>
+  <div class="cand fa"><img src="colau.jpg" alt="Ada Colau"><div class="ci"><div class="nm">Ada Colau</div><div class="pt">Frente Amplio</div><div class="tg">«Vivienda para vivir»</div></div></div>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><b>2 h 05</b><span>de directo</span></div>
+  <div class="kpi"><b>5+1</b><span>bloques + minuto de oro</span></div>
+  <div class="kpi"><b id="kpi-claims">–</b><span>afirmaciones en radar</span></div>
+  <div class="kpi"><b id="kpi-bad">–</b><span>falsas / engañosas</span></div>
+  <div class="kpi"><b>3 días</b><span>para las urnas</span></div>
+</div>
+
+<!-- METERS -->
+<h2 style="font-size:1.05rem;margin:30px 0 6px">Termómetro editorial <span class="tag o">valoración propia · metodología en §09</span></h2>
+<div class="meters">
+  <div class="meter"><div class="nm"><span style="color:#f2837c">Pedro Sánchez</span><small>contenido 6 · forma 5</small></div><div class="mrow"><span>Contenido</span><span>6/10</span></div><div class="mbar"><i style="width:60%"></i></div><div class="mrow"><span>Formas</span><span>5/10</span></div><div class="mbar c2"><i style="width:50%"></i></div><div class="lab">Presidencial y con inventario social, pero a la defensiva en trenes y corrupción; dos zascas fallidos.</div></div>
+  <div class="meter"><div class="nm"><span style="color:#86b5f2">Feijóo</span><small>contenido 6 · forma 6</small></div><div class="mrow"><span>Contenido</span><span>6/10</span></div><div class="mbar"><i style="width:60%"></i></div><div class="mrow"><span>Formas</span><span>6/10</span></div><div class="mbar c2"><i style="width:60%"></i></div><div class="lab">Cumple el guion: no pica con Vox, instala «gestión» y su órdago de dimisión. Pero su batería de cifras volvió a cojear.</div></div>
+  <div class="meter"><div class="nm"><span style="color:#8fce84">Abascal</span><small>contenido 4 · forma 3</small></div><div class="mrow"><span>Contenido</span><span>4/10</span></div><div class="mbar"><i style="width:40%"></i></div><div class="mrow"><span>Formas</span><span>3/10</span></div><div class="mbar c2"><i style="width:30%"></i></div><div class="lab">Contenido en el debate más duro que se le recuerda… y el más falso: negarse a condenar la violencia machista en prime time define su noche.</div></div>
+  <div class="meter"><div class="nm"><span style="color:#cda2ef">Colau</span><small>contenido 6 · forma 6</small></div><div class="mrow"><span>Contenido</span><span>6/10</span></div><div class="mbar"><i style="width:60%"></i></div><div class="mrow"><span>Formas</span><span>6/10</span></div><div class="mbar c2"><i style="width:60%"></i></div><div class="lab">Valiente autocrítica en vivienda y la mejor frase de la noche para su electorado; pagó caro el debut en el cruce con la derecha.</div></div>
+</div>
+
+<!-- CH01 FICHA -->
+<section id="seccion-ficha">
+  <div class="ch"><span class="n">CH·01</span><h2>La ficha técnica</h2></div>
+  <div class="card">
+    <p>Segundo gran debate de la campaña tras el cara a cara Sánchez–Feijóo del 19-N (10,2 M de espectadores) y el debate a ocho de RTVE del lunes (3,45 M). El de anoche ha enfrentado por <b>primera vez en un mismo plató</b> a los cuatro candidatos con opciones reales — Feijóo no acudió al debate a cuatro de 2023, error que sus estrategas reconocen como capital de aquella campaña.</p>
+    <h4>Reglas del formato (Academia de la Televisión)</h4>
+    <ul>
+      <li><b>Cinco bloques</b> de ~20 min (turnos de ~5 min): <b>1º Vivienda · 2º Economía y fiscalidad · 3º Política social y servicios públicos · 4º Corrupción y regeneración · 5º Migración y política exterior</b>. Dos pausas de 3 min tras el 2º y 4º bloque, con un único asesor acreditado y sin móviles.</li>
+      <li>Turno inicial de 90 s por orden sorteados: <b>Colau → Sánchez → Feijóo → Abascal</b>. Cierre con <b>minuto de oro</b>: Sánchez → Abascal → Colau → <b>Feijóo (última palabra)</b>.</li>
+      <li>Cronómetro en manos de <b>árbitros de la Federación Española de Baloncesto</b>. 18 cámaras y 1,8 m entre atriles. Podios: Abascal, Sánchez, Feijóo, Colau.</li>
+      <li>Señal neutral abierta a todas las cadenas (el PP vetó a RTVE como organizador y el PSOE a las privadas; la Academia fue la solución pactada a la guerra de los debates).</li>
+    </ul>
+    <h4>Contexto en que llegan</h4>
+    <ul>
+      <li><b>Veda encuestadora desde el lunes</b> (LOREG art. 69): desde el 23-N no se puede publicar ninguna encuesta, ni siquiera las que se hagan tras el debate. Todo sondeo post-debate que veas hasta el cierre de urnas del domingo es votación de lectores, no estadística.</li>
+      <li>Antes de la veda, los trackings daban <b>subidón del PSOE sin arrebatar a PP+Vox su mayoría</b> — de ahí la urgencia de Sánchez por el tono presidencial y la movilización, y la calma declarada de Feijóo («voto prestado del PSOE; que Abascal no me robe a mí»).</li>
+      <li>Sánchez llegó <b>entre pitos</b> frente al recinto; Abascal fue el primero en entrar y saludó riendo a Feijóo (primer saludo público del curso entre ambos). Casado moderó por segunda vez consecutiva.</li>
+      <li>Tensión de campaña sobre mesa: accidentes de Adamuz y Urda (alta velocidad), dana (230+ víctimas), pulseras antimaltrato, casos Koldo/Ábalos y Begoña Gómez, crisis migratoria en El Hierro y Ceuta, y el <b>primer deepfake de una campaña española</b> (vídeo falseando a cargos del PSOE; PP niega autoría, Moncloa estudia denuncia).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CH02 BLOQUES -->
+<section id="seccion-bloques">
+  <div class="ch"><span class="n">CH·02</span><h2>Qué se dijo, bloque a bloque</h2></div>
+  <p class="note">Las citas están contrastadas con la <b>transcripción propia de la señal íntegra</b> (audio EL PAÍS, 2 h 29) y con 9 narraciones en directo de medios distintos; los minutos son aproximados al directo. El detalle verificado, en el <a href="#seccion-radar">radar §03</a>.</p>
+
+  <div class="card"><h3>BLOQUE 1 · Vivienda (22:11–22:31) — «el gran buitre está a su izquierda»</h3>
+    <p>Feijóo abrió la materia estrella: <b>«esta ha sido la legislatura de la vivienda imposible»</b> (comprar +76%, alquilar +45%: cifras reales <b>desde 2018</b>, no de la legislatura — ver radar). Su remedio, <b>un millón de viviendas</b>; Colau le preguntó <b>cómo</b> — no lo concretó. La marca de la casa popular: <i>«para tener una casa hay que heredarla, okuparla o aparecer en los sumarios»</i> y <i>«me ocuparé de la vivienda haciendo lo contrario que Colau en Barcelona»</i>.</p>
+    <p>Abascal convirtió el bloque en su primer choque del debate: la regulación de izquierda <b>«ha hecho desaparecer la mitad de la oferta»</b> (el dato de anuncios existe, la causal es falsa — ver radar) y soltó la frase que abría los informativos: <i>«el gran buitre que hay en España está justo a su izquierda»</i>, llamando <b>«buitre»</b> a Sánchez. Y a Sánchez, desafiante: <i>«usted solo no es capaz de enfrentarse a mí; ha tenido que traer a esta señora para que le haga el trabajo sucio»</i> — unos segundos de debate en pausa.</p>
+    <blockquote>«En los últimos seis años han entrado 6 millones de personas y únicamente se han construido 100.000 viviendas. Es una estafa hablar de vivienda sin hablar de inmigración masiva.»<span class="who">Abascal (audio 26:26) — doble verificación en el radar: migración <b style="color:#eda05c">ENGANOSA</b> (6 M son entradas brutas; el saldo neto INE es +2,2 M) y vivienda <b style="color:#f0918b">FALSA</b> (554.000 viviendas terminadas desde 2020)</span></blockquote>
+    <p>Colau estrenó la noche con la <b>única autocrítica progresista del debate</b>: el gobierno de coalición <b>«ha suspendido en vivienda»</b>, aunque pidió reeditar la coalición con los alquileres como «primordial» y expropiación a fondos buitre. Un detalle del audio que la prensa casi no recogió: fue <b>Colau</b> quien puso el único dato oficial defendible del bloque —la contención de rentas en zonas tensionadas catalanas «ha bajado ligeramente, un 4%» (minuto 30:08 de la grabación; los informes de la Generalitat lo sostienen: -5% agregado, Barcelona ciudad entre -3,3% y -4,4%)—. Sánchez, sin cifra propia, se atrincheró en la acusación: PP y Vox, <b>«perro del hortelano»</b> —boicotean la vivienda donde gobiernan y votan contra toda regulación (los votos nominales, en el radar)—.</p>
+  </div>
+
+  <div class="card"><h3>BLOQUE 2 · Economía y fiscalidad (22:31–22:55) — «Robin Hood disfrazado»</h3>
+    <p>Abascal: «el Gobierno es el enemigo de los trabajadores; los señores del Ibex han ganado más con Sánchez», y su condición de futuro: <i>«no voy a participar en ningún gobierno en el que no se bajen impuestos»</i>. Su plan —desvelado ese día—: recortar <b>112.000 millones</b> de gasto público (casi el doble del presupuesto anual de Educación), «dejar de financiar partidos y ONG ideológicas» y <b>prioridad nacional</b> en las prestaciones.</p>
+    <p>Colau convirtió el susto en argumento: «Argentina entró en recesión con esas políticas; <b>no lo vamos a permitir — la gente va a ir a votar en masa</b>», y rescató su <i>tax the rich</i>. Feijóo prometió recortar <b>«asesores, altos cargos y todo tipo de indecencia»</b>, se declaró <b>a favor de subir el SMI</b> («que ustedes manejen a los sindicatos no significa que yo maneje a la patronal») y presumió de cuentas: <i>«a mí me gustan las cuentas; a ustedes, los cuentos»</i>. Sánchez reconoció que <b>«la vida está cara»</b> pero lo atribuyó a la guerra de Irán, y reivindicó haberse <i>«partido la cara ante Trump en la OTAN»</i>.</p>
+    <p>El cruce más repetido de la noche: Sánchez y Colau reprocharon a Abascal <b>cobrar el bono social térmico de familia numerosa</b> habiendo votado contra las familias numerosas (dato cierto: ver radar). De ahí el <b>«a otro perro con ese hueso»</b> de Sánchez y el «paguita» del IMV en boca de Abascal.</p>
+    <blockquote>«Me conmueve ver a Feijóo y Abascal disfrazados de Robin Hood.»<span class="who">Sánchez — que recibió: «usted es un tertuliano, señor Sánchez» (Feijóo)</span></blockquote>
+    <p>Dato para la memoria: Colau echó en cara al PP <b>«haber votado 4 veces en contra de la subida del SMI»</b>… y es <b>falso</b>: el SMI se aprueba por real decreto y no se vota en el Congreso. Se lo corrigió el propio Feijóo — rareza del debate: la verificación en directo.</p>
+  </div>
+
+  <div class="card"><h3>BLOQUE 3 · Servicios públicos (22:55–23:24) — el bloque donde Sánchez encajó golpes</h3>
+    <p>Colau abrió con otra agresión machista ocurrida «mientras debatíamos» y reivindicó la letra pequeña del Gobierno (SMI, permisos, dependencia, permiso de duelo) como obra de las fuerzas hoy en Frente Amplio. Feijóo montó el bloque sobre el talón de Aquiles del PSOE: los <b>116 muertos ferroviarios «en menos de un año»</b> (Adamuz + Urda; la cifra cuadra — ver radar), la filtración de los audios del maquinista fallecido (hipótesis sin acreditar judicialmente — ver radar), las pulseras antimaltrato y <b>«170 fallos en dos años»</b> en la LAV Madrid–Sevilla (la cifra existe —170 caídas del LZB— pero son de diez meses de 2026 y las dio el propio ministro Puente llamándolas «normalidad europea»: «dos años» no aguanta — ver radar): <i>«nadie puede ser presidente si no puede garantizar que nos subamos tranquilos a un tren»</i>.</p>
+    <p>Abascal, a su aire: <i>«las redes que nos protegían han sido destruidas: la ferroviaria, gastándoselo en mordidas y fulanas; la sanitaria, regalándosela a todo el mundo»</i>. Sánchez y Colau hicieron causa común: Ayuso y las listas de espera catalanas cruzadas como armas arrojadizas, los cribados de cáncer andaluces y la huelga de maestros de Madrid («garrapatas», ático). De ahí la falsa frase de Feijóo: <b>«allí hubo dimisiones; en el Gobierno de España, ni una»</b> (ver radar: el propio Puente dimitió el 3-N por los propios trenes).</p>
+    <blockquote>«Buena gestión es ponerse al frente de una emergencia nacional y no salir huyendo de Paiporta… y usted, calladita.»<span class="who">Feijóo a Colau, por la dana — Sánchez, en su defensa: «¿Qué machismo es este? Un poco de respeto»</span></blockquote>
+    <p>La dana fue el otro frente: Colau recriminó al PP tener <b>«aforado a Mazón con más de 230 víctimas mortales»</b> (cierto con precisión: la jueza de Catarroja ya reconoce 234 víctimas y Mazón, tras dimitir como president, conserva escaño en Les Corts —con aforamiento ante el TSJCV—; lo que no dijo Feijóo es que ya no gobierna la Generalitat — ver radar) y Feijóo devolvió el «calladita», que ocupó más tertulias que cualquier propuesta.</p>
+  </div>
+
+  <div class="card"><h3>BLOQUE 4 · Corrupción (23:24–23:50) — «imán», Marcial Dorado y el órdago de Feijóo</h3>
+    <p>Sánchez abrió con la frase-defensa: <i>«corrupción cero no existe, pero tolerancia cero sí existe»</i>; se definió como <b>«político íntegro»</b>; acusó a PP y Vox de tener <b>«42 casos abiertos»</b> y a Feijóo de «no admitir imputados ni en su partido»: <i>«nosotros estamos expulsándola y el PP parece que comprándola»</i>. Feijóo, con sorna: <b>¿«tiene usted un imán para la corrupción»?</b> — y Sánchez, contraataque: <i>«pregúntese con quién iba de vacaciones él»</i> (Marcial Dorado, caso que terminó archivado — ver radar).</p>
+    <p>El momento político del bloque (audio 98:15-98:52, ≈23:27): el órdago de Feijóo —<b>«o usted o yo vamos a presidir el Gobierno: ¿usted va a dimitir, dejar el acta y renunciar al aforamiento? Yo sí»</b>— y la esquiva de Sánchez, que en vez de recogerlo devolvió la carta Mazón: <i>«¿y usted va a acabar con el aforamiento del señor Mazón, que se lo he preguntado y no me ha contestado?»</i>. ABC/El Debate: «Sánchez lo evita».) Colau, con la sentencia Gürtel en la mano: el PP <b>«fue condenado»</b> — aunque decir «como organización criminal» se pasa de lo que dice la sentencia (ver radar). Abascal, a lo suyo: <i>«la corrupción de Sánchez ha matado españoles»</i> (Adamuz, Urda, apagón, dana) y el sarcasmo de la moción de censura «presentada por Ábalos».</p>
+  </div>
+
+  <div class="card"><h3>BLOQUE 5 · Migración y exterior (23:50–00:00) — Ceuta «invadida» y el duelo insólito del Mundial</h3>
+    <p>Feijóo arrancó por Ceuta (mayo 2021) y los cayucos de Canarias: <i>«quiero llevarme bien con Marruecos: lealtad, reciprocidad y respeto, pero Ceuta no se vende, Ceuta se defiende»</i>. Inesperado duelo por el <b>Mundial 2030</b>: Feijóo exigió acoger la final; Sánchez, atletico: «me gustaría el Metropolitano, pero entiendo que sea el Bernabéu». Abascal: <i>«no se puede hacer un Mundial con una ciudad invadida; 100.000 invasores en una ciudad de 80.000… y traidores que abrieron las puertas»</i> (la cifra, directamente falsa — ver radar).</p>
+    <p>Sánchez rivendicó su exterior: «dijimos no a la guerra en Irán y en Ucrania, no al genocidio de Israel en Gaza, <b>no al 5% en defensa</b>, y sí al Estado de Palestina» (el «no al 5%»: verdad incómoda con letra pequeña — ver radar). Colau denunció la «coalición internacional ultraderechista» y la <b>medalla de la Comunidad de Madrid «al Gobierno de Israel en pleno genocidio»</b> (falsa en triple: era propuesta del Ayuntamiento, retirada por Almeida, y nunca dada a ningún gobierno — ver radar), y cerró el debate como lo abrió: exigiendo a Abascal que condene la violencia machista, y a Feijóo que se la exija: <i>«¿por qué no lo hace? ¿miedo?»</i>. La respuesta de Abascal fue la cifra más falsa de la noche, literal y en primerísimo plano (23:50): <i>«¿Va a seguir metiendo violadores para que aumenten las violaciones por tres? Desde que usted llegó, un 247% han aumentado las agresiones sexuales»</i> (radar: la serie comparable de Interior da +80% en agresiones y +96% con penetración — casi el doble, no el triple).</p>
+  </div>
+
+  <div class="card"><h3>CIERRE · Minuto de oro (00:00–00:05) — cuatro cartas distintas a la misma baraja</h3>
+    <p><b>Sánchez</b> abrió el oro con el mensaje más votado por su militancia: <i>«Feijóo y Abascal tienen mucho poder, pero el domingo el poder lo tienes tú: tienes más poder que ellos»</i>; «que España siga progresando y no gane la involución». <b>Abascal</b>: <i>«España tiene futuro y lo decidiremos en unas elecciones limpias y transparentes para que España reconquiste su futuro»</i>; frenar «la invasión migratoria» y «defender Ceuta». <b>Colau</b>: compromiso de «escuchar a la ciudadanía movilizada» y conseguir que «la vivienda sea para vivir y no para especular». <b>Feijóo</b> cerró el debate con su mejor línea: <i>«él os pide el voto con miedo; yo os lo pido con memoria… no os garantizo milagros, pero sí decencia y gestión. El domingo, votad con memoria, porque el cambio es necesario para todos»</i>.</p>
+  </div>
+</section>
+
+<!-- CH03 RADAR -->
+<section id="seccion-radar">
+  <div class="ch"><span class="n">CH·03</span><h2>Bulómetro — el radar de afirmaciones</h2></div>
+  <p class="note">Cada tarjeta es una afirmación <b>comprobada con fuente primaria</b> (INE, Interior, BOE, Seguridad Social, tribunal de cuentas, sentencias…) y contrastada con VerificaRTVE, Newtral y los verificadores del directo cuando ya la cubrían — pero recomputada por separado. Veredictos: <b>verdadero · mayormente verdadero · impreciso · engañoso · falso · sin fuente</b>. «Engañoso» = dato real con marco falso; es el género favorito de esta noche.</p>
+  <div class="scorestrip" id="score-by-cand"></div>
+  <div class="filters" id="claim-filters"></div>
+  <div class="claims" id="claims-list"><div class="note">Cargando radar…</div></div>
+</section>
+
+<!-- CH04 FORMAS -->
+<section id="seccion-formas">
+  <div class="ch"><span class="n">CH·04</span><h2>Las formas — tono, golpes y lenguaje no verbal</h2></div>
+  <div class="card">
+    <h4>El termómetro de la bronca</h4>
+    <p>Fue el debate más bronco de los tres (el cara a cara ya fue un ring; el a ocho, un trámite). Pero la bronca no fue uniforme: <b>PP y Vox firmaron un pacto de no agresión visible</b> (así lo llamó ABC en directo: «pacto de no agresión»; Feijóo llegó a pactar «ignorar» a Abascal) mientras el choque real fue <b>2 vs 2</b>: izquierda contra la ofensiva de trenes/dana/corrupción, y los tres contra Abascal cuando pedía condenar la violencia machista. El momento de mayor tensión de la noche no fue un hecho de país: fue si Abascal decía o no la palabra «violencia machista». No la dijo en toda la noche.</p>
+    <h4>Los momentos que definirán el montaje del día</h4>
+    <ul>
+      <li><b>«Traiga a esta señora para el trabajo sucio»</b> — Abascal a Sánchez (22:22): parón de segundos y el eslogan que Vox convertirá en clip.</li>
+      <li><b>«Y usted, calladita»</b> — Feijóo a Colau (23:35). La palabra del debate: para unos, machismo en prime time; para su autor y El Debate, «una recriminación legítima sacada de contexto». Lo que diga la edición del clip importa menos que una cosa: fue <b>la única vez que Feijóo perdió el guion… y aun así le funcionó</b>.</li>
+      <li><b>«A otro perro con ese hueso»</b> — Sánchez a Abascal por el bono térmico: el zasca más satisfactorio del PSOE del 29-N hasta hoy.</li>
+      <li><b>«Sabe de economía lo mismo que de inglés»</b> — Sánchez a Feijóo. Duró 20 segundos: Feijóo lo devolvió con «usted sí sabe de economía: por eso no ha presentado ni un solo proyecto de presupuestos». Empate técnico, victoria de reflejos popular.</li>
+      <li><b>«Usted es un tertuliano, señor Sánchez»</b> — Feijóo tras un silencio largo. Y el PP de Feijóo «presidente a la espera» (ABC) sin llegar nunca a la agresividad del cara a cara.</li>
+      <li><b>La negativa de Abascal a condenar la violencia machista</b>, con 49 mujeres asesinadas en 2026 (registro de Igualdad, ese mismo día) y una agresión «mientras debatíamos» de fondo. Ni en su turno, ni en el oro. El resto de candidatos sobre él tres veces.</li>
+    </ul>
+    <h4>Lo no-verbal</h4>
+    <ul>
+      <li>Sánchez: azul corporativo + corbata regalo de la OMS + pin Agenda 2030; llegó el último (lo pactado), con cara de aguantar el apagón mediático de los pitos y con <b>la lección del 2023 aprendida</b>: no entró al karaoke de cifras hasta que no tuvo el zasca en la mano (y dos veces no la tenía).</li>
+      <li>Feijóo: «tranquilo, como quien espera un banquete» (dicho literalmente), corbata azul «para no dar pábulo al verde Vox», un solo asesor en plató. Su equipo: burla preventiva del traje de Sánchez.</li>
+      <li>Abascal: primer saludo conocido con Feijóo en una campaña (risas incluidas) — foto que Vox vendió como normalidad y que su electorado digirió sin crujidos. Su estrategia comunicativa (3 días sin actos) dio resultado: contención de La Revuelta + dureza puntual.</li>
+      <li>Colau: chapa LGTBIQ, «un poco nerviosa» al llegar; en plató, dos mitades: impecable con su electorado (25-N, autocrítica, vivienda) y atropellada en el cruce: ABC la vio «cansada»; el剪辑 de sus interrupciones a Feijóo será material de campaña rival. Bieito Rubido (El Debate): «ha sido la muleta de Sánchez» — lectura imposible de sostener por el propio Sánchez.</li>
+      <li>María Casado, moderación «de plano» (ABC): dejó correr los turnos, aguantó los golpes y sostuvo las reglas sin protagonismo. Sin TVE poniendo Juego de Tronos de sintonía, que eso ya lo puso la prensa.</li>
+    </ul>
+    <h4>Los árbitros en directo — <span class="tag f">opinión de sus medios: léase con sesgo</span></h4>
+    <table>
+      <tr><th>Columnista (medio)</th><th>Fallo en directo</th></tr>
+      <tr><td>I. Camacho (ABC, derecha)</td><td>«Sánchez solo podía encajar y ha encajado… le cayó una tormenta y no ha dicho una palabra» (bloque de servicios). Feijóo «presume de capacidad de gestión».</td></tr>
+      <tr><td>M.J. Fuenteálamo (ABC)</td><td>«Pacto de no agresión Feijóo–Abascal. El más nervioso es Sánchez… Feijóo, sin exacerbarse con los tiempos. El verdadero cara a cara es hoy».</td></tr>
+      <tr><td>R. Argudo (ABC)</td><td>«Sánchez y Colau atacan en grupo, como velocirraptores, a Abascal».</td></tr>
+      <tr><td>Chapu Apaolaza (ABC)</td><td>«La izquierda no consigue rentabilizar el bloque social… Colau no brilla». (En el mismo sentido, la prensa pro-FA elogiaba su «firmeza» — simetría de sesgos, lectura obligada).</td></tr>
+      <tr><td>J.A. Pérez (ABC)</td><td>«Feijóo disfruta y sale casi ileso de la primera parte».</td></tr>
+      <tr><td>Bieito Rubido (El Debate, vespertino)</td><td>«Colau ha sido la muleta de Sánchez, que se defendió sin responder».</td></tr>
+    </table>
+    <h4>Y a la salida, cada prensa cantó su winner <span class="tag o">encuadres atribuidos · léanse con la línea editorial puesta</span></h4>
+    <table>
+      <tr><th>Lectura</th><th>Quién lo sostiene</th><th>Frase/encuadre</th></tr>
+      <tr><td><b>«Sin ganador / empate»</b></td><td>El Mundo (Lucía Méndez), Telecinco, COPE (San José), The Objective</td><td>«Ni perdedor ni ganador… cada candidato se dirigió a su público»; «más difícil de decidir que en el cara a cara»; «casi un empate técnico entre bloques, aunque le ha salido mejor que el primero».</td></tr>
+      <tr><td><b>«Todo queda igual / gana la gestión»</b></td><td>ABC (Apaolaza, Fuenteálamo), La Razón, Periodista Digital</td><td>«Feijóo y Abascal presentan la alternativa… un debate que deja todo igual»; interna del PP vía El Mundo: «nuestra ventaja sigue intacta… otra gran noche».</td></tr>
+      <tr><td><b>«El tono fue nuestro»</b></td><td>elDiario.es, RTVE (Fedriani), Catalunyapress, 20minutos (Terán)</td><td>«Ada Colau le pone las pilas a Sánchez»; «Sánchez recupera el tono en un áspero debate con Colau de aliada»; «la izquierda ganó el debate en el tono y el relato — falta ver si da votos».</td></tr>
+    </table>
+    <p class="small">Patrón predecible y útil como brújula inversa: cuando la mitad de las cabeceras dice «empate» y cada bando dice «ganamos nosotros», el dato sensato es <b>empate con ventaja de ejecución</b> — que es exactamente lo que midió, horas después, el único sondeo-flash publicado (ver §05).</p>
+  </div>
+</section>
+
+<!-- CH05 FLASH -->
+<section id="seccion-flash">
+  <div class="ch"><span class="n">CH·05</span><h2>Flash post-debate: «¿quién ha ganado?» — leído con precaución</h2></div>
+  <p class="note warn"><b>Esto NO son encuestas.</b> Con la veda en vigor (art. 69 LOREG), nada medido tras el debate puede publicarse antes del cierre de urnas del domingo 29 a las 20:00. Lo único que existe son <b>votaciones de lectores</b>: miden la militancia y el algoritmo, no al electorado. Útil para el termómetro de cada «granero», nada más. Las encuestas de campo pre-veda, en §06.</p>
+  <div class="card">
+    <table>
+      <tr><th>Votación (medio)</th><th>Sánchez</th><th>Feijóo</th><th>Abascal</th><th>Colau</th><th>Muestra</th></tr>
+      <tr><td>Sociómetro (votación abierta)</td><td class="big" style="color:#f2837c">49%</td><td class="big" style="color:#86b5f2">36%</td><td class="big">11%</td><td class="big">4%</td><td>~2.819 votos, abierta</td></tr>
+      <tr><td>Suma por bloques (Sociómetro)</td><td colspan="2" style="text-align:center">Izquierda <b>53%</b> · Derecha <b>47%</b></td><td colspan="3">la ventaja izquierda de hace una semana era de 61 puntos (78-17 en el a ocho)</td></tr>
+    </table>
+    <p class="small">Referencia honesta: en la misma votación tras el cara a cara, Sánchez sacó 58%. Aquí 49% con Abascal y Colau en pista: <b>la lectura no es que Sánchez «pierda 9 puntos» — es que en formato a cuatro el granero propio se diluye y el «ganador» baja mientras los bloques se recompactan</b>. La comparación entre votaciones con campos distintos no es una encuesta: es un termómetro.</p>
+    <h4>Y encima, dos avisos</h4>
+    <ul>
+      <li><b>Voto por correo ya emitido</b>: ~2,4 millones de electores (datos de campaña 2026) ya habían votado ANTES del debate. El debate no puede moverles. ABC en directo: «el debate a cuatro llega tarde».</li>
+      <li><b>Audiencia</b>: aún sin dato (se publica el viernes al mediodía). Contexto: cara a cara 10,2M/71,1%; a ocho 3,45M/26%. Actualizaré esta sección (v1.x).</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>NC Report FLASH para La Razón (27-N, 00:17) — caso fronterizo de veda</h3>
+    <p class="note warn">A las 00:17 La Razón publicó una flash de <b>600 entrevistas hechas el mismo día del debate</b>, amparada en que mide <b>valoración del debate, no intención de voto</b> — lectura fronteriza del art. 69 LOREG que el resto de medios no ha seguido. Sondeo-relámpago con campo de un día: ni es encuesta consolidada ni puede ignorarse como si no existiera. Léase con pinzas.</p>
+    <table>
+      <tr><th>«¿Quién ganó el debate?»</th><th>Feijóo</th><th>Sánchez</th><th>Abascal</th><th>Colau</th><th>Ns/Nc</th></tr>
+      <tr><td>Total</td><td class="big" style="color:#86b5f2">28,3%</td><td class="big" style="color:#f2837c">24,2%</td><td class="big">17,8%</td><td class="big">6,3%</td><td>23,3%</td></tr>
+      <tr><td>Su propio electorado</td><td>83,3%</td><td>78,3%</td><td>85,6%</td><td>72,2%</td><td>—</td></tr>
+      <tr><td>Confianza para gobernar</td><td colspan="2" style="text-align:center">Feijóo 31,0% · Sánchez 22,5%</td><td colspan="3">~84% mantiene su voto · ~10% dice que cambiará</td></tr>
+    </table>
+    <p class="small">Lectura honesta: el primer medidor post-debate da <b>ligera ventaja a Feijóo</b> — dentro del margen de error de un n=600 (±4-5 pts) frente al 24,2 de Sánchez — con un 23% que no sabe y un patrón de espejo perfecto: cada granero declara ganador al suyo (83-86% de coherencia interna). Encaja con la lectura de esta página: <b>ventaja de ejecución popular sin tsunami, empate estructural intacto</b>. Ningún medio serio lo está tratando como veredicto.</p>
+  </div>
+  <div class="card">
+    <h3>Reacciones en caliente (00:13–00:28) — los cuatro se declararon ganadores</h3>
+    <ul>
+      <li><b>PSOE</b> — Bolaños, en X (23:42): ««Tenga cuidado, Sr. Sánchez». Feijóo amenazando al Presidente. Qué pena ese tono matón». Sin balance cerrado hasta la mañana del viernes.</li>
+      <li><b>PP</b> — Sémper (00:15): «Si la semana pasada vimos a un Sánchez desganado, hoy está desesperado… no nos engañamos: ganar el debate no asegura ganar las elecciones». Interna vía El Mundo (Lamet): «nuestra ventaja sigue intacta; el debate no transfiere voto entre bloques pero debilita a Sánchez en favor de Colau. Otra gran noche».</li>
+      <li><b>Vox</b> — Garriga (00:17): «teatrillo» entre Sánchez y Colau, «compinchados»; Abascal (00:28): «Me lo he pasado bien y estoy satisfecho; espero una movilización masiva».</li>
+      <li><b>Frente Amplio</b> — Bustinduy (00:13): «Ada ha dado una lección de buena política; hoy hemos ganado este debate y el domingo ganamos las elecciones»; Colau (00:24): «No nos vamos a callar con los asesinatos. No vamos a estar calladitas».</li>
+    </ul>
+    <p class="small">Regla de oro para el lector: cuando <b>las cuatro partes cantan victoria a las 00:20</b>, la estadística dice empate y el marketing dice lo contrario. El desempate real, el domingo a las 21:00.</p>
+  </div>
+</section>
+
+<!-- CH06 TABLERO -->
+<section id="seccion-tablero">
+  <div class="ch"><span class="n">CH·06</span><h2>El tablero a 3 días</h2></div>
+  <div class="grid2">
+    <div class="card"><h3 style="color:#f2837c">PSOE — empatar a costa de movilizar</h3><p>Le faltaban votos, no escaños propios: su jugada era el <b>tono presidencial</b> + el «tienes más poder que ellos» del oro. Logra: bono térmico instalado en Abascal, «machismo» de Feijóo como contragolpe, y la coalición con FA encauzada sin sumisión (Colau le arranca «vivienda primordial»). Pierde: trenes, corrupción y la ausencia de respuesta al órdago del aforamiento — y el zasca del inglés. <b>Veredicto: cumple su plan</b> (no perder a los suyos y hablar al centro), sin milagro.</p></div>
+    <div class="card"><h3 style="color:#86b5f2">PP — el órdago y la moderación</h3><p>Guion perfecto sobre el papel: no picar con Vox, «gestión», memoria del oro. Y una propuesta concreta (dimisión + aforamiento si pierde) que <b>Sánchez no recogió</b> — punto para Génova. Lo suyo: la batería de cifras de vivienda «desde 2018» y los «170 fallos» siguen siendo su talón verificador. <b>Veredicto: no remontó, consolidó</b>. En votaciones de lectores, segunda.</p></div>
+    <div class="card"><h3 style="color:#8fce84">Vox — el techo de cristal propio</h3><p>La estrategia «sentido común» (contención + zascas al bulto) funciona con los suyos: «buitre» y «traed a esta señora» montan el clip. Pero aparece el problema que le acompaña toda la campaña: <b>sin choque con Feijóo no diferencia</b>, y su negativo a la violencia machista cuesta caro en el electorado moderado que ambos quieren. 11% en la votación de lectores de Sociómetro — su suelo, no su techo. <b>Veredicto: sobrevive sin rascar</b>.</p></div>
+    <div class="card"><h3 style="color:#cda2ef">Frente Amplio — debut con nota y sin fuelle</h3><p>Colau hizo lo que podía: abrir con 25-N, autocrítica honesta de vivienda (valiente y probablemente correcta), anclar la coalición futura en sus condiciones y el «no lo vamos a permitir — votarán en masa» que es su única tesis: movilizar o morir. Lo que no pudo: el cruce con dos profesionales del golpe seco. 4% en la votación de lectores dice poco — en el «a ocho» su bloque sumó el 78% de esa votación—. <b>Veredicto: cumple su papel, sin margen</b>.</p></div>
+  </div>
+  <div class="card">
+    <h3>El marcador congelado: las encuestas que la veda ocultará hasta el domingo</h3>
+    <p class="note">Últimos sondeos publicados antes del silencio (LOREG art. 69: nada se podrá publicar hasta las 20:00 del 29-N). El debate se jugó <b>sin marcador visible</b> — y con un dato de fondo: ~2,4 millones de votos por correo ya emitidos antes de anoche. Síntesis: <b>5 de 6 medidores dan victoria del PP y mayoría PP+Vox (183-197 escaños)</b>; el CIS aísla con un PSOE de +9,7 sobre el PP — la oleada más discutida por su metodología y la más celebrada por La Moncloa.</p>
+    <table>
+      <tr><th>Sondeo</th><th>Campo / publ.</th><th>PP</th><th>PSOE</th><th>Vox</th><th>Fte. Amplio</th><th>PP+Vox (escaños)</th></tr>
+      <tr><td><a href="https://www.abc.es/espana/derecha-mantiene-holgada-mayoria-194-escanos-semana-20261122023225-nt.html" target="_blank">GAD3 · ABC</a></td><td>16-19 nov</td><td>31,1%</td><td>28,4%</td><td>18,1%</td><td>5,8% (7 es. solos)</td><td class="big">194</td></tr>
+      <tr><td><a href="https://www.lasexta.com/elecciones/generales/encuestas-sondeos-2026_202611106af2b8b39a31a65adcd6a3fa.html" target="_blank">CIS</a></td><td>10-17 nov</td><td>24,7%</td><td class="big">34,4%</td><td>15,6%</td><td>5,7%</td><td>— (bloque der. 40,3%)</td></tr>
+      <tr><td><a href="https://as.com/actualidad/politica/quien-ganara-las-elecciones-esto-dicen-los-sondeos-de-40db-cis-y-gad3-antes-del-silencio-en-las-encuestas-f202611-n/" target="_blank">40dB · El País/SER</a></td><td>10-21 nov</td><td>31,8%</td><td>30,9%</td><td>17,3%</td><td>5,7%</td><td class="big">187</td></tr>
+      <tr><td><a href="https://www.abc.es/espana/encuestas-elecciones-generales-29n-resultados-psoe-pp-vox-frente-amplio-ganador-segundos-20261126050000-nt.html" target="_blank">Sigma Dos · El Mundo</a></td><td>22-23 nov</td><td>31,5%</td><td>28,0%</td><td>18,4%</td><td>6,5%</td><td class="big">183-194</td></tr>
+      <tr><td><a href="https://www.larazon.es/espana/283-cree-que-feijoo-impuso-sanchez-debate-cuatro_202611276b08be17c0d5c85b96c88626.html" target="_blank">NC Report · La Razón</a></td><td>publ. 23 nov</td><td>31,9%</td><td>27,2%</td><td>19,0%</td><td>5,6%</td><td class="big">194-199</td></tr>
+      <tr><td>Sociométrica · El Español</td><td>publ. pre-veda</td><td>134 es.</td><td>114 es.</td><td>63 es.</td><td>4 es.</td><td class="big">197</td></tr>
+    </table>
+    <p class="small">Lectura fría a tres días: el tablero medio dice <b>PP ~130 · PSOE ~112 · Vox ~62 · FA ~9 escaños</b>, con mayoría PP+Vox en 5 de 6 medidores (y Podemos extraparlamentario en casi todos). Ese marco explica la noche: a Sánchez no le servía arañar cifras imposibles, le servía <b>activar la abstención propia</b> («el domingo tienes más poder que ellos»); a Feijóo, <b>no regalar nada</b> (ni picar con Vox, ni cifras infladas… aunque las infló). El debate, si la veda no esconde un terremoto, no cambiaba escaños: cambiaba movilización. Por eso los cuatro minutos de oro eran la misma frase con cuatro envoltorios: <i>ve a votar</i>.</p>
+  </div>
+  <div class="card">
+    <h4>Lo que viene (calendario honesto)</h4>
+    <ul>
+      <li><b>Viernes 27</b>: audiencia del debate + últimas fotos de campaña. Cierre de campaña a medianoche.</li>
+      <li><b>Sábado 28</b>: jornada de reflexión — nada.</li>
+      <li><b>Domingo 29, 21:00</b>: <b>exit poll de RTVE</b> (la primera encuesta legalmente publicable que mide tras el debate) + <b>flash de La 1 a las 22:00</b> + resultados. Ese es el material de la <b>v2 de esta página</b>: ganadores reales por bloque territorial, escaños, y si el debate movió algo.</li>
+      <li>La duda razonable que deja la noche: <b>¿movió el debate algo?</b> Mi lectura: casi nada (bloques compactados, voto correo ya emitido, veda sin medidor). Con una excepción: el <b>«calladita» y la negativa de Abascal a condenar la violencia machista</b> son de las que cristalizan en las cabezas el fin de semana. Lo mediremos el domingo.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CH07 OPINIÓN -->
+<section id="seccion-opinion">
+  <div class="ch"><span class="n">CH·07</span><h2>Mi opinión</h2></div>
+  <div class="opin">
+    <h3>🐱 ¿Hubo ganador claro? No. Y quien diga lo contrario, está vendiendo algo.</h3>
+    <p>Un debate solo tiene ganador si <b>mueve la duda del indeciso</b> o <b>quiebra la narrativa de un rival</b>. Esta noche no pasó ninguna de las dos cosas de forma verificable: cada candidato habló a su granero, los bloques de datos falsos de cada lado se neutralizaron entre sí, y el voto que podía decidir (correo) ya estaba en el buzón desde hacía una semana. Lo honesto: <b>empate técnico con matices</b>.</p>
+    <p>Si me apuras a mojarme con el material que hay a estas horas: <b>Feijóo fue el que mejor ejecutó</b> — su guion (gestión + no picar con Vox + órdago del aforamiento) era el más difícil y lo cumplió, y es el único que logró una promesa concreta que el rival no quiso recoger. <b>Sánchez ganó en agresividad de red</b> (bono térmico, «calladita» como contragolpe, el zasca del «trabajo sucio» contra Abascal) pero perdió la parte dura del debate: trenes, dana y corrupción sin respuesta redonda. <b>Abascal fue protagonista con saldo negativo</b>: los mejores titulares y la peor decisión (no condenar la violencia machista ni en el minuto de oro, en el 25-N, es una elección con consecuencias más allá de la noche). <b>Colau cumplió con oficio</b>: autocrítica en vivienda — la frase más valiente y necesaria del debate — sin poder hacer más con menos.</p>
+    <p>Tres cosas que me preocupa que se pierdan en el ruido: (1) los <b>116 muertos</b> ferroviarios son verdad, igual que es mentira que la corrupción los matara — la tragedia no necesita mentiras para ser escandalosa; (2) el dato de vivienda que sí resiste a ambos lados: el parque de alquiler <b>creció</b> mientras caían los anuncios — o sea, el mercado no se «fugó» por la ley, se <b>encogió de rotación</b>; quien diga lo contrario vende humo con fuente; (3) el <b>247%</b> de Abascal sobre agresiones sexuales no es solo falso — es el doble de agresiones reales ≈ x1,8, con mejora de registro de por medio, y usar a víctimas para un titular inflado es la peor forma de mentir con estadística.</p>
+    <p>Y una nota de gato viejo: tres debates en once días, dos vetos cruzados de organizador, pitos en la puerta, un deepfake estrenado en campaña española y un partido que se niega a condenar la violencia machista en directo — el formato aguantó mejor que los participantes. Casado y los árbitros de baloncesto fueron lo más cercano a la neutralidad de toda la noche. El domingo a las 21:00, la única encuesta que importará. La actualizo aquí (v2).</p>
+    <p>La madrugada trajo el primer medidor: <b>NC Report flash para La Razón (n=600, campo el mismo día, publicada a las 00:17 bajo la fórmula «valoración del debate» — frontera legal discutible con la veda)</b>: Feijóo 28,3%, Sánchez 24,2%, Abascal 17,8%, Colau 6,3%… y un 23% que no sabe. Los espejos: el 83% del electorado popular da ganador a Feijóo y el 78% del socialista a Sánchez. Encaja con lo que escribí a las dos de la mañana sin conocerlo: <b>ventaja de ejecución del PP, empate estructural, ningún terremoto</b>. Y la pruebaCommunicación definitiva de que no hubo ganador claro: a las 00:20, los cuatro partidos se habían declarado ganadores. Cuando las cuatro partes cantan victoria, el honesto dice empate; el martes, si el CIS postelectoral lo confirma, tendremos la primera respuesta incómoda para todos.</p>
+    <p class="footnote">Opinión, no información — separada a propósito del radar de datos. Verificadores citados y método, en §09. Si discrepas, tienes mis fuentes abajo: úsalas.</p>
+  </div>
+</section>
+
+<!-- CH08 NOVEDADES -->
+<section id="seccion-novedades">
+  <div class="ch"><span class="n">CH·08</span><h2>Novedades y versiones</h2></div>
+  <div class="card" id="upd-log">
+    <div class="log-item"><span class="d">v1.1 · 27/11 01:40</span><span>Primera edición nocturna: reconstrucción por bloques contrastada con 9 directos + transcripción propia; radar con primeras verificaciones (VerificaRTVE + recomprobación primaria); flash de votaciones de lectores; formas y tablero.</span></div>
+    <div class="log-item"><span class="d">v1.2 · 27/11 02:50</span><span><b>Radar completo: 30 afirmaciones verificadas con fuente primaria</b> (INE JAX, Interior, BOE, sentencias AN/TS, MIVAU, Generalitat) y minuto exacto de mi propia transcripción cuando el audio la cubre. Añadidos: flash NC Report (caso fronterizo de veda), reacciones en caliente, mapa de encuestas pre-veda y encuadres de prensa. <b>Tres correcciones a la edición de madrugada:</b> el «alquiler −4%» es de Colau (no de Sánchez); el aforamiento de Mazón es como diputado en Les Corts (no senador); la «medalla a Israel» era propuesta municipal retirada y nunca concedida.</span></div>
+    <div class="log-item"><span class="d">v1.3 · previsto 27/11 tarde</span><span>Audiencia del debate (Barlovento), crónicas matutinas, cierres nocturnos de EFE Verifica, votaciones de lectores cerradas (ABC/eldiario) y reacciones de La Revuelta/tertulias — con la transcripción propia completa (cierre del minuto de oro incluido).</span></div>
+    <div class="log-item"><span class="d">v2 · previsto 29/11 21:05</span><span><b>Exit poll RTVE + flash La 1 + primeros resultados</b>. Se evaluará si el debate cambió algo: bloque a bloque, territorio a territorio, y se cerrará el veredicto de ganador con datos.</span></div>
+  </div>
+</section>
+
+<!-- CH09 METODOLOGÍA -->
+<section id="seccion-metodologia">
+  <div class="ch"><span class="n">CH·09</span><h2>Metodología — máxima transparencia</h2></div>
+  <div class="card">
+    <div class="step"><div class="num">1</div><p><b>Señal íntegra y transcripción propia.</b> Se descargó el directo íntegro de la señal abierta de la Academia (retransmisión de EL PAÍS en YouTube, 2 h 29 min desde el pre-show a las 21:49) y se transcribió con un modelo Whisper propio (faster-whisper, CPU). Las frases citadas se contrastaron con el audio y con las narraciones en directo de los medios; donde hubo divergencia, se cita la versión del audio o la más documentada entre medios, y se indica. Horas = CET, aproximadas al directo.</p></div>
+    <div class="step"><div class="num">2</div><p><b>Reconstrucción redundante.</b> Nueve narraciones minute-a-minute independientes (RTVE, El Mundo, ABC, elDiario, LaSexta, The Objective, Europa Press, Heraldo, elEspañol/Telemadrid) + los vídeos de los momentos clave. Una frase entra en la página si está en el audio propio o la corroboran ≥2 medios.</p></div>
+    <div class="step"><div class="num">3</div><p><b>Verificación primaria, no de rebotadera.</b> Cada afirmación del radar se comprueba contra la fuente oficial de la magnitud (INE/JAXU, Interior/delitos sexuales, BOE, Seguridad Social, Tribunal de Cuentas, CGPJ/sentencias, FIFA, OTAN…). VerificaRTVE y otros verificadores son una <b>pista</b>, nunca la evidencia: sus cifras se recomputan desde el origen. Si nosotros disentimos, lo decimos.</p></div>
+    <div class="step"><div class="num">4</div><p><b>Veredictos con marco, no solo con número.</b> Se clasifica la magnitud que usó el candidato (flujo vs saldo, legislatura vs mandato, registrado vs denunciado…) y se da la otra: el veredicto es el contraste, no la cifra. Etiquetas: verdadero / mayormente verdadero / impreciso / engañoso / falso / sin fuente.</p></div>
+    <div class="step"><div class="num">5</div><p><b>Sesgo declarado.</b> Los columnistas citados (ABC, El Debate) opinan y sus etiquetas de «nervioso», «muleta» o «ileso» son opinión de medios con línea editorial — marcadas como tales, igual que los elogios a Colau de la prensa progresista. El termómetro editorial y «Mi opinión» son valoración propia y viven en secciones separadas del radar de datos.</p></div>
+    <div class="step"><div class="num">6</div><p><b>Limitaciones.</b> Esta v1 se escribió de madrugada: faltan crónicas matutinas, audiencia y fact-checkers nocturnos (llegan en v1.2). Las votaciones de lectores post-debate NO son muestras. Whisper puede errar nombres propios — las citas de personas se verificaron sobre texto de prensa o audio. Y un límite de fondo: <b>el veredicto «quién ganó» con encuestas reales será imposible hasta el 29-N a las 21:00</b> — por ley, no por pereza.</p></div>
+    <div class="step"><div class="num">7</div><p><b>Correcciones.</b> Errores visto = verificado = corregido en el changelog con hora. El código y el proceso de esta página es público en el repo <a href="https://github.com/RaulGDMM/cocobot-pages" target="_blank">RaulGDMM/cocobot-pages</a>.</p></div>
+  </div>
+</section>
+
+<!-- CH10 FUENTES -->
+<section id="seccion-fuentes">
+  <div class="ch"><span class="n">CH·10</span><h2>Fuentes</h2></div>
+  <div class="card">
+    <div class="src-cat"><h4>Señal y transcripción</h4><ul class="srcs-list" id="fuentes-1"></ul></div>
+    <div class="src-cat"><h4>Verificación en directo y datos oficiales</h4><ul class="srcs-list" id="fuentes-2"></ul></div>
+    <div class="src-cat"><h4>Crónicas y análisis</h4><ul class="srcs-list" id="fuentes-3"></ul></div>
+    <div class="src-cat"><h4>Encuestas y votaciones</h4><ul class="srcs-list" id="fuentes-4"></ul></div>
+    <p class="small">Última fuente incorporada: 27/11/2026 02:50 CET. Los enlaces se verificaron vivos al insertarlos; si alguno muere, la cita figura en dos sitios.</p>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer class="footer"><div class="footer-inner">
+  <span class="footer-brand">🐱 Cocobot · análisis independiente · sin publicidad ni pactos</span>
+  <span id="visit-counter" class="visit-counter-badge">👁️ -- visitas</span>
+</div></footer>
+
+<script>
+// ─── datos del radar ───
+// who: 's' Sánchez | 'f' Feijóo | 'a' Abascal | 'c' Colau · v: veredicto · t: hora aprox · block: nº
+var CLAIMS = [{"who": "a", "v": "enganoso", "t": "≈22:14 (audio 25:46)", "q": "Un presidente del gobierno que se ha dedicado a importar violadores", "why": "La sobrerrepresentación existe: el 39,2% de los detenidos/investigados por delitos sexuales en 2024 eran extranjeros (Interior) sobre un 14,6% de población extranjera (INE). Pero «importar violadores» implica una política deliberada que ningún documento oficial sostiene; y el 28,6% de las víctimas de 2025 también son extranjeras. Estadística real convertida en eslogan causal: la marca de la casa.", "srcs": [["Interior — informe delitos sexuales 2024 (PDF)", "https://www.interior.gob.es/opencms/pdf/archivos-y-documentacion/documentacion-y-publicaciones/publicaciones-descargables/publicaciones-periodicas/informe-sobre-delitos-contra-la-libertad-e-indemnidad-sexual-en-Espana/Informe_DelitosSexuales24_v111225_ACC_OK.pdf"], ["Interior — informe 2025 (víctimas)", "https://www.interior.gob.es/opencms/pdf/archivos-y-documentacion/documentacion-y-publicaciones/publicaciones-descargables/publicaciones-periodicas/informe-sobre-delitos-contra-la-libertad-e-indemnidad-sexual-en-Espana/Informe_DelitosSexuales25_v210926.pdf"]]}, {"who": "a", "v": "enganoso", "t": "≈22:15 (audio 26:26)", "q": "En los últimos seis años han entrado en España seis millones de personas según el INE y únicamente se han construido 100.000 viviendas", "why": "Doble trampa. Migración: con las tablas del INE (EMCR), las entradas brutas 2021-24 suman 4,69 M (≈6 M con la provisional 2025), pero las salidas fueron 2,5 M: el saldo exterior neto 2021-24 es +2,19 M. Vender flujos como «seis millones que se han quedado» es engañoso (VerificaRTVE lo desmontó igual). Vivienda: falso por defecto — entre 2020 y 2025 se terminaron 553.973 viviendas (media de 92.000/año; 100.980 en 2024). Lo que sí es escaso es la VPO: 64.542 calificaciones en seis años. Ahí el problema es real; el número, no.", "srcs": [["INE JAX 69690 — entradas desde el extranjero", "https://www.ine.es/jaxiT3/Tabla.htm?t=69690"], ["INE JAX 69758 — saldos migratorios", "https://www.ine.es/jaxiT3/Tabla.htm?t=69758"], ["MIVAU — Boletín Anual de Vivienda 2025", "https://publicaciones.transportes.gob.es/downloadcustom/sample/4130"]]}, {"who": "a", "v": "enganoso", "t": "23:50 (directo RTVE)", "q": "¿Va a seguir metiendo violadores para que aumenten las violaciones por tres? Desde que usted llegó han aumentado un 247% las agresiones sexuales", "why": "Con la serie comparable de Interior (reagrupada tras la LO 10/2022): agresiones sexuales 2018→2025 +80% (10.727→19.282) y con penetración +96% (2.744→5.370): casi un doble, no el triple. El 247% solo sale comparando con la categoría antigua pre-2022 — truco que hasta la propia nota de campaña del PP repite. El aumento es real y grave; parte viene de más denuncia y mejor registro. Inflar cifras de víctimas: la peor forma de mentir con estadística.", "srcs": [["Interior — informe delitos sexuales 2025", "https://www.interior.gob.es/opencms/pdf/archivos-y-documentacion/documentacion-y-publicaciones/publicaciones-descargables/publicaciones-periodicas/informe-sobre-delitos-contra-la-libertad-e-indemnidad-sexual-en-Espana/Informe_DelitosSexuales25_v210926.pdf"], ["El Correo — verificador del directo", "https://www.elcorreo.com/elecciones/generales/verificador-comprobamos-datos-cara-cara-20261126221743-ntrc.html"]]}, {"who": "a", "v": "falso", "t": "≈23:55", "q": "No se puede hacer un Mundial con una ciudad invadida: 100.000 invasores en una ciudad de 80.000", "why": "Ceuta tiene 83.595 habitantes (padrón BOE) — eso cuadra. Los «100.000 invasores», no: la peor crisis registrada (17-mayo-2021) se estimó oficialmente en 8.000-10.000 personas (resolución de la Guardia Civil en transparencia); Interior computó 2.559 entradas irregulares en 2024 y 3.527 en 2025. Ni acumulando cinco años se llega a 20.000. Exageración de factor 5-10 sobre una ciudad real con problema real.", "srcs": [["DG Guardia Civil — resolución transparencia (estimación mayo 2021)", "https://www.interior.gob.es/opencms/documentacion/Portal-de-Transparencia/ResolucionesDenegatorias_2023/001-083370.pdf"], ["Interior — balance irregulares 2025", "https://www.europapress.es/epsocial/migracion/noticia-total-36775-migrantes-llegaron-espana-forma-irregular-2025-426-menos-2024-20260102154742.html"], ["BOE — cifras oficiales de población (Ceuta 83.595)", "https://www.boe.es/boe/dias/2025-12-11/pdfs/BOE-A-2025-25362.pdf"]]}, {"who": "a", "v": "enganoso", "t": "≈23:45", "q": "La corrupción de Sánchez ha matado españoles (Adamuz, Urda…), con las redes gastadas «en mordidas y fulanas»", "why": "Las investigaciones oficiales apuntan a fallos técnicos y de mantenimiento, no a corrupción: en Adamuz, rotura de carril por soldadura fuera de rango, un bache detectado y no re-auscultado y —según la Guardia Civil— falta de balasto en el punto exacto. Ninguna causa judicial acreditada vincula dinero negro con los accidentes. Gestionar mal no es matar por corrupción: la tragedia no necesita esa mentira para ser escandalosa.", "srcs": [["ABC — la Guardia Civil y el balasto en Adamuz", "https://www.abc.es/espana/guardia-civil-descubre-video-que-faltaba-balasto-punto-exacto-accidente-adamuz-20261126124843-nt.html"], ["El Mundo — misma investigación", "https://www.elmundo.es/espana/2026-11-26/6b084f50e85ece74228b4568.html"]]}, {"who": "a", "v": "contexto", "t": "≈22:15", "q": "1,2 millones de españoles han tenido que emigrar con el PSOE", "why": "Usa emigración bruta: según el INE, 857.000 salieron y 526.000 volvieron en el periodo (además de un corte metodológico en la serie). El saldo real ronda los 330.000 — tres veces y media menos de lo que sonó en el plató. Maldita y El País lo marcaron igual.", "srcs": [["Maldita — verificaciones del debate a cuatro", "https://maldita.es/desinfo/20261126/verificaciones-del-debate-a-cuatro-para-las-elecciones-del-29n/"]]}, {"who": "f", "v": "mayormente", "t": "≈22:56 (audio 66:53)", "q": "116 muertos en menos de un año y ni palabra", "why": "Casi exacto: Adamuz (18-ene-2026) dejó 46 muertos (cifra cerrada el 30-ene) y Urda (28-oct-2026), 69 (CID/Junta de CLM, identificadas el 3-nov): suma 115. Los 116 solo salen sumando al maquinista muerto en Gelida (20-ene, Rodalies, red convencional por caída de un muro). La ventana «menos de un año» es cierta (ene-oct). VerificaRTVE validó la cifra de fondo. Es de las pocas veces que una cifra suya cuadra: aquí no había que inflar nada.", "srcs": [["RTVE — Adamuz, cifra definitiva", "https://www.rtve.es/noticias/20260121/ascienden-43-muertos-accidente-tren-adamuz-cordoba-localizar-nueva-victima/16903636.shtml"], ["Junta de CLM — Urda: 69 fallecidos", "https://www.castillalamancha.es/actualidad/notasdeprensa/el-gobierno-regional-informa-de-que-se-mantiene-activado-el-platecam-en-situacion-operativa-1-y-que"], ["RTVE — memorial de las 69 víctimas de Urda", "https://www.rtve.es/noticias/20261110/memorial-victimas-accidente-tren-urda/17306923.shtml"]]}, {"who": "f", "v": "impreciso", "t": "≈22:56 (audio 66:53)", "q": "Un sistema de seguridad que tuvo 170 fallos en los dos últimos años", "why": "El 170 existe y es oficial — del propio ministro Puente (30-oct): caídas del LZB en la LAV Madrid-Sevilla entre el 1-ene y el 28-oct de 2026. Es decir: diez meses, no dos años; en dos años serían 300-400 (media estable 150-200/año que Puente llamó «normalidad europea», 75% por causas ajenas: robos de cobre, inclemencias, obras). Y el LZB, cuando cae, detiene los trenes: no deja la línea «sin seguridad». Cifra real, marco falso.", "srcs": [["El Mundo — las 170 caídas del LZB según Puente", "https://www.elmundo.es/economia/2026-10-30/6ae484a6fdddff57578b4588.html"], ["El País — radiografía del sistema de seguridad", "https://elpais.com/espana/2026-10-31/radiografia-del-sistema-de-seguridad-que-dejo-de-funcionar-antes-del-accidente-de-urda-casi-una-caida-cada-dos-dias.html"]]}, {"who": "f", "v": "sinfuente", "t": "≈23:30", "q": "¿Usted o Moncloa filtraron los audios del maquinista muerto?", "why": "La filtración es un hecho (las comunicaciones del centro de control de Atocha sobre Urda se difundieron la noche del 28-oct, días antes de entregarse a las familias); el autor, no: la Guardia Civil halló en los metadatos un rastro de la Secretaría de Estado de Comunicación (Moncloa), según El Debate y El Español, y hay investigación secreta por revelación de secretos en Orgaz — pero ningún juzgado ha acreditado aún quién filtró. Preguntar como acusación lo que aún es hipótesis judicial no es un dato: es munición.", "srcs": [["El Debate — la secretaria de Estado en la sala de descarga", "https://www.eldebate.com/espana/20261104/secretaria-estado-comunicacion-estuvo-sala-donde-descargo-audio-publicaron-medios-afines-gobierno_477215.html"], ["El Español — dónde y cuándo se grabaron los audios", "https://www.elespanol.com/invertia/observatorios/movilidad/20261104/audios-filtrados-medios-afines-gobierno-grabaron-puente-visito-centro-control-atocha/1003744446695_0.html"]]}, {"who": "f", "v": "enganoso", "t": "23:07 (directo RTVE)", "q": "Allí (en Andalucía) hubo dimisiones; en el Gobierno de España, ni una", "why": "Falso de manual: el ministro Óscar Puente dimitió el 3-nov-2026, seis días después de Urda y tras su comparecencia en la Diputación Permanente, renunciando además a ir en las listas — «un ministro de Transportes no puede continuar con dos accidentes de esta gravedad en menos de un año», dijo al irse. VerificaRTVE lo desmintió en directo.", "srcs": [["Infobae/EFE — dimisión de Puente", "https://www.infobae.com/espana/agencias/2026/11/03/puente-dimite-por-sorpresa-6-dias-despues-de-urda-tras-una-dura-comparecencia-en-congreso/"], ["Europa Press — cese publicado en BOE", "https://www.europapress.es/nacional/noticia-feijoo-anima-sanchez-siga-pasos-puente-presente-dimision-aplicatelo-20261104073821.html"]]}, {"who": "f", "v": "enganoso", "t": "≈22:10", "q": "Esta ha sido la legislatura de la vivienda imposible (comprar +76%, alquilar +45%)", "why": "La vivienda está en emergencia, sí — pero esos porcentajes (Idealista) son acumulados desde 2018, no de la legislatura: desde 2023 el alza es +39,8% compra y +24,8% alquiler (verificación El País y Maldita). El dato oficial de la legislatura: el INE cifra la vivienda en +34,4% (IPV). Empeorar el mandato con un punto de partida ajeno es la trampa clásica de las cifras de vivienda de esta campaña.", "srcs": [["Maldita — verificaciones del debate", "https://maldita.es/desinfo/20261126/verificaciones-del-debate-a-cuatro-para-las-elecciones-del-29n/"], ["El País — mentiras y medias verdades", "https://elpais.com/espana/elecciones-generales/2026-11-26/mentiras-y-medias-verdades-del-debate-electoral-a-cuatro-entre-sanchez-feijoo-abascal-y-colau.html"]]}, {"who": "f", "v": "enganoso", "t": "≈23:40", "q": "La clase baja ha pasado del 3% al 20%", "why": "No es una estadística de renta: es la pregunta del CIS sobre clase SUBJETIVA («clase baja o pobre»), serie contaminada por dos cambios metodológicos (entrevista telefónica desde abr-2020; ponderación nueva desde nov-2023) que el propio CIS atribuye el salto de finales de 2023. Los indicadores oficiales van en otra dirección: AROPE 25,7% en 2025 (25,8% en 2024) y renta mediana de los hogares +7,8% desde 2021. Autopercepción + metodología cambiante ≠ empobrecimiento medido.", "srcs": [["Newtral — cambios metodológicos del CIS clase baja", "https://www.newtral.es/cambios-metodologia-cis-clase-baja/20261117/"], ["INE — Condiciones de Vida 2025 (AROPE 25,7%)", "https://www.ine.es/dyngs/Prensa/ECV2025.htm"]]}, {"who": "f", "v": "verdadero", "t": "≈23:40", "q": "Sánchez no ha presentado ni aprobado ningún proyecto de Presupuestos en esta legislatura", "why": "Cierto y relevante: primera legislatura de la democracia íntegramente con cuentas prorrogadas (2024, 2025 y 2026 sin proyecto presentado), con conflicto de atribuciones del Senado admitido por el TC (24-feb-2026). El «de quién es la culpa» (mayoría inexistente, dice el Gobierno) es otra discusión — el hecho, verificadísimo.", "srcs": [["Europa Press — legislatura sin Presupuestos", "https://www.europapress.es/economia/macroeconomia-00338/noticia-legislatura-cierra-nuevos-presupuestos-primera-vez-historia-20261005100119.html"], ["BOE — TC admite conflicto por no presentación de PGE", "https://www.boe.es/buscar/doc.php?id=BOE-A-2026-4670"]]}, {"who": "f", "v": "contexto", "t": "≈23:52", "q": "La final del Mundial 2030 tiene que jugarse en España y lo reclamaremos a la FIFA", "why": "Propuesta, no hecho: la sede de la final sigue sin decidir (candidatas Madrid, Barcelona y Casablanca; decisión prevista hacia 2028). Prometer algo que decide un tercero dentro de dos años es gratis; queda anotado como compromiso, ni falso ni verdadero.", "srcs": [["RTVE Verifica — la final de 2030, en el aire", "https://www.rtve.es/noticias/20260726/mundial-2030-final-madrid-barcelona-casablanca/16660387.shtml"]]}, {"who": "s", "v": "enganoso", "t": "≈22:40", "q": "Multipliqué por tres la hucha de las pensiones: el PP la dejó en 5.000 millones y hoy está en 20.000", "why": "Punto de partida de conveniencia: los 5.043 M€ son el saldo de NOV-2018 — tras el retiro de 3.000 M€ para pagar la extra de Navidad, ejecutado YA con Sánchez en Moncloa (a cierre de 2017 había 8.095). Y «hoy 20.000» no existe: es la PREVISIÓN de cierre de 2026 (19.841 M€); el último saldo real es 15.267 (31-mar). La mejora es real (ingresos del MEI), pero convive con una deuda del sistema con el Estado de ~146.000 M€ que la frase no menciona.", "srcs": [["La Moncloa — fondo por encima de 15.200 M€ (abr-2026)", "https://www.lamoncloa.gob.es/serviciosdeprensa/notasprensa/inclusion/paginas/2026/130426-fondo-reserva-seguridad-social-abril.aspx"], ["Zifras — verificación «de 5.000 a 20.000»", "https://zifras.es/verificaciones/211"], ["Inclusión — el retiro de 3.000 M€ (nov-2018)", "https://www.inclusion.gob.es/en/w/el-gobierno-dispone-de-3.000-millones-del-fondo-de-reserva-para-pagar-la-extra-de-las-pensiones"]]}, {"who": "s", "v": "verdadero", "t": "23:26 (directo RTVE)", "q": "La sede del PP está financiada con dinero B", "why": "Conste en sentencia firme: la AN (28-oct-2021) probó que la reforma de Génova 13 se pagó con 1.072.000 € en «b» de la contabilidad parallel de Bárcenas (pagos 184.000 € y 888.000 € a Unifica) y el Supremo lo confirmó el 15-nov-2024 manteniendo la responsabilidad civil del PP. La frase más contundente del bloque de corrupción… y de las que más se sostienen.", "srcs": [["Europa Press — el millón de la caja B en Génova", "https://www.europapress.es/nacional/noticia-audiencia-nacional-desgrana-millon-euros-salio-caja-pp-pagar-obra-genova-20211028181107.html"], ["El País — el Supremo confirma", "https://elpais.com/espana/2024-11-15/el-supremo-confirma-la-condena-al-pp-como-responsable-civil-por-el-pago-en-negro-de-la-obra-de-la-sede-de-genova.html"]]}, {"who": "s", "v": "sinfuente", "t": "23:26", "q": "Tienen 42 casos de corrupción abiertos", "why": "Ninguna lista judicial o dossier publicado sostiene el 42 exacto. El orden de magnitud del PP es plausible (recuento periodístico de losgenoveses.net: 40 causas vivas a 22-nov), pero Vox no tiene ni una condena penal de partido (Anticorrupción archivó su financiación en jun-2025 y el TS ha anulado dos multas del Tribunal de Cuentas). Sumar partidos heterogéneos hasta un número redondo es retórica, no dato.", "srcs": [["Los Genoveses — 40 causas vivas del PP (PDF)", "https://losgenoveses.net/El%20PP%20en%20el%20banquillo.%20Version%20completa.%2022.11.26.pdf"], ["El País — Anticorrupción archiva la causa a Vox", "https://elpais.com/espana/2025-06-16/anticorrupcion-archiva-la-investigacion-que-abrio-a-vox-por-financiacion-irregular.html"]]}, {"who": "s", "v": "enganoso", "t": "23:26 (directo RTVE)", "q": "Las primarias las pagaron los militantes, con el aval del Tribunal de Cuentas", "why": "El Tribunal de Cuentas dijo justo lo contrario sobre el principio: su informe (mar-2017) estableció que las primarias debían someterse a la ley de financiación de partidos; la comisión del Senado calificó la recaudación del crowdfunding (128.908 € vía Bancal de Rosas) de irregular, y este mismo mes la UCO ha declarado ante el propio Tribunal por discordancias en las donaciones. «Avalado» no consta en ninguna resolución.", "srcs": [["El País — el Tribunal de Cuentas da la razón a la gestora", "https://elpais.com/politica/2017/03/15/actualidad/1489585066_745323.html"], ["The Objective — la UCO ante el Tribunal de Cuentas", "https://theobjective.com/espana/politica/2026-11-20/uco-tribunal-cuentas-donaciones-psoe/"]]}, {"who": "s", "v": "mayormente", "t": "≈22:40", "q": "La vida está cara, pero es por la guerra de Irán", "why": "El Banco de España atribuye a la guerra la aceleración energética (IPC general al 4,9% en sep-oct, carburantes +26,6%, Brent casi duplicado) — eso es verificable y cierto. Pero la subyacente está al 3,1%: servicios y alimentos siguen tirando. La guerra explica gran parte del pico de 2026, no toda la cesta de la compra de tres años. Mitad física, mitad eximente.", "srcs": [["Banco de España — Boletín T3-2026 (proyecciones e inflación)", "https://www.bde.es/bde/es/secciones/sala-de-prensa/notas-de-prensa/notas/2026/nota_29102026_boletin/"], ["ABC/EFE — inflación 4,9% por carburantes", "https://www.abc.es/economia/inflacion-sube-49-septiembre-carburantes-guerra-iran-20261014133530-nt.html"]]}, {"who": "s", "v": "verdadero", "t": "≈23:59", "q": "Dijimos no al 5% del gasto en defensa", "why": "Verdad con letra pequeña que él no lee: en la cumbre de La Haya (2025) el objetivo fue el 5% (3,5+1,5) y España logró un texto que no le obliga a alcanzarlo — la «excepción» que criticaron socios de la OTAN; España sigue en ~2-2,1% del PIB. Es cierto que no firmó el 5%; vender como virtud la única excepción de la Alianza ya es elección del espectador.", "srcs": [["El País — España pacta con la OTAN no verse obligada al 5%", "https://elpais.com/espana/2025-06-25/espana-pacta-con-la-otan-que-no-estara-obligada-a-gastar-el-5-del-pib-en-defensa.html"], ["elDiario.es — la OTAN al 5% entre críticas a la excepción", "https://www.eldiario.es/politica/otan-compromete-5-gasto-militar-criticas-excepcion-sanchez_1_12442444.html"]]}, {"who": "s", "v": "mayormente", "t": "≈22:25 (audio 36:20)", "q": "PP y Vox han votado en contra de todo lo que tenga que ver con la regulación de la vivienda", "why": "Núcleo cierto y documentado en el diario de sesiones: ley por el derecho a la vivienda (2023) aprobada 176-167 con PP y Vox en contra; RDL de vivienda 26/2026 tumbado 172-178 (PP, Vox, Junts, UPN); RDL 29/2026 convalidado por 35-34 con los mismos en contra. El «perro del hortelano» (bloquear la regulación y gobernar contra ella en sus CCAA) es valoración — legítima y con votos citables detrás.", "srcs": [["RTVE — el Congreso aprueba la ley de vivienda (2023)", "https://www.rtve.es/noticias/20230427/congreso-aprueba-ley-derecho-vivienda-partidos-contrarios-pp-vox/14955377.shtml"], ["Europa Press — el Congreso rechaza el decreto de vivienda (oct-2026)", "https://www.europapress.es/economia/macroeconomia-00338/noticia-congreso-rechaza-decreto-medidas-vivienda-votos-pp-vox-junts-upn-20261002143820.html"]]}, {"who": "s", "v": "falso", "t": "≈22:35", "q": "Somos la economía que más crece de Europa", "why": "Falso tal cual: España crece ~2,6% — muy bien, pero por detrás de ocho socios de la UE (Irlanda, Malta, Polonia…). Sí es la que más crece ENTRE las cuatro grandes economías, que es la versión que se cuela en el titular. El propio verificador de El País lo marcó como falso en el directo.", "srcs": [["El País — mentiras y medias verdades del debate", "https://elpais.com/espana/elecciones-generales/2026-11-26/mentiras-y-medias-verdades-del-debate-electoral-a-cuatro-entre-sanchez-feijoo-abascal-y-colau.html"]]}, {"who": "s", "v": "verdadero", "t": "≈22:12", "q": "726.000 viviendas (de parque público impulsado por el Gobierno)", "why": "Casi clavado: la cifra oficial del Ministerio es 719.602 viviendas — Newtral y Maldita lo validaron como verdadero en el directo; el 87,7% con condición protegida o pública. Lo discutible no es el número sino qué cuenta (incluye promociones en curso y VPO de promoción privada concertada): pero la cifra dicha, aguanta.", "srcs": [["Maldita — 726.000 viviendas: verdadero", "https://maldita.es/desinfo/20261126/verificaciones-del-debate-a-cuatro-para-las-elecciones-del-29n/"], ["Newtral — verificación en directo", "https://www.newtral.es/verificacion-directo-debate-a-cuatro-elecciones-29n/20261126/"]]}, {"who": "c", "v": "falso", "t": "≈23:20 (audio 88:43)", "q": "El PP ha sido condenado por corrupción, condenado como organización criminal. Eso son sentencias, no opiniones", "why": "Son sentencias — y dicen otra cosa. Gürtel (AN 2018, TS 2020) condenó a 29 personas y al PP solo como partícipe a título lucrativo (responsabilidad civil, «total ausencia de participación en los hechos»). La propia AN (nov-2023, pieza 9 de Púnica) rechazó con nombre y apellido hablar de «organización criminal» en la cúpula del PP. Las condenas por corrupción vinculadas al PP son numerosísimas y reales; esa calificación, no.", "srcs": [["CGPJ — sentencia Gürtel (AN 2018)", "https://www.poderjudicial.es/cgpj/es/Poder-Judicial/Audiencia-Nacional/Noticias-Judiciales/La-Audiencia-Nacional-condena-a-penas-de-hasta-51-anos-de-prision-a-29-de-los-37-acusados-en-el--caso-Gurtel-"], ["CGPJ — la AN niega la organización criminal en Púnica PS9", "https://www.poderjudicial.es/cgpj/es/Poder-Judicial/Audiencia-Nacional/Oficina-de-Comunicacion/Notas-de-prensa/La-Audiencia-Nacional-confirma-archivo-de-Esperanza-Aguirre--Ignacio-Gonzalez-y-4-exconsejeros-en-la-pieza-de-Punica-sobre-financiacion-del-PP-de-Madrid"], ["elDiario.es — verificación del directo", "https://www.eldiario.es/politica/ultima-hora-ultimo-debate-electoral-sanchez-feijoo-colau-abascal_6_13696999_1126937.html"]]}, {"who": "c", "v": "falso", "t": "≈22:50", "q": "Han votado hasta cuatro veces en contra de la subida del SMI", "why": "El SMI no se vota NUNCA en el Congreso: se fija por real decreto (arts. 26-27 del Estatuto de los Trabajadores). Votos del PP contra subidas del SMI: cero. Lo que sí ocurrió: el 27-ene-2026 PP, Vox y Junts tumbaron un decreto ómnibus de medidas sociales que PRORROGABA el SMI (era escudo social y pensiones, no una subida), y el día del debate el PP votó A FAVOR de eximir el SMI de IRPF (63-0). Se lo corrigió en plató el propio Feijóo — rara escena: verificación en directo con corrector inesperado.", "srcs": [["Newtral — la subida del SMI no se vota en el Congreso", "https://www.newtral.es/subida-smi-congreso-pnv-factcheck/20261124/"], ["El País — veredicto «falso» en su verificación del debate", "https://elpais.com/espana/elecciones-generales/2026-11-26/mentiras-y-medias-verdades-del-debate-electoral-a-cuatro-entre-sanchez-feijoo-abascal-y-colau.html"]]}, {"who": "c", "v": "verdadero", "t": "≈23:10", "q": "Tienen a Mazón con cargo público y aforado pese a más de 230 víctimas mortales", "why": "Cierto con los dos datos: la jueza de Catarroja elevó a 234 las víctimas mortales de la DANA reconocidas en la causa (30-oct-2026), y Mazón, tras dimitir como president (3-nov-2025), conserva acta de diputado en Les Corts Valencianes — con el aforamiento que eso implica ante el TSJCV. Lo que la frase omite (y Feijóo no aclaró): que ya no preside la Generalitat.", "srcs": [["RTVE — la jueza eleva a 234 las víctimas", "https://www.rtve.es/noticias/20261030/jueza-eleva-234-cifra-oficial-victimas-mortales-dana/17294861.shtml"], ["El País — el cruce Mazón en el debate", "https://elpais.com/espana/elecciones-generales/2026-11-26/debate-electoral-29-n-a-cuatro-entre-sanchez-feijoo-abascal-y-colau-en-directo.html"]]}, {"who": "c", "v": "falso", "t": "≈23:56", "q": "La Comunidad de Madrid dio una medalla de honor al Gobierno de Israel en pleno genocidio", "why": "Falsa en emisor, en destinatario y en el hecho: la propuesta (oct-2023, PP+Vox) era de MEDALLA DEL AYUNTAMIENTO de Madrid (Almeida), no de la Comunidad; los Cronistas de la Villa informaron en contra y Almeida RETIRÓ la concesión (22-dic-2023); la medalla acabó dándose, en mayo-2024, a la comunidad judía de Madrid. Al Gobierno de Israel nunca se la dio ninguna institución. Error de memoria o de guion: las tres cosas a la vez.", "srcs": [["ABC — la propuesta de medalla (oct-2023)", "https://www.abc.es/espana/madrid/madrid-concedera-medalla-honor-israel-votos-pp-vox-20231030143914-nt.html"], ["Cadena SER — Almeida rectifica", "https://cadenaser.com/cmadrid/2023/12/22/almeida-rectifica-y-madrid-no-dara-la-medalla-de-honor-a-israel-2/"]]}, {"who": "c", "v": "mayormente", "t": "≈23:35", "q": "En mi partido hay corrupción cero: ocho años de alcaldía, veinte querellas falsas, todo archivado", "why": "El núcleo resiste: no consta ninguna condena contra Colau ni su equipo; la última causa (subvenciones a entidades sociales, llegó a estar investigada por 5 delitos) se archivó definitivamente en marzo-2025. El «20» no se puede verificar como tal y algunos casos (Casa Batlló/VGIT) se cerraron sin imputarla a ella. «Cero absoluto» es auto-balance; el expediente, tal como está hoy, le da bastante razón.", "srcs": [["El País — archivo definitivo de la causa", "https://elpais.com/espana/2025-03-12/el-juez-archiva-definitivamente-la-causa-contra-ada-colau-por-subvenciones-a-entidades-sociales.html"], ["La Vanguardia — casos archivados", "https://www.lavanguardia.com/local/barcelona/20240712/9783512/archivados-dos-casos-judiciales-contr.html"]]}, {"who": "c", "v": "mayormente", "t": "≈22:19 (audio 30:08)", "q": "La contención de precios en Barcelona ha tenido un efecto: ha bajado ligeramente, un 4%", "why": "Bien sostenido por fuentes oficiales: los informes de la Generalitat sobre las zonas tensionadas catalanas cifran el efecto a la baja en torno al 5% agregado, con Barcelona ciudad entre -3,3% y -4,4% (2025-26), y las rentas de los municipios regulados creciendo un 0,7% frente al 11% de los no regulados. Matices: efecto concentrado en renovaciones y vivienda cara, y el índice general sigue subiendo. La autocrítica («hemos suspendido en vivienda») y este dato: su mejor minuto.", "srcs": [["El Mundo — informe del Govern: efecto -5%", "https://www.elmundo.es/economia/vivienda/2026/03/07/69aafb85e85ece812e8b4576.html"], ["Catalunyapress — INCASÒL: Barcelona ciudad -3,3%", "https://www.catalunyapress.es/articulo/economia/2026-02-22/5781257-catalunya-logra-contener-alquileres-zonas-tensionadas"], ["El Mundo — zonas tensionadas, dos años después", "https://amp.elmundo.es/economia/vivienda/2026/11/02/6ae88c7fe4d4d883668b4592.html"]]}, {"who": "c", "v": "contexto", "t": "≈22:16 (audio 27:11)", "q": "Extranjeros que acumulan cientos de miles de viviendas, en manos de fondos buitre y grandes propietarios", "why": "El registro oficial de grandes tenedores cifra 625.883 viviendas — el orden de magnitud («cientos de miles») es correcto — pero el registro no distingue nacionalidad y el parque está mayoritariamente en manos de sociedades y particulares españoles: el marco «extranjeros acaparando» no lo sostiene ningún dato oficial. El problema es de concentración; la nacionalidad, adorno.", "srcs": [["Maldita — verificación de los 600.000 de fondos buitre", "https://maldita.es/desinfo/20261126/verificaciones-del-debate-a-cuatro-para-las-elecciones-del-29n/"]]}];
+</script>
+<script>
+var VERD_LABEL={verdadero:'Verdadero',mayormente:'Mayormente verdadero',impreciso:'Impreciso',enganoso:'Engañoso',falso:'FALSO',sinfuente:'Sin fuente',opinion:'Opinión',contexto:'Contexto'};
+var CAND_LABEL={s:'PSOE',f:'PP',a:'Vox',c:'F.A.'};
+function renderClaims(){
+  var host=document.getElementById('claims-list');
+  var strip=document.getElementById('score-by-cand');
+  var filters=document.getElementById('claim-filters');
+  if(!CLAIMS.length){host.innerHTML='<div class="note">Radar en preparación (verificaciones primarias en curso). Mientras tanto, los bloques y las formas ya están verificados con las fuentes de abajo.</div>';return;}
+  var order=['falso','enganoso','impreciso','mayormente','contexto','opinion','sinfuente','verdadero'];
+  var byWho={s:[],f:[],a:[],c:[]};
+  CLAIMS.forEach(function(cl){(byWho[cl.who]=byWho[cl.who]||[]).push(cl);});
+  strip.innerHTML=['s','f','a','c'].map(function(w){
+    var arr=byWho[w]||[];
+    var bad=arr.filter(function(x){return x.v==='falso'||x.v==='enganoso';}).length;
+    var ok=arr.filter(function(x){return x.v==='verdadero';}).length;
+    var nm={s:'Pedro Sánchez',f:'Núñez Feijóo',a:'Santiago Abascal',c:'Ada Colau'}[w];
+    var col={s:'#f2837c',f:'#86b5f2',a:'#8fce84',c:'#cda2ef'}[w];
+    return '<div class="score"><div class="nm" style="color:'+col+'">'+nm+' <small>'+arr.length+' verificadas</small></div>'+
+      '<div class="countline"><span style="color:#f0918b">✗ '+bad+' falsas/engañosas</span><span style="color:#6fd68f">✓ '+ok+' verdaderas</span></div></div>';
+  }).join('');
+  var html='<span class="fbtn on" data-f="all">Todas ('+CLAIMS.length+')</span>'+['s','f','a','c'].map(function(w){return '<span class="fbtn" data-f="w-'+w+'">'+CAND_LABEL[w]+' ('+(byWho[w]||[]).length+')</span>';}).join('')+order.map(function(v){var n=CLAIMS.filter(function(x){return x.v===v;}).length;return n?'<span class="fbtn" data-f="v-'+v+'">'+VERD_LABEL[v]+' ('+n+')</span>':'';}).join('');
+  filters.innerHTML=html;
+  var sorted=CLAIMS.slice().sort(function(a,b){return order.indexOf(a.v)-order.indexOf(b.v);});
+  host.innerHTML=sorted.map(function(cl,i){
+    return '<div class="claim c-'+cl.who+'" data-v="'+cl.v+'" data-w="'+cl.who+'">'+
+    '<div class="top"><span class="who-chip w-'+cl.who+'">'+CAND_LABEL[cl.who]+'</span><span class="tchip">'+cl.t+'</span>'+
+    '<span class="vchip v-'+cl.v+'">'+VERD_LABEL[cl.v]+'</span></div>'+
+    '<div class="q">«'+cl.q+'»</div><div class="why">'+cl.why+'</div>'+
+    '<div class="srcs">'+(cl.srcs||[]).map(function(s){return '<a href="'+s[1]+'" target="_blank">↗ '+s[0]+'</a>';}).join('')+'</div></div>';
+  }).join('');
+  document.getElementById('kpi-claims').textContent=CLAIMS.length;
+  document.getElementById('kpi-bad').textContent=CLAIMS.filter(function(x){return x.v==='falso'||x.v==='enganoso';}).length;
+  filters.addEventListener('click',function(e){
+    var b=e.target.closest('.fbtn'); if(!b)return;
+    filters.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    var f=b.dataset.f;
+    host.querySelectorAll('.claim').forEach(function(c){
+      var show=f==='all'||('w-'+c.dataset.w===f)||('v-'+c.dataset.v===f);
+      c.style.display=show?'':'none';
+    });
+  });
+}
+var FUENTES={
+ 1:[['Señal íntegra del debate — retransmisión EL PAÍS (YouTube, 2 h 29)','https://www.youtube.com/watch?v=zciNSh50M18'],['RTVE — resumen en directo minuto a minuto','https://www.rtve.es/noticias/20261126/debate-cuatro-directo-elecciones-2026-resumen/17329999.shtml']],
+ 2:[['VerificaRTVE — verificación en directo del debate a cuatro','https://www.rtve.es/noticias/20261126/debate-cuatro-verificacion-datos-elecciones-generales-2026/17330993.shtml'],['VerificaRTVE — cara a cara 19-N (herencia de checks)','https://www.rtve.es/noticias/20261119/verificacion-datos-contexto-debate-cara-a-cara-entre-sanchez-feijoo-directo/17322402.shtml'],['INE — precios de vivienda (IPV) y migraciones','https://www.ine.es/'],['Ministerio del Interior — delitos contra la libertad sexual','https://www.interior.gob.es/'],['Seguridad Social — Fondo de Reserva (hucha)','https://www.seg-social.es/'],['Tribunal de Cuentas — partidos','https://www.tribunaldecuentas.es/'],['Newtral — verificación en directo del debate a cuatro','https://www.newtral.es/verificacion-directo-debate-a-cuatro-elecciones-29n/20261126/'],['Maldita + Verificat (Comprobado) — verificaciones del debate','https://maldita.es/desinfo/20261126/verificaciones-del-debate-a-cuatro-para-las-elecciones-del-29n/'],['El País — mentiras y medias verdades del debate','https://elpais.com/espana/elecciones-generales/2026-11-26/mentiras-y-medias-verdades-del-debate-electoral-a-cuatro-entre-sanchez-feijoo-abascal-y-colau.html'],['El Correo — verificador del directo','https://www.elcorreo.com/elecciones/generales/verificador-comprobamos-datos-cara-cara-20261126221743-ntrc.html'],['INE JAX 69690 — entradas desde el extranjero','https://www.ine.es/jaxiT3/Tabla.htm?t=69690'],['Interior — informe delitos contra la libertad sexual 2025','https://www.interior.gob.es/opencms/pdf/archivos-y-documentacion/documentacion-y-publicaciones/publicaciones-descargables/publicaciones-periodicas/informe-sobre-delitos-contra-la-libertad-e-indemnidad-sexual-en-Espana/Informe_DelitosSexuales25_v210926.pdf'],['MIVAU — Boletín Anual de Vivienda 2025','https://publicaciones.transportes.gob.es/downloadcustom/sample/4130'],['Infobae/EFE — dimisión de Puente (3-nov-2026)','https://www.infobae.com/espana/agencias/2026/11/03/puente-dimite-por-sorpresa-6-dias-despues-de-urda-tras-una-dura-comparecencia-en-congreso/']],
+ 3:[['elDiario.es — directo del debate','https://www.eldiario.es/politica/ultima-hora-ultimo-debate-electoral-sanchez-feijoo-colau-abascal_6_13696999.html'],['ABC — directo y columnistas','https://www.abc.es/espana/debate-elecciones-generales-directo-pedro-sanchez-feijoo-20261126201502-di.html'],['ABC — los momentos más tensos','https://www.abc.es/espana/buitre-sanchez-banda-guarros-bofetadas-feijoo-momentos-20261126225219-nt.html'],['El Mundo — directo','https://www.elmundo.es/espana/2026/11/26/6b087fc908df1ff64e9803cb-directo.html'],['The Objective — directo','https://theobjective.com/espana/politica/2026-11-26/debate-electoral-sanchez-feijoo-abascal-colau/directo/'],['LaSexta — directo','https://www.lasexta.com/elecciones/generales/debate-electoral-cuatro-sanchez-feijoo-abascal-colau-directo-todo-preparado-debate-decisivo-penultimo-dia-campana-antes-elecciones-29n_202611266b07cf49ff6fec29219b7d13.html'],['Telemadrid — minuto de oro','https://www.telemadrid.es/elecciones/generales/2026/decencia-futuro-vivienda-minuto-oro_1_2842739.html'],['El Debate — análisis (derecha; sesgo declarado)','https://www.eldebate.com/espana/20261127/bieito-rubido-analiza-debate-cuatro-colau-sido-muleta-sanchez-defendio-responder_485726.html'],['Heraldo — directo','https://www.heraldo.es/noticias/nacional/2026/11/26/debate-cuatro-pedro-sanchez-feijoo-abascal-colau-elecciones-generales-2026-directo-2072153.html'],['Europa Press — minuto a minuto','https://www.europapress.es/nacional/noticia-debate-electoral-directo-sanchez-feijoo-abascal-colau-minuto-minuto-20261126183629.html']],
+ 4:[['Sociómetro — votación de lectores (no muestra)','https://bilbaohiria.com/actualidad/quien-ha-ganado-debate-a-cuatro-sanchez-feijoo-encuesta'],['ABC — votación de lectores','https://www.abc.es/espana/ganando-debate-cuatro-elecciones-generales-29n-20261126221822-nt.html'],['The Objective — StrawPoll (no muestra)','https://theobjective.com/espana/politica/2026-11-27/encuesta-debate-a-cuatro/'],['ABC — todas las encuestas pre-veda','https://www.abc.es/espana/encuestas-elecciones-generales-29n-resultados-psoe-pp-20261124050000-nt.html'],['laSexta — resumen de sondeos pre-veda (CIS, 40dB, Sigma Dos, NC Report, GAD3)','https://www.lasexta.com/elecciones/generales/encuestas-sondeos-2026_202611106af2b8b39a31a65adcd6a3fa.html'],['La Razón — flash NC Report post-debate (frontera de veda)','https://www.larazon.es/espana/283-cree-que-feijoo-impuso-sanchez-debate-cuatro_202611276b08be17c0d5c85b96c88626.html'],['Barlovento — informe de audiencia del debate a ocho (referencia comparada)','https://barloventocomunicacion.es/wp-content/uploads/2026/11/AUDIENCIA-DEBATE-A-8_23112026_BARLOVENTO.pdf']]
+};
+function fillFuentes(){Object.keys(FUENTES).forEach(function(k){var el=document.getElementById('fuentes-'+k);if(!el)return;el.innerHTML=FUENTES[k].map(function(f){return '<li><a href="'+f[1]+'" target="_blank">'+f[0]+'</a></li>';}).join('');});}
+renderClaims();fillFuentes();
+(function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/debate-a-cuatro-29n/';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();
+</script>
+</body>
+</html>
