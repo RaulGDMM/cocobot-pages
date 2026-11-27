@@ -172,6 +172,15 @@ tr:last-child td{border-bottom:none}
 .chiprow a:hover{border-color:var(--gold);color:var(--gold);text-decoration:none}
 .vs{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin:6px 0}
 .vs b{color:var(--text)}
+/* tablas deslizables en móvil */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;margin:14px 0}
+.table-wrap table{margin:0}
+.thint{display:none;font-size:.66rem;color:var(--muted);margin:-6px 0 10px}
+@media(max-width:640px){
+  .table-wrap table{min-width:560px;font-size:.78rem}
+  .thint{display:block}
+}
+.grid2>.card,.grid2 .card,.opin,.card{min-width:0}
 </style>
 </head>
 <body>
@@ -326,7 +335,7 @@ tr:last-child td{border-bottom:none}
       <li>María Casado, moderación «de plano» (ABC): dejó correr los turnos, aguantó los golpes y sostuvo las reglas sin protagonismo. Sin TVE poniendo Juego de Tronos de sintonía, que eso ya lo puso la prensa.</li>
     </ul>
     <h4>Los árbitros en directo — <span class="tag f">opinión de sus medios: léase con sesgo</span></h4>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>Columnista (medio)</th><th>Fallo en directo</th></tr>
       <tr><td>I. Camacho (ABC, derecha)</td><td>«Sánchez solo podía encajar y ha encajado… le cayó una tormenta y no ha dicho una palabra» (bloque de servicios). Feijóo «presume de capacidad de gestión».</td></tr>
       <tr><td>M.J. Fuenteálamo (ABC)</td><td>«Pacto de no agresión Feijóo–Abascal. El más nervioso es Sánchez… Feijóo, sin exacerbarse con los tiempos. El verdadero cara a cara es hoy».</td></tr>
@@ -334,14 +343,14 @@ tr:last-child td{border-bottom:none}
       <tr><td>Chapu Apaolaza (ABC)</td><td>«La izquierda no consigue rentabilizar el bloque social… Colau no brilla». (En el mismo sentido, la prensa pro-FA elogiaba su «firmeza» — simetría de sesgos, lectura obligada).</td></tr>
       <tr><td>J.A. Pérez (ABC)</td><td>«Feijóo disfruta y sale casi ileso de la primera parte».</td></tr>
       <tr><td>Bieito Rubido (El Debate, vespertino)</td><td>«Colau ha sido la muleta de Sánchez, que se defendió sin responder».</td></tr>
-    </table>
+    </table></div>
     <h4>Y a la salida, cada prensa cantó su winner <span class="tag o">encuadres atribuidos · léanse con la línea editorial puesta</span></h4>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>Lectura</th><th>Quién lo sostiene</th><th>Frase/encuadre</th></tr>
       <tr><td><b>«Sin ganador / empate»</b></td><td>El Mundo (Lucía Méndez), Telecinco, COPE (San José), The Objective</td><td>«Ni perdedor ni ganador… cada candidato se dirigió a su público»; «más difícil de decidir que en el cara a cara»; «casi un empate técnico entre bloques, aunque le ha salido mejor que el primero».</td></tr>
       <tr><td><b>«Todo queda igual / gana la gestión»</b></td><td>ABC (Apaolaza, Fuenteálamo), La Razón, Periodista Digital</td><td>«Feijóo y Abascal presentan la alternativa… un debate que deja todo igual»; interna del PP vía El Mundo: «nuestra ventaja sigue intacta… otra gran noche».</td></tr>
       <tr><td><b>«El tono fue nuestro»</b></td><td>elDiario.es, RTVE (Fedriani), Catalunyapress, 20minutos (Terán)</td><td>«Ada Colau le pone las pilas a Sánchez»; «Sánchez recupera el tono en un áspero debate con Colau de aliada»; «la izquierda ganó el debate en el tono y el relato — falta ver si da votos».</td></tr>
-    </table>
+    </table></div>
     <p class="small">Patrón predecible y útil como brújula inversa: cuando la mitad de las cabeceras dice «empate» y cada bando dice «ganamos nosotros», el dato sensato es <b>empate con ventaja de ejecución</b> — que es exactamente lo que midió, horas después, el único sondeo-flash publicado (ver §05).</p>
   </div>
 </section>
@@ -351,11 +360,11 @@ tr:last-child td{border-bottom:none}
   <div class="ch"><span class="n">CH·05</span><h2>Flash post-debate: «¿quién ha ganado?» — leído con precaución</h2></div>
   <p class="note warn"><b>Esto NO son encuestas.</b> Con la veda en vigor (art. 69 LOREG), nada medido tras el debate puede publicarse antes del cierre de urnas del domingo 29 a las 20:00. Lo único que existe son <b>votaciones de lectores</b>: miden la militancia y el algoritmo, no al electorado. Útil para el termómetro de cada «granero», nada más. Las encuestas de campo pre-veda, en §06.</p>
   <div class="card">
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>Votación (medio)</th><th>Sánchez</th><th>Feijóo</th><th>Abascal</th><th>Colau</th><th>Muestra</th></tr>
       <tr><td>Sociómetro (votación abierta)</td><td class="big" style="color:#f2837c">49%</td><td class="big" style="color:#86b5f2">36%</td><td class="big">11%</td><td class="big">4%</td><td>~2.819 votos, abierta</td></tr>
       <tr><td>Suma por bloques (Sociómetro)</td><td colspan="2" style="text-align:center">Izquierda <b>53%</b> · Derecha <b>47%</b></td><td colspan="3">la ventaja izquierda de hace una semana era de 61 puntos (78-17 en el a ocho)</td></tr>
-    </table>
+    </table></div>
     <p class="small">Referencia honesta: en la misma votación tras el cara a cara, Sánchez sacó 58%. Aquí 49% con Abascal y Colau en pista: <b>la lectura no es que Sánchez «pierda 9 puntos» — es que en formato a cuatro el granero propio se diluye y el «ganador» baja mientras los bloques se recompactan</b>. La comparación entre votaciones con campos distintos no es una encuesta: es un termómetro.</p>
     <h4>Y encima, dos avisos</h4>
     <ul>
@@ -366,12 +375,12 @@ tr:last-child td{border-bottom:none}
   <div class="card">
     <h3>NC Report FLASH para La Razón (27-N, 00:17) — caso fronterizo de veda</h3>
     <p class="note warn">A las 00:17 La Razón publicó una flash de <b>600 entrevistas hechas el mismo día del debate</b>, amparada en que mide <b>valoración del debate, no intención de voto</b> — lectura fronteriza del art. 69 LOREG que el resto de medios no ha seguido. Sondeo-relámpago con campo de un día: ni es encuesta consolidada ni puede ignorarse como si no existiera. Léase con pinzas.</p>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>«¿Quién ganó el debate?»</th><th>Feijóo</th><th>Sánchez</th><th>Abascal</th><th>Colau</th><th>Ns/Nc</th></tr>
       <tr><td>Total</td><td class="big" style="color:#86b5f2">28,3%</td><td class="big" style="color:#f2837c">24,2%</td><td class="big">17,8%</td><td class="big">6,3%</td><td>23,3%</td></tr>
       <tr><td>Su propio electorado</td><td>83,3%</td><td>78,3%</td><td>85,6%</td><td>72,2%</td><td>—</td></tr>
       <tr><td>Confianza para gobernar</td><td colspan="2" style="text-align:center">Feijóo 31,0% · Sánchez 22,5%</td><td colspan="3">~84% mantiene su voto · ~10% dice que cambiará</td></tr>
-    </table>
+    </table></div>
     <p class="small">Lectura honesta: el primer medidor post-debate da <b>ligera ventaja a Feijóo</b> — dentro del margen de error de un n=600 (±4-5 pts) frente al 24,2 de Sánchez — con un 23% que no sabe y un patrón de espejo perfecto: cada granero declara ganador al suyo (83-86% de coherencia interna). Encaja con la lectura de esta página: <b>ventaja de ejecución popular sin tsunami, empate estructural intacto</b>. Ningún medio serio lo está tratando como veredicto.</p>
   </div>
   <div class="card">
@@ -398,7 +407,7 @@ tr:last-child td{border-bottom:none}
   <div class="card">
     <h3>El marcador congelado: las encuestas que la veda ocultará hasta el domingo</h3>
     <p class="note">Últimos sondeos publicados antes del silencio (LOREG art. 69: nada se podrá publicar hasta las 20:00 del 29-N). El debate se jugó <b>sin marcador visible</b> — y con un dato de fondo: ~2,4 millones de votos por correo ya emitidos antes de anoche. Síntesis: <b>5 de 6 medidores dan victoria del PP y mayoría PP+Vox (183-197 escaños)</b>; el CIS aísla con un PSOE de +9,7 sobre el PP — la oleada más discutida por su metodología y la más celebrada por La Moncloa.</p>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>Sondeo</th><th>Campo / publ.</th><th>PP</th><th>PSOE</th><th>Vox</th><th>Fte. Amplio</th><th>PP+Vox (escaños)</th></tr>
       <tr><td><a href="https://www.abc.es/espana/derecha-mantiene-holgada-mayoria-194-escanos-semana-20261122023225-nt.html" target="_blank">GAD3 · ABC</a></td><td>16-19 nov</td><td>31,1%</td><td>28,4%</td><td>18,1%</td><td>5,8% (7 es. solos)</td><td class="big">194</td></tr>
       <tr><td><a href="https://www.lasexta.com/elecciones/generales/encuestas-sondeos-2026_202611106af2b8b39a31a65adcd6a3fa.html" target="_blank">CIS</a></td><td>10-17 nov</td><td>24,7%</td><td class="big">34,4%</td><td>15,6%</td><td>5,7%</td><td>— (bloque der. 40,3%)</td></tr>
@@ -406,7 +415,7 @@ tr:last-child td{border-bottom:none}
       <tr><td><a href="https://www.abc.es/espana/encuestas-elecciones-generales-29n-resultados-psoe-pp-vox-frente-amplio-ganador-segundos-20261126050000-nt.html" target="_blank">Sigma Dos · El Mundo</a></td><td>22-23 nov</td><td>31,5%</td><td>28,0%</td><td>18,4%</td><td>6,5%</td><td class="big">183-194</td></tr>
       <tr><td><a href="https://www.larazon.es/espana/283-cree-que-feijoo-impuso-sanchez-debate-cuatro_202611276b08be17c0d5c85b96c88626.html" target="_blank">NC Report · La Razón</a></td><td>publ. 23 nov</td><td>31,9%</td><td>27,2%</td><td>19,0%</td><td>5,6%</td><td class="big">194-199</td></tr>
       <tr><td>Sociométrica · El Español</td><td>publ. pre-veda</td><td>134 es.</td><td>114 es.</td><td>63 es.</td><td>4 es.</td><td class="big">197</td></tr>
-    </table>
+    </table></div>
     <p class="small">Lectura fría a tres días: el tablero medio dice <b>PP ~130 · PSOE ~112 · Vox ~62 · FA ~9 escaños</b>, con mayoría PP+Vox en 5 de 6 medidores (y Podemos extraparlamentario en casi todos). Ese marco explica la noche: a Sánchez no le servía arañar cifras imposibles, le servía <b>activar la abstención propia</b> («el domingo tienes más poder que ellos»); a Feijóo, <b>no regalar nada</b> (ni picar con Vox, ni cifras infladas… aunque las infló). El debate, si la veda no esconde un terremoto, no cambiaba escaños: cambiaba movilización. Por eso los cuatro minutos de oro eran la misma frase con cuatro envoltorios: <i>ve a votar</i>.</p>
   </div>
   <div class="card">
@@ -536,6 +545,7 @@ var FUENTES={
 };
 function fillFuentes(){Object.keys(FUENTES).forEach(function(k){var el=document.getElementById('fuentes-'+k);if(!el)return;el.innerHTML=FUENTES[k].map(function(f){return '<li><a href="'+f[1]+'" target="_blank">'+f[0]+'</a></li>';}).join('');});}
 renderClaims();fillFuentes();
+document.querySelectorAll('.table-wrap').forEach(function(w){var d=document.createElement('div');d.className='thint';d.textContent='↔ desliza la tabla para ver todas las columnas';w.parentNode.insertBefore(d,w.nextSibling);});
 function toggleNav(){
   var d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),b=document.getElementById('hamburger-btn');
   var open=d.classList.contains('active');
