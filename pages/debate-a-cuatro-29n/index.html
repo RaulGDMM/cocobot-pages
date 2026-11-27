@@ -21,15 +21,16 @@ a{color:var(--gold);text-decoration:none}
 a:hover{text-decoration:underline}
 ::selection{background:rgba(232,179,75,.25)}
 /* breaking banner — franja fina, siempre visible */
-:root{--bbh:28px}
-.bb{background:linear-gradient(90deg,#8a1f1a,var(--red));color:#fff;height:var(--bbh);padding:0 12px;font-size:.68rem;font-weight:600;position:fixed;top:0;left:0;right:0;z-index:1002;display:flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden}
-.bb::before{content:'';width:7px;height:7px;background:#fff;border-radius:50%;animation:p 1.2s infinite;flex-shrink:0}
-.bb span{overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
-.bb .wide{display:inline}
+.ticker{position:relative;z-index:1002;display:flex;align-items:center;height:36px;background:linear-gradient(90deg,#8a1f1a,var(--red) 55%,#8a1f1a);color:#fff;overflow:hidden;box-shadow:0 2px 14px rgba(228,87,79,.25)}
+.tk-dot{width:8px;height:8px;background:#fff;border-radius:50%;margin:0 14px;flex-shrink:0;box-shadow:0 0 9px rgba(255,255,255,.95);animation:p 1.2s infinite}
+.tk-win{flex:1;min-width:0;overflow:hidden}
+.tk-track{display:inline-flex;white-space:nowrap;animation:tk 36s linear infinite;will-change:transform}
+.tk-seq{display:inline-flex;padding-right:40px;font-size:.72rem;font-weight:600}
+.tk-seq b{color:#ffe08a}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
-@media(max-width:680px){.bb .wide{display:none}}
 /* topbar fina con hamburguesa — se oculta al bajar, reaparece al subir */
-.topbar{position:fixed;top:var(--bbh);left:0;right:0;z-index:1001;background:rgba(12,16,22,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:8px 16px;height:46px;transition:transform .28s ease;flex-wrap:nowrap}
+.topbar{position:sticky;top:0;z-index:1001;animation:barIn .6s cubic-bezier(.22,.9,.26,1) backwards;background:rgba(12,16,22,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:8px 16px;height:46px;transition:transform .28s ease;flex-wrap:nowrap}
+.topbar::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4;pointer-events:none}
 .topbar.t-hide{transform:translateY(-115%)}
 @media(prefers-reduced-motion:reduce){.topbar{transition:none}}
 .topbar .brand{font-family:Georgia,serif;font-weight:bold;color:var(--gold);font-size:.9rem;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -51,12 +52,13 @@ a:hover{text-decoration:underline}
 .nav-drawer a:last-child{border-bottom:none}
 .nav-drawer a .n{color:var(--muted);font-size:.7rem;margin-right:8px;font-family:Georgia,serif}
 /* back fab */
-.back-btn{position:fixed;top:calc(var(--bbh) + 56px);left:14px;z-index:999;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 13px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s}
+.back-btn{position:fixed;top:64px;left:14px;z-index:999;background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 13px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s}
 .back-btn:hover{color:var(--gold);border-color:var(--gold)}
 @media(max-width:1280px){.back-btn{display:none}}
-.wrap{max-width:980px;margin:0 auto;padding:calc(var(--bbh) + 92px) 22px 40px}
-section{margin-bottom:64px;scroll-margin-top:calc(var(--bbh) + 54px)}
-.kpis,.meters,.cands{scroll-margin-top:calc(var(--bbh) + 54px)}
+.wrap{max-width:980px;margin:0 auto;padding:58px 22px 40px}
+#seccion-top{position:relative}
+section{margin-bottom:64px;scroll-margin-top:62px}
+.kpis,.meters,.cands,.eq{scroll-margin-top:62px}
 #seccion-top{scroll-margin-top:12px}
 .kicker{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
 h1{font-size:clamp(2.1rem,5.4vw,3.4rem);margin-bottom:12px}
@@ -83,10 +85,11 @@ h1 .thin{color:var(--muted);font-weight:normal}
 .ch .n{font-size:.72rem;color:var(--gold);font-family:Georgia,serif;letter-spacing:.18em}
 .ch h2{font-size:clamp(1.4rem,3.2vw,1.9rem)}
 .note{color:var(--muted);font-size:.86rem;margin:-12px 0 22px;max-width:800px}
+.card .note,.opin .note{margin-top:4px}
 .note.warn{color:#d9a44a;border-left:3px solid var(--orange);padding-left:12px}
 /* cards */
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:16px}
-.card h3{font-size:1.12rem;margin-bottom:8px}
+.card h3{font-size:1.12rem;margin-bottom:12px}
 .card h4{font-size:.95rem;margin:14px 0 6px;color:var(--gold)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:700px){.grid2{grid-template-columns:1fr}}
@@ -184,10 +187,44 @@ tr:last-child td{border-bottom:none}
   .thint{display:block}
 }
 .grid2>.card,.grid2 .card,.opin,.card{min-width:0}
+/* ---- v1.23: cabecera de TV ---- */
+.onair-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.onair{display:inline-flex;align-items:center;gap:8px;font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.2em;color:var(--gold);border:1px solid rgba(232,179,75,.45);border-radius:5px;padding:5px 12px;background:rgba(232,179,75,.07)}
+.onair i{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 9px var(--red);animation:p 1.15s steps(2) infinite}
+.clock{font-family:'Courier New',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.clock b{color:var(--text);font-weight:600}
+h1 .l2{display:block;font-size:.52em;color:transparent;-webkit-text-stroke:1px rgba(232,237,245,.68);margin-top:.12em}
+.hero-bg{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:min(1240px,150vw);height:640px;z-index:-1;pointer-events:none;overflow:hidden}
+.hero-bg i{position:absolute;width:460px;height:460px;border-radius:50%;filter:blur(100px);opacity:.13;animation:drift 22s ease-in-out infinite alternate}
+.hero-bg i:nth-child(1){background:var(--psoe);left:4%;top:0}
+.hero-bg i:nth-child(2){background:var(--pp);left:33%;top:-70px;animation-delay:-6s}
+.hero-bg i:nth-child(3){background:var(--vox);left:58%;top:20px;animation-delay:-12s}
+.hero-bg i:nth-child(4){background:var(--fa);left:79%;top:-40px;animation-delay:-17s}
+.hero-bg::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 4px);animation:scan 14s linear infinite}
+.eq{display:flex;gap:3px;align-items:flex-end;height:34px;margin:20px 0 6px;opacity:.75}
+.eq i{flex:1;min-width:3px;background:linear-gradient(180deg,var(--gold),rgba(232,179,75,.18));border-radius:2px;transform-origin:bottom;animation:lvl 1.2s ease-in-out infinite alternate}
+.fu{animation:fadeUp .6s ease backwards}
+.onair-row.fu{animation-delay:.05s}
+h1.fu{animation-delay:.14s}
+.sub.fu{animation-delay:.24s}
+.upd.fu{animation-delay:.34s}
+.cands.fu{animation-delay:.42s}
+.kpis.fu{animation-delay:.52s}
+.eq{animation:fadeUp .6s ease .6s backwards}
+.cand{animation:fadeUp .55s ease backwards}
+.cand:nth-child(1){animation-delay:.46s}.cand:nth-child(2){animation-delay:.55s}
+.cand:nth-child(3){animation-delay:.64s}.cand:nth-child(4){animation-delay:.73s}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes barIn{from{transform:translateY(-115%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes lvl{from{transform:scaleY(.28)}to{transform:scaleY(1)}}
+@keyframes drift{to{transform:translate(40px,-30px) scale(1.18)}}
+@keyframes scan{to{background-position:0 240px}}
+@media(prefers-reduced-motion:reduce){.fu,.cand,.eq,.topbar,.hero-bg i,.hero-bg::after,.onair i,.eq i,.tk-track,.tk-dot{animation:none!important}}
 </style>
 </head>
 <body>
-<div class="bb"><span>v1.22 · 27/11 08:05 — 32 verificaciones sobre fuente primaria<span class="wide"> · transcripción y audio propios · v2: exit poll y resultados el 29-N</span></span></div>
+<div class="ticker"><span class="tk-dot"></span><div class="tk-win"><div class="tk-track"><span class="tk-seq"><b>v1.23 · 27/11 09:05</b> — bulómetro: 32 verificaciones sobre fuente primaria ✦ transcripción y audio propios, no resúmenes de prensa ✦ minuto de oro verificado sobre el audio ✦ v2 el domingo 29-N con exit poll y resultados ✦</span><span class="tk-seq" aria-hidden="true"><b>v1.23 · 27/11 09:05</b> — bulómetro: 32 verificaciones sobre fuente primaria ✦ transcripción y audio propios, no resúmenes de prensa ✦ minuto de oro verificado sobre el audio ✦ v2 el domingo 29-N con exit poll y resultados ✦</span></div></div></div>
 <header class="topbar" id="topbar">
   <span class="brand">🐱 COCOBOT · VERIFICADO</span>
   <button class="hamburger-btn" id="hamburger-btn" aria-label="Menú" onclick="toggleNav()">☰</button>
@@ -210,27 +247,33 @@ tr:last-child td{border-bottom:none}
 </nav>
 
 <div class="wrap" id="seccion-top">
+<div class="hero-bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 <!-- HERO -->
-<div class="kicker">Academia de la Televisión · Transmisión 22:00 → 00:05 · Tres Cantos (Madrid) · 26·11·2026</div>
-<h1>Debate a cuatro <span class="thin">— el duelo definitivo antes del 29-N, verificado</span></h1>
-<p class="sub">Sánchez, Feijóo, Abascal y Colau se han enfrentado dos horas en el último gran debate antes de las elecciones. Esta página es un análisis <b>independiente</b>: transcripción propia de la señal íntegra, radar de afirmaciones con fuentes primarias, análisis de las formas y una lectura honesta de si ha habido ganador —spoiler: la respuesta incómoda es que no, y lo explico con datos.</p>
-<div class="upd" id="upd-badge">v1.22 · radar completo (32) · minuto de oro verificado sobre audio propio · cada cifra recomputada sobre fuente primaria</div>
+<div class="onair-row fu">
+  <span class="onair"><i></i>SEÑAL ANALIZADA · ACADEMIA DE LA TELEVISIÓN</span>
+  <span class="clock">TRANSMISIÓN <b>22:00</b> → <b>00:05</b> · 26·11·2026 · MADRID CONTENT CITY</span>
+</div>
+<h1 class="fu">Debate a cuatro<span class="l2">El duelo definitivo antes del 29-N</span></h1>
+<p class="sub fu">Sánchez, Feijóo, Abascal y Colau se han enfrentado dos horas en el último gran debate antes de las elecciones. Esta página es un análisis <b>independiente</b>: transcripción propia de la señal íntegra, radar de afirmaciones con fuentes primarias, análisis de las formas y una lectura honesta de si ha habido ganador —spoiler: la respuesta incómoda es que no, y lo explico con datos.</p>
+<div class="upd fu" id="upd-badge">v1.23 · radar completo (32) · minuto de oro verificado sobre audio propio · cada cifra recomputada sobre fuente primaria</div>
 
-<div class="cands">
+<div class="cands fu">
   <div class="cand psoe"><img src="sanchez.jpg" alt="Pedro Sánchez"><div class="ci"><div class="nm">Pedro Sánchez</div><div class="pt">PSOE · presidente</div><div class="tg">«El domingo el poder lo tienes tú»</div></div></div>
   <div class="cand pp"><img src="feijoo.jpg" alt="Alberto Núñez Feijóo"><div class="ci"><div class="nm">Núñez Feijóo</div><div class="pt">PP · candidato</div><div class="tg">«Voten con memoria»</div></div></div>
   <div class="cand vox"><img src="abascal.jpg" alt="Santiago Abascal"><div class="ci"><div class="nm">Santiago Abascal</div><div class="pt">Vox</div><div class="tg">«Reconquistar el futuro»</div></div></div>
   <div class="cand fa"><img src="colau.jpg" alt="Ada Colau"><div class="ci"><div class="nm">Ada Colau</div><div class="pt">Frente Amplio</div><div class="tg">«Vivienda para vivir»</div></div></div>
 </div>
 
-<div class="kpis">
+<div class="kpis fu">
   <div class="kpi"><b>2 h 05</b><span>de directo</span></div>
   <div class="kpi"><b>5+1</b><span>bloques + minuto de oro</span></div>
   <div class="kpi"><b id="kpi-claims">–</b><span>afirmaciones en radar</span></div>
   <div class="kpi"><b id="kpi-bad">–</b><span>falsas / engañosas</span></div>
   <div class="kpi"><b>3 días</b><span>para las urnas</span></div>
 </div>
+
+<div class="eq" id="eq" aria-hidden="true"></div>
 
 <!-- METERS -->
 <h2 style="font-size:1.05rem;margin:30px 0 6px">Termómetro editorial <span class="tag o">valoración propia · metodología en §09</span></h2>
@@ -453,6 +496,7 @@ tr:last-child td{border-bottom:none}
     <div class="log-item"><span class="d">v1.1 · 27/11 01:40</span><span>Primera edición nocturna: reconstrucción por bloques contrastada con 9 directos + transcripción propia; radar con primeras verificaciones (VerificaRTVE + recomprobación primaria); flash de votaciones de lectores; formas y tablero.</span></div>
     <div class="log-item"><span class="d">v1.2 · 27/11 02:50</span><span><b>Radar completo: 30 afirmaciones verificadas con fuente primaria</b> (INE JAX, Interior, BOE, sentencias AN/TS, MIVAU, Generalitat) y minuto exacto de mi propia transcripción cuando el audio la cubre. Añadidos: flash NC Report (caso fronterizo de veda), reacciones en caliente, mapa de encuestas pre-veda y encuadres de prensa. <b>Tres correcciones a la edición de madrugada:</b> el «alquiler −4%» es de Colau (no de Sánchez); el aforamiento de Mazón es como diputado en Les Corts (no senador); la «medalla a Israel» era propuesta municipal retirada y nunca concedida.</span></div>
     <div class="log-item"><span class="d">v1.22 · 27/11 08:05</span><span>Cabecera rediseñada (crítica de Raúl desde móvil): la franja roja pasa a línea fina fija arriba; la barra de cabecera se oculta al hacer scroll hacia abajo y reaparece al subir; los diez enlaces pasan a menú hamburguesa lateral (drawer derecha) con el diseño habitual de las páginas Cocobot — incluye enlace de vuelta al índice. Comportamiento idéntico con <i>reduced motion</i> (sin animación, misma función). Además: las 5 tablas anchas van ahora en contenedor deslizable (se corrigió un desborde de 566px en pantallas de móvil que ampliaba todo el lienzo).</span></div>
+    <div class="log-item"><span class="d">v1.23 · 27/11 09:05</span><span>Segunda crítica de Raúl: <b>el banner rojo ya no es fijo</b> — es un ticker de televisión que solo se ve al entrar y se va con el scroll; la barra superior ahora es <i>sticky</i> y entra deslizándose, con el rótulo decodificándose. El hero estrena insignia de emisión, foco de luz de los cuatro colores, scanlines tenues y ecualizador animado (homenaje al audio propio). Además: los títulos de tarjeta respiran mejor del texto (un margen negativo las pegaba).</span></div>
     <div class="log-item"><span class="d">v1.21 · 27/11 03:20</span><span>Transcripción propia COMPLETA hasta el cierre: los cuatro minutos de oro verificados sobre mi audio ([128:38]-[131:50], cita íntegra de Feijóo actualizada). Dos afirmaciones añadidas captadas en el audio: el «25% del crecimiento es por los migrantes» de Sánchez (mayormente: techo BdE) y el «50% de extracomunitarios no cotiza» de Abascal (sin fuente). Radar: <b>32 afirmaciones</b>.</span></div>
     <div class="log-item"><span class="d">v1.3 · previsto 27/11 tarde</span><span>Audiencia del debate (Barlovento), crónicas matutinas, cierres nocturnos de EFE Verifica, votaciones de lectores cerradas (ABC/eldiario) y reacciones de La Revuelta/tertulias — con la transcripción propia completa (cierre del minuto de oro incluido).</span></div>
     <div class="log-item"><span class="d">v2 · previsto 29/11 21:05</span><span><b>Exit poll RTVE + flash La 1 + primeros resultados</b>. Se evaluará si el debate cambió algo: bloque a bloque, territorio a territorio, y se cerrará el veredicto de ganador con datos.</span></div>
@@ -576,6 +620,27 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   });
 });
 (function(){var w='https://cocobot-stats.rgarciademarina.workers.dev';var p='/pages/debate-a-cuatro-29n/';var el=document.getElementById('visit-counter');fetch(w+'/t?path='+encodeURIComponent(p),{method:'GET'}).catch(function(){});fetch(w+'/c?path='+encodeURIComponent(p)).then(function(r){return r.json();}).then(function(d){if(el&&d.count){el.textContent='👁️ '+d.count+' visitas';}}).catch(function(){});})();
+
+/* brand scramble-decode (con guardas) */
+(function(){var el=document.querySelector('.topbar .brand');if(!el)return;
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var all=Array.from(el.textContent),fixed=all.slice(0,2).join(''),body=all.slice(2);
+var glyphs='\u259A\u259E\u2591\u2592\u2593\u2588/\\<>_\u2014\u00B7\u2726',t0=null,dur=750,done=false;
+setTimeout(function(){if(!done){done=true;el.textContent=fixed+body.join('');}},1500);
+function fr(t){if(done)return;t0=t0||t;var p=Math.min(1,(t-t0)/dur),k=Math.floor(body.length*p),s='';
+for(var i=0;i<body.length;i++){s+=(i<k||body[i]===' ')?body[i]:glyphs[Math.floor(Math.random()*glyphs.length)];}
+el.textContent=fixed+s;
+if(p<1){requestAnimationFrame(fr);}else{done=true;el.textContent=fixed+body.join('');}}
+requestAnimationFrame(fr);})();
+/* ecualizador del hero */
+(function(){var eq=document.getElementById('eq');if(!eq)return;
+var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var frag=document.createDocumentFragment();
+for(var i=0;i<44;i++){var b=document.createElement('i');
+b.style.height=(22+Math.random()*76)+'%';
+if(!reduce){b.style.animationDelay=(-Math.random()*1.4)+'s';b.style.animationDuration=(0.8+Math.random()*1.2)+'s';}
+frag.appendChild(b);}
+eq.appendChild(frag);})();
 </script>
 </body>
 </html>
